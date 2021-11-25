@@ -1,10 +1,10 @@
 <template>
     <v-container fluid class="outer-wrapper grey lighten-5">
         <v-row class="inner-wrapper" no-gutters>
-            <v-col class="login-wrapper" cols="12" sm="8" md="6">
+            <v-col class="login-wrapper" cols="12" md="6">
                 <v-container fluid>
-                    <v-row no-gutters class="login-wrapper">
-                        <v-col cols="12" sm="10" md="8">
+                    <v-row no-gutters class="login-row">
+                        <v-col cols="11" sm="10" md="8">
                             <h1>{{ $t("login.title") }}</h1>
                             <p class="mb-8 mt-4">{{ $t("login.subtitle") }}</p>
                             <v-form ref="form" @submit.prevent="submit" lazy-validation>
@@ -90,8 +90,20 @@
                     </v-row>
                 </v-container>
             </v-col>
-            <v-col class="images-wrapper" cols="12" sm="8" md="6">
-                <v-card class="pa-2" outlined tile>One of three columns</v-card>
+            <v-col class="images-wrapper" cols="12" md="6">
+                <v-container style="height: 100%" fluid>
+                    <v-row style="height: 100%" no-gutters>
+                        <v-col cols="6" offset="3" class="login-row">
+                            <div class="rounded-xl society-icon-wrapper">
+                                <img
+                                    src="../static/aktionSodisBig.png"
+                                    style="width: 100%;"
+                                    alt="Aktion Sodis Logo"
+                                />
+                            </div>
+                        </v-col>
+                    </v-row>
+                </v-container>
             </v-col>
         </v-row>
     </v-container>
@@ -134,22 +146,51 @@ export default {
 
 <style scoped>
 .outer-wrapper {
+    padding: 0;
     height: 100%;
+    overflow: hidden;
 }
 .inner-wrapper {
     height: 100%;
 }
 
 .login-wrapper {
-    height: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    z-index: 2;
 }
 
+.login-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
 .images-wrapper {
-    height: 100%;
+    background-image: url("../static/colleagues.jpeg");
+    background-size: cover;
+    background-position: center;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+@media only screen and (max-width: 960px) {
+    .images-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+    }
+
+    .login-wrapper {
+        background-color: rgba(255, 255, 255, 0.85);
+        height: 100vh;
+    }
 }
 
 .row-space-between {
@@ -160,5 +201,20 @@ export default {
 .push-to-end {
     display: flex;
     justify-content: end;
+}
+
+.background-img {
+    height: 100%;
+}
+
+.society-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    z-index: 2;
+    background-color: rgba(128, 128, 128, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 16px;
 }
 </style>
