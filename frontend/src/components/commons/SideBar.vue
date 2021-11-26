@@ -14,6 +14,7 @@
                 <v-list nav dense class="mt-12">
                     <v-list-item
                         :to="{ name: 'Home' }"
+                        exact
                         :class="currentRouteName === 'Home' ? 'primary darken-4' : ''"
                     >
                         <v-list-item-icon>
