@@ -11,6 +11,15 @@ const authModule = {
     firstname: null,
     lastname: null,
   }),
+  getters: {
+    getIsAuthenticated: (state) => state.isAuthenticated,
+    getCredentials: (state) => ({
+      userId: state.userId,
+      email: state.email,
+      firstname: state.firstname,
+      lastname: state.lastname,
+    }),
+  },
   mutations: {
     setIsAuthenticated(state, payload) {
       state.isAuthenticated = payload;
@@ -23,7 +32,7 @@ const authModule = {
       state.lastname = payload.lastname;
     },
     setToken(state, payload) {
-      state.token = payload.token;
+      state.token = payload;
     },
   },
   actions: {
@@ -59,15 +68,6 @@ const authModule = {
       commit("setIsAuthenticated", false);
       return true;
     },
-  },
-  getters: {
-    getIsAuthenticated: (state) => state.isAuthenticated,
-    getCredentials: (state) => ({
-      userId: state.userId,
-      email: state.email,
-      firstname: state.firstname,
-      lastname: state.lastname,
-    }),
   },
 };
 
