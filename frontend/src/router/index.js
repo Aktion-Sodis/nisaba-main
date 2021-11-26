@@ -1,8 +1,12 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "../store";
+
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
-import store from "../store";
+import OrganizationStructure from "../views/OrganizationStructure.vue";
+import BaseData from "../views/BaseData.vue";
+import Technologies from "../views/Technologies.vue";
 
 Vue.use(VueRouter);
 
@@ -21,6 +25,30 @@ const routes = [
     component: Login,
     meta: {
       requiresAuth: false,
+    },
+  },
+  {
+    path: "/organization-structure",
+    name: "OrganizationStructure",
+    component: OrganizationStructure,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/base-data",
+    name: "BaseData",
+    component: BaseData,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/technologies",
+    name: "Technologies",
+    component: Technologies,
+    meta: {
+      requiresAuth: true,
     },
   },
   {
