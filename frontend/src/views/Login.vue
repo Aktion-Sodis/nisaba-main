@@ -88,13 +88,26 @@
                             </v-form>
                         </v-col>
                     </v-row>
+                    <v-row no-gutters class="d-md-none mt-16">
+                        <v-col cols="6" sm="4" offset="3" offset-sm="4">
+                            <div class="rounded-xl pa-4 lg-rounded-pill society-icon-wrapper">
+                                <img
+                                    src="../static/aktionSodisBig.png"
+                                    style="width: 100%;"
+                                    alt="Aktion Sodis Logo"
+                                />
+                            </div>
+                        </v-col>
+                    </v-row>
                 </v-container>
             </v-col>
             <v-col class="images-wrapper" cols="12" md="6">
                 <v-container style="height: 100%" fluid>
                     <v-row style="height: 100%" no-gutters>
                         <v-col cols="6" offset="3" class="login-row">
-                            <div class="rounded-xl society-icon-wrapper">
+                            <div
+                                class="rounded-xl pa-4 lg-rounded-pill d-none d-md-block society-icon-wrapper"
+                            >
                                 <img
                                     src="../static/aktionSodisBig.png"
                                     style="width: 100%;"
@@ -137,7 +150,12 @@ export default {
         submit() {
             const valid = this.$refs.form.validate()
             if (valid) {
-                // handle login
+                const signInSuccess = this.$store.dispatch("auth/signIn", {
+                    username: this.username
+                })
+                if (signInSuccess) {
+                    this.$router.push({ name: "Home" })
+                }
             }
         }
     }
@@ -213,8 +231,6 @@ export default {
     align-items: center;
     max-width: 100%;
     z-index: 2;
-    background-color: rgba(128, 128, 128, 0.95);
-    backdrop-filter: blur(20px);
-    padding: 16px;
+    background-color: gray;
 }
 </style>
