@@ -45,9 +45,11 @@ router.beforeEach((to, from, next) => {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!store.getters["auth/getIsAuthenticated"]) {
+      // redirect to login page if not authenticated
+      store.dispatch("auth/logout"); // delete state data for consistency
       next({ name: "Login" });
     } else {
-      next(); // go to wherever I'm going
+      next();
     }
   } else {
     next(); // does not require auth, make sure to always call next()!
