@@ -1,7 +1,7 @@
 {
   "login": {
     "title": "Welcome back!",
-    "subtitle": "Please login with your credentials or register.",
+    "subtitle": "Please sign in with your credentials or register.",
     "username": "Username",
     "password": "Password",
     "required": "Required.",
