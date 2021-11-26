@@ -74,7 +74,7 @@ router.beforeEach((to, from, next) => {
     // if not, redirect to login page.
     if (!store.getters["auth/getIsAuthenticated"]) {
       // redirect to login page if not authenticated
-      store.dispatch("auth/logout"); // delete state data for consistency
+      store.dispatch("auth/deleteSession"); // delete state data for consistency
       next({ name: "Login" });
     } else {
       next();

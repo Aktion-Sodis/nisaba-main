@@ -67,7 +67,9 @@
                             <v-list-item-title class="text-h6 white--text">Lorem ipsum</v-list-item-title>
                             <v-list-item-subtitle class="white--text">sandra_a88@gmail.com</v-list-item-subtitle>
                         </v-list-item-content>
-                        <v-icon color="white">mdi-exit-to-app</v-icon>
+                        <v-btn @click="logout" class="mx-2" fab elevation="0" small color="primary">
+                            <v-icon color="white">mdi-exit-to-app</v-icon>
+                        </v-btn>
                     </div>
                 </v-list-item>
             </v-list>
@@ -76,7 +78,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
     name: "SideBar",
@@ -89,6 +91,15 @@ export default {
             return this.$route.name;
         }
     },
+    methods: {
+        ...mapActions({
+            deleteSession: 'auth/deleteSession'
+        }),
+        logout() {
+            this.deleteSession();
+            this.$router.push({ name: "Login" })
+        }
+    }
 };
 </script>
 

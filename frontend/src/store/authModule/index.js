@@ -52,7 +52,7 @@ const authModule = {
       commit("setIsAuthenticated", true);
       return true;
     },
-    logout({ commit }) {
+    deleteSession({ commit }) {
       // Here an axios call to fetch user information & authentication
       // const password = payload.password;
       // const persistSession = payload.rememberMe;
