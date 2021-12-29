@@ -59,6 +59,14 @@
         </v-card-text>
 
         <v-card-actions>
+          <v-btn
+            v-if="interventionModalIsEdit"
+            @click="clickOnDeleteIntervention"
+            color="warning"
+            text
+          >
+            {{ $t("general.delete") }}
+          </v-btn>
           <v-spacer></v-spacer>
           <v-btn color="secondary" text @click="closeThenDeleteComponentData">
             {{ $t("general.cancel") }}
@@ -126,7 +134,15 @@ export default {
       saveIntervention: "ivGui/saveIntervention",
       showInterventionModal: "ivGui/showInterventionModal",
       closeInterventionModal: "ivGui/closeInterventionModal",
+      deleteIntervention: "ivGui/deleteIntervention",
     }),
+    clickOnDeleteIntervention() {
+      this.deleteIntervention(
+        this.interventionCurrentlyBeingEdited.interventionId
+      );
+      this.interventionName = "";
+      this.interventionDescription = "";
+    },
     closeThenDeleteComponentData() {
       this.closeInterventionModal();
 

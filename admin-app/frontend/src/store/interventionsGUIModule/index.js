@@ -62,6 +62,10 @@ const interventionsModule = {
           { root: true }
         );
     },
+    deleteIntervention: ({ commit, dispatch }, interventionId) => {
+      commit("iv/deleteIntervention", interventionId, { root: true });
+      dispatch("resetAll");
+    },
     showInterventionModal: ({ commit }) => {
       commit("setInterventionModalIsDisplayed", true);
     },

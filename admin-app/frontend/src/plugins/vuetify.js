@@ -24,6 +24,7 @@ export default new Vuetify({
         "primary-dark": colors.indigo.darken1,
         secondary: colors.red.lighten4,
         accent: colors.indigo.base,
+        warning: colors.red.darken4,
       },
     },
   },
