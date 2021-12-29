@@ -24,11 +24,7 @@ export enum ShapesEnum {
 }
 
 export enum TechnologyContentTypeEnum {
-<<<<<<< HEAD
   "MarkdownDocument",
-=======
-  "Document",
->>>>>>> 1a37aad (in tech: generalize doc into content)
   "Image",
   "Video",
   "Misc",
