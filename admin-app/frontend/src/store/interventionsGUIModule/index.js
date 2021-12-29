@@ -65,6 +65,9 @@ const interventionsModule = {
     showInterventionModal: ({ commit }) => {
       commit("setInterventionModalIsDisplayed", true);
     },
+    closeInterventionModal: ({ commit }) => {
+      commit("setInterventionModalIsDisplayed", false);
+    },
   },
 };
 
