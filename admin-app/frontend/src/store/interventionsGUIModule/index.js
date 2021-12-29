@@ -6,7 +6,7 @@ const interventionsModule = {
   }),
   getters: {
     getInterventionModalIsEdit: (state) =>
-      state.InterventionIdCurrentlyBeingEdited !== null,
+      state.interventionIdCurrentlyBeingEdited !== null,
     getInterventionCurrentlyBeingEdited: (
       state,
       getters,
