@@ -59,14 +59,16 @@
           >
         </v-list-item>
         <v-list-item
-          :to="{ name: 'Technologies' }"
-          :class="currentRouteName === 'Technologies' ? 'primary darken-4' : ''"
+          :to="{ name: 'Interventions' }"
+          :class="
+            currentRouteName === 'Interventions' ? 'primary darken-4' : ''
+          "
         >
           <v-list-item-icon>
             <v-icon color="white">mdi-wrench-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-title class="white--text text-body-1"
-            >Technologies</v-list-item-title
+            >Interventions</v-list-item-title
           >
         </v-list-item>
       </v-list>

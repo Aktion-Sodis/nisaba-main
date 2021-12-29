@@ -115,7 +115,7 @@ export default {
     ...mapGetters({
       allEntitiesOfLevel: "entities/getAllEntitiesOfLevelByHid",
       upperLevelById: "entities/getUpperLevelById",
-      allowedTechnologies: "entities/getTechnologies",
+      allowedInterventions: "entities/getInterventions",
       entityModalIsEdit: "os/getEntityModalIsEdit",
       entityCurrentlyBeingEdited: "os/getEntityCurrentlyBeingEdited",
       entityModalIsDisplayed: "os/getEntityModalIsDisplayed",

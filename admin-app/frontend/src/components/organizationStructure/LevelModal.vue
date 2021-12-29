@@ -64,21 +64,21 @@
               </v-col>
 
               <v-col cols="12" sm="6">
-                <v-card-title> Technologies </v-card-title>
+                <v-card-title> Interventions </v-card-title>
                 <v-card-text>
                   <v-select
-                    v-model="levelAllowedTechnologies"
-                    :items="allowedTechnologies"
+                    v-model="levelAllowedInterventions"
+                    :items="allowedInterventions"
                     :label="
                       $t(
-                        'organizationStructure.levelModal.manageAllowedTechnologies'
+                        'organizationStructure.levelModal.manageAllowedInterventions'
                       )
                     "
                     multiple
                     dense
                     outlined
                     persistent-hint
-                    item-value="technologyId"
+                    item-value="interventionId"
                     item-text="name"
                   ></v-select>
                 </v-card-text>
@@ -127,14 +127,14 @@ export default {
       },
       levelName: "",
       levelDescription: "",
-      levelAllowedTechnologies: [],
+      levelAllowedInterventions: [],
       levelIsSubordinateTo: null,
     };
   },
   computed: {
     ...mapGetters({
       levels: "entities/getSortedLevels",
-      allowedTechnologies: "entities/getTechnologies",
+      allowedInterventions: "entities/getInterventions",
       levelModalIsEdit: "os/getLevelModalIsEdit",
       levelModalIsDisplayed: "os/getLevelModalIsDisplayed",
       levelCurrentlyBeingEdited: "os/getLevelCurrentlyBeingEdited",
@@ -165,7 +165,7 @@ export default {
 
       this.levelName = "";
       this.levelDescription = "";
-      this.levelAllowedTechnologies = [];
+      this.levelAllowedInterventions = [];
       this.levelIsSubordinateTo = null;
     },
     submitLevel() {
@@ -175,7 +175,7 @@ export default {
           : null,
         name: this.levelName,
         description: this.levelDescription,
-        allowedTechnologies: this.levelAllowedTechnologies || [],
+        allowedInterventions: this.levelAllowedInterventions || [],
         upperLevelId: this.levelIsSubordinateTo,
       });
 

@@ -6,7 +6,7 @@ import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import OrganizationStructure from "../views/OrganizationStructure.vue";
 import BaseData from "../views/BaseData.vue";
-import Technologies from "../views/Technologies.vue";
+import Interventions from "../views/Interventions.vue";
 
 Vue.use(VueRouter);
 
@@ -44,9 +44,9 @@ const routes = [
     },
   },
   {
-    path: "/technologies",
-    name: "Technologies",
-    component: Technologies,
+    path: "/interventions",
+    name: "Interventions",
+    component: Interventions,
     meta: {
       requiresAuth: true,
     },

@@ -76,7 +76,7 @@ const organizationStructureModule = {
     },
     saveLevel: (
       { commit },
-      { levelId, name, description, upperLevelId, allowedTechnologies }
+      { levelId, name, description, upperLevelId, allowedInterventions }
     ) => {
       if (levelId === null)
         commit(
@@ -85,7 +85,7 @@ const organizationStructureModule = {
             name,
             description,
             upperLevelId,
-            allowedTechnologies,
+            allowedInterventions,
           },
           { root: true }
         );
@@ -97,7 +97,7 @@ const organizationStructureModule = {
             name,
             description,
             upperLevelId,
-            allowedTechnologies,
+            allowedInterventions,
           },
           { root: true }
         );
