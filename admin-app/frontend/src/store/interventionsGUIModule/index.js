@@ -37,7 +37,7 @@ const interventionsModule = {
       commit("setInterventionIdCurrentlyBeingEdited", payload);
       dispatch("showInterventionModal");
     },
-    clickOnAddNewIntervention: ({ commit, dispatch }) => {
+    clickOnAddNewIntervention: ({ dispatch }) => {
       dispatch("resetAll");
       dispatch("showInterventionModal");
     },
