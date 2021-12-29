@@ -20,6 +20,18 @@ const interventionsModule = {
         description:
           "A plantation is an agricultural estate, generally centered on a plantation house, meant for farming that specializes in cash crops, usually mainly planted with a single crop, with perhaps ancillary areas for vegetables for eating and so on.",
       },
+      {
+        interventionId: "5f463cd0-22d3-4321-960d-a4e01efeeccf",
+        name: "Birth Control",
+        description:
+          "Birth control, also known as contraception, anticonception, and fertility control, is a method or device used to prevent pregnancy.",
+      },
+      {
+        interventionId: "a7dcb0d2-28ca-4679-aa98-f2fc07c66066",
+        name: "Gender Equality",
+        description:
+          "Gender equality, also known as sexual equality or equality of the sexes, is the state of equal ease of access to resources and opportunities regardless of gender, including economic participation and decision-making; and the state of valuing different behaviors, aspirations and needs equally, regardless of gender. ",
+      },
     ],
   }),
   getters: {
