@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 const interventionsModule = {
   namespaced: true,
   state: () => ({
@@ -42,8 +44,12 @@ const interventionsModule = {
   },
   mutations: {
     /* CREATE, UPDATE, DELETE */
-    addIntervention: (state, payload) => {
-      state.interventions = state.interventions.concat(payload);
+    addIntervention: (state, { name, description }) => {
+      state.interventions = state.interventions.concat({
+        interventionId: uuidv4(),
+        name,
+        description,
+      });
     },
     replaceIntervention: (state, { interventionId, name, description }) => {
       state.interventions = state.interventions.map((i) =>
