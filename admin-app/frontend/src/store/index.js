@@ -7,6 +7,7 @@ import authModule from "./authModule";
 import entitiesModule from "./entitiesModule";
 import organizationStructureModule from "./organizationStructureModule";
 import interventionsModule from "./interventionsModule";
+import interventionsGUIModule from "./interventionsGUIModule";
 
 // persist
 const vuexLocal = new VuexPersistence({
@@ -29,6 +30,7 @@ export default new Vuex.Store({
     entities: entitiesModule,
     os: organizationStructureModule,
     iv: interventionsModule,
+    ivGui: interventionsGUIModule,
   },
   plugins: [vuexLocal.plugin],
 });
