@@ -3,7 +3,16 @@
     <v-img
       src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
       height="200px"
-    ></v-img>
+    >
+      <v-btn
+        fab
+        class="iv-edit-icon"
+        color="primary"
+        @click="callVuexActionThenFillInterventionModalForm"
+      >
+        <v-icon color="darken-2"> mdi-pencil-outline </v-icon>
+      </v-btn>
+    </v-img>
     <v-card-title>
       {{ interventionName }}
     </v-card-title>
@@ -15,6 +24,8 @@
 
 <script>
 import { validate as uuidValidate } from "uuid";
+
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Intervention",
@@ -32,7 +43,32 @@ export default {
       required: true,
     },
   },
+  computed: {
+    ...mapGetters({}),
+  },
+  methods: {
+    ...mapActions({
+      clickOnEditIntervention: "ivGui/clickOnEditIntervention",
+    }),
+    callVuexActionThenFillInterventionModalForm() {
+      this.clickOnEditIntervention(this.interventionId);
+
+      /* TODO: This is bad, bad practice. */
+      const InterventionModal = this.$parent.$children.find(
+        (c) => c.$options.name === "InterventionModal"
+      );
+      InterventionModal.interventionName = this.interventionName || "";
+      InterventionModal.interventionDescription =
+        this.interventionDescription || "";
+    },
+  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.iv-edit-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+</style>
