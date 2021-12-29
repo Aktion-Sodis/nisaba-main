@@ -3,23 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 const entitiesModule = {
   namespaced: true,
   state: () => ({
-    interventions: [
-      {
-        interventionId: "bd5f6df6-a64c-4d60-9df2-8f29bb7944d5",
-        description: "Some description",
-        name: "Kitchen",
-      },
-      {
-        interventionId: "59fe15e7-59ad-46bf-a196-cbab81885d5b",
-        description: "Some description",
-        name: "Toilet",
-      },
-      {
-        interventionId: "c220fb83-a0e4-4463-a28a-f21b260e609a",
-        description: "Some description",
-        name: "Plantation",
-      },
-    ],
     levels: [
       {
         description: "Some description",
@@ -100,9 +83,6 @@ const entitiesModule = {
   }),
   getters: {
     /* GENERIC GETTERS */
-    getInterventions: (state) => state.interventions,
-    getInterventionById: (state, getters) => (interventionId) =>
-      getters.getInterventions.find((e) => e.interventionId === interventionId),
     getEntities: (state) => state.entities,
     getLevels: (state) => state.levels, // not sorted. Use with care.
     getSortedLevels: (state, getters) =>

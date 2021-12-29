@@ -71,7 +71,7 @@ export default {
   computed: {
     ...mapGetters({
       levels: "entities/getSortedLevels",
-      getInterventionById: "entities/getInterventionById",
+      getInterventionById: "iv/getInterventionById",
     }),
   },
   methods: {
