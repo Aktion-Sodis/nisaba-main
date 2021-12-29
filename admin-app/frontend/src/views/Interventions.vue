@@ -9,7 +9,12 @@
             class="pa-2 d-flex justify-center align-center"
           >
             <div class="d-flex flex-column align-center">
-              <v-btn fab x-large color="primary lighten-2">
+              <v-btn
+                fab
+                x-large
+                color="primary lighten-2"
+                @click="clickOnAddNewIntervention"
+              >
                 <v-icon dark> mdi-plus </v-icon>
               </v-btn>
               <h2 class="mt-4">New intervention</h2>
@@ -37,7 +42,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 import Intervention from "../components/interventions/Intervention.vue";
 import InterventionModal from "../components/interventions/InterventionModal.vue";
@@ -48,6 +53,11 @@ export default {
   computed: {
     ...mapGetters({
       interventions: "iv/getInterventions",
+    }),
+  },
+  methods: {
+    ...mapActions({
+      clickOnAddNewIntervention: "ivGui/clickOnAddNewIntervention",
     }),
   },
 };
