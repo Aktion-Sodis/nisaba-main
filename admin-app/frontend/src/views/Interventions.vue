@@ -33,6 +33,7 @@
             :interventionId="intervention.interventionId"
             :interventionName="intervention.name"
             :interventionDescription="intervention.description"
+            :interventionTags="intervention.tags"
           />
         </v-col>
       </v-row>

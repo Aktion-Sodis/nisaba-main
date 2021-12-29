@@ -19,6 +19,11 @@
     <v-card-subtitle>
       {{ interventionDescription }}
     </v-card-subtitle>
+    <v-card-text>
+      <v-chip v-for="tagId in interventionTags" :key="tagId" class="mr-2">{{
+        interventionTagById(tagId).name
+      }}</v-chip>
+    </v-card-text>
   </v-card>
 </template>
 
@@ -42,9 +47,15 @@ export default {
       type: String,
       required: true,
     },
+    interventionTags: {
+      type: Array,
+      validator: (a) => a.every((e) => uuidValidate(e)),
+    },
   },
   computed: {
-    ...mapGetters({}),
+    ...mapGetters({
+      interventionTagById: "iv/getInterventionTagById",
+    }),
   },
   methods: {
     ...mapActions({
@@ -60,6 +71,7 @@ export default {
       InterventionModal.interventionName = this.interventionName || "";
       InterventionModal.interventionDescription =
         this.interventionDescription || "";
+      InterventionModal.interventionTags = this.interventionTags || [];
     },
   },
 };

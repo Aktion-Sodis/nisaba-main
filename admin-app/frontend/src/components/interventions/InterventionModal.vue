@@ -52,7 +52,18 @@
               </v-col>
 
               <v-col cols="12" sm="6">
-                <v-card-title> Here be some other things </v-card-title>
+                <v-select
+                  v-model="interventionTags"
+                  :items="allInterventionTags"
+                  item-value="tagId"
+                  item-text="name"
+                  deletable-chips
+                  chips
+                  dense
+                  label="Tags"
+                  multiple
+                  outlined
+                ></v-select>
               </v-col>
             </v-row>
           </v-container>
@@ -107,6 +118,7 @@ export default {
       },
       interventionName: "",
       interventionDescription: "",
+      interventionTags: [],
     };
   },
   computed: {
@@ -116,6 +128,7 @@ export default {
       interventionModalIsDisplayed: "ivGui/getInterventionModalIsDisplayed",
       interventionCurrentlyBeingEdited:
         "ivGui/getInterventionCurrentlyBeingEdited",
+      allInterventionTags: "iv/getInterventionTags",
     }),
     requiredi18n() {
       return this.$t("login.required");
@@ -156,6 +169,7 @@ export default {
           : null,
         name: this.interventionName,
         description: this.interventionDescription,
+        tags: this.interventionTags,
       });
 
       this.closeThenDeleteComponentData();

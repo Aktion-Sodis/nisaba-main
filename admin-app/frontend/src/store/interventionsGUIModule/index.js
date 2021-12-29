@@ -41,13 +41,17 @@ const interventionsModule = {
       dispatch("resetAll");
       dispatch("showInterventionModal");
     },
-    saveIntervention: ({ commit }, { interventionId, name, description }) => {
+    saveIntervention: (
+      { commit },
+      { interventionId, name, description, tags }
+    ) => {
       if (interventionId === null)
         commit(
           "iv/addIntervention",
           {
             name,
             description,
+            tags,
           },
           { root: true }
         );
@@ -58,6 +62,7 @@ const interventionsModule = {
             interventionId,
             name,
             description,
+            tags,
           },
           { root: true }
         );
