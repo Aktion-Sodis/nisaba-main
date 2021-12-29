@@ -3,7 +3,7 @@
     <h1 class="ml-8 mt-6">Interventions</h1>
     <v-container class="mt-8">
       <v-row class="mr-2 mr-md-0">
-        <v-col>
+        <v-col cols="12" sm="6" md="4" lg="3">
           <div
             style="height: 100%"
             class="pa-2 d-flex justify-center align-center"
