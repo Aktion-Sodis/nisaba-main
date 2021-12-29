@@ -60,7 +60,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="closeThenDeleteComponentData">
+          <v-btn color="secondary" text @click="closeThenDeleteComponentData">
             {{ $t("general.cancel") }}
           </v-btn>
           <v-btn
