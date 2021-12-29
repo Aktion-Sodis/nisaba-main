@@ -28,6 +28,29 @@ const interventionsModule = {
     getInterventionById: (state, getters) => (interventionId) =>
       getters.getInterventions.find((e) => e.interventionId === interventionId),
   },
+  mutations: {
+    /* CREATE, UPDATE, DELETE */
+    addIntervention: (state, payload) => {
+      state.interventions = state.interventions.concat(payload);
+    },
+    replaceIntervention: (state, { interventionId, name, description }) => {
+      state.interventions = state.interventions.map((i) =>
+        i.interventionId === interventionId
+          ? {
+              ...i,
+              interventionId,
+              name,
+              description,
+            }
+          : i
+      );
+    },
+    deleteIntervention: (state, interventionId) => {
+      state.interventions = state.interventions.filter(
+        (i) => i.interventionId !== interventionId
+      );
+    },
+  },
   actions: {},
 };
 
