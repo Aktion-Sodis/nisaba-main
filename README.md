@@ -33,6 +33,9 @@
 
 ![image](https://user-images.githubusercontent.com/4698720/147454315-1a985342-36aa-4661-aada-43fede5deb97.png)
 
+![image](https://user-images.githubusercontent.com/4698720/147783104-7fcc55aa-0c32-478a-9df7-af16b2bfd2c9.png)
+
+
 ### 📈 The Analytics App
 
 <div align="right">
@@ -59,4 +62,4 @@
 
 ## 🙌 Contribute
 
-See our ["job" posts](https://cloud.collective-incubator.de/teams/aktion-sodis) for our volunteer collaboration! We will love it to have you around and to skyrocket our coolness coefficient to the moon 😎🚀
+See our ["job" posts](https://cloud.collective-incubator.de/teams/aktion-sodis) for our volunteer collaboration! We will love to have you around and skyrocket our coolness coefficient to the moon 😎🚀
