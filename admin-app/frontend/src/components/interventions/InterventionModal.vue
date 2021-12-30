@@ -1,5 +1,9 @@
 <template>
-  <v-dialog v-model="interventionModalIsDisplayed" max-width="800px" persistent>
+  <v-dialog
+    v-model="interventionModalIsDisplayed"
+    max-width="1200px"
+    persistent
+  >
     <v-card class="px-4 pt-4">
       <v-form ref="form" @submit.prevent="submitIntervention" lazy-validation>
         <v-card-title>
@@ -21,7 +25,7 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" sm="6">
+              <v-col cols="12" md="6">
                 <v-card-title> Intervention information </v-card-title>
                 <v-text-field
                   v-model="interventionName"
@@ -51,7 +55,7 @@
                 ></v-textarea>
               </v-col>
 
-              <v-col cols="12" sm="6">
+              <v-col cols="12" md="6">
                 <v-select
                   v-model="interventionTags"
                   :items="allInterventionTags"
