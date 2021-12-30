@@ -6,36 +6,44 @@ before replacing the other substrings.
 TODO: don't deploy the dollar signs to production! */
 
 const databaseOntologies = Object.freeze({
-  userImgPath: { path: "userFiles/$userID/img.png", replace: ["userID"] },
-  levelImgPath: { path: "levelFiles/$levelID/img.png", replace: ["levelID"] },
+  userImgPath: { path: "userFiles/$userID/img.png", toBeReplaced: ["userID"] },
+  levelImgPath: {
+    path: "levelFiles/$levelID/img.png",
+    toBeReplaced: ["levelID"],
+  },
   levelCustomDataImgPath: {
     path: "levelFiles/$levelID/customDataFiles/$customDataID/img.png",
-    replace: ["levelID", "customDataID"],
+    toBeReplaced: ["levelID", "customDataID"],
   },
   interventionImgPath: {
     path: "interventionFiles/$interventionID/img.png",
-    replace: ["interventionID"],
+    toBeReplaced: ["interventionID"],
   },
   interventionDocMdPath: {
     path: "interventionFiles/$interventionID/documentFiles/$documentID.md",
-    replace: ["interventionID", "documentID"],
+    toBeReplaced: ["interventionID", "documentID"],
   },
   interventionSurveyImgPath: {
     path: "interventionFiles/$interventionID/surveyFiles/$surveyID/img.png",
-    replace: ["interventionID", "surveyID"],
+    toBeReplaced: ["interventionID", "surveyID"],
   },
   questionImgPath: {
     path: "interventionFiles/$interventionID/surveyFiles/$surveyID/questionFiles/$questionID/img.png",
-    replace: ["interventionID", "surveyID", "questionID"],
+    toBeReplaced: ["interventionID", "surveyID", "questionID"],
   },
   questionOptionImgPath: {
     path: "interventionFiles/$interventionID/surveyFiles/$surveyID/questionFiles/$questionID/optionFiles/$optionID/img.png",
-    replace: ["interventionID", "surveyID", "questionID", "optionID"],
+    toBeReplaced: ["interventionID", "surveyID", "questionID", "optionID"],
   },
   entityImgPath: {
     path: "entityFiles/$entityID/img.png",
-    replace: ["entityID"],
+    toBeReplaced: ["entityID"],
   },
-  taskImgPath: { path: "taskFiles/$taskID/img.png", replace: ["taskID"] },
-  taskImgPath: { path: "taskFiles/$taskID/audio.mp3", replace: ["taskID"] },
+  taskImgPath: { path: "taskFiles/$taskID/img.png", toBeReplaced: ["taskID"] },
+  taskImgPath: {
+    path: "taskFiles/$taskID/audio.mp3",
+    toBeReplaced: ["taskID"],
+  },
 });
+
+export default { databaseOntologies };
