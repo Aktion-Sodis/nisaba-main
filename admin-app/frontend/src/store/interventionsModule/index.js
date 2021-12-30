@@ -66,6 +66,10 @@ const interventionsModule = {
     getInterventionTags: (state) => state.interventionTags,
     getInterventionTagById: (state, getters) => (tagId) =>
       getters.getInterventionTags.find((e) => e.tagId === tagId),
+
+    getInterventionDocs: (state) => state.interventionDocs,
+    getInterventionDocById: (state, getters) => (docId) =>
+      getters.getInterventionDocs.find((e) => e.docId === docId),
   },
   mutations: {
     /* CREATE, UPDATE, DELETE */
