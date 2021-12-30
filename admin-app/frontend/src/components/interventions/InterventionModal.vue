@@ -53,6 +53,14 @@
                   outlined
                   dense
                 ></v-textarea>
+                <v-img
+                  src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+                  max-height="200px"
+                >
+                  <v-btn fab class="iv-edit-icon" color="primary">
+                    <v-icon color="darken-2"> mdi-pencil-outline </v-icon>
+                  </v-btn>
+                </v-img>
               </v-col>
 
               <v-col cols="12" md="6">
