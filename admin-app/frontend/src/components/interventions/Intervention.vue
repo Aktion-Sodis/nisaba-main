@@ -51,6 +51,10 @@ export default {
       type: Array,
       validator: (a) => a.every((e) => uuidValidate(e)),
     },
+    interventionDocs: {
+      type: Array,
+      validator: (a) => a.every((e) => uuidValidate(e)),
+    },
   },
   computed: {
     ...mapGetters({
@@ -72,6 +76,7 @@ export default {
       InterventionModal.interventionDescription =
         this.interventionDescription || "";
       InterventionModal.interventionTags = this.interventionTags || [];
+      InterventionModal.interventionDocs = this.interventionDocs || [];
     },
   },
 };

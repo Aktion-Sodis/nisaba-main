@@ -34,6 +34,7 @@
             :interventionName="intervention.name"
             :interventionDescription="intervention.description"
             :interventionTags="intervention.tags"
+            :interventionDocs="intervention.docs"
           />
         </v-col>
       </v-row>

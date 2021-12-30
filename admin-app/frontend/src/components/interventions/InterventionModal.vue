@@ -62,7 +62,6 @@
                   </v-btn>
                 </v-img>
               </v-col>
-
               <v-col cols="12" md="6">
                 <v-select
                   v-model="interventionTags"
@@ -76,11 +75,20 @@
                   multiple
                   outlined
                 ></v-select>
+                <v-card-title> Documents </v-card-title>
+                <v-select
+                  v-model="interventionDocs"
+                  :items="allInterventionDocs"
+                  item-value="docId"
+                  item-text="name"
+                  label="Select the documents for the intervention"
+                  multiple
+                  persistent-hint
+                ></v-select>
               </v-col>
             </v-row>
           </v-container>
         </v-card-text>
-
         <v-card-actions>
           <v-btn
             v-if="interventionModalIsEdit"
@@ -131,6 +139,7 @@ export default {
       interventionName: "",
       interventionDescription: "",
       interventionTags: [],
+      interventionDocs: [],
     };
   },
   computed: {
@@ -141,6 +150,7 @@ export default {
       interventionCurrentlyBeingEdited:
         "ivGui/getInterventionCurrentlyBeingEdited",
       allInterventionTags: "iv/getInterventionTags",
+      allInterventionDocs: "iv/getInterventionDocs",
     }),
     requiredi18n() {
       return this.$t("login.required");
@@ -182,6 +192,7 @@ export default {
         name: this.interventionName,
         description: this.interventionDescription,
         tags: this.interventionTags,
+        docs: this.interventionDocs,
       });
 
       this.closeThenDeleteComponentData();
@@ -189,3 +200,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.iv-edit-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+</style>
