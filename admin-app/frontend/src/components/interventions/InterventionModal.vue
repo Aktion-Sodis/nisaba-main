@@ -75,16 +75,45 @@
                   multiple
                   outlined
                 ></v-select>
-                <v-card-title> Documents </v-card-title>
-                <v-select
-                  v-model="interventionDocs"
-                  :items="allInterventionDocs"
-                  item-value="docId"
-                  item-text="name"
-                  label="Select the documents for the intervention"
-                  multiple
-                  persistent-hint
-                ></v-select>
+                <v-card-title>
+                  Documents
+                  <v-btn fab x-small color="primary lighten-2" class="ml-2">
+                    <v-icon dark> mdi-plus </v-icon>
+                  </v-btn>
+                </v-card-title>
+                <v-expansion-panels accordion>
+                  <v-expansion-panel
+                    v-for="docId in interventionDocs"
+                    :key="docId"
+                  >
+                    <v-expansion-panel-header outlined>
+                      <div class="d-flex justify-start">
+                        <v-icon> mdi-file-document-outline </v-icon>
+                        <p class="mb-0 pt-1 ml-2 text-subtitle-1">
+                          {{ interventionDocById(docId).name }}
+                        </p>
+                      </div>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                      <p style="transform: translateY(-12px)" class="mb-0">
+                        {{ interventionDocById(docId).description }}
+                      </p>
+                      <v-chip
+                        v-for="tagId in interventionDocById(docId).tags"
+                        :key="tagId"
+                        class="mr-2"
+                      >
+                        {{ interventionDocTagById(tagId).name }}
+                      </v-chip>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                </v-expansion-panels>
+                <div class="d-flex justify-center mt-4">
+                  <v-btn elevation="2" rounded x-large color="primary">
+                    <v-icon left> mdi-plus </v-icon>
+                    Add Form
+                  </v-btn>
+                </div>
               </v-col>
             </v-row>
           </v-container>
@@ -151,6 +180,8 @@ export default {
         "ivGui/getInterventionCurrentlyBeingEdited",
       allInterventionTags: "iv/getInterventionTags",
       allInterventionDocs: "iv/getInterventionDocs",
+      interventionDocTagById: "iv/getInterventionDocTagById",
+      interventionDocById: "iv/getInterventionDocById",
     }),
     requiredi18n() {
       return this.$t("login.required");
