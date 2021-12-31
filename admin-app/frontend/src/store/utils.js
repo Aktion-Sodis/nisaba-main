@@ -1,6 +1,6 @@
 import databaseOntologies from "./constants";
 
-const databaseDerivativesReplacer = (paramsObj, wantedDerivative) => {
+const deriveFilePath = (wantedDerivative, paramsObj) => {
   const derivative = databaseOntologies[wantedDerivative];
   if (Object.keys(paramsObj).length !== derivative.toBeReplaced.length)
     return -1;
