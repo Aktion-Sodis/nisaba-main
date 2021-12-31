@@ -54,7 +54,13 @@ const interventionsModule = {
       {
         docId: "eff8b64c-22e9-4b34-948e-465a3f5b9a4a",
         name: "Some explanatory document",
+        description:
+          "IKEA is a Swedish-origin Dutch-headquartered multinational conglomerate that designs and sells ready-to-assemble furniture, kitchen appliances and home accessories, among other goods and home services.",
+        tags: ["1a19542e-509a-4648-8280-bf5acb9825d7"],
       },
+    ],
+    interventionDocTags: [
+      { tagId: "1a19542e-509a-4648-8280-bf5acb9825d7", name: "Doc tag 1" },
     ],
   }),
   getters: {
@@ -70,6 +76,10 @@ const interventionsModule = {
     getInterventionDocs: (state) => state.interventionDocs,
     getInterventionDocById: (state, getters) => (docId) =>
       getters.getInterventionDocs.find((e) => e.docId === docId),
+
+    getInterventionDocTags: (state) => state.interventionDocTags,
+    getInterventionDocTagById: (state, getters) => (tagId) =>
+      getters.getInterventionDocTags.find((e) => e.tagId === tagId),
   },
   mutations: {
     /* CREATE, UPDATE, DELETE */
