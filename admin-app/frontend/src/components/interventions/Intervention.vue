@@ -50,9 +50,9 @@ export default {
       type: Array,
       validator: (a) => a.every((e) => uuidValidate(e)),
     },
-    interventionDocs: {
+    interventionContent: {
       type: Array,
-      validator: (a) => a.every((e) => uuidValidate(e)),
+      validator: (a) => a.every((e) => uuidValidate(e.id)),
     },
   },
   computed: {
@@ -75,7 +75,7 @@ export default {
       InterventionModal.interventionDescription =
         this.interventionDescription || "";
       InterventionModal.interventionTags = this.interventionTags || [];
-      InterventionModal.interventionDocs = this.interventionDocs || [];
+      InterventionModal.interventionContent = this.interventionContent || [];
     },
   },
 };

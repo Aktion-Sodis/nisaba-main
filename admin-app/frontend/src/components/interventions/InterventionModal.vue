@@ -81,39 +81,95 @@
                     <v-icon dark> mdi-plus </v-icon>
                   </v-btn>
                 </v-card-title>
-                <v-expansion-panels accordion>
+                <v-expansion-panels
+                  accordion
+                  v-if="allDocumentsOfIntervention.length > 0"
+                >
                   <v-expansion-panel
-                    v-for="docId in interventionDocs"
-                    :key="docId"
+                    v-for="doc in allDocumentsOfIntervention"
+                    :key="doc.id"
                   >
                     <v-expansion-panel-header outlined>
                       <div class="d-flex justify-start">
                         <v-icon> mdi-file-document-outline </v-icon>
                         <p class="mb-0 pt-1 ml-2 text-subtitle-1">
-                          {{ interventionDocById(docId).name }}
+                          {{ doc.name }}
                         </p>
                       </div>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content>
                       <p style="transform: translateY(-12px)" class="mb-0">
-                        {{ interventionDocById(docId).description }}
+                        {{ doc.description }}
                       </p>
                       <v-chip
-                        v-for="tagId in interventionDocById(docId).tags"
+                        v-for="tagId in doc.tags"
                         :key="tagId"
                         class="mr-2"
                       >
-                        {{ interventionDocTagById(tagId).name }}
+                        {{ interventionContentTagById(tagId).name }}
                       </v-chip>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                 </v-expansion-panels>
-                <div class="d-flex justify-center mt-4">
-                  <v-btn elevation="2" rounded x-large color="primary">
-                    <v-icon left> mdi-plus </v-icon>
-                    Add Form
+                <p v-else>No documents uploaded.</p>
+
+                <v-card-title>
+                  Images
+                  <v-btn fab x-small color="primary lighten-2" class="ml-2">
+                    <v-icon dark> mdi-plus </v-icon>
                   </v-btn>
+                </v-card-title>
+                <div v-if="allImagesOfIntervention.length > 0">
+                  <v-row>
+                    <v-col
+                      v-for="img in allImagesOfIntervention"
+                      :key="img.id"
+                      class="d-flex child-flex"
+                      cols="3"
+                    >
+                      <v-img
+                        src="https://picsum.photos/id/11/500/300"
+                        lazy-src="https://picsum.photos/id/11/10/6"
+                        aspect-ratio="1"
+                      >
+                        <template v-slot:placeholder>
+                          <v-row
+                            class="fill-height ma-0"
+                            align="center"
+                            justify="center"
+                          >
+                            <v-progress-circular
+                              indeterminate
+                              color="grey lighten-5"
+                            ></v-progress-circular>
+                          </v-row>
+                        </template>
+                      </v-img>
+                    </v-col>
+                  </v-row>
                 </div>
+                <p v-else>No images uploaded.</p>
+
+                <v-card-title>
+                  Videos
+                  <v-btn fab x-small color="primary lighten-2" class="ml-2">
+                    <v-icon dark> mdi-plus </v-icon>
+                  </v-btn>
+                </v-card-title>
+                <div v-if="allVideosOfIntervention.length > 0">
+                  <div v-for="vid in allVideosOfIntervention" :key="vid.id">
+                    <video width="50"></video>
+                  </div>
+                </div>
+                <p v-else>No videos uploaded.</p>
+
+                <v-card-title class="mt-4">
+                  Surveys
+                  <v-btn fab x-small color="primary lighten-2" class="ml-2">
+                    <v-icon dark> mdi-plus </v-icon>
+                  </v-btn>
+                </v-card-title>
+                <p>No surveys added.</p>
               </v-col>
             </v-row>
           </v-container>
@@ -168,7 +224,7 @@ export default {
       interventionName: "",
       interventionDescription: "",
       interventionTags: [],
-      interventionDocs: [],
+      interventionContent: [],
     };
   },
   computed: {
@@ -179,9 +235,16 @@ export default {
       interventionCurrentlyBeingEdited:
         "ivGui/getInterventionCurrentlyBeingEdited",
       allInterventionTags: "iv/getInterventionTags",
-      allInterventionDocs: "iv/getInterventionDocs",
-      interventionDocTagById: "iv/getInterventionDocTagById",
-      interventionDocById: "iv/getInterventionDocById",
+
+      allContentByInterventionId: "iv/getAllContentByInterventionId",
+
+      // allDocumentsOfIntervention: "iv/getAllDocumentsOfIntervention",
+      // allImagesOfIntervention: "iv/getAllImagesOfIntervention",
+      // allVideosOfIntervention: "iv/getAllVideosOfIntervention",
+
+      contentById: "iv/getContentById",
+
+      interventionContentTagById: "iv/getInterventionContentTagById",
     }),
     requiredi18n() {
       return this.$t("login.required");
@@ -193,6 +256,18 @@ export default {
     },
     interventionFormIsInvalid() {
       return !!this.interventionName;
+    },
+    allDocumentsOfIntervention() {
+      return (
+        this.interventionContent.filter((c) => c.type === "MarkdownDocument") ||
+        []
+      );
+    },
+    allVideosOfIntervention() {
+      return this.interventionContent.filter((c) => c.type === "Video") || [];
+    },
+    allImagesOfIntervention() {
+      return this.interventionContent.filter((c) => c.type === "Image") || [];
     },
   },
   methods: {
@@ -223,7 +298,7 @@ export default {
         name: this.interventionName,
         description: this.interventionDescription,
         tags: this.interventionTags,
-        docs: this.interventionDocs,
+        content: this.interventionContent,
       });
 
       this.closeThenDeleteComponentData();
