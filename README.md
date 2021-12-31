@@ -13,7 +13,7 @@
   
 **[OUR MISSION](https://github.com/Aktion-Sodis/software-main#our-mission) • 
 [THE SUBPROJECTS](https://github.com/Aktion-Sodis/software-main#the-subprojects) • 
-[CONTRIBUTE](https://github.com/Aktion-Sodis/software-main#contribute)**
+[CONTRIBUTE](https://github.com/Aktion-Sodis/software-main#raised_hands-contribute)**
 
 </div>
 
@@ -60,6 +60,6 @@
   
 </div>
 
-## 🙌 Contribute
+## :raised_hands: Contribute
 
 See our ["job" posts](https://cloud.collective-incubator.de/teams/aktion-sodis) for our volunteer collaboration! We will love to have you around and skyrocket our coolness coefficient to the moon 😎🚀
