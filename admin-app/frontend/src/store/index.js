@@ -12,6 +12,7 @@ import interventionsGUIModule from "./interventionsGUIModule";
 // persist
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
+  modules: ["auth"],
 });
 
 Vue.use(Vuex);
