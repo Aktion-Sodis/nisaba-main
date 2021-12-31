@@ -33,7 +33,10 @@ const interventionsModule = {
         name: "Birth Control",
         description:
           "Birth control, also known as contraception, anticonception, and fertility control, is a method or device used to prevent pregnancy.",
-        tags: ["7bbe9c5f-1784-41c5-8795-ae449ec95498"],
+        tags: [
+          "c1f87fc0-9e7c-400c-aec5-73719a87642a",
+          "4b139d0e-1d61-4317-8cc6-1e1364d3b6b9",
+        ],
         docs: ["eff8b64c-22e9-4b34-948e-465a3f5b9a4a"],
       },
       {
@@ -41,14 +44,17 @@ const interventionsModule = {
         name: "Gender Equality",
         description:
           "Gender equality, also known as sexual equality or equality of the sexes, is the state of equal ease of access to resources and opportunities regardless of gender, including economic participation and decision-making; and the state of valuing different behaviors, aspirations and needs equally, regardless of gender. ",
-        tags: ["7bbe9c5f-1784-41c5-8795-ae449ec95498"],
+        tags: [
+          "c1f87fc0-9e7c-400c-aec5-73719a87642a",
+          "4b139d0e-1d61-4317-8cc6-1e1364d3b6b9",
+        ],
         docs: [],
       },
     ],
     interventionTags: [
-      { tagId: "7bbe9c5f-1784-41c5-8795-ae449ec95498", name: "Tag 1" },
-      { tagId: "4b139d0e-1d61-4317-8cc6-1e1364d3b6b9", name: "Tag 2" },
-      { tagId: "c1f87fc0-9e7c-400c-aec5-73719a87642a", name: "Tag 3" },
+      { tagId: "7bbe9c5f-1784-41c5-8795-ae449ec95498", name: "Technology" },
+      { tagId: "4b139d0e-1d61-4317-8cc6-1e1364d3b6b9", name: "Education" },
+      { tagId: "c1f87fc0-9e7c-400c-aec5-73719a87642a", name: "Social" },
     ],
     interventionDocs: [
       {
