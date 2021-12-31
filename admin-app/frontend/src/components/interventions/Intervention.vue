@@ -15,15 +15,14 @@
     </v-img>
     <v-card-title>
       {{ interventionName }}
+      <v-spacer></v-spacer>
+      <v-chip v-for="tagId in interventionTags" :key="tagId" class="ml-2"
+        >{{ interventionTagById(tagId).name }}
+      </v-chip>
     </v-card-title>
-    <v-card-subtitle>
+    <v-card-subtitle class="mt-0">
       {{ interventionDescription }}
     </v-card-subtitle>
-    <v-card-text>
-      <v-chip v-for="tagId in interventionTags" :key="tagId" class="mr-2">{{
-        interventionTagById(tagId).name
-      }}</v-chip>
-    </v-card-text>
   </v-card>
 </template>
 
