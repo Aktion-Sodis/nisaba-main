@@ -16,7 +16,7 @@ type User @model {
 
 type Permission {
   permissionType: PermissionType!
-  allowedEntities: [ID!]! #  hier ggf. via entity verknüpfen
+  allowedEntities: [ID!]! # connect possibly via entity
 }
 
 enum PermissionType {
@@ -50,7 +50,7 @@ type ColorTheme {
 type StoragePaths {
   ownerPic: String
   ownerIcon: String
-  # todo: prüfen ob auf diese Art und Weise sinnvoll
+  # todo: check whether this approach makes sense
 }
 
 # level collection
@@ -72,7 +72,7 @@ type Level @model {
 }
 
 type CustomData {
-  id: ID! # todo: prüfen wie zu generieren
+  id: ID! # todo: check how to generate it
   name: String!
   type: Type!
 }
@@ -102,7 +102,7 @@ enum InterventionType {
 # content collection
 
 type Content @model {
-  id: ID! # todo: verknüpfte ID
+  id: ID! # todo: dependent ID
   schemeVersion: Int!
   interventionID: ID!
   intervention: Intervention @connection(fields: ["interventionID"])
@@ -112,7 +112,7 @@ type Content @model {
 
 # survey collection
 type Survey @model {
-  id: ID! # todo: verknüpfte ID
+  id: ID! # todo: dependent ID
   schemeVersion: Int!
   interventionID: ID!
   intervention: Intervention @connection(fields: ["interventionID"])
@@ -136,7 +136,7 @@ enum QuestionType {
 }
 
 type Question {
-  id: ID! # todo: verknüpfte key
+  id: ID! # todo: dependent ID
   text: String!
   type: QuestionType!
   questionOptions: [QuestionOption!]
@@ -150,7 +150,7 @@ type QuestionOption {
 
 # entityCollection
 
-# todo: hier schauen ob verknüpfung der kinder auch sinn macht
+# todo: check whether binding the children makes sense
 type Entity @model {
   id: ID!
   schemeVersion: Int!
@@ -172,7 +172,7 @@ type Location {
 }
 
 type AppliedCustomData {
-  customDataID: ID! # todo: ggf. referenz annotieren
+  customDataID: ID! # todo: we might possibly annotate the connection
   type: Type!
   name: String!
   intValue: Int
@@ -181,7 +181,7 @@ type AppliedCustomData {
 
 # appliedInterventionCollection
 
-# todo: ggf. beidseitige refernz entity hinzufügen
+# todo: possibly add bidirectional reference entity
 type AppliedIntervention @model {
   id: ID!
   schemeVersion: Int!
@@ -208,14 +208,14 @@ type ExecutedSurvey @model {
 }
 
 type QuestionAnswer {
-  id: ID! # todo: verknüpfte ID
-  questionID: ID! # todo: verknüpfte ID
+  id: ID! # todo: dependent ID
+  questionID: ID! # todo: dependent ID
   date: AWSDateTime!
   type: QuestionType!
   text: String
   questionOptions: [QuestionOption!]
   markings: [Marking!]
-  # todo: ggf. bild/audio path
+  # todo: possibly also pic/audio path
 }
 
 type Marking {
@@ -235,5 +235,5 @@ type Task @model {
   entityID: ID
   appliedInterventionID: ID
   executedSurveyID: ID
-  # todo: was machen mit audio
+  # todo: what to do with audio
 }
