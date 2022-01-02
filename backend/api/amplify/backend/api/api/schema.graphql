@@ -1,13 +1,14 @@
-# This "input" configures a global authorization rule to enable public access to
-# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
-
-#user collection
+#  This "input" configures a global authorization rule to enable public access to
+#  all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY {
+  globalAuthRule: AuthRule = { allow: public }
+} #  FOR TESTING ONLY!
+# user collection
 
 type User @model {
   id: ID!
   firstName: String!
-  lastName: String! 
+  lastName: String!
   bio: String
   permissions: [Permission!]!
   schemeVersion: Int!
@@ -15,7 +16,7 @@ type User @model {
 
 type Permission {
   permissionType: PermissionType!
-  allowedEntities: [ID!]! #hier ggf. via entity verknüpfen
+  allowedEntities: [ID!]! #  hier ggf. via entity verknüpfen
 }
 
 enum PermissionType {
@@ -27,7 +28,7 @@ enum PermissionType {
   ADMIN
 }
 
-#config collection
+# config collection
 
 type Config @model {
   id: ID!
@@ -38,21 +39,21 @@ type Config @model {
 }
 
 type ColorTheme {
-  highlight: String #chosen by user #todo: default
-  secundaryHighlight: String #chosen by user #todo: default
-  backgroundOneLight: String #auto generate via api
-  backgroundTwoLight: String #auto generate via api
-  backgroundOneDark: String #auto generate via api
-  backgroundTwoDark: String #auto generate via api
+  highlight: String # chosen by user # todo: default
+  secundaryHighlight: String # chosen by user # todo: default
+  backgroundOneLight: String # auto generate via api
+  backgroundTwoLight: String # auto generate via api
+  backgroundOneDark: String # auto generate via api
+  backgroundTwoDark: String # auto generate via api
 }
 
 type StoragePaths {
   ownerPic: String
   ownerIcon: String
-  #todo: prüfen ob auf diese Art und Weise sinnvoll
+  # todo: prüfen ob auf diese Art und Weise sinnvoll
 }
 
-#level collection
+# level collection
 
 type Level @model {
   id: ID!
@@ -64,13 +65,14 @@ type Level @model {
   childLevel: Level @connection(fields: ["childLevelID"])
   interventionsAllowed: Bool!
   allowedInterventionIDs: [ID!]
-  allowedInterventions: [Intervention!] @connection(fields: ["allowedInterventionIDs"])
+  allowedInterventions: [Intervention!]
+    @connection(fields: ["allowedInterventionIDs"])
   customDatas: [CustomData!]!
   schemeVersion: Int!
 }
 
 type CustomData {
-  id: ID! #todo: prüfen wie zu generieren
+  id: ID! # todo: prüfen wie zu generieren
   name: String!
   type: Type!
 }
@@ -80,7 +82,7 @@ enum Type {
   STRING
 }
 
-#intervention collection
+# intervention collection
 
 type Intervention @model {
   id: ID!
@@ -97,10 +99,10 @@ enum InterventionType {
   EDUCATION
 }
 
-#content collection
+# content collection
 
 type Content @model {
-  id: ID! #todo: verknüpfte ID
+  id: ID! # todo: verknüpfte ID
   schemeVersion: Int!
   interventionID: ID!
   intervention: Intervention @connection(fields: ["interventionID"])
@@ -108,9 +110,9 @@ type Content @model {
   tags: [String!]!
 }
 
-#survey collection
+# survey collection
 type Survey @model {
-  id: ID! #todo: verknüpfte ID
+  id: ID! # todo: verknüpfte ID
   schemeVersion: Int!
   interventionID: ID!
   intervention: Intervention @connection(fields: ["interventionID"])
@@ -133,8 +135,8 @@ enum QuestionType {
   AUDIO
 }
 
-type Question{
-  id: ID! #todo: verknüpfte key
+type Question {
+  id: ID! # todo: verknüpfte key
   text: String!
   type: QuestionType!
   questionOptions: [QuestionOption!]
@@ -146,9 +148,9 @@ type QuestionOption {
   followupQuestion: Question
 }
 
-#entityCollection
+# entityCollection
 
-##todo: hier schauen ob verknüpfung der kinder auch sinn macht
+# todo: hier schauen ob verknüpfung der kinder auch sinn macht
 type Entity @model {
   id: ID!
   schemeVersion: Int!
@@ -170,18 +172,16 @@ type Location {
 }
 
 type AppliedCustomData {
-  customDataID: ID! #todo: ggf. referenz annotieren
+  customDataID: ID! # todo: ggf. referenz annotieren
   type: Type!
   name: String!
   intValue: Int
-  stringValue: String 
+  stringValue: String
 }
 
+# appliedInterventionCollection
 
-
-#appliedInterventionCollection
-
-#todo: ggf. beidseitige refernz entity hinzufügen
+# todo: ggf. beidseitige refernz entity hinzufügen
 type AppliedIntervention @model {
   id: ID!
   schemeVersion: Int!
@@ -191,13 +191,14 @@ type AppliedIntervention @model {
   executedSurveys: [ExecutedSurvey!]! @hasMany
 }
 
-#executedSurveyCollection
+# executedSurveyCollection
 
 type ExecutedSurvey @model {
   id: ID!
   schemeVersion: Int!
   appliedInterventionID: ID!
-  appliedIntervention: AppliedIntervention! @connection(fields: ["appliedInterventionID"])
+  appliedIntervention: AppliedIntervention!
+    @connection(fields: ["appliedInterventionID"])
   surveyID: ID!
   survey: Survey! @connection(fields: ["surveyID"])
   userID: ID!
@@ -207,14 +208,14 @@ type ExecutedSurvey @model {
 }
 
 type QuestionAnswer {
-  id: ID! #todo: verknüpfte ID
-  questionID: ID! #todo: verknüpfte ID
+  id: ID! # todo: verknüpfte ID
+  questionID: ID! # todo: verknüpfte ID
   date: AWSDateTime!
   type: QuestionType!
   text: String
   questionOptions: [QuestionOption!]
   markings: [Marking!]
-  #todo: ggf. bild/audio path
+  # todo: ggf. bild/audio path
 }
 
 type Marking {
@@ -234,5 +235,5 @@ type Task @model {
   entityID: ID
   appliedInterventionID: ID
   executedSurveyID: ID
-  #todo: was machen mit audio
+  # todo: was machen mit audio
 }
