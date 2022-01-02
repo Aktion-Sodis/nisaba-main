@@ -19,11 +19,11 @@ type Permission {
 }
 
 enum PermissionType {
-  READ,
-  CHANGEMASTERDATA,
-  CREATEINTERVENTIONS,
-  EXECUTESURVEYS,
-  CREATESUBENTITIES,
+  READ
+  CHANGEMASTERDATA
+  CREATEINTERVENTIONS
+  EXECUTESURVEYS
+  CREATESUBENTITIES
   ADMIN
 }
 
@@ -38,8 +38,12 @@ type Config @model {
 }
 
 type ColorTheme {
-  highlight: String
-  secundaryHighlight: String
+  highlight: String #chosen by user #todo: default
+  secundaryHighlight: String #chosen by user #todo: default
+  backgroundOneLight: String #auto generate via api
+  backgroundTwoLight: String #auto generate via api
+  backgroundOneDark: String #auto generate via api
+  backgroundTwoDark: String #auto generate via api
 }
 
 type StoragePaths {
@@ -54,10 +58,13 @@ type Level @model {
   id: ID!
   name: String!
   description: String!
-  parentLevel: Level
-  childLevel: Level
+  parentLevelID: ID
+  parentLevel: Level @connection(fields: ["parentLevelID"])
+  childLevelID: ID
+  childLevel: Level @connection(fields: ["childLevelID"])
   interventionsAllowed: Bool!
-  allowedInterventions: [Intervention!]
+  allowedInterventionIDs: [ID!]
+  allowedInterventions: [Intervention!] @connection(fields: ["allowedInterventionIDs"])
   customDatas: [CustomData!]!
   schemeVersion: Int!
 }
@@ -69,7 +76,7 @@ type CustomData {
 }
 
 enum Type {
-  INT,
+  INT
   STRING
 }
 
@@ -86,7 +93,7 @@ type Intervention @model {
 }
 
 enum InterventionType {
-  TECHNOLOGY,
+  TECHNOLOGY
   EDUCATION
 }
 
@@ -109,20 +116,20 @@ type Survey @model {
   intervention: Intervention @connection(fields: ["interventionID"])
   name: String!
   description: String!
-  questions: [Question!]! @hasMany
+  questions: [Question!]!
 }
 
 enum SurveyType {
-  INITIAL,
+  INITIAL
   DEFAULT
 }
 
 enum QuestionType {
-  TEXT,
-  SINGLECHOICE,
-  MULTIPLECHOICE,
-  PICTURE,
-  PICTUREWITHTAGS,
+  TEXT
+  SINGLECHOICE
+  MULTIPLECHOICE
+  PICTURE
+  PICTUREWITHTAGS
   AUDIO
 }
 
