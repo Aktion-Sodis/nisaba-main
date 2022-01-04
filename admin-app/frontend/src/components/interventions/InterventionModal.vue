@@ -57,9 +57,20 @@
                   src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
                   max-height="200px"
                 >
-                  <v-btn fab class="iv-edit-icon" color="primary">
+                  <v-btn
+                    fab
+                    class="iv-edit-icon"
+                    color="primary"
+                    @click="selectImg"
+                  >
                     <v-icon color="darken-2"> mdi-pencil-outline </v-icon>
                   </v-btn>
+                  <input
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    ref="img-upload"
+                    style="display: none"
+                  />
                 </v-img>
               </v-col>
               <v-col cols="12" md="6">
@@ -302,6 +313,11 @@ export default {
       });
 
       this.closeThenDeleteComponentData();
+    },
+    selectImg() {
+      const imgInput = this.$refs["img-upload"];
+      imgInput.click();
+      console.log("TODO: do something with", imgInput);
     },
   },
 };
