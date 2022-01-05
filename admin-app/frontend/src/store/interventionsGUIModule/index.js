@@ -49,8 +49,8 @@ const interventionsModule = {
     resetAll: ({ commit }) => {
       commit("setInterventionIdCurrentlyBeingEdited", null);
       commit("setInterventionModalIsDisplayed", false);
-      commit("surveyIdCurrentlyBeingEdited", null);
-      commit("surveyModalIsDisplayed", false);
+      commit("setSurveyIdCurrentlyBeingEdited", null);
+      commit("setSurveyModalIsDisplayed", false);
     },
 
     /* INTERVENTION */
