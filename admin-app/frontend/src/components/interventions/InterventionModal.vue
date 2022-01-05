@@ -246,15 +246,8 @@ export default {
       interventionCurrentlyBeingEdited:
         "ivGui/getInterventionCurrentlyBeingEdited",
       allInterventionTags: "iv/getInterventionTags",
-
       allContentByInterventionId: "iv/getAllContentByInterventionId",
-
-      // allDocumentsOfIntervention: "iv/getAllDocumentsOfIntervention",
-      // allImagesOfIntervention: "iv/getAllImagesOfIntervention",
-      // allVideosOfIntervention: "iv/getAllVideosOfIntervention",
-
       contentById: "iv/getContentById",
-
       interventionContentTagById: "iv/getInterventionContentTagById",
     }),
     requiredi18n() {
