@@ -45,7 +45,7 @@ const interventionsModule = {
       { commit },
       { interventionId, name, description, tags }
     ) => {
-      if (interventionId === null)
+      if (interventionId === null) {
         commit(
           "iv/addIntervention",
           {
@@ -55,7 +55,8 @@ const interventionsModule = {
           },
           { root: true }
         );
-      else
+        return;
+      }
         commit(
           "iv/replaceIntervention",
           {
