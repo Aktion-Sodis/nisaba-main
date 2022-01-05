@@ -3,44 +3,27 @@ import { v4 as uuidv4 } from "uuid";
 const entitiesModule = {
   namespaced: true,
   state: () => ({
-    technologies: [
-      {
-        technologyId: "bd5f6df6-a64c-4d60-9df2-8f29bb7944d5",
-        description: "Some description",
-        name: "Kitchen",
-      },
-      {
-        technologyId: "59fe15e7-59ad-46bf-a196-cbab81885d5b",
-        description: "Some description",
-        name: "Toilet",
-      },
-      {
-        technologyId: "c220fb83-a0e4-4463-a28a-f21b260e609a",
-        description: "Some description",
-        name: "Plantation",
-      },
-    ],
     levels: [
       {
         description: "Some description",
         name: "Gemeinde",
         levelId: "5a93459f-f23d-44e6-a112-c41e90473a2d",
         upperLevelId: null,
-        allowedTechnologies: [],
+        allowedInterventions: [],
       },
       {
         description: "Some description",
         name: "Dorf",
         levelId: "e7a03934-90b9-405b-807b-3f748b15ae69",
         upperLevelId: "5a93459f-f23d-44e6-a112-c41e90473a2d",
-        allowedTechnologies: ["bd5f6df6-a64c-4d60-9df2-8f29bb7944d5"],
+        allowedInterventions: ["bd5f6df6-a64c-4d60-9df2-8f29bb7944d5"],
       },
       {
         description: "Some description",
         name: "Family",
         levelId: "d1faef12-cf15-4b5e-9637-b4ffbd156954",
         upperLevelId: "e7a03934-90b9-405b-807b-3f748b15ae69",
-        allowedTechnologies: [
+        allowedInterventions: [
           "bd5f6df6-a64c-4d60-9df2-8f29bb7944d5",
           "59fe15e7-59ad-46bf-a196-cbab81885d5b",
           "c220fb83-a0e4-4463-a28a-f21b260e609a",
@@ -100,9 +83,6 @@ const entitiesModule = {
   }),
   getters: {
     /* GENERIC GETTERS */
-    getTechnologies: (state) => state.technologies,
-    getTechnologyById: (state, getters) => (technologyId) =>
-      getters.getTechnologies.find((e) => e.technologyId === technologyId),
     getEntities: (state) => state.entities,
     getLevels: (state) => state.levels, // not sorted. Use with care.
     getSortedLevels: (state, getters) =>
@@ -222,7 +202,7 @@ const entitiesModule = {
     },
     injectNewLevel: (
       state,
-      { name, description, upperLevelId, allowedTechnologies }
+      { name, description, upperLevelId, allowedInterventions }
     ) => {
       const levelId = uuidv4();
       state.levels = state.levels.map((l) =>
@@ -233,12 +213,12 @@ const entitiesModule = {
         name,
         description,
         upperLevelId,
-        allowedTechnologies,
+        allowedInterventions,
       });
     },
     replaceLevel: (
       state,
-      { levelId, name, description, upperLevelId, allowedTechnologies }
+      { levelId, name, description, upperLevelId, allowedInterventions }
     ) => {
       state.levels = state.levels.map((l) =>
         l.levelId === levelId
@@ -248,7 +228,7 @@ const entitiesModule = {
               name,
               description,
               upperLevelId,
-              allowedTechnologies,
+              allowedInterventions,
             }
           : l
       );

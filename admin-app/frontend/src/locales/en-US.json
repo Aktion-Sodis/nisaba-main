@@ -16,7 +16,8 @@
   "general": {
     "search-box": "Search anything",
     "cancel": "Cancel",
-    "save": "Save"
+    "save": "Save",
+    "delete": "Delete"
   },
   "organizationStructure": {
     "addNewEntity": "Add entity",
@@ -29,7 +30,7 @@
       },
       "levelName": "Level Name",
       "levelDescription": "Level Description",
-      "manageAllowedTechnologies": "Manage allowed technologies",
+      "manageAllowedInterventions": "Manage allowed interventions",
       "levelIsSubordinateTo": "Level is subordinate to..."
     },
     "entityModal": {
@@ -42,6 +43,20 @@
       "entityName": "Entity Name",
       "entityDescription": "Entity Description",
       "entityIsSubordinateTo": "Entity is subordinate to..."
+    }
+  },
+  "interventionView": {
+    "interventionModal": {
+      "title": {
+        "edit": "Edit intervention ",
+        "create": "Create new intervention"
+      },
+      "description": {
+        "edit": "This is the description of this beautiful edit dialog.",
+        "create": "This is the description of this beautiful create dialog."
+      },
+      "interventionName": "Intervention Name",
+      "interventionDescription": "Intervention Description"
     }
   }
 }

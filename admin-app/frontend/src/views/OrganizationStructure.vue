@@ -23,23 +23,23 @@
           <div
             class="d-flex justify-space-around"
             style="width: 100%"
-            v-if="level.allowedTechnologies.length > 0"
+            v-if="level.allowedInterventions.length > 0"
           >
             <v-tooltip
               top
-              v-for="technologyId in level.allowedTechnologies"
-              :key="technologyId"
+              v-for="interventionId in level.allowedInterventions"
+              :key="interventionId"
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-avatar v-bind="attrs" v-on="on">
                   <v-icon color="white"> mdi-hammer-wrench </v-icon>
                 </v-avatar>
               </template>
-              <span>{{ getTechnologyById(technologyId).name }}</span>
+              <span>{{ getInterventionById(interventionId).name }}</span>
             </v-tooltip>
           </div>
           <div v-else style="height: 48px; overflow: hidden">
-            <p class="caption">No technologies for this level.</p>
+            <p class="caption">No interventions for this level.</p>
           </div>
         </div>
         <EntitiesColumn :levelId="level.levelId" :index="index" />
@@ -71,7 +71,7 @@ export default {
   computed: {
     ...mapGetters({
       levels: "entities/getSortedLevels",
-      getTechnologyById: "entities/getTechnologyById",
+      getInterventionById: "iv/getInterventionById",
     }),
   },
   methods: {
@@ -89,7 +89,7 @@ export default {
       );
       levelModal.levelName = level.name || "";
       levelModal.levelDescription = level.description || "";
-      levelModal.levelAllowedTechnologies = level.allowedTechnologies || [];
+      levelModal.levelAllowedInterventions = level.allowedInterventions || [];
       levelModal.levelIsSubordinateTo = level.upperLevelId || null;
     },
   },
