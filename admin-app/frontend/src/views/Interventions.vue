@@ -60,6 +60,7 @@ export default {
   methods: {
     ...mapActions({
       clickOnAddNewIntervention: "ivGui/clickOnAddNewIntervention",
+      clickOnAddNewSurvey: "ivGui/clickOnAddNewSurvey",
     }),
   },
 };
