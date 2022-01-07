@@ -60,13 +60,11 @@ type Level @model {
   name: String!
   description: String!
   parentLevelID: ID
-  parentLevel: Level @connection(fields: ["parentLevelID"])
-  childLevelID: ID
-  childLevel: Level @connection(fields: ["childLevelID"])
-  interventionsAllowed: Bool!
+  parentLevel: Level @belongsTo
+  childLevel: Level @hasOne
+  interventionsAllowed: Boolean!
   allowedInterventionIDs: [ID!]
-  allowedInterventions: [Intervention!]
-    @connection(fields: ["allowedInterventionIDs"])
+  allowedInterventions: [Intervention!] @hasMany
   customDatas: [CustomData!]!
   schemeVersion: Int!
 }
@@ -104,8 +102,7 @@ enum InterventionType {
 type Content @model {
   id: ID! # todo: dependent ID
   schemeVersion: Int!
-  interventionID: ID!
-  intervention: Intervention @connection(fields: ["interventionID"])
+  intervention: Intervention @belongsTo
   name: String!
   tags: [String!]!
 }
@@ -114,8 +111,7 @@ type Content @model {
 type Survey @model {
   id: ID! # todo: dependent ID
   schemeVersion: Int!
-  interventionID: ID!
-  intervention: Intervention @connection(fields: ["interventionID"])
+  intervention: Intervention @belongsTo
   name: String!
   description: String!
   questions: [Question!]!
@@ -154,12 +150,9 @@ type QuestionOption {
 type Entity @model {
   id: ID!
   schemeVersion: Int!
-  parentEntityID: ID
-  parentEntity: Entity @connection(fields: ["parentEntityID"])
-  childEntitiesIDs: [ID!]
-  childEntities: [Entity!] @connection(fields: ["childEntitiesIDs"])
-  levelID: ID!
-  level: Level! @connection(fields: ["levelID"])
+  parentEntity: Entity @belongsTo
+  childEntities: [Entity!] @hasMany
+  level: Level! @hasOne
   location: Location
   name: String!
   customDatas: [AppliedCustomData]!
@@ -196,11 +189,8 @@ type AppliedIntervention @model {
 type ExecutedSurvey @model {
   id: ID!
   schemeVersion: Int!
-  appliedInterventionID: ID!
-  appliedIntervention: AppliedIntervention!
-    @connection(fields: ["appliedInterventionID"])
-  surveyID: ID!
-  survey: Survey! @connection(fields: ["surveyID"])
+  appliedIntervention: AppliedIntervention! @belongsTo
+  survey: Survey! @hasOne
   userID: ID!
   date: AWSDateTime!
   location: Location
