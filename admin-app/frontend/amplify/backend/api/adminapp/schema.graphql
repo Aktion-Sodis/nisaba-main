@@ -58,14 +58,11 @@ type StoragePaths {
 type Level @model {
   id: ID!
   name: String!
-  description: String!
-  parentLevelID: ID
-  parentLevel: Level @belongsTo
-  childLevel: Level @hasOne
-  interventionsAllowed: Boolean!
-  allowedInterventionIDs: [ID!]
+  description: String! # TODO: add default value empty string.
+  parentLevel: Level @hasOne
+  interventionsAreAllowed: Boolean!
   allowedInterventions: [Intervention!] @hasMany
-  customDatas: [CustomData!]!
+  customData: [CustomData!]!
   schemeVersion: Int!
 }
 
@@ -84,12 +81,13 @@ enum Type {
 
 type Intervention @model {
   id: ID!
-  schemeVersion: Int!
   name: String!
-  description: String!
+  description: String! # TODO: add default value empty string.
   interventionType: InterventionType!
   contents: [Content!]! @hasMany
   surveys: [Survey!]! @hasMany
+  tags: [String!]!
+  schemeVersion: Int!
 }
 
 enum InterventionType {
@@ -98,23 +96,23 @@ enum InterventionType {
 }
 
 # content collection
-
 type Content @model {
-  id: ID! # todo: dependent ID
-  schemeVersion: Int!
-  intervention: Intervention @belongsTo
+  id: ID!
   name: String!
+  description: String! # TODO: add default value empty string.
+  intervention: Intervention @belongsTo
   tags: [String!]!
+  schemeVersion: Int!
 }
 
 # survey collection
 type Survey @model {
-  id: ID! # todo: dependent ID
-  schemeVersion: Int!
-  intervention: Intervention @belongsTo
+  id: ID!
   name: String!
-  description: String!
+  description: String! # TODO: add default value empty string.
+  intervention: Intervention @belongsTo
   questions: [Question!]!
+  schemeVersion: Int!
 }
 
 enum SurveyType {
@@ -141,7 +139,7 @@ type Question {
 type QuestionOption {
   id: ID!
   text: String!
-  followupQuestion: Question
+  followUpQuestion: Question
 }
 
 # entityCollection
@@ -149,14 +147,15 @@ type QuestionOption {
 # todo: check whether binding the children makes sense
 type Entity @model {
   id: ID!
-  schemeVersion: Int!
+  name: String!
+  description: String! # TODO: add default value empty string.
   parentEntity: Entity @belongsTo
-  childEntities: [Entity!] @hasMany
+  childEntities: [Entity!] @hasMany # TODO: check whether causes inconsistency
   level: Level! @hasOne
   location: Location
-  name: String!
-  customDatas: [AppliedCustomData]!
+  customData: [AppliedCustomData]!
   appliedInterventions: [AppliedIntervention!]! @hasMany
+  schemeVersion: Int!
 }
 
 type Location {
@@ -177,24 +176,24 @@ type AppliedCustomData {
 # todo: possibly add bidirectional reference entity
 type AppliedIntervention @model {
   id: ID!
-  schemeVersion: Int!
-  userID: ID!
-  interventionID: ID!
+  whoDidIt: User! @hasOne
+  intervention: Intervention! @hasOne
   location: Location
   executedSurveys: [ExecutedSurvey!]! @hasMany
+  schemeVersion: Int!
 }
 
 # executedSurveyCollection
 
 type ExecutedSurvey @model {
   id: ID!
-  schemeVersion: Int!
   appliedIntervention: AppliedIntervention! @belongsTo
   survey: Survey! @hasOne
-  userID: ID!
+  whoExecutedIt: User! @hasOne
   date: AWSDateTime!
   location: Location
   answers: [QuestionAnswer!]!
+  schemeVersion: Int!
 }
 
 type QuestionAnswer {
@@ -209,9 +208,9 @@ type QuestionAnswer {
 }
 
 type Marking {
-  height: Float!
-  width: Float!
-  description: String
+  x: Float!
+  y: Float!
+  description: String! # TODO: add default value empty string.
 }
 
 type Task @model {
@@ -221,9 +220,9 @@ type Task @model {
   dueDate: AWSDateTime
   finishedDate: AWSDateTime
   location: Location
-  userID: ID!
-  entityID: ID
-  appliedInterventionID: ID
-  executedSurveyID: ID
+  user: User! @hasOne
+  entity: Entity @hasOne
+  appliedIntervention: AppliedIntervention @hasOne
+  executedSurvey: ExecutedSurvey @hasOne
   # todo: what to do with audio
 }
