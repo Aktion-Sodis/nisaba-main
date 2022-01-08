@@ -189,19 +189,15 @@ export const getLevel = /* GraphQL */ `
       id
       name
       description
-      parentLevelID
       parentLevel {
         id
         name
         description
-        parentLevelID
         parentLevel {
           id
           name
           description
-          parentLevelID
-          interventionsAllowed
-          allowedInterventionIDs
+          interventionsAreAllowed
           schemeVersion
           createdAt
           updatedAt
@@ -209,31 +205,13 @@ export const getLevel = /* GraphQL */ `
           _deleted
           _lastChangedAt
           levelParentLevelId
-          levelChildLevelId
         }
-        childLevel {
-          id
-          name
-          description
-          parentLevelID
-          interventionsAllowed
-          allowedInterventionIDs
-          schemeVersion
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          levelParentLevelId
-          levelChildLevelId
-        }
-        interventionsAllowed
-        allowedInterventionIDs
+        interventionsAreAllowed
         allowedInterventions {
           nextToken
           startedAt
         }
-        customDatas {
+        customData {
           id
           name
           type
@@ -245,74 +223,16 @@ export const getLevel = /* GraphQL */ `
         _deleted
         _lastChangedAt
         levelParentLevelId
-        levelChildLevelId
       }
-      childLevel {
-        id
-        name
-        description
-        parentLevelID
-        parentLevel {
-          id
-          name
-          description
-          parentLevelID
-          interventionsAllowed
-          allowedInterventionIDs
-          schemeVersion
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          levelParentLevelId
-          levelChildLevelId
-        }
-        childLevel {
-          id
-          name
-          description
-          parentLevelID
-          interventionsAllowed
-          allowedInterventionIDs
-          schemeVersion
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          levelParentLevelId
-          levelChildLevelId
-        }
-        interventionsAllowed
-        allowedInterventionIDs
-        allowedInterventions {
-          nextToken
-          startedAt
-        }
-        customDatas {
-          id
-          name
-          type
-        }
-        schemeVersion
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        levelParentLevelId
-        levelChildLevelId
-      }
-      interventionsAllowed
-      allowedInterventionIDs
+      interventionsAreAllowed
       allowedInterventions {
         items {
           id
-          schemeVersion
           name
           description
           interventionType
+          tags
+          schemeVersion
           createdAt
           updatedAt
           _version
@@ -323,7 +243,7 @@ export const getLevel = /* GraphQL */ `
         nextToken
         startedAt
       }
-      customDatas {
+      customData {
         id
         name
         type
@@ -335,7 +255,6 @@ export const getLevel = /* GraphQL */ `
       _deleted
       _lastChangedAt
       levelParentLevelId
-      levelChildLevelId
     }
   }
 `;
@@ -350,14 +269,11 @@ export const listLevels = /* GraphQL */ `
         id
         name
         description
-        parentLevelID
         parentLevel {
           id
           name
           description
-          parentLevelID
-          interventionsAllowed
-          allowedInterventionIDs
+          interventionsAreAllowed
           schemeVersion
           createdAt
           updatedAt
@@ -365,31 +281,13 @@ export const listLevels = /* GraphQL */ `
           _deleted
           _lastChangedAt
           levelParentLevelId
-          levelChildLevelId
         }
-        childLevel {
-          id
-          name
-          description
-          parentLevelID
-          interventionsAllowed
-          allowedInterventionIDs
-          schemeVersion
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          levelParentLevelId
-          levelChildLevelId
-        }
-        interventionsAllowed
-        allowedInterventionIDs
+        interventionsAreAllowed
         allowedInterventions {
           nextToken
           startedAt
         }
-        customDatas {
+        customData {
           id
           name
           type
@@ -401,7 +299,6 @@ export const listLevels = /* GraphQL */ `
         _deleted
         _lastChangedAt
         levelParentLevelId
-        levelChildLevelId
       }
       nextToken
       startedAt
@@ -425,14 +322,11 @@ export const syncLevels = /* GraphQL */ `
         id
         name
         description
-        parentLevelID
         parentLevel {
           id
           name
           description
-          parentLevelID
-          interventionsAllowed
-          allowedInterventionIDs
+          interventionsAreAllowed
           schemeVersion
           createdAt
           updatedAt
@@ -440,31 +334,13 @@ export const syncLevels = /* GraphQL */ `
           _deleted
           _lastChangedAt
           levelParentLevelId
-          levelChildLevelId
         }
-        childLevel {
-          id
-          name
-          description
-          parentLevelID
-          interventionsAllowed
-          allowedInterventionIDs
-          schemeVersion
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          levelParentLevelId
-          levelChildLevelId
-        }
-        interventionsAllowed
-        allowedInterventionIDs
+        interventionsAreAllowed
         allowedInterventions {
           nextToken
           startedAt
         }
-        customDatas {
+        customData {
           id
           name
           type
@@ -476,7 +352,6 @@ export const syncLevels = /* GraphQL */ `
         _deleted
         _lastChangedAt
         levelParentLevelId
-        levelChildLevelId
       }
       nextToken
       startedAt
@@ -487,16 +362,16 @@ export const getIntervention = /* GraphQL */ `
   query GetIntervention($id: ID!) {
     getIntervention(id: $id) {
       id
-      schemeVersion
       name
       description
       interventionType
       contents {
         items {
           id
-          schemeVersion
           name
+          description
           tags
+          schemeVersion
           createdAt
           updatedAt
           _version
@@ -510,9 +385,9 @@ export const getIntervention = /* GraphQL */ `
       surveys {
         items {
           id
-          schemeVersion
           name
           description
+          schemeVersion
           createdAt
           updatedAt
           _version
@@ -523,6 +398,8 @@ export const getIntervention = /* GraphQL */ `
         nextToken
         startedAt
       }
+      tags
+      schemeVersion
       createdAt
       updatedAt
       _version
@@ -541,7 +418,6 @@ export const listInterventions = /* GraphQL */ `
     listInterventions(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        schemeVersion
         name
         description
         interventionType
@@ -553,6 +429,8 @@ export const listInterventions = /* GraphQL */ `
           nextToken
           startedAt
         }
+        tags
+        schemeVersion
         createdAt
         updatedAt
         _version
@@ -580,7 +458,6 @@ export const syncInterventions = /* GraphQL */ `
     ) {
       items {
         id
-        schemeVersion
         name
         description
         interventionType
@@ -592,6 +469,8 @@ export const syncInterventions = /* GraphQL */ `
           nextToken
           startedAt
         }
+        tags
+        schemeVersion
         createdAt
         updatedAt
         _version
@@ -608,10 +487,10 @@ export const getContent = /* GraphQL */ `
   query GetContent($id: ID!) {
     getContent(id: $id) {
       id
-      schemeVersion
+      name
+      description
       intervention {
         id
-        schemeVersion
         name
         description
         interventionType
@@ -623,6 +502,8 @@ export const getContent = /* GraphQL */ `
           nextToken
           startedAt
         }
+        tags
+        schemeVersion
         createdAt
         updatedAt
         _version
@@ -630,8 +511,8 @@ export const getContent = /* GraphQL */ `
         _lastChangedAt
         levelAllowedInterventionsId
       }
-      name
       tags
+      schemeVersion
       createdAt
       updatedAt
       _version
@@ -650,13 +531,15 @@ export const listContents = /* GraphQL */ `
     listContents(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        schemeVersion
+        name
+        description
         intervention {
           id
-          schemeVersion
           name
           description
           interventionType
+          tags
+          schemeVersion
           createdAt
           updatedAt
           _version
@@ -664,8 +547,8 @@ export const listContents = /* GraphQL */ `
           _lastChangedAt
           levelAllowedInterventionsId
         }
-        name
         tags
+        schemeVersion
         createdAt
         updatedAt
         _version
@@ -693,13 +576,15 @@ export const syncContents = /* GraphQL */ `
     ) {
       items {
         id
-        schemeVersion
+        name
+        description
         intervention {
           id
-          schemeVersion
           name
           description
           interventionType
+          tags
+          schemeVersion
           createdAt
           updatedAt
           _version
@@ -707,8 +592,8 @@ export const syncContents = /* GraphQL */ `
           _lastChangedAt
           levelAllowedInterventionsId
         }
-        name
         tags
+        schemeVersion
         createdAt
         updatedAt
         _version
@@ -725,10 +610,10 @@ export const getSurvey = /* GraphQL */ `
   query GetSurvey($id: ID!) {
     getSurvey(id: $id) {
       id
-      schemeVersion
+      name
+      description
       intervention {
         id
-        schemeVersion
         name
         description
         interventionType
@@ -740,6 +625,8 @@ export const getSurvey = /* GraphQL */ `
           nextToken
           startedAt
         }
+        tags
+        schemeVersion
         createdAt
         updatedAt
         _version
@@ -747,8 +634,6 @@ export const getSurvey = /* GraphQL */ `
         _lastChangedAt
         levelAllowedInterventionsId
       }
-      name
-      description
       questions {
         id
         text
@@ -758,6 +643,7 @@ export const getSurvey = /* GraphQL */ `
           text
         }
       }
+      schemeVersion
       createdAt
       updatedAt
       _version
@@ -776,13 +662,15 @@ export const listSurveys = /* GraphQL */ `
     listSurveys(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        schemeVersion
+        name
+        description
         intervention {
           id
-          schemeVersion
           name
           description
           interventionType
+          tags
+          schemeVersion
           createdAt
           updatedAt
           _version
@@ -790,13 +678,12 @@ export const listSurveys = /* GraphQL */ `
           _lastChangedAt
           levelAllowedInterventionsId
         }
-        name
-        description
         questions {
           id
           text
           type
         }
+        schemeVersion
         createdAt
         updatedAt
         _version
@@ -824,13 +711,15 @@ export const syncSurveys = /* GraphQL */ `
     ) {
       items {
         id
-        schemeVersion
+        name
+        description
         intervention {
           id
-          schemeVersion
           name
           description
           interventionType
+          tags
+          schemeVersion
           createdAt
           updatedAt
           _version
@@ -838,13 +727,12 @@ export const syncSurveys = /* GraphQL */ `
           _lastChangedAt
           levelAllowedInterventionsId
         }
-        name
-        description
         questions {
           id
           text
           type
         }
+        schemeVersion
         createdAt
         updatedAt
         _version
@@ -861,14 +749,17 @@ export const getEntity = /* GraphQL */ `
   query GetEntity($id: ID!) {
     getEntity(id: $id) {
       id
-      schemeVersion
+      name
+      description
       parentEntity {
         id
-        schemeVersion
+        name
+        description
         parentEntity {
           id
-          schemeVersion
           name
+          description
+          schemeVersion
           createdAt
           updatedAt
           _version
@@ -885,9 +776,7 @@ export const getEntity = /* GraphQL */ `
           id
           name
           description
-          parentLevelID
-          interventionsAllowed
-          allowedInterventionIDs
+          interventionsAreAllowed
           schemeVersion
           createdAt
           updatedAt
@@ -895,14 +784,12 @@ export const getEntity = /* GraphQL */ `
           _deleted
           _lastChangedAt
           levelParentLevelId
-          levelChildLevelId
         }
         location {
           latitude
           longitude
         }
-        name
-        customDatas {
+        customData {
           customDataID
           type
           name
@@ -913,6 +800,7 @@ export const getEntity = /* GraphQL */ `
           nextToken
           startedAt
         }
+        schemeVersion
         createdAt
         updatedAt
         _version
@@ -924,8 +812,9 @@ export const getEntity = /* GraphQL */ `
       childEntities {
         items {
           id
-          schemeVersion
           name
+          description
+          schemeVersion
           createdAt
           updatedAt
           _version
@@ -941,14 +830,11 @@ export const getEntity = /* GraphQL */ `
         id
         name
         description
-        parentLevelID
         parentLevel {
           id
           name
           description
-          parentLevelID
-          interventionsAllowed
-          allowedInterventionIDs
+          interventionsAreAllowed
           schemeVersion
           createdAt
           updatedAt
@@ -956,31 +842,13 @@ export const getEntity = /* GraphQL */ `
           _deleted
           _lastChangedAt
           levelParentLevelId
-          levelChildLevelId
         }
-        childLevel {
-          id
-          name
-          description
-          parentLevelID
-          interventionsAllowed
-          allowedInterventionIDs
-          schemeVersion
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          levelParentLevelId
-          levelChildLevelId
-        }
-        interventionsAllowed
-        allowedInterventionIDs
+        interventionsAreAllowed
         allowedInterventions {
           nextToken
           startedAt
         }
-        customDatas {
+        customData {
           id
           name
           type
@@ -992,14 +860,12 @@ export const getEntity = /* GraphQL */ `
         _deleted
         _lastChangedAt
         levelParentLevelId
-        levelChildLevelId
       }
       location {
         latitude
         longitude
       }
-      name
-      customDatas {
+      customData {
         customDataID
         type
         name
@@ -1010,18 +876,19 @@ export const getEntity = /* GraphQL */ `
         items {
           id
           schemeVersion
-          userID
-          interventionID
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
           entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
         }
         nextToken
         startedAt
       }
+      schemeVersion
       createdAt
       updatedAt
       _version
@@ -1041,11 +908,13 @@ export const listEntities = /* GraphQL */ `
     listEntities(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        schemeVersion
+        name
+        description
         parentEntity {
           id
-          schemeVersion
           name
+          description
+          schemeVersion
           createdAt
           updatedAt
           _version
@@ -1062,9 +931,7 @@ export const listEntities = /* GraphQL */ `
           id
           name
           description
-          parentLevelID
-          interventionsAllowed
-          allowedInterventionIDs
+          interventionsAreAllowed
           schemeVersion
           createdAt
           updatedAt
@@ -1072,14 +939,12 @@ export const listEntities = /* GraphQL */ `
           _deleted
           _lastChangedAt
           levelParentLevelId
-          levelChildLevelId
         }
         location {
           latitude
           longitude
         }
-        name
-        customDatas {
+        customData {
           customDataID
           type
           name
@@ -1090,6 +955,7 @@ export const listEntities = /* GraphQL */ `
           nextToken
           startedAt
         }
+        schemeVersion
         createdAt
         updatedAt
         _version
@@ -1118,11 +984,13 @@ export const syncEntities = /* GraphQL */ `
     ) {
       items {
         id
-        schemeVersion
+        name
+        description
         parentEntity {
           id
-          schemeVersion
           name
+          description
+          schemeVersion
           createdAt
           updatedAt
           _version
@@ -1139,9 +1007,7 @@ export const syncEntities = /* GraphQL */ `
           id
           name
           description
-          parentLevelID
-          interventionsAllowed
-          allowedInterventionIDs
+          interventionsAreAllowed
           schemeVersion
           createdAt
           updatedAt
@@ -1149,14 +1015,12 @@ export const syncEntities = /* GraphQL */ `
           _deleted
           _lastChangedAt
           levelParentLevelId
-          levelChildLevelId
         }
         location {
           latitude
           longitude
         }
-        name
-        customDatas {
+        customData {
           customDataID
           type
           name
@@ -1167,6 +1031,7 @@ export const syncEntities = /* GraphQL */ `
           nextToken
           startedAt
         }
+        schemeVersion
         createdAt
         updatedAt
         _version
@@ -1184,9 +1049,44 @@ export const getAppliedIntervention = /* GraphQL */ `
   query GetAppliedIntervention($id: ID!) {
     getAppliedIntervention(id: $id) {
       id
-      schemeVersion
-      userID
-      interventionID
+      whoDidIt {
+        id
+        firstName
+        lastName
+        bio
+        permissions {
+          permissionType
+          allowedEntities
+        }
+        schemeVersion
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      intervention {
+        id
+        name
+        description
+        interventionType
+        contents {
+          nextToken
+          startedAt
+        }
+        surveys {
+          nextToken
+          startedAt
+        }
+        tags
+        schemeVersion
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        levelAllowedInterventionsId
+      }
       location {
         latitude
         longitude
@@ -1194,9 +1094,8 @@ export const getAppliedIntervention = /* GraphQL */ `
       executedSurveys {
         items {
           id
-          schemeVersion
-          userID
           date
+          schemeVersion
           createdAt
           updatedAt
           _version
@@ -1204,16 +1103,20 @@ export const getAppliedIntervention = /* GraphQL */ `
           _lastChangedAt
           appliedInterventionExecutedSurveysId
           executedSurveySurveyId
+          executedSurveyWhoExecutedItId
         }
         nextToken
         startedAt
       }
+      schemeVersion
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
       entityAppliedInterventionsId
+      appliedInterventionWhoDidItId
+      appliedInterventionInterventionId
     }
   }
 `;
@@ -1230,9 +1133,32 @@ export const listAppliedInterventions = /* GraphQL */ `
     ) {
       items {
         id
-        schemeVersion
-        userID
-        interventionID
+        whoDidIt {
+          id
+          firstName
+          lastName
+          bio
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        intervention {
+          id
+          name
+          description
+          interventionType
+          tags
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          levelAllowedInterventionsId
+        }
         location {
           latitude
           longitude
@@ -1241,12 +1167,15 @@ export const listAppliedInterventions = /* GraphQL */ `
           nextToken
           startedAt
         }
+        schemeVersion
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
         entityAppliedInterventionsId
+        appliedInterventionWhoDidItId
+        appliedInterventionInterventionId
       }
       nextToken
       startedAt
@@ -1268,9 +1197,32 @@ export const syncAppliedInterventions = /* GraphQL */ `
     ) {
       items {
         id
-        schemeVersion
-        userID
-        interventionID
+        whoDidIt {
+          id
+          firstName
+          lastName
+          bio
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        intervention {
+          id
+          name
+          description
+          interventionType
+          tags
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          levelAllowedInterventionsId
+        }
         location {
           latitude
           longitude
@@ -1279,12 +1231,15 @@ export const syncAppliedInterventions = /* GraphQL */ `
           nextToken
           startedAt
         }
+        schemeVersion
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
         entityAppliedInterventionsId
+        appliedInterventionWhoDidItId
+        appliedInterventionInterventionId
       }
       nextToken
       startedAt
@@ -1295,12 +1250,34 @@ export const getExecutedSurvey = /* GraphQL */ `
   query GetExecutedSurvey($id: ID!) {
     getExecutedSurvey(id: $id) {
       id
-      schemeVersion
       appliedIntervention {
         id
-        schemeVersion
-        userID
-        interventionID
+        whoDidIt {
+          id
+          firstName
+          lastName
+          bio
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        intervention {
+          id
+          name
+          description
+          interventionType
+          tags
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          levelAllowedInterventionsId
+        }
         location {
           latitude
           longitude
@@ -1309,22 +1286,27 @@ export const getExecutedSurvey = /* GraphQL */ `
           nextToken
           startedAt
         }
+        schemeVersion
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
         entityAppliedInterventionsId
+        appliedInterventionWhoDidItId
+        appliedInterventionInterventionId
       }
       survey {
         id
-        schemeVersion
+        name
+        description
         intervention {
           id
-          schemeVersion
           name
           description
           interventionType
+          tags
+          schemeVersion
           createdAt
           updatedAt
           _version
@@ -1332,13 +1314,12 @@ export const getExecutedSurvey = /* GraphQL */ `
           _lastChangedAt
           levelAllowedInterventionsId
         }
-        name
-        description
         questions {
           id
           text
           type
         }
+        schemeVersion
         createdAt
         updatedAt
         _version
@@ -1346,7 +1327,22 @@ export const getExecutedSurvey = /* GraphQL */ `
         _lastChangedAt
         interventionSurveysId
       }
-      userID
+      whoExecutedIt {
+        id
+        firstName
+        lastName
+        bio
+        permissions {
+          permissionType
+          allowedEntities
+        }
+        schemeVersion
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       date
       location {
         latitude
@@ -1363,11 +1359,12 @@ export const getExecutedSurvey = /* GraphQL */ `
           text
         }
         markings {
-          height
-          width
+          x
+          y
           description
         }
       }
+      schemeVersion
       createdAt
       updatedAt
       _version
@@ -1375,6 +1372,7 @@ export const getExecutedSurvey = /* GraphQL */ `
       _lastChangedAt
       appliedInterventionExecutedSurveysId
       executedSurveySurveyId
+      executedSurveyWhoExecutedItId
     }
   }
 `;
@@ -1387,24 +1385,23 @@ export const listExecutedSurveys = /* GraphQL */ `
     listExecutedSurveys(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        schemeVersion
         appliedIntervention {
           id
           schemeVersion
-          userID
-          interventionID
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
           entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
         }
         survey {
           id
-          schemeVersion
           name
           description
+          schemeVersion
           createdAt
           updatedAt
           _version
@@ -1412,7 +1409,18 @@ export const listExecutedSurveys = /* GraphQL */ `
           _lastChangedAt
           interventionSurveysId
         }
-        userID
+        whoExecutedIt {
+          id
+          firstName
+          lastName
+          bio
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         date
         location {
           latitude
@@ -1425,6 +1433,7 @@ export const listExecutedSurveys = /* GraphQL */ `
           type
           text
         }
+        schemeVersion
         createdAt
         updatedAt
         _version
@@ -1432,6 +1441,7 @@ export const listExecutedSurveys = /* GraphQL */ `
         _lastChangedAt
         appliedInterventionExecutedSurveysId
         executedSurveySurveyId
+        executedSurveyWhoExecutedItId
       }
       nextToken
       startedAt
@@ -1453,24 +1463,23 @@ export const syncExecutedSurveys = /* GraphQL */ `
     ) {
       items {
         id
-        schemeVersion
         appliedIntervention {
           id
           schemeVersion
-          userID
-          interventionID
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
           entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
         }
         survey {
           id
-          schemeVersion
           name
           description
+          schemeVersion
           createdAt
           updatedAt
           _version
@@ -1478,7 +1487,18 @@ export const syncExecutedSurveys = /* GraphQL */ `
           _lastChangedAt
           interventionSurveysId
         }
-        userID
+        whoExecutedIt {
+          id
+          firstName
+          lastName
+          bio
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
         date
         location {
           latitude
@@ -1491,6 +1511,7 @@ export const syncExecutedSurveys = /* GraphQL */ `
           type
           text
         }
+        schemeVersion
         createdAt
         updatedAt
         _version
@@ -1498,6 +1519,7 @@ export const syncExecutedSurveys = /* GraphQL */ `
         _lastChangedAt
         appliedInterventionExecutedSurveysId
         executedSurveySurveyId
+        executedSurveyWhoExecutedItId
       }
       nextToken
       startedAt
@@ -1516,15 +1538,195 @@ export const getTask = /* GraphQL */ `
         latitude
         longitude
       }
-      userID
-      entityID
-      appliedInterventionID
-      executedSurveyID
+      user {
+        id
+        firstName
+        lastName
+        bio
+        permissions {
+          permissionType
+          allowedEntities
+        }
+        schemeVersion
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      entity {
+        id
+        name
+        description
+        parentEntity {
+          id
+          name
+          description
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityChildEntitiesId
+          entityLevelId
+        }
+        childEntities {
+          nextToken
+          startedAt
+        }
+        level {
+          id
+          name
+          description
+          interventionsAreAllowed
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          levelParentLevelId
+        }
+        location {
+          latitude
+          longitude
+        }
+        customData {
+          customDataID
+          type
+          name
+          intValue
+          stringValue
+        }
+        appliedInterventions {
+          nextToken
+          startedAt
+        }
+        schemeVersion
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        entityChildEntitiesId
+        entityLevelId
+      }
+      appliedIntervention {
+        id
+        whoDidIt {
+          id
+          firstName
+          lastName
+          bio
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        intervention {
+          id
+          name
+          description
+          interventionType
+          tags
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          levelAllowedInterventionsId
+        }
+        location {
+          latitude
+          longitude
+        }
+        executedSurveys {
+          nextToken
+          startedAt
+        }
+        schemeVersion
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        entityAppliedInterventionsId
+        appliedInterventionWhoDidItId
+        appliedInterventionInterventionId
+      }
+      executedSurvey {
+        id
+        appliedIntervention {
+          id
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+        }
+        survey {
+          id
+          name
+          description
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+        }
+        whoExecutedIt {
+          id
+          firstName
+          lastName
+          bio
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        date
+        location {
+          latitude
+          longitude
+        }
+        answers {
+          id
+          questionID
+          date
+          type
+          text
+        }
+        schemeVersion
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        appliedInterventionExecutedSurveysId
+        executedSurveySurveyId
+        executedSurveyWhoExecutedItId
+      }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      taskUserId
+      taskEntityId
+      taskAppliedInterventionId
+      taskExecutedSurveyId
     }
   }
 `;
@@ -1545,15 +1747,65 @@ export const listTasks = /* GraphQL */ `
           latitude
           longitude
         }
-        userID
-        entityID
-        appliedInterventionID
-        executedSurveyID
+        user {
+          id
+          firstName
+          lastName
+          bio
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        entity {
+          id
+          name
+          description
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityChildEntitiesId
+          entityLevelId
+        }
+        appliedIntervention {
+          id
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+        }
+        executedSurvey {
+          id
+          date
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          appliedInterventionExecutedSurveysId
+          executedSurveySurveyId
+          executedSurveyWhoExecutedItId
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        taskUserId
+        taskEntityId
+        taskAppliedInterventionId
+        taskExecutedSurveyId
       }
       nextToken
       startedAt
@@ -1583,15 +1835,65 @@ export const syncTasks = /* GraphQL */ `
           latitude
           longitude
         }
-        userID
-        entityID
-        appliedInterventionID
-        executedSurveyID
+        user {
+          id
+          firstName
+          lastName
+          bio
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        entity {
+          id
+          name
+          description
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityChildEntitiesId
+          entityLevelId
+        }
+        appliedIntervention {
+          id
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+        }
+        executedSurvey {
+          id
+          date
+          schemeVersion
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          appliedInterventionExecutedSurveysId
+          executedSurveySurveyId
+          executedSurveyWhoExecutedItId
+        }
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        taskUserId
+        taskEntityId
+        taskAppliedInterventionId
+        taskExecutedSurveyId
       }
       nextToken
       startedAt
