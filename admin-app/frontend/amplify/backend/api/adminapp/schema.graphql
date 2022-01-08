@@ -210,7 +210,7 @@ type QuestionAnswer {
 type Marking {
   x: Float!
   y: Float!
-  description: String! @default(value: "")
+  description: String!
 }
 
 type Task @model {
