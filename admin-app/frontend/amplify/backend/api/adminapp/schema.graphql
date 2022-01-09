@@ -11,7 +11,7 @@ type User @model {
   lastName: String!
   bio: String
   permissions: [Permission!]!
-  schemeVersion: Int!
+  schemeVersion: Int! @default(value: 0)
 }
 
 type Permission {
@@ -32,10 +32,10 @@ enum PermissionType {
 
 type Config @model {
   id: ID!
-  schemeVersion: Int!
   name: String!
   colorTheme: ColorTheme
   storagePaths: StoragePaths!
+  schemeVersion: Int! @default(value: 0)
 }
 
 type ColorTheme {
@@ -63,7 +63,7 @@ type Level @model {
   interventionsAreAllowed: Boolean!
   allowedInterventions: [Intervention!] @hasMany
   customData: [CustomData!]!
-  schemeVersion: Int!
+  schemeVersion: Int! @default(value: 0)
 }
 
 type CustomData {
@@ -87,7 +87,7 @@ type Intervention @model {
   contents: [Content!]! @hasMany
   surveys: [Survey!]! @hasMany
   tags: [String!]!
-  schemeVersion: Int!
+  schemeVersion: Int! @default(value: 0)
 }
 
 enum InterventionType {
@@ -102,7 +102,7 @@ type Content @model {
   description: String! @default(value: "")
   intervention: Intervention @belongsTo
   tags: [String!]!
-  schemeVersion: Int!
+  schemeVersion: Int! @default(value: 0)
 }
 
 # survey collection
@@ -112,7 +112,7 @@ type Survey @model {
   description: String! @default(value: "")
   intervention: Intervention @belongsTo
   questions: [Question!]!
-  schemeVersion: Int!
+  schemeVersion: Int! @default(value: 0)
 }
 
 enum SurveyType {
@@ -155,7 +155,7 @@ type Entity @model {
   location: Location
   customData: [AppliedCustomData]!
   appliedInterventions: [AppliedIntervention!]! @hasMany
-  schemeVersion: Int!
+  schemeVersion: Int! @default(value: 0)
 }
 
 type Location {
@@ -180,7 +180,7 @@ type AppliedIntervention @model {
   intervention: Intervention! @hasOne
   location: Location
   executedSurveys: [ExecutedSurvey!]! @hasMany
-  schemeVersion: Int!
+  schemeVersion: Int! @default(value: 0)
 }
 
 # executedSurveyCollection
@@ -193,7 +193,7 @@ type ExecutedSurvey @model {
   date: AWSDateTime!
   location: Location
   answers: [QuestionAnswer!]!
-  schemeVersion: Int!
+  schemeVersion: Int! @default(value: 0)
 }
 
 type QuestionAnswer {
@@ -224,5 +224,6 @@ type Task @model {
   entity: Entity @hasOne
   appliedIntervention: AppliedIntervention @hasOne
   executedSurvey: ExecutedSurvey @hasOne
+  schemeVersion: Int! @default(value: "0")
   # todo: what to do with audio
 }
