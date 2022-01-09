@@ -67,5 +67,13 @@
         }
       }
     }
+  },
+  "storage": {
+    "adminapp9bf3812d": {
+      "service": "S3",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
   }
 }
