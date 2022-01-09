@@ -6,7 +6,6 @@ input AMPLIFY {
 # user collection
 
 type User @model {
-  id: ID!
   firstName: String!
   lastName: String!
   bio: String
@@ -31,7 +30,6 @@ enum PermissionType {
 # config collection
 
 type Config @model {
-  id: ID!
   name: String!
   colorTheme: ColorTheme
   storagePaths: StoragePaths!
@@ -56,7 +54,6 @@ type StoragePaths {
 # level collection
 
 type Level @model {
-  id: ID!
   name: String!
   description: String! @default(value: "")
   parentLevel: Level @hasOne
@@ -80,7 +77,6 @@ enum Type {
 # intervention collection
 
 type Intervention @model {
-  id: ID!
   name: String!
   description: String! @default(value: "")
   interventionType: InterventionType!
@@ -97,7 +93,6 @@ enum InterventionType {
 
 # content collection
 type Content @model {
-  id: ID!
   name: String!
   description: String! @default(value: "")
   intervention: Intervention @belongsTo
@@ -107,7 +102,6 @@ type Content @model {
 
 # survey collection
 type Survey @model {
-  id: ID!
   name: String!
   description: String! @default(value: "")
   intervention: Intervention @belongsTo
@@ -146,7 +140,6 @@ type QuestionOption {
 
 # todo: check whether binding the children makes sense
 type Entity @model {
-  id: ID!
   name: String!
   description: String! @default(value: "")
   parentEntity: Entity @belongsTo
@@ -175,7 +168,6 @@ type AppliedCustomData {
 
 # todo: possibly add bidirectional reference entity
 type AppliedIntervention @model {
-  id: ID!
   whoDidIt: User! @hasOne
   intervention: Intervention! @hasOne
   location: Location
@@ -186,7 +178,6 @@ type AppliedIntervention @model {
 # executedSurveyCollection
 
 type ExecutedSurvey @model {
-  id: ID!
   appliedIntervention: AppliedIntervention! @belongsTo
   survey: Survey! @hasOne
   whoExecutedIt: User! @hasOne
@@ -214,7 +205,6 @@ type Marking {
 }
 
 type Task @model {
-  id: ID!
   title: String!
   text: String
   dueDate: AWSDateTime
