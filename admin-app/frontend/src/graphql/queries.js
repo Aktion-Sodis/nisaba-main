@@ -4,7 +4,6 @@
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
-      id
       firstName
       lastName
       bio
@@ -13,6 +12,7 @@ export const getUser = /* GraphQL */ `
         allowedEntities
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -29,7 +29,6 @@ export const listUsers = /* GraphQL */ `
   ) {
     listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        id
         firstName
         lastName
         bio
@@ -38,6 +37,7 @@ export const listUsers = /* GraphQL */ `
           allowedEntities
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -63,7 +63,6 @@ export const syncUsers = /* GraphQL */ `
       lastSync: $lastSync
     ) {
       items {
-        id
         firstName
         lastName
         bio
@@ -72,6 +71,7 @@ export const syncUsers = /* GraphQL */ `
           allowedEntities
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -86,8 +86,6 @@ export const syncUsers = /* GraphQL */ `
 export const getConfig = /* GraphQL */ `
   query GetConfig($id: ID!) {
     getConfig(id: $id) {
-      id
-      schemeVersion
       name
       colorTheme {
         highlight
@@ -101,6 +99,8 @@ export const getConfig = /* GraphQL */ `
         ownerPic
         ownerIcon
       }
+      schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -117,8 +117,6 @@ export const listConfigs = /* GraphQL */ `
   ) {
     listConfigs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        id
-        schemeVersion
         name
         colorTheme {
           highlight
@@ -132,6 +130,8 @@ export const listConfigs = /* GraphQL */ `
           ownerPic
           ownerIcon
         }
+        schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -157,8 +157,6 @@ export const syncConfigs = /* GraphQL */ `
       lastSync: $lastSync
     ) {
       items {
-        id
-        schemeVersion
         name
         colorTheme {
           highlight
@@ -172,6 +170,8 @@ export const syncConfigs = /* GraphQL */ `
           ownerPic
           ownerIcon
         }
+        schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -186,19 +186,17 @@ export const syncConfigs = /* GraphQL */ `
 export const getLevel = /* GraphQL */ `
   query GetLevel($id: ID!) {
     getLevel(id: $id) {
-      id
       name
       description
       parentLevel {
-        id
         name
         description
         parentLevel {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -217,6 +215,7 @@ export const getLevel = /* GraphQL */ `
           type
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -227,12 +226,12 @@ export const getLevel = /* GraphQL */ `
       interventionsAreAllowed
       allowedInterventions {
         items {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -249,6 +248,7 @@ export const getLevel = /* GraphQL */ `
         type
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -266,15 +266,14 @@ export const listLevels = /* GraphQL */ `
   ) {
     listLevels(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        id
         name
         description
         parentLevel {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -293,6 +292,7 @@ export const listLevels = /* GraphQL */ `
           type
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -319,15 +319,14 @@ export const syncLevels = /* GraphQL */ `
       lastSync: $lastSync
     ) {
       items {
-        id
         name
         description
         parentLevel {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -346,6 +345,7 @@ export const syncLevels = /* GraphQL */ `
           type
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -361,17 +361,16 @@ export const syncLevels = /* GraphQL */ `
 export const getIntervention = /* GraphQL */ `
   query GetIntervention($id: ID!) {
     getIntervention(id: $id) {
-      id
       name
       description
       interventionType
       contents {
         items {
-          id
           name
           description
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -384,10 +383,10 @@ export const getIntervention = /* GraphQL */ `
       }
       surveys {
         items {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -400,6 +399,7 @@ export const getIntervention = /* GraphQL */ `
       }
       tags
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -417,7 +417,6 @@ export const listInterventions = /* GraphQL */ `
   ) {
     listInterventions(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        id
         name
         description
         interventionType
@@ -431,6 +430,7 @@ export const listInterventions = /* GraphQL */ `
         }
         tags
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -457,7 +457,6 @@ export const syncInterventions = /* GraphQL */ `
       lastSync: $lastSync
     ) {
       items {
-        id
         name
         description
         interventionType
@@ -471,6 +470,7 @@ export const syncInterventions = /* GraphQL */ `
         }
         tags
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -486,11 +486,9 @@ export const syncInterventions = /* GraphQL */ `
 export const getContent = /* GraphQL */ `
   query GetContent($id: ID!) {
     getContent(id: $id) {
-      id
       name
       description
       intervention {
-        id
         name
         description
         interventionType
@@ -504,6 +502,7 @@ export const getContent = /* GraphQL */ `
         }
         tags
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -513,6 +512,7 @@ export const getContent = /* GraphQL */ `
       }
       tags
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -530,16 +530,15 @@ export const listContents = /* GraphQL */ `
   ) {
     listContents(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        id
         name
         description
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -549,6 +548,7 @@ export const listContents = /* GraphQL */ `
         }
         tags
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -575,16 +575,15 @@ export const syncContents = /* GraphQL */ `
       lastSync: $lastSync
     ) {
       items {
-        id
         name
         description
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -594,6 +593,7 @@ export const syncContents = /* GraphQL */ `
         }
         tags
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -609,11 +609,9 @@ export const syncContents = /* GraphQL */ `
 export const getSurvey = /* GraphQL */ `
   query GetSurvey($id: ID!) {
     getSurvey(id: $id) {
-      id
       name
       description
       intervention {
-        id
         name
         description
         interventionType
@@ -627,6 +625,7 @@ export const getSurvey = /* GraphQL */ `
         }
         tags
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -644,6 +643,7 @@ export const getSurvey = /* GraphQL */ `
         }
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -661,16 +661,15 @@ export const listSurveys = /* GraphQL */ `
   ) {
     listSurveys(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        id
         name
         description
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -684,6 +683,7 @@ export const listSurveys = /* GraphQL */ `
           type
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -710,16 +710,15 @@ export const syncSurveys = /* GraphQL */ `
       lastSync: $lastSync
     ) {
       items {
-        id
         name
         description
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -733,6 +732,7 @@ export const syncSurveys = /* GraphQL */ `
           type
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -748,18 +748,16 @@ export const syncSurveys = /* GraphQL */ `
 export const getEntity = /* GraphQL */ `
   query GetEntity($id: ID!) {
     getEntity(id: $id) {
-      id
       name
       description
       parentEntity {
-        id
         name
         description
         parentEntity {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -773,11 +771,11 @@ export const getEntity = /* GraphQL */ `
           startedAt
         }
         level {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -801,6 +799,7 @@ export const getEntity = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -811,10 +810,10 @@ export const getEntity = /* GraphQL */ `
       }
       childEntities {
         items {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -827,15 +826,14 @@ export const getEntity = /* GraphQL */ `
         startedAt
       }
       level {
-        id
         name
         description
         parentLevel {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -854,6 +852,7 @@ export const getEntity = /* GraphQL */ `
           type
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -874,8 +873,8 @@ export const getEntity = /* GraphQL */ `
       }
       appliedInterventions {
         items {
-          id
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -889,6 +888,7 @@ export const getEntity = /* GraphQL */ `
         startedAt
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -907,14 +907,13 @@ export const listEntities = /* GraphQL */ `
   ) {
     listEntities(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        id
         name
         description
         parentEntity {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -928,11 +927,11 @@ export const listEntities = /* GraphQL */ `
           startedAt
         }
         level {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -956,6 +955,7 @@ export const listEntities = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -983,14 +983,13 @@ export const syncEntities = /* GraphQL */ `
       lastSync: $lastSync
     ) {
       items {
-        id
         name
         description
         parentEntity {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1004,11 +1003,11 @@ export const syncEntities = /* GraphQL */ `
           startedAt
         }
         level {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1032,6 +1031,7 @@ export const syncEntities = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1048,9 +1048,7 @@ export const syncEntities = /* GraphQL */ `
 export const getAppliedIntervention = /* GraphQL */ `
   query GetAppliedIntervention($id: ID!) {
     getAppliedIntervention(id: $id) {
-      id
       whoDidIt {
-        id
         firstName
         lastName
         bio
@@ -1059,6 +1057,7 @@ export const getAppliedIntervention = /* GraphQL */ `
           allowedEntities
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1066,7 +1065,6 @@ export const getAppliedIntervention = /* GraphQL */ `
         _lastChangedAt
       }
       intervention {
-        id
         name
         description
         interventionType
@@ -1080,6 +1078,7 @@ export const getAppliedIntervention = /* GraphQL */ `
         }
         tags
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1093,9 +1092,9 @@ export const getAppliedIntervention = /* GraphQL */ `
       }
       executedSurveys {
         items {
-          id
           date
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1109,6 +1108,7 @@ export const getAppliedIntervention = /* GraphQL */ `
         startedAt
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -1132,13 +1132,12 @@ export const listAppliedInterventions = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
-        id
         whoDidIt {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1146,12 +1145,12 @@ export const listAppliedInterventions = /* GraphQL */ `
           _lastChangedAt
         }
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1168,6 +1167,7 @@ export const listAppliedInterventions = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1196,13 +1196,12 @@ export const syncAppliedInterventions = /* GraphQL */ `
       lastSync: $lastSync
     ) {
       items {
-        id
         whoDidIt {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1210,12 +1209,12 @@ export const syncAppliedInterventions = /* GraphQL */ `
           _lastChangedAt
         }
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1232,6 +1231,7 @@ export const syncAppliedInterventions = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1249,15 +1249,13 @@ export const syncAppliedInterventions = /* GraphQL */ `
 export const getExecutedSurvey = /* GraphQL */ `
   query GetExecutedSurvey($id: ID!) {
     getExecutedSurvey(id: $id) {
-      id
       appliedIntervention {
-        id
         whoDidIt {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1265,12 +1263,12 @@ export const getExecutedSurvey = /* GraphQL */ `
           _lastChangedAt
         }
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1287,6 +1285,7 @@ export const getExecutedSurvey = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1297,16 +1296,15 @@ export const getExecutedSurvey = /* GraphQL */ `
         appliedInterventionInterventionId
       }
       survey {
-        id
         name
         description
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1320,6 +1318,7 @@ export const getExecutedSurvey = /* GraphQL */ `
           type
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1328,7 +1327,6 @@ export const getExecutedSurvey = /* GraphQL */ `
         interventionSurveysId
       }
       whoExecutedIt {
-        id
         firstName
         lastName
         bio
@@ -1337,6 +1335,7 @@ export const getExecutedSurvey = /* GraphQL */ `
           allowedEntities
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1365,6 +1364,7 @@ export const getExecutedSurvey = /* GraphQL */ `
         }
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -1384,10 +1384,9 @@ export const listExecutedSurveys = /* GraphQL */ `
   ) {
     listExecutedSurveys(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        id
         appliedIntervention {
-          id
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1398,10 +1397,10 @@ export const listExecutedSurveys = /* GraphQL */ `
           appliedInterventionInterventionId
         }
         survey {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1410,11 +1409,11 @@ export const listExecutedSurveys = /* GraphQL */ `
           interventionSurveysId
         }
         whoExecutedIt {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1434,6 +1433,7 @@ export const listExecutedSurveys = /* GraphQL */ `
           text
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1462,10 +1462,9 @@ export const syncExecutedSurveys = /* GraphQL */ `
       lastSync: $lastSync
     ) {
       items {
-        id
         appliedIntervention {
-          id
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1476,10 +1475,10 @@ export const syncExecutedSurveys = /* GraphQL */ `
           appliedInterventionInterventionId
         }
         survey {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1488,11 +1487,11 @@ export const syncExecutedSurveys = /* GraphQL */ `
           interventionSurveysId
         }
         whoExecutedIt {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1512,6 +1511,7 @@ export const syncExecutedSurveys = /* GraphQL */ `
           text
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1529,7 +1529,6 @@ export const syncExecutedSurveys = /* GraphQL */ `
 export const getTask = /* GraphQL */ `
   query GetTask($id: ID!) {
     getTask(id: $id) {
-      id
       title
       text
       dueDate
@@ -1539,7 +1538,6 @@ export const getTask = /* GraphQL */ `
         longitude
       }
       user {
-        id
         firstName
         lastName
         bio
@@ -1548,6 +1546,7 @@ export const getTask = /* GraphQL */ `
           allowedEntities
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1555,14 +1554,13 @@ export const getTask = /* GraphQL */ `
         _lastChangedAt
       }
       entity {
-        id
         name
         description
         parentEntity {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1576,11 +1574,11 @@ export const getTask = /* GraphQL */ `
           startedAt
         }
         level {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1604,6 +1602,7 @@ export const getTask = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1613,13 +1612,12 @@ export const getTask = /* GraphQL */ `
         entityLevelId
       }
       appliedIntervention {
-        id
         whoDidIt {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1627,12 +1625,12 @@ export const getTask = /* GraphQL */ `
           _lastChangedAt
         }
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1649,6 +1647,7 @@ export const getTask = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1659,10 +1658,9 @@ export const getTask = /* GraphQL */ `
         appliedInterventionInterventionId
       }
       executedSurvey {
-        id
         appliedIntervention {
-          id
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1673,10 +1671,10 @@ export const getTask = /* GraphQL */ `
           appliedInterventionInterventionId
         }
         survey {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1685,11 +1683,11 @@ export const getTask = /* GraphQL */ `
           interventionSurveysId
         }
         whoExecutedIt {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1709,6 +1707,7 @@ export const getTask = /* GraphQL */ `
           text
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1718,6 +1717,8 @@ export const getTask = /* GraphQL */ `
         executedSurveySurveyId
         executedSurveyWhoExecutedItId
       }
+      schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -1738,7 +1739,6 @@ export const listTasks = /* GraphQL */ `
   ) {
     listTasks(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
-        id
         title
         text
         dueDate
@@ -1748,11 +1748,11 @@ export const listTasks = /* GraphQL */ `
           longitude
         }
         user {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1760,10 +1760,10 @@ export const listTasks = /* GraphQL */ `
           _lastChangedAt
         }
         entity {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1773,8 +1773,8 @@ export const listTasks = /* GraphQL */ `
           entityLevelId
         }
         appliedIntervention {
-          id
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1785,9 +1785,9 @@ export const listTasks = /* GraphQL */ `
           appliedInterventionInterventionId
         }
         executedSurvey {
-          id
           date
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1797,6 +1797,8 @@ export const listTasks = /* GraphQL */ `
           executedSurveySurveyId
           executedSurveyWhoExecutedItId
         }
+        schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1826,7 +1828,6 @@ export const syncTasks = /* GraphQL */ `
       lastSync: $lastSync
     ) {
       items {
-        id
         title
         text
         dueDate
@@ -1836,11 +1837,11 @@ export const syncTasks = /* GraphQL */ `
           longitude
         }
         user {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1848,10 +1849,10 @@ export const syncTasks = /* GraphQL */ `
           _lastChangedAt
         }
         entity {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1861,8 +1862,8 @@ export const syncTasks = /* GraphQL */ `
           entityLevelId
         }
         appliedIntervention {
-          id
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1873,9 +1874,9 @@ export const syncTasks = /* GraphQL */ `
           appliedInterventionInterventionId
         }
         executedSurvey {
-          id
           date
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1885,6 +1886,8 @@ export const syncTasks = /* GraphQL */ `
           executedSurveySurveyId
           executedSurveyWhoExecutedItId
         }
+        schemeVersion
+        id
         createdAt
         updatedAt
         _version

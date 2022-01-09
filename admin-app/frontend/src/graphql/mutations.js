@@ -7,7 +7,6 @@ export const createUser = /* GraphQL */ `
     $condition: ModelUserConditionInput
   ) {
     createUser(input: $input, condition: $condition) {
-      id
       firstName
       lastName
       bio
@@ -16,6 +15,7 @@ export const createUser = /* GraphQL */ `
         allowedEntities
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -30,7 +30,6 @@ export const updateUser = /* GraphQL */ `
     $condition: ModelUserConditionInput
   ) {
     updateUser(input: $input, condition: $condition) {
-      id
       firstName
       lastName
       bio
@@ -39,6 +38,7 @@ export const updateUser = /* GraphQL */ `
         allowedEntities
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -53,7 +53,6 @@ export const deleteUser = /* GraphQL */ `
     $condition: ModelUserConditionInput
   ) {
     deleteUser(input: $input, condition: $condition) {
-      id
       firstName
       lastName
       bio
@@ -62,6 +61,7 @@ export const deleteUser = /* GraphQL */ `
         allowedEntities
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -76,8 +76,6 @@ export const createConfig = /* GraphQL */ `
     $condition: ModelConfigConditionInput
   ) {
     createConfig(input: $input, condition: $condition) {
-      id
-      schemeVersion
       name
       colorTheme {
         highlight
@@ -91,6 +89,8 @@ export const createConfig = /* GraphQL */ `
         ownerPic
         ownerIcon
       }
+      schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -105,8 +105,6 @@ export const updateConfig = /* GraphQL */ `
     $condition: ModelConfigConditionInput
   ) {
     updateConfig(input: $input, condition: $condition) {
-      id
-      schemeVersion
       name
       colorTheme {
         highlight
@@ -120,6 +118,8 @@ export const updateConfig = /* GraphQL */ `
         ownerPic
         ownerIcon
       }
+      schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -134,8 +134,6 @@ export const deleteConfig = /* GraphQL */ `
     $condition: ModelConfigConditionInput
   ) {
     deleteConfig(input: $input, condition: $condition) {
-      id
-      schemeVersion
       name
       colorTheme {
         highlight
@@ -149,6 +147,8 @@ export const deleteConfig = /* GraphQL */ `
         ownerPic
         ownerIcon
       }
+      schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -163,19 +163,17 @@ export const createLevel = /* GraphQL */ `
     $condition: ModelLevelConditionInput
   ) {
     createLevel(input: $input, condition: $condition) {
-      id
       name
       description
       parentLevel {
-        id
         name
         description
         parentLevel {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -194,6 +192,7 @@ export const createLevel = /* GraphQL */ `
           type
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -204,12 +203,12 @@ export const createLevel = /* GraphQL */ `
       interventionsAreAllowed
       allowedInterventions {
         items {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -226,6 +225,7 @@ export const createLevel = /* GraphQL */ `
         type
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -241,19 +241,17 @@ export const updateLevel = /* GraphQL */ `
     $condition: ModelLevelConditionInput
   ) {
     updateLevel(input: $input, condition: $condition) {
-      id
       name
       description
       parentLevel {
-        id
         name
         description
         parentLevel {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -272,6 +270,7 @@ export const updateLevel = /* GraphQL */ `
           type
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -282,12 +281,12 @@ export const updateLevel = /* GraphQL */ `
       interventionsAreAllowed
       allowedInterventions {
         items {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -304,6 +303,7 @@ export const updateLevel = /* GraphQL */ `
         type
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -319,19 +319,17 @@ export const deleteLevel = /* GraphQL */ `
     $condition: ModelLevelConditionInput
   ) {
     deleteLevel(input: $input, condition: $condition) {
-      id
       name
       description
       parentLevel {
-        id
         name
         description
         parentLevel {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -350,6 +348,7 @@ export const deleteLevel = /* GraphQL */ `
           type
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -360,12 +359,12 @@ export const deleteLevel = /* GraphQL */ `
       interventionsAreAllowed
       allowedInterventions {
         items {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -382,6 +381,7 @@ export const deleteLevel = /* GraphQL */ `
         type
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -397,17 +397,16 @@ export const createIntervention = /* GraphQL */ `
     $condition: ModelInterventionConditionInput
   ) {
     createIntervention(input: $input, condition: $condition) {
-      id
       name
       description
       interventionType
       contents {
         items {
-          id
           name
           description
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -420,10 +419,10 @@ export const createIntervention = /* GraphQL */ `
       }
       surveys {
         items {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -436,6 +435,7 @@ export const createIntervention = /* GraphQL */ `
       }
       tags
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -451,17 +451,16 @@ export const updateIntervention = /* GraphQL */ `
     $condition: ModelInterventionConditionInput
   ) {
     updateIntervention(input: $input, condition: $condition) {
-      id
       name
       description
       interventionType
       contents {
         items {
-          id
           name
           description
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -474,10 +473,10 @@ export const updateIntervention = /* GraphQL */ `
       }
       surveys {
         items {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -490,6 +489,7 @@ export const updateIntervention = /* GraphQL */ `
       }
       tags
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -505,17 +505,16 @@ export const deleteIntervention = /* GraphQL */ `
     $condition: ModelInterventionConditionInput
   ) {
     deleteIntervention(input: $input, condition: $condition) {
-      id
       name
       description
       interventionType
       contents {
         items {
-          id
           name
           description
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -528,10 +527,10 @@ export const deleteIntervention = /* GraphQL */ `
       }
       surveys {
         items {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -544,6 +543,7 @@ export const deleteIntervention = /* GraphQL */ `
       }
       tags
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -559,11 +559,9 @@ export const createContent = /* GraphQL */ `
     $condition: ModelContentConditionInput
   ) {
     createContent(input: $input, condition: $condition) {
-      id
       name
       description
       intervention {
-        id
         name
         description
         interventionType
@@ -577,6 +575,7 @@ export const createContent = /* GraphQL */ `
         }
         tags
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -586,6 +585,7 @@ export const createContent = /* GraphQL */ `
       }
       tags
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -601,11 +601,9 @@ export const updateContent = /* GraphQL */ `
     $condition: ModelContentConditionInput
   ) {
     updateContent(input: $input, condition: $condition) {
-      id
       name
       description
       intervention {
-        id
         name
         description
         interventionType
@@ -619,6 +617,7 @@ export const updateContent = /* GraphQL */ `
         }
         tags
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -628,6 +627,7 @@ export const updateContent = /* GraphQL */ `
       }
       tags
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -643,11 +643,9 @@ export const deleteContent = /* GraphQL */ `
     $condition: ModelContentConditionInput
   ) {
     deleteContent(input: $input, condition: $condition) {
-      id
       name
       description
       intervention {
-        id
         name
         description
         interventionType
@@ -661,6 +659,7 @@ export const deleteContent = /* GraphQL */ `
         }
         tags
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -670,6 +669,7 @@ export const deleteContent = /* GraphQL */ `
       }
       tags
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -685,11 +685,9 @@ export const createSurvey = /* GraphQL */ `
     $condition: ModelSurveyConditionInput
   ) {
     createSurvey(input: $input, condition: $condition) {
-      id
       name
       description
       intervention {
-        id
         name
         description
         interventionType
@@ -703,6 +701,7 @@ export const createSurvey = /* GraphQL */ `
         }
         tags
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -720,6 +719,7 @@ export const createSurvey = /* GraphQL */ `
         }
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -735,11 +735,9 @@ export const updateSurvey = /* GraphQL */ `
     $condition: ModelSurveyConditionInput
   ) {
     updateSurvey(input: $input, condition: $condition) {
-      id
       name
       description
       intervention {
-        id
         name
         description
         interventionType
@@ -753,6 +751,7 @@ export const updateSurvey = /* GraphQL */ `
         }
         tags
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -770,6 +769,7 @@ export const updateSurvey = /* GraphQL */ `
         }
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -785,11 +785,9 @@ export const deleteSurvey = /* GraphQL */ `
     $condition: ModelSurveyConditionInput
   ) {
     deleteSurvey(input: $input, condition: $condition) {
-      id
       name
       description
       intervention {
-        id
         name
         description
         interventionType
@@ -803,6 +801,7 @@ export const deleteSurvey = /* GraphQL */ `
         }
         tags
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -820,6 +819,7 @@ export const deleteSurvey = /* GraphQL */ `
         }
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -835,18 +835,16 @@ export const createEntity = /* GraphQL */ `
     $condition: ModelEntityConditionInput
   ) {
     createEntity(input: $input, condition: $condition) {
-      id
       name
       description
       parentEntity {
-        id
         name
         description
         parentEntity {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -860,11 +858,11 @@ export const createEntity = /* GraphQL */ `
           startedAt
         }
         level {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -888,6 +886,7 @@ export const createEntity = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -898,10 +897,10 @@ export const createEntity = /* GraphQL */ `
       }
       childEntities {
         items {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -914,15 +913,14 @@ export const createEntity = /* GraphQL */ `
         startedAt
       }
       level {
-        id
         name
         description
         parentLevel {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -941,6 +939,7 @@ export const createEntity = /* GraphQL */ `
           type
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -961,8 +960,8 @@ export const createEntity = /* GraphQL */ `
       }
       appliedInterventions {
         items {
-          id
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -976,6 +975,7 @@ export const createEntity = /* GraphQL */ `
         startedAt
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -992,18 +992,16 @@ export const updateEntity = /* GraphQL */ `
     $condition: ModelEntityConditionInput
   ) {
     updateEntity(input: $input, condition: $condition) {
-      id
       name
       description
       parentEntity {
-        id
         name
         description
         parentEntity {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1017,11 +1015,11 @@ export const updateEntity = /* GraphQL */ `
           startedAt
         }
         level {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1045,6 +1043,7 @@ export const updateEntity = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1055,10 +1054,10 @@ export const updateEntity = /* GraphQL */ `
       }
       childEntities {
         items {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1071,15 +1070,14 @@ export const updateEntity = /* GraphQL */ `
         startedAt
       }
       level {
-        id
         name
         description
         parentLevel {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1098,6 +1096,7 @@ export const updateEntity = /* GraphQL */ `
           type
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1118,8 +1117,8 @@ export const updateEntity = /* GraphQL */ `
       }
       appliedInterventions {
         items {
-          id
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1133,6 +1132,7 @@ export const updateEntity = /* GraphQL */ `
         startedAt
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -1149,18 +1149,16 @@ export const deleteEntity = /* GraphQL */ `
     $condition: ModelEntityConditionInput
   ) {
     deleteEntity(input: $input, condition: $condition) {
-      id
       name
       description
       parentEntity {
-        id
         name
         description
         parentEntity {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1174,11 +1172,11 @@ export const deleteEntity = /* GraphQL */ `
           startedAt
         }
         level {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1202,6 +1200,7 @@ export const deleteEntity = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1212,10 +1211,10 @@ export const deleteEntity = /* GraphQL */ `
       }
       childEntities {
         items {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1228,15 +1227,14 @@ export const deleteEntity = /* GraphQL */ `
         startedAt
       }
       level {
-        id
         name
         description
         parentLevel {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1255,6 +1253,7 @@ export const deleteEntity = /* GraphQL */ `
           type
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1275,8 +1274,8 @@ export const deleteEntity = /* GraphQL */ `
       }
       appliedInterventions {
         items {
-          id
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1290,6 +1289,7 @@ export const deleteEntity = /* GraphQL */ `
         startedAt
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -1306,9 +1306,7 @@ export const createAppliedIntervention = /* GraphQL */ `
     $condition: ModelAppliedInterventionConditionInput
   ) {
     createAppliedIntervention(input: $input, condition: $condition) {
-      id
       whoDidIt {
-        id
         firstName
         lastName
         bio
@@ -1317,6 +1315,7 @@ export const createAppliedIntervention = /* GraphQL */ `
           allowedEntities
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1324,7 +1323,6 @@ export const createAppliedIntervention = /* GraphQL */ `
         _lastChangedAt
       }
       intervention {
-        id
         name
         description
         interventionType
@@ -1338,6 +1336,7 @@ export const createAppliedIntervention = /* GraphQL */ `
         }
         tags
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1351,9 +1350,9 @@ export const createAppliedIntervention = /* GraphQL */ `
       }
       executedSurveys {
         items {
-          id
           date
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1367,6 +1366,7 @@ export const createAppliedIntervention = /* GraphQL */ `
         startedAt
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -1384,9 +1384,7 @@ export const updateAppliedIntervention = /* GraphQL */ `
     $condition: ModelAppliedInterventionConditionInput
   ) {
     updateAppliedIntervention(input: $input, condition: $condition) {
-      id
       whoDidIt {
-        id
         firstName
         lastName
         bio
@@ -1395,6 +1393,7 @@ export const updateAppliedIntervention = /* GraphQL */ `
           allowedEntities
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1402,7 +1401,6 @@ export const updateAppliedIntervention = /* GraphQL */ `
         _lastChangedAt
       }
       intervention {
-        id
         name
         description
         interventionType
@@ -1416,6 +1414,7 @@ export const updateAppliedIntervention = /* GraphQL */ `
         }
         tags
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1429,9 +1428,9 @@ export const updateAppliedIntervention = /* GraphQL */ `
       }
       executedSurveys {
         items {
-          id
           date
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1445,6 +1444,7 @@ export const updateAppliedIntervention = /* GraphQL */ `
         startedAt
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -1462,9 +1462,7 @@ export const deleteAppliedIntervention = /* GraphQL */ `
     $condition: ModelAppliedInterventionConditionInput
   ) {
     deleteAppliedIntervention(input: $input, condition: $condition) {
-      id
       whoDidIt {
-        id
         firstName
         lastName
         bio
@@ -1473,6 +1471,7 @@ export const deleteAppliedIntervention = /* GraphQL */ `
           allowedEntities
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1480,7 +1479,6 @@ export const deleteAppliedIntervention = /* GraphQL */ `
         _lastChangedAt
       }
       intervention {
-        id
         name
         description
         interventionType
@@ -1494,6 +1492,7 @@ export const deleteAppliedIntervention = /* GraphQL */ `
         }
         tags
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1507,9 +1506,9 @@ export const deleteAppliedIntervention = /* GraphQL */ `
       }
       executedSurveys {
         items {
-          id
           date
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1523,6 +1522,7 @@ export const deleteAppliedIntervention = /* GraphQL */ `
         startedAt
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -1540,15 +1540,13 @@ export const createExecutedSurvey = /* GraphQL */ `
     $condition: ModelExecutedSurveyConditionInput
   ) {
     createExecutedSurvey(input: $input, condition: $condition) {
-      id
       appliedIntervention {
-        id
         whoDidIt {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1556,12 +1554,12 @@ export const createExecutedSurvey = /* GraphQL */ `
           _lastChangedAt
         }
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1578,6 +1576,7 @@ export const createExecutedSurvey = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1588,16 +1587,15 @@ export const createExecutedSurvey = /* GraphQL */ `
         appliedInterventionInterventionId
       }
       survey {
-        id
         name
         description
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1611,6 +1609,7 @@ export const createExecutedSurvey = /* GraphQL */ `
           type
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1619,7 +1618,6 @@ export const createExecutedSurvey = /* GraphQL */ `
         interventionSurveysId
       }
       whoExecutedIt {
-        id
         firstName
         lastName
         bio
@@ -1628,6 +1626,7 @@ export const createExecutedSurvey = /* GraphQL */ `
           allowedEntities
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1656,6 +1655,7 @@ export const createExecutedSurvey = /* GraphQL */ `
         }
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -1673,15 +1673,13 @@ export const updateExecutedSurvey = /* GraphQL */ `
     $condition: ModelExecutedSurveyConditionInput
   ) {
     updateExecutedSurvey(input: $input, condition: $condition) {
-      id
       appliedIntervention {
-        id
         whoDidIt {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1689,12 +1687,12 @@ export const updateExecutedSurvey = /* GraphQL */ `
           _lastChangedAt
         }
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1711,6 +1709,7 @@ export const updateExecutedSurvey = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1721,16 +1720,15 @@ export const updateExecutedSurvey = /* GraphQL */ `
         appliedInterventionInterventionId
       }
       survey {
-        id
         name
         description
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1744,6 +1742,7 @@ export const updateExecutedSurvey = /* GraphQL */ `
           type
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1752,7 +1751,6 @@ export const updateExecutedSurvey = /* GraphQL */ `
         interventionSurveysId
       }
       whoExecutedIt {
-        id
         firstName
         lastName
         bio
@@ -1761,6 +1759,7 @@ export const updateExecutedSurvey = /* GraphQL */ `
           allowedEntities
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1789,6 +1788,7 @@ export const updateExecutedSurvey = /* GraphQL */ `
         }
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -1806,15 +1806,13 @@ export const deleteExecutedSurvey = /* GraphQL */ `
     $condition: ModelExecutedSurveyConditionInput
   ) {
     deleteExecutedSurvey(input: $input, condition: $condition) {
-      id
       appliedIntervention {
-        id
         whoDidIt {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1822,12 +1820,12 @@ export const deleteExecutedSurvey = /* GraphQL */ `
           _lastChangedAt
         }
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1844,6 +1842,7 @@ export const deleteExecutedSurvey = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1854,16 +1853,15 @@ export const deleteExecutedSurvey = /* GraphQL */ `
         appliedInterventionInterventionId
       }
       survey {
-        id
         name
         description
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1877,6 +1875,7 @@ export const deleteExecutedSurvey = /* GraphQL */ `
           type
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1885,7 +1884,6 @@ export const deleteExecutedSurvey = /* GraphQL */ `
         interventionSurveysId
       }
       whoExecutedIt {
-        id
         firstName
         lastName
         bio
@@ -1894,6 +1892,7 @@ export const deleteExecutedSurvey = /* GraphQL */ `
           allowedEntities
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1922,6 +1921,7 @@ export const deleteExecutedSurvey = /* GraphQL */ `
         }
       }
       schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -1939,7 +1939,6 @@ export const createTask = /* GraphQL */ `
     $condition: ModelTaskConditionInput
   ) {
     createTask(input: $input, condition: $condition) {
-      id
       title
       text
       dueDate
@@ -1949,7 +1948,6 @@ export const createTask = /* GraphQL */ `
         longitude
       }
       user {
-        id
         firstName
         lastName
         bio
@@ -1958,6 +1956,7 @@ export const createTask = /* GraphQL */ `
           allowedEntities
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -1965,14 +1964,13 @@ export const createTask = /* GraphQL */ `
         _lastChangedAt
       }
       entity {
-        id
         name
         description
         parentEntity {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -1986,11 +1984,11 @@ export const createTask = /* GraphQL */ `
           startedAt
         }
         level {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2014,6 +2012,7 @@ export const createTask = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -2023,13 +2022,12 @@ export const createTask = /* GraphQL */ `
         entityLevelId
       }
       appliedIntervention {
-        id
         whoDidIt {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2037,12 +2035,12 @@ export const createTask = /* GraphQL */ `
           _lastChangedAt
         }
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2059,6 +2057,7 @@ export const createTask = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -2069,10 +2068,9 @@ export const createTask = /* GraphQL */ `
         appliedInterventionInterventionId
       }
       executedSurvey {
-        id
         appliedIntervention {
-          id
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2083,10 +2081,10 @@ export const createTask = /* GraphQL */ `
           appliedInterventionInterventionId
         }
         survey {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2095,11 +2093,11 @@ export const createTask = /* GraphQL */ `
           interventionSurveysId
         }
         whoExecutedIt {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2119,6 +2117,7 @@ export const createTask = /* GraphQL */ `
           text
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -2128,6 +2127,8 @@ export const createTask = /* GraphQL */ `
         executedSurveySurveyId
         executedSurveyWhoExecutedItId
       }
+      schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -2146,7 +2147,6 @@ export const updateTask = /* GraphQL */ `
     $condition: ModelTaskConditionInput
   ) {
     updateTask(input: $input, condition: $condition) {
-      id
       title
       text
       dueDate
@@ -2156,7 +2156,6 @@ export const updateTask = /* GraphQL */ `
         longitude
       }
       user {
-        id
         firstName
         lastName
         bio
@@ -2165,6 +2164,7 @@ export const updateTask = /* GraphQL */ `
           allowedEntities
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -2172,14 +2172,13 @@ export const updateTask = /* GraphQL */ `
         _lastChangedAt
       }
       entity {
-        id
         name
         description
         parentEntity {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2193,11 +2192,11 @@ export const updateTask = /* GraphQL */ `
           startedAt
         }
         level {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2221,6 +2220,7 @@ export const updateTask = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -2230,13 +2230,12 @@ export const updateTask = /* GraphQL */ `
         entityLevelId
       }
       appliedIntervention {
-        id
         whoDidIt {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2244,12 +2243,12 @@ export const updateTask = /* GraphQL */ `
           _lastChangedAt
         }
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2266,6 +2265,7 @@ export const updateTask = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -2276,10 +2276,9 @@ export const updateTask = /* GraphQL */ `
         appliedInterventionInterventionId
       }
       executedSurvey {
-        id
         appliedIntervention {
-          id
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2290,10 +2289,10 @@ export const updateTask = /* GraphQL */ `
           appliedInterventionInterventionId
         }
         survey {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2302,11 +2301,11 @@ export const updateTask = /* GraphQL */ `
           interventionSurveysId
         }
         whoExecutedIt {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2326,6 +2325,7 @@ export const updateTask = /* GraphQL */ `
           text
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -2335,6 +2335,8 @@ export const updateTask = /* GraphQL */ `
         executedSurveySurveyId
         executedSurveyWhoExecutedItId
       }
+      schemeVersion
+      id
       createdAt
       updatedAt
       _version
@@ -2353,7 +2355,6 @@ export const deleteTask = /* GraphQL */ `
     $condition: ModelTaskConditionInput
   ) {
     deleteTask(input: $input, condition: $condition) {
-      id
       title
       text
       dueDate
@@ -2363,7 +2364,6 @@ export const deleteTask = /* GraphQL */ `
         longitude
       }
       user {
-        id
         firstName
         lastName
         bio
@@ -2372,6 +2372,7 @@ export const deleteTask = /* GraphQL */ `
           allowedEntities
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -2379,14 +2380,13 @@ export const deleteTask = /* GraphQL */ `
         _lastChangedAt
       }
       entity {
-        id
         name
         description
         parentEntity {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2400,11 +2400,11 @@ export const deleteTask = /* GraphQL */ `
           startedAt
         }
         level {
-          id
           name
           description
           interventionsAreAllowed
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2428,6 +2428,7 @@ export const deleteTask = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -2437,13 +2438,12 @@ export const deleteTask = /* GraphQL */ `
         entityLevelId
       }
       appliedIntervention {
-        id
         whoDidIt {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2451,12 +2451,12 @@ export const deleteTask = /* GraphQL */ `
           _lastChangedAt
         }
         intervention {
-          id
           name
           description
           interventionType
           tags
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2473,6 +2473,7 @@ export const deleteTask = /* GraphQL */ `
           startedAt
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -2483,10 +2484,9 @@ export const deleteTask = /* GraphQL */ `
         appliedInterventionInterventionId
       }
       executedSurvey {
-        id
         appliedIntervention {
-          id
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2497,10 +2497,10 @@ export const deleteTask = /* GraphQL */ `
           appliedInterventionInterventionId
         }
         survey {
-          id
           name
           description
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2509,11 +2509,11 @@ export const deleteTask = /* GraphQL */ `
           interventionSurveysId
         }
         whoExecutedIt {
-          id
           firstName
           lastName
           bio
           schemeVersion
+          id
           createdAt
           updatedAt
           _version
@@ -2533,6 +2533,7 @@ export const deleteTask = /* GraphQL */ `
           text
         }
         schemeVersion
+        id
         createdAt
         updatedAt
         _version
@@ -2542,6 +2543,8 @@ export const deleteTask = /* GraphQL */ `
         executedSurveySurveyId
         executedSurveyWhoExecutedItId
       }
+      schemeVersion
+      id
       createdAt
       updatedAt
       _version

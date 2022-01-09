@@ -165,10 +165,10 @@ export declare class User {
 
 export declare class Config {
   readonly id: string;
-  readonly schemeVersion: number;
   readonly name: string;
   readonly colorTheme?: ColorTheme;
   readonly storagePaths: StoragePaths;
+  readonly schemeVersion: number;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Config, ConfigMetaData>);
@@ -299,6 +299,7 @@ export declare class Task {
   readonly entity?: Entity;
   readonly appliedIntervention?: AppliedIntervention;
   readonly executedSurvey?: ExecutedSurvey;
+  readonly schemeVersion: number;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   readonly taskUserId: string;

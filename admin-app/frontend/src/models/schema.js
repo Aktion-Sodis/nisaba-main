@@ -84,13 +84,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "schemeVersion": {
-                    "name": "schemeVersion",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "name": {
                     "name": "name",
                     "isArray": false,
@@ -113,6 +106,13 @@ export const schema = {
                     "type": {
                         "nonModel": "StoragePaths"
                     },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "schemeVersion": {
+                    "name": "schemeVersion",
+                    "isArray": false,
+                    "type": "Int",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -1026,6 +1026,13 @@ export const schema = {
                         "targetName": "taskExecutedSurveyId"
                     }
                 },
+                "schemeVersion": {
+                    "name": "schemeVersion",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1459,5 +1466,5 @@ export const schema = {
             }
         }
     },
-    "version": "a4f634e354cc07b51850b15a72bd510a"
+    "version": "f5bf698acbd1d26902109a359a5e767d"
 };
