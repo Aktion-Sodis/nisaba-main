@@ -76,8 +76,9 @@ const interventionsModule = {
       commit("setInterventionIdCurrentlyBeingEdited", interventionId);
       dispatch("showInterventionModal");
     },
-    clickOnAddNewIntervention: ({ dispatch }) => {
+    clickOnAddNewIntervention: ({ commit, dispatch }) => {
       dispatch("resetAll");
+      commit("setInterventionModalMode", modalModesDict.create);
       dispatch("showInterventionModal");
     },
     saveIntervention: (
