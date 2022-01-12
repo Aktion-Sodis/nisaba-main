@@ -5,7 +5,7 @@ before replacing the other substrings.
 
 TODO: don't deploy the dollar signs to production! */
 
-const databaseOntologies = Object.freeze({
+export const databaseOntologies = Object.freeze({
   userImgPath: { path: "userFiles/$userID/img.png", toBeReplaced: ["userID"] },
   levelImgPath: {
     path: "levelFiles/$levelID/img.png",
@@ -40,10 +40,14 @@ const databaseOntologies = Object.freeze({
     toBeReplaced: ["entityID"],
   },
   taskImgPath: { path: "taskFiles/$taskID/img.png", toBeReplaced: ["taskID"] },
-  taskImgPath: {
+  taskAudioPath: {
     path: "taskFiles/$taskID/audio.mp3",
     toBeReplaced: ["taskID"],
   },
 });
 
-export default { databaseOntologies };
+export const modalModesDict = {
+  read: "READ",
+  edit: "EDIT",
+  create: "CREATE",
+};

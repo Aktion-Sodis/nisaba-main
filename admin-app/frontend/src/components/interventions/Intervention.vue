@@ -1,17 +1,15 @@
 <template>
-  <v-card style="height: 100%" class="pa-2" outlined tile>
+  <v-card
+    style="height: 100%"
+    class="pa-2"
+    outlined
+    tile
+    @click="clickOnIntervention"
+  >
     <v-img
       src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
       height="200px"
     >
-      <v-btn
-        fab
-        class="iv-edit-icon"
-        color="primary"
-        @click="callVuexActionThenFillInterventionModalForm"
-      >
-        <v-icon color="darken-2"> mdi-pencil-outline </v-icon>
-      </v-btn>
     </v-img>
     <v-card-title>
       {{ interventionName }}
@@ -61,22 +59,37 @@ export default {
     }),
   },
   methods: {
-    ...mapActions({
-      clickOnEditIntervention: "ivGui/clickOnEditIntervention",
-    }),
-    callVuexActionThenFillInterventionModalForm() {
-      this.clickOnEditIntervention(this.interventionId);
+    clickOnIntervention() {
+      this.viewIntervention();
 
       /* TODO: This is bad, bad practice. */
       const InterventionModal = this.$parent.$children.find(
         (c) => c.$options.name === "InterventionModal"
       );
+      InterventionModal.interventionId = this.interventionId || "";
       InterventionModal.interventionName = this.interventionName || "";
       InterventionModal.interventionDescription =
         this.interventionDescription || "";
       InterventionModal.interventionTags = this.interventionTags || [];
       InterventionModal.interventionContent = this.interventionContent || [];
     },
+    ...mapActions({
+      viewIntervention: "ivGui/viewIntervention",
+      clickOnEditIntervention: "ivGui/clickOnEditIntervention",
+    }),
+    // callVuexActionThenFillInterventionModalForm() {
+    //   this.clickOnEditIntervention(this.interventionId);
+
+    //   /* TODO: This is bad, bad practice. */
+    //   const InterventionModal = this.$parent.$children.find(
+    //     (c) => c.$options.name === "InterventionModal"
+    //   );
+    //   InterventionModal.interventionName = this.interventionName || "";
+    //   InterventionModal.interventionDescription =
+    //     this.interventionDescription || "";
+    //   InterventionModal.interventionTags = this.interventionTags || [];
+    //   InterventionModal.interventionContent = this.interventionContent || [];
+    // },
   },
 };
 </script>

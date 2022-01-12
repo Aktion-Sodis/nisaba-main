@@ -7,18 +7,20 @@
     <v-card class="px-4 pt-4">
       <v-form ref="form" @submit.prevent="submitIntervention" lazy-validation>
         <v-card-title>
-          <h2 v-if="interventionModalIsEdit">
+          <h2 v-if="interventionModalMode === modalModesDict.edit">
             {{ $t("interventionView.interventionModal.title.edit") }}
             <i>{{ interventionCurrentlyBeingEdited.name }}</i>
           </h2>
-          <h2 v-else>
+          <h2 v-else-if="interventionModalMode === modalModesDict.create">
             {{ $t("interventionView.interventionModal.title.create") }}
           </h2>
         </v-card-title>
-        <v-card-subtitle v-if="interventionModalIsEdit">
+        <v-card-subtitle v-if="interventionModalMode === modalModesDict.edit">
           {{ $t("interventionView.interventionModal.description.edit") }}
         </v-card-subtitle>
-        <v-card-subtitle v-else>
+        <v-card-subtitle
+          v-else-if="interventionModalMode === modalModesDict.create"
+        >
           {{ $t("interventionView.interventionModal.description.create") }}
         </v-card-subtitle>
 
@@ -27,7 +29,11 @@
             <v-row>
               <v-col cols="12" md="6">
                 <v-card-title> Intervention information </v-card-title>
+                <h3 v-if="interventionModalMode === modalModesDict.read">
+                  {{ interventionName }}
+                </h3>
                 <v-text-field
+                  v-else
                   v-model="interventionName"
                   :rules="[rules.required]"
                   :label="
@@ -37,7 +43,12 @@
                   outlined
                   dense
                 ></v-text-field>
+
+                <h3 v-if="interventionModalMode === modalModesDict.read">
+                  {{ interventionDescription }}
+                </h3>
                 <v-textarea
+                  v-else
                   v-model="interventionDescription"
                   :counter="
                     interventionDescription.length >
@@ -58,6 +69,7 @@
                   max-height="200px"
                 >
                   <v-btn
+                    v-if="interventionModalMode !== modalModesDict.read"
                     fab
                     class="iv-edit-icon"
                     color="primary"
@@ -66,6 +78,7 @@
                     <v-icon color="darken-2"> mdi-pencil-outline </v-icon>
                   </v-btn>
                   <input
+                    v-if="interventionModalMode !== modalModesDict.read"
                     type="file"
                     accept="image/png, image/jpeg"
                     ref="img-upload"
@@ -74,7 +87,14 @@
                 </v-img>
               </v-col>
               <v-col cols="12" md="6">
+                <div v-if="interventionModalMode === modalModesDict.read">
+                  <v-card-title> Tags </v-card-title>
+                  <v-chip v-for="tagId in interventionTags" :key="tagId">
+                    {{ tagById(tagId).name }}
+                  </v-chip>
+                </div>
                 <v-select
+                  v-else
                   v-model="interventionTags"
                   :items="allInterventionTags"
                   item-value="tagId"
@@ -86,9 +106,16 @@
                   multiple
                   outlined
                 ></v-select>
+
                 <v-card-title>
                   Documents
-                  <v-btn fab x-small color="primary lighten-2" class="ml-2">
+                  <v-btn
+                    v-if="interventionModalMode !== modalModesDict.read"
+                    fab
+                    x-small
+                    color="primary lighten-2"
+                    class="ml-2"
+                  >
                     <v-icon dark> mdi-plus </v-icon>
                   </v-btn>
                 </v-card-title>
@@ -126,7 +153,13 @@
 
                 <v-card-title>
                   Images
-                  <v-btn fab x-small color="primary lighten-2" class="ml-2">
+                  <v-btn
+                    v-if="interventionModalMode !== modalModesDict.read"
+                    fab
+                    x-small
+                    color="primary lighten-2"
+                    class="ml-2"
+                  >
                     <v-icon dark> mdi-plus </v-icon>
                   </v-btn>
                 </v-card-title>
@@ -163,7 +196,13 @@
 
                 <v-card-title>
                   Videos
-                  <v-btn fab x-small color="primary lighten-2" class="ml-2">
+                  <v-btn
+                    v-if="interventionModalMode !== modalModesDict.read"
+                    fab
+                    x-small
+                    color="primary lighten-2"
+                    class="ml-2"
+                  >
                     <v-icon dark> mdi-plus </v-icon>
                   </v-btn>
                 </v-card-title>
@@ -176,7 +215,13 @@
 
                 <v-card-title class="mt-4">
                   Surveys
-                  <v-btn fab x-small color="primary lighten-2" class="ml-2">
+                  <v-btn
+                    v-if="interventionModalMode !== modalModesDict.read"
+                    fab
+                    x-small
+                    color="primary lighten-2"
+                    class="ml-2"
+                  >
                     <v-icon dark> mdi-plus </v-icon>
                   </v-btn>
                 </v-card-title>
@@ -187,7 +232,7 @@
         </v-card-text>
         <v-card-actions>
           <v-btn
-            v-if="interventionModalIsEdit"
+            v-if="interventionModalMode !== modalModesDict.read"
             @click="clickOnDeleteIntervention"
             color="warning"
             text
@@ -196,9 +241,22 @@
           </v-btn>
           <v-spacer></v-spacer>
           <v-btn color="secondary" text @click="closeThenDeleteComponentData">
-            {{ $t("general.cancel") }}
+            {{
+              interventionModalMode === modalModesDict.read
+                ? "Close"
+                : $t("general.cancel")
+            }}
           </v-btn>
           <v-btn
+            v-if="interventionModalMode === modalModesDict.read"
+            color="primary"
+            text
+            @click="switchToEditing(interventionId)"
+          >
+            Edit
+          </v-btn>
+          <v-btn
+            v-if="interventionModalMode !== modalModesDict.read"
             type="submit"
             color="primary"
             text
@@ -214,7 +272,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
+import { modalModesDict } from "../../store/constants";
 
 const interventionDescriptionMaxChar = Math.max(
   parseInt(process.env.VUE_APP_INTERVENTION_DESCRIPTION_MAX_CHAR, 10),
@@ -232,20 +291,23 @@ export default {
           value.length <= interventionDescriptionMaxChar ||
           this.maxCharExceededi18n,
       },
+      interventionId: null,
       interventionName: "",
       interventionDescription: "",
       interventionTags: [],
       interventionContent: [],
+      modalModesDict,
     };
   },
   computed: {
     ...mapGetters({
       interventions: "iv/getInterventions",
-      interventionModalIsEdit: "ivGui/getInterventionModalIsEdit",
+      interventionModalMode: "ivGui/getInterventionModalMode",
       interventionModalIsDisplayed: "ivGui/getInterventionModalIsDisplayed",
       interventionCurrentlyBeingEdited:
         "ivGui/getInterventionCurrentlyBeingEdited",
       allInterventionTags: "iv/getInterventionTags",
+      tagById: "iv/getInterventionTagById",
       allContentByInterventionId: "iv/getAllContentByInterventionId",
       contentById: "iv/getContentById",
       interventionContentTagById: "iv/getInterventionContentTagById",
@@ -280,6 +342,10 @@ export default {
       showInterventionModal: "ivGui/showInterventionModal",
       closeInterventionModal: "ivGui/closeInterventionModal",
       deleteIntervention: "ivGui/deleteIntervention",
+      switchToEditing: "ivGui/switchToEditing",
+    }),
+    ...mapMutations({
+      setInterventionModalMode: "ivGui/setInterventionModalMode",
     }),
     clickOnDeleteIntervention() {
       this.deleteIntervention(

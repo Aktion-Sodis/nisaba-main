@@ -1,13 +1,18 @@
+import { modalModesDict } from "../../store/constants";
+
 const interventionsModule = {
   namespaced: true,
   state: () => ({
     interventionIdCurrentlyBeingEdited: null,
     interventionModalIsDisplayed: false,
+    interventionModalMode: modalModesDict.read,
 
     surveyIdCurrentlyBeingEdited: null,
     surveyModalIsDisplayed: false,
+    surveyModalMode: modalModesDict.read,
   }),
   getters: {
+    getInterventionModalMode: (state) => state.interventionModalMode,
     getInterventionModalIsEdit: (state) =>
       state.interventionIdCurrentlyBeingEdited !== null,
     getInterventionCurrentlyBeingEdited: (
@@ -22,6 +27,7 @@ const interventionsModule = {
     getInterventionModalIsDisplayed: (state) =>
       state.interventionModalIsDisplayed,
 
+    getSurveyModalMode: (state) => state.surveyModalMode,
     getSurveyModalIsEdit: (state) =>
       state.surveyIdCurrentlyBeingEdited !== null,
     getSurveyCurrentlyBeingEdited: (state, getters, rootState, rootGetters) =>
@@ -37,12 +43,18 @@ const interventionsModule = {
     setInterventionModalIsDisplayed: (state, payload) => {
       state.interventionModalIsDisplayed = payload;
     },
+    setInterventionModalMode: (state, payload) => {
+      state.interventionModalMode = payload;
+    },
 
     setSurveyIdCurrentlyBeingEdited: (state, surveyId) => {
       state.surveyIdCurrentlyBeingEdited = surveyId;
     },
     setSurveyModalIsDisplayed: (state, payload) => {
       state.surveyModalIsDisplayed = payload;
+    },
+    setSurveyModalMode: (state, payload) => {
+      state.surveyModalMode = payload;
     },
   },
   actions: {
@@ -54,6 +66,11 @@ const interventionsModule = {
     },
 
     /* INTERVENTION */
+    viewIntervention: ({ commit, dispatch }) => {
+      dispatch("resetAll");
+      commit("setInterventionModalMode", modalModesDict.read);
+      dispatch("showInterventionModal");
+    },
     clickOnEditIntervention: ({ commit, dispatch }, interventionId) => {
       dispatch("resetAll");
       commit("setInterventionIdCurrentlyBeingEdited", interventionId);
@@ -99,6 +116,10 @@ const interventionsModule = {
     },
     closeInterventionModal: ({ commit }) => {
       commit("setInterventionModalIsDisplayed", false);
+    },
+    switchToEditing: ({ commit }, interventionId) => {
+      commit("setInterventionIdCurrentlyBeingEdited", interventionId);
+      commit("setInterventionModalMode", modalModesDict.edit);
     },
 
     /* SURVEY */
