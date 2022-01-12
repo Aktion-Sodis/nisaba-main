@@ -7,20 +7,19 @@
     <v-card class="px-4 pt-4">
       <v-form ref="form" @submit.prevent="submitIntervention" lazy-validation>
         <v-card-title>
-          <h2 v-if="interventionModalMode === modalModesDict.edit">
+          <h2 v-if="edit">
             {{ $t("interventionView.interventionModal.title.edit") }}
             <i>{{ interventionCurrentlyBeingEdited.name }}</i>
           </h2>
-          <h2 v-else-if="interventionModalMode === modalModesDict.create">
+          <h2 v-else-if="create">
             {{ $t("interventionView.interventionModal.title.create") }}
           </h2>
+          <h2 v-else>Viewing intervention</h2>
         </v-card-title>
-        <v-card-subtitle v-if="interventionModalMode === modalModesDict.edit">
+        <v-card-subtitle v-if="edit">
           {{ $t("interventionView.interventionModal.description.edit") }}
         </v-card-subtitle>
-        <v-card-subtitle
-          v-else-if="interventionModalMode === modalModesDict.create"
-        >
+        <v-card-subtitle v-else-if="create">
           {{ $t("interventionView.interventionModal.description.create") }}
         </v-card-subtitle>
 
@@ -29,9 +28,9 @@
             <v-row>
               <v-col cols="12" md="6">
                 <v-card-title> Intervention information </v-card-title>
-                <h3 v-if="interventionModalMode === modalModesDict.read">
+                <h2 v-if="read">
                   {{ interventionName }}
-                </h3>
+                </h2>
                 <v-text-field
                   v-else
                   v-model="interventionName"
@@ -44,7 +43,7 @@
                   dense
                 ></v-text-field>
 
-                <h3 v-if="interventionModalMode === modalModesDict.read">
+                <h3 v-if="read" class="py-12">
                   {{ interventionDescription }}
                 </h3>
                 <v-textarea
@@ -69,7 +68,7 @@
                   max-height="200px"
                 >
                   <v-btn
-                    v-if="interventionModalMode !== modalModesDict.read"
+                    v-if="!read"
                     fab
                     class="iv-edit-icon"
                     color="primary"
@@ -78,7 +77,7 @@
                     <v-icon color="darken-2"> mdi-pencil-outline </v-icon>
                   </v-btn>
                   <input
-                    v-if="interventionModalMode !== modalModesDict.read"
+                    v-if="!read"
                     type="file"
                     accept="image/png, image/jpeg"
                     ref="img-upload"
@@ -87,7 +86,7 @@
                 </v-img>
               </v-col>
               <v-col cols="12" md="6">
-                <div v-if="interventionModalMode === modalModesDict.read">
+                <div v-if="read">
                   <v-card-title> Tags </v-card-title>
                   <v-chip v-for="tagId in interventionTags" :key="tagId">
                     {{ tagById(tagId).name }}
@@ -110,7 +109,7 @@
                 <v-card-title>
                   Documents
                   <v-btn
-                    v-if="interventionModalMode !== modalModesDict.read"
+                    v-if="!read"
                     fab
                     x-small
                     color="primary lighten-2"
@@ -154,7 +153,7 @@
                 <v-card-title>
                   Images
                   <v-btn
-                    v-if="interventionModalMode !== modalModesDict.read"
+                    v-if="!read"
                     fab
                     x-small
                     color="primary lighten-2"
@@ -197,7 +196,7 @@
                 <v-card-title>
                   Videos
                   <v-btn
-                    v-if="interventionModalMode !== modalModesDict.read"
+                    v-if="!read"
                     fab
                     x-small
                     color="primary lighten-2"
@@ -216,7 +215,7 @@
                 <v-card-title class="mt-4">
                   Surveys
                   <v-btn
-                    v-if="interventionModalMode !== modalModesDict.read"
+                    v-if="!read"
                     fab
                     x-small
                     color="primary lighten-2"
@@ -232,7 +231,7 @@
         </v-card-text>
         <v-card-actions>
           <v-btn
-            v-if="interventionModalMode !== modalModesDict.read"
+            v-if="edit"
             @click="clickOnDeleteIntervention"
             color="warning"
             text
@@ -241,14 +240,10 @@
           </v-btn>
           <v-spacer></v-spacer>
           <v-btn color="secondary" text @click="closeThenDeleteComponentData">
-            {{
-              interventionModalMode === modalModesDict.read
-                ? "Close"
-                : $t("general.cancel")
-            }}
+            {{ read ? "Close" : $t("general.cancel") }}
           </v-btn>
           <v-btn
-            v-if="interventionModalMode === modalModesDict.read"
+            v-if="read"
             color="primary"
             text
             @click="switchToEditing(interventionId)"
@@ -256,7 +251,7 @@
             Edit
           </v-btn>
           <v-btn
-            v-if="interventionModalMode !== modalModesDict.read"
+            v-if="!read"
             type="submit"
             color="primary"
             text
@@ -334,6 +329,15 @@ export default {
     },
     allImagesOfIntervention() {
       return this.interventionContent.filter((c) => c.type === "Image") || [];
+    },
+    edit() {
+      return this.interventionModalMode === this.modalModesDict.edit;
+    },
+    create() {
+      return this.interventionModalMode === this.modalModesDict.create;
+    },
+    read() {
+      return this.interventionModalMode === this.modalModesDict.read;
     },
   },
   methods: {
