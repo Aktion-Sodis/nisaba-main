@@ -239,7 +239,15 @@
             {{ $t("general.delete") }}
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="secondary" text @click="closeThenDeleteComponentData">
+          <v-btn
+            color="secondary"
+            text
+            @click="
+              read || create
+                ? closeThenDeleteComponentData()
+                : switchToReading()
+            "
+          >
             {{ read ? "Close" : $t("general.cancel") }}
           </v-btn>
           <v-btn
@@ -347,6 +355,7 @@ export default {
       closeInterventionModal: "ivGui/closeInterventionModal",
       deleteIntervention: "ivGui/deleteIntervention",
       switchToEditing: "ivGui/switchToEditing",
+      switchToReading: "ivGui/switchToReading",
     }),
     ...mapMutations({
       setInterventionModalMode: "ivGui/setInterventionModalMode",
@@ -358,11 +367,16 @@ export default {
       this.interventionName = "";
       this.interventionDescription = "";
     },
-    closeThenDeleteComponentData() {
-      this.closeInterventionModal();
-
+    deleteComponentData() {
+      this.interventionId = null;
       this.interventionName = "";
       this.interventionDescription = "";
+      this.interventionTags = [];
+      this.interventionContent = [];
+    },
+    closeThenDeleteComponentData() {
+      this.closeInterventionModal();
+      this.deleteComponentData();
     },
     submitIntervention() {
       this.saveIntervention({
