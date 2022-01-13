@@ -122,6 +122,11 @@ const interventionsModule = {
       commit("setInterventionIdCurrentlyBeingEdited", interventionId);
       commit("setInterventionModalMode", modalModesDict.edit);
     },
+    switchToReading: ({ commit }) => {
+      console.log("hey");
+      commit("setInterventionModalMode", modalModesDict.read);
+      commit("setInterventionIdCurrentlyBeingEdited", null);
+    },
 
     /* SURVEY */
     clickOnEditSurvey: ({ commit, dispatch }, surveyId) => {
