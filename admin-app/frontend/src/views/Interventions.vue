@@ -1,5 +1,7 @@
 <template>
   <div>
+    <InterventionModal />
+    <SurveyModal />
     <h1 class="ml-8 mt-6">Interventions</h1>
     <v-container class="mt-8">
       <v-row class="mr-2 mr-md-0">
