@@ -96,6 +96,15 @@
       </v-card-text>
 
       <v-card-actions>
+        <v-btn
+          color="secondary"
+          text
+          @click="
+            read || create ? closeThenDeleteComponentData() : switchToReading()
+          "
+        >
+          {{ read ? "Close" : $t("general.cancel") }}
+        </v-btn>
         <v-spacer></v-spacer>
         <v-btn x-large text class="text-none">
           {{ read ? "Questions" : "Next step" }}
@@ -153,12 +162,24 @@ export default {
     },
   },
   methods: {
-    ...mapActions({}),
+    ...mapActions({
+      closeSurveyModal: "ivGui/closeSurveyModal",
+    }),
     ...mapMutations({}),
     selectImg() {
       const imgInput = this.$refs["img-upload"];
       imgInput.click();
       console.log("TODO: do something with", imgInput);
+    },
+    closeThenDeleteComponentData() {
+      this.closeSurveyModal();
+      this.deleteComponentData();
+    },
+    deleteComponentData() {
+      this.surveyId = null;
+      this.surveyName = "";
+      this.surveyDescription = "";
+      this.surveyTags = [];
     },
   },
 };
