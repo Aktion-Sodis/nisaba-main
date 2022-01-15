@@ -1,6 +1,9 @@
 <template>
   <v-dialog v-model="surveyModalIsDisplayed" max-width="1200px" persistent>
-    <SurveyModalFirstCard v-if="isOnFirstCard" />
+    <SurveyModalFirstCard
+      v-if="isOnFirstCard"
+      @setIsOnFirstCard="setIsOnFirstCard"
+    />
     <SurveyModalQuestion v-else />
   </v-dialog>
 </template>
@@ -44,6 +47,9 @@ export default {
   methods: {
     ...mapActions({}),
     ...mapMutations({}),
+    setIsOnFirstCard(payload) {
+      this.isOnFirstCard = payload;
+    },
   },
 };
 </script>

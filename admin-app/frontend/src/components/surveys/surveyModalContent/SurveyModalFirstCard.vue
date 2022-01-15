@@ -106,7 +106,7 @@
           {{ read ? "Close" : $t("general.cancel") }}
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn x-large text class="text-none">
+        <v-btn x-large text class="text-none" @click="clickOnNext">
           {{ read ? "Questions" : "Next step" }}
           <v-icon large> mdi-chevron-right </v-icon>
           <!-- TODO: i18n -->
@@ -180,6 +180,9 @@ export default {
       this.surveyName = "";
       this.surveyDescription = "";
       this.surveyTags = [];
+    },
+    clickOnNext() {
+      this.$emit("setIsOnFirstCard", false);
     },
   },
 };
