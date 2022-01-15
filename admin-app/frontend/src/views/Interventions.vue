@@ -54,7 +54,6 @@
         </v-col>
       </v-row>
     </v-container>
-    <InterventionModal />
   </div>
 </template>
 
@@ -63,10 +62,11 @@ import { mapGetters, mapActions } from "vuex";
 
 import Intervention from "../components/interventions/Intervention.vue";
 import InterventionModal from "../components/interventions/InterventionModal.vue";
+import SurveyModal from "../components/surveys/SurveyModal.vue";
 
 export default {
   name: "Interventions",
-  components: { Intervention, InterventionModal },
+  components: { Intervention, InterventionModal, SurveyModal },
   computed: {
     ...mapGetters({
       interventions: "iv/getInterventions",
