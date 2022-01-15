@@ -134,8 +134,9 @@ const interventionsModule = {
       commit("setSurveyIdCurrentlyBeingEdited", surveyId);
       dispatch("showSurveyModal");
     },
-    clickOnAddNewSurvey: ({ dispatch }) => {
+    clickOnAddNewSurvey: ({ commit, dispatch }) => {
       dispatch("resetAll");
+      commit("setSurveyModalMode", modalModesDict.create);
       dispatch("showSurveyModal");
     },
     saveSurvey: ({ commit }, { surveyId, name, description, tags }) => {

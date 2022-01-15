@@ -12,6 +12,7 @@ const surveysModule = {
         questionIds: [],
         creationDate: 1641335580514,
         lastEditDate: null,
+        tags: ["c3089035-a6c7-417f-bed5-6a2d4ba44ec6"],
       },
     ],
     questions: [
@@ -30,6 +31,9 @@ const surveysModule = {
         followingQuestionId: null,
       },
     ],
+    surveyTags: [
+      { tagId: "c3089035-a6c7-417f-bed5-6a2d4ba44ec6", name: "Some tag" },
+    ],
   }),
   getters: {
     /* READ */
@@ -47,6 +51,10 @@ const surveysModule = {
       getters
         .getQuestionById(questionId)
         .options.find((o) => o.optionId === optionId),
+
+    getSurveyTags: (state) => state.surveyTags,
+    getSurveyTagById: (state, getters) => (tagId) =>
+      getters.getSurveyTags.find((e) => e.tagId === tagId),
   },
   mutations: {
     /* CREATE, UPDATE, DELETE */
