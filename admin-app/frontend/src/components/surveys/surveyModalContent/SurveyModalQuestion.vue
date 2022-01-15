@@ -1,4 +1,4 @@
-<template></template>
+<template><div></div></template>
 
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
@@ -9,8 +9,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters({
-    }),
+    ...mapGetters({}),
   },
   methods: {
     ...mapActions({}),
