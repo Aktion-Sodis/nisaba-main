@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="surveyModalIsDisplayed" max-width="1200px" persistent>
-    <SurveyModalFirstCard v-if="progress === 0" />
-    <SurveyModalQuestion v-if="progress === 1" />
+    <SurveyModalFirstCard v-if="isOnFirstCard" />
+    <SurveyModalQuestion v-else />
   </v-dialog>
 </template>
 
@@ -9,8 +9,12 @@
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { modalModesDict } from "../../store/constants";
 
+import SurveyModalFirstCard from "./surveyModalContent/SurveyModalFirstCard.vue";
+import SurveyModalQuestion from "./surveyModalContent/SurveyModalQuestion.vue";
+
 export default {
   name: "SurveyModal",
+  components: { SurveyModalFirstCard, SurveyModalQuestion },
   data() {
     return {
       surveyId: null,
@@ -19,12 +23,13 @@ export default {
       interventionId: null,
       questions: [],
       modalModesDict,
-      progress: 0,
+      isOnFirstCard: true,
     };
   },
   computed: {
     ...mapGetters({
-      interventionModalMode: "ivGui/getSurveyModalMode",
+      surveyModalMode: "ivGui/getSurveyModalMode",
+      surveyModalIsDisplayed: "ivGui/getSurveyModalIsDisplayed",
     }),
     edit() {
       return this.surveyModalMode === this.modalModesDict.edit;
@@ -39,12 +44,6 @@ export default {
   methods: {
     ...mapActions({}),
     ...mapMutations({}),
-    incrementProgress() {
-      this.progress += 1;
-    },
-    decrementProgress() {
-      this.progress -= 1;
-    },
   },
 };
 </script>
