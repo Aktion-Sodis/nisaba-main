@@ -8,6 +8,7 @@ const interventionsModule = {
     interventionModalMode: modalModesDict.read,
 
     surveyIdCurrentlyBeingEdited: null,
+    surveyNameCurrentlyBeingEdited: "",
     surveyModalIsDisplayed: false,
     surveyModalMode: modalModesDict.read,
   }),
@@ -34,6 +35,8 @@ const interventionsModule = {
       rootGetters["surveys/getSurveyById"](
         state.surveyIdCurrentlyBeingEdited
       ) || null,
+    getSurveyNameCurrentlyBeingEdited: (state) =>
+      state.surveyNameCurrentlyBeingEdited,
     getSurveyModalIsDisplayed: (state) => state.surveyModalIsDisplayed,
   },
   mutations: {
@@ -49,6 +52,9 @@ const interventionsModule = {
 
     setSurveyIdCurrentlyBeingEdited: (state, surveyId) => {
       state.surveyIdCurrentlyBeingEdited = surveyId;
+    },
+    setSurveyNameCurrentlyBeingEdited: (state, surveyName) => {
+      state.surveyNameCurrentlyBeingEdited = surveyName;
     },
     setSurveyModalIsDisplayed: (state, payload) => {
       state.surveyModalIsDisplayed = payload;

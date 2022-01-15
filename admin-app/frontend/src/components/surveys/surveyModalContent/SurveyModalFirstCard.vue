@@ -1,8 +1,8 @@
 <template>
   <v-card class="px-4 pt-4">
-    <v-form ref="form" @submit.prevent="submitIntervention" lazy-validation>
-      <v-card-title
-        ><h2 v-if="edit">
+    <v-form ref="form" @submit.prevent="submitSurvey" lazy-validation>
+      <v-card-title>
+        <h2 v-if="edit">
           TODO i18n Editing survey
           <i>{{ surveyCurrentlyBeingEdited.name }}</i>
         </h2>
@@ -106,7 +106,13 @@
           {{ read ? "Close" : $t("general.cancel") }}
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn x-large text class="text-none" @click="clickOnNext">
+        <v-btn
+          x-large
+          text
+          class="text-none"
+          @click="clickOnNext"
+          :disabled="cantAdvance"
+        >
           {{ read ? "Questions" : "Next step" }}
           <v-icon large> mdi-chevron-right </v-icon>
           <!-- TODO: i18n -->
@@ -160,12 +166,18 @@ export default {
     requiredi18n() {
       return this.$t("login.required");
     },
+    cantAdvance() {
+      return this.surveyName === "";
+    },
   },
   methods: {
     ...mapActions({
       closeSurveyModal: "ivGui/closeSurveyModal",
     }),
-    ...mapMutations({}),
+    ...mapMutations({
+      setSurveyNameCurrentlyBeingEdited:
+        "ivGui/setSurveyNameCurrentlyBeingEdited",
+    }),
     selectImg() {
       const imgInput = this.$refs["img-upload"];
       imgInput.click();
@@ -183,6 +195,7 @@ export default {
     },
     clickOnNext() {
       this.$emit("setIsOnFirstCard", false);
+      this.setSurveyNameCurrentlyBeingEdited(this.surveyName);
     },
   },
 };
