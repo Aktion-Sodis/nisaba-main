@@ -111,7 +111,7 @@
           text
           class="text-none"
           @click="clickOnNext"
-          :disabled="cantAdvance"
+          :disabled="!canAdvance"
         >
           {{ read ? "Questions" : "Next step" }}
           <v-icon large> mdi-chevron-right </v-icon>
@@ -166,8 +166,8 @@ export default {
     requiredi18n() {
       return this.$t("login.required");
     },
-    cantAdvance() {
-      return this.surveyName === "";
+    canAdvance() {
+      return this.surveyName !== "";
     },
   },
   methods: {
