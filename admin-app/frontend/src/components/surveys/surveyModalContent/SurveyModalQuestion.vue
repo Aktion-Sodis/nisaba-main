@@ -1,6 +1,19 @@
 <template>
   <v-card class="px-4 pt-4">
     <v-form ref="form" lazy-validation>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn
+          x-large
+          text
+          class="text-none"
+          @click="clickOnNextQuestion"
+          :disabled="!isSaveable"
+        >
+          Save survey
+          <v-icon large class="ml-2"> mdi-content-save-outline </v-icon>
+        </v-btn>
+      </v-card-actions>
       <v-card-title>
         <h2>
           {{ surveyName }}
@@ -142,7 +155,13 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn x-large text class="text-none" @click="clickOnNextQuestion">
+        <v-btn
+          x-large
+          text
+          class="text-none"
+          @click="clickOnNextQuestion"
+          :disabled="!canAdvance"
+        >
           Next question
           <v-icon large> mdi-chevron-right </v-icon>
         </v-btn>
@@ -197,6 +216,16 @@ export default {
     },
     read() {
       return this.surveyModalMode === this.modalModesDict.read;
+    },
+    canAdvance() {
+      return (
+        this.questionText !== "" &&
+        this.answers.length > 0 &&
+        !new Set(this.answers.map((a) => a.answerText === "")).has(true)
+      );
+    },
+    isSaveable() {
+      return this.canAdvance;
     },
   },
   methods: {
