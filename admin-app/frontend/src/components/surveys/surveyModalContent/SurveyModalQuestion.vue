@@ -83,24 +83,36 @@
                     dense
                   ></v-text-field>
 
-                  <v-btn
-                    v-if="read || create"
-                    color="primary"
-                    rounded
-                    outlined
-                    @click="clickOnAddAnswer"
-                    class="ml-2"
-                  >
-                    <v-icon class="mr-2"> mdi-image </v-icon>
-                    <span class="overflow-hidden"> Add image to answer </span>
-                  </v-btn>
-                  <input
-                    v-if="!read"
-                    type="file"
-                    accept="image/png, image/jpeg"
-                    ref="question-img-upload"
-                    style="display: none"
-                  />
+                  <div class="d-flex">
+                    <v-btn
+                      v-if="read || create"
+                      color="primary"
+                      rounded
+                      outlined
+                      @click="clickOnAddAnswer"
+                      class="ml-2"
+                    >
+                      <v-icon class="mr-2"> mdi-image </v-icon>
+                      <span class="overflow-hidden"> Add image to answer </span>
+                    </v-btn>
+                    <input
+                      v-if="!read"
+                      type="file"
+                      accept="image/png, image/jpeg"
+                      ref="question-img-upload"
+                      style="display: none"
+                    />
+                    <v-btn
+                      v-if="read || create"
+                      color="primary"
+                      outlined
+                      icon
+                      @click="clickOnRemoveAnswer(index)"
+                      class="ml-2"
+                    >
+                      <v-icon> mdi-minus </v-icon>
+                    </v-btn>
+                  </div>
                 </div>
               </div>
 
@@ -205,6 +217,9 @@ export default {
       this.answers.push({ answerText: "" });
     },
     clickOnNextQuestion() {},
+    clickOnRemoveAnswer(index) {
+      this.answers = this.answers.filter((a, i) => i !== index);
+    },
   },
 };
 </script>
