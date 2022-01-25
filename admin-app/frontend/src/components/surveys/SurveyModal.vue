@@ -3,8 +3,18 @@
     <SurveyModalFirstCard
       v-if="isOnFirstCard"
       @setIsOnFirstCard="setIsOnFirstCard"
+      @close="closeSurveyModal"
     />
-    <SurveyModalQuestion v-else />
+    <SurveyModalQuestion
+      v-else
+      @close="closeSurveyModal"
+      @pushToQuestions="pushToQuestions"
+      :initialQText="questions[qIndex].questionText"
+      :initialQType="questions[qIndex].questionType"
+      :initialAnswers="questions[qIndex].answers"
+    />
+    {{ questions[qIndex].answers }}
+    {{ qIndex }}
   </v-dialog>
 </template>
 
@@ -15,6 +25,12 @@ import { modalModesDict } from "../../store/constants";
 import SurveyModalFirstCard from "./surveyModalContent/SurveyModalFirstCard.vue";
 import SurveyModalQuestion from "./surveyModalContent/SurveyModalQuestion.vue";
 
+// const emptyQuestion = Object.freeze({
+//   questionText: "",
+//   questionType: "text",
+//   answers: [{ answerText: "" }],
+// });
+
 export default {
   name: "SurveyModal",
   components: { SurveyModalFirstCard, SurveyModalQuestion },
@@ -24,9 +40,16 @@ export default {
       surveyName: "",
       surveyDescription: "",
       interventionId: null,
-      questions: [],
+      questions: [
+        {
+          questionText: "",
+          questionType: "text",
+          answers: [{ answerText: "" }],
+        },
+      ],
       modalModesDict,
       isOnFirstCard: true,
+      qIndex: 0,
     };
   },
   computed: {
@@ -45,10 +68,23 @@ export default {
     },
   },
   methods: {
-    ...mapActions({}),
+    ...mapActions({
+      closeSurveyModal: "ivGui/closeSurveyModal",
+    }),
     ...mapMutations({}),
     setIsOnFirstCard(payload) {
       this.isOnFirstCard = payload;
+    },
+    pushToQuestions(payload) {
+      console.log({ payload });
+      // this.$set(this.questions, this.qIndex, payload);
+      this.questions[this.qIndex] = payload;
+      this.questions = this.questions.concat({
+        questionText: "",
+        questionType: "text",
+        answers: [{ answerText: "" }],
+      });
+      this.qIndex++;
     },
   },
 };

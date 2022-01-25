@@ -171,9 +171,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions({
-      closeSurveyModal: "ivGui/closeSurveyModal",
-    }),
+    ...mapActions({}),
     ...mapMutations({
       setSurveyNameCurrentlyBeingEdited:
         "ivGui/setSurveyNameCurrentlyBeingEdited",
@@ -184,7 +182,7 @@ export default {
       console.log("TODO: do something with", imgInput);
     },
     closeThenDeleteComponentData() {
-      this.closeSurveyModal();
+      this.$emit("close");
       this.deleteComponentData();
     },
     deleteComponentData() {

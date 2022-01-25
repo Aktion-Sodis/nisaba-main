@@ -1,7 +1,10 @@
 <template>
   <v-card class="px-4 pt-4">
     <v-form ref="form" lazy-validation>
-      <v-card-actions>
+      <v-card-title>
+        <h2>
+          {{ surveyName }}
+        </h2>
         <v-spacer></v-spacer>
         <v-btn
           x-large
@@ -13,11 +16,6 @@
           Save survey
           <v-icon large class="ml-2"> mdi-content-save-outline </v-icon>
         </v-btn>
-      </v-card-actions>
-      <v-card-title>
-        <h2>
-          {{ surveyName }}
-        </h2>
       </v-card-title>
 
       <v-card-text>
@@ -34,6 +32,7 @@
                 required
                 outlined
                 dense
+                ref="question-text"
               ></v-textarea>
 
               <h3>Question Image TODO: i18n</h3>
@@ -78,6 +77,7 @@
                 label="Question type TODO i18n"
                 outlined
                 dense
+                ref="question-type"
               ></v-select>
 
               <div>
@@ -94,6 +94,7 @@
                     required
                     outlined
                     dense
+                    :ref="`answer-text-${index}`"
                   ></v-text-field>
 
                   <div class="d-flex">
@@ -136,7 +137,7 @@
                   rounded
                   x-large
                   @click="clickOnAddAnswer"
-                  class="ml-2"
+                  class="mt-2"
                 >
                   <v-icon class="mr-2"> mdi-plus </v-icon>
                   <span class="overflow-hidden"> Add answer </span>
@@ -154,6 +155,16 @@
         </v-container>
       </v-card-text>
       <v-card-actions>
+        <v-btn
+          x-large
+          text
+          color="warning"
+          class="text-none"
+          @click="closeThenDeleteComponentData"
+        >
+          Discard question
+          <v-icon large> mdi-delete </v-icon>
+        </v-btn>
         <v-spacer></v-spacer>
         <v-btn
           x-large
@@ -166,6 +177,7 @@
           <v-icon large> mdi-chevron-right </v-icon>
         </v-btn>
       </v-card-actions>
+      {{ initialAnswers }}
     </v-form>
   </v-card>
 </template>
@@ -181,6 +193,23 @@ const questionTextMaxChar = Math.max(
 
 export default {
   name: "SurveyModalQuestion",
+  props: {
+    initialQText: {
+      type: String,
+      required: true,
+    },
+    initialQType: {
+      type: String,
+      required: true,
+      validator: (value) => {
+        Object.keys(questionTypesDict).includes(value);
+      },
+    },
+    initialAnswers: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
     return {
       rules: {
@@ -189,11 +218,14 @@ export default {
           value.length <= questionTextMaxChar || this.maxCharExceededi18n,
       },
       modalModesDict,
-      questionText: "",
       questionTypesDict,
+      questionText: "",
       questionType: "text",
       answers: [{ answerText: "" }],
     };
+  },
+  mounted() {
+    this.resetComponentData();
   },
   computed: {
     ...mapGetters({
@@ -237,6 +269,19 @@ export default {
       imgInput.click ? imgInput.click() : imgInput[0].click();
       console.log("TODO: do something with", imgInput);
     },
+    resetComponentData() {
+      this.questionText = this.initialQText;
+      this.questionType = this.initialQType;
+      this.answers = this.initialAnswers;
+      console.log({ answers: this.answers });
+      console.log({ initialAnswers: this.initialAnswers });
+      for (let index = 0; index < this.initialAnswers.length; index++) {
+        const initialAnswer = this.initialAnswers[index];
+        console.log(initialAnswer.answerText);
+
+        this.answers[index].answerText = initialAnswer.answerText;
+      }
+    },
     clickOnAddAudio() {
       const audioInput = this.$refs["question-audio-upload"];
       audioInput.click();
@@ -245,9 +290,25 @@ export default {
     clickOnAddAnswer() {
       this.answers.push({ answerText: "" });
     },
-    clickOnNextQuestion() {},
+    clickOnNextQuestion() {
+      this.$emit("pushToQuestions", {
+        questionText: this.questionText,
+        questionType: this.questionType,
+        answers: this.answers,
+      });
+      this.resetComponentData();
+    },
     clickOnRemoveAnswer(index) {
       this.answers = this.answers.filter((a, i) => i !== index);
+    },
+    closeThenDeleteComponentData() {
+      this.$emit("close");
+      this.deleteComponentData();
+    },
+    deleteComponentData() {
+      this.questionText = "";
+      this.questionType = "text";
+      this.answers = [{ answerText: "" }];
     },
   },
 };
