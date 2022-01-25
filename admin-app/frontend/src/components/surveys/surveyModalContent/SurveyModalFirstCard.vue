@@ -19,7 +19,7 @@
               </h2>
               <v-text-field
                 v-else
-                :autofocus="edit"
+                :autofocus="edit || create"
                 v-model="surveyName"
                 :rules="[rules.required]"
                 label="Survey name TODO i18n"
