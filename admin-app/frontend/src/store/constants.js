@@ -46,8 +46,17 @@ export const databaseOntologies = Object.freeze({
   },
 });
 
-export const modalModesDict = {
+export const modalModesDict = Object.freeze({
   read: "READ",
   edit: "EDIT",
   create: "CREATE",
-};
+});
+
+export const questionTypesDict = Object.freeze({
+  text: "TEXT",
+  singleChoice: "SINGLECHOICE",
+  multipleChoice: "MULTIPLECHOICE",
+  picture: "PICTURE",
+  pictureWithTags: "PICTUREWITHTAGS",
+  audio: "AUDIO",
+});
