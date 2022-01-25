@@ -192,7 +192,8 @@ export default {
     ...mapMutations({}),
     clickOnAddImage() {
       const imgInput = this.$refs["question-img-upload"];
-      imgInput.click();
+      console.log({ imgInput });
+      imgInput.click ? imgInput.click() : imgInput[0].click();
       console.log("TODO: do something with", imgInput);
     },
     clickOnAddAudio() {
@@ -203,6 +204,7 @@ export default {
     clickOnAddAnswer() {
       this.answers.push({ answerText: "" });
     },
+    clickOnNextQuestion() {},
   },
 };
 </script>
