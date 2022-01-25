@@ -56,7 +56,7 @@ type StoragePaths {
 type Level @model {
   name: String!
   description: String @default(value: "")
-  parentLevel: Level @hasOne
+  parentLevelID: ID
   interventionsAreAllowed: Boolean!
   allowedInterventions: [Intervention!] @hasMany
   customData: [CustomData!]!
@@ -142,8 +142,7 @@ type QuestionOption {
 type Entity @model {
   name: String!
   description: String @default(value: "")
-  parentEntity: Entity @belongsTo
-  childEntities: [Entity!] @hasMany # TODO: check whether causes inconsistency
+  parentEntityID: ID
   level: Level! @hasOne
   location: Location
   customData: [AppliedCustomData]!
