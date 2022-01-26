@@ -32,8 +32,7 @@ class Entity extends Model {
   final String id;
   final String? _name;
   final String? _description;
-  final Entity? _parentEntity;
-  final List<Entity>? _childEntities;
+  final String? _parentEntityID;
   final Level? _level;
   final Location? _location;
   final List<AppliedCustomData>? _customData;
@@ -41,7 +40,6 @@ class Entity extends Model {
   final int? _schemeVersion;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
-  final String? _entityChildEntitiesId;
   final String? _entityLevelId;
 
   @override
@@ -69,12 +67,8 @@ class Entity extends Model {
     return _description;
   }
   
-  Entity? get parentEntity {
-    return _parentEntity;
-  }
-  
-  List<Entity>? get childEntities {
-    return _childEntities;
+  String? get parentEntityID {
+    return _parentEntityID;
   }
   
   Level get level {
@@ -132,10 +126,6 @@ class Entity extends Model {
     return _updatedAt;
   }
   
-  String? get entityChildEntitiesId {
-    return _entityChildEntitiesId;
-  }
-  
   String get entityLevelId {
     try {
       return _entityLevelId!;
@@ -149,21 +139,19 @@ class Entity extends Model {
     }
   }
   
-  const Entity._internal({required this.id, required name, description, parentEntity, childEntities, required level, location, required customData, required appliedInterventions, schemeVersion, createdAt, updatedAt, entityChildEntitiesId, required entityLevelId}): _name = name, _description = description, _parentEntity = parentEntity, _childEntities = childEntities, _level = level, _location = location, _customData = customData, _appliedInterventions = appliedInterventions, _schemeVersion = schemeVersion, _createdAt = createdAt, _updatedAt = updatedAt, _entityChildEntitiesId = entityChildEntitiesId, _entityLevelId = entityLevelId;
+  const Entity._internal({required this.id, required name, description, parentEntityID, required level, location, required customData, required appliedInterventions, schemeVersion, createdAt, updatedAt, required entityLevelId}): _name = name, _description = description, _parentEntityID = parentEntityID, _level = level, _location = location, _customData = customData, _appliedInterventions = appliedInterventions, _schemeVersion = schemeVersion, _createdAt = createdAt, _updatedAt = updatedAt, _entityLevelId = entityLevelId;
   
-  factory Entity({String? id, required String name, String? description, Entity? parentEntity, List<Entity>? childEntities, required Level level, Location? location, required List<AppliedCustomData> customData, required List<AppliedIntervention> appliedInterventions, int? schemeVersion, String? entityChildEntitiesId, required String entityLevelId}) {
+  factory Entity({String? id, required String name, String? description, String? parentEntityID, required Level level, Location? location, required List<AppliedCustomData> customData, required List<AppliedIntervention> appliedInterventions, int? schemeVersion, required String entityLevelId}) {
     return Entity._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
       description: description,
-      parentEntity: parentEntity,
-      childEntities: childEntities != null ? List<Entity>.unmodifiable(childEntities) : childEntities,
+      parentEntityID: parentEntityID,
       level: level,
       location: location,
       customData: customData != null ? List<AppliedCustomData>.unmodifiable(customData) : customData,
       appliedInterventions: appliedInterventions != null ? List<AppliedIntervention>.unmodifiable(appliedInterventions) : appliedInterventions,
       schemeVersion: schemeVersion,
-      entityChildEntitiesId: entityChildEntitiesId,
       entityLevelId: entityLevelId);
   }
   
@@ -178,14 +166,12 @@ class Entity extends Model {
       id == other.id &&
       _name == other._name &&
       _description == other._description &&
-      _parentEntity == other._parentEntity &&
-      DeepCollectionEquality().equals(_childEntities, other._childEntities) &&
+      _parentEntityID == other._parentEntityID &&
       _level == other._level &&
       _location == other._location &&
       DeepCollectionEquality().equals(_customData, other._customData) &&
       DeepCollectionEquality().equals(_appliedInterventions, other._appliedInterventions) &&
       _schemeVersion == other._schemeVersion &&
-      _entityChildEntitiesId == other._entityChildEntitiesId &&
       _entityLevelId == other._entityLevelId;
   }
   
@@ -200,32 +186,29 @@ class Entity extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("name=" + "$_name" + ", ");
     buffer.write("description=" + "$_description" + ", ");
-    buffer.write("parentEntity=" + (_parentEntity != null ? _parentEntity!.toString() : "null") + ", ");
+    buffer.write("parentEntityID=" + "$_parentEntityID" + ", ");
     buffer.write("location=" + (_location != null ? _location!.toString() : "null") + ", ");
     buffer.write("customData=" + (_customData != null ? _customData!.toString() : "null") + ", ");
     buffer.write("schemeVersion=" + (_schemeVersion != null ? _schemeVersion!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null") + ", ");
-    buffer.write("entityChildEntitiesId=" + "$_entityChildEntitiesId" + ", ");
     buffer.write("entityLevelId=" + "$_entityLevelId");
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Entity copyWith({String? id, String? name, String? description, Entity? parentEntity, List<Entity>? childEntities, Level? level, Location? location, List<AppliedCustomData>? customData, List<AppliedIntervention>? appliedInterventions, int? schemeVersion, String? entityChildEntitiesId, String? entityLevelId}) {
+  Entity copyWith({String? id, String? name, String? description, String? parentEntityID, Level? level, Location? location, List<AppliedCustomData>? customData, List<AppliedIntervention>? appliedInterventions, int? schemeVersion, String? entityLevelId}) {
     return Entity._internal(
       id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
-      parentEntity: parentEntity ?? this.parentEntity,
-      childEntities: childEntities ?? this.childEntities,
+      parentEntityID: parentEntityID ?? this.parentEntityID,
       level: level ?? this.level,
       location: location ?? this.location,
       customData: customData ?? this.customData,
       appliedInterventions: appliedInterventions ?? this.appliedInterventions,
       schemeVersion: schemeVersion ?? this.schemeVersion,
-      entityChildEntitiesId: entityChildEntitiesId ?? this.entityChildEntitiesId,
       entityLevelId: entityLevelId ?? this.entityLevelId);
   }
   
@@ -233,15 +216,7 @@ class Entity extends Model {
     : id = json['id'],
       _name = json['name'],
       _description = json['description'],
-      _parentEntity = json['parentEntity']?['serializedData'] != null
-        ? Entity.fromJson(new Map<String, dynamic>.from(json['parentEntity']['serializedData']))
-        : null,
-      _childEntities = json['childEntities'] is List
-        ? (json['childEntities'] as List)
-          .where((e) => e?['serializedData'] != null)
-          .map((e) => Entity.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
-          .toList()
-        : null,
+      _parentEntityID = json['parentEntityID'],
       _level = json['level']?['serializedData'] != null
         ? Level.fromJson(new Map<String, dynamic>.from(json['level']['serializedData']))
         : null,
@@ -263,22 +238,16 @@ class Entity extends Model {
       _schemeVersion = (json['schemeVersion'] as num?)?.toInt(),
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null,
-      _entityChildEntitiesId = json['entityChildEntitiesId'],
       _entityLevelId = json['entityLevelId'];
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'description': _description, 'parentEntity': _parentEntity?.toJson(), 'childEntities': _childEntities?.map((Entity? e) => e?.toJson()).toList(), 'level': _level?.toJson(), 'location': _location?.toJson(), 'customData': _customData?.map((AppliedCustomData? e) => e?.toJson()).toList(), 'appliedInterventions': _appliedInterventions?.map((AppliedIntervention? e) => e?.toJson()).toList(), 'schemeVersion': _schemeVersion, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'entityChildEntitiesId': _entityChildEntitiesId, 'entityLevelId': _entityLevelId
+    'id': id, 'name': _name, 'description': _description, 'parentEntityID': _parentEntityID, 'level': _level?.toJson(), 'location': _location?.toJson(), 'customData': _customData?.map((AppliedCustomData? e) => e?.toJson()).toList(), 'appliedInterventions': _appliedInterventions?.map((AppliedIntervention? e) => e?.toJson()).toList(), 'schemeVersion': _schemeVersion, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'entityLevelId': _entityLevelId
   };
 
   static final QueryField ID = QueryField(fieldName: "entity.id");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
-  static final QueryField PARENTENTITY = QueryField(
-    fieldName: "parentEntity",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Entity).toString()));
-  static final QueryField CHILDENTITIES = QueryField(
-    fieldName: "childEntities",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Entity).toString()));
+  static final QueryField PARENTENTITYID = QueryField(fieldName: "parentEntityID");
   static final QueryField LEVEL = QueryField(
     fieldName: "level",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Level).toString()));
@@ -288,7 +257,6 @@ class Entity extends Model {
     fieldName: "appliedInterventions",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (AppliedIntervention).toString()));
   static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
-  static final QueryField ENTITYCHILDENTITIESID = QueryField(fieldName: "entityChildEntitiesId");
   static final QueryField ENTITYLEVELID = QueryField(fieldName: "entityLevelId");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Entity";
@@ -308,18 +276,10 @@ class Entity extends Model {
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-      key: Entity.PARENTENTITY,
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Entity.PARENTENTITYID,
       isRequired: false,
-      targetName: "entityChildEntitiesId",
-      ofModelName: (Entity).toString()
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-      key: Entity.CHILDENTITIES,
-      isRequired: true,
-      ofModelName: (Entity).toString(),
-      associatedKey: Entity.ENTITYCHILDENTITIESID
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
@@ -367,12 +327,6 @@ class Entity extends Model {
       isRequired: false,
       isReadOnly: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Entity.ENTITYCHILDENTITIESID,
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
