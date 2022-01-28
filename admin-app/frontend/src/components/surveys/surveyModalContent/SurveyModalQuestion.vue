@@ -27,9 +27,8 @@
                 v-if="read || create"
                 :autofocus="edit || create"
                 v-model="questionText"
-                :rules="[rules.required, rules.maxChar]"
+                :rules="[rules.maxChar]"
                 label="Question text TODO i18n"
-                required
                 outlined
                 dense
                 ref="question-text"
@@ -73,25 +72,19 @@
                 :autofocus="edit || create"
                 v-model="questionType"
                 :items="Object.keys(questionTypesDict)"
-                :rules="[rules.required, rules.maxChar]"
+                :rules="[rules.maxChar]"
                 label="Question type TODO i18n"
                 outlined
                 dense
                 ref="question-type"
               ></v-select>
 
-              <div>
-                <h3>Answer 1</h3>
-                <div
-                  class="d-flex justify-space-between"
-                  v-for="(answer, index) in answers"
-                  :key="index"
-                >
+              <div v-for="(answer, index) in answers" :key="index">
+                <h3>Answer {{ index + 1 }}</h3>
+                <div class="d-flex justify-space-between">
                   <v-text-field
                     v-model="answers[index].answerText"
-                    :rules="[rules.required]"
                     label="Answer text TODO i18n"
-                    required
                     outlined
                     dense
                     :ref="`answer-text-${index}`"
@@ -160,7 +153,7 @@
           text
           color="warning"
           class="text-none"
-          @click="closeThenDeleteComponentData"
+          @click="closeThenDeleteData"
         >
           Discard question
           <v-icon large> mdi-delete </v-icon>
@@ -192,6 +185,7 @@ const questionTextMaxChar = Math.max(
 
 export default {
   name: "SurveyModalQuestion",
+  /* The parent element is SurveyModal.vue */
   props: {
     initialQText: {
       type: String,
@@ -201,7 +195,7 @@ export default {
       type: String,
       required: true,
       validator: (value) => {
-        Object.keys(questionTypesDict).includes(value);
+        return Object.keys(questionTypesDict).includes(value);
       },
     },
     initialAnswers: {
@@ -262,17 +256,14 @@ export default {
   methods: {
     ...mapActions({}),
     ...mapMutations({}),
-    clickOnAddImage() {
-      const imgInput = this.$refs["question-img-upload"];
-      console.log({ imgInput });
-      imgInput.click ? imgInput.click() : imgInput[0].click();
-      console.log("TODO: do something with", imgInput);
-    },
     resetComponentData() {
       this.questionText = this.initialQText;
       this.questionType = this.initialQType;
       this.answers = this.initialAnswers;
+    },
+    clickOnAddImage() {
       const imgInput = this.$refs["question-img-upload"];
+      imgInput.click ? imgInput.click() : imgInput[0].click();
     },
     clickOnAddAudio() {
       const audioInput = this.$refs["question-audio-upload"];
@@ -294,14 +285,9 @@ export default {
     clickOnRemoveAnswer(index) {
       this.answers = this.answers.filter((a, i) => i !== index);
     },
-    closeThenDeleteComponentData() {
+    closeThenDeleteData() {
       this.$emit("close");
-      this.deleteComponentData();
-    },
-    deleteComponentData() {
-      this.questionText = "";
-      this.questionType = "text";
-      this.answers = [{ answerText: "" }];
+      this.$emit("deleteQuestions");
     },
   },
 };

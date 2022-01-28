@@ -21,9 +21,7 @@
                 v-else
                 :autofocus="edit || create"
                 v-model="surveyName"
-                :rules="[rules.required]"
                 label="Survey name TODO i18n"
-                required
                 outlined
                 dense
               ></v-text-field>
@@ -41,7 +39,6 @@
                 label="
                     TODO: i18n
                   "
-                required
                 outlined
                 dense
                 class="mt-4"
@@ -137,7 +134,6 @@ export default {
     return {
       surveyDescriptionMaxChar,
       rules: {
-        required: (value) => !!value || this.requiredi18n,
         maxChar: (value) =>
           value.length <= surveyDescriptionMaxChar || this.maxCharExceededi18n,
       },
@@ -162,9 +158,6 @@ export default {
     },
     read() {
       return this.surveyModalMode === this.modalModesDict.read;
-    },
-    requiredi18n() {
-      return this.$t("login.required");
     },
     canAdvance() {
       return this.surveyName !== "";
