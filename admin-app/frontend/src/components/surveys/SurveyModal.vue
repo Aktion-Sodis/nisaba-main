@@ -9,6 +9,8 @@
       v-else
       @close="closeSurveyModal"
       @pushToQuestions="pushToQuestions"
+      @deleteQuestions="deleteQuestions"
+      @saveSurvey="saveSurvey"
       :initialQText="questions[qIndex].questionText"
       :initialQType="questions[qIndex].questionType"
       :initialAnswers="questions[qIndex].answers"
@@ -71,6 +73,7 @@ export default {
       this.qIndex = 0;
       this.questions = [new EmptyQuestion()];
     },
+    saveSurvey() {},
   },
 };
 </script>
