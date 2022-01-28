@@ -177,7 +177,6 @@
           <v-icon large> mdi-chevron-right </v-icon>
         </v-btn>
       </v-card-actions>
-      {{ initialAnswers }}
     </v-form>
   </v-card>
 </template>
@@ -273,14 +272,7 @@ export default {
       this.questionText = this.initialQText;
       this.questionType = this.initialQType;
       this.answers = this.initialAnswers;
-      console.log({ answers: this.answers });
-      console.log({ initialAnswers: this.initialAnswers });
-      for (let index = 0; index < this.initialAnswers.length; index++) {
-        const initialAnswer = this.initialAnswers[index];
-        console.log(initialAnswer.answerText);
-
-        this.answers[index].answerText = initialAnswer.answerText;
-      }
+      const imgInput = this.$refs["question-img-upload"];
     },
     clickOnAddAudio() {
       const audioInput = this.$refs["question-audio-upload"];

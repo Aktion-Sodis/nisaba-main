@@ -13,8 +13,6 @@
       :initialQType="questions[qIndex].questionType"
       :initialAnswers="questions[qIndex].answers"
     />
-    {{ questions[qIndex].answers }}
-    {{ qIndex }}
   </v-dialog>
 </template>
 
