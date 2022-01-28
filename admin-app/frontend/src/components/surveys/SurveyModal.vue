@@ -75,16 +75,13 @@ export default {
     setIsOnFirstCard(payload) {
       this.isOnFirstCard = payload;
     },
-    pushToQuestions(payload) {
-      console.log({ payload });
-      // this.$set(this.questions, this.qIndex, payload);
-      this.questions[this.qIndex] = payload;
-      this.questions = this.questions.concat({
-        questionText: "",
-        questionType: "text",
-        answers: [{ answerText: "" }],
-      });
+    async pushToQuestions(payload) {
+      await this.$set(this.questions, this.qIndex, payload);
       this.qIndex++;
+      await this.$set(this.questions, this.qIndex, new EmptyQuestion());
+    },
+    deleteQuestions() {
+      this.qIndex = 0;
     },
   },
 };

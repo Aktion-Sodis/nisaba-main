@@ -290,12 +290,13 @@ export default {
     clickOnAddAnswer() {
       this.answers.push({ answerText: "" });
     },
-    clickOnNextQuestion() {
-      this.$emit("pushToQuestions", {
+    async clickOnNextQuestion() {
+      await this.$emit("pushToQuestions", {
         questionText: this.questionText,
         questionType: this.questionType,
         answers: this.answers,
       });
+      await this.$nextTick();
       this.resetComponentData();
     },
     clickOnRemoveAnswer(index) {
