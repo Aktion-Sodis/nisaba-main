@@ -24,12 +24,7 @@ import { modalModesDict } from "../../store/constants";
 
 import SurveyModalFirstCard from "./surveyModalContent/SurveyModalFirstCard.vue";
 import SurveyModalQuestion from "./surveyModalContent/SurveyModalQuestion.vue";
-
-// const emptyQuestion = Object.freeze({
-//   questionText: "",
-//   questionType: "text",
-//   answers: [{ answerText: "" }],
-// });
+import { EmptyQuestion } from "./utils";
 
 export default {
   name: "SurveyModal",
@@ -40,13 +35,7 @@ export default {
       surveyName: "",
       surveyDescription: "",
       interventionId: null,
-      questions: [
-        {
-          questionText: "",
-          questionType: "text",
-          answers: [{ answerText: "" }],
-        },
-      ],
+      questions: [new EmptyQuestion()],
       modalModesDict,
       isOnFirstCard: true,
       qIndex: 0,
@@ -82,6 +71,7 @@ export default {
     },
     deleteQuestions() {
       this.qIndex = 0;
+      this.questions = [new EmptyQuestion()];
     },
   },
 };
