@@ -101,7 +101,8 @@
       "discard-question": "Discard question",
       "prior-question": "Prior question",
       "next-question": "Next question",
-      "save-survey": "Save survey"
+      "publish-survey": "Publish survey",
+      "save-question": "Save question"
     }
   }
 }

@@ -32,7 +32,7 @@
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-avatar v-bind="attrs" v-on="on">
-                  <v-icon color="white"> mdi-hammer-wrench </v-icon>
+                  <v-icon> mdi-hammer-wrench </v-icon>
                 </v-avatar>
               </template>
               <span>{{ getInterventionById(interventionId).name }}</span>

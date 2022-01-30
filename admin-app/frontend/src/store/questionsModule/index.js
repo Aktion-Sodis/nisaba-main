@@ -77,7 +77,19 @@ const questionsModule = {
       }
       commit("deleteQuestionAtIndex", { index: getters.getIQuestions });
     },
-    saveQuestionHandler: () => {},
+    saveQuestionHandler: ({ commit, getters }, { newQuestion }) => {
+      commit("replaceQuestionAtIndex", {
+        newQuestion,
+        index: getters.getIQuestions,
+      });
+      if (getters.isAtLastQuestion) {
+        commit("addQuestionAtIndex", {
+          newQuestion: new EmptyQuestion(),
+          index: getters.getIQuestions + 1,
+        });
+        commit("incrementIQuestions");
+      }
+    },
   },
 };
 

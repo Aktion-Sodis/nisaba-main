@@ -41,13 +41,7 @@
     >
       <v-tabs-slider color="primary"></v-tabs-slider>
       <v-tab v-for="(q, i) in questions" :key="i" :value="i">
-        <v-progress-linear
-          buffer-value="0"
-          stream
-          reverse
-          v-if="i === nQuestions - 1"
-          style="width: 1.5rem"
-        ></v-progress-linear>
+        <v-icon v-if="i === nQuestions - 1"> mdi-plus </v-icon>
         <v-icon v-else>
           {{ questionTypesIconDict[q.questionType] }}
         </v-icon>
@@ -83,6 +77,9 @@ export default {
   },
   watch: {
     iQ: function (newVal) {
+      // this.replaceQuestionAtIndex({newQuestion: {}})
+      // TODO: save changes in SurveyModalQuestion and don't block manual nav
+      // this.iQ = oldVal;
       this.setIQuestions({ payload: newVal });
     },
     iQuestions: function (newVal) {
@@ -114,6 +111,7 @@ export default {
     ...mapMutations({
       setSurveyModalIsDisplayed: "ivGui/setSurveyModalIsDisplayed",
       setIQuestions: "q/setIQuestions",
+      replaceQuestionAtIndex: "q/replaceQuestionAtIndex",
     }),
     setIsOnFirstCard(payload) {
       this.isOnFirstCard = payload;

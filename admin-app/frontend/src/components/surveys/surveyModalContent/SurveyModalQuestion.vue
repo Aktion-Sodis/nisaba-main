@@ -10,11 +10,11 @@
           x-large
           text
           class="text-none"
-          @click="saveQuestionHandler"
-          :disabled="!isSaveable"
+          @click="saveSurveyHandler"
+          :disabled="true"
         >
-          {{ $t("interventionView.surveyModalQuestionCard.save-survey") }}
-          <v-icon large class="ml-2"> mdi-content-save-outline </v-icon>
+          {{ $t("interventionView.surveyModalQuestionCard.publish-survey") }}
+          <v-icon large class="ml-2"> mdi-upload </v-icon>
         </v-btn>
       </v-card-title>
 
@@ -230,13 +230,14 @@
           {{ $t("interventionView.surveyModalQuestionCard.discard-question") }}
           <v-icon large> mdi-delete </v-icon>
         </v-btn>
-        <v-spacer></v-spacer>
+        <v-spacer v-if="!isAtLastQuestion"></v-spacer>
         <v-btn
           x-large
           text
           class="text-none"
           @click="priorQuestion"
           :disabled="!canAdvanceBack"
+          v-if="!isAtLastQuestion"
         >
           <v-icon large> mdi-chevron-left </v-icon>
           {{ $t("interventionView.surveyModalQuestionCard.prior-question") }}
@@ -247,9 +248,21 @@
           class="text-none"
           @click="nextQuestion"
           :disabled="!canAdvance"
+          v-if="!isAtLastQuestion"
         >
           {{ $t("interventionView.surveyModalQuestionCard.next-question") }}
           <v-icon large> mdi-chevron-right </v-icon>
+        </v-btn>
+        <v-spacer></v-spacer>
+        <v-btn
+          x-large
+          text
+          class="text-none"
+          @click="saveQuestion"
+          :disabled="!canSave"
+        >
+          {{ $t("interventionView.surveyModalQuestionCard.save-question") }}
+          <v-icon large class="ml-2"> mdi-content-save-outline </v-icon>
         </v-btn>
       </v-card-actions>
     </v-form>
@@ -293,10 +306,12 @@ export default {
     ...mapGetters({
       surveyName: "ivGui/getSurveyNameCurrentlyBeingEdited",
       surveyModalMode: "ivGui/getSurveyModalMode",
-      canAdvanceBack: "q/canAdvanceBack",
       canAdvanceForward: "q/canAdvanceForward",
       currentQuestion: "q/currentQuestion",
       nQuestions: "q/nQuestions",
+      iQuestions: "q/getIQuestions",
+      isAtLastQuestion: "q/isAtLastQuestion",
+      isAtFirstQuestion: "q/isAtFirstQuestion",
     }),
     questionTypesItemValue() {
       let res = [];
@@ -318,6 +333,17 @@ export default {
         maxChar: questionTextMaxChar,
       });
     },
+    areThereChanges() {
+      return (
+        this.questionText !== this.currentQuestion.questionText ||
+        (this.areAnswersNeeded &&
+          (this.answers.length !== this.currentQuestion.answers.length ||
+            this.answers.filter(
+              (a, i) =>
+                a.answerText !== this.currentQuestion.answers[i].answerText
+            ).length > 0))
+      );
+    },
     edit() {
       return this.surveyModalMode === this.modalModesDict.edit;
     },
@@ -327,16 +353,19 @@ export default {
     read() {
       return this.surveyModalMode === this.modalModesDict.read;
     },
+    canAdvanceBack() {
+      return !this.isAtFirstQuestion && !this.areThereChanges;
+    },
     canAdvance() {
+      return this.iQuestions < this.nQuestions - 2 && !this.areThereChanges;
+    },
+    canSave() {
       return (
         this.questionText !== "" &&
         (!this.areAnswersNeeded ||
           (this.answers.length > 0 &&
             !new Set(this.answers.map((a) => a.answerText === "")).has(true)))
       );
-    },
-    isSaveable() {
-      return this.nQuestions > 1 && !this.canAdvance;
     },
     areAnswersNeeded() {
       return (
@@ -353,6 +382,16 @@ export default {
       discardQuestionHandler: "q/discardQuestionHandler",
       saveQuestionHandler: "q/saveQuestionHandler",
     }),
+    saveSurveyHandler() {},
+    saveQuestion() {
+      this.saveQuestionHandler({
+        newQuestion: {
+          questionText: this.questionText,
+          questionType: this.questionType,
+          answers: this.answers,
+        },
+      });
+    },
     ...mapMutations({}),
     clickOnAddImage() {
       const imgInput = this.$refs["question-img-upload"];
