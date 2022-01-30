@@ -9,6 +9,7 @@ import organizationStructureModule from "./organizationStructureModule";
 import interventionsModule from "./interventionsModule";
 import interventionsGUIModule from "./interventionsGUIModule";
 import surveysModule from "./surveysModule";
+import questionsModule from "./questionsModule";
 
 // persist
 const vuexLocal = new VuexPersistence({
@@ -34,6 +35,7 @@ export default new Vuex.Store({
     iv: interventionsModule,
     ivGui: interventionsGUIModule,
     surveys: surveysModule,
+    q: questionsModule,
   },
   plugins: [vuexLocal.plugin],
 });
