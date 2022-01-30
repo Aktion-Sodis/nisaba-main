@@ -1,31 +1,99 @@
 {
   "login": {
-    "title": "¡Bienvenido de nuevo!",
-    "subtitle": "Inicie sesión con sus datos o regístrese.",
-    "username": "Nombre de usuario",
-    "password": "Contraseña",
-    "required": "Necessario.",
+    "title": "Welcome back!",
+    "subtitle": "Please sign in with your credentials or register.",
+    "username": "Username",
+    "password": "Password",
+    "required": "Required.",
     "maxCharExceeded": "Maximum {maxChar} characters.",
-    "remember-me": "Recuérdame",
-    "forgot-password": "Contraseña Olvidada",
-    "sign-in": "iniciar sesión",
-    "sign-in-with-google": "Iniciar sesión con Google",
-    "dont-have-an-account": "¿No tienes una cuenta?",
-    "register-here": "Regístrese aquí"
+    "remember-me": "Remember me",
+    "forgot-password": "Forgot Password",
+    "sign-in": "Sign in",
+    "sign-in-with-google": "Sign in with Google",
+    "dont-have-an-account": "Don't have an account?",
+    "register-here": "Register here"
   },
   "general": {
-    "search-box": "Buscar cualquier cosa",
+    "search-box": "Search anything",
     "cancel": "Cancel",
-    "save": "Save"
+    "save": "Save",
+    "delete": "Delete"
   },
   "organizationStructure": {
     "addNewEntity": "Add entity",
     "addNewLevel": "Add new level",
     "levelModal": {
+      "title": { "edit": "Edit level ", "create": "Create new level" },
+      "description": {
+        "edit": "This is the description of this beautiful edit dialog.",
+        "create": "This is the description of this beautiful create dialog."
+      },
       "levelName": "Level Name",
       "levelDescription": "Level Description",
       "manageAllowedInterventions": "Manage allowed interventions",
       "levelIsSubordinateTo": "Level is subordinate to..."
+    },
+    "entityModal": {
+      "title": { "edit": "Edit entity ", "create": "Create new entity" },
+      "description": {
+        "edit": "This is the description of this beautiful edit dialog.",
+        "create": "This is the description of this beautiful create dialog."
+      },
+      "upperEntity": "Choose parent entity",
+      "entityName": "Entity Name",
+      "entityDescription": "Entity Description",
+      "entityIsSubordinateTo": "Entity is subordinate to..."
+    }
+  },
+  "interventionView": {
+    "interventionModal": {
+      "title": {
+        "edit": "Edit intervention ",
+        "create": "Create new intervention"
+      },
+      "description": {
+        "edit": "This is the description of this beautiful edit dialog.",
+        "create": "This is the description of this beautiful create dialog."
+      },
+      "interventionName": "Intervention Name",
+      "interventionDescription": "Intervention Description"
+    },
+    "surveyModalFirstCard": {
+      "title": {
+        "edit": "Editing survey ",
+        "create": "New survey"
+      },
+      "form": {
+        "name": "Survey name",
+        "description": "Survey description",
+        "tags": "Survey tags"
+      },
+      "next-step": "Next step",
+      "questions": "Questions"
+    },
+    "surveyModalQuestionCard": {
+      "form": {
+        "question": {
+          "title": "Question",
+          "textLabel": "Question text",
+          "imageTitle": "Question image",
+          "addImage": "Add image",
+          "audioTitle": "Question audio",
+          "addAudio": "Add audio"
+        },
+        "answer": {
+          "title": "Answer",
+          "typeLabel": "Question type",
+          "answer": "Answer",
+          "textLabel": "Answer text",
+          "addImage": "Add image to answer",
+          "addAnswer": "Add answer"
+        }
+      },
+      "discard-question": "Discard question",
+      "prior-question": "Prior question",
+      "next-question": "Next question",
+      "save-survey": "Save survey"
     }
   }
 }

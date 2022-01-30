@@ -57,6 +57,43 @@
       },
       "interventionName": "Intervention Name",
       "interventionDescription": "Intervention Description"
+    },
+    "surveyModalFirstCard": {
+      "title": {
+        "edit": "Editing survey ",
+        "create": "New survey"
+      },
+      "form": {
+        "name": "Survey name",
+        "description": "Survey description",
+        "tags": "Survey tags"
+      },
+      "next-step": "Next step",
+      "questions": "Questions"
+    },
+    "surveyModalQuestionCard": {
+      "form": {
+        "question": {
+          "title": "Question",
+          "textLabel": "Question text",
+          "imageTitle": "Question image",
+          "addImage": "Add image",
+          "audioTitle": "Question audio",
+          "addAudio": "Add audio"
+        },
+        "answer": {
+          "title": "Answer",
+          "typeLabel": "Question type",
+          "answer": "Answer",
+          "textLabel": "Answer text",
+          "addImage": "Add image to answer",
+          "addAnswer": "Add answer"
+        }
+      },
+      "discard-question": "Discard question",
+      "prior-question": "Prior question",
+      "next-question": "Next question",
+      "save-survey": "Save survey"
     }
   }
 }
