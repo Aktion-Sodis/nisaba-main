@@ -60,3 +60,12 @@ export const questionTypesDict = Object.freeze({
   pictureWithTags: "PICTUREWITHTAGS",
   audio: "AUDIO",
 });
+
+export const questionTypesIconDict = Object.freeze({
+  text: "mdi-text",
+  singleChoice: "mdi-radiobox-marked",
+  multipleChoice: "mdi-dots-horizontal",
+  picture: "mdi-image",
+  pictureWithTags: "mdi-message-image",
+  audio: "mdi-waveform",
+});
