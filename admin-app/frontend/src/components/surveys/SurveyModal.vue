@@ -41,10 +41,22 @@
     >
       <v-tabs-slider color="primary"></v-tabs-slider>
       <v-tab v-for="(q, i) in questions" :key="i" :value="i">
-        <v-icon v-if="i === nQuestions - 1"> mdi-plus </v-icon>
-        <v-icon v-else>
-          {{ questionTypesIconDict[q.questionType] }}
-        </v-icon>
+        <v-icon v-if="i === nQuestions - 1" large> mdi-plus </v-icon>
+        <div v-else>
+          <div v-if="q.questionType === 'multipleChoice'">
+            <v-icon> mdi-checkbox-outline </v-icon>
+            <v-icon> mdi-checkbox-outline </v-icon>
+            <v-icon> mdi-checkbox-blank-outline </v-icon>
+          </div>
+          <div v-else-if="q.questionType === 'singleChoice'">
+            <v-icon> mdi-checkbox-outline </v-icon>
+            <v-icon> mdi-checkbox-blank-outline </v-icon>
+            <v-icon> mdi-checkbox-blank-outline </v-icon>
+          </div>
+          <v-icon v-else large>
+            {{ questionTypesIconDict[q.questionType] }}
+          </v-icon>
+        </div>
       </v-tab>
     </v-tabs>
   </v-dialog>
