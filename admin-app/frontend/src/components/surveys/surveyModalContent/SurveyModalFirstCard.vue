@@ -96,7 +96,7 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn color="secondary" text @click="handleExit">
+        <v-btn color="warning" text @click="handleExit">
           {{ read ? "Close" : $t("general.cancel") }}
         </v-btn>
         <v-spacer></v-spacer>

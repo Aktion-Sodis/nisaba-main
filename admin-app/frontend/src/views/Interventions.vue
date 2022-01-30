@@ -15,7 +15,7 @@
                 <v-btn
                   fab
                   x-large
-                  color="primary lighten-2"
+                  color="primary"
                   @click="clickOnAddNewIntervention"
                 >
                   <v-icon dark> mdi-wrench </v-icon>
@@ -23,12 +23,7 @@
                 <h2 class="mt-2 mb-4">New intervention</h2>
               </div>
               <div class="d-flex flex-column align-center">
-                <v-btn
-                  fab
-                  small
-                  color="primary lighten-2"
-                  @click="clickOnAddNewSurvey"
-                >
+                <v-btn fab small color="primary" @click="clickOnAddNewSurvey">
                   <v-icon dark> mdi-crosshairs-question </v-icon>
                 </v-btn>
                 <h3 class="mt-2">New Survey</h3>

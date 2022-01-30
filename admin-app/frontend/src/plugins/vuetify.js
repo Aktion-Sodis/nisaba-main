@@ -20,9 +20,9 @@ export default new Vuetify({
   theme: {
     themes: {
       light: {
-        primary: colors.indigo,
-        "primary-dark": colors.indigo.darken1,
-        secondary: colors.red.lighten4,
+        primary: "#723D46",
+        "primary-dark": "#472D30",
+        secondary: "#E26D5C",
         accent: colors.indigo.base,
         warning: colors.red.darken4,
       },
