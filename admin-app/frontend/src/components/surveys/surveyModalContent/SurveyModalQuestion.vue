@@ -123,6 +123,8 @@
                 ref="question-type"
               ></v-select>
 
+              <v-divider class="mb-4"></v-divider>
+
               <div v-for="(answer, index) in answers" :key="index">
                 <h3>
                   {{
@@ -143,6 +145,8 @@
                     outlined
                     dense
                     :ref="`answer-text-${index}`"
+                    :hide-details="true"
+                    class="mb-2"
                   ></v-text-field>
 
                   <div class="d-flex">
