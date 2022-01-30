@@ -125,94 +125,96 @@
 
               <v-divider class="mb-4"></v-divider>
 
-              <div v-for="(answer, index) in answers" :key="index">
-                <h3>
-                  {{
-                    $t(
-                      "interventionView.surveyModalQuestionCard.form.answer.answer"
-                    )
-                  }}
-                  {{ index + 1 }}
-                </h3>
-                <div class="d-flex justify-space-between">
-                  <v-text-field
-                    v-model="answers[index].answerText"
-                    :label="
-                      $t(
-                        'interventionView.surveyModalQuestionCard.form.answer.textLabel'
-                      )
-                    "
-                    outlined
-                    dense
-                    :ref="`answer-text-${index}`"
-                    :hide-details="true"
-                    class="mb-2"
-                  ></v-text-field>
-
-                  <div class="d-flex">
-                    <v-btn
-                      v-if="read || create"
-                      color="primary"
-                      rounded
-                      outlined
-                      @click="clickOnAddImgToAnswer"
-                      class="ml-2"
-                    >
-                      <v-icon class="mr-2"> mdi-image </v-icon>
-                      <span class="overflow-hidden">
-                        {{
-                          $t(
-                            "interventionView.surveyModalQuestionCard.form.answer.addImage"
-                          )
-                        }}
-                      </span>
-                    </v-btn>
-                    <input
-                      v-if="!read"
-                      type="file"
-                      accept="image/png, image/jpeg"
-                      ref="question-img-upload"
-                      style="display: none"
-                    />
-                    <v-btn
-                      v-if="read || create"
-                      color="primary"
-                      outlined
-                      icon
-                      @click="clickOnRemoveAnswer(index)"
-                      class="ml-2"
-                    >
-                      <v-icon> mdi-minus </v-icon>
-                    </v-btn>
-                  </div>
-                </div>
-              </div>
-
-              <div class="d-flex justify-center">
-                <v-btn
-                  v-if="read || create"
-                  color="primary"
-                  rounded
-                  x-large
-                  @click="clickOnAddAnswer"
-                  class="mt-2"
-                >
-                  <v-icon class="mr-2"> mdi-plus </v-icon>
-                  <span class="overflow-hidden">
+              <div v-if="areAnswersNeeded">
+                <div v-for="(answer, index) in answers" :key="index">
+                  <h3>
                     {{
                       $t(
-                        "interventionView.surveyModalQuestionCard.form.answer.addAnswer"
+                        "interventionView.surveyModalQuestionCard.form.answer.answer"
                       )
                     }}
-                  </span>
-                </v-btn>
-                <input
-                  v-if="!read"
-                  type="file"
-                  accept="audio/*"
-                  ref="question-audio-upload"
-                  style="display: none"
-                />
+                    {{ index + 1 }}
+                  </h3>
+                  <div class="d-flex justify-space-between">
+                    <v-text-field
+                      v-model="answers[index].answerText"
+                      :label="
+                        $t(
+                          'interventionView.surveyModalQuestionCard.form.answer.textLabel'
+                        )
+                      "
+                      outlined
+                      dense
+                      :ref="`answer-text-${index}`"
+                      :hide-details="true"
+                      class="mb-2"
+                    ></v-text-field>
+
+                    <div class="d-flex">
+                      <v-btn
+                        v-if="read || create"
+                        color="primary"
+                        rounded
+                        outlined
+                        @click="clickOnAddImgToAnswer"
+                        class="ml-2"
+                      >
+                        <v-icon class="mr-2"> mdi-image </v-icon>
+                        <span class="overflow-hidden">
+                          {{
+                            $t(
+                              "interventionView.surveyModalQuestionCard.form.answer.addImage"
+                            )
+                          }}
+                        </span>
+                      </v-btn>
+                      <input
+                        v-if="!read"
+                        type="file"
+                        accept="image/png, image/jpeg"
+                        ref="question-img-upload"
+                        style="display: none"
+                      />
+                      <v-btn
+                        v-if="read || create"
+                        color="primary"
+                        outlined
+                        icon
+                        @click="clickOnRemoveAnswer(index)"
+                        class="ml-2"
+                      >
+                        <v-icon> mdi-minus </v-icon>
+                      </v-btn>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-center">
+                  <v-btn
+                    v-if="read || create"
+                    color="primary"
+                    rounded
+                    x-large
+                    @click="clickOnAddAnswer"
+                    class="mt-2"
+                  >
+                    <v-icon class="mr-2"> mdi-plus </v-icon>
+                    <span class="overflow-hidden">
+                      {{
+                        $t(
+                          "interventionView.surveyModalQuestionCard.form.answer.addAnswer"
+                        )
+                      }}
+                    </span>
+                  </v-btn>
+                  <input
+                    v-if="!read"
+                    type="file"
+                    accept="audio/*"
+                    ref="question-audio-upload"
+                    style="display: none"
+                  />
+                </div>
               </div>
             </v-col>
           </v-row>
@@ -316,12 +318,20 @@ export default {
     canAdvance() {
       return (
         this.questionText !== "" &&
-        this.answers.length > 0 &&
-        !new Set(this.answers.map((a) => a.answerText === "")).has(true)
+        (!this.areAnswersNeeded ||
+          (this.answers.length > 0 &&
+            !new Set(this.answers.map((a) => a.answerText === "")).has(true)))
       );
     },
     isSaveable() {
       return this.canAdvance;
+    },
+    areAnswersNeeded() {
+      return (
+        this.questionType === "text" ||
+        this.questionType === "singleChoice" ||
+        this.questionType === "multipleChoice"
+      );
     },
   },
   methods: {
