@@ -1,30 +1,68 @@
 <template>
-  <v-dialog v-model="surveyModalIsDisplayed" max-width="1200px" persistent>
+  <v-dialog
+    @keydown.esc="exitHandler"
+    v-model="surveyModalIsDisplayed"
+    max-width="1200px"
+    persistent
+  >
+    <v-stepper alt-labels v-model="completionIndex">
+      <v-stepper-header>
+        <v-stepper-step step="1" :complete="completionIndex > 1">
+          Survey details
+        </v-stepper-step>
+
+        <v-divider></v-divider>
+
+        <v-stepper-step step="2" :complete="completionIndex > 2"
+          >Questions
+        </v-stepper-step>
+
+        <v-divider></v-divider>
+
+        <v-stepper-step step="3"> Finalize </v-stepper-step>
+      </v-stepper-header>
+    </v-stepper>
+
     <SurveyModalFirstCard
       v-if="isOnFirstCard"
       @setIsOnFirstCard="setIsOnFirstCard"
       @close="closeSurveyModal"
+      @incrementCompletionIndex="incrementCompletionIndex"
     />
-    <SurveyModalQuestion
-      v-else
-      @close="closeSurveyModal"
-      @pushToQuestions="pushToQuestions"
-      @deleteQuestions="deleteQuestions"
-      @saveSurvey="saveSurvey"
-      :initialQText="questions[qIndex].questionText"
-      :initialQType="questions[qIndex].questionType"
-      :initialAnswers="questions[qIndex].answers"
-    />
+    <SurveyModalQuestion v-else />
+
+    <v-tabs
+      background-color="grey lighten-3"
+      show-arrows
+      centered
+      center-active
+      v-if="!isOnFirstCard && nQuestions > 0"
+      v-model="iQ"
+    >
+      <v-tabs-slider color="primary"></v-tabs-slider>
+      <v-tab v-for="(q, i) in questions" :key="i" :value="i">
+        <v-progress-linear
+          buffer-value="0"
+          stream
+          reverse
+          v-if="i === nQuestions - 1"
+          style="width: 1.5rem"
+        ></v-progress-linear>
+        <v-icon v-else>
+          {{ questionTypesIconDict[q.questionType] }}
+        </v-icon>
+      </v-tab>
+    </v-tabs>
   </v-dialog>
 </template>
 
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
-import { modalModesDict } from "../../store/constants";
+import { modalModesDict, questionTypesIconDict } from "../../store/constants";
 
 import SurveyModalFirstCard from "./surveyModalContent/SurveyModalFirstCard.vue";
 import SurveyModalQuestion from "./surveyModalContent/SurveyModalQuestion.vue";
-import { EmptyQuestion } from "./utils";
+import { EmptyQuestion } from "../../store/questionsModule/utils";
 
 export default {
   name: "SurveyModal",
@@ -34,17 +72,30 @@ export default {
       surveyId: null,
       surveyName: "",
       surveyDescription: "",
+      surveyTags: [],
+      completionIndex: 1,
+      iQ: 0,
       interventionId: null,
-      questions: [new EmptyQuestion()],
-      modalModesDict,
       isOnFirstCard: true,
-      qIndex: 0,
+      modalModesDict,
+      questionTypesIconDict,
     };
+  },
+  watch: {
+    iQ: function (newVal) {
+      this.setIQuestions({ payload: newVal });
+    },
+    iQuestions: function (newVal) {
+      this.iQ = newVal;
+    },
   },
   computed: {
     ...mapGetters({
       surveyModalMode: "ivGui/getSurveyModalMode",
       surveyModalIsDisplayed: "ivGui/getSurveyModalIsDisplayed",
+      questions: "q/getQuestions",
+      iQuestions: "q/getIQuestions",
+      nQuestions: "q/nQuestions",
     }),
     edit() {
       return this.surveyModalMode === this.modalModesDict.edit;
@@ -60,20 +111,37 @@ export default {
     ...mapActions({
       closeSurveyModal: "ivGui/closeSurveyModal",
     }),
-    ...mapMutations({}),
+    ...mapMutations({
+      setSurveyModalIsDisplayed: "ivGui/setSurveyModalIsDisplayed",
+      setIQuestions: "q/setIQuestions",
+    }),
     setIsOnFirstCard(payload) {
       this.isOnFirstCard = payload;
-    },
-    async pushToQuestions(payload) {
-      await this.$set(this.questions, this.qIndex, payload);
-      this.qIndex++;
-      await this.$set(this.questions, this.qIndex, new EmptyQuestion());
     },
     deleteQuestions() {
       this.qIndex = 0;
       this.questions = [new EmptyQuestion()];
     },
-    saveSurvey() {},
+    exitHandler() {
+      if (this.read) {
+        this.setSurveyModalIsDisplayed(false);
+        return;
+      }
+      if (this.edit) {
+        return;
+      }
+      /* create */
+      if (
+        this.surveyName !== "" ||
+        this.surveyDescription !== "" ||
+        this.surveyTags.length > 0
+      ) {
+        // TODO: ask are you serious
+      }
+    },
+    incrementCompletionIndex() {
+      this.completionIndex++;
+    },
   },
 };
 </script>

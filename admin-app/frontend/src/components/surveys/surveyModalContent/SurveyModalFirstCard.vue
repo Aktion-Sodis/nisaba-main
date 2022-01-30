@@ -3,11 +3,14 @@
     <v-form ref="form" @submit.prevent="submitSurvey" lazy-validation>
       <v-card-title>
         <h2 v-if="edit">
-          TODO i18n Editing survey
+          {{ $t("interventionView.surveyModalFirstCard.title.edit") }}
+
           <i>{{ surveyCurrentlyBeingEdited.name }}</i>
         </h2>
-        <h2 v-else-if="create">New survey TODO i18n</h2>
-        <h2 v-else>Viewing survey TODO i18n</h2>
+        <h2 v-else-if="create">
+          {{ $t("interventionView.surveyModalFirstCard.title.create") }}
+        </h2>
+        <h2 v-else>{{ surveyCurrentlyBeingEdited.name }}</h2>
       </v-card-title>
 
       <v-card-text>
@@ -21,7 +24,7 @@
                 v-else
                 :autofocus="edit || create"
                 v-model="surveyName"
-                label="Survey name TODO i18n"
+                :label="$t('interventionView.surveyModalFirstCard.form.name')"
                 outlined
                 dense
               ></v-text-field>
@@ -36,9 +39,9 @@
                   surveyDescription.length > surveyDescriptionMaxChar - 20
                 "
                 :rules="[rules.maxChar]"
-                label="
-                    TODO: i18n
-                  "
+                :label="
+                  $t('interventionView.surveyModalFirstCard.form.description')
+                "
                 outlined
                 dense
                 class="mt-4"
@@ -82,7 +85,7 @@
                 deletable-chips
                 chips
                 dense
-                label="Tags TODO i18n"
+                :label="$t('interventionView.surveyModalFirstCard.form.tags')"
                 multiple
                 outlined
                 class="mt-8"
@@ -93,13 +96,7 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn
-          color="secondary"
-          text
-          @click="
-            read || create ? closeThenDeleteComponentData() : switchToReading()
-          "
-        >
+        <v-btn color="secondary" text @click="handleExit">
           {{ read ? "Close" : $t("general.cancel") }}
         </v-btn>
         <v-spacer></v-spacer>
@@ -110,7 +107,11 @@
           @click="clickOnNext"
           :disabled="!canAdvance"
         >
-          {{ read ? "Questions" : "Next step" }}
+          {{
+            read
+              ? $t("interventionView.surveyModalFirstCard.questions")
+              : $t(`interventionView.surveyModalFirstCard.next-step`)
+          }}
           <v-icon large> mdi-chevron-right </v-icon>
           <!-- TODO: i18n -->
         </v-btn>
@@ -176,9 +177,21 @@ export default {
     },
     closeThenDeleteComponentData() {
       this.$emit("close");
-      this.deleteComponentData();
+      this.handleClose();
     },
-    deleteComponentData() {
+    handleExit() {
+      if (
+        !this.read &&
+        (this.surveyName !== "" ||
+          this.surveyDescription !== "" ||
+          this.surveyTags.length > 0)
+      ) {
+        // TODO: ask are you sure
+        return;
+      }
+      this.closeThenDeleteComponentData();
+    },
+    handleClose() {
       this.surveyId = null;
       this.surveyName = "";
       this.surveyDescription = "";
@@ -186,6 +199,7 @@ export default {
     },
     clickOnNext() {
       this.$emit("setIsOnFirstCard", false);
+      this.$emit("incrementCompletionIndex");
       this.setSurveyNameCurrentlyBeingEdited(this.surveyName);
     },
   },

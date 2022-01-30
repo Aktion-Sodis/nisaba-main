@@ -10,10 +10,10 @@
           x-large
           text
           class="text-none"
-          @click="clickOnNextQuestion"
+          @click="saveQuestionHandler"
           :disabled="!isSaveable"
         >
-          Save survey
+          {{ $t("interventionView.surveyModalQuestionCard.save-survey") }}
           <v-icon large class="ml-2"> mdi-content-save-outline </v-icon>
         </v-btn>
       </v-card-title>
@@ -22,19 +22,35 @@
         <v-container>
           <v-row>
             <v-col cols="12" md="6">
-              <h2>Question</h2>
+              <h2 class="mb-2">
+                {{
+                  $t(
+                    "interventionView.surveyModalQuestionCard.form.question.title"
+                  )
+                }}
+              </h2>
               <v-textarea
                 v-if="read || create"
                 :autofocus="edit || create"
                 v-model="questionText"
                 :rules="[rules.maxChar]"
-                label="Question text TODO i18n"
+                :label="
+                  $t(
+                    'interventionView.surveyModalQuestionCard.form.question.textLabel'
+                  )
+                "
                 outlined
                 dense
                 ref="question-text"
               ></v-textarea>
 
-              <h3>Question Image TODO: i18n</h3>
+              <h3>
+                {{
+                  $t(
+                    "interventionView.surveyModalQuestionCard.form.question.imageTitle"
+                  )
+                }}
+              </h3>
               <div class="d-flex justify-center">
                 <v-btn
                   v-if="read || create"
@@ -45,11 +61,23 @@
                   class="mt-4"
                 >
                   <v-icon class="mr-2"> mdi-image </v-icon>
-                  <span class="overflow-hidden"> Add Image TODO: i18n </span>
+                  <span class="overflow-hidden">
+                    {{
+                      $t(
+                        "interventionView.surveyModalQuestionCard.form.question.addImage"
+                      )
+                    }}
+                  </span>
                 </v-btn>
               </div>
 
-              <h3 class="mt-8">Question Audio TODO: i18n</h3>
+              <h3 class="mt-8">
+                {{
+                  $t(
+                    "interventionView.surveyModalQuestionCard.form.question.audioTitle"
+                  )
+                }}
+              </h3>
               <div class="d-flex justify-center">
                 <v-btn
                   v-if="read || create"
@@ -60,31 +88,58 @@
                   class="mt-4"
                 >
                   <v-icon class="mr-2"> mdi-waveform </v-icon>
-                  <span class="overflow-hidden"> Add Audio TODO: i18n </span>
+                  <span class="overflow-hidden">
+                    {{
+                      $t(
+                        "interventionView.surveyModalQuestionCard.form.question.addAudio"
+                      )
+                    }}
+                  </span>
                 </v-btn>
               </div>
             </v-col>
 
             <v-col cols="12" md="6">
-              <h2>Answer</h2>
+              <h2 class="mb-2">
+                {{
+                  $t(
+                    "interventionView.surveyModalQuestionCard.form.answer.title"
+                  )
+                }}
+              </h2>
               <v-select
                 v-if="read || create"
                 :autofocus="edit || create"
                 v-model="questionType"
                 :items="Object.keys(questionTypesDict)"
                 :rules="[rules.maxChar]"
-                label="Question type TODO i18n"
+                :label="
+                  $t(
+                    'interventionView.surveyModalQuestionCard.form.answer.typeLabel'
+                  )
+                "
                 outlined
                 dense
                 ref="question-type"
               ></v-select>
 
               <div v-for="(answer, index) in answers" :key="index">
-                <h3>Answer {{ index + 1 }}</h3>
+                <h3>
+                  {{
+                    $t(
+                      "interventionView.surveyModalQuestionCard.form.answer.answer"
+                    )
+                  }}
+                  {{ index + 1 }}
+                </h3>
                 <div class="d-flex justify-space-between">
                   <v-text-field
                     v-model="answers[index].answerText"
-                    label="Answer text TODO i18n"
+                    :label="
+                      $t(
+                        'interventionView.surveyModalQuestionCard.form.answer.textLabel'
+                      )
+                    "
                     outlined
                     dense
                     :ref="`answer-text-${index}`"
@@ -96,11 +151,17 @@
                       color="primary"
                       rounded
                       outlined
-                      @click="clickOnAddAnswer"
+                      @click="clickOnAddImgToAnswer"
                       class="ml-2"
                     >
                       <v-icon class="mr-2"> mdi-image </v-icon>
-                      <span class="overflow-hidden"> Add image to answer </span>
+                      <span class="overflow-hidden">
+                        {{
+                          $t(
+                            "interventionView.surveyModalQuestionCard.form.answer.addImage"
+                          )
+                        }}
+                      </span>
                     </v-btn>
                     <input
                       v-if="!read"
@@ -133,7 +194,13 @@
                   class="mt-2"
                 >
                   <v-icon class="mr-2"> mdi-plus </v-icon>
-                  <span class="overflow-hidden"> Add answer </span>
+                  <span class="overflow-hidden">
+                    {{
+                      $t(
+                        "interventionView.surveyModalQuestionCard.form.answer.addAnswer"
+                      )
+                    }}
+                  </span>
                 </v-btn>
                 <input
                   v-if="!read"
@@ -153,9 +220,9 @@
           text
           color="warning"
           class="text-none"
-          @click="closeThenDeleteData"
+          @click="discardQuestionHandler"
         >
-          Discard question
+          {{ $t("interventionView.surveyModalQuestionCard.discard-question") }}
           <v-icon large> mdi-delete </v-icon>
         </v-btn>
         <v-spacer></v-spacer>
@@ -163,10 +230,20 @@
           x-large
           text
           class="text-none"
-          @click="clickOnNextQuestion"
+          @click="priorQuestion"
+          :disabled="!canAdvanceBack"
+        >
+          <v-icon large> mdi-chevron-left </v-icon>
+          {{ $t("interventionView.surveyModalQuestionCard.prior-question") }}
+        </v-btn>
+        <v-btn
+          x-large
+          text
+          class="text-none"
+          @click="nextQuestion"
           :disabled="!canAdvance"
         >
-          Next question
+          {{ $t("interventionView.surveyModalQuestionCard.next-question") }}
           <v-icon large> mdi-chevron-right </v-icon>
         </v-btn>
       </v-card-actions>
@@ -186,21 +263,11 @@ const questionTextMaxChar = Math.max(
 export default {
   name: "SurveyModalQuestion",
   /* The parent element is SurveyModal.vue */
-  props: {
-    initialQText: {
-      type: String,
-      required: true,
-    },
-    initialQType: {
-      type: String,
-      required: true,
-      validator: (value) => {
-        return Object.keys(questionTypesDict).includes(value);
-      },
-    },
-    initialAnswers: {
-      type: Array,
-      required: true,
+  watch: {
+    currentQuestion: function (newVal) {
+      this.questionText = newVal.questionText;
+      this.questionType = newVal.questionType;
+      this.answers = newVal.answers;
     },
   },
   data() {
@@ -217,13 +284,13 @@ export default {
       answers: [{ answerText: "" }],
     };
   },
-  mounted() {
-    this.resetComponentData();
-  },
   computed: {
     ...mapGetters({
       surveyName: "ivGui/getSurveyNameCurrentlyBeingEdited",
       surveyModalMode: "ivGui/getSurveyModalMode",
+      canAdvanceBack: "q/canAdvanceBack",
+      canAdvanceForward: "q/canAdvanceForward",
+      currentQuestion: "q/currentQuestion",
     }),
     requiredi18n() {
       return this.$t("login.required");
@@ -254,13 +321,13 @@ export default {
     },
   },
   methods: {
-    ...mapActions({}),
+    ...mapActions({
+      nextQuestionHandler: "q/nextQuestionHandler",
+      priorQuestionHandler: "q/priorQuestionHandler",
+      discardQuestionHandler: "q/discardQuestionHandler",
+      saveQuestionHandler: "q/saveQuestionHandler",
+    }),
     ...mapMutations({}),
-    resetComponentData() {
-      this.questionText = this.initialQText;
-      this.questionType = this.initialQType;
-      this.answers = this.initialAnswers;
-    },
     clickOnAddImage() {
       const imgInput = this.$refs["question-img-upload"];
       imgInput.click ? imgInput.click() : imgInput[0].click();
@@ -273,21 +340,27 @@ export default {
     clickOnAddAnswer() {
       this.answers.push({ answerText: "" });
     },
-    async clickOnNextQuestion() {
-      await this.$emit("pushToQuestions", {
-        questionText: this.questionText,
-        questionType: this.questionType,
-        answers: this.answers,
-      });
-      await this.$nextTick();
-      this.resetComponentData();
-    },
+    clickOnAddImgToAnswer() {},
     clickOnRemoveAnswer(index) {
       this.answers = this.answers.filter((a, i) => i !== index);
     },
-    closeThenDeleteData() {
-      this.$emit("close");
-      this.$emit("deleteQuestions");
+    nextQuestion() {
+      this.nextQuestionHandler({
+        newQuestion: {
+          questionText: this.questionText,
+          questionType: this.questionType,
+          answers: this.answers,
+        },
+      });
+    },
+    priorQuestion() {
+      this.priorQuestionHandler({
+        newQuestion: {
+          questionText: this.questionText,
+          questionType: this.questionType,
+          answers: this.answers,
+        },
+      });
     },
   },
 };
