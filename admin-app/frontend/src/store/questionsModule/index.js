@@ -14,10 +14,6 @@ const questionsModule = {
     isAtFirstQuestion: (state, { getIQuestions }) => getIQuestions === 0,
     isAtLastQuestion: (state, { getIQuestions, nQuestions }) =>
       getIQuestions === nQuestions - 1,
-    isAtNextToLastQuestion: (state, { getIQuestions, nQuestions }) =>
-      getIQuestions === nQuestions - 2,
-    canAdvanceBack: (state, { isAtFirstQuestion }) => !isAtFirstQuestion,
-    canAdvanceForward: (state, { isAtLastQuestion }) => !isAtLastQuestion,
     currentQuestion: (state, { getQuestions, getIQuestions }) =>
       getQuestions[getIQuestions],
   },
