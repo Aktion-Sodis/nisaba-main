@@ -87,7 +87,15 @@
           "answer": "Answer",
           "textLabel": "Answer text",
           "addImage": "Add image to answer",
-          "addAnswer": "Add answer"
+          "addAnswer": "Add answer",
+          "questionTypes": {
+            "text": "Text",
+            "singleChoice": "Single choice",
+            "multipleChoice": "Multiple choice",
+            "picture": "Picture",
+            "pictureWithTags": "Picture with tags",
+            "audio": "Audio"
+          }
         }
       },
       "discard-question": "Discard question",

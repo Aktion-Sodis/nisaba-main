@@ -111,8 +111,7 @@
                 v-if="read || create"
                 :autofocus="edit || create"
                 v-model="questionType"
-                :items="Object.keys(questionTypesDict)"
-                :rules="[rules.maxChar]"
+                :items="questionTypesItemValue"
                 :label="
                   $t(
                     'interventionView.surveyModalQuestionCard.form.answer.typeLabel'
@@ -297,7 +296,20 @@ export default {
       canAdvanceBack: "q/canAdvanceBack",
       canAdvanceForward: "q/canAdvanceForward",
       currentQuestion: "q/currentQuestion",
+      nQuestions: "q/nQuestions",
     }),
+    questionTypesItemValue() {
+      let res = [];
+      for (const key in questionTypesDict) {
+        res.push({
+          text: this.$t(
+            `interventionView.surveyModalQuestionCard.form.answer.questionTypes.${key}`
+          ),
+          value: key,
+        });
+      }
+      return res;
+    },
     requiredi18n() {
       return this.$t("login.required");
     },
@@ -324,7 +336,7 @@ export default {
       );
     },
     isSaveable() {
-      return this.canAdvance;
+      return this.nQuestions > 1 && !this.canAdvance;
     },
     areAnswersNeeded() {
       return (
