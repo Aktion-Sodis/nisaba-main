@@ -10,11 +10,11 @@
           x-large
           text
           class="text-none"
-          @click="saveSurveyHandler"
+          @click="finalizeSurveyHandler"
           :disabled="true"
         >
-          {{ $t("interventionView.surveyModalQuestionCard.publish-survey") }}
-          <v-icon large class="ml-2"> mdi-upload </v-icon>
+          {{ $t("interventionView.surveyModalQuestionCard.finalize-survey") }}
+          <v-icon large class="ml-2"> mdi-chevron-right </v-icon>
         </v-btn>
       </v-card-title>
 
@@ -239,7 +239,7 @@
           :disabled="!canAdvanceBack"
           v-if="!isAtLastQuestion"
         >
-          <v-icon large> mdi-chevron-left </v-icon>
+          <v-icon large> mdi-skip-previous </v-icon>
           {{ $t("interventionView.surveyModalQuestionCard.prior-question") }}
         </v-btn>
         <v-btn
@@ -251,7 +251,7 @@
           v-if="!isAtLastQuestion"
         >
           {{ $t("interventionView.surveyModalQuestionCard.next-question") }}
-          <v-icon large> mdi-chevron-right </v-icon>
+          <v-icon large> mdi-skip-next </v-icon>
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn
@@ -388,7 +388,7 @@ export default {
       discardQuestionHandler: "q/discardQuestionHandler",
       saveQuestionHandler: "q/saveQuestionHandler",
     }),
-    saveSurveyHandler() {},
+    finalizeSurveyHandler() {},
     updateComponentData() {
       const q = this.currentQuestion;
       const currentAnswers = this.currentAnswers;
@@ -397,11 +397,11 @@ export default {
       this.questionType = q.questionType;
       this.answers = [new EmptyAnswer()];
       if (!currentAnswers[0].isEmptyAnswer)
-      for (let index = 0; index < currentAnswers.length; index++) {
-        const cA = currentAnswers[index];
-        const nA = new Answer({ answerText: cA.answerText });
-        this.answers.splice(index, 1, nA);
-      }
+        for (let index = 0; index < currentAnswers.length; index++) {
+          const cA = currentAnswers[index];
+          const nA = new Answer({ answerText: cA.answerText });
+          this.answers.splice(index, 1, nA);
+        }
     },
     saveQuestion() {
       this.saveQuestionHandler({

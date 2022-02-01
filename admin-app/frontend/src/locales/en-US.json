@@ -101,6 +101,7 @@
       "discard-question": "Discard question",
       "prior-question": "Prior question",
       "next-question": "Next question",
+      "finalize-survey": "Finalize survey",
       "publish-survey": "Publish survey",
       "save-question": "Save question"
     }
