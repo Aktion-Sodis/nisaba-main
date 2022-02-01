@@ -272,6 +272,11 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { modalModesDict, questionTypesDict } from "../../../store/constants";
+import {
+  EmptyQuestion,
+  EmptyAnswer,
+  Answer,
+} from "../../../store/questionsModule/utils";
 
 const questionTextMaxChar = Math.max(
   parseInt(process.env.VUE_APP_QUESTION_TEXT_MAX_CHAR, 10),
@@ -280,13 +285,8 @@ const questionTextMaxChar = Math.max(
 
 export default {
   name: "SurveyModalQuestion",
-  /* The parent element is SurveyModal.vue */
   watch: {
-    currentQuestion: function (newVal) {
-      this.questionText = newVal.questionText;
-      this.questionType = newVal.questionType;
-      this.answers = newVal.answers;
-    },
+    iQuestions: "updateComponentData",
   },
   data() {
     return {
@@ -297,9 +297,9 @@ export default {
       },
       modalModesDict,
       questionTypesDict,
-      questionText: "",
-      questionType: "text",
-      answers: [{ answerText: "" }],
+      questionText: new EmptyQuestion().questionText,
+      questionType: new EmptyQuestion().questionType,
+      answers: [new EmptyAnswer()],
     };
   },
   computed: {
@@ -308,6 +308,8 @@ export default {
       surveyModalMode: "ivGui/getSurveyModalMode",
       canAdvanceForward: "q/canAdvanceForward",
       currentQuestion: "q/currentQuestion",
+      currentAnswers: "q/currentAnswers",
+      currentQuestionWithAnswers: "q/currentQuestionWithAnswers",
       nQuestions: "q/nQuestions",
       iQuestions: "q/getIQuestions",
       isAtLastQuestion: "q/isAtLastQuestion",
@@ -334,15 +336,17 @@ export default {
       });
     },
     areThereChanges() {
-      return (
-        this.questionText !== this.currentQuestion.questionText ||
-        (this.areAnswersNeeded &&
-          (this.answers.length !== this.currentQuestion.answers.length ||
-            this.answers.filter(
-              (a, i) =>
-                a.answerText !== this.currentQuestion.answers[i].answerText
-            ).length > 0))
-      );
+      if (this.questionText !== this.currentQuestion.questionText) return true;
+      if (this.areAnswersNeeded) {
+        if (this.answers.length !== this.currentAnswers.length) return true;
+        if (
+          this.answers.filter(
+            (a, i) => a.answerText !== this.currentAnswers[i].answerText
+          ).length > 0
+        )
+          return true;
+      }
+      return false;
     },
     edit() {
       return this.surveyModalMode === this.modalModesDict.edit;
@@ -364,7 +368,9 @@ export default {
         this.questionText !== "" &&
         (!this.areAnswersNeeded ||
           (this.answers.length > 0 &&
-            !new Set(this.answers.map((a) => a.answerText === "")).has(true)))
+            !this.answers.find((a) => a.answerText === ""))) &&
+        (!(this.currentQuestion.isEmptyQuestion ?? true) ||
+          this.areThereChanges)
       );
     },
     areAnswersNeeded() {
@@ -383,13 +389,25 @@ export default {
       saveQuestionHandler: "q/saveQuestionHandler",
     }),
     saveSurveyHandler() {},
+    updateComponentData() {
+      const q = this.currentQuestion;
+      const currentAnswers = this.currentAnswers;
+
+      this.questionText = q.questionText;
+      this.questionType = q.questionType;
+      for (let index = 0; index < currentAnswers.length; index++) {
+        const cA = currentAnswers[index];
+        const nA = new Answer({ answerText: cA.answerText });
+        this.answers.splice(index, 1, nA);
+      }
+    },
     saveQuestion() {
       this.saveQuestionHandler({
         newQuestion: {
           questionText: this.questionText,
           questionType: this.questionType,
-          answers: this.answers,
         },
+        newAnswers: Array.from(this.answers),
       });
     },
     ...mapMutations({}),
@@ -407,15 +425,15 @@ export default {
     },
     clickOnAddImgToAnswer() {},
     clickOnRemoveAnswer(index) {
-      this.answers = this.answers.filter((a, i) => i !== index);
+      this.answers.splice(index, 1);
     },
     nextQuestion() {
       this.nextQuestionHandler({
         newQuestion: {
           questionText: this.questionText,
           questionType: this.questionType,
-          answers: this.answers,
         },
+        newAnswers: Array.from(this.answers),
       });
     },
     priorQuestion() {
@@ -423,8 +441,8 @@ export default {
         newQuestion: {
           questionText: this.questionText,
           questionType: this.questionType,
-          answers: this.answers,
         },
+        newAnswers: Array.from(this.answers),
       });
     },
   },

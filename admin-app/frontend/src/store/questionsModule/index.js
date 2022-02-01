@@ -1,23 +1,43 @@
-import { EmptyQuestion } from "../../store/questionsModule/utils";
+import { EmptyQuestion, EmptyAnswer } from "../../store/questionsModule/utils";
 
 const questionsModule = {
   namespaced: true,
   state: () => ({
     iQuestions: 0,
-
     questions: [new EmptyQuestion()],
+    answers: [[new EmptyAnswer()]],
   }),
   getters: {
+    /* The getters with the prefix "get-" are the only ones with a direct access to the state. */
+    /* The other should use them instead of the state itself for avoiding side effects. */
     getIQuestions: ({ iQuestions }) => iQuestions,
     getQuestions: ({ questions }) => questions,
-    nQuestions: ({ questions }) => questions.length,
+    getAnswers: ({ answers }) => answers,
+
+    questionsWithAnswers: (state, { getQuestions, getAnswers }) =>
+      getQuestions.map((q, i) => ({ ...q, answers: getAnswers[i] })),
+    nQuestions: (state, { getQuestions }) => getQuestions.length,
     isAtFirstQuestion: (state, { getIQuestions }) => getIQuestions === 0,
     isAtLastQuestion: (state, { getIQuestions, nQuestions }) =>
       getIQuestions === nQuestions - 1,
+
     currentQuestion: (state, { getQuestions, getIQuestions }) =>
       getQuestions[getIQuestions],
+
+    currentAnswers: (state, { getAnswers, getIQuestions }) => {
+      return getAnswers[getIQuestions];
+    },
+
+    currentQuestionWithAnswers: (
+      state,
+      { getAnswers, getQuestions, getIQuestions }
+    ) => ({
+      ...getQuestions[getIQuestions],
+      answers: getAnswers[getIQuestions],
+    }),
   },
   mutations: {
+    /* INDEX OPERATIONS */
     setIQuestions: (state, { payload }) => {
       state.iQuestions = payload;
     },
@@ -28,44 +48,72 @@ const questionsModule = {
       state.iQuestions--;
     },
 
+    /* QUESTION & ANSWER BULK UPDATE */
     setQuestions: (state, { payload }) => {
       state.questions = payload;
     },
+    setAnswers: (state, { payload }) => {
+      state.answers = payload;
+    },
 
+    /* QUESTION CREATE, UPDATE, DELETE */
     addQuestionAtIndex: (state, { newQuestion, index }) => {
       state.questions.splice(index, 0, newQuestion);
-    },
-    deleteQuestionAtIndex: (state, { index }) => {
-      state.questions.splice(index, 1);
     },
     replaceQuestionAtIndex: (state, { newQuestion, index }) => {
       state.questions.splice(index, 1, newQuestion);
     },
+    deleteQuestionAtIndex: (state, { index }) => {
+      state.questions.splice(index, 1);
+    },
+
+    /* ANSWER CREATE, UPDATE, DELETE */
+    addAnswerAtIndex: (state, { newAnswers, index }) => {
+      state.answers.splice(index, 0, newAnswers);
+    },
+    deleteAnswerAtIndex: (state, { index }) => {
+      state.answers.splice(index, 1);
+    },
+    replaceAnswerAtIndex: (state, { newAnswers, index }) => {
+      state.answers.splice(index, 1, newAnswers);
+    },
   },
   actions: {
-    nextQuestionHandler: ({ commit, getters }, { newQuestion }) => {
-      console.log({ newQuestion });
-      console.log(getters.getIQuestions);
+    nextQuestionHandler: ({ commit, getters }, { newQuestion, newAnswers }) => {
       commit("replaceQuestionAtIndex", {
         newQuestion,
         index: getters.getIQuestions,
       });
-      console.log(getters.getQuestions);
-      if (getters.isAtLastQuestion)
+      commit("replaceAnswerAtIndex", {
+        newAnswers,
+        index: getters.getIAnswers,
+      });
+      if (getters.isAtLastQuestion) {
         commit("addQuestionAtIndex", {
           newQuestion: new EmptyQuestion(),
           index: getters.getIQuestions + 1,
         });
+        commit("addAnswerAtIndex", {
+          newAnswers: [new EmptyAnswer()],
+          index: getters.getIQuestions + 1,
+        });
+      }
       commit("incrementIQuestions");
     },
-    priorQuestionHandler: ({ commit, getters }, { newQuestion }) => {
+    priorQuestionHandler: (
+      { commit, getters },
+      { newQuestion, newAnswers }
+    ) => {
       if (getters.isAtFirstQuestion) return;
       commit("replaceQuestionAtIndex", {
         newQuestion,
         index: getters.getIQuestions,
       });
+      commit("replaceAnswerAtIndex", {
+        newAnswers,
+        index: getters.getIQuestions,
+      });
       commit("decrementIQuestions");
-      console.log(getters.getQuestions);
     },
     discardQuestionHandler: ({ commit, getters }) => {
       if (getters.isAtLastQuestion) {
@@ -73,18 +121,31 @@ const questionsModule = {
           newQuestion: new EmptyQuestion(),
           index: getters.getIQuestions,
         });
+        commit("replaceAnswerAtIndex", {
+          newAnswers: [new EmptyAnswer()],
+          index: getters.getIQuestions,
+        });
         return;
       }
       commit("deleteQuestionAtIndex", { index: getters.getIQuestions });
+      commit("deleteAnswerAtIndex", { index: getters.getIQuestions });
     },
-    saveQuestionHandler: ({ commit, getters }, { newQuestion }) => {
+    saveQuestionHandler: ({ commit, getters }, { newQuestion, newAnswers }) => {
       commit("replaceQuestionAtIndex", {
         newQuestion,
+        index: getters.getIQuestions,
+      });
+      commit("replaceAnswerAtIndex", {
+        newAnswers,
         index: getters.getIQuestions,
       });
       if (getters.isAtLastQuestion) {
         commit("addQuestionAtIndex", {
           newQuestion: new EmptyQuestion(),
+          index: getters.getIQuestions + 1,
+        });
+        commit("addAnswerAtIndex", {
+          newAnswers: [new EmptyAnswer()],
           index: getters.getIQuestions + 1,
         });
         commit("incrementIQuestions");

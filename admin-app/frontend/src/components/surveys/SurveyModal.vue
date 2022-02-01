@@ -100,7 +100,7 @@ export default {
     ...mapGetters({
       surveyModalMode: "ivGui/getSurveyModalMode",
       surveyModalIsDisplayed: "ivGui/getSurveyModalIsDisplayed",
-      questions: "q/getQuestions",
+      questions: "q/questionsWithAnswers",
       iQuestions: "q/getIQuestions",
       nQuestions: "q/nQuestions",
     }),
