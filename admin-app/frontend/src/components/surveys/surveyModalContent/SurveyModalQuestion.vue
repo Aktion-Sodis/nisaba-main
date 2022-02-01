@@ -286,7 +286,7 @@ const questionTextMaxChar = Math.max(
 export default {
   name: "SurveyModalQuestion",
   watch: {
-    iQuestions: "updateComponentData",
+    currentQuestion: "updateComponentData",
   },
   data() {
     return {
