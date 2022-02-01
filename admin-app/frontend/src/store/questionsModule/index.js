@@ -71,11 +71,11 @@ const questionsModule = {
     addAnswerAtIndex: (state, { newAnswers, index }) => {
       state.answers.splice(index, 0, newAnswers);
     },
-    deleteAnswerAtIndex: (state, { index }) => {
-      state.answers.splice(index, 1);
-    },
     replaceAnswerAtIndex: (state, { newAnswers, index }) => {
       state.answers.splice(index, 1, newAnswers);
+    },
+    deleteAnswerAtIndex: (state, { index }) => {
+      state.answers.splice(index, 1);
     },
   },
   actions: {
