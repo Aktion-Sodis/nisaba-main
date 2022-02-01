@@ -395,6 +395,8 @@ export default {
 
       this.questionText = q.questionText;
       this.questionType = q.questionType;
+      this.answers = [new EmptyAnswer()];
+      if (!currentAnswers[0].isEmptyAnswer)
       for (let index = 0; index < currentAnswers.length; index++) {
         const cA = currentAnswers[index];
         const nA = new Answer({ answerText: cA.answerText });
@@ -407,7 +409,9 @@ export default {
           questionText: this.questionText,
           questionType: this.questionType,
         },
-        newAnswers: Array.from(this.answers),
+        newAnswers: Array.from(
+          this.answers.map((a) => ({ answerText: a.answerText }))
+        ),
       });
     },
     ...mapMutations({}),
@@ -433,7 +437,9 @@ export default {
           questionText: this.questionText,
           questionType: this.questionType,
         },
-        newAnswers: Array.from(this.answers),
+        newAnswers: Array.from(
+          this.answers.map((a) => ({ answerText: a.answerText }))
+        ),
       });
     },
     priorQuestion() {
@@ -442,7 +448,9 @@ export default {
           questionText: this.questionText,
           questionType: this.questionType,
         },
-        newAnswers: Array.from(this.answers),
+        newAnswers: Array.from(
+          this.answers.map((a) => ({ answerText: a.answerText }))
+        ),
       });
     },
   },
