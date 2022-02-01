@@ -89,10 +89,8 @@ export default {
   },
   watch: {
     iQ: function (newVal) {
-      // this.replaceQuestionAtIndex({newQuestion: {}})
-      // TODO: save changes in SurveyModalQuestion and don't block manual nav
-      // this.iQ = oldVal;
-      this.setIQuestions({ payload: newVal });
+      // update the index in state only if it is caused by iQ
+      if (newVal !== this.iQuestions) this.setIQuestions({ payload: newVal });
     },
     iQuestions: function (newVal) {
       this.iQ = newVal;
