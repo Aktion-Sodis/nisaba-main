@@ -337,6 +337,7 @@ export default {
     },
     areThereChanges() {
       if (this.questionText !== this.currentQuestion.questionText) return true;
+      if (this.questionType !== this.currentQuestion.questionType) return true;
       if (this.areAnswersNeeded) {
         if (this.answers.length !== this.currentAnswers.length) return true;
         if (
