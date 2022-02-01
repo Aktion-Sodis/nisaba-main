@@ -13,8 +13,8 @@
 
         <v-divider></v-divider>
 
-        <v-stepper-step step="2" :complete="completionIndex > 2"
-          >Questions
+        <v-stepper-step step="2" :complete="completionIndex > 2">
+          Questions
         </v-stepper-step>
 
         <v-divider></v-divider>
@@ -42,21 +42,23 @@
       <v-tabs-slider color="primary"></v-tabs-slider>
       <v-tab v-for="(q, i) in questions" :key="i" :value="i">
         <v-icon v-if="i === nQuestions - 1" large> mdi-plus </v-icon>
-        <div v-else>
-          <div v-if="q.questionType === 'multipleChoice'">
-            <v-icon> mdi-checkbox-outline </v-icon>
-            <v-icon> mdi-checkbox-outline </v-icon>
-            <v-icon> mdi-checkbox-blank-outline </v-icon>
+        <v-badge v-else color="grey lighten-2" :content="i + 1" bottom overlap>
+          <div>
+            <div v-if="q.questionType === 'multipleChoice'">
+              <v-icon> mdi-checkbox-outline </v-icon>
+              <v-icon> mdi-checkbox-outline </v-icon>
+              <v-icon> mdi-checkbox-blank-outline </v-icon>
+            </div>
+            <div v-else-if="q.questionType === 'singleChoice'">
+              <v-icon> mdi-radiobox-marked </v-icon>
+              <v-icon> mdi-radiobox-blank </v-icon>
+              <v-icon> mdi-radiobox-blank </v-icon>
+            </div>
+            <v-icon v-else large>
+              {{ questionTypesIconDict[q.questionType] }}
+            </v-icon>
           </div>
-          <div v-else-if="q.questionType === 'singleChoice'">
-            <v-icon> mdi-radiobox-marked </v-icon>
-            <v-icon> mdi-radiobox-blank </v-icon>
-            <v-icon> mdi-radiobox-blank </v-icon>
-          </div>
-          <v-icon v-else large>
-            {{ questionTypesIconDict[q.questionType] }}
-          </v-icon>
-        </div>
+        </v-badge>
       </v-tab>
     </v-tabs>
   </v-dialog>
