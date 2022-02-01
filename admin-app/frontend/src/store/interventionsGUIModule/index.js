@@ -129,7 +129,6 @@ const interventionsModule = {
       commit("setInterventionModalMode", modalModesDict.edit);
     },
     switchToReading: ({ commit }) => {
-      console.log("hey");
       commit("setInterventionModalMode", modalModesDict.read);
       commit("setInterventionIdCurrentlyBeingEdited", null);
     },
