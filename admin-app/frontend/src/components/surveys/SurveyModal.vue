@@ -49,9 +49,9 @@
             <v-icon> mdi-checkbox-blank-outline </v-icon>
           </div>
           <div v-else-if="q.questionType === 'singleChoice'">
-            <v-icon> mdi-checkbox-outline </v-icon>
-            <v-icon> mdi-checkbox-blank-outline </v-icon>
-            <v-icon> mdi-checkbox-blank-outline </v-icon>
+            <v-icon> mdi-radiobox-marked </v-icon>
+            <v-icon> mdi-radiobox-blank </v-icon>
+            <v-icon> mdi-radiobox-blank </v-icon>
           </div>
           <v-icon v-else large>
             {{ questionTypesIconDict[q.questionType] }}
