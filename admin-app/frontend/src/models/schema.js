@@ -166,19 +166,12 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "parentLevel": {
-                    "name": "parentLevel",
+                "parentLevelID": {
+                    "name": "parentLevelID",
                     "isArray": false,
-                    "type": {
-                        "model": "Level"
-                    },
+                    "type": "ID",
                     "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": "id",
-                        "targetName": "levelParentLevelId"
-                    }
+                    "attributes": []
                 },
                 "interventionsAreAllowed": {
                     "name": "interventionsAreAllowed",
@@ -233,13 +226,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "levelParentLevelId": {
-                    "name": "levelParentLevelId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -288,14 +274,14 @@ export const schema = {
                     "name": "contents",
                     "isArray": true,
                     "type": {
-                        "model": "Content"
+                        "model": "InterventionContentRelation"
                     },
                     "isRequired": true,
                     "attributes": [],
                     "isArrayNullable": false,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "interventionContentsId"
+                        "associatedWith": "intervention"
                     }
                 },
                 "surveys": {
@@ -384,17 +370,18 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "intervention": {
-                    "name": "intervention",
-                    "isArray": false,
+                "interventions": {
+                    "name": "interventions",
+                    "isArray": true,
                     "type": {
-                        "model": "Intervention"
+                        "model": "InterventionContentRelation"
                     },
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": [],
+                    "isArrayNullable": false,
                     "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "interventionContentsId"
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "content"
                     }
                 },
                 "tags": {
@@ -427,13 +414,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "interventionContentsId": {
-                    "name": "interventionContentsId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -492,6 +472,14 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": false
                 },
+                "tags": {
+                    "name": "tags",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": [],
+                    "isArrayNullable": false
+                },
                 "schemeVersion": {
                     "name": "schemeVersion",
                     "isArray": false,
@@ -514,13 +502,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "interventionSurveysId": {
-                    "name": "interventionSurveysId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -556,32 +537,12 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "parentEntity": {
-                    "name": "parentEntity",
+                "parentEntityID": {
+                    "name": "parentEntityID",
                     "isArray": false,
-                    "type": {
-                        "model": "Entity"
-                    },
+                    "type": "ID",
                     "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "entityChildEntitiesId"
-                    }
-                },
-                "childEntities": {
-                    "name": "childEntities",
-                    "isArray": true,
-                    "type": {
-                        "model": "Entity"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "entityChildEntitiesId"
-                    }
+                    "attributes": []
                 },
                 "level": {
                     "name": "level",
@@ -652,13 +613,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "entityChildEntitiesId": {
-                    "name": "entityChildEntitiesId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 },
                 "entityLevelId": {
                     "name": "entityLevelId",
@@ -892,13 +846,6 @@ export const schema = {
                     "attributes": [],
                     "isReadOnly": true
                 },
-                "appliedInterventionExecutedSurveysId": {
-                    "name": "appliedInterventionExecutedSurveysId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "executedSurveySurveyId": {
                     "name": "executedSurveySurveyId",
                     "isArray": false,
@@ -1080,6 +1027,68 @@ export const schema = {
             },
             "syncable": true,
             "pluralName": "Tasks",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                }
+            ]
+        },
+        "InterventionContentRelation": {
+            "name": "InterventionContentRelation",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "intervention": {
+                    "name": "intervention",
+                    "isArray": false,
+                    "type": {
+                        "model": "Intervention"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "interventionID"
+                    }
+                },
+                "content": {
+                    "name": "content",
+                    "isArray": false,
+                    "type": {
+                        "model": "Content"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "contentID"
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "InterventionContentRelations",
             "attributes": [
                 {
                     "type": "model",
@@ -1456,6 +1465,20 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "rx": {
+                    "name": "rx",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "ry": {
+                    "name": "ry",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "description": {
                     "name": "description",
                     "isArray": false,
@@ -1466,5 +1489,5 @@ export const schema = {
             }
         }
     },
-    "version": "0dc432336982770c47f760fcae8dd1b4"
+    "version": "2169cd6098fbe7c38821be998d7eef17"
 };

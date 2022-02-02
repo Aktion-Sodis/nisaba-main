@@ -80,7 +80,7 @@ type Intervention @model {
   name: String!
   description: String @default(value: "")
   interventionType: InterventionType!
-  contents: [Content!]! @hasMany
+  contents: [Content!]! @manyToMany(relationName: "InterventionContentRelation")
   surveys: [Survey!]! @hasMany
   tags: [String!]!
   schemeVersion: Int @default(value: "0")
@@ -95,7 +95,7 @@ enum InterventionType {
 type Content @model {
   name: String!
   description: String @default(value: "")
-  intervention: Intervention @belongsTo
+  interventions: [Intervention!]! @manyToMany(relationName: "InterventionContentRelation")
   tags: [String!]!
   schemeVersion: Int @default(value: "0")
 }
@@ -106,6 +106,7 @@ type Survey @model {
   description: String @default(value: "")
   intervention: Intervention @belongsTo
   questions: [Question!]!
+  tags: [String!]!
   schemeVersion: Int @default(value: "0")
 }
 
@@ -200,6 +201,8 @@ type QuestionAnswer {
 type Marking {
   x: Float!
   y: Float!
+  rx: Float!
+  ry: Float!
   description: String!
 }
 

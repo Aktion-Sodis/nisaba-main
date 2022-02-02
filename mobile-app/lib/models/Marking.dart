@@ -28,6 +28,8 @@ import 'package:flutter/foundation.dart';
 class Marking {
   final double? _x;
   final double? _y;
+  final double? _rx;
+  final double? _ry;
   final String? _description;
 
   double get x {
@@ -56,6 +58,32 @@ class Marking {
     }
   }
   
+  double get rx {
+    try {
+      return _rx!;
+    } catch(e) {
+      throw new DataStoreException(
+      DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      recoverySuggestion:
+        DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+      underlyingException: e.toString()
+    );
+    }
+  }
+  
+  double get ry {
+    try {
+      return _ry!;
+    } catch(e) {
+      throw new DataStoreException(
+      DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      recoverySuggestion:
+        DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+      underlyingException: e.toString()
+    );
+    }
+  }
+  
   String get description {
     try {
       return _description!;
@@ -69,12 +97,14 @@ class Marking {
     }
   }
   
-  const Marking._internal({required x, required y, required description}): _x = x, _y = y, _description = description;
+  const Marking._internal({required x, required y, required rx, required ry, required description}): _x = x, _y = y, _rx = rx, _ry = ry, _description = description;
   
-  factory Marking({required double x, required double y, required String description}) {
+  factory Marking({required double x, required double y, required double rx, required double ry, required String description}) {
     return Marking._internal(
       x: x,
       y: y,
+      rx: rx,
+      ry: ry,
       description: description);
   }
   
@@ -88,6 +118,8 @@ class Marking {
     return other is Marking &&
       _x == other._x &&
       _y == other._y &&
+      _rx == other._rx &&
+      _ry == other._ry &&
       _description == other._description;
   }
   
@@ -101,26 +133,32 @@ class Marking {
     buffer.write("Marking {");
     buffer.write("x=" + (_x != null ? _x!.toString() : "null") + ", ");
     buffer.write("y=" + (_y != null ? _y!.toString() : "null") + ", ");
+    buffer.write("rx=" + (_rx != null ? _rx!.toString() : "null") + ", ");
+    buffer.write("ry=" + (_ry != null ? _ry!.toString() : "null") + ", ");
     buffer.write("description=" + "$_description");
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Marking copyWith({double? x, double? y, String? description}) {
+  Marking copyWith({double? x, double? y, double? rx, double? ry, String? description}) {
     return Marking._internal(
       x: x ?? this.x,
       y: y ?? this.y,
+      rx: rx ?? this.rx,
+      ry: ry ?? this.ry,
       description: description ?? this.description);
   }
   
   Marking.fromJson(Map<String, dynamic> json)  
     : _x = (json['x'] as num?)?.toDouble(),
       _y = (json['y'] as num?)?.toDouble(),
+      _rx = (json['rx'] as num?)?.toDouble(),
+      _ry = (json['ry'] as num?)?.toDouble(),
       _description = json['description'];
   
   Map<String, dynamic> toJson() => {
-    'x': _x, 'y': _y, 'description': _description
+    'x': _x, 'y': _y, 'rx': _rx, 'ry': _ry, 'description': _description
   };
 
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
@@ -135,6 +173,18 @@ class Marking {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
       fieldName: 'y',
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.double)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+      fieldName: 'rx',
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.double)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+      fieldName: 'ry',
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.double)
     ));

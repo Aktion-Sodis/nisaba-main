@@ -35,7 +35,7 @@ const SurveyType = {
   "DEFAULT": "DEFAULT"
 };
 
-const { User, Config, Level, Intervention, Content, Survey, Entity, AppliedIntervention, ExecutedSurvey, Task, Permission, ColorTheme, StoragePaths, Question, QuestionOption, CustomData, Location, AppliedCustomData, QuestionAnswer, Marking } = initSchema(schema);
+const { User, Config, Level, Intervention, Content, Survey, Entity, AppliedIntervention, ExecutedSurvey, Task, InterventionContentRelation, Permission, ColorTheme, StoragePaths, Question, QuestionOption, CustomData, Location, AppliedCustomData, QuestionAnswer, Marking } = initSchema(schema);
 
 export {
   User,
@@ -48,6 +48,7 @@ export {
   AppliedIntervention,
   ExecutedSurvey,
   Task,
+  InterventionContentRelation,
   PermissionType,
   InterventionType,
   QuestionType,
