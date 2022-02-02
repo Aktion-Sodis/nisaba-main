@@ -376,7 +376,6 @@ export default {
     },
     areAnswersNeeded() {
       return (
-        this.questionType === "text" ||
         this.questionType === "singleChoice" ||
         this.questionType === "multipleChoice"
       );
