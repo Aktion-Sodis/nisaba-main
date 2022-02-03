@@ -26,6 +26,7 @@ import 'Content.dart';
 import 'Entity.dart';
 import 'ExecutedSurvey.dart';
 import 'Intervention.dart';
+import 'InterventionContentRelation.dart';
 import 'Level.dart';
 import 'Survey.dart';
 import 'Task.dart';
@@ -50,6 +51,7 @@ export 'CustomData.dart';
 export 'Entity.dart';
 export 'ExecutedSurvey.dart';
 export 'Intervention.dart';
+export 'InterventionContentRelation.dart';
 export 'InterventionType.dart';
 export 'Level.dart';
 export 'Location.dart';
@@ -69,9 +71,9 @@ export 'User.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "0dc432336982770c47f760fcae8dd1b4";
+  String version = "b4c0bbe21cbdde26762c8b3ccaef14be";
   @override
-  List<ModelSchema> modelSchemas = [AppliedIntervention.schema, Config.schema, Content.schema, Entity.schema, ExecutedSurvey.schema, Intervention.schema, Level.schema, Survey.schema, Task.schema, User.schema];
+  List<ModelSchema> modelSchemas = [AppliedIntervention.schema, Config.schema, Content.schema, Entity.schema, ExecutedSurvey.schema, Intervention.schema, InterventionContentRelation.schema, Level.schema, Survey.schema, Task.schema, User.schema];
   static final ModelProvider _instance = ModelProvider();
   @override
   List<ModelSchema> customTypeSchemas = [AppliedCustomData.schema, ColorTheme.schema, CustomData.schema, Location.schema, Marking.schema, Permission.schema, Question.schema, QuestionAnswer.schema, QuestionOption.schema, StoragePaths.schema];
@@ -92,6 +94,8 @@ class ModelProvider implements ModelProviderInterface {
         return ExecutedSurvey.classType;
       case "Intervention":
         return Intervention.classType;
+      case "InterventionContentRelation":
+        return InterventionContentRelation.classType;
       case "Level":
         return Level.classType;
       case "Survey":

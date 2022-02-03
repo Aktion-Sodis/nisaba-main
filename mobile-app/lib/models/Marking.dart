@@ -28,7 +28,9 @@ import 'package:flutter/foundation.dart';
 class Marking {
   final double? _x;
   final double? _y;
-  final String? _description;
+  final double? _rx;
+  final double? _ry;
+  final String? _text;
 
   double get x {
     try {
@@ -56,9 +58,9 @@ class Marking {
     }
   }
   
-  String get description {
+  double get rx {
     try {
-      return _description!;
+      return _rx!;
     } catch(e) {
       throw new DataStoreException(
       DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -69,13 +71,41 @@ class Marking {
     }
   }
   
-  const Marking._internal({required x, required y, required description}): _x = x, _y = y, _description = description;
+  double get ry {
+    try {
+      return _ry!;
+    } catch(e) {
+      throw new DataStoreException(
+      DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      recoverySuggestion:
+        DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+      underlyingException: e.toString()
+    );
+    }
+  }
   
-  factory Marking({required double x, required double y, required String description}) {
+  String get text {
+    try {
+      return _text!;
+    } catch(e) {
+      throw new DataStoreException(
+      DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      recoverySuggestion:
+        DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+      underlyingException: e.toString()
+    );
+    }
+  }
+  
+  const Marking._internal({required x, required y, required rx, required ry, required text}): _x = x, _y = y, _rx = rx, _ry = ry, _text = text;
+  
+  factory Marking({required double x, required double y, required double rx, required double ry, required String text}) {
     return Marking._internal(
       x: x,
       y: y,
-      description: description);
+      rx: rx,
+      ry: ry,
+      text: text);
   }
   
   bool equals(Object other) {
@@ -88,7 +118,9 @@ class Marking {
     return other is Marking &&
       _x == other._x &&
       _y == other._y &&
-      _description == other._description;
+      _rx == other._rx &&
+      _ry == other._ry &&
+      _text == other._text;
   }
   
   @override
@@ -101,26 +133,32 @@ class Marking {
     buffer.write("Marking {");
     buffer.write("x=" + (_x != null ? _x!.toString() : "null") + ", ");
     buffer.write("y=" + (_y != null ? _y!.toString() : "null") + ", ");
-    buffer.write("description=" + "$_description");
+    buffer.write("rx=" + (_rx != null ? _rx!.toString() : "null") + ", ");
+    buffer.write("ry=" + (_ry != null ? _ry!.toString() : "null") + ", ");
+    buffer.write("text=" + "$_text");
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Marking copyWith({double? x, double? y, String? description}) {
+  Marking copyWith({double? x, double? y, double? rx, double? ry, String? text}) {
     return Marking._internal(
       x: x ?? this.x,
       y: y ?? this.y,
-      description: description ?? this.description);
+      rx: rx ?? this.rx,
+      ry: ry ?? this.ry,
+      text: text ?? this.text);
   }
   
   Marking.fromJson(Map<String, dynamic> json)  
     : _x = (json['x'] as num?)?.toDouble(),
       _y = (json['y'] as num?)?.toDouble(),
-      _description = json['description'];
+      _rx = (json['rx'] as num?)?.toDouble(),
+      _ry = (json['ry'] as num?)?.toDouble(),
+      _text = json['text'];
   
   Map<String, dynamic> toJson() => {
-    'x': _x, 'y': _y, 'description': _description
+    'x': _x, 'y': _y, 'rx': _rx, 'ry': _ry, 'text': _text
   };
 
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
@@ -140,7 +178,19 @@ class Marking {
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'description',
+      fieldName: 'rx',
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.double)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+      fieldName: 'ry',
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.double)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+      fieldName: 'text',
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));

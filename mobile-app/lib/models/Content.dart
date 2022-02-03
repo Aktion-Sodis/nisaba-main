@@ -32,12 +32,11 @@ class Content extends Model {
   final String id;
   final String? _name;
   final String? _description;
-  final Intervention? _intervention;
+  final List<InterventionContentRelation>? _interventions;
   final List<String>? _tags;
   final int? _schemeVersion;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
-  final String? _interventionContentsId;
 
   @override
   getInstanceType() => classType;
@@ -64,8 +63,17 @@ class Content extends Model {
     return _description;
   }
   
-  Intervention? get intervention {
-    return _intervention;
+  List<InterventionContentRelation> get interventions {
+    try {
+      return _interventions!;
+    } catch(e) {
+      throw new DataStoreException(
+      DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      recoverySuggestion:
+        DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+      underlyingException: e.toString()
+    );
+    }
   }
   
   List<String> get tags {
@@ -93,21 +101,16 @@ class Content extends Model {
     return _updatedAt;
   }
   
-  String? get interventionContentsId {
-    return _interventionContentsId;
-  }
+  const Content._internal({required this.id, required name, description, required interventions, required tags, schemeVersion, createdAt, updatedAt}): _name = name, _description = description, _interventions = interventions, _tags = tags, _schemeVersion = schemeVersion, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  const Content._internal({required this.id, required name, description, intervention, required tags, schemeVersion, createdAt, updatedAt, interventionContentsId}): _name = name, _description = description, _intervention = intervention, _tags = tags, _schemeVersion = schemeVersion, _createdAt = createdAt, _updatedAt = updatedAt, _interventionContentsId = interventionContentsId;
-  
-  factory Content({String? id, required String name, String? description, Intervention? intervention, required List<String> tags, int? schemeVersion, String? interventionContentsId}) {
+  factory Content({String? id, required String name, String? description, required List<InterventionContentRelation> interventions, required List<String> tags, int? schemeVersion}) {
     return Content._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
       description: description,
-      intervention: intervention,
+      interventions: interventions != null ? List<InterventionContentRelation>.unmodifiable(interventions) : interventions,
       tags: tags != null ? List<String>.unmodifiable(tags) : tags,
-      schemeVersion: schemeVersion,
-      interventionContentsId: interventionContentsId);
+      schemeVersion: schemeVersion);
   }
   
   bool equals(Object other) {
@@ -121,10 +124,9 @@ class Content extends Model {
       id == other.id &&
       _name == other._name &&
       _description == other._description &&
-      _intervention == other._intervention &&
+      DeepCollectionEquality().equals(_interventions, other._interventions) &&
       DeepCollectionEquality().equals(_tags, other._tags) &&
-      _schemeVersion == other._schemeVersion &&
-      _interventionContentsId == other._interventionContentsId;
+      _schemeVersion == other._schemeVersion;
   }
   
   @override
@@ -138,54 +140,52 @@ class Content extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("name=" + "$_name" + ", ");
     buffer.write("description=" + "$_description" + ", ");
-    buffer.write("intervention=" + (_intervention != null ? _intervention!.toString() : "null") + ", ");
     buffer.write("tags=" + (_tags != null ? _tags!.toString() : "null") + ", ");
     buffer.write("schemeVersion=" + (_schemeVersion != null ? _schemeVersion!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
-    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null") + ", ");
-    buffer.write("interventionContentsId=" + "$_interventionContentsId");
+    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Content copyWith({String? id, String? name, String? description, Intervention? intervention, List<String>? tags, int? schemeVersion, String? interventionContentsId}) {
+  Content copyWith({String? id, String? name, String? description, List<InterventionContentRelation>? interventions, List<String>? tags, int? schemeVersion}) {
     return Content._internal(
       id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
-      intervention: intervention ?? this.intervention,
+      interventions: interventions ?? this.interventions,
       tags: tags ?? this.tags,
-      schemeVersion: schemeVersion ?? this.schemeVersion,
-      interventionContentsId: interventionContentsId ?? this.interventionContentsId);
+      schemeVersion: schemeVersion ?? this.schemeVersion);
   }
   
   Content.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _name = json['name'],
       _description = json['description'],
-      _intervention = json['intervention']?['serializedData'] != null
-        ? Intervention.fromJson(new Map<String, dynamic>.from(json['intervention']['serializedData']))
+      _interventions = json['interventions'] is List
+        ? (json['interventions'] as List)
+          .where((e) => e?['serializedData'] != null)
+          .map((e) => InterventionContentRelation.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
+          .toList()
         : null,
       _tags = json['tags']?.cast<String>(),
       _schemeVersion = (json['schemeVersion'] as num?)?.toInt(),
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
-      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null,
-      _interventionContentsId = json['interventionContentsId'];
+      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'description': _description, 'intervention': _intervention?.toJson(), 'tags': _tags, 'schemeVersion': _schemeVersion, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'interventionContentsId': _interventionContentsId
+    'id': id, 'name': _name, 'description': _description, 'interventions': _interventions?.map((InterventionContentRelation? e) => e?.toJson()).toList(), 'tags': _tags, 'schemeVersion': _schemeVersion, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "content.id");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
-  static final QueryField INTERVENTION = QueryField(
-    fieldName: "intervention",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Intervention).toString()));
+  static final QueryField INTERVENTIONS = QueryField(
+    fieldName: "interventions",
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (InterventionContentRelation).toString()));
   static final QueryField TAGS = QueryField(fieldName: "tags");
   static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
-  static final QueryField INTERVENTIONCONTENTSID = QueryField(fieldName: "interventionContentsId");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Content";
     modelSchemaDefinition.pluralName = "Contents";
@@ -204,11 +204,11 @@ class Content extends Model {
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
-      key: Content.INTERVENTION,
-      isRequired: false,
-      targetName: "interventionContentsId",
-      ofModelName: (Intervention).toString()
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+      key: Content.INTERVENTIONS,
+      isRequired: true,
+      ofModelName: (InterventionContentRelation).toString(),
+      associatedKey: InterventionContentRelation.CONTENT
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
@@ -236,12 +236,6 @@ class Content extends Model {
       isRequired: false,
       isReadOnly: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Content.INTERVENTIONCONTENTSID,
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
   });
 }
