@@ -8,7 +8,9 @@ import entitiesModule from "./entitiesModule";
 import organizationStructureModule from "./organizationStructureModule";
 import interventionsModule from "./interventionsModule";
 import interventionsGUIModule from "./interventionsGUIModule";
-import surveysModule from "./surveysModule";
+import surveysData from "./survey/data";
+import surveysUI from "./survey/ui";
+import questionsUI from "./questions/ui";
 
 // persist
 const vuexLocal = new VuexPersistence({
@@ -33,7 +35,9 @@ export default new Vuex.Store({
     os: organizationStructureModule,
     iv: interventionsModule,
     ivGui: interventionsGUIModule,
-    surveys: surveysModule,
+    surveysData,
+    surveysUI,
+    questionsUI,
   },
   plugins: [vuexLocal.plugin],
 });

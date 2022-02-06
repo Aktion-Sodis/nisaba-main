@@ -1,13 +1,14 @@
+import { modalModesDict } from "../../store/constants";
+
 const interventionsModule = {
   namespaced: true,
   state: () => ({
     interventionIdCurrentlyBeingEdited: null,
     interventionModalIsDisplayed: false,
-
-    surveyIdCurrentlyBeingEdited: null,
-    surveyModalIsDisplayed: false,
+    interventionModalMode: modalModesDict.read,
   }),
   getters: {
+    getInterventionModalMode: (state) => state.interventionModalMode,
     getInterventionModalIsEdit: (state) =>
       state.interventionIdCurrentlyBeingEdited !== null,
     getInterventionCurrentlyBeingEdited: (
@@ -21,14 +22,6 @@ const interventionsModule = {
       ) || null,
     getInterventionModalIsDisplayed: (state) =>
       state.interventionModalIsDisplayed,
-
-    getSurveyModalIsEdit: (state) =>
-      state.surveyIdCurrentlyBeingEdited !== null,
-    getSurveyCurrentlyBeingEdited: (state, getters, rootState, rootGetters) =>
-      rootGetters["surveys/getSurveyById"](
-        state.surveyIdCurrentlyBeingEdited
-      ) || null,
-    getSurveyModalIsDisplayed: (state) => state.surveyModalIsDisplayed,
   },
   mutations: {
     setInterventionIdCurrentlyBeingEdited: (state, interventionId) => {
@@ -37,30 +30,30 @@ const interventionsModule = {
     setInterventionModalIsDisplayed: (state, payload) => {
       state.interventionModalIsDisplayed = payload;
     },
-
-    setSurveyIdCurrentlyBeingEdited: (state, surveyId) => {
-      state.surveyIdCurrentlyBeingEdited = surveyId;
-    },
-    setSurveyModalIsDisplayed: (state, payload) => {
-      state.surveyModalIsDisplayed = payload;
+    setInterventionModalMode: (state, payload) => {
+      state.interventionModalMode = payload;
     },
   },
   actions: {
     resetAll: ({ commit }) => {
       commit("setInterventionIdCurrentlyBeingEdited", null);
       commit("setInterventionModalIsDisplayed", false);
-      commit("setSurveyIdCurrentlyBeingEdited", null);
-      commit("setSurveyModalIsDisplayed", false);
     },
 
     /* INTERVENTION */
+    viewIntervention: ({ commit, dispatch }) => {
+      dispatch("resetAll");
+      commit("setInterventionModalMode", modalModesDict.read);
+      dispatch("showInterventionModal");
+    },
     clickOnEditIntervention: ({ commit, dispatch }, interventionId) => {
       dispatch("resetAll");
       commit("setInterventionIdCurrentlyBeingEdited", interventionId);
       dispatch("showInterventionModal");
     },
-    clickOnAddNewIntervention: ({ dispatch }) => {
+    clickOnAddNewIntervention: ({ commit, dispatch }) => {
       dispatch("resetAll");
+      commit("setInterventionModalMode", modalModesDict.create);
       dispatch("showInterventionModal");
     },
     saveIntervention: (
@@ -100,50 +93,13 @@ const interventionsModule = {
     closeInterventionModal: ({ commit }) => {
       commit("setInterventionModalIsDisplayed", false);
     },
-
-    /* SURVEY */
-    clickOnEditSurvey: ({ commit, dispatch }, surveyId) => {
-      dispatch("resetAll");
-      commit("setSurveyIdCurrentlyBeingEdited", surveyId);
-      dispatch("showSurveyModal");
+    switchToEditing: ({ commit }, interventionId) => {
+      commit("setInterventionIdCurrentlyBeingEdited", interventionId);
+      commit("setInterventionModalMode", modalModesDict.edit);
     },
-    clickOnAddNewSurvey: ({ dispatch }) => {
-      dispatch("resetAll");
-      dispatch("showSurveyModal");
-    },
-    saveSurvey: ({ commit }, { surveyId, name, description, tags }) => {
-      if (surveyId === null) {
-        commit(
-          "iv/addSurvey",
-          {
-            name,
-            description,
-            tags,
-          },
-          { root: true }
-        );
-        return;
-      }
-      commit(
-        "iv/replaceSurvey",
-        {
-          surveyId,
-          name,
-          description,
-          tags,
-        },
-        { root: true }
-      );
-    },
-    deleteSurvey: ({ commit, dispatch }, surveyId) => {
-      commit("iv/deleteSurvey", surveyId, { root: true });
-      dispatch("resetAll");
-    },
-    showSurveyModal: ({ commit }) => {
-      commit("setSurveyModalIsDisplayed", true);
-    },
-    closeSurveyModal: ({ commit }) => {
-      commit("setSurveyModalIsDisplayed", false);
+    switchToReading: ({ commit }) => {
+      commit("setInterventionModalMode", modalModesDict.read);
+      commit("setInterventionIdCurrentlyBeingEdited", null);
     },
   },
 };

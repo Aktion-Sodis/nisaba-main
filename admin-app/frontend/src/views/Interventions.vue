@@ -1,5 +1,7 @@
 <template>
   <div>
+    <InterventionModal />
+    <SurveyModal />
     <h1 class="ml-8 mt-6">Interventions</h1>
     <v-container class="mt-8">
       <v-row class="mr-2 mr-md-0">
@@ -13,7 +15,7 @@
                 <v-btn
                   fab
                   x-large
-                  color="primary lighten-2"
+                  color="primary"
                   @click="clickOnAddNewIntervention"
                 >
                   <v-icon dark> mdi-wrench </v-icon>
@@ -21,12 +23,7 @@
                 <h2 class="mt-2 mb-4">New intervention</h2>
               </div>
               <div class="d-flex flex-column align-center">
-                <v-btn
-                  fab
-                  small
-                  color="primary lighten-2"
-                  @click="clickOnAddNewSurvey"
-                >
+                <v-btn fab small color="primary" @click="newSurveyHandler">
                   <v-icon dark> mdi-crosshairs-question </v-icon>
                 </v-btn>
                 <h3 class="mt-2">New Survey</h3>
@@ -52,7 +49,6 @@
         </v-col>
       </v-row>
     </v-container>
-    <InterventionModal />
   </div>
 </template>
 
@@ -61,10 +57,11 @@ import { mapGetters, mapActions } from "vuex";
 
 import Intervention from "../components/interventions/Intervention.vue";
 import InterventionModal from "../components/interventions/InterventionModal.vue";
+import SurveyModal from "../components/surveys/SurveyModal.vue";
 
 export default {
   name: "Interventions",
-  components: { Intervention, InterventionModal },
+  components: { Intervention, InterventionModal, SurveyModal },
   computed: {
     ...mapGetters({
       interventions: "iv/getInterventions",
@@ -73,7 +70,7 @@ export default {
   methods: {
     ...mapActions({
       clickOnAddNewIntervention: "ivGui/clickOnAddNewIntervention",
-      clickOnAddNewSurvey: "ivGui/clickOnAddNewSurvey",
+      newSurveyHandler: "surveysUI/newSurveyHandler",
     }),
   },
 };

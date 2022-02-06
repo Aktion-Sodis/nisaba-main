@@ -66,4 +66,26 @@ export const databaseOntologies = Object.freeze({
   },
 });
 
-export default { databaseOntologies };
+export const modalModesDict = Object.freeze({
+  read: "READ",
+  edit: "EDIT",
+  create: "CREATE",
+});
+
+export const questionTypesDict = Object.freeze({
+  text: "TEXT",
+  singleChoice: "SINGLECHOICE",
+  multipleChoice: "MULTIPLECHOICE",
+  picture: "PICTURE",
+  pictureWithTags: "PICTUREWITHTAGS",
+  audio: "AUDIO",
+});
+
+export const questionTypesIconDict = Object.freeze({
+  text: "mdi-text",
+  singleChoice: "mdi-radiobox-marked",
+  multipleChoice: "mdi-dots-horizontal",
+  picture: "mdi-image",
+  pictureWithTags: "mdi-message-image",
+  audio: "mdi-waveform",
+});

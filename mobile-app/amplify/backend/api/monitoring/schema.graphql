@@ -95,7 +95,8 @@ enum InterventionType {
 type Content @model {
   name: String!
   description: String @default(value: "")
-  interventions: [Intervention!]! @manyToMany(relationName: "InterventionContentRelation")
+  interventions: [Intervention!]!
+    @manyToMany(relationName: "InterventionContentRelation")
   tags: [String!]!
   schemeVersion: Int @default(value: "0")
 }
