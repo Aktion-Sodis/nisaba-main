@@ -23,7 +23,7 @@
                 <h2 class="mt-2 mb-4">New intervention</h2>
               </div>
               <div class="d-flex flex-column align-center">
-                <v-btn fab small color="primary" @click="clickOnAddNewSurvey">
+                <v-btn fab small color="primary" @click="newSurveyHandler">
                   <v-icon dark> mdi-crosshairs-question </v-icon>
                 </v-btn>
                 <h3 class="mt-2">New Survey</h3>
@@ -70,7 +70,7 @@ export default {
   methods: {
     ...mapActions({
       clickOnAddNewIntervention: "ivGui/clickOnAddNewIntervention",
-      clickOnAddNewSurvey: "ivGui/clickOnAddNewSurvey",
+      newSurveyHandler: "surveysUI/newSurveyHandler",
     }),
   },
 };

@@ -1,40 +1,42 @@
-import { EmptyQuestion, EmptyAnswer } from "../../store/questionsModule/utils";
+import { EmptyQuestion, EmptyAnswer } from "./utils.js";
 
-const questionsModule = {
+const questionsUI = {
   namespaced: true,
   state: () => ({
     iQuestions: 0,
-    questions: [new EmptyQuestion()],
-    answers: [[new EmptyAnswer()]],
+    questionDrafts: [new EmptyQuestion()],
+    answerDrafts: [[new EmptyAnswer()]],
   }),
   getters: {
-    /* The getters with the prefix "get-" are the only ones with a direct access to the state. */
-    /* The other should use them instead of the state itself for avoiding side effects. */
-    getIQuestions: ({ iQuestions }) => iQuestions,
-    getQuestions: ({ questions }) => questions,
-    getAnswers: ({ answers }) => answers,
+    /* READ */
+    getIQuestions: ({ iQuestions }) => iQuestions ?? 0,
+    getQuestionDrafts: ({ questionDrafts }) =>
+      questionDrafts || [new EmptyQuestion()],
+    getAnswerDrafts: ({ answerDrafts }) =>
+      answerDrafts || [[new EmptyAnswer()]],
 
-    questionsWithAnswers: (state, { getQuestions, getAnswers }) =>
-      getQuestions.map((q, i) => ({ ...q, answers: getAnswers[i] })),
-    nQuestions: (state, { getQuestions }) => getQuestions.length,
-    isAtFirstQuestion: (state, { getIQuestions }) => getIQuestions === 0,
-    isAtLastQuestion: (state, { getIQuestions, nQuestions }) =>
+    questionWithAnswersDrafts: (_, { getQuestionDrafts, getAnswerDrafts }) =>
+      getQuestionDrafts.map((q, i) => ({
+        ...q,
+        answerDrafts: getAnswerDrafts[i],
+      })),
+    nQuestions: (_, { getQuestionDrafts }) => getQuestionDrafts.length ?? 1,
+    isAtFirstQuestion: (_, { getIQuestions }) => getIQuestions === 0,
+    isAtLastQuestion: (_, { getIQuestions, nQuestions }) =>
       getIQuestions === nQuestions - 1,
-
-    currentQuestion: (state, { getQuestions, getIQuestions }) =>
-      getQuestions[getIQuestions],
-
-    currentAnswers: (state, { getAnswers, getIQuestions }) => {
-      return getAnswers[getIQuestions];
-    },
-
+    questionCurrentDraft: (_, { getQuestionDrafts, getIQuestions }) =>
+      getQuestionDrafts[getIQuestions],
+    answersCurrentDraft: (_, { getAnswerDrafts, getIQuestions }) =>
+      getAnswerDrafts[getIQuestions],
     currentQuestionWithAnswers: (
-      state,
-      { getAnswers, getQuestions, getIQuestions }
+      _,
+      { getAnswerDrafts, getQuestionDrafts, getIQuestions }
     ) => ({
-      ...getQuestions[getIQuestions],
-      answers: getAnswers[getIQuestions],
+      ...getQuestionDrafts[getIQuestions],
+      answerDrafts: getAnswerDrafts[getIQuestions],
     }),
+    questionTextInFocus: (state, { getIQuestions }, rootState, rootGetters) =>
+      rootGetters["surveysUI/surveyInFocus"]?.questions[getIQuestions] ?? "",
   },
   mutations: {
     /* INDEX OPERATIONS */
@@ -50,32 +52,32 @@ const questionsModule = {
 
     /* QUESTION & ANSWER BULK UPDATE */
     setQuestions: (state, { payload }) => {
-      state.questions = payload;
+      state.questionDrafts = payload;
     },
     setAnswers: (state, { payload }) => {
-      state.answers = payload;
+      state.answerDrafts = payload;
     },
 
     /* QUESTION CREATE, UPDATE, DELETE */
     addQuestionAtIndex: (state, { newQuestion, index }) => {
-      state.questions.splice(index, 0, newQuestion);
+      state.questionDrafts.splice(index, 0, newQuestion);
     },
     replaceQuestionAtIndex: (state, { newQuestion, index }) => {
-      state.questions.splice(index, 1, newQuestion);
+      state.questionDrafts.splice(index, 1, newQuestion);
     },
     deleteQuestionAtIndex: (state, { index }) => {
-      state.questions.splice(index, 1);
+      state.questionDrafts.splice(index, 1);
     },
 
     /* ANSWER CREATE, UPDATE, DELETE */
     addAnswerAtIndex: (state, { newAnswers, index }) => {
-      state.answers.splice(index, 0, newAnswers);
+      state.answerDrafts.splice(index, 0, newAnswers);
     },
     replaceAnswerAtIndex: (state, { newAnswers, index }) => {
-      state.answers.splice(index, 1, newAnswers);
+      state.answerDrafts.splice(index, 1, newAnswers);
     },
     deleteAnswerAtIndex: (state, { index }) => {
-      state.answers.splice(index, 1);
+      state.answerDrafts.splice(index, 1);
     },
   },
   actions: {
@@ -154,4 +156,4 @@ const questionsModule = {
   },
 };
 
-export default questionsModule;
+export default questionsUI;

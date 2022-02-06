@@ -6,11 +6,6 @@ const interventionsModule = {
     interventionIdCurrentlyBeingEdited: null,
     interventionModalIsDisplayed: false,
     interventionModalMode: modalModesDict.read,
-
-    surveyIdCurrentlyBeingEdited: null,
-    surveyNameCurrentlyBeingEdited: "",
-    surveyModalIsDisplayed: false,
-    surveyModalMode: modalModesDict.read,
   }),
   getters: {
     getInterventionModalMode: (state) => state.interventionModalMode,
@@ -27,17 +22,6 @@ const interventionsModule = {
       ) || null,
     getInterventionModalIsDisplayed: (state) =>
       state.interventionModalIsDisplayed,
-
-    getSurveyModalMode: (state) => state.surveyModalMode,
-    getSurveyModalIsEdit: (state) =>
-      state.surveyIdCurrentlyBeingEdited !== null,
-    getSurveyCurrentlyBeingEdited: (state, getters, rootState, rootGetters) =>
-      rootGetters["surveys/getSurveyById"](
-        state.surveyIdCurrentlyBeingEdited
-      ) || null,
-    getSurveyNameCurrentlyBeingEdited: (state) =>
-      state.surveyNameCurrentlyBeingEdited,
-    getSurveyModalIsDisplayed: (state) => state.surveyModalIsDisplayed,
   },
   mutations: {
     setInterventionIdCurrentlyBeingEdited: (state, interventionId) => {
@@ -49,26 +33,11 @@ const interventionsModule = {
     setInterventionModalMode: (state, payload) => {
       state.interventionModalMode = payload;
     },
-
-    setSurveyIdCurrentlyBeingEdited: (state, surveyId) => {
-      state.surveyIdCurrentlyBeingEdited = surveyId;
-    },
-    setSurveyNameCurrentlyBeingEdited: (state, surveyName) => {
-      state.surveyNameCurrentlyBeingEdited = surveyName;
-    },
-    setSurveyModalIsDisplayed: (state, payload) => {
-      state.surveyModalIsDisplayed = payload;
-    },
-    setSurveyModalMode: (state, payload) => {
-      state.surveyModalMode = payload;
-    },
   },
   actions: {
     resetAll: ({ commit }) => {
       commit("setInterventionIdCurrentlyBeingEdited", null);
       commit("setInterventionModalIsDisplayed", false);
-      commit("setSurveyIdCurrentlyBeingEdited", null);
-      commit("setSurveyModalIsDisplayed", false);
     },
 
     /* INTERVENTION */
@@ -131,52 +100,6 @@ const interventionsModule = {
     switchToReading: ({ commit }) => {
       commit("setInterventionModalMode", modalModesDict.read);
       commit("setInterventionIdCurrentlyBeingEdited", null);
-    },
-
-    /* SURVEY */
-    clickOnEditSurvey: ({ commit, dispatch }, surveyId) => {
-      dispatch("resetAll");
-      commit("setSurveyIdCurrentlyBeingEdited", surveyId);
-      dispatch("showSurveyModal");
-    },
-    clickOnAddNewSurvey: ({ commit, dispatch }) => {
-      dispatch("resetAll");
-      commit("setSurveyModalMode", modalModesDict.create);
-      dispatch("showSurveyModal");
-    },
-    saveSurvey: ({ commit }, { surveyId, name, description, tags }) => {
-      if (surveyId === null) {
-        commit(
-          "iv/addSurvey",
-          {
-            name,
-            description,
-            tags,
-          },
-          { root: true }
-        );
-        return;
-      }
-      commit(
-        "iv/replaceSurvey",
-        {
-          surveyId,
-          name,
-          description,
-          tags,
-        },
-        { root: true }
-      );
-    },
-    deleteSurvey: ({ commit, dispatch }, surveyId) => {
-      commit("iv/deleteSurvey", surveyId, { root: true });
-      dispatch("resetAll");
-    },
-    showSurveyModal: ({ commit }) => {
-      commit("setSurveyModalIsDisplayed", true);
-    },
-    closeSurveyModal: ({ commit }) => {
-      commit("setSurveyModalIsDisplayed", false);
     },
   },
 };
