@@ -288,7 +288,7 @@ import {
   EmptyQuestion,
   EmptyAnswer,
   Answer,
-} from "../../../store/questionsModule/utils";
+} from "../../../store/questions/utils";
 
 const questionTextMaxChar = Math.max(
   parseInt(process.env.VUE_APP_QUESTION_TEXT_MAX_CHAR, 10),
