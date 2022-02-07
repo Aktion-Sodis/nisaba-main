@@ -17,7 +17,7 @@
           :disabled="!canGoBackToDetails"
         >
           <v-icon large class="ml-2"> mdi-chevron-left </v-icon>
-          {{ $t("interventionView.surveyModal.questionCard.back-to-details") }}
+          {{ $t("interventions.surveyModal.questionCard.back-to-details") }}
         </v-btn>
         <v-btn
           x-large
@@ -26,7 +26,7 @@
           @click="finalizeSurveyHandler"
           :disabled="!canFinalize"
         >
-          {{ $t("interventionView.surveyModal.questionCard.finalize-survey") }}
+          {{ $t("interventions.surveyModal.questionCard.finalize-survey") }}
           <v-icon large class="ml-2"> mdi-chevron-right </v-icon>
         </v-btn>
       </v-card-title>
@@ -38,7 +38,7 @@
               <h2 class="mb-2">
                 {{
                   $t(
-                    "interventionView.surveyModal.questionCard.form.question.title"
+                    "interventions.surveyModal.questionCard.form.question.title"
                   )
                 }}
               </h2>
@@ -52,7 +52,7 @@
                 :rules="[rules.maxChar]"
                 :label="
                   $t(
-                    'interventionView.surveyModal.questionCard.form.question.textLabel'
+                    'interventions.surveyModal.questionCard.form.question.textLabel'
                   )
                 "
                 outlined
@@ -62,7 +62,7 @@
               <h3>
                 {{
                   $t(
-                    "interventionView.surveyModal.questionCard.form.question.imageTitle"
+                    "interventions.surveyModal.questionCard.form.question.imageTitle"
                   )
                 }}
               </h3>
@@ -79,7 +79,7 @@
                   <span class="overflow-hidden">
                     {{
                       $t(
-                        "interventionView.surveyModal.questionCard.form.question.addImage"
+                        "interventions.surveyModal.questionCard.form.question.addImage"
                       )
                     }}
                   </span>
@@ -89,7 +89,7 @@
               <h3 class="mt-8">
                 {{
                   $t(
-                    "interventionView.surveyModal.questionCard.form.question.audioTitle"
+                    "interventions.surveyModal.questionCard.form.question.audioTitle"
                   )
                 }}
               </h3>
@@ -106,7 +106,7 @@
                   <span class="overflow-hidden">
                     {{
                       $t(
-                        "interventionView.surveyModal.questionCard.form.question.addAudio"
+                        "interventions.surveyModal.questionCard.form.question.addAudio"
                       )
                     }}
                   </span>
@@ -117,9 +117,7 @@
             <v-col cols="12" md="6">
               <h2 class="mb-2">
                 {{
-                  $t(
-                    "interventionView.surveyModal.questionCard.form.answer.title"
-                  )
+                  $t("interventions.surveyModal.questionCard.form.answer.title")
                 }}
               </h2>
               <v-select
@@ -128,7 +126,7 @@
                 :items="questionTypesItemValue"
                 :label="
                   $t(
-                    'interventionView.surveyModal.questionCard.form.answer.typeLabel'
+                    'interventions.surveyModal.questionCard.form.answer.typeLabel'
                   )
                 "
                 outlined
@@ -142,7 +140,7 @@
                   <h3>
                     {{
                       $t(
-                        "interventionView.surveyModal.questionCard.form.answer.answer"
+                        "interventions.surveyModal.questionCard.form.answer.answer"
                       )
                     }}
                     {{ index + 1 }}
@@ -152,7 +150,7 @@
                       v-model="answers[index].answerText"
                       :label="
                         $t(
-                          'interventionView.surveyModal.questionCard.form.answer.textLabel'
+                          'interventions.surveyModal.questionCard.form.answer.textLabel'
                         )
                       "
                       outlined
@@ -174,7 +172,7 @@
                         <span class="overflow-hidden">
                           {{
                             $t(
-                              "interventionView.surveyModal.questionCard.form.answer.addImage"
+                              "interventions.surveyModal.questionCard.form.answer.addImage"
                             )
                           }}
                         </span>
@@ -213,7 +211,7 @@
                     <span class="overflow-hidden">
                       {{
                         $t(
-                          "interventionView.surveyModal.questionCard.form.answer.addAnswer"
+                          "interventions.surveyModal.questionCard.form.answer.addAnswer"
                         )
                       }}
                     </span>
@@ -239,7 +237,7 @@
           class="text-none"
           @click="discardQuestionHandler"
         >
-          {{ $t("interventionView.surveyModal.questionCard.discard-question") }}
+          {{ $t("interventions.surveyModal.questionCard.discard-question") }}
           <v-icon large> mdi-delete </v-icon>
         </v-btn>
         <v-spacer v-if="!isAtLastQuestion"></v-spacer>
@@ -252,7 +250,7 @@
           v-if="!isAtLastQuestion"
         >
           <v-icon large> mdi-skip-previous </v-icon>
-          {{ $t("interventionView.surveyModal.questionCard.prior-question") }}
+          {{ $t("interventions.surveyModal.questionCard.prior-question") }}
         </v-btn>
         <v-btn
           x-large
@@ -262,7 +260,7 @@
           :disabled="!canAdvance"
           v-if="!isAtLastQuestion"
         >
-          {{ $t("interventionView.surveyModal.questionCard.next-question") }}
+          {{ $t("interventions.surveyModal.questionCard.next-question") }}
           <v-icon large> mdi-skip-next </v-icon>
         </v-btn>
         <v-spacer></v-spacer>
@@ -273,7 +271,7 @@
           @click="saveQuestion"
           :disabled="!canSave"
         >
-          {{ $t("interventionView.surveyModal.questionCard.save-draft") }}
+          {{ $t("interventions.surveyModal.questionCard.save-draft") }}
           <v-icon large class="ml-2"> mdi-content-save-outline </v-icon>
         </v-btn>
       </v-card-actions>
@@ -329,13 +327,13 @@ export default {
     questionTypesItemValue() {
       return Object.keys(questionTypesDict).map((key) => ({
         text: this.$t(
-          `interventionView.surveyModal.questionCard.form.answer.questionTypes.${key}`
+          `interventions.surveyModal.questionCard.form.answer.questionTypes.${key}`
         ),
         value: key,
       }));
     },
     maxCharExceededi18n() {
-      return this.$t("login.maxCharExceeded", {
+      return this.$t("general.form.maxCharExceeded", {
         maxChar: questionTextMaxChar,
       });
     },

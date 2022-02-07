@@ -2,7 +2,9 @@
   <div>
     <InterventionModal />
     <SurveyModal />
-    <h1 class="ml-8 mt-6">Interventions</h1>
+    <h1 class="ml-8 mt-6">
+      {{ $t("interventions.title") }}
+    </h1>
     <v-container class="mt-8">
       <v-row class="mr-2 mr-md-0">
         <v-col cols="12" sm="6" md="4" lg="3">
@@ -20,13 +22,15 @@
                 >
                   <v-icon dark> mdi-wrench </v-icon>
                 </v-btn>
-                <h2 class="mt-2 mb-4">New intervention</h2>
+                <h2 class="mt-2 mb-4">
+                  {{ $t("interventions.new-intervention") }}
+                </h2>
               </div>
               <div class="d-flex flex-column align-center">
                 <v-btn fab small color="primary" @click="newSurveyHandler">
                   <v-icon dark> mdi-crosshairs-question </v-icon>
                 </v-btn>
-                <h3 class="mt-2">New Survey</h3>
+                <h3 class="mt-2">{{ $t("interventions.new-survey") }}</h3>
               </div>
             </div>
           </div>

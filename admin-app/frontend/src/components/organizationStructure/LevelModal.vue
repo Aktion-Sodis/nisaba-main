@@ -140,10 +140,10 @@ export default {
       levelCurrentlyBeingEdited: "os/getLevelCurrentlyBeingEdited",
     }),
     requiredi18n() {
-      return this.$t("login.required");
+      return this.$t("general.form.required");
     },
     maxCharExceededi18n() {
-      return this.$t("login.maxCharExceeded", {
+      return this.$t("general.form.maxCharExceeded", {
         maxChar: levelDescriptionMaxChar,
       });
     },

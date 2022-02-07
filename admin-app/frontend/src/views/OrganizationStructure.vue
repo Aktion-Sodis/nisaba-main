@@ -39,7 +39,9 @@
             </v-tooltip>
           </div>
           <div v-else style="height: 48px; overflow: hidden">
-            <p class="caption">No interventions for this level.</p>
+            <p class="caption">
+              {{ $t("organizationStructure.hasNoInterventions") }}
+            </p>
           </div>
         </div>
         <EntitiesColumn :levelId="level.levelId" :index="index" />

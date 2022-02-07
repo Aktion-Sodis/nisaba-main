@@ -3,11 +3,11 @@
     <v-form lazy-validation>
       <v-card-title>
         <h2 v-if="edit">
-          {{ $t("interventionView.surveyModal.firstCard.title.edit") }}
+          {{ $t("interventions.surveyModal.firstCard.title.edit") }}
           <i>{{ surveyInFocus.name }}</i>
         </h2>
         <h2 v-else-if="create">
-          {{ $t("interventionView.surveyModal.firstCard.title.create") }}
+          {{ $t("interventions.surveyModal.firstCard.title.create") }}
         </h2>
         <h2 v-else-if="read">{{ surveyInFocus.name }}</h2>
         <v-spacer></v-spacer>
@@ -20,8 +20,8 @@
         >
           {{
             read
-              ? $t("interventionView.surveyModal.firstCard.questions")
-              : $t(`interventionView.surveyModal.firstCard.next-step`)
+              ? $t("interventions.surveyModal.firstCard.questions")
+              : $t(`interventions.surveyModal.firstCard.next-step`)
           }}
           <v-icon large> mdi-chevron-right </v-icon>
         </v-btn>
@@ -38,7 +38,7 @@
                 v-else
                 autofocus
                 v-model="surveyName"
-                :label="$t('interventionView.surveyModal.firstCard.form.name')"
+                :label="$t('interventions.surveyModal.firstCard.form.name')"
                 outlined
                 dense
               ></v-text-field>
@@ -54,7 +54,7 @@
                 "
                 :rules="[rules.maxChar]"
                 :label="
-                  $t('interventionView.surveyModal.firstCard.form.description')
+                  $t('interventions.surveyModal.firstCard.form.description')
                 "
                 outlined
                 dense
@@ -81,7 +81,7 @@
 
               <div v-if="read">
                 <h2>
-                  {{ $t("interventionView.surveyModal.firstCard.form.tags") }}
+                  {{ $t("interventions.surveyModal.firstCard.form.tags") }}
                 </h2>
                 <v-chip v-for="tag in tagsInFocus" :key="tag.tagId">
                   {{ tag }}
@@ -96,7 +96,7 @@
                 deletable-chips
                 chips
                 dense
-                :label="$t('interventionView.surveyModal.firstCard.form.tags')"
+                :label="$t('interventions.surveyModal.firstCard.form.tags')"
                 multiple
                 outlined
                 class="mt-8"
@@ -163,7 +163,7 @@ export default {
       return this.read || this.surveyName !== "";
     },
     maxCharExceededi18n() {
-      return this.$t("login.maxCharExceeded", {
+      return this.$t("general.form.maxCharExceeded", {
         maxChar: surveyDescriptionMaxChar,
       });
     },

@@ -12,7 +12,7 @@
         @click="publishSurveyHandler"
         :disabled="false"
       >
-        {{ $t("interventionView.surveyModal.finalizeCard.publish-survey") }}
+        {{ $t("interventions.surveyModal.finalizeCard.publish-survey") }}
         <v-icon large class="ml-2"> mdi-bullhorn-outline </v-icon>
       </v-btn>
     </v-card-title>

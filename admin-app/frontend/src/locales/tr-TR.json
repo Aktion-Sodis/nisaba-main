@@ -1,11 +1,25 @@
 {
+  "general": {
+    "search-box": "Her yerde ara",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "form": {
+      "maxCharExceeded": "Maksimum {maxChar} karakter.",
+      "required": "Zorunlu alan."
+    },
+    "sideBar": {
+      "home": "Ana ekran",
+      "baseData": "Temel veriler",
+      "organizationStructure": "Organizasyonel yapı",
+      "interventions": "Müdahaleler"
+    }
+  },
   "login": {
     "title": "Hoş geldin!",
     "subtitle": "Lütfen giriş yap ya da kaydol.",
     "username": "Kullanıcı adı",
     "password": "Şifre",
-    "required": "Zorunlu alan.",
-    "maxCharExceeded": "Maksimum {maxChar} karakter.",
     "remember-me": "Oturumu hatırla",
     "forgot-password": "Şifremi unuttum",
     "sign-in": "Giriş yap",
@@ -13,15 +27,10 @@
     "dont-have-an-account": "Hesabın yok mu?",
     "register-here": "Buradan kaydol"
   },
-  "general": {
-    "search-box": "Her yerde ara",
-    "cancel": "İptal",
-    "save": "Kaydet",
-    "delete": "Sil"
-  },
   "organizationStructure": {
     "addNewEntity": "Yeni oluşum ekle",
     "addNewLevel": "Yeni seviye ekle",
+    "hasNoInterventions": "Bu seviyede henüz hiç müdahale yok.",
     "levelModal": {
       "title": { "edit": "Seviyeyi düzenle ", "create": "Yeni seviye yarat" },
       "description": {
@@ -45,7 +54,7 @@
       "entityIsSubordinateTo": "Oluşumun üst oluşumu..."
     }
   },
-  "interventionView": {
+  "interventions": {
     "interventionModal": {
       "title": {
         "edit": "Müdahaleyi düzenle ",

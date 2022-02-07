@@ -145,7 +145,7 @@ export default {
       isAuthenticated: "auth/getIsAuthenticated",
     }),
     requiredi18n: function () {
-      return this.$t("login.required");
+      return this.$t("general.form.required");
     },
   },
   methods: {

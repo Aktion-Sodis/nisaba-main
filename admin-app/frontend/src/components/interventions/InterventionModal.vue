@@ -8,19 +8,19 @@
       <v-form ref="form" @submit.prevent="submitIntervention" lazy-validation>
         <v-card-title>
           <h2 v-if="edit">
-            {{ $t("interventionView.interventionModal.title.edit") }}
+            {{ $t("interventions.interventionModal.title.edit") }}
             <i>{{ interventionCurrentlyBeingEdited.name }}</i>
           </h2>
           <h2 v-else-if="create">
-            {{ $t("interventionView.interventionModal.title.create") }}
+            {{ $t("interventions.interventionModal.title.create") }}
           </h2>
           <h2 v-else>Viewing intervention</h2>
         </v-card-title>
         <v-card-subtitle v-if="edit">
-          {{ $t("interventionView.interventionModal.description.edit") }}
+          {{ $t("interventions.interventionModal.description.edit") }}
         </v-card-subtitle>
         <v-card-subtitle v-else-if="create">
-          {{ $t("interventionView.interventionModal.description.create") }}
+          {{ $t("interventions.interventionModal.description.create") }}
         </v-card-subtitle>
 
         <v-card-text>
@@ -36,7 +36,7 @@
                   v-model="interventionName"
                   :rules="[rules.required]"
                   :label="
-                    $t('interventionView.interventionModal.interventionName')
+                    $t('interventions.interventionModal.interventionName')
                   "
                   required
                   outlined
@@ -56,7 +56,7 @@
                   :rules="[rules.maxChar]"
                   :label="
                     $t(
-                      'interventionView.interventionModal.interventionDescription'
+                      'interventions.interventionModal.interventionDescription'
                     )
                   "
                   required
@@ -316,10 +316,10 @@ export default {
       interventionContentTagById: "iv/getInterventionContentTagById",
     }),
     requiredi18n() {
-      return this.$t("login.required");
+      return this.$t("general.form.required");
     },
     maxCharExceededi18n() {
-      return this.$t("login.maxCharExceeded", {
+      return this.$t("general.form.maxCharExceeded", {
         maxChar: interventionDescriptionMaxChar,
       });
     },

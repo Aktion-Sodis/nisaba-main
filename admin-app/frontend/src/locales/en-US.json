@@ -1,11 +1,25 @@
 {
+  "general": {
+    "search-box": "Search anything",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "form": {
+      "maxCharExceeded": "Maximum {maxChar} characters.",
+      "required": "Required."
+    },
+    "sideBar": {
+      "home": "Home",
+      "baseData": "Base data",
+      "organizationStructure": "Organization structure",
+      "interventions": "Interventions"
+    }
+  },
   "login": {
     "title": "Welcome back!",
     "subtitle": "Please sign in with your credentials or register.",
     "username": "Username",
     "password": "Password",
-    "required": "Required.",
-    "maxCharExceeded": "Maximum {maxChar} characters.",
     "remember-me": "Remember me",
     "forgot-password": "Forgot Password",
     "sign-in": "Sign in",
@@ -13,15 +27,10 @@
     "dont-have-an-account": "Don't have an account?",
     "register-here": "Register here"
   },
-  "general": {
-    "search-box": "Search anything",
-    "cancel": "Cancel",
-    "save": "Save",
-    "delete": "Delete"
-  },
   "organizationStructure": {
     "addNewEntity": "Add entity",
     "addNewLevel": "Add new level",
+    "hasNoInterventions": "There are no interventions for this level.",
     "levelModal": {
       "title": { "edit": "Edit level ", "create": "Create new level" },
       "description": {
@@ -45,7 +54,10 @@
       "entityIsSubordinateTo": "Entity is subordinate to..."
     }
   },
-  "interventionView": {
+  "interventions": {
+    "title": "Interventions",
+    "new-intervention": "New intervention",
+    "new-survey": "New survey",
     "interventionModal": {
       "title": {
         "edit": "Edit intervention ",

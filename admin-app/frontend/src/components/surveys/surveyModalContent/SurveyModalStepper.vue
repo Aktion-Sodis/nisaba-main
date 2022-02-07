@@ -2,15 +2,15 @@
   <v-stepper alt-labels v-model="completionIndex">
     <v-stepper-header>
       <v-stepper-step step="1" :complete="completionIndex > 1">
-        {{ $t("interventionView.surveyModal.stepper.details") }}
+        {{ $t("interventions.surveyModal.stepper.details") }}
       </v-stepper-step>
       <v-divider></v-divider>
       <v-stepper-step step="2" :complete="completionIndex > 2">
-        {{ $t("interventionView.surveyModal.stepper.questions") }}
+        {{ $t("interventions.surveyModal.stepper.questions") }}
       </v-stepper-step>
       <v-divider></v-divider>
       <v-stepper-step step="3">
-        {{ $t("interventionView.surveyModal.stepper.finalize") }}
+        {{ $t("interventions.surveyModal.stepper.finalize") }}
       </v-stepper-step>
     </v-stepper-header>
   </v-stepper>
