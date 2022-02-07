@@ -43,8 +43,8 @@ export default {
   data: () => ({
     langs: [
       { name: "English US", abbr: "en-US" },
-      { name: "Spanish Spain", abbr: "es-ES" },
-      { name: "Turkish Turkey", abbr: "tr-TR" },
+      { name: "Español España", abbr: "es-ES" },
+      { name: "Türkçe Türkiye", abbr: "tr-TR" },
     ],
   }),
   computed: {
