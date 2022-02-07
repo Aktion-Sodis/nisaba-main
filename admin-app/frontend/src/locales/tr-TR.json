@@ -20,12 +20,12 @@
     "subtitle": "Lütfen giriş yap ya da kaydol.",
     "username": "Kullanıcı adı",
     "password": "Şifre",
-    "remember-me": "Oturumu hatırla",
-    "forgot-password": "Şifremi unuttum",
-    "sign-in": "Giriş yap",
-    "sign-in-with-google": "Google'la giriş yap",
-    "dont-have-an-account": "Hesabın yok mu?",
-    "register-here": "Buradan kaydol"
+    "rememberMe": "Oturumu hatırla",
+    "forgotPassword": "Şifremi unuttum",
+    "signIn": "Giriş yap",
+    "signInWithGoogle": "Google'la giriş yap",
+    "dontHaveAnAccount": "Hesabın yok mu?",
+    "registerHere": "Buradan kaydol"
   },
   "organizationStructure": {
     "addNewEntity": "Yeni oluşum ekle",

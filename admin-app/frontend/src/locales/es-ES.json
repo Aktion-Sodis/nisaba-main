@@ -20,12 +20,12 @@
     "subtitle": "Please sign in with your credentials or register.",
     "username": "Username",
     "password": "Password",
-    "remember-me": "Remember me",
-    "forgot-password": "Forgot Password",
-    "sign-in": "Sign in",
-    "sign-in-with-google": "Sign in with Google",
-    "dont-have-an-account": "Don't have an account?",
-    "register-here": "Register here"
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot Password",
+    "signIn": "Sign in",
+    "signInWithGoogle": "Sign in with Google",
+    "dontHaveAnAccount": "Don't have an account?",
+    "registerHere": "Register here"
   },
   "organizationStructure": {
     "addNewEntity": "Add entity",

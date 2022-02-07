@@ -29,9 +29,9 @@
                   <v-checkbox
                     class="my-0"
                     v-model="rememberMe"
-                    :label="$t('login.remember-me')"
+                    :label="$t('login.rememberMe')"
                   ></v-checkbox>
-                  <p class="mt-1 py-0">{{ $t("login.forgot-password") }}</p>
+                  <p class="mt-1 py-0">{{ $t("login.forgotPassword") }}</p>
                 </div>
                 <v-btn
                   type="submit"
@@ -39,7 +39,7 @@
                   large
                   color="primary"
                   class="text-none"
-                  >{{ $t("login.sign-in") }}</v-btn
+                  >{{ $t("login.signIn") }}</v-btn
                 >
                 <v-btn
                   type="submit"
@@ -75,15 +75,15 @@
                       />
                     </g>
                   </svg>
-                  {{ $t("login.sign-in-with-google") }}
+                  {{ $t("login.signInWithGoogle") }}
                 </v-btn>
                 <div class="push-to-end mt-4">
                   <p>
-                    {{ $t("login.dont-have-an-account") }}
+                    {{ $t("login.dontHaveAnAccount") }}
                     <a
                       href="#"
                       class="font-weight-bold font-italic text-decoration-none"
-                      >{{ $t("login.register-here") }}</a
+                      >{{ $t("login.registerHere") }}</a
                     >
                   </p>
                 </div>
