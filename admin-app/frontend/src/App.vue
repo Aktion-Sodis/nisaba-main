@@ -34,14 +34,18 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import SideBar from './components/commons/SideBar.vue'
+import { mapGetters } from "vuex";
+import SideBar from "./components/commons/SideBar.vue";
 
 export default {
   name: "App",
   components: { SideBar },
   data: () => ({
-    langs: [{ name: 'English US', abbr: 'en-US' }, { name: 'Spanish Spain', abbr: 'es-ES' }]
+    langs: [
+      { name: "English US", abbr: "en-US" },
+      { name: "Spanish Spain", abbr: "es-ES" },
+      { name: "Turkish Turkey", abbr: "tr-TR" },
+    ],
   }),
   computed: {
     ...mapGetters({
@@ -49,11 +53,10 @@ export default {
     }),
     currentRouteName() {
       return this.$route.name;
-    }
+    },
   },
 };
 </script>
-
 
 <style scoped>
 .search-bar-wrapper {

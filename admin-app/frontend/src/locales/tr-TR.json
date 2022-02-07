@@ -1,0 +1,119 @@
+{
+  "login": {
+    "title": "Hoş geldin!",
+    "subtitle": "Lütfen giriş yap ya da kaydol.",
+    "username": "Kullanıcı adı",
+    "password": "Şifre",
+    "required": "Zorunlu alan.",
+    "maxCharExceeded": "Maksimum {maxChar} karakter.",
+    "remember-me": "Oturumu hatırla",
+    "forgot-password": "Şifremi unuttum",
+    "sign-in": "Giriş yap",
+    "sign-in-with-google": "Google'la giriş yap",
+    "dont-have-an-account": "Hesabın yok mu?",
+    "register-here": "Buradan kaydol"
+  },
+  "general": {
+    "search-box": "Her yerde ara",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "delete": "Sil"
+  },
+  "organizationStructure": {
+    "addNewEntity": "Yeni oluşum ekle",
+    "addNewLevel": "Yeni seviye ekle",
+    "levelModal": {
+      "title": { "edit": "Seviyeyi düzenle ", "create": "Yeni seviye yarat" },
+      "description": {
+        "edit": "Bu güzel seviye düzenleme diyaloğunun çok güzel açıklaması.",
+        "create": "Bu güzel seviye yaratma diyaloğunun çok güzel açıklaması."
+      },
+      "levelName": "Seviye adı",
+      "levelDescription": "Seviye açıklaması",
+      "manageAllowedInterventions": "İzin verilen müdahaleleri yönet",
+      "levelIsSubordinateTo": "Seviyenin üst seviyesi..."
+    },
+    "entityModal": {
+      "title": { "edit": "Oluşumu düzenle ", "create": "Yeni oluşum yarat" },
+      "description": {
+        "edit": "Bu güzel oluşum düzenleme diyaloğunun çok güzel açıklaması.",
+        "create": "Bu güzel oluşum yaratma diyaloğunun çok güzel açıklaması."
+      },
+      "upperEntity": "Üst seviyeyi seç",
+      "entityName": "Oluşum adı",
+      "entityDescription": "Oluşum açıklaması",
+      "entityIsSubordinateTo": "Oluşumun üst oluşumu..."
+    }
+  },
+  "interventionView": {
+    "interventionModal": {
+      "title": {
+        "edit": "Müdahaleyi düzenle ",
+        "create": "Yeni müdahale yarat"
+      },
+      "description": {
+        "edit": "Bu güzel müdahale düzenleme diyaloğunun çok güzel açıklaması.",
+        "create": "Bu güzel müdahale yaratma diyaloğunun çok güzel açıklaması."
+      },
+      "interventionName": "Müdahale adı",
+      "interventionDescription": "Müdahale açıklaması"
+    },
+    "surveyModal": {
+      "firstCard": {
+        "title": {
+          "edit": "Anket düzenleniyor... ",
+          "create": "Yeni anket"
+        },
+        "form": {
+          "name": "Anket adı",
+          "description": "Anket açıklaması",
+          "tags": "Anket etiketleri"
+        },
+        "next-step": "Sonraki adım",
+        "questions": "Sorular"
+      },
+      "questionCard": {
+        "form": {
+          "question": {
+            "title": "Soru",
+            "textLabel": "Soru metni",
+            "imageTitle": "Soru resmi",
+            "addImage": "Resim ekle",
+            "audioTitle": "Soru sesi",
+            "addAudio": "Ses ekle"
+          },
+          "answer": {
+            "title": "Yanıt",
+            "typeLabel": "Soru tipi",
+            "answer": "Yanıt",
+            "textLabel": "Yanıt metni",
+            "addImage": "Yanıta resim ekle",
+            "addAnswer": "Yanıt ekle",
+            "questionTypes": {
+              "text": "Metin",
+              "singleChoice": "Çoktan tek seçmeli",
+              "multipleChoice": "Çoktan çok seçmeli",
+              "picture": "Resim",
+              "pictureWithTags": "Etiketli resim",
+              "audio": "Ses"
+            }
+          }
+        },
+        "discard-question": "Soruyu sil",
+        "prior-question": "Önceki soru",
+        "next-question": "Sonraki soru",
+        "finalize-survey": "Anketi tamamla",
+        "back-to-details": "Detaylar",
+        "save-draft": "Taslağı kaydet"
+      },
+      "finalizeCard": {
+        "publish-survey": "Anketi yayınla"
+      },
+      "stepper": {
+        "details": "Anket detayları",
+        "questions": "Sorular",
+        "finalize": "Tamamla"
+      }
+    }
+  }
+}
