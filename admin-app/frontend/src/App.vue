@@ -35,7 +35,7 @@
             🚧 The Admin-App v0.1, development phase
         </v-snackbar> -->
 
-        <a href="https://github.com/Aktion-Sodis/software-main">
+        <a href="https://github.com/Aktion-Sodis/software-main" target="_blank">
             <v-alert class="version-wrapper" outlined color="primary" icon="🚧" border="left">
                 The Admin-App v0.1, development phase 🔗
             </v-alert>
