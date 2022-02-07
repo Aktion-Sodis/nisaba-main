@@ -31,11 +31,11 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
-import { questionTypesIconDict } from "../../../store/constants";
+import { mapGetters, mapMutations } from 'vuex';
+import { questionTypesIconDict } from '../../../store/constants';
 
 export default {
-  name: "QuestionTabs",
+  name: 'QuestionTabs',
   data() {
     return {
       iQ: 0,
@@ -43,24 +43,24 @@ export default {
     };
   },
   watch: {
-    iQ: function (newVal) {
+    iQ(newVal) {
       // update the index in state only if it is caused by iQ
       if (newVal !== this.iQuestions) this.setIQuestions({ payload: newVal });
     },
-    iQuestions: function (newVal) {
+    iQuestions(newVal) {
       this.iQ = newVal;
     },
   },
   computed: {
     ...mapGetters({
-      questions: "questionsUI/questionWithAnswersDrafts",
-      iQuestions: "questionsUI/getIQuestions",
-      nQuestions: "questionsUI/nQuestions",
+      questions: 'questionsUI/questionWithAnswersDrafts',
+      iQuestions: 'questionsUI/getIQuestions',
+      nQuestions: 'questionsUI/nQuestions',
     }),
   },
   methods: {
     ...mapMutations({
-      setIQuestions: "questionsUI/setIQuestions",
+      setIQuestions: 'questionsUI/setIQuestions',
     }),
   },
 };

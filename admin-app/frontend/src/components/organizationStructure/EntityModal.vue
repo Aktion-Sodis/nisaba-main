@@ -89,51 +89,50 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
 const entityDescriptionMaxChar = Math.max(
   parseInt(process.env.VUE_APP_ENTITY_DESCRIPTION_MAX_CHAR, 10),
-  0
+  0,
 );
 
 export default {
-  name: "EntityModal",
+  name: 'EntityModal',
   data() {
     return {
       entityDescriptionMaxChar,
       rules: {
         required: (value) => !!value || this.requiredi18n,
-        maxChar: (value) =>
-          value.length <= entityDescriptionMaxChar || this.maxCharExceededi18n,
+        maxChar: (value) => value.length <= entityDescriptionMaxChar || this.maxCharExceededi18n,
       },
-      entityName: "",
-      entityDescription: "",
+      entityName: '',
+      entityDescription: '',
       upperEntity: null,
     };
   },
   computed: {
     ...mapGetters({
-      allEntitiesOfLevel: "entities/getAllEntitiesOfLevelByHid",
-      upperLevelById: "entities/getUpperLevelById",
-      allowedInterventions: "iv/getInterventions",
-      entityModalIsEdit: "os/getEntityModalIsEdit",
-      entityCurrentlyBeingEdited: "os/getEntityCurrentlyBeingEdited",
-      entityModalIsDisplayed: "os/getEntityModalIsDisplayed",
-      levelIdOfEntityBeingCreated: "os/getLevelIdOfEntityBeingCreated",
+      allEntitiesOfLevel: 'entities/getAllEntitiesOfLevelByHid',
+      upperLevelById: 'entities/getUpperLevelById',
+      allowedInterventions: 'iv/getInterventions',
+      entityModalIsEdit: 'os/getEntityModalIsEdit',
+      entityCurrentlyBeingEdited: 'os/getEntityCurrentlyBeingEdited',
+      entityModalIsDisplayed: 'os/getEntityModalIsDisplayed',
+      levelIdOfEntityBeingCreated: 'os/getLevelIdOfEntityBeingCreated',
     }),
     allEntitiesOfUpperLevel() {
       const upperLevel = this.upperLevelById(
         this.entityModalIsEdit
           ? this.entityCurrentlyBeingEdited.levelId
-          : this.levelIdOfEntityBeingCreated
+          : this.levelIdOfEntityBeingCreated,
       );
       return upperLevel ? this.allEntitiesOfLevel(upperLevel.levelId) : [];
     },
     requiredi18n() {
-      return this.$t("general.form.required");
+      return this.$t('general.form.required');
     },
     maxCharExceededi18n() {
-      return this.$t("general.form.maxCharExceeded", {
+      return this.$t('general.form.maxCharExceeded', {
         maxChar: entityDescriptionMaxChar,
       });
     },
@@ -143,14 +142,14 @@ export default {
   },
   methods: {
     ...mapActions({
-      saveEntity: "os/saveEntity",
-      closeEntityModal: "os/closeEntityModal",
+      saveEntity: 'os/saveEntity',
+      closeEntityModal: 'os/closeEntityModal',
     }),
     closeThenDeleteComponentData() {
       this.closeEntityModal();
 
-      this.entityName = "";
-      this.entityDescription = "";
+      this.entityName = '';
+      this.entityDescription = '';
       this.upperEntity = null;
     },
     submitEntity() {

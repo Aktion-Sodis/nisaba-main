@@ -10,21 +10,17 @@ const organizationStructureModule = {
   }),
   getters: {
     /* ENTITY */
-    getEntityModalIsEdit: (state) =>
-      state.entityIdCurrentlyBeingEdited !== null,
-    getEntityCurrentlyBeingEdited: (state, getters, rootState, rootGetters) =>
-      rootGetters["entities/getEntityById"](
-        state.entityIdCurrentlyBeingEdited
-      ) || null,
+    getEntityModalIsEdit: (state) => state.entityIdCurrentlyBeingEdited !== null,
+    getEntityCurrentlyBeingEdited: (state, getters, rootState, rootGetters) => rootGetters['entities/getEntityById'](
+      state.entityIdCurrentlyBeingEdited,
+    ) || null,
     getEntityModalIsDisplayed: (state) => state.entityModalIsDisplayed,
-    getLevelIdOfEntityBeingCreated: (state) =>
-      state.levelIdOfEntityBeingCreated,
+    getLevelIdOfEntityBeingCreated: (state) => state.levelIdOfEntityBeingCreated,
 
     /* LEVEL */
     getLevelModalIsEdit: (state) => state.levelIdCurrentlyBeingEdited !== null,
-    getLevelCurrentlyBeingEdited: (state, getters, rootState, rootGetters) =>
-      rootGetters["entities/getLevelById"](state.levelIdCurrentlyBeingEdited) ||
-      null,
+    getLevelCurrentlyBeingEdited: (state, getters, rootState, rootGetters) => rootGetters['entities/getLevelById'](state.levelIdCurrentlyBeingEdited)
+      || null,
     getLevelModalIsDisplayed: (state) => state.levelModalIsDisplayed,
   },
   mutations: {
@@ -49,49 +45,51 @@ const organizationStructureModule = {
   },
   actions: {
     resetAll: ({ commit }) => {
-      commit("setEntityIdCurrentlyBeingEdited", null);
-      commit("setEntityModalIsDisplayed", false);
-      commit("setLevelIdOfEntityBeingCreated", null);
-      commit("setLevelIdCurrentlyBeingEdited", null);
-      commit("setLevelModalIsDisplayed", false);
+      commit('setEntityIdCurrentlyBeingEdited', null);
+      commit('setEntityModalIsDisplayed', false);
+      commit('setLevelIdOfEntityBeingCreated', null);
+      commit('setLevelIdCurrentlyBeingEdited', null);
+      commit('setLevelModalIsDisplayed', false);
     },
     clickOnEditEntity: ({ commit, dispatch }, payload) => {
-      dispatch("resetAll");
-      commit("setEntityIdCurrentlyBeingEdited", payload);
-      dispatch("showEntityModal");
+      dispatch('resetAll');
+      commit('setEntityIdCurrentlyBeingEdited', payload);
+      dispatch('showEntityModal');
     },
     clickOnAddNewEntity: ({ commit, dispatch }, payload) => {
-      dispatch("resetAll");
-      commit("setLevelIdOfEntityBeingCreated", payload);
-      dispatch("showEntityModal");
+      dispatch('resetAll');
+      commit('setLevelIdOfEntityBeingCreated', payload);
+      dispatch('showEntityModal');
     },
     clickOnAddNewLevel: ({ dispatch }) => {
-      dispatch("resetAll");
-      dispatch("showLevelModal");
+      dispatch('resetAll');
+      dispatch('showLevelModal');
     },
     clickOnEditLevel: ({ commit, dispatch }, payload) => {
-      dispatch("resetAll");
-      commit("setLevelIdCurrentlyBeingEdited", payload);
-      dispatch("showLevelModal");
+      dispatch('resetAll');
+      commit('setLevelIdCurrentlyBeingEdited', payload);
+      dispatch('showLevelModal');
     },
     saveLevel: (
       { commit },
-      { levelId, name, description, upperLevelId, allowedInterventions }
+      {
+        levelId, name, description, upperLevelId, allowedInterventions,
+      },
     ) => {
-      if (levelId === null)
+      if (levelId === null) {
         commit(
-          "entities/injectNewLevel",
+          'entities/injectNewLevel',
           {
             name,
             description,
             upperLevelId,
             allowedInterventions,
           },
-          { root: true }
+          { root: true },
         );
-      else
+      } else {
         commit(
-          "entities/replaceLevel",
+          'entities/replaceLevel',
           {
             levelId,
             name,
@@ -99,8 +97,9 @@ const organizationStructureModule = {
             upperLevelId,
             allowedInterventions,
           },
-          { root: true }
+          { root: true },
         );
+      }
     },
     saveEntity: (
       { commit },
@@ -110,22 +109,22 @@ const organizationStructureModule = {
         entityDescription,
         entityLevelId,
         entityUpperEntityId,
-      }
+      },
     ) => {
-      if (entityId === null)
+      if (entityId === null) {
         commit(
-          "entities/injectNewEntity",
+          'entities/injectNewEntity',
           {
             entityName,
             entityDescription,
             entityLevelId,
             entityUpperEntityId,
           },
-          { root: true }
+          { root: true },
         );
-      else
+      } else {
         commit(
-          "entities/replaceEntity",
+          'entities/replaceEntity',
           {
             entityId,
             entityName,
@@ -133,22 +132,23 @@ const organizationStructureModule = {
             entityLevelId,
             entityUpperEntityId,
           },
-          { root: true }
+          { root: true },
         );
+      }
     },
     showEntityModal: ({ commit }) => {
-      commit("setEntityModalIsDisplayed", true);
+      commit('setEntityModalIsDisplayed', true);
     },
     showLevelModal: ({ commit }) => {
-      commit("setLevelModalIsDisplayed", true);
+      commit('setLevelModalIsDisplayed', true);
     },
     closeEntityModal: ({ commit }) => {
-      commit("setEntityIdCurrentlyBeingEdited", null);
-      commit("setEntityModalIsDisplayed", false);
+      commit('setEntityIdCurrentlyBeingEdited', null);
+      commit('setEntityModalIsDisplayed', false);
     },
     closeLevelModal: ({ commit }) => {
-      commit("setLevelIdCurrentlyBeingEdited", null);
-      commit("setLevelModalIsDisplayed", false);
+      commit('setLevelIdCurrentlyBeingEdited', null);
+      commit('setLevelModalIsDisplayed', false);
     },
   },
 };

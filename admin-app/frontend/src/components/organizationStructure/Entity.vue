@@ -45,12 +45,12 @@
 </template>
 
 <script>
-import { validate as uuidValidate } from "uuid";
+import { validate as uuidValidate } from 'uuid';
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  entityName: "Entity",
+  entityName: 'Entity',
   props: {
     levelId: {
       required: true,
@@ -70,10 +70,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      entityHasParent: "entities/getEntityHasParent",
-      hasDescendants: "entities/getHasDescendants",
-      lineColors: "getLineColors",
-      lineOfEntity: "entities/getLineByEntityId",
+      entityHasParent: 'entities/getEntityHasParent',
+      hasDescendants: 'entities/getHasDescendants',
+      lineColors: 'getLineColors',
+      lineOfEntity: 'entities/getLineByEntityId',
     }),
     leftLineOfEntity() {
       return this.lineOfEntity(this.upperEntityId);
@@ -84,18 +84,18 @@ export default {
   },
   methods: {
     ...mapActions({
-      clickOnEditEntity: "os/clickOnEditEntity",
+      clickOnEditEntity: 'os/clickOnEditEntity',
     }),
     callVuexActionThenFillEntityModalForm() {
       this.clickOnEditEntity(this.entityId);
 
       /* TODO: This is bad, bad practice. */
       const entityModal = this.$parent.$parent.$children.find(
-        (c) => c.$options.name === "EntityModal"
+        (c) => c.$options.name === 'EntityModal',
       );
-      entityModal.entityName = this.entityName || "";
-      entityModal.entityDescription = this.entityDescription || "";
-      entityModal.upperEntity = this.upperEntityId || "";
+      entityModal.entityName = this.entityName || '';
+      entityModal.entityDescription = this.entityDescription || '';
+      entityModal.upperEntity = this.upperEntityId || '';
     },
   },
 };

@@ -17,13 +17,13 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "SurveyModalStepper",
+  name: 'SurveyModalStepper',
   computed: {
     ...mapGetters({
-      completionIndex: "surveysUI/getSurveyModalCompletionIndex",
+      completionIndex: 'surveysUI/getSurveyModalCompletionIndex',
     }),
   },
 };

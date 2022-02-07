@@ -24,18 +24,18 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
-  name: "Finalize",
+  name: 'Finalize',
   watch: {},
   data() {
     return {};
   },
   computed: {
     ...mapGetters({
-      surveyName: "surveysUI/surveyNameInFocus",
-      surveyModalMode: "surveysUI/getSurveyModalMode",
+      surveyName: 'surveysUI/surveyNameInFocus',
+      surveyModalMode: 'surveysUI/getSurveyModalMode',
     }),
     edit() {
       return this.surveyModalMode === this.modalModesDict.edit;
@@ -49,11 +49,11 @@ export default {
   },
   methods: {
     ...mapActions({
-      publishSurveyHandler: "surveysUI/publishSurveyHandler",
+      publishSurveyHandler: 'surveysUI/publishSurveyHandler',
     }),
     ...mapMutations({
-      incrementCompletionIndex: "surveysUI/incrementSurveyModalCompletionIndex",
-      decrementCompletionIndex: "surveysUI/decrementSurveyModalCompletionIndex",
+      incrementCompletionIndex: 'surveysUI/incrementSurveyModalCompletionIndex',
+      decrementCompletionIndex: 'surveysUI/decrementSurveyModalCompletionIndex',
     }),
   },
 };

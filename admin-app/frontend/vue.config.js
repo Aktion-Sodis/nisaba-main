@@ -1,6 +1,6 @@
 module.exports = {
   transpileDependencies: [
-    'vuetify'
+    'vuetify',
   ],
 
   pluginOptions: {
@@ -9,7 +9,7 @@ module.exports = {
       fallbackLocale: 'es',
       localeDir: 'locales',
       enableInSFC: true,
-      enableBridge: false
-    }
-  }
-}
+      enableBridge: false,
+    },
+  },
+};

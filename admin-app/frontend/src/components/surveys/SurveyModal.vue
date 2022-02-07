@@ -17,16 +17,16 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 
-import SurveyModalStepper from "./surveyModalContent/SurveyModalStepper.vue";
-import QuestionTabs from "./surveyModalContent/QuestionTabs.vue";
-import SurveyModalFirstCard from "./surveyModalContent/SurveyModalFirstCard.vue";
-import SurveyModalQuestion from "./surveyModalContent/SurveyModalQuestion.vue";
-import SurveyModalFinalize from "./surveyModalContent/SurveyModalFinalize.vue";
+import SurveyModalStepper from './surveyModalContent/SurveyModalStepper.vue';
+import QuestionTabs from './surveyModalContent/QuestionTabs.vue';
+import SurveyModalFirstCard from './surveyModalContent/SurveyModalFirstCard.vue';
+import SurveyModalQuestion from './surveyModalContent/SurveyModalQuestion.vue';
+import SurveyModalFinalize from './surveyModalContent/SurveyModalFinalize.vue';
 
 export default {
-  name: "SurveyModal",
+  name: 'SurveyModal',
   components: {
     SurveyModalFirstCard,
     SurveyModalQuestion,
@@ -36,8 +36,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isSurveyModalDisplayed: "surveysUI/getIsSurveyModalDisplayed",
-      completionIndex: "surveysUI/getSurveyModalCompletionIndex",
+      isSurveyModalDisplayed: 'surveysUI/getIsSurveyModalDisplayed',
+      completionIndex: 'surveysUI/getSurveyModalCompletionIndex',
     }),
   },
 };

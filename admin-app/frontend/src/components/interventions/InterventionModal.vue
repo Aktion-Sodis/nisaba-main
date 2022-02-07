@@ -275,28 +275,27 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
-import { modalModesDict } from "../../store/constants";
+import { mapGetters, mapActions, mapMutations } from 'vuex';
+import { modalModesDict } from '../../store/constants';
 
 const interventionDescriptionMaxChar = Math.max(
   parseInt(process.env.VUE_APP_INTERVENTION_DESCRIPTION_MAX_CHAR, 10),
-  0
+  0,
 );
 
 export default {
-  name: "InterventionModal",
+  name: 'InterventionModal',
   data() {
     return {
       interventionDescriptionMaxChar,
       rules: {
         required: (value) => !!value || this.requiredi18n,
-        maxChar: (value) =>
-          value.length <= interventionDescriptionMaxChar ||
-          this.maxCharExceededi18n,
+        maxChar: (value) => value.length <= interventionDescriptionMaxChar
+          || this.maxCharExceededi18n,
       },
       interventionId: null,
-      interventionName: "",
-      interventionDescription: "",
+      interventionName: '',
+      interventionDescription: '',
       interventionTags: [],
       interventionContent: [],
       modalModesDict,
@@ -304,22 +303,22 @@ export default {
   },
   computed: {
     ...mapGetters({
-      interventions: "iv/getInterventions",
-      interventionModalMode: "ivGui/getInterventionModalMode",
-      interventionModalIsDisplayed: "ivGui/getInterventionModalIsDisplayed",
+      interventions: 'iv/getInterventions',
+      interventionModalMode: 'ivGui/getInterventionModalMode',
+      interventionModalIsDisplayed: 'ivGui/getInterventionModalIsDisplayed',
       interventionCurrentlyBeingEdited:
-        "ivGui/getInterventionCurrentlyBeingEdited",
-      allInterventionTags: "iv/getInterventionTags",
-      tagById: "iv/getInterventionTagById",
-      allContentByInterventionId: "iv/getAllContentByInterventionId",
-      contentById: "iv/getContentById",
-      interventionContentTagById: "iv/getInterventionContentTagById",
+        'ivGui/getInterventionCurrentlyBeingEdited',
+      allInterventionTags: 'iv/getInterventionTags',
+      tagById: 'iv/getInterventionTagById',
+      allContentByInterventionId: 'iv/getAllContentByInterventionId',
+      contentById: 'iv/getContentById',
+      interventionContentTagById: 'iv/getInterventionContentTagById',
     }),
     requiredi18n() {
-      return this.$t("general.form.required");
+      return this.$t('general.form.required');
     },
     maxCharExceededi18n() {
-      return this.$t("general.form.maxCharExceeded", {
+      return this.$t('general.form.maxCharExceeded', {
         maxChar: interventionDescriptionMaxChar,
       });
     },
@@ -328,15 +327,15 @@ export default {
     },
     allDocumentsOfIntervention() {
       return (
-        this.interventionContent.filter((c) => c.type === "MarkdownDocument") ||
-        []
+        this.interventionContent.filter((c) => c.type === 'MarkdownDocument')
+        || []
       );
     },
     allVideosOfIntervention() {
-      return this.interventionContent.filter((c) => c.type === "Video") || [];
+      return this.interventionContent.filter((c) => c.type === 'Video') || [];
     },
     allImagesOfIntervention() {
-      return this.interventionContent.filter((c) => c.type === "Image") || [];
+      return this.interventionContent.filter((c) => c.type === 'Image') || [];
     },
     edit() {
       return this.interventionModalMode === this.modalModesDict.edit;
@@ -350,27 +349,27 @@ export default {
   },
   methods: {
     ...mapActions({
-      saveIntervention: "ivGui/saveIntervention",
-      showInterventionModal: "ivGui/showInterventionModal",
-      closeInterventionModal: "ivGui/closeInterventionModal",
-      deleteIntervention: "ivGui/deleteIntervention",
-      switchToEditing: "ivGui/switchToEditing",
-      switchToReading: "ivGui/switchToReading",
+      saveIntervention: 'ivGui/saveIntervention',
+      showInterventionModal: 'ivGui/showInterventionModal',
+      closeInterventionModal: 'ivGui/closeInterventionModal',
+      deleteIntervention: 'ivGui/deleteIntervention',
+      switchToEditing: 'ivGui/switchToEditing',
+      switchToReading: 'ivGui/switchToReading',
     }),
     ...mapMutations({
-      setInterventionModalMode: "ivGui/setInterventionModalMode",
+      setInterventionModalMode: 'ivGui/setInterventionModalMode',
     }),
     clickOnDeleteIntervention() {
       this.deleteIntervention(
-        this.interventionCurrentlyBeingEdited.interventionId
+        this.interventionCurrentlyBeingEdited.interventionId,
       );
-      this.interventionName = "";
-      this.interventionDescription = "";
+      this.interventionName = '';
+      this.interventionDescription = '';
     },
     deleteComponentData() {
       this.interventionId = null;
-      this.interventionName = "";
-      this.interventionDescription = "";
+      this.interventionName = '';
+      this.interventionDescription = '';
       this.interventionTags = [];
       this.interventionContent = [];
     },
@@ -392,9 +391,9 @@ export default {
       this.closeThenDeleteComponentData();
     },
     selectImg() {
-      const imgInput = this.$refs["img-upload"];
+      const imgInput = this.$refs['img-upload'];
       imgInput.click();
-      console.log("TODO: do something with", imgInput);
+      console.log('TODO: do something with', imgInput);
     },
   },
 };

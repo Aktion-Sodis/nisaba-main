@@ -34,22 +34,22 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import SideBar from "./components/commons/SideBar.vue";
+import { mapGetters } from 'vuex';
+import SideBar from './components/commons/SideBar.vue';
 
 export default {
-  name: "App",
+  name: 'App',
   components: { SideBar },
   data: () => ({
     langs: [
-      { name: "English US", abbr: "en-US" },
-      { name: "Español España", abbr: "es-ES" },
-      { name: "Türkçe Türkiye", abbr: "tr-TR" },
+      { name: 'English US', abbr: 'en-US' },
+      { name: 'Español España', abbr: 'es-ES' },
+      { name: 'Türkçe Türkiye', abbr: 'tr-TR' },
     ],
   }),
   computed: {
     ...mapGetters({
-      isAuthenticated: "auth/getIsAuthenticated",
+      isAuthenticated: 'auth/getIsAuthenticated',
     }),
     currentRouteName() {
       return this.$route.name;

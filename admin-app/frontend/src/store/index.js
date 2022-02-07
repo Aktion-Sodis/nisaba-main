@@ -1,28 +1,28 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import VuexPersistence from "vuex-persist";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import VuexPersistence from 'vuex-persist';
 
 // import modules
-import authModule from "./authModule";
-import entitiesModule from "./entitiesModule";
-import organizationStructureModule from "./organizationStructureModule";
-import interventionsModule from "./interventionsModule";
-import interventionsGUIModule from "./interventionsGUIModule";
-import surveysData from "./survey/data";
-import surveysUI from "./survey/ui";
-import questionsUI from "./questions/ui";
+import authModule from './authModule';
+import entitiesModule from './entitiesModule';
+import organizationStructureModule from './organizationStructureModule';
+import interventionsModule from './interventionsModule';
+import interventionsGUIModule from './interventionsGUIModule';
+import surveysData from './survey/data';
+import surveysUI from './survey/ui';
+import questionsUI from './questions/ui';
 
 // persist
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
-  modules: ["auth"],
+  modules: ['auth'],
 });
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    lineColors: ["green", "orange", "blue", "red", "yellow", "purple"],
+    lineColors: ['green', 'orange', 'blue', 'red', 'yellow', 'purple'],
   },
   getters: {
     getLineColors: (state) => state.lineColors,

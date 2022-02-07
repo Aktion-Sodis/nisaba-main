@@ -1115,14 +1115,7 @@ export const schema = {
     },
     QuestionType: {
       name: "QuestionType",
-      values: [
-        "TEXT",
-        "SINGLECHOICE",
-        "MULTIPLECHOICE",
-        "PICTURE",
-        "PICTUREWITHTAGS",
-        "AUDIO",
-      ],
+      values: ["TEXT", "SINGLECHOICE", "MULTIPLECHOICE", "PICTURE", "PICTUREWITHTAGS", "AUDIO"],
     },
     Type: {
       name: "Type",

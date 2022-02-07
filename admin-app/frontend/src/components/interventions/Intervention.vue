@@ -25,12 +25,12 @@
 </template>
 
 <script>
-import { validate as uuidValidate } from "uuid";
+import { validate as uuidValidate } from 'uuid';
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: "Intervention",
+  name: 'Intervention',
   props: {
     interventionId: {
       required: true,
@@ -55,7 +55,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      interventionTagById: "iv/getInterventionTagById",
+      interventionTagById: 'iv/getInterventionTagById',
     }),
   },
   methods: {
@@ -64,18 +64,17 @@ export default {
 
       /* TODO: This is bad, bad practice. */
       const InterventionModal = this.$parent.$children.find(
-        (c) => c.$options.name === "InterventionModal"
+        (c) => c.$options.name === 'InterventionModal',
       );
-      InterventionModal.interventionId = this.interventionId || "";
-      InterventionModal.interventionName = this.interventionName || "";
-      InterventionModal.interventionDescription =
-        this.interventionDescription || "";
+      InterventionModal.interventionId = this.interventionId || '';
+      InterventionModal.interventionName = this.interventionName || '';
+      InterventionModal.interventionDescription = this.interventionDescription || '';
       InterventionModal.interventionTags = this.interventionTags || [];
       InterventionModal.interventionContent = this.interventionContent || [];
     },
     ...mapActions({
-      viewIntervention: "ivGui/viewIntervention",
-      clickOnEditIntervention: "ivGui/clickOnEditIntervention",
+      viewIntervention: 'ivGui/viewIntervention',
+      clickOnEditIntervention: 'ivGui/clickOnEditIntervention',
     }),
     // callVuexActionThenFillInterventionModalForm() {
     //   this.clickOnEditIntervention(this.interventionId);

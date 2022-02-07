@@ -113,27 +113,27 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
 const societyName = process.env.VUE_APP_SOCIETY_VERBOSE_NAME;
 
 export default {
-  name: "SideBar",
+  name: 'SideBar',
   data: () => ({ societyName }),
   computed: {
     ...mapGetters({
-      isAuthenticated: "auth/getIsAuthenticated",
-      credentials: "auth/getCredentials",
+      isAuthenticated: 'auth/getIsAuthenticated',
+      credentials: 'auth/getCredentials',
     }),
   },
   props: { currentRouteName: String },
   methods: {
     ...mapActions({
-      deleteSession: "auth/deleteSession",
+      deleteSession: 'auth/deleteSession',
     }),
     logout() {
       this.deleteSession();
-      this.$router.push({ name: "Login" });
+      this.$router.push({ name: 'Login' });
     },
   },
 };

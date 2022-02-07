@@ -1,4 +1,4 @@
-import { modalModesDict } from "../../store/constants";
+import { modalModesDict } from '../constants';
 
 const interventionsModule = {
   namespaced: true,
@@ -9,19 +9,16 @@ const interventionsModule = {
   }),
   getters: {
     getInterventionModalMode: (state) => state.interventionModalMode,
-    getInterventionModalIsEdit: (state) =>
-      state.interventionIdCurrentlyBeingEdited !== null,
+    getInterventionModalIsEdit: (state) => state.interventionIdCurrentlyBeingEdited !== null,
     getInterventionCurrentlyBeingEdited: (
       state,
       getters,
       rootState,
-      rootGetters
-    ) =>
-      rootGetters["iv/getInterventionById"](
-        state.interventionIdCurrentlyBeingEdited
-      ) || null,
-    getInterventionModalIsDisplayed: (state) =>
-      state.interventionModalIsDisplayed,
+      rootGetters,
+    ) => rootGetters['iv/getInterventionById'](
+      state.interventionIdCurrentlyBeingEdited,
+    ) || null,
+    getInterventionModalIsDisplayed: (state) => state.interventionModalIsDisplayed,
   },
   mutations: {
     setInterventionIdCurrentlyBeingEdited: (state, interventionId) => {
@@ -36,70 +33,72 @@ const interventionsModule = {
   },
   actions: {
     resetAll: ({ commit }) => {
-      commit("setInterventionIdCurrentlyBeingEdited", null);
-      commit("setInterventionModalIsDisplayed", false);
+      commit('setInterventionIdCurrentlyBeingEdited', null);
+      commit('setInterventionModalIsDisplayed', false);
     },
 
     /* INTERVENTION */
     viewIntervention: ({ commit, dispatch }) => {
-      dispatch("resetAll");
-      commit("setInterventionModalMode", modalModesDict.read);
-      dispatch("showInterventionModal");
+      dispatch('resetAll');
+      commit('setInterventionModalMode', modalModesDict.read);
+      dispatch('showInterventionModal');
     },
     clickOnEditIntervention: ({ commit, dispatch }, interventionId) => {
-      dispatch("resetAll");
-      commit("setInterventionIdCurrentlyBeingEdited", interventionId);
-      dispatch("showInterventionModal");
+      dispatch('resetAll');
+      commit('setInterventionIdCurrentlyBeingEdited', interventionId);
+      dispatch('showInterventionModal');
     },
     clickOnAddNewIntervention: ({ commit, dispatch }) => {
-      dispatch("resetAll");
-      commit("setInterventionModalMode", modalModesDict.create);
-      dispatch("showInterventionModal");
+      dispatch('resetAll');
+      commit('setInterventionModalMode', modalModesDict.create);
+      dispatch('showInterventionModal');
     },
     saveIntervention: (
       { commit },
-      { interventionId, name, description, tags }
+      {
+        interventionId, name, description, tags,
+      },
     ) => {
       if (interventionId === null) {
         commit(
-          "iv/addIntervention",
+          'iv/addIntervention',
           {
             name,
             description,
             tags,
           },
-          { root: true }
+          { root: true },
         );
         return;
       }
       commit(
-        "iv/replaceIntervention",
+        'iv/replaceIntervention',
         {
           interventionId,
           name,
           description,
           tags,
         },
-        { root: true }
+        { root: true },
       );
     },
     deleteIntervention: ({ commit, dispatch }, interventionId) => {
-      commit("iv/deleteIntervention", interventionId, { root: true });
-      dispatch("resetAll");
+      commit('iv/deleteIntervention', interventionId, { root: true });
+      dispatch('resetAll');
     },
     showInterventionModal: ({ commit }) => {
-      commit("setInterventionModalIsDisplayed", true);
+      commit('setInterventionModalIsDisplayed', true);
     },
     closeInterventionModal: ({ commit }) => {
-      commit("setInterventionModalIsDisplayed", false);
+      commit('setInterventionModalIsDisplayed', false);
     },
     switchToEditing: ({ commit }, interventionId) => {
-      commit("setInterventionIdCurrentlyBeingEdited", interventionId);
-      commit("setInterventionModalMode", modalModesDict.edit);
+      commit('setInterventionIdCurrentlyBeingEdited', interventionId);
+      commit('setInterventionModalMode', modalModesDict.edit);
     },
     switchToReading: ({ commit }) => {
-      commit("setInterventionModalMode", modalModesDict.read);
-      commit("setInterventionIdCurrentlyBeingEdited", null);
+      commit('setInterventionModalMode', modalModesDict.read);
+      commit('setInterventionIdCurrentlyBeingEdited', null);
     },
   },
 };

@@ -33,22 +33,10 @@
                   ></v-checkbox>
                   <p class="mt-1 py-0">{{ $t("login.forgotPassword") }}</p>
                 </div>
-                <v-btn
-                  type="submit"
-                  block
-                  large
-                  color="primary"
-                  class="text-none"
-                  >{{ $t("login.signIn") }}</v-btn
-                >
-                <v-btn
-                  type="submit"
-                  block
-                  outlined
-                  large
-                  color="grey"
-                  class="mt-2 text-none"
-                >
+                <v-btn type="submit" block large color="primary" class="text-none">{{
+                  $t("login.signIn")
+                }}</v-btn>
+                <v-btn type="submit" block outlined large color="grey" class="mt-2 text-none">
                   <svg
                     viewBox="0 0 24 24"
                     width="24"
@@ -56,6 +44,7 @@
                     xmlns="http://www.w3.org/2000/svg"
                     class="mr-2"
                   >
+                    <!-- eslint-disable max-len -->
                     <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
                       <path
                         fill="#4285F4"
@@ -74,17 +63,16 @@
                         d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"
                       />
                     </g>
+                    <!-- eslint-enable max-len -->
                   </svg>
                   {{ $t("login.signInWithGoogle") }}
                 </v-btn>
                 <div class="push-to-end mt-4">
                   <p>
                     {{ $t("login.dontHaveAnAccount") }}
-                    <a
-                      href="#"
-                      class="font-weight-bold font-italic text-decoration-none"
-                      >{{ $t("login.registerHere") }}</a
-                    >
+                    <a href="#" class="font-weight-bold font-italic text-decoration-none">{{
+                      $t("login.registerHere")
+                    }}</a>
                   </p>
                 </div>
               </v-form>
@@ -107,9 +95,7 @@
         <v-container style="height: 100%" fluid>
           <v-row style="height: 100%" no-gutters>
             <v-col cols="6" offset="3" class="login-row">
-              <div
-                class="rounded-xl pa-4 lg-rounded-pill d-none d-md-block society-icon-wrapper"
-              >
+              <div class="rounded-xl pa-4 lg-rounded-pill d-none d-md-block society-icon-wrapper">
                 <img
                   src="../static/aktionSodisBig.png"
                   style="width: 100%"
@@ -125,14 +111,14 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     return {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
       showPassword: false,
       rules: {
         required: (value) => !!value || this.requiredi18n,
@@ -142,21 +128,21 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isAuthenticated: "auth/getIsAuthenticated",
+      isAuthenticated: 'auth/getIsAuthenticated',
     }),
-    requiredi18n: function () {
-      return this.$t("general.form.required");
+    requiredi18n() {
+      return this.$t('general.form.required');
     },
   },
   methods: {
     submit() {
       const valid = this.$refs.form.validate();
       if (valid) {
-        const signInSuccess = this.$store.dispatch("auth/signIn", {
+        const signInSuccess = this.$store.dispatch('auth/signIn', {
           username: this.username,
         });
         if (signInSuccess) {
-          this.$router.push({ name: "Home" });
+          this.$router.push({ name: 'Home' });
         }
       }
     },

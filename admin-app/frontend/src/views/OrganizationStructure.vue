@@ -61,36 +61,36 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
-import LevelModal from "../components/organizationStructure/LevelModal.vue";
-import EntityModal from "../components/organizationStructure/EntityModal.vue";
-import EntitiesColumn from "../components/organizationStructure/EntitiesColumn.vue";
+import LevelModal from '../components/organizationStructure/LevelModal.vue';
+import EntityModal from '../components/organizationStructure/EntityModal.vue';
+import EntitiesColumn from '../components/organizationStructure/EntitiesColumn.vue';
 
 export default {
-  name: "OrganizationStructure",
+  name: 'OrganizationStructure',
   components: { LevelModal, EntityModal, EntitiesColumn },
   computed: {
     ...mapGetters({
-      levels: "entities/getSortedLevels",
-      getInterventionById: "iv/getInterventionById",
+      levels: 'entities/getSortedLevels',
+      getInterventionById: 'iv/getInterventionById',
     }),
   },
   methods: {
     ...mapActions({
-      clickOnEntity: "entities/clickOnEntity",
-      clickOnAddNewLevel: "os/clickOnAddNewLevel",
-      clickOnEditLevel: "os/clickOnEditLevel",
+      clickOnEntity: 'entities/clickOnEntity',
+      clickOnAddNewLevel: 'os/clickOnAddNewLevel',
+      clickOnEditLevel: 'os/clickOnEditLevel',
     }),
     callVuexActionThenFillEntityModalForm(level) {
       this.clickOnEditLevel(level.levelId);
 
       /* TODO: This is bad, bad practice. */
       const levelModal = this.$children.find(
-        (c) => c.$options.name === "LevelModal"
+        (c) => c.$options.name === 'LevelModal',
       );
-      levelModal.levelName = level.name || "";
-      levelModal.levelDescription = level.description || "";
+      levelModal.levelName = level.name || '';
+      levelModal.levelDescription = level.description || '';
       levelModal.levelAllowedInterventions = level.allowedInterventions || [];
       levelModal.levelIsSubordinateTo = level.upperLevelId || null;
     },

@@ -57,24 +57,24 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
-import Intervention from "../components/interventions/Intervention.vue";
-import InterventionModal from "../components/interventions/InterventionModal.vue";
-import SurveyModal from "../components/surveys/SurveyModal.vue";
+import Intervention from '../components/interventions/Intervention.vue';
+import InterventionModal from '../components/interventions/InterventionModal.vue';
+import SurveyModal from '../components/surveys/SurveyModal.vue';
 
 export default {
-  name: "Interventions",
+  name: 'Interventions',
   components: { Intervention, InterventionModal, SurveyModal },
   computed: {
     ...mapGetters({
-      interventions: "iv/getInterventions",
+      interventions: 'iv/getInterventions',
     }),
   },
   methods: {
     ...mapActions({
-      clickOnAddNewIntervention: "ivGui/clickOnAddNewIntervention",
-      newSurveyHandler: "surveysUI/newSurveyHandler",
+      clickOnAddNewIntervention: 'ivGui/clickOnAddNewIntervention',
+      newSurveyHandler: 'surveysUI/newSurveyHandler',
     }),
   },
 };

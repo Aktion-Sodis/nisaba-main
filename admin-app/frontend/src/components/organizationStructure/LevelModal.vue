@@ -108,42 +108,41 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
 const levelDescriptionMaxChar = Math.max(
   parseInt(process.env.VUE_APP_LEVEL_DESCRIPTION_MAX_CHAR, 10),
-  0
+  0,
 );
 
 export default {
-  name: "LevelModal",
+  name: 'LevelModal',
   data() {
     return {
       levelDescriptionMaxChar,
       rules: {
         required: (value) => !!value || this.requiredi18n,
-        maxChar: (value) =>
-          value.length <= levelDescriptionMaxChar || this.maxCharExceededi18n,
+        maxChar: (value) => value.length <= levelDescriptionMaxChar || this.maxCharExceededi18n,
       },
-      levelName: "",
-      levelDescription: "",
+      levelName: '',
+      levelDescription: '',
       levelAllowedInterventions: [],
       levelIsSubordinateTo: null,
     };
   },
   computed: {
     ...mapGetters({
-      levels: "entities/getSortedLevels",
-      allowedInterventions: "iv/getInterventions",
-      levelModalIsEdit: "os/getLevelModalIsEdit",
-      levelModalIsDisplayed: "os/getLevelModalIsDisplayed",
-      levelCurrentlyBeingEdited: "os/getLevelCurrentlyBeingEdited",
+      levels: 'entities/getSortedLevels',
+      allowedInterventions: 'iv/getInterventions',
+      levelModalIsEdit: 'os/getLevelModalIsEdit',
+      levelModalIsDisplayed: 'os/getLevelModalIsDisplayed',
+      levelCurrentlyBeingEdited: 'os/getLevelCurrentlyBeingEdited',
     }),
     requiredi18n() {
-      return this.$t("general.form.required");
+      return this.$t('general.form.required');
     },
     maxCharExceededi18n() {
-      return this.$t("general.form.maxCharExceeded", {
+      return this.$t('general.form.maxCharExceeded', {
         maxChar: levelDescriptionMaxChar,
       });
     },
@@ -156,15 +155,15 @@ export default {
   },
   methods: {
     ...mapActions({
-      saveLevel: "os/saveLevel",
-      showLevelModal: "os/showLevelModal",
-      closeLevelModal: "os/closeLevelModal",
+      saveLevel: 'os/saveLevel',
+      showLevelModal: 'os/showLevelModal',
+      closeLevelModal: 'os/closeLevelModal',
     }),
     closeThenDeleteComponentData() {
       this.closeLevelModal();
 
-      this.levelName = "";
-      this.levelDescription = "";
+      this.levelName = '';
+      this.levelDescription = '';
       this.levelAllowedInterventions = [];
       this.levelIsSubordinateTo = null;
     },

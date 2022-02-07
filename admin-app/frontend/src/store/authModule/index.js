@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 const authModule = {
   namespaced: true,
@@ -41,15 +41,15 @@ const authModule = {
       // const password = payload.password;
       // const persistSession = payload.rememberMe;
 
-      commit("setCredentials", {
+      commit('setCredentials', {
         userId: uuidv4(),
-        email: "dummy@mail.com",
+        email: 'dummy@mail.com',
         username: payload.username,
-        firstname: "Ahmet",
-        lastname: "Polat",
+        firstname: 'Ahmet',
+        lastname: 'Polat',
       });
-      commit("setToken", uuidv4());
-      commit("setIsAuthenticated", true);
+      commit('setToken', uuidv4());
+      commit('setIsAuthenticated', true);
       return true;
     },
     deleteSession({ commit }) {
@@ -57,15 +57,15 @@ const authModule = {
       // const password = payload.password;
       // const persistSession = payload.rememberMe;
 
-      commit("setCredentials", {
+      commit('setCredentials', {
         userId: null,
         email: null,
         username: null,
         firstname: null,
         lastname: null,
       });
-      commit("setToken", null);
-      commit("setIsAuthenticated", false);
+      commit('setToken', null);
+      commit('setIsAuthenticated', false);
       return true;
     },
   },

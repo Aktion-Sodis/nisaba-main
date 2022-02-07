@@ -116,26 +116,25 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from "vuex";
-import { modalModesDict } from "../../../store/constants";
+import { mapGetters, mapActions, mapMutations } from 'vuex';
+import { modalModesDict } from '../../../store/constants';
 
 const surveyDescriptionMaxChar = Math.max(
   parseInt(process.env.VUE_APP_SURVEY_DESCRIPTION_MAX_CHAR, 10),
-  0
+  0,
 );
 
 export default {
-  name: "SurveyModalFirstCard",
+  name: 'SurveyModalFirstCard',
   data() {
     return {
       surveyDescriptionMaxChar,
       rules: {
-        maxChar: (value) =>
-          value.length <= surveyDescriptionMaxChar || this.maxCharExceededi18n,
+        maxChar: (value) => value.length <= surveyDescriptionMaxChar || this.maxCharExceededi18n,
       },
       modalModesDict,
-      surveyName: "",
-      surveyDescription: "",
+      surveyName: '',
+      surveyDescription: '',
       surveyTags: [],
     };
   },
@@ -144,11 +143,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      surveyModalMode: "surveysUI/getSurveyModalMode",
-      surveyInFocus: "surveysUI/surveyInFocus",
-      surveyDraft: "surveysUI/getSurveyDraft",
-      allSurveyTags: "surveysData/getSurveyTags",
-      tagsInFocus: "surveysUI/tagsInFocus",
+      surveyModalMode: 'surveysUI/getSurveyModalMode',
+      surveyInFocus: 'surveysUI/surveyInFocus',
+      surveyDraft: 'surveysUI/getSurveyDraft',
+      allSurveyTags: 'surveysData/getSurveyTags',
+      tagsInFocus: 'surveysUI/tagsInFocus',
     }),
     edit() {
       return this.surveyModalMode === this.modalModesDict.edit;
@@ -160,28 +159,28 @@ export default {
       return this.surveyModalMode === this.modalModesDict.read;
     },
     canAdvance() {
-      return this.read || this.surveyName !== "";
+      return this.read || this.surveyName !== '';
     },
     maxCharExceededi18n() {
-      return this.$t("general.form.maxCharExceeded", {
+      return this.$t('general.form.maxCharExceeded', {
         maxChar: surveyDescriptionMaxChar,
       });
     },
   },
   methods: {
     ...mapActions({
-      abortNewSurveyHandler: "surveysUI/abortNewSurveyHandler",
-      abortReadSurveyHandler: "surveysUI/abortReadSurveyHandler",
-      abortEditSurveyHandler: "surveysUI/abortEditSurveyHandler",
+      abortNewSurveyHandler: 'surveysUI/abortNewSurveyHandler',
+      abortReadSurveyHandler: 'surveysUI/abortReadSurveyHandler',
+      abortEditSurveyHandler: 'surveysUI/abortEditSurveyHandler',
     }),
     ...mapMutations({
-      setSurveyDraft: "surveysUI/setSurveyDraft",
-      incrementCompletionIndex: "surveysUI/incrementSurveyModalCompletionIndex",
+      setSurveyDraft: 'surveysUI/setSurveyDraft',
+      incrementCompletionIndex: 'surveysUI/incrementSurveyModalCompletionIndex',
     }),
     selectImg() {
-      const imgInput = this.$refs["img-upload"];
+      const imgInput = this.$refs['img-upload'];
       imgInput.click();
-      console.log("TODO: do something with", imgInput);
+      console.log('TODO: do something with', imgInput);
     },
     nextStepHandler() {
       this.setSurveyDraft({
@@ -192,8 +191,8 @@ export default {
       this.incrementCompletionIndex();
     },
     prefillComponentDataFromSurveyDraft() {
-      this.surveyName = this.surveyDraft?.name ?? "";
-      this.surveyDescription = this.surveyDraft?.description ?? "";
+      this.surveyName = this.surveyDraft?.name ?? '';
+      this.surveyDescription = this.surveyDraft?.description ?? '';
       this.surveyTags = this.surveyDraft?.tags ?? [];
     },
     exitHandler() {

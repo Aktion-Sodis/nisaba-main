@@ -31,12 +31,12 @@
 </template>
 
 <script>
-import { validate as uuidValidate } from "uuid";
+import { validate as uuidValidate } from 'uuid';
 
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 
 export default {
-  name: "AddEntityButton",
+  name: 'AddEntityButton',
   data: () => ({ isHovered: false }),
   props: {
     levelId: {
@@ -45,11 +45,11 @@ export default {
     },
   },
   methods: {
-    setIsHovered: function (payload) {
+    setIsHovered(payload) {
       this.isHovered = payload;
     },
     ...mapActions({
-      clickOnAddNewEntity: "os/clickOnAddNewEntity",
+      clickOnAddNewEntity: 'os/clickOnAddNewEntity',
     }),
   },
 };

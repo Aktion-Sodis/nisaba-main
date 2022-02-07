@@ -1,8 +1,8 @@
 export class EmptySurvey {
   constructor() {
-    this.name = "";
-    this.description = "";
-    this.type = "Default";
+    this.name = '';
+    this.description = '';
+    this.type = 'Default';
     this.questionsIds = [];
     this.creationDate = Date.now();
     this.lastEditDate = null;
@@ -13,13 +13,7 @@ export class EmptySurvey {
 
 export class Survey {
   constructor({
-    name,
-    description,
-    type,
-    questionsIds,
-    creationDate,
-    lastEditDate,
-    tags,
+    name, description, type, questionsIds, creationDate, lastEditDate, tags,
   }) {
     this.name = name;
     this.description = description;

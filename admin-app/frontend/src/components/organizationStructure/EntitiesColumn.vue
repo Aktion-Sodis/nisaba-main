@@ -36,15 +36,15 @@
 </template>
 
 <script>
-import { validate as uuidValidate } from "uuid";
+import { validate as uuidValidate } from 'uuid';
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex';
 
-import AddEntityButton from "./AddEntityButton.vue";
-import Entity from "./Entity.vue";
+import AddEntityButton from './AddEntityButton.vue';
+import Entity from './Entity.vue';
 
 export default {
-  name: "EntitiesColumn",
+  name: 'EntitiesColumn',
   components: { AddEntityButton, Entity },
   props: {
     levelId: {
@@ -55,14 +55,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      allEntitiesOfLevel: "entities/getAllEntitiesOfLevelByHid",
-      lineColors: "getLineColors",
-      calculatedLinesByLevelId: "entities/getCalculatedLinesByLevelId",
+      allEntitiesOfLevel: 'entities/getAllEntitiesOfLevelByHid',
+      lineColors: 'getLineColors',
+      calculatedLinesByLevelId: 'entities/getCalculatedLinesByLevelId',
     }),
   },
   methods: {
     ...mapActions({
-      clickOnEntity: "entities/clickOnEntity",
+      clickOnEntity: 'entities/clickOnEntity',
     }),
   },
 };
