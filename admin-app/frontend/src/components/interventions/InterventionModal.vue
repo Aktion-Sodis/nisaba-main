@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="interventionModalIsDisplayed" max-width="1200px" persistent>
+  <v-dialog v-model="isInterventionModalDisplayed" max-width="1200px" persistent>
     <v-card class="px-4 pt-4">
       <v-form ref="form" @submit.prevent="submitIntervention" lazy-validation>
         <v-card-title>
@@ -234,7 +234,7 @@ export default {
     ...mapGetters({
       interventions: 'iv/getInterventions',
       interventionModalMode: 'ivGui/getInterventionModalMode',
-      interventionModalIsDisplayed: 'ivGui/getInterventionModalIsDisplayed',
+      isInterventionModalDisplayed: 'ivGui/getInterventionModalIsDisplayed',
       interventionCurrentlyBeingEdited: 'ivGui/getInterventionCurrentlyBeingEdited',
       allInterventionTags: 'iv/getInterventionTags',
       tagById: 'iv/getInterventionTagById',
