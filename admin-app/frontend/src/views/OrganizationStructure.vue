@@ -35,7 +35,7 @@
                   <v-icon> mdi-hammer-wrench </v-icon>
                 </v-avatar>
               </template>
-              <span>{{ getInterventionById(interventionId).name }}</span>
+              <span>{{ interventionById(interventionId).name }}</span>
             </v-tooltip>
           </div>
           <div v-else style="height: 48px; overflow: hidden">
@@ -71,7 +71,7 @@ export default {
   computed: {
     ...mapGetters({
       levels: 'entities/sortedLevels',
-      getInterventionById: 'iv/getInterventionById',
+      interventionById: 'iv/interventionById',
     }),
   },
   methods: {

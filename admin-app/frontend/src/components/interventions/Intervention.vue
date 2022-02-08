@@ -1,16 +1,6 @@
 <template>
-  <v-card
-    style="height: 100%"
-    class="pa-2"
-    outlined
-    tile
-    @click="clickOnIntervention"
-  >
-    <v-img
-      src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-      height="200px"
-    >
-    </v-img>
+  <v-card style="height: 100%" class="pa-2" outlined tile @click="clickOnIntervention">
+    <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" height="200px"> </v-img>
     <v-card-title>
       {{ interventionName }}
       <v-spacer></v-spacer>
@@ -55,7 +45,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      interventionTagById: 'iv/getInterventionTagById',
+      interventionTagById: 'iv/interventionTagById',
     }),
   },
   methods: {

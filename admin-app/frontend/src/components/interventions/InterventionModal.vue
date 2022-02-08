@@ -185,7 +185,7 @@
           >
             {{ read ? 'Close' : $t('general.cancel') }}
           </v-btn>
-          <v-btn v-if="read" color="primary" text @click="switchToEditing(interventionId)">
+          <v-btn v-if="read" color="primary" text @click="switchToEditing({ interventionId })">
             Edit
           </v-btn>
           <v-btn
@@ -235,12 +235,13 @@ export default {
       interventions: 'iv/getInterventions',
       interventionModalMode: 'ivGui/getInterventionModalMode',
       isInterventionModalDisplayed: 'ivGui/getInterventionModalIsDisplayed',
-      interventionCurrentlyBeingEdited: 'ivGui/getInterventionCurrentlyBeingEdited',
+      interventionIdCurrentlyBeingEdited: 'ivGui/getInterventionIdCurrentlyBeingEdited',
+      interventionCurrentlyBeingEdited: 'ivGui/interventionCurrentlyBeingEdited',
       allInterventionTags: 'iv/getInterventionTags',
-      tagById: 'iv/getInterventionTagById',
-      allContentByInterventionId: 'iv/getAllContentByInterventionId',
-      contentById: 'iv/getContentById',
-      interventionContentTagById: 'iv/getInterventionContentTagById',
+      tagById: 'iv/interventionTagById',
+      allContentByInterventionId: 'iv/allContentsByInterventionId',
+      contentById: 'iv/contentById',
+      interventionContentTagById: 'iv/interventionContentTagById',
     }),
     requiredi18n() {
       return this.$t('general.form.required');
@@ -282,9 +283,8 @@ export default {
       switchToReading: 'ivGui/switchToReading',
     }),
     clickOnDeleteIntervention() {
-      this.deleteIntervention(this.interventionCurrentlyBeingEdited.interventionId);
-      this.interventionName = '';
-      this.interventionDescription = '';
+      this.closeThenDeleteComponentData();
+      this.deleteIntervention({ interventionId: this.interventionIdCurrentlyBeingEdited });
     },
     deleteComponentData() {
       this.interventionId = null;

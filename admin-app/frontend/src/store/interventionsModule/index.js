@@ -42,10 +42,7 @@ const interventionsModule = {
         name: 'Birth Control',
         description:
           'Birth control, also known as contraception, anticonception, and fertility control, is a method or device used to prevent pregnancy.',
-        tags: [
-          'c1f87fc0-9e7c-400c-aec5-73719a87642a',
-          '4b139d0e-1d61-4317-8cc6-1e1364d3b6b9',
-        ],
+        tags: ['c1f87fc0-9e7c-400c-aec5-73719a87642a', '4b139d0e-1d61-4317-8cc6-1e1364d3b6b9'],
         content: [
           {
             id: '300cc45e-f212-42a9-a940-367df3fd1dbb',
@@ -70,10 +67,7 @@ const interventionsModule = {
         name: 'Gender Equality',
         description:
           'Gender equality, also known as sexual equality or equality of the sexes, is the state of equal ease of access to resources and opportunities regardless of gender, including economic participation and decision-making; and the state of valuing different behaviors, aspirations and needs equally, regardless of gender. ',
-        tags: [
-          'c1f87fc0-9e7c-400c-aec5-73719a87642a',
-          '4b139d0e-1d61-4317-8cc6-1e1364d3b6b9',
-        ],
+        tags: ['c1f87fc0-9e7c-400c-aec5-73719a87642a', '4b139d0e-1d61-4317-8cc6-1e1364d3b6b9'],
         content: [],
       },
     ],
@@ -88,59 +82,56 @@ const interventionsModule = {
   }),
   getters: {
     /* READ */
-    getInterventions: (state) => state.interventions,
-    getInterventionById: (state, getters) => (interventionId) => getters.getInterventions.find((e) => e.interventionId === interventionId),
+    getInterventions: ({ interventions }) => interventions,
+    getInterventionTags: ({ interventionTags }) => interventionTags,
+    getInterventionContentTags: ({ interventionContentTags }) => interventionContentTags,
 
-    getInterventionTags: (state) => state.interventionTags,
-    getInterventionTagById: (state, getters) => (tagId) => getters.getInterventionTags.find((e) => e.tagId === tagId),
+    interventionById:
+      (_, { getInterventions }) => (interventionId) => getInterventions.find((e) => e.interventionId === interventionId),
 
-    getAllContentByInterventionId: (state, getters) => (interventionId) => getters.getInterventionById(interventionId).content,
-    getContentById: (state, getters) => (interventionId, contentId) => getters
-      .getInterventionById(interventionId)
-      .content.find((c) => c.id === contentId),
-    getAllDocumentsOfIntervention: (state, getters) => (interventionId) => getters
-      .getInterventionById(interventionId)
-      .content.filter((c) => c.type === 'MarkdownDocument') || [],
-    getAllImagesOfIntervention: (state, getters) => (interventionId) => getters
-      .getInterventionById(interventionId)
-      .content.filter((c) => c.type === 'Image') || [],
-    getAllVideosOfIntervention: (state, getters) => (interventionId) => getters
-      .getInterventionById(interventionId)
-      .content.filter((c) => c.type === 'Video') || [],
+    interventionTagById:
+      (_, { getInterventionTags }) => (tagId) => getInterventionTags.find((e) => e.tagId === tagId),
 
-    getInterventionContentTags: (state) => state.interventionContentTags,
-    getInterventionContentTagById: (state, getters) => (tagId) => getters.getInterventionContentTags.find((e) => e.tagId === tagId),
+    allContentsByInterventionId:
+      (_, { interventionById }) => (interventionId) => interventionById(interventionId).content,
+    contentById:
+      (_, { interventionById }) => (interventionId, contentId) => interventionById(interventionId).content.find((c) => c.id === contentId),
+
+    resourcesOfIntervention:
+      (_, { interventionById }) => (interventionId, resourceType) => interventionById(interventionId).content.filter((c) => c.type === resourceType) || [],
+    allDocumentsOfIntervention:
+      (_, { resourcesOfIntervention }) => (interventionId) => resourcesOfIntervention(interventionId, 'Document'),
+    allImagessOfIntervention:
+      (_, { resourcesOfIntervention }) => (interventionId) => resourcesOfIntervention(interventionId, 'Image'),
+    allVideosOfIntervention:
+      (_, { resourcesOfIntervention }) => (interventionId) => resourcesOfIntervention(interventionId, 'Video'),
+
+    interventionContentTagById:
+      (_, { getInterventionContentTags }) => (tagId) => getInterventionContentTags.find((e) => e.tagId === tagId),
   },
   mutations: {
     /* CREATE, UPDATE, DELETE */
-    addIntervention: (state, { name, description, tags }) => {
+    addIntervention: (state, { newIntervention }) => {
       state.interventions = state.interventions.concat({
         interventionId: uuidv4(),
-        name,
-        description,
-        tags,
+        name: newIntervention.name,
+        description: newIntervention.description,
+        tags: newIntervention.tags,
       });
     },
-    replaceIntervention: (
-      state,
-      {
-        interventionId, name, description, tags,
-      },
-    ) => {
-      state.interventions = state.interventions.map((i) => (i.interventionId === interventionId
+    replaceIntervention: (state, { newIntervention }) => {
+      state.interventions = state.interventions.map((i) => (i.interventionId === newIntervention.interventionId
         ? {
           ...i,
-          interventionId,
-          name,
-          description,
-          tags,
+          interventionId: newIntervention.interventionId,
+          name: newIntervention.name,
+          description: newIntervention.description,
+          tags: newIntervention.tags,
         }
         : i));
     },
-    deleteIntervention: (state, interventionId) => {
-      state.interventions = state.interventions.filter(
-        (i) => i.interventionId !== interventionId,
-      );
+    deleteIntervention: (state, { interventionId }) => {
+      state.interventions = state.interventions.filter((i) => i.interventionId !== interventionId);
     },
   },
   actions: {},

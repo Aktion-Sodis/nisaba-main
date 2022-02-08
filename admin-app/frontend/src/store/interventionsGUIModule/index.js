@@ -8,8 +8,9 @@ const interventionsModule = {
     interventionModalMode: modalModesDict.read,
   }),
   getters: {
+    getInterventionIdCurrentlyBeingEdited: ({ interventionIdCurrentlyBeingEdited }) => interventionIdCurrentlyBeingEdited,
     getInterventionModalMode: ({ interventionModalMode }) => interventionModalMode,
-    getInterventionCurrentlyBeingEdited: (state, getters, rootState, rootGetters) => rootGetters['iv/getInterventionById'](state.interventionIdCurrentlyBeingEdited) || null,
+    interventionCurrentlyBeingEdited: (state, getters, rootState, rootGetters) => rootGetters['iv/interventionById'](state.interventionIdCurrentlyBeingEdited) || null,
     getInterventionModalIsDisplayed: ({ isInterventionModalDisplayed }) => isInterventionModalDisplayed,
   },
   mutations: {
@@ -25,6 +26,7 @@ const interventionsModule = {
   },
   actions: {
     resetAll: ({ commit }) => {
+      commit('setInterventionModalMode', { newMode: modalModesDict.read });
       commit('setInterventionIdCurrentlyBeingEdited', { newId: null });
       commit('setIsInterventionModalDisplayed', { newValue: false });
     },
@@ -52,9 +54,11 @@ const interventionsModule = {
         commit(
           'iv/addIntervention',
           {
-            name,
-            description,
-            tags,
+            newIntervention: {
+              name,
+              description,
+              tags,
+            },
           },
           { root: true },
         );
@@ -63,16 +67,18 @@ const interventionsModule = {
       commit(
         'iv/replaceIntervention',
         {
-          interventionId,
-          name,
-          description,
-          tags,
+          newIntervention: {
+            interventionId,
+            name,
+            description,
+            tags,
+          },
         },
         { root: true },
       );
     },
-    deleteIntervention: ({ commit, dispatch }, interventionId) => {
-      commit('iv/deleteIntervention', interventionId, { root: true });
+    deleteIntervention: ({ commit, dispatch }, { interventionId }) => {
+      commit('iv/deleteIntervention', { interventionId }, { root: true });
       dispatch('resetAll');
     },
     showInterventionModal: ({ commit }) => {
@@ -81,7 +87,7 @@ const interventionsModule = {
     closeInterventionModal: ({ commit }) => {
       commit('setIsInterventionModalDisplayed', { newValue: false });
     },
-    switchToEditing: ({ commit }, interventionId) => {
+    switchToEditing: ({ commit }, { interventionId }) => {
       commit('setInterventionIdCurrentlyBeingEdited', { newId: interventionId });
       commit('setInterventionModalMode', { newMode: modalModesDict.edit });
     },
