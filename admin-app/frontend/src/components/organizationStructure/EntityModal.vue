@@ -4,25 +4,27 @@
       <v-form ref="form" @submit.prevent="submitEntity" lazy-validation>
         <v-card-title>
           <h2 v-if="entityModalIsEdit">
-            {{ $t("organizationStructure.entityModal.title.edit") }}
+            {{ $t('organizationStructure.entityModal.title.edit') }}
             <i>{{ entityCurrentlyBeingEdited.name }}</i>
           </h2>
           <h2 v-else>
-            {{ $t("organizationStructure.entityModal.title.create") }}
+            {{ $t('organizationStructure.entityModal.title.create') }}
           </h2>
         </v-card-title>
         <v-card-subtitle v-if="entityModalIsEdit">
-          {{ $t("organizationStructure.entityModal.description.edit") }}
+          {{ $t('organizationStructure.entityModal.description.edit') }}
         </v-card-subtitle>
         <v-card-subtitle v-else>
-          {{ $t("organizationStructure.entityModal.description.create") }}
+          {{ $t('organizationStructure.entityModal.description.create') }}
         </v-card-subtitle>
 
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12" sm="6">
-                <v-card-title> Entity information </v-card-title>
+                <v-card-title>
+                  {{ $t('organizationStructure.entityModal.entityInformation') }}
+                </v-card-title>
                 <v-text-field
                   :autofocus="entityModalIsEdit"
                   v-model="entityName"
@@ -35,13 +37,9 @@
                 ></v-text-field>
                 <v-textarea
                   v-model="entityDescription"
-                  :counter="
-                    entityDescription.length > entityDescriptionMaxChar - 20
-                  "
+                  :counter="entityDescription.length > entityDescriptionMaxChar - 20"
                   :rules="[rules.maxChar]"
-                  :label="
-                    $t('organizationStructure.entityModal.entityDescription')
-                  "
+                  :label="$t('organizationStructure.entityModal.entityDescription')"
                   required
                   outlined
                   dense
@@ -62,7 +60,9 @@
               </v-col>
 
               <v-col cols="12" sm="6">
-                <v-card-title> Here be some other things </v-card-title>
+                <v-card-title>
+                  {{ $t('organizationStructure.entityModal.otherInfo') }}
+                </v-card-title>
               </v-col>
             </v-row>
           </v-container>
@@ -71,16 +71,16 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" text @click="closeThenDeleteComponentData">
-            {{ $t("general.cancel") }}
+            {{ $t('general.cancel') }}
           </v-btn>
           <v-btn
             type="submit"
             color="primary"
             text
-            @click.prevent="submitEntity()"
+            @click.prevent="submitEntity"
             :disabled="!entityFormIsInvalid"
           >
-            {{ $t("general.save") }}
+            {{ $t('general.save') }}
           </v-btn>
         </v-card-actions>
       </v-form>
@@ -154,9 +154,7 @@ export default {
     },
     submitEntity() {
       this.saveEntity({
-        entityId: this.entityCurrentlyBeingEdited
-          ? this.entityCurrentlyBeingEdited.entityId
-          : null,
+        entityId: this.entityCurrentlyBeingEdited ? this.entityCurrentlyBeingEdited.entityId : null,
         entityName: this.entityName,
         entityDescription: this.entityDescription,
         entityLevelId: this.entityCurrentlyBeingEdited

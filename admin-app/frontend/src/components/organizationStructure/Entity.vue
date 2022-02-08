@@ -5,24 +5,18 @@
       class="entity-connection-left-line"
       :style="`width: ${60 - leftLineOfEntity.indentation * 12}px; left: ${
         -60 + leftLineOfEntity.indentation * 12
-      }px; background-color: ${
-        lineColors[leftLineOfEntity.indentation]
-      }; top: ${64 + leftLineOfEntity.indentation * 6}px; z-index: ${
-        leftLineOfEntity.indentation
-      }`"
+      }px; background-color: ${lineColors[leftLineOfEntity.indentation]}; top: ${
+        64 + leftLineOfEntity.indentation * 6
+      }px; z-index: ${leftLineOfEntity.indentation}`"
     ></div>
     <div
       v-if="hasDescendants(entityId)"
       class="entity-connection-right-line"
-      :style="`width: ${
-        72 + rightLineOfEntity.indentation * 12
-      }px; left: calc(12rem - 26px + ${
+      :style="`width: ${72 + rightLineOfEntity.indentation * 12}px; left: calc(12rem - 26px + ${
         rightLineOfEntity.indentation * 6
-      }px); background-color: ${
-        lineColors[rightLineOfEntity.indentation]
-      }; top: ${64 + rightLineOfEntity.indentation * 6}px; z-index: ${
-        rightLineOfEntity.indentation
-      }`"
+      }px); background-color: ${lineColors[rightLineOfEntity.indentation]}; top: ${
+        64 + rightLineOfEntity.indentation * 6
+      }px; z-index: ${rightLineOfEntity.indentation}`"
     ></div>
     <v-hover v-slot="{ hover }">
       <v-sheet
@@ -31,12 +25,7 @@
         elevation="4"
       >
         {{ entityName }} <br />
-        <v-btn
-          fab
-          icon
-          class="entity-icon"
-          @click="callVuexActionThenFillEntityModalForm"
-        >
+        <v-btn fab icon class="entity-icon" @click="callVuexActionThenFillEntityModalForm">
           <v-icon color="darken-2"> mdi-pencil-outline </v-icon>
         </v-btn>
       </v-sheet>

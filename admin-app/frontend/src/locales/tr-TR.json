@@ -9,7 +9,7 @@
       "required": "Zorunlu alan."
     },
     "sideBar": {
-      "home": "Ana ekran",
+      "home": "Ana sayfa",
       "baseData": "Temel veriler",
       "organizationStructure": "Organizasyonel yapı",
       "interventions": "Müdahaleler"
@@ -27,12 +27,26 @@
     "dontHaveAnAccount": "Hesabın yok mu?",
     "registerHere": "Buradan kaydol"
   },
+  "home": {
+    "title": "Ana Sayfa"
+  },
+  "baseData": {
+    "title": "Temel Veriler",
+    "documents": "Dokümanlar",
+    "images": "Resimler",
+    "videos": "Videolar",
+    "surveys": "Anketler",
+    "tags": "Etiketler"
+  },
   "organizationStructure": {
+    "title": "Organizasyonel Yapı",
     "addNewEntity": "Yeni oluşum ekle",
     "addNewLevel": "Yeni seviye ekle",
     "hasNoInterventions": "Bu seviyede henüz hiç müdahale yok.",
     "levelModal": {
       "title": { "edit": "Seviyeyi düzenle ", "create": "Yeni seviye yarat" },
+      "levelInformation": "Seviye bilgileri",
+      "interventions": "Müdahaleler",
       "description": {
         "edit": "Bu güzel seviye düzenleme diyaloğunun çok güzel açıklaması.",
         "create": "Bu güzel seviye yaratma diyaloğunun çok güzel açıklaması."
@@ -44,6 +58,8 @@
     },
     "entityModal": {
       "title": { "edit": "Oluşumu düzenle ", "create": "Yeni oluşum yarat" },
+      "entityInformation": "Oluşum bilgileri",
+      "otherInfo": "Burada başka bir şeyler olsun",
       "description": {
         "edit": "Bu güzel oluşum düzenleme diyaloğunun çok güzel açıklaması.",
         "create": "Bu güzel oluşum yaratma diyaloğunun çok güzel açıklaması."
@@ -55,6 +71,9 @@
     }
   },
   "interventions": {
+    "title": "Müdahaleler",
+    "newIntervention": "Yeni müdahale",
+    "newSurvey": "Yeni anket",
     "interventionModal": {
       "title": {
         "edit": "Müdahaleyi düzenle ",
@@ -64,8 +83,13 @@
         "edit": "Bu güzel müdahale düzenleme diyaloğunun çok güzel açıklaması.",
         "create": "Bu güzel müdahale yaratma diyaloğunun çok güzel açıklaması."
       },
+      "interventionInformation": "Müdahale bilgileri",
       "interventionName": "Müdahale adı",
-      "interventionDescription": "Müdahale açıklaması"
+      "interventionDescription": "Müdahale açıklaması",
+      "noDocuments": "Henüz hiç döküman yüklenmemiş.",
+      "noImages": "Henüz hiç resım yüklenmemiş.",
+      "noVideos": "Henüz hiç video yüklenmemiş.",
+      "noSurveys": "Henüz hiç anket yüklenmemiş."
     },
     "surveyModal": {
       "firstCard": {

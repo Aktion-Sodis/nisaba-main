@@ -1,7 +1,5 @@
 module.exports = {
-  transpileDependencies: [
-    'vuetify',
-  ],
+  transpileDependencies: ['vuetify'],
 
   pluginOptions: {
     i18n: {
@@ -10,6 +8,13 @@ module.exports = {
       localeDir: 'locales',
       enableInSFC: true,
       enableBridge: false,
+    },
+  },
+
+  devServer: {
+    overlay: {
+      warnings: true,
+      errors: true,
     },
   },
 };

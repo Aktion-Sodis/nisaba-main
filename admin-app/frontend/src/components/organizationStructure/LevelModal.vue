@@ -1,32 +1,30 @@
 <template>
-  <v-dialog
-    v-model="levelModalIsDisplayed"
-    max-width="800px"
-    :persistent="persistModal"
-  >
+  <v-dialog v-model="levelModalIsDisplayed" max-width="800px" :persistent="persistModal">
     <v-card class="px-4 pt-4">
       <v-form ref="form" @submit.prevent="submitLevel" lazy-validation>
         <v-card-title>
           <h2 v-if="levelModalIsEdit">
-            {{ $t("organizationStructure.levelModal.title.edit") }}
+            {{ $t('organizationStructure.levelModal.title.edit') }}
             <i>{{ levelCurrentlyBeingEdited.name }}</i>
           </h2>
           <h2 v-else>
-            {{ $t("organizationStructure.levelModal.title.create") }}
+            {{ $t('organizationStructure.levelModal.title.create') }}
           </h2>
         </v-card-title>
         <v-card-subtitle v-if="levelModalIsEdit">
-          {{ $t("organizationStructure.levelModal.description.edit") }}
+          {{ $t('organizationStructure.levelModal.description.edit') }}
         </v-card-subtitle>
         <v-card-subtitle v-else>
-          {{ $t("organizationStructure.levelModal.description.create") }}
+          {{ $t('organizationStructure.levelModal.description.create') }}
         </v-card-subtitle>
 
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12" sm="6">
-                <v-card-title> Level information </v-card-title>
+                <v-card-title>
+                  {{ $t('organizationStructure.levelModal.levelInformation') }}
+                </v-card-title>
                 <v-text-field
                   v-model="levelName"
                   :rules="[rules.required]"
@@ -37,13 +35,9 @@
                 ></v-text-field>
                 <v-textarea
                   v-model="levelDescription"
-                  :counter="
-                    levelDescription.length > levelDescriptionMaxChar - 20
-                  "
+                  :counter="levelDescription.length > levelDescriptionMaxChar - 20"
                   :rules="[rules.maxChar]"
-                  :label="
-                    $t('organizationStructure.levelModal.levelDescription')
-                  "
+                  :label="$t('organizationStructure.levelModal.levelDescription')"
                   required
                   outlined
                   dense
@@ -52,9 +46,7 @@
                 <v-select
                   v-model="levelIsSubordinateTo"
                   :items="levels"
-                  :label="
-                    $t('organizationStructure.levelModal.levelIsSubordinateTo')
-                  "
+                  :label="$t('organizationStructure.levelModal.levelIsSubordinateTo')"
                   dense
                   outlined
                   persistent-hint
@@ -64,16 +56,14 @@
               </v-col>
 
               <v-col cols="12" sm="6">
-                <v-card-title> Interventions </v-card-title>
+                <v-card-title>
+                  {{ $t('organizationStructure.levelModal.interventions') }}
+                </v-card-title>
                 <v-card-text>
                   <v-select
                     v-model="levelAllowedInterventions"
                     :items="allowedInterventions"
-                    :label="
-                      $t(
-                        'organizationStructure.levelModal.manageAllowedInterventions'
-                      )
-                    "
+                    :label="$t('organizationStructure.levelModal.manageAllowedInterventions')"
                     multiple
                     dense
                     outlined
@@ -90,7 +80,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="primary" text @click="closeLevelModal">
-            {{ $t("general.cancel") }}
+            {{ $t('general.cancel') }}
           </v-btn>
           <v-btn
             type="submit"
@@ -99,7 +89,7 @@
             @click.prevent="submitLevel()"
             :disabled="!levelFormIsInvalid"
           >
-            {{ $t("general.save") }}
+            {{ $t('general.save') }}
           </v-btn>
         </v-card-actions>
       </v-form>
@@ -169,9 +159,7 @@ export default {
     },
     submitLevel() {
       this.saveLevel({
-        levelId: this.levelCurrentlyBeingEdited
-          ? this.levelCurrentlyBeingEdited.levelId
-          : null,
+        levelId: this.levelCurrentlyBeingEdited ? this.levelCurrentlyBeingEdited.levelId : null,
         name: this.levelName,
         description: this.levelDescription,
         allowedInterventions: this.levelAllowedInterventions || [],

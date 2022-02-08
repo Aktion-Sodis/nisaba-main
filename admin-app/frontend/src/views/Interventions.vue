@@ -23,14 +23,14 @@
                   <v-icon dark> mdi-wrench </v-icon>
                 </v-btn>
                 <h2 class="mt-2 mb-4">
-                  {{ $t("interventions.new-intervention") }}
+                  {{ $t("interventions.newIntervention") }}
                 </h2>
               </div>
               <div class="d-flex flex-column align-center">
                 <v-btn fab small color="primary" @click="newSurveyHandler">
                   <v-icon dark> mdi-crosshairs-question </v-icon>
                 </v-btn>
-                <h3 class="mt-2">{{ $t("interventions.new-survey") }}</h3>
+                <h3 class="mt-2">{{ $t("interventions.newSurvey") }}</h3>
               </div>
             </div>
           </div>

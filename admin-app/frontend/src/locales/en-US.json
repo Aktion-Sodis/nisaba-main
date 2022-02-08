@@ -27,12 +27,26 @@
     "dontHaveAnAccount": "Don't have an account?",
     "registerHere": "Register here"
   },
+  "home": {
+    "title": "Home"
+  },
+  "baseData": {
+    "title": "Base Data",
+    "documents": "Documents",
+    "images": "Images",
+    "videos": "Videos",
+    "surveys": "Surveys",
+    "tags": "Etiketler"
+  },
   "organizationStructure": {
+    "title": "Organization Structure",
     "addNewEntity": "Add entity",
     "addNewLevel": "Add new level",
     "hasNoInterventions": "There are no interventions for this level.",
     "levelModal": {
       "title": { "edit": "Edit level ", "create": "Create new level" },
+      "levelInformation": "Level information",
+      "interventions": "Interventions",
       "description": {
         "edit": "This is the description of this beautiful edit dialog.",
         "create": "This is the description of this beautiful create dialog."
@@ -44,6 +58,8 @@
     },
     "entityModal": {
       "title": { "edit": "Edit entity ", "create": "Create new entity" },
+      "entityInformation": "Entity information",
+      "otherInfo": "Here be some other things",
       "description": {
         "edit": "This is the description of this beautiful edit dialog.",
         "create": "This is the description of this beautiful create dialog."
@@ -56,8 +72,8 @@
   },
   "interventions": {
     "title": "Interventions",
-    "new-intervention": "New intervention",
-    "new-survey": "New survey",
+    "newIntervention": "New intervention",
+    "newSurvey": "New survey",
     "interventionModal": {
       "title": {
         "edit": "Edit intervention ",
@@ -67,8 +83,13 @@
         "edit": "This is the description of this beautiful edit dialog.",
         "create": "This is the description of this beautiful create dialog."
       },
+      "interventionInformation": "Intervention information",
       "interventionName": "Intervention Name",
-      "interventionDescription": "Intervention Description"
+      "interventionDescription": "Intervention Description",
+      "noDocuments": "No documents uploaded.",
+      "noImages": "No images uploaded.",
+      "noVideos": "No videos uploaded.",
+      "noSurveys": "No surveys uploaded."
     },
     "surveyModal": {
       "firstCard": {

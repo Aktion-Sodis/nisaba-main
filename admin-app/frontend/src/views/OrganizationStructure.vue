@@ -1,6 +1,6 @@
 <template>
   <div style="overflow-x: scroll; width: 100%">
-    <h1 class="ml-8">Organization Structure</h1>
+    <h1 class="ml-8">{{ $t('organizationStructure.title') }}</h1>
     <div class="my-8 d-flex">
       <div
         v-for="(level, index) in levels"
@@ -40,20 +40,18 @@
           </div>
           <div v-else style="height: 48px; overflow: hidden">
             <p class="caption">
-              {{ $t("organizationStructure.hasNoInterventions") }}
+              {{ $t('organizationStructure.hasNoInterventions') }}
             </p>
           </div>
         </div>
         <EntitiesColumn :levelId="level.levelId" :index="index" />
       </div>
-      <div
-        class="column-wrapper dotted-left-border d-flex align-center justify-center"
-      >
+      <div class="column-wrapper dotted-left-border d-flex align-center justify-center">
         <LevelModal />
         <EntityModal />
         <v-btn rounded x-large color="primary" @click="clickOnAddNewLevel">
           <v-icon class="mr-2"> mdi-plus </v-icon>
-          {{ $t("organizationStructure.addNewLevel") }}
+          {{ $t('organizationStructure.addNewLevel') }}
         </v-btn>
       </div>
     </div>
@@ -86,9 +84,7 @@ export default {
       this.clickOnEditLevel(level.levelId);
 
       /* TODO: This is bad, bad practice. */
-      const levelModal = this.$children.find(
-        (c) => c.$options.name === 'LevelModal',
-      );
+      const levelModal = this.$children.find((c) => c.$options.name === 'LevelModal');
       levelModal.levelName = level.name || '';
       levelModal.levelDescription = level.description || '';
       levelModal.levelAllowedInterventions = level.allowedInterventions || [];

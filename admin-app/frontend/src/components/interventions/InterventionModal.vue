@@ -1,33 +1,31 @@
 <template>
-  <v-dialog
-    v-model="interventionModalIsDisplayed"
-    max-width="1200px"
-    persistent
-  >
+  <v-dialog v-model="interventionModalIsDisplayed" max-width="1200px" persistent>
     <v-card class="px-4 pt-4">
       <v-form ref="form" @submit.prevent="submitIntervention" lazy-validation>
         <v-card-title>
           <h2 v-if="edit">
-            {{ $t("interventions.interventionModal.title.edit") }}
+            {{ $t('interventions.interventionModal.title.edit') }}
             <i>{{ interventionCurrentlyBeingEdited.name }}</i>
           </h2>
           <h2 v-else-if="create">
-            {{ $t("interventions.interventionModal.title.create") }}
+            {{ $t('interventions.interventionModal.title.create') }}
           </h2>
           <h2 v-else>Viewing intervention</h2>
         </v-card-title>
         <v-card-subtitle v-if="edit">
-          {{ $t("interventions.interventionModal.description.edit") }}
+          {{ $t('interventions.interventionModal.description.edit') }}
         </v-card-subtitle>
         <v-card-subtitle v-else-if="create">
-          {{ $t("interventions.interventionModal.description.create") }}
+          {{ $t('interventions.interventionModal.description.create') }}
         </v-card-subtitle>
 
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12" md="6">
-                <v-card-title> Intervention information </v-card-title>
+                <v-card-title>
+                  {{ $t('interventions.interventionModal.interventionInformation') }}
+                </v-card-title>
                 <h2 v-if="read">
                   {{ interventionName }}
                 </h2>
@@ -35,9 +33,7 @@
                   v-else
                   v-model="interventionName"
                   :rules="[rules.required]"
-                  :label="
-                    $t('interventions.interventionModal.interventionName')
-                  "
+                  :label="$t('interventions.interventionModal.interventionName')"
                   required
                   outlined
                   dense
@@ -49,31 +45,15 @@
                 <v-textarea
                   v-else
                   v-model="interventionDescription"
-                  :counter="
-                    interventionDescription.length >
-                    interventionDescriptionMaxChar - 20
-                  "
+                  :counter="interventionDescription.length > interventionDescriptionMaxChar - 20"
                   :rules="[rules.maxChar]"
-                  :label="
-                    $t(
-                      'interventions.interventionModal.interventionDescription'
-                    )
-                  "
+                  :label="$t('interventions.interventionModal.interventionDescription')"
                   required
                   outlined
                   dense
                 ></v-textarea>
-                <v-img
-                  src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-                  max-height="200px"
-                >
-                  <v-btn
-                    v-if="!read"
-                    fab
-                    class="iv-edit-icon"
-                    color="primary"
-                    @click="selectImg"
-                  >
+                <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" max-height="200px">
+                  <v-btn v-if="!read" fab class="iv-edit-icon" color="primary" @click="selectImg">
                     <v-icon color="darken-2"> mdi-pencil-outline </v-icon>
                   </v-btn>
                   <input
@@ -87,7 +67,9 @@
               </v-col>
               <v-col cols="12" md="6">
                 <div v-if="read">
-                  <v-card-title> Tags </v-card-title>
+                  <v-card-title>
+                    {{ $t('baseData.tags') }}
+                  </v-card-title>
                   <v-chip v-for="tagId in interventionTags" :key="tagId">
                     {{ tagById(tagId).name }}
                   </v-chip>
@@ -101,31 +83,19 @@
                   deletable-chips
                   chips
                   dense
-                  label="Tags"
+                  :label="$t('baseData.tags')"
                   multiple
                   outlined
                 ></v-select>
 
                 <v-card-title>
-                  Documents
-                  <v-btn
-                    v-if="!read"
-                    fab
-                    x-small
-                    color="primary lighten-2"
-                    class="ml-2"
-                  >
+                  {{ $t('baseData.documents') }}
+                  <v-btn v-if="!read" fab x-small color="primary lighten-2" class="ml-2">
                     <v-icon dark> mdi-plus </v-icon>
                   </v-btn>
                 </v-card-title>
-                <v-expansion-panels
-                  accordion
-                  v-if="allDocumentsOfIntervention.length > 0"
-                >
-                  <v-expansion-panel
-                    v-for="doc in allDocumentsOfIntervention"
-                    :key="doc.id"
-                  >
+                <v-expansion-panels accordion v-if="allDocumentsOfIntervention.length > 0">
+                  <v-expansion-panel v-for="doc in allDocumentsOfIntervention" :key="doc.id">
                     <v-expansion-panel-header outlined>
                       <div class="d-flex justify-start">
                         <v-icon> mdi-file-document-outline </v-icon>
@@ -138,27 +108,17 @@
                       <p style="transform: translateY(-12px)" class="mb-0">
                         {{ doc.description }}
                       </p>
-                      <v-chip
-                        v-for="tagId in doc.tags"
-                        :key="tagId"
-                        class="mr-2"
-                      >
+                      <v-chip v-for="tagId in doc.tags" :key="tagId" class="mr-2">
                         {{ interventionContentTagById(tagId).name }}
                       </v-chip>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                 </v-expansion-panels>
-                <p v-else>No documents uploaded.</p>
+                <p v-else>{{ $t('interventions.interventionModal.noDocuments') }}</p>
 
                 <v-card-title>
-                  Images
-                  <v-btn
-                    v-if="!read"
-                    fab
-                    x-small
-                    color="primary lighten-2"
-                    class="ml-2"
-                  >
+                  {{ $t('baseData.images') }}
+                  <v-btn v-if="!read" fab x-small color="primary lighten-2" class="ml-2">
                     <v-icon dark> mdi-plus </v-icon>
                   </v-btn>
                 </v-card-title>
@@ -176,11 +136,7 @@
                         aspect-ratio="1"
                       >
                         <template v-slot:placeholder>
-                          <v-row
-                            class="fill-height ma-0"
-                            align="center"
-                            justify="center"
-                          >
+                          <v-row class="fill-height ma-0" align="center" justify="center">
                             <v-progress-circular
                               indeterminate
                               color="grey lighten-5"
@@ -191,17 +147,11 @@
                     </v-col>
                   </v-row>
                 </div>
-                <p v-else>No images uploaded.</p>
+                <p v-else>{{ $t('interventions.interventionModal.noImages') }}</p>
 
                 <v-card-title>
-                  Videos
-                  <v-btn
-                    v-if="!read"
-                    fab
-                    x-small
-                    color="primary lighten-2"
-                    class="ml-2"
-                  >
+                  {{ $t('baseData.videos') }}
+                  <v-btn v-if="!read" fab x-small color="primary lighten-2" class="ml-2">
                     <v-icon dark> mdi-plus </v-icon>
                   </v-btn>
                 </v-card-title>
@@ -210,52 +160,32 @@
                     <video width="50"></video>
                   </div>
                 </div>
-                <p v-else>No videos uploaded.</p>
+                <p v-else>{{ $t('interventions.interventionModal.noVideos') }}</p>
 
                 <v-card-title class="mt-4">
-                  Surveys
-                  <v-btn
-                    v-if="!read"
-                    fab
-                    x-small
-                    color="primary lighten-2"
-                    class="ml-2"
-                  >
+                  {{ $t('baseData.surveys') }}
+                  <v-btn v-if="!read" fab x-small color="primary lighten-2" class="ml-2">
                     <v-icon dark> mdi-plus </v-icon>
                   </v-btn>
                 </v-card-title>
-                <p>No surveys added.</p>
+                <p>{{ $t('interventions.interventionModal.noSurveys') }}</p>
               </v-col>
             </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
-          <v-btn
-            v-if="edit"
-            @click="clickOnDeleteIntervention"
-            color="warning"
-            text
-          >
-            {{ $t("general.delete") }}
+          <v-btn v-if="edit" @click="clickOnDeleteIntervention" color="warning" text>
+            {{ $t('general.delete') }}
           </v-btn>
           <v-spacer></v-spacer>
           <v-btn
             color="secondary"
             text
-            @click="
-              read || create
-                ? closeThenDeleteComponentData()
-                : switchToReading()
-            "
+            @click="read || create ? closeThenDeleteComponentData() : switchToReading()"
           >
-            {{ read ? "Close" : $t("general.cancel") }}
+            {{ read ? 'Close' : $t('general.cancel') }}
           </v-btn>
-          <v-btn
-            v-if="read"
-            color="primary"
-            text
-            @click="switchToEditing(interventionId)"
-          >
+          <v-btn v-if="read" color="primary" text @click="switchToEditing(interventionId)">
             Edit
           </v-btn>
           <v-btn
@@ -266,7 +196,7 @@
             @click.prevent="submitIntervention"
             :disabled="!interventionFormIsInvalid"
           >
-            {{ $t("general.save") }}
+            {{ $t('general.save') }}
           </v-btn>
         </v-card-actions>
       </v-form>
@@ -290,8 +220,7 @@ export default {
       interventionDescriptionMaxChar,
       rules: {
         required: (value) => !!value || this.requiredi18n,
-        maxChar: (value) => value.length <= interventionDescriptionMaxChar
-          || this.maxCharExceededi18n,
+        maxChar: (value) => value.length <= interventionDescriptionMaxChar || this.maxCharExceededi18n,
       },
       interventionId: null,
       interventionName: '',
@@ -326,10 +255,7 @@ export default {
       return !!this.interventionName;
     },
     allDocumentsOfIntervention() {
-      return (
-        this.interventionContent.filter((c) => c.type === 'MarkdownDocument')
-        || []
-      );
+      return this.interventionContent.filter((c) => c.type === 'MarkdownDocument') || [];
     },
     allVideosOfIntervention() {
       return this.interventionContent.filter((c) => c.type === 'Video') || [];
@@ -360,9 +286,7 @@ export default {
       setInterventionModalMode: 'ivGui/setInterventionModalMode',
     }),
     clickOnDeleteIntervention() {
-      this.deleteIntervention(
-        this.interventionCurrentlyBeingEdited.interventionId,
-      );
+      this.deleteIntervention(this.interventionCurrentlyBeingEdited.interventionId);
       this.interventionName = '';
       this.interventionDescription = '';
     },
