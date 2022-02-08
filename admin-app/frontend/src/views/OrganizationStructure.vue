@@ -72,7 +72,7 @@ export default {
   components: { LevelModal, EntityModal, EntitiesColumn },
   computed: {
     ...mapGetters({
-      levels: 'entities/getSortedLevels',
+      levels: 'entities/sortedLevels',
       getInterventionById: 'iv/getInterventionById',
     }),
   },

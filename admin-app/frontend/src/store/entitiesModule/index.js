@@ -83,80 +83,92 @@ const entitiesModule = {
   }),
   getters: {
     /* GENERIC GETTERS */
-    getEntities: (state) => state.entities,
-    getLevels: (state) => state.levels, // not sorted. Use with care.
-    getSortedLevels: (state, getters) => getters.getLevels.sort((a, b) => getters.hierarchySort(a, b)),
+    getEntities: ({ entities }) => entities,
+    getLevels: ({ levels }) => levels, // not sorted. Use with care.
+    sortedLevels: (_, getters) => getters.getLevels.sort((a, b) => getters.hierarchySort(a, b)),
 
-    // used in the getter "getSortedLevels". Don't use directly outside of Vuex environment.
-    hierarchySort: (state, getters) => (a, b) => {
+    // used in the getter "sortedLevels". Don't use directly outside of Vuex environment.
+    hierarchySort: (_, getters) => (a, b) => {
       if (a.upperLevelId === null) return -1;
       if (b.upperLevelId === null) return 1;
       if (a.levelId === b.upperLevelId) return -1;
-      return getters.hierarchySort(a, getters.getLevelById(b.upperLevelId));
+      console.log('hey');
+      return getters.hierarchySort(a, getters.levelById(b.upperLevelId));
     },
 
-    getEntityById: (state, getters) => (entityId) => getters.getEntities.find((e) => e.entityId === entityId),
-    getLevelById: (state, getters) => (levelId) => getters.getLevels?.find((l) => l.levelId === levelId) ?? null,
-    getAllEntitiesOfLevelByHid: (state) => (levelId) => state.entities.filter((e) => e.levelId === levelId).sort((a, b) => a.entityId - b.entityId), // sort by entityId for consistency
-    getUpperLevelById: (state, getters) => (levelId) => {
-      const currentLevel = getters.getLevels.find((l) => l.levelId === levelId);
-      if (!currentLevel) return null;
-      const upperLevel = getters.getLevels.find((l) => l.levelId === currentLevel.upperLevelId);
-      return upperLevel || null;
-    },
+    entityById:
+      (_, { getEntities }) => (entityId) => getEntities.find((e) => e.entityId === entityId),
+    levelById:
+      (_, { getLevels }) => (levelId) => getLevels?.find((l) => l.levelId === levelId) ?? null,
+    allEntitiesOfLevelByHid:
+      (_, { getEntities }) => (levelId) => getEntities.filter((e) => e.levelId === levelId).sort((a, b) => a.entityId - b.entityId), // sort by entityId for consistency
+    upperLevelById:
+      (_, { getLevels }) => (levelId) => {
+        const currentLevel = getLevels.find((l) => l.levelId === levelId);
+        if (!currentLevel) return null;
+        const upperLevel = getLevels.find((l) => l.levelId === currentLevel.upperLevelId);
+        return upperLevel || null;
+      },
 
     /* VERTICAL CALCULATIONS */
-    getVerticalOrderByEntityId: (state, getters) => (entityId, levelId) => getters.getAllEntitiesOfLevelByHid(levelId).findIndex((e) => e.entityId === entityId),
+    verticalOrderByEntityId:
+      (_, { allEntitiesOfLevelByHid }) => (entityId, levelId) => allEntitiesOfLevelByHid(levelId).findIndex((e) => e.entityId === entityId),
 
-    getMaxVerticalOrderOfChildren: (state, getters) => (entityId, levelId) => {
-      const allEntitiesInLowerLevel = getters.getAllEntitiesOfLevelByHid(
-        getters.getLevels.find((l) => l.upperLevelId === levelId).levelId,
-      );
-      const lowerLevelContainsChildren = allEntitiesInLowerLevel.some(
-        (e) => e.upperEntityId === entityId,
-      );
-      return lowerLevelContainsChildren
-        ? allEntitiesInLowerLevel.length
-            - allEntitiesInLowerLevel.reverse().findIndex((e) => e.upperEntityId === entityId)
-            - 1
-        : -1;
-    },
-    getMinVerticalOrderOfChildren: (state, getters) => (entityId, levelId) => {
-      const allEntitiesInLowerLevel = getters.getAllEntitiesOfLevelByHid(
-        getters.getLevels.find((l) => l.upperLevelId === levelId).levelId,
-      );
-      const lowerLevelContainsChildren = allEntitiesInLowerLevel.some(
-        (e) => e.upperEntityId === entityId,
-      );
-      return lowerLevelContainsChildren
-        ? allEntitiesInLowerLevel.findIndex((e) => e.upperEntityId === entityId)
-        : -1;
-    },
+    maxVerticalOrderOfChildren:
+      (_, { allEntitiesOfLevelByHid, getLevels }) => (entityId, levelId) => {
+        const allEntitiesInLowerLevel = allEntitiesOfLevelByHid(
+          getLevels.find((l) => l.upperLevelId === levelId).levelId,
+        );
+        const lowerLevelContainsChildren = allEntitiesInLowerLevel.some(
+          (e) => e.upperEntityId === entityId,
+        );
+        return lowerLevelContainsChildren
+          ? allEntitiesInLowerLevel.length
+              - allEntitiesInLowerLevel.reverse().findIndex((e) => e.upperEntityId === entityId)
+              - 1
+          : -1;
+      },
+    minVerticalOrderOfChildren:
+      (_, { allEntitiesOfLevelByHid, getLevels }) => (entityId, levelId) => {
+        const allEntitiesInLowerLevel = allEntitiesOfLevelByHid(
+          getLevels.find((l) => l.upperLevelId === levelId).levelId,
+        );
+        const lowerLevelContainsChildren = allEntitiesInLowerLevel.some(
+          (e) => e.upperEntityId === entityId,
+        );
+        return lowerLevelContainsChildren
+          ? allEntitiesInLowerLevel.findIndex((e) => e.upperEntityId === entityId)
+          : -1;
+      },
 
-    getHasDescendants: (state, getters) => (entityId) => getters.getEntities.some((e) => e.upperEntityId === entityId),
-    getEntityHasParent: (state, getters) => (upperEntityId) => getters.getEntities.some((e) => e.entityId === upperEntityId),
+    hasEntityDescendants:
+      (_, { getEntities }) => (entityId) => getEntities.some((e) => e.upperEntityId === entityId),
+    hasEntityParent:
+      (_, { getEntities }) => (upperEntityId) => getEntities.some((e) => e.entityId === upperEntityId),
 
     /* returns "lines" with the schema {levelId, entityId, indentation, y0, y1} */
-    getCalculatedLines: (state, getters) => {
+    calculatedLines: (
+      _,
+      {
+        allEntitiesOfLevelByHid,
+        sortedLevels,
+        hasEntityDescendants,
+        verticalOrderByEntityId,
+        minVerticalOrderOfChildren,
+        maxVerticalOrderOfChildren,
+      },
+    ) => {
       const lines = [];
-      getters.getSortedLevels.forEach((h) => {
-        const allParentsInLevel = getters
-          .getAllEntitiesOfLevelByHid(h.levelId)
-          .filter((e) => getters.getHasDescendants(e.entityId));
+      sortedLevels.forEach((h) => {
+        const allParentsInLevel = allEntitiesOfLevelByHid(h.levelId).filter((e) => hasEntityDescendants(e.entityId));
         allParentsInLevel.forEach((p, index) => {
-          const parentVerticalOrder = getters.getVerticalOrderByEntityId(p.entityId, p.levelId);
+          const parentVerticalOrder = verticalOrderByEntityId(p.entityId, p.levelId);
           const newLine = {
             levelId: h.levelId,
             entityId: p.entityId,
             indentation: index,
-            y0: Math.min(
-              getters.getMinVerticalOrderOfChildren(p.entityId, h.levelId),
-              parentVerticalOrder,
-            ),
-            y1: Math.max(
-              getters.getMaxVerticalOrderOfChildren(p.entityId, h.levelId),
-              parentVerticalOrder,
-            ),
+            y0: Math.min(minVerticalOrderOfChildren(p.entityId, h.levelId), parentVerticalOrder),
+            y1: Math.max(maxVerticalOrderOfChildren(p.entityId, h.levelId), parentVerticalOrder),
           };
           lines.push(newLine);
         });
@@ -164,71 +176,59 @@ const entitiesModule = {
       return lines;
     },
 
-    getCalculatedLinesByLevelId: (state, getters) => (levelId) => getters.getCalculatedLines.filter(
-      (li) => getters.getLevels.find((le) => le.upperLevelId === li.levelId).levelId === levelId,
-    ),
-    getLineByEntityId: (state, getters) => (entityId) => getters.getCalculatedLines.find((l) => l.entityId === entityId) || {
-      indentation: 0,
-    },
+    calculatedLinesByLevelId:
+      (_, { calculatedLines, getLevels }) => (levelId) => calculatedLines.filter(
+        (li) => getLevels.find((le) => le.upperLevelId === li.levelId).levelId === levelId,
+      ),
+    getLineByEntityId:
+      (_, { calculatedLines }) => (entityId) => calculatedLines.find((l) => l.entityId === entityId) || {
+        indentation: 0,
+      },
   },
   mutations: {
-    addLevel: (state, payload) => {
-      state.levels = state.levels.concat(payload);
+    addLevel: (state, { newLevel }) => {
+      state.levels = state.levels.concat(newLevel);
     },
-    injectNewLevel: (state, {
-      name, description, upperLevelId, allowedInterventions,
-    }) => {
+    injectNewLevel: (state, { newLevel }) => {
       const levelId = uuidv4();
-      state.levels = state.levels.map((l) => (l.upperLevelId === upperLevelId ? { ...l, upperLevelId: levelId } : l));
+      state.levels = state.levels.map((l) => (l.upperLevelId === newLevel.upperLevelId ? { ...l, upperLevelId: levelId } : l));
       state.levels = state.levels.concat({
-        levelId,
-        name,
-        description,
-        upperLevelId,
-        allowedInterventions,
+        levelId: newLevel.levelId,
+        name: newLevel.name,
+        description: newLevel.description,
+        upperLevelId: newLevel.upperLevelId,
+        allowedInterventions: newLevel.allowedInterventions,
       });
     },
-    replaceLevel: (state, {
-      levelId, name, description, upperLevelId, allowedInterventions,
-    }) => {
-      state.levels = state.levels.map((l) => (l.levelId === levelId
+    replaceLevel: (state, { newLevel }) => {
+      state.levels = state.levels.map((l) => (l.levelId === newLevel.levelId
         ? {
           ...l,
-          levelId,
-          name,
-          description,
-          upperLevelId,
-          allowedInterventions,
+          levelId: newLevel.levelId,
+          name: newLevel.name,
+          description: newLevel.description,
+          upperLevelId: newLevel.upperLevelId,
+          allowedInterventions: newLevel.allowedInterventions,
         }
         : l));
     },
-    injectNewEntity: (
-      state,
-      {
-        entityName, entityDescription, entityLevelId, entityUpperEntityId,
-      },
-    ) => {
+    injectNewEntity: (state, { newEntity }) => {
       state.entities = state.entities.concat({
         entityId: uuidv4(),
-        levelId: entityLevelId,
-        upperEntityId: entityUpperEntityId,
-        description: entityDescription,
-        name: entityName,
+        levelId: newEntity.entityLevelId,
+        upperEntityId: newEntity.entityUpperEntityId,
+        description: newEntity.entityDescription,
+        name: newEntity.entityName,
       });
     },
-    replaceEntity: (
-      state,
-      {
-        entityId, entityName, entityDescription, entityLevelId, entityUpperEntityId,
-      },
-    ) => {
-      state.entities = state.entities.map((e) => (e.entityId === entityId
+    replaceEntity: (state, { newEntity }) => {
+      state.entities = state.entities.map((e) => (e.entityId === newEntity.entityId
         ? {
-          entityId,
-          levelId: entityLevelId,
-          upperEntityId: entityUpperEntityId,
-          description: entityDescription,
-          name: entityName,
+          ...e,
+          levelId: newEntity.entityLevelId,
+          upperEntityId: newEntity.entityUpperEntityId,
+          description: newEntity.entityDescription,
+          name: newEntity.entityName,
         }
         : e));
     },
