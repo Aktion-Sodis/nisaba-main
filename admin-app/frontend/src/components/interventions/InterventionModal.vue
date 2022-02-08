@@ -205,7 +205,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import { modalModesDict } from '../../store/constants';
 
 const interventionDescriptionMaxChar = Math.max(
@@ -280,9 +280,6 @@ export default {
       deleteIntervention: 'ivGui/deleteIntervention',
       switchToEditing: 'ivGui/switchToEditing',
       switchToReading: 'ivGui/switchToReading',
-    }),
-    ...mapMutations({
-      setInterventionModalMode: 'ivGui/setInterventionModalMode',
     }),
     clickOnDeleteIntervention() {
       this.deleteIntervention(this.interventionCurrentlyBeingEdited.interventionId);
