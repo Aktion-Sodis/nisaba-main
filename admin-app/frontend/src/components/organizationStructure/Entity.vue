@@ -59,8 +59,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      entityHasParent: 'entities/getEntityHasParent',
-      hasDescendants: 'entities/getHasDescendants',
+      entityHasParent: 'entities/hasEntityParent',
+      hasDescendants: 'entities/hasEntityDescendants',
       lineColors: 'getLineColors',
       lineOfEntity: 'entities/getLineByEntityId',
     }),

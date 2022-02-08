@@ -122,7 +122,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      levels: 'entities/getSortedLevels',
+      levels: 'entities/sortedLevels',
       allowedInterventions: 'iv/getInterventions',
       levelModalIsEdit: 'os/getLevelModalIsEdit',
       levelModalIsDisplayed: 'os/getLevelModalIsDisplayed',

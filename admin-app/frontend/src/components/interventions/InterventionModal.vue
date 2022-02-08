@@ -235,8 +235,7 @@ export default {
       interventions: 'iv/getInterventions',
       interventionModalMode: 'ivGui/getInterventionModalMode',
       interventionModalIsDisplayed: 'ivGui/getInterventionModalIsDisplayed',
-      interventionCurrentlyBeingEdited:
-        'ivGui/getInterventionCurrentlyBeingEdited',
+      interventionCurrentlyBeingEdited: 'ivGui/getInterventionCurrentlyBeingEdited',
       allInterventionTags: 'iv/getInterventionTags',
       tagById: 'iv/getInterventionTagById',
       allContentByInterventionId: 'iv/getAllContentByInterventionId',
