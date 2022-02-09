@@ -47,8 +47,8 @@
         <EntitiesColumn :levelId="level.levelId" :index="index" />
       </div>
       <div class="column-wrapper dotted-left-border d-flex align-center justify-center">
-        <LevelModal />
-        <EntityModal />
+        <LevelModal v-if="showLevelModal" />
+        <EntityModal v-if="showEntityModal" />
         <v-btn rounded x-large color="primary" @click="clickOnAddNewLevel">
           <v-icon class="mr-2"> mdi-plus </v-icon>
           {{ $t('organizationStructure.addNewLevel') }}
@@ -68,11 +68,23 @@ import EntitiesColumn from '../components/organizationStructure/EntitiesColumn.v
 export default {
   name: 'OrganizationStructure',
   components: { LevelModal, EntityModal, EntitiesColumn },
+  data() {
+    return {
+      showLevelModal: false,
+      showEntityModal: false,
+    };
+  },
   computed: {
     ...mapGetters({
       levels: 'entities/sortedLevels',
       interventionById: 'iv/interventionById',
+      levelModalIsDisplayed: 'os/getLevelModalIsDisplayed',
+      entityModalIsDisplayed: 'os/getEntityModalIsDisplayed',
     }),
+  },
+  watch: {
+    levelModalIsDisplayed: 'destroyLevelModalAfterDelay',
+    entityModalIsDisplayed: 'destroyEntityModalAfterDelay',
   },
   methods: {
     ...mapActions({
@@ -80,6 +92,25 @@ export default {
       clickOnAddNewLevel: 'os/clickOnAddNewLevel',
       clickOnEditLevel: 'os/clickOnEditLevel',
     }),
+    async destroyLevelModalAfterDelay(newValue) {
+      // If closed, wait for 500, if still closed, destroy component instance
+      if (newValue) {
+        this.showLevelModal = true;
+        return;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      if (!this.levelModalIsDisplayed) this.showLevelModal = false;
+    },
+    async destroyEntityModalAfterDelay(newValue) {
+      // If closed, wait for 500, if still closed, destroy component instance
+      if (newValue) {
+        this.showEntityModal = true;
+        return;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      if (!this.levelModalIsDisplayed) this.showLevelModal = false;
+    },
+
     callVuexActionThenFillEntityModalForm(level) {
       this.clickOnEditLevel(level.levelId);
 
