@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="entityModalIsDisplayed" max-width="800px" persistent>
+  <v-dialog v-model="entityModalIsDisplayed" max-width="800px" persistent @keydown.esc="escHandler">
     <v-card class="px-4 pt-4">
       <v-form ref="form" @submit.prevent="submitEntity" lazy-validation>
         <v-card-title>
@@ -145,6 +145,10 @@ export default {
       saveEntity: 'os/saveEntity',
       closeEntityModal: 'os/closeEntityModal',
     }),
+    escHandler() {
+      this.closeEntityModal();
+    },
+
     closeThenDeleteComponentData() {
       this.closeEntityModal();
 
