@@ -3,24 +3,18 @@
     <v-form lazy-validation>
       <v-card-title>
         <h2 v-if="edit">
-          {{ $t("interventions.surveyModal.firstCard.title.edit") }}
+          {{ $t('interventions.surveyModal.firstCard.title.edit') }}
           <i>{{ surveyInFocus.name }}</i>
         </h2>
         <h2 v-else-if="create">
-          {{ $t("interventions.surveyModal.firstCard.title.create") }}
+          {{ $t('interventions.surveyModal.firstCard.title.create') }}
         </h2>
         <h2 v-else-if="read">{{ surveyInFocus.name }}</h2>
         <v-spacer></v-spacer>
-        <v-btn
-          x-large
-          text
-          class="text-none"
-          @click="nextStepHandler"
-          :disabled="!canAdvance"
-        >
+        <v-btn x-large text class="text-none" @click="nextStepHandler" :disabled="!canAdvance">
           {{
             read
-              ? $t("interventions.surveyModal.firstCard.questions")
+              ? $t('interventions.surveyModal.firstCard.questions')
               : $t(`interventions.surveyModal.firstCard.next-step`)
           }}
           <v-icon large> mdi-chevron-right </v-icon>
@@ -49,23 +43,16 @@
               <v-textarea
                 v-else
                 v-model="surveyDescription"
-                :counter="
-                  surveyDescription.length > surveyDescriptionMaxChar - 20
-                "
+                :counter="surveyDescription.length > surveyDescriptionMaxChar - 20"
                 :rules="[rules.maxChar]"
-                :label="
-                  $t('interventions.surveyModal.firstCard.form.description')
-                "
+                :label="$t('interventions.surveyModal.firstCard.form.description')"
                 outlined
                 dense
                 class="mt-4"
               ></v-textarea>
             </v-col>
             <v-col cols="12" md="6">
-              <v-img
-                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-                max-height="200px"
-              >
+              <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" max-height="200px">
                 <div v-if="!read" class="iv-edit-icon">
                   <v-btn fab color="primary" @click="selectImg">
                     <v-icon color="darken-2"> mdi-pencil-outline </v-icon>
@@ -81,7 +68,7 @@
 
               <div v-if="read">
                 <h2>
-                  {{ $t("interventions.surveyModal.firstCard.form.tags") }}
+                  {{ $t('interventions.surveyModal.firstCard.form.tags') }}
                 </h2>
                 <v-chip v-for="tag in tagsInFocus" :key="tag.tagId">
                   {{ tag }}
@@ -108,7 +95,7 @@
 
       <v-card-actions>
         <v-btn color="warning" text @click="exitHandler">
-          {{ read ? "Close" : $t("general.cancel") }}
+          {{ read ? 'Close' : $t('general.cancel') }}
         </v-btn>
       </v-card-actions>
     </v-form>
@@ -132,7 +119,6 @@ export default {
       rules: {
         maxChar: (value) => value.length <= surveyDescriptionMaxChar || this.maxCharExceededi18n,
       },
-      modalModesDict,
       surveyName: '',
       surveyDescription: '',
       surveyTags: [],
@@ -150,13 +136,13 @@ export default {
       tagsInFocus: 'surveysUI/tagsInFocus',
     }),
     edit() {
-      return this.surveyModalMode === this.modalModesDict.edit;
+      return this.surveyModalMode === modalModesDict.edit;
     },
     create() {
-      return this.surveyModalMode === this.modalModesDict.create;
+      return this.surveyModalMode === modalModesDict.create;
     },
     read() {
-      return this.surveyModalMode === this.modalModesDict.read;
+      return this.surveyModalMode === modalModesDict.read;
     },
     canAdvance() {
       return this.read || this.surveyName !== '';

@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    @keydown.esc="exitHandler"
+    @keydown.esc="escHandler"
     v-model="isSurveyModalDisplayed"
     max-width="1200px"
     persistent
@@ -17,7 +17,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
+import { modalModesDict } from '../../store/constants';
 
 import SurveyModalStepper from './surveyModalContent/SurveyModalStepper.vue';
 import QuestionTabs from './surveyModalContent/QuestionTabs.vue';
@@ -36,9 +37,31 @@ export default {
   },
   computed: {
     ...mapGetters({
+      surveyModalMode: 'surveysUI/getSurveyModalMode',
       isSurveyModalDisplayed: 'surveysUI/getIsSurveyModalDisplayed',
       completionIndex: 'surveysUI/getSurveyModalCompletionIndex',
     }),
+    edit() {
+      return this.surveyModalMode === modalModesDict.edit;
+    },
+    create() {
+      return this.surveyModalMode === modalModesDict.create;
+    },
+    read() {
+      return this.surveyModalMode === modalModesDict.read;
+    },
+  },
+  methods: {
+    ...mapActions({
+      abortReadSurveyHandler: 'surveysUI/abortReadSurveyHandler',
+      abortNewSurveyHandler: 'surveysUI/abortNewSurveyHandler',
+      abortEditSurveyHandler: 'surveysUI/abortEditSurveyHandler',
+    }),
+    escHandler() {
+      if (this.read) this.abortReadSurveyHandler();
+      else if (this.edit) this.abortEditSurveyHandler();
+      else if (this.create) this.abortNewSurveyHandler();
+    },
   },
 };
 </script>

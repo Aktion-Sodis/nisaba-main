@@ -1,5 +1,10 @@
 <template>
-  <v-dialog v-model="isInterventionModalDisplayed" max-width="1200px" persistent>
+  <v-dialog
+    v-model="isInterventionModalDisplayed"
+    max-width="1200px"
+    persistent
+    @keydown.esc="escHandler"
+  >
     <v-card class="px-4 pt-4">
       <v-form ref="form" @submit.prevent="submitIntervention" lazy-validation>
         <v-card-title>
@@ -282,6 +287,9 @@ export default {
       switchToEditing: 'ivGui/switchToEditing',
       switchToReading: 'ivGui/switchToReading',
     }),
+    escHandler() {
+      this.closeInterventionModal();
+    },
     clickOnDeleteIntervention() {
       this.closeThenDeleteComponentData();
       this.deleteIntervention({ interventionId: this.interventionIdCurrentlyBeingEdited });

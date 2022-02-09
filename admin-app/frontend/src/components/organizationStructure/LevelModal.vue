@@ -139,9 +139,6 @@ export default {
     levelFormIsInvalid() {
       return !!this.levelName;
     },
-    persistModal() {
-      return Boolean(this.levelName || this.levelDescription);
-    },
   },
   methods: {
     ...mapActions({
