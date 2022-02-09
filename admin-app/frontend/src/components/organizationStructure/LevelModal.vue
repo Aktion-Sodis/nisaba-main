@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="levelModalIsDisplayed" max-width="800px" :persistent="persistModal">
+  <v-dialog v-model="levelModalIsDisplayed" max-width="800px" persistent>
     <v-card class="px-4 pt-4">
       <v-form ref="form" @submit.prevent="submitLevel" lazy-validation>
         <v-card-title>
