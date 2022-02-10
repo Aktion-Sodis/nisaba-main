@@ -165,6 +165,11 @@ const levelsData = {
       commit('deleteLevel', {
         levelId: rootGetters['levelsUI/getLevelIdInFocus'],
       });
+      commit(
+        'entitiesData/deleteEntitiesByLevelId',
+        { levelId: rootGetters['levelsUI/getLevelIdInFocus'] },
+        { root: true },
+      );
       commit('levelsUI/setLevelIdInFocus', { newValue: null }, { root: true });
       commit('levelsUI/setLevelModalMode', { newValue: modalModesDict.read }, { root: true });
       dispatch(
