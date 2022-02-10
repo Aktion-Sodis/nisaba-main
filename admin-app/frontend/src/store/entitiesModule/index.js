@@ -92,7 +92,6 @@ const entitiesModule = {
       if (a.upperLevelId === null) return -1;
       if (b.upperLevelId === null) return 1;
       if (a.levelId === b.upperLevelId) return -1;
-      console.log('hey');
       return getters.hierarchySort(a, getters.levelById(b.upperLevelId));
     },
 

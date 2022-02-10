@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import { EmptySurvey, Survey } from './utils';
 import { modalModesDict } from '../constants';
 
@@ -51,18 +50,18 @@ const surveysUI = {
     setSurveyDraft: (
       state,
       {
-        surveyId, name, description, tags, type, questions, creationDate, lastEditDate,
+        surveyId, name, description, tags, type, questionIds, creationDate, lastEditDate,
       },
     ) => {
       state.surveyDraft = new Survey({
-        surveyId: surveyId ?? uuidv4(),
-        name: name ?? '',
-        description: description ?? '',
-        type: type ?? 'Default',
-        tags: tags ?? [],
-        questions: questions ?? [],
-        creationDate: creationDate ?? Date.now(),
-        lastEditDate: lastEditDate ?? null,
+        surveyId,
+        name,
+        description,
+        type,
+        tags,
+        questionIds,
+        creationDate,
+        lastEditDate,
       });
     },
     resetSurveyDraft: (state) => {
@@ -98,7 +97,7 @@ const surveysUI = {
       commit('setSurveyModalMode', { newValue: modalModesDict.edit });
       commit('setSurveyIdInFocus', { newValue: surveyId });
       const survey = rootGetters['surveysData/surveyById']({ surveyId });
-      commit('resetSurveyDraft', survey);
+      commit('setSurveyDraft', survey);
       commit('setSurveyModalCompletionIndex', { newValue: 1 });
       commit('setIsSurveyModalDisplayed', { newValue: true });
     },
