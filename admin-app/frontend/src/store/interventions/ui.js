@@ -110,7 +110,7 @@ const interventionsUI = {
       // 1. DELETE this in the ./data.js
       // 2. Await the response DB object
       // 3. Put the response DB object to interventions
-      await dispatch('interventionsData/APIdeleteIntervention', getters.interventionIdInFocus, {
+      await dispatch('interventionsData/APIdeleteIntervention', getters.getInterventionIdInFocus, {
         root: true,
       });
     },
