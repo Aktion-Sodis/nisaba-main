@@ -208,6 +208,25 @@ export default {
     read() {
       return this.modalMode === modalModesDict.read;
     },
+    areThereChanges() {
+      const tagIdsInComponent = new Set(this.tagIds);
+      const tagIdsInDraft = new Set(this.levelDraft.tagIds);
+
+      const allowedInterventionsInComponent = new Set(this.allowedInterventions);
+      const allowedInterventionsInDraft = new Set(this.levelDraft.allowedInterventions);
+      return (
+        this.name !== this.levelDraft.name
+        || this.description !== this.levelDraft.description
+        || !(
+          tagIdsInComponent.size === tagIdsInDraft.size
+          && [...tagIdsInComponent].every((value) => tagIdsInDraft.has(value))
+        )
+        || !(
+          allowedInterventionsInComponent.size === allowedInterventionsInDraft.size
+          && [...allowedInterventionsInComponent].every((value) => allowedInterventionsInDraft.has(value))
+        )
+      );
+    },
   },
   methods: {
     ...mapActions({
