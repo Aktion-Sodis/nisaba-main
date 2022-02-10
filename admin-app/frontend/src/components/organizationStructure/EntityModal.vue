@@ -251,6 +251,7 @@ export default {
     prefillComponentDataFromEntityDraft() {
       this.name = this.entityDraft?.name ?? '';
       this.description = this.entityDraft?.description ?? '';
+      this.upperEntityId = this.entityDraft?.upperEntityId ?? null;
       this.tagIds = this.entityDraft?.tagIds ?? [];
       this.contents = this.entityDraft?.contents ?? [];
     },
