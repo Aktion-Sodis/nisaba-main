@@ -236,12 +236,21 @@ export default {
       abortNewLevelHandler: 'levelsUI/abortNewLevelHandler',
       abortEditLevelHandler: 'levelsUI/abortEditLevelHandler',
       editLevelHandler: 'levelsUI/editLevelHandler',
+
+      showFeedbackForDuration: 'feedbackModule/showFeedbackForDuration',
     }),
     ...mapMutations({
       setLevelDraft: 'levelsUI/setLevelDraft',
     }),
     deleteHandler() {
       if (this.read) return;
+      if (this.levelIdInFocus !== this.lowestLevelId) {
+        this.showFeedbackForDuration({
+          type: 'warning',
+          text: 'Only the lowest level can be deleted.',
+        });
+        return;
+      }
       this.deleteLevelHandler();
     },
     closeHandler() {
