@@ -267,7 +267,6 @@ export default {
   mounted() {
     this.prefillComponentDataFromInterventionDraft();
   },
-
   computed: {
     ...mapGetters({
       interventionModalMode: 'interventionsUI/getInterventionModalMode',
@@ -335,13 +334,6 @@ export default {
     },
     escHandler() {
       this.closeInterventionModal();
-    },
-    deleteComponentData() {
-      this.interventionId = null;
-      this.name = '';
-      this.description = '';
-      this.tagIds = [];
-      this.contents = [];
     },
     async submitHandler() {
       this.setInterventionDraft({
