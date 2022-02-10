@@ -76,7 +76,8 @@
     "newSurvey": "Yeni anket",
     "interventionModal": {
       "title": {
-        "edit": "Müdahaleyi düzenle ",
+        "read": "Müdahale",
+        "edit": "Müdahaleyi düzenle: ",
         "create": "Yeni müdahale yarat"
       },
       "description": {
@@ -87,7 +88,7 @@
       "interventionName": "Müdahale adı",
       "interventionDescription": "Müdahale açıklaması",
       "noDocuments": "Henüz hiç döküman yüklenmemiş.",
-      "noImages": "Henüz hiç resım yüklenmemiş.",
+      "noImages": "Henüz hiç resim yüklenmemiş.",
       "noVideos": "Henüz hiç video yüklenmemiş.",
       "noSurveys": "Henüz hiç anket yüklenmemiş."
     },

@@ -11,7 +11,7 @@
           <div style="height: 100%" class="pa-2">
             <div style="height: 100%" class="d-flex flex-column justify-space-around">
               <div class="d-flex flex-column align-center">
-                <v-btn fab x-large color="primary" @click="clickOnAddNewIntervention">
+                <v-btn fab x-large color="primary" @click="newInterventionHandler">
                   <v-icon dark> mdi-wrench </v-icon>
                 </v-btn>
                 <h2 class="mt-2 mb-4">
@@ -39,7 +39,7 @@
             :interventionId="intervention.interventionId"
             :interventionName="intervention.name"
             :interventionDescription="intervention.description"
-            :interventionTags="intervention.tags"
+            :interventionTagIds="intervention.tagIds"
             :interventionContent="intervention.content"
           />
         </v-col>
@@ -66,8 +66,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      interventions: 'iv/getInterventions',
-      isInterventionModalDisplayed: 'ivGui/getInterventionModalIsDisplayed',
+      interventions: 'interventionsData/getInterventions',
+      isInterventionModalDisplayed: 'interventionsUI/getIsInterventionModalDisplayed',
       isSurveyModalDisplayed: 'surveysUI/getIsSurveyModalDisplayed',
     }),
   },
@@ -78,8 +78,8 @@ export default {
 
   methods: {
     ...mapActions({
-      clickOnAddNewIntervention: 'ivGui/clickOnAddNewIntervention',
       newSurveyHandler: 'surveysUI/newSurveyHandler',
+      newInterventionHandler: 'interventionsUI/newInterventionHandler',
     }),
     // If closed, wait for 500, if still closed, destroy component instance
     async destroyInterventionModalAfterDelay(newValue) {

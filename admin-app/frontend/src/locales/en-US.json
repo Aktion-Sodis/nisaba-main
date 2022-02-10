@@ -76,6 +76,7 @@
     "newSurvey": "New survey",
     "interventionModal": {
       "title": {
+        "read": "Viewing intervention",
         "edit": "Edit intervention ",
         "create": "Create new intervention"
       },
