@@ -23,11 +23,9 @@
         class="entity-sheet mx-auto grey lighten-5 rounded-lg pa-4 d-flex flex-column justify-center align-center"
         :class="hover ? 'lighten-4' : ''"
         elevation="4"
+        @click="clickHandler"
       >
-        {{ entityName }} <br />
-        <v-btn fab icon class="entity-icon" @click="callVuexActionThenFillEntityModalForm">
-          <v-icon color="darken-2"> mdi-pencil-outline </v-icon>
-        </v-btn>
+        {{ entityName }}
       </v-sheet>
     </v-hover>
   </div>
@@ -59,10 +57,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      entityHasParent: 'entities/hasEntityParent',
-      hasDescendants: 'entities/hasEntityDescendants',
+      entityHasParent: 'entitiesData/hasParentByUpperEntityId',
+      hasDescendants: 'entitiesData/hasDescendantsById',
       lineColors: 'getLineColors',
-      lineOfEntity: 'entities/getLineByEntityId',
+      lineOfEntity: 'entitiesData/lineByEntityId',
     }),
     leftLineOfEntity() {
       return this.lineOfEntity(this.upperEntityId);
@@ -73,18 +71,10 @@ export default {
   },
   methods: {
     ...mapActions({
-      clickOnEditEntity: 'os/clickOnEditEntity',
+      readEntityHandler: 'entitiesUI/readEntityHandler',
     }),
-    callVuexActionThenFillEntityModalForm() {
-      this.clickOnEditEntity(this.entityId);
-
-      /* TODO: This is bad, bad practice. */
-      const entityModal = this.$parent.$parent.$children.find(
-        (c) => c.$options.name === 'EntityModal',
-      );
-      entityModal.entityName = this.entityName || '';
-      entityModal.entityDescription = this.entityDescription || '';
-      entityModal.upperEntity = this.upperEntityId || '';
+    clickHandler() {
+      this.readEntityHandler({ entityId: this.entityId });
     },
   },
 };

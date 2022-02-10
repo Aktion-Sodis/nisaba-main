@@ -8,7 +8,11 @@
         class="column-wrapper px-16"
         :class="level.upperLevelId === null || 'dotted-left-border'"
       >
-        <LevelColumnHeader :allowedInterventions="level.allowedInterventions" :name="level.name" />
+        <LevelColumnHeader
+          :levelId="level.levelId"
+          :allowedInterventions="level.allowedInterventions"
+          :name="level.name"
+        />
         <EntitiesColumn :levelId="level.levelId" :index="index" />
       </div>
       <div class="column-wrapper dotted-left-border d-flex align-center justify-center">
@@ -47,22 +51,23 @@ export default {
   },
   computed: {
     ...mapGetters({
-      levels: 'entities/sortedLevels',
+      levels: 'levelsData/sortedLevels',
       interventionById: 'interventionsData/interventionById',
-      levelModalIsDisplayed: 'os/getLevelModalIsDisplayed',
-      entityModalIsDisplayed: 'os/getEntityModalIsDisplayed',
+      isLevelModalDisplayed: 'levelsUI/getIsLevelModalDisplayed',
+      entityModalIsDisplayed: 'entitiesUI/getIsEntityModalDisplayed',
     }),
   },
   watch: {
-    levelModalIsDisplayed: 'destroyLevelModalAfterDelay',
+    isLevelModalDisplayed: 'destroyLevelModalAfterDelay',
     entityModalIsDisplayed: 'destroyEntityModalAfterDelay',
   },
   methods: {
     ...mapActions({
-      clickOnEntity: 'entities/clickOnEntity',
-      clickOnAddNewLevel: 'os/clickOnAddNewLevel',
-      clickOnEditLevel: 'os/clickOnEditLevel',
+      newLevelHandler: 'levelsUI/newLevelHandler',
     }),
+    clickOnAddNewLevel() {
+      this.newLevelHandler();
+    },
     async destroyLevelModalAfterDelay(newValue) {
       // If closed, wait for 500, if still closed, destroy component instance
       if (newValue) {
@@ -70,7 +75,7 @@ export default {
         return;
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
-      if (!this.levelModalIsDisplayed) this.showLevelModal = false;
+      if (!this.isLevelModalDisplayed) this.showLevelModal = false;
     },
     async destroyEntityModalAfterDelay(newValue) {
       // If closed, wait for 500, if still closed, destroy component instance
@@ -79,7 +84,7 @@ export default {
         return;
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
-      if (!this.levelModalIsDisplayed) this.showLevelModal = false;
+      if (!this.isLevelModalDisplayed) this.showLevelModal = false;
     },
   },
 };

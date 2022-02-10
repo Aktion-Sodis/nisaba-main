@@ -1,84 +1,127 @@
 <template>
-  <v-dialog v-model="entityModalIsDisplayed" max-width="800px" persistent @keydown.esc="escHandler">
+  <v-dialog v-model="isModalDisplayed" max-width="800px" persistent @keydown.esc="escHandler">
     <v-card class="px-4 pt-4">
-      <v-form ref="form" @submit.prevent="submitEntity" lazy-validation>
+      <v-form lazy-validation>
         <v-card-title>
-          <h2 v-if="entityModalIsEdit">
-            {{ $t('organizationStructure.entityModal.title.edit') }}
-            <i>{{ entityCurrentlyBeingEdited.name }}</i>
+          <h2 v-if="edit && entityInFocus">
+            {{ $t('organizationStructure.entityModal.modalTitle.edit') }}
+            <i>{{ entityInFocus.name }}</i>
           </h2>
-          <h2 v-else>
-            {{ $t('organizationStructure.entityModal.title.create') }}
+          <h2 v-else-if="create">
+            {{ $t('organizationStructure.entityModal.modalTitle.create') }}
+          </h2>
+          <h2 v-else-if="read">
+            {{ $t('organizationStructure.entityModal.modalTitle.read') }}
           </h2>
         </v-card-title>
-        <v-card-subtitle v-if="entityModalIsEdit">
-          {{ $t('organizationStructure.entityModal.description.edit') }}
+        <v-card-subtitle v-if="edit">
+          {{ $t('organizationStructure.entityModal.modalDescription.edit') }}
         </v-card-subtitle>
-        <v-card-subtitle v-else>
-          {{ $t('organizationStructure.entityModal.description.create') }}
+        <v-card-subtitle v-else-if="create">
+          {{ $t('organizationStructure.entityModal.modalDescription.create') }}
         </v-card-subtitle>
 
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12" sm="6">
-                <v-card-title>
-                  {{ $t('organizationStructure.entityModal.entityInformation') }}
-                </v-card-title>
+                <h2 v-if="read && entityInFocus">
+                  {{ entityInFocus.name }}
+                </h2>
                 <v-text-field
-                  :autofocus="entityModalIsEdit"
-                  v-model="entityName"
-                  :rules="[rules.required]"
-                  :label="$t('organizationStructure.entityModal.entityName')"
+                  v-else
+                  autofocus
+                  v-model="name"
+                  :label="$t('organizationStructure.entityModal.name')"
                   required
                   outlined
                   dense
-                  ref="entity-name"
                 ></v-text-field>
+
+                <div
+                  v-if="read && entityInFocus"
+                  class="d-flex flex-column justify-center"
+                  style="min-height: 10rem"
+                >
+                  <h3>
+                    {{ entityInFocus.description }}
+                  </h3>
+                </div>
                 <v-textarea
-                  v-model="entityDescription"
-                  :counter="entityDescription.length > entityDescriptionMaxChar - 20"
+                  v-else
+                  v-model="description"
+                  :counter="description.length > entityDescriptionMaxChar - 20"
                   :rules="[rules.maxChar]"
-                  :label="$t('organizationStructure.entityModal.entityDescription')"
+                  :label="$t('organizationStructure.entityModal.description')"
                   required
                   outlined
                   dense
-                  ref="entity-description"
                 ></v-textarea>
 
+                <div v-if="read && entityInFocus" style="min-height: 5rem">
+                  <h3 v-if="entityInFocus.upperEntityId">
+                    {{ $t('organizationStructure.entityModal.upperEntity') }}:
+                    {{ entityById({ entityId: entityInFocus.upperEntityId }).name }}
+                  </h3>
+                </div>
                 <v-select
-                  v-model="upperEntity"
-                  :items="allEntitiesOfUpperLevel || []"
-                  :label="$t('organizationStructure.entityModal.upperEntity')"
+                  v-else-if="allEntitiesOfUpperLevel.length > 0"
+                  v-model="upperEntityId"
+                  :items="allEntitiesOfUpperLevel"
+                  :label="$t('organizationStructure.entityModal.upperEntityLabel')"
                   dense
                   outlined
                   persistent-hint
                   item-value="entityId"
                   item-text="name"
-                  ref="upper-entity"
                 ></v-select>
               </v-col>
 
               <v-col cols="12" sm="6">
                 <v-card-title>
-                  {{ $t('organizationStructure.entityModal.otherInfo') }}
+                  {{ $t('baseData.tags') }}
                 </v-card-title>
+                <div v-if="read && entityInFocus">
+                  <v-chip v-for="tagId in entityInFocus.tagIds" :key="tagId">
+                    {{ tagById({ tagId }).name }}
+                  </v-chip>
+                </div>
+                <v-select
+                  v-else
+                  v-model="tagIds"
+                  :items="allEntityTags"
+                  item-value="tagId"
+                  item-text="name"
+                  deletable-chips
+                  chips
+                  dense
+                  :label="$t('baseData.tags')"
+                  multiple
+                  outlined
+                ></v-select>
               </v-col>
             </v-row>
           </v-container>
         </v-card-text>
 
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="closeThenDeleteComponentData">
-            {{ $t('general.cancel') }}
+          <v-btn x-large v-if="edit" @click="deleteHandler" color="warning" text>
+            {{ $t('general.delete') }}
+            <v-icon large> mdi-delete </v-icon>
           </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn x-large color="secondary" text @click="closeHandler">
+            {{ read ? 'Close' : $t('general.cancel') }}
+          </v-btn>
+          <v-btn x-large v-if="read" color="primary" text @click="editHandler"> Edit </v-btn>
           <v-btn
+            x-large
+            v-if="!read"
             type="submit"
             color="primary"
             text
-            @click.prevent="submitEntity"
-            :disabled="!entityFormIsInvalid"
+            @click.prevent="submitHandler"
+            :disabled="!isFormInvalid"
           >
             {{ $t('general.save') }}
           </v-btn>
@@ -89,7 +132,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
+import { modalModesDict } from '../../store/constants';
 
 const entityDescriptionMaxChar = Math.max(
   parseInt(process.env.VUE_APP_ENTITY_DESCRIPTION_MAX_CHAR, 10),
@@ -102,72 +146,113 @@ export default {
     return {
       entityDescriptionMaxChar,
       rules: {
-        required: (value) => !!value || this.requiredi18n,
         maxChar: (value) => value.length <= entityDescriptionMaxChar || this.maxCharExceededi18n,
       },
-      entityName: '',
-      entityDescription: '',
-      upperEntity: null,
+      name: '',
+      description: '',
+      upperEntityId: null,
+      tagIds: [],
     };
+  },
+  watch: { entityDraft: 'prefillComponentDataFromEntityDraft' },
+  mounted() {
+    this.prefillComponentDataFromEntityDraft();
   },
   computed: {
     ...mapGetters({
-      allEntitiesOfLevel: 'entities/allEntitiesOfLevelByHid',
-      upperLevelById: 'entities/upperLevelById',
-      allowedInterventions: 'interventionsData/getInterventions',
-      entityModalIsEdit: 'os/getEntityModalIsEdit',
-      entityCurrentlyBeingEdited: 'os/getEntityCurrentlyBeingEdited',
-      entityModalIsDisplayed: 'os/getEntityModalIsDisplayed',
-      levelIdOfEntityBeingCreated: 'os/getLevelIdOfEntityBeingCreated',
+      allEntitiesOfLevel: 'entitiesData/allEntitiesByLevelId',
+      upperLevelById: 'levelsData/upperLevelById',
+      levelById: 'levelsData/levelById',
+
+      modalMode: 'entitiesUI/getEntityModalMode',
+      isModalDisplayed: 'entitiesUI/getIsEntityModalDisplayed',
+      entityIdInFocus: 'entitiesUI/getEntityIdInFocus',
+      entityDraft: 'entitiesUI/getEntityDraft',
+      entityInFocus: 'entitiesUI/entityInFocus',
+      hasDescendants: 'entitiesData/hasDescendantsById',
+
+      entityById: 'entitiesData/entityById',
+      allEntityTags: 'entitiesData/getEntityTags',
+      tagById: 'entitiesData/entityTagById',
+      getCreatingEntityInLevelId: 'entitiesUI/getCreatingEntityInLevelId',
     }),
     allEntitiesOfUpperLevel() {
-      const upperLevel = this.upperLevelById(
-        this.entityModalIsEdit
-          ? this.entityCurrentlyBeingEdited.levelId
-          : this.levelIdOfEntityBeingCreated,
-      );
-      return upperLevel ? this.allEntitiesOfLevel(upperLevel.levelId) : [];
+      const currentLevel = this.levelById({
+        levelId: this.edit ? this.entityInFocus?.levelId : this.getCreatingEntityInLevelId,
+      });
+      return this.allEntitiesOfLevel(currentLevel?.upperLevelId) ?? [];
     },
-    requiredi18n() {
-      return this.$t('general.form.required');
+    edit() {
+      return this.modalMode === modalModesDict.edit;
+    },
+    create() {
+      return this.modalMode === modalModesDict.create;
+    },
+    read() {
+      return this.modalMode === modalModesDict.read;
     },
     maxCharExceededi18n() {
       return this.$t('general.form.maxCharExceeded', {
         maxChar: entityDescriptionMaxChar,
       });
     },
-    entityFormIsInvalid() {
-      return !!this.entityName;
+    isFormInvalid() {
+      return !!this.name;
     },
   },
   methods: {
     ...mapActions({
-      saveEntity: 'os/saveEntity',
-      closeEntityModal: 'os/closeEntityModal',
+      saveEntityHandler: 'entitiesUI/saveEntityHandler',
+      deleteEntityHandler: 'entitiesUI/deleteEntityHandler',
+      abortReadEntityHandler: 'entitiesUI/abortReadEntityHandler',
+      abortNewEntityHandler: 'entitiesUI/abortNewEntityHandler',
+      abortEditEntityHandler: 'entitiesUI/abortEditEntityHandler',
+      editEntityHandler: 'entitiesUI/editEntityHandler',
+
+      showFeedbackForDuration: 'feedbackModule/showFeedbackForDuration',
+    }),
+    ...mapMutations({
+      setEntityDraft: 'entitiesUI/setEntityDraft',
     }),
     escHandler() {
-      this.closeEntityModal();
+      this.closeHandler();
     },
-
-    closeThenDeleteComponentData() {
-      this.closeEntityModal();
-
-      this.entityName = '';
-      this.entityDescription = '';
-      this.upperEntity = null;
+    deleteHandler() {
+      if (this.read) return;
+      if (this.hasDescendants(this.entityIdInFocus)) {
+        this.showFeedbackForDuration({
+          type: 'warning',
+          text: 'Cannot delete an entity with descendants.',
+        });
+        return;
+      }
+      this.deleteEntityHandler();
     },
-    submitEntity() {
-      this.saveEntity({
-        entityId: this.entityCurrentlyBeingEdited ? this.entityCurrentlyBeingEdited.entityId : null,
-        entityName: this.entityName,
-        entityDescription: this.entityDescription,
-        entityLevelId: this.entityCurrentlyBeingEdited
-          ? this.entityCurrentlyBeingEdited.levelId
-          : this.levelIdOfEntityBeingCreated,
-        entityUpperEntityId: this.upperEntity,
+    closeHandler() {
+      if (this.read) this.abortReadEntityHandler();
+      else if (this.create) this.abortNewEntityHandler();
+      else if (this.edit) this.abortEditEntityHandler();
+    },
+    editHandler() {
+      this.editEntityHandler({ entityId: this.entityIdInFocus });
+    },
+    async submitHandler() {
+      this.setEntityDraft({
+        entityId: this.entityIdInFocus,
+        name: this.name,
+        description: this.description,
+        levelId: this.edit ? this.entityInFocus.levelId : this.getCreatingEntityInLevelId,
+        upperEntityId: this.upperEntityId ?? null,
+        tagIds: this.tagIds,
       });
-
-      this.closeThenDeleteComponentData();
+      await this.$nextTick();
+      this.saveEntityHandler();
+    },
+    prefillComponentDataFromEntityDraft() {
+      this.name = this.entityDraft?.name ?? '';
+      this.description = this.entityDraft?.description ?? '';
+      this.tagIds = this.entityDraft?.tagIds ?? [];
+      this.contents = this.entityDraft?.contents ?? [];
     },
   },
 };

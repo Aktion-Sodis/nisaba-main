@@ -7,7 +7,7 @@
             <v-col cols="11" sm="10" md="8">
               <h1>{{ $t('login.title') }}</h1>
               <p class="mb-8 mt-4">{{ $t('login.subtitle') }}</p>
-              <v-form ref="form" @submit.prevent="submit" lazy-validation>
+              <v-form @submit.prevent="submit" lazy-validation>
                 <v-text-field
                   v-model="username"
                   :rules="[rules.required]"

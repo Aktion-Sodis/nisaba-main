@@ -6,40 +6,37 @@
     @keydown.esc="escHandler"
   >
     <v-card class="px-4 pt-4">
-      <v-form ref="form" lazy-validation>
+      <v-form lazy-validation>
         <v-card-title>
           <h2 v-if="edit">
-            {{ $t('interventions.interventionModal.title.edit') }}
+            {{ $t('interventions.interventionModal.modalTitle.edit') }}
             <i>{{ interventionInFocus.name }}</i>
           </h2>
           <h2 v-else-if="create">
-            {{ $t('interventions.interventionModal.title.create') }}
+            {{ $t('interventions.interventionModal.modalTitle.create') }}
           </h2>
           <h2 v-else>
-            {{ $t('interventions.interventionModal.title.read') }}
+            {{ $t('interventions.interventionModal.modalTitle.read') }}
           </h2>
         </v-card-title>
         <v-card-subtitle v-if="edit">
-          {{ $t('interventions.interventionModal.description.edit') }}
+          {{ $t('interventions.interventionModal.modalDescription.edit') }}
         </v-card-subtitle>
         <v-card-subtitle v-else-if="create">
-          {{ $t('interventions.interventionModal.description.create') }}
+          {{ $t('interventions.interventionModal.modalDescription.create') }}
         </v-card-subtitle>
 
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12" md="6">
-                <v-card-title>
-                  {{ $t('interventions.interventionModal.interventionInformation') }}
-                </v-card-title>
                 <h2 v-if="read && interventionInFocus">
                   {{ interventionInFocus.name }}
                 </h2>
                 <v-text-field
                   v-else
                   v-model="name"
-                  :label="$t('interventions.interventionModal.interventionName')"
+                  :label="$t('interventions.interventionModal.name')"
                   required
                   outlined
                   dense
@@ -53,7 +50,7 @@
                   v-model="description"
                   :counter="description.length > interventionDescriptionMaxChar - 20"
                   :rules="[rules.maxChar]"
-                  :label="$t('interventions.interventionModal.interventionDescription')"
+                  :label="$t('interventions.interventionModal.description')"
                   required
                   outlined
                   dense

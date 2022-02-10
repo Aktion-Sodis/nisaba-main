@@ -4,8 +4,6 @@ import VuexPersistence from 'vuex-persist';
 
 // import modules
 import authModule from './authModule';
-import entitiesModule from './entitiesModule';
-import organizationStructureModule from './organizationStructureModule';
 
 import interventionsData from './interventions/data';
 import interventionsUI from './interventions/ui';
@@ -13,6 +11,10 @@ import surveysData from './survey/data';
 import surveysUI from './survey/ui';
 import questionsUI from './questions/ui';
 import feedbackModule from './feedback/ui';
+import levelsData from './levels/data';
+import levelsUI from './levels/ui';
+import entitiesData from './entities/data';
+import entitiesUI from './entities/ui';
 
 // persist
 const vuexLocal = new VuexPersistence({
@@ -33,8 +35,10 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     auth: authModule,
-    entities: entitiesModule,
-    os: organizationStructureModule,
+    levelsData,
+    levelsUI,
+    entitiesData,
+    entitiesUI,
     interventionsData,
     interventionsUI,
     surveysData,

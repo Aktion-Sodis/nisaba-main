@@ -1,93 +1,143 @@
 <template>
-  <v-dialog v-model="levelModalIsDisplayed" max-width="800px" persistent>
+  <v-dialog v-model="isModalDisplayed" max-width="800px" persistent @keydown.esc="escHandler">
     <v-card class="px-4 pt-4">
-      <v-form ref="form" @submit.prevent="submitLevel" lazy-validation>
+      <v-form lazy-validation>
         <v-card-title>
-          <h2 v-if="levelModalIsEdit">
-            {{ $t('organizationStructure.levelModal.title.edit') }}
-            <i>{{ levelCurrentlyBeingEdited.name }}</i>
+          <h2 v-if="edit && levelInFocus">
+            {{ $t('organizationStructure.levelModal.modalTitle.edit') }}
+            <i>{{ levelInFocus.name }}</i>
           </h2>
-          <h2 v-else>
-            {{ $t('organizationStructure.levelModal.title.create') }}
+          <h2 v-else-if="create">
+            {{ $t('organizationStructure.levelModal.modalTitle.create') }}
+          </h2>
+          <h2 v-else-if="read">
+            {{ $t('organizationStructure.levelModal.modalTitle.read') }}
           </h2>
         </v-card-title>
-        <v-card-subtitle v-if="levelModalIsEdit">
-          {{ $t('organizationStructure.levelModal.description.edit') }}
+        <v-card-subtitle v-if="edit">
+          {{ $t('organizationStructure.levelModal.modalDescription.edit') }}
         </v-card-subtitle>
-        <v-card-subtitle v-else>
-          {{ $t('organizationStructure.levelModal.description.create') }}
+        <v-card-subtitle v-else-if="create">
+          {{ $t('organizationStructure.levelModal.modalDescription.create') }}
         </v-card-subtitle>
 
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12" sm="6">
-                <v-card-title>
-                  {{ $t('organizationStructure.levelModal.levelInformation') }}
-                </v-card-title>
+                <h2 v-if="read && levelInFocus">
+                  {{ levelInFocus.name }}
+                </h2>
                 <v-text-field
-                  v-model="levelName"
-                  :rules="[rules.required]"
-                  :label="$t('organizationStructure.levelModal.levelName')"
+                  v-else
+                  autofocus
+                  v-model="name"
+                  :label="$t('organizationStructure.levelModal.name')"
                   required
                   outlined
                   dense
                 ></v-text-field>
+
+                <div
+                  v-if="read && levelInFocus"
+                  class="d-flex flex-column justify-center"
+                  style="min-height: 10rem"
+                >
+                  <h3>
+                    {{ levelInFocus.description }}
+                  </h3>
+                </div>
                 <v-textarea
-                  v-model="levelDescription"
-                  :counter="levelDescription.length > levelDescriptionMaxChar - 20"
+                  v-else
+                  v-model="description"
+                  :counter="description.length > levelDescriptionMaxChar - 20"
                   :rules="[rules.maxChar]"
-                  :label="$t('organizationStructure.levelModal.levelDescription')"
+                  :label="$t('organizationStructure.levelModal.description')"
                   required
                   outlined
                   dense
                 ></v-textarea>
 
-                <v-select
-                  v-model="levelIsSubordinateTo"
-                  :items="levels"
-                  :label="$t('organizationStructure.levelModal.levelIsSubordinateTo')"
-                  dense
-                  outlined
-                  persistent-hint
-                  item-value="levelId"
-                  item-text="name"
-                ></v-select>
+                <div v-if="read && levelInFocus" style="min-height: 5rem">
+                  <h3 v-if="levelInFocus.upperLevelId">
+                    {{ $t('organizationStructure.levelModal.upperLevel') }}:
+                    {{ levelById({ levelId: levelInFocus.upperLevelId }).name }}
+                  </h3>
+                </div>
               </v-col>
 
               <v-col cols="12" sm="6">
                 <v-card-title>
                   {{ $t('organizationStructure.levelModal.interventions') }}
                 </v-card-title>
-                <v-card-text>
-                  <v-select
-                    v-model="levelAllowedInterventions"
-                    :items="allowedInterventions"
-                    :label="$t('organizationStructure.levelModal.manageAllowedInterventions')"
-                    multiple
-                    dense
-                    outlined
-                    persistent-hint
-                    item-value="interventionId"
-                    item-text="name"
-                  ></v-select>
-                </v-card-text>
+                <div v-if="read && levelInFocus">
+                  <div
+                    v-for="interventionId in levelInFocus.allowedInterventions"
+                    :key="interventionId"
+                  >
+                    <v-avatar>
+                      <v-icon> mdi-hammer-wrench </v-icon>
+                    </v-avatar>
+                    {{ interventionById({ interventionId }).name }}
+                  </div>
+                </div>
+                <v-select
+                  v-else
+                  v-model="allowedInterventions"
+                  :items="interventions"
+                  :label="$t('organizationStructure.levelModal.manageAllowedInterventions')"
+                  multiple
+                  dense
+                  outlined
+                  persistent-hint
+                  item-value="interventionId"
+                  item-text="name"
+                ></v-select>
+
+                <v-card-title>
+                  {{ $t('baseData.tags') }}
+                </v-card-title>
+                <div v-if="read && levelInFocus">
+                  <v-chip v-for="tagId in levelInFocus.tagIds" :key="tagId">
+                    {{ tagById({ tagId }).name }}
+                  </v-chip>
+                </div>
+                <v-select
+                  v-else
+                  v-model="tagIds"
+                  :items="allLevelTags"
+                  item-value="tagId"
+                  item-text="name"
+                  deletable-chips
+                  chips
+                  dense
+                  :label="$t('baseData.tags')"
+                  multiple
+                  outlined
+                ></v-select>
               </v-col>
             </v-row>
           </v-container>
         </v-card-text>
 
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="closeLevelModal">
-            {{ $t('general.cancel') }}
+          <v-btn x-large v-if="edit" @click="deleteHandler" color="warning" text>
+            {{ $t('general.delete') }}
+            <v-icon large> mdi-delete </v-icon>
           </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn x-large color="secondary" text @click="closeHandler">
+            {{ read ? 'Close' : $t('general.cancel') }}
+          </v-btn>
+          <v-btn x-large v-if="read" color="primary" text @click="editHandler"> Edit </v-btn>
           <v-btn
+            x-large
+            v-if="!read"
             type="submit"
             color="primary"
             text
-            @click.prevent="submitLevel()"
-            :disabled="!levelFormIsInvalid"
+            @click.prevent="submitHandler"
+            :disabled="!isFormInvalid"
           >
             {{ $t('general.save') }}
           </v-btn>
@@ -98,7 +148,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
+import { modalModesDict } from '../../store/constants';
 
 const levelDescriptionMaxChar = Math.max(
   parseInt(process.env.VUE_APP_LEVEL_DESCRIPTION_MAX_CHAR, 10),
@@ -111,22 +162,31 @@ export default {
     return {
       levelDescriptionMaxChar,
       rules: {
-        required: (value) => !!value || this.requiredi18n,
         maxChar: (value) => value.length <= levelDescriptionMaxChar || this.maxCharExceededi18n,
       },
-      levelName: '',
-      levelDescription: '',
-      levelAllowedInterventions: [],
-      levelIsSubordinateTo: null,
+      name: '',
+      description: '',
+      allowedInterventions: [],
+      tagIds: [],
     };
   },
+  watch: { levelDraft: 'prefillComponentDataFromLevelDraft' },
   computed: {
     ...mapGetters({
-      levels: 'entities/sortedLevels',
-      allowedInterventions: 'interventionsData/getInterventions',
-      levelModalIsEdit: 'os/getLevelModalIsEdit',
-      levelModalIsDisplayed: 'os/getLevelModalIsDisplayed',
-      levelCurrentlyBeingEdited: 'os/getLevelCurrentlyBeingEdited',
+      interventions: 'interventionsData/getInterventions',
+
+      modalMode: 'levelsUI/getLevelModalMode',
+      isModalDisplayed: 'levelsUI/getIsLevelModalDisplayed',
+      levelIdInFocus: 'levelsUI/getLevelIdInFocus',
+      levelDraft: 'levelsUI/getLevelDraft',
+      levelInFocus: 'levelsUI/levelInFocus',
+
+      allLevelTags: 'levelsData/getLevelTags',
+      tagById: 'levelsData/levelTagById',
+      lowestLevelId: 'levelsData/lowestLevelId',
+      levelById: 'levelsData/levelById',
+
+      interventionById: 'interventionsData/interventionById',
     }),
     requiredi18n() {
       return this.$t('general.form.required');
@@ -136,34 +196,62 @@ export default {
         maxChar: levelDescriptionMaxChar,
       });
     },
-    levelFormIsInvalid() {
-      return !!this.levelName;
+    isFormInvalid() {
+      return !!this.name;
+    },
+    edit() {
+      return this.modalMode === modalModesDict.edit;
+    },
+    create() {
+      return this.modalMode === modalModesDict.create;
+    },
+    read() {
+      return this.modalMode === modalModesDict.read;
     },
   },
   methods: {
     ...mapActions({
-      saveLevel: 'os/saveLevel',
-      showLevelModal: 'os/showLevelModal',
-      closeLevelModal: 'os/closeLevelModal',
+      saveLevelHandler: 'levelsUI/saveLevelHandler',
+      deleteLevelHandler: 'levelsUI/deleteLevelHandler',
+      abortReadLevelHandler: 'levelsUI/abortReadLevelHandler',
+      abortNewLevelHandler: 'levelsUI/abortNewLevelHandler',
+      abortEditLevelHandler: 'levelsUI/abortEditLevelHandler',
+      editLevelHandler: 'levelsUI/editLevelHandler',
     }),
-    closeThenDeleteComponentData() {
-      this.closeLevelModal();
-
-      this.levelName = '';
-      this.levelDescription = '';
-      this.levelAllowedInterventions = [];
-      this.levelIsSubordinateTo = null;
+    ...mapMutations({
+      setLevelDraft: 'levelsUI/setLevelDraft',
+    }),
+    deleteHandler() {
+      if (this.read) return;
+      this.deleteLevelHandler();
     },
-    submitLevel() {
-      this.saveLevel({
-        levelId: this.levelCurrentlyBeingEdited ? this.levelCurrentlyBeingEdited.levelId : null,
-        name: this.levelName,
-        description: this.levelDescription,
-        allowedInterventions: this.levelAllowedInterventions || [],
-        upperLevelId: this.levelIsSubordinateTo,
+    closeHandler() {
+      if (this.read) this.abortReadLevelHandler();
+      else if (this.create) this.abortNewLevelHandler();
+      else if (this.edit) this.abortEditLevelHandler();
+    },
+    editHandler() {
+      this.editLevelHandler({ levelId: this.levelIdInFocus });
+    },
+    escHandler() {
+      this.closeHandler();
+    },
+    submitHandler() {
+      this.setLevelDraft({
+        levelId: this.levelIdInFocus,
+        name: this.name,
+        description: this.description,
+        upperLevelId: this.create ? this.lowestLevelId : this.levelInFocus.upperLevelId,
+        allowedInterventions: this.allowedInterventions || [],
+        tagIds: this.tagIds || [],
       });
-
-      this.closeThenDeleteComponentData();
+      this.saveLevelHandler();
+    },
+    prefillComponentDataFromLevelDraft() {
+      this.name = this.levelDraft?.name ?? '';
+      this.description = this.levelDraft?.description ?? '';
+      this.tagIds = this.levelDraft?.tagIds ?? [];
+      this.allowedInterventions = this.levelDraft?.allowedInterventions ?? [];
     },
   },
 };

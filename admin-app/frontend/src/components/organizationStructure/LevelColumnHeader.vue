@@ -31,7 +31,7 @@
 
 <script>
 import { validate as uuidValidate } from 'uuid';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'LevelColumnHeader',
@@ -45,6 +45,11 @@ export default {
       type: String,
       required: true,
     },
+    levelId: {
+      type: String,
+      required: true,
+      validator: (i) => uuidValidate(i),
+    },
   },
   computed: {
     ...mapGetters({
@@ -52,7 +57,12 @@ export default {
     }),
   },
   methods: {
-    clickOnLevelHandler() {},
+    ...mapActions({
+      readLevelHandler: 'levelsUI/readLevelHandler',
+    }),
+    clickOnLevelHandler() {
+      this.readLevelHandler({ levelId: this.levelId });
+    },
   },
 };
 </script>
