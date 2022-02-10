@@ -6,7 +6,7 @@
       </h2>
       <v-spacer></v-spacer>
       <v-btn x-large text class="text-none" @click="handlePublishSurvey" :disabled="false">
-        {{ $t('interventions.surveyModal.finalizeCard.publish-survey') }}
+        {{ $t('interventions.surveyModal.finalizeCard.publishSurvey') }}
         <v-icon large class="ml-2"> mdi-bullhorn-outline </v-icon>
       </v-btn>
     </v-card-title>

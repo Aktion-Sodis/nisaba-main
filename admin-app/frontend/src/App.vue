@@ -18,7 +18,7 @@
       ></v-select>
       <v-text-field
         v-if="currentRouteName !== 'Login'"
-        :label="$t('general.search-box')"
+        :label="$t('general.searchBox')"
         prepend-inner-icon="mdi-magnify"
         outlined
         dense
