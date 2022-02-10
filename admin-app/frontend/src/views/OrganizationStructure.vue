@@ -5,45 +5,10 @@
       <div
         v-for="(level, index) in levels"
         :key="level.levelId"
-        class="column-wrapper d-flex flex-column px-16"
+        class="column-wrapper px-16"
         :class="level.upperLevelId === null || 'dotted-left-border'"
       >
-        <v-btn
-          plain
-          rounded
-          class="text-none black--text"
-          @click="callVuexActionThenFillEntityModalForm(level)"
-        >
-          <span class="text-h5">
-            {{ level.name }}
-          </span>
-          <v-icon dense class="edit-level-icon"> mdi-pencil-outline </v-icon>
-        </v-btn>
-        <div style="width: 100%">
-          <div
-            class="d-flex justify-space-around"
-            style="width: 100%"
-            v-if="level.allowedInterventions.length > 0"
-          >
-            <v-tooltip
-              top
-              v-for="interventionId in level.allowedInterventions"
-              :key="interventionId"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-avatar v-bind="attrs" v-on="on">
-                  <v-icon> mdi-hammer-wrench </v-icon>
-                </v-avatar>
-              </template>
-              <span>{{ interventionById({ interventionId }).name }}</span>
-            </v-tooltip>
-          </div>
-          <div v-else style="height: 48px; overflow: hidden">
-            <p class="caption">
-              {{ $t('organizationStructure.hasNoInterventions') }}
-            </p>
-          </div>
-        </div>
+        <LevelColumnHeader :allowedInterventions="level.allowedInterventions" :name="level.name" />
         <EntitiesColumn :levelId="level.levelId" :index="index" />
       </div>
       <div class="column-wrapper dotted-left-border d-flex align-center justify-center">
@@ -64,10 +29,16 @@ import { mapGetters, mapActions } from 'vuex';
 import LevelModal from '../components/organizationStructure/LevelModal.vue';
 import EntityModal from '../components/organizationStructure/EntityModal.vue';
 import EntitiesColumn from '../components/organizationStructure/EntitiesColumn.vue';
+import LevelColumnHeader from '../components/organizationStructure/LevelColumnHeader.vue';
 
 export default {
   name: 'OrganizationStructure',
-  components: { LevelModal, EntityModal, EntitiesColumn },
+  components: {
+    LevelModal,
+    EntityModal,
+    EntitiesColumn,
+    LevelColumnHeader,
+  },
   data() {
     return {
       showLevelModal: false,
@@ -109,17 +80,6 @@ export default {
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
       if (!this.levelModalIsDisplayed) this.showLevelModal = false;
-    },
-
-    callVuexActionThenFillEntityModalForm(level) {
-      this.clickOnEditLevel(level.levelId);
-
-      /* TODO: This is bad, bad practice. */
-      const levelModal = this.$children.find((c) => c.$options.name === 'LevelModal');
-      levelModal.levelName = level.name || '';
-      levelModal.levelDescription = level.description || '';
-      levelModal.levelAllowedInterventions = level.allowedInterventions || [];
-      levelModal.levelIsSubordinateTo = level.upperLevelId || null;
     },
   },
 };
