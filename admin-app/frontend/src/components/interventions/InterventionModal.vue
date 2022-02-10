@@ -185,15 +185,17 @@
           </v-container>
         </v-card-text>
         <v-card-actions>
-          <v-btn v-if="edit" @click="deleteHandler" color="warning" text>
+          <v-btn x-large v-if="edit" @click="deleteHandler" color="warning" text>
             {{ $t('general.delete') }}
+            <v-icon large> mdi-delete </v-icon>
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="secondary" text @click="closeHandler">
+          <v-btn x-large color="secondary" text @click="closeHandler">
             {{ read ? 'Close' : $t('general.cancel') }}
           </v-btn>
-          <v-btn v-if="read" color="primary" text @click="editHandler"> Edit </v-btn>
+          <v-btn x-large v-if="read" color="primary" text @click="editHandler"> Edit </v-btn>
           <v-btn
+            x-large
             v-if="!read"
             type="submit"
             color="primary"
