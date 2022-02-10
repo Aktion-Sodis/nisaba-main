@@ -6,13 +6,13 @@ import VuexPersistence from 'vuex-persist';
 import authModule from './authModule';
 import entitiesModule from './entitiesModule';
 import organizationStructureModule from './organizationStructureModule';
-import interventionsGUIModule from './interventionsGUIModule';
 
 import interventionsData from './interventions/data';
 import interventionsUI from './interventions/ui';
 import surveysData from './survey/data';
 import surveysUI from './survey/ui';
 import questionsUI from './questions/ui';
+import feedbackModule from './feedback/ui';
 
 // persist
 const vuexLocal = new VuexPersistence({
@@ -35,12 +35,12 @@ export default new Vuex.Store({
     auth: authModule,
     entities: entitiesModule,
     os: organizationStructureModule,
-    ivGui: interventionsGUIModule,
     interventionsData,
     interventionsUI,
     surveysData,
     surveysUI,
     questionsUI,
+    feedbackModule,
   },
   plugins: [vuexLocal.plugin],
 });

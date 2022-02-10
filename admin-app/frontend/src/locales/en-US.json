@@ -1,4 +1,7 @@
 {
+  "development": {
+    "not-yet-implemented": "This feature is yet to be implemented. Please ignore if you are on bug hunting! 🐞🔍"
+  },
   "general": {
     "search-box": "Search anything",
     "cancel": "Cancel",

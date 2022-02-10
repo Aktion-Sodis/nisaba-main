@@ -96,7 +96,14 @@
 
                 <v-card-title>
                   {{ $t('baseData.documents') }}
-                  <v-btn v-if="!read" fab x-small color="primary lighten-2" class="ml-2">
+                  <v-btn
+                    v-if="!read"
+                    fab
+                    x-small
+                    color="primary lighten-2"
+                    class="ml-2"
+                    @click="showToBeImplementedFeedback"
+                  >
                     <v-icon dark> mdi-plus </v-icon>
                   </v-btn>
                 </v-card-title>
@@ -127,7 +134,14 @@
 
                 <v-card-title>
                   {{ $t('baseData.images') }}
-                  <v-btn v-if="!read" fab x-small color="primary lighten-2" class="ml-2">
+                  <v-btn
+                    v-if="!read"
+                    fab
+                    x-small
+                    color="primary lighten-2"
+                    class="ml-2"
+                    @click="showToBeImplementedFeedback"
+                  >
                     <v-icon dark> mdi-plus </v-icon>
                   </v-btn>
                 </v-card-title>
@@ -160,7 +174,14 @@
 
                 <v-card-title>
                   {{ $t('baseData.videos') }}
-                  <v-btn v-if="!read" fab x-small color="primary lighten-2" class="ml-2">
+                  <v-btn
+                    v-if="!read"
+                    fab
+                    x-small
+                    color="primary lighten-2"
+                    class="ml-2"
+                    @click="showToBeImplementedFeedback"
+                  >
                     <v-icon dark> mdi-plus </v-icon>
                   </v-btn>
                 </v-card-title>
@@ -173,7 +194,14 @@
 
                 <v-card-title>
                   {{ $t('baseData.surveys') }}
-                  <v-btn v-if="!read" fab x-small color="primary lighten-2" class="ml-2">
+                  <v-btn
+                    v-if="!read"
+                    fab
+                    x-small
+                    color="primary lighten-2"
+                    class="ml-2"
+                    @click="showToBeImplementedFeedback"
+                  >
                     <v-icon dark> mdi-plus </v-icon>
                   </v-btn>
                 </v-card-title>
@@ -288,6 +316,7 @@ export default {
       abortNewInterventionHandler: 'interventionsUI/abortNewInterventionHandler',
       abortEditInterventionHandler: 'interventionsUI/abortEditInterventionHandler',
       editInterventionHandler: 'interventionsUI/editInterventionHandler',
+      showToBeImplementedFeedback: 'feedbackModule/showToBeImplementedFeedback',
     }),
     ...mapMutations({
       setInterventionDraft: 'interventionsUI/setInterventionDraft',
@@ -326,6 +355,7 @@ export default {
       this.saveInterventionHandler();
     },
     selectImg() {
+      this.showToBeImplementedFeedback();
       const imgInput = this.$refs['img-upload'];
       imgInput.click();
       console.log('TODO: do something with', imgInput);

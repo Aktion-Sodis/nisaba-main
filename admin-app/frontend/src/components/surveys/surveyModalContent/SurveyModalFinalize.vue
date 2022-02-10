@@ -5,14 +5,8 @@
         {{ surveyName }}
       </h2>
       <v-spacer></v-spacer>
-      <v-btn
-        x-large
-        text
-        class="text-none"
-        @click="publishSurveyHandler"
-        :disabled="false"
-      >
-        {{ $t("interventions.surveyModal.finalizeCard.publish-survey") }}
+      <v-btn x-large text class="text-none" @click="handlePublishSurvey" :disabled="false">
+        {{ $t('interventions.surveyModal.finalizeCard.publish-survey') }}
         <v-icon large class="ml-2"> mdi-bullhorn-outline </v-icon>
       </v-btn>
     </v-card-title>
@@ -50,11 +44,16 @@ export default {
   methods: {
     ...mapActions({
       publishSurveyHandler: 'surveysUI/publishSurveyHandler',
+      showToBeImplementedFeedback: 'feedbackModule/showToBeImplementedFeedback',
     }),
     ...mapMutations({
       incrementCompletionIndex: 'surveysUI/incrementSurveyModalCompletionIndex',
       decrementCompletionIndex: 'surveysUI/decrementSurveyModalCompletionIndex',
     }),
+    handlePublishSurvey() {
+      this.showToBeImplementedFeedback();
+      this.publishSurveyHandler();
+    },
   },
 };
 </script>
