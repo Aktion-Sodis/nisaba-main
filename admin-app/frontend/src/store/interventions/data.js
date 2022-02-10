@@ -125,9 +125,9 @@ const interventionsData = {
         }),
       );
     },
-    deleteIntervention: (state, interventionId) => {
+    deleteIntervention: (state, { interventionId }) => {
       state.interventions.splice(
-        state.interventions.indexOf((i) => i.interventionId === interventionId),
+        Array.from(state.interventions).findIndex((i) => i.interventionId === interventionId),
         1,
       );
     },
@@ -173,16 +173,22 @@ const interventionsData = {
       if (deleteResponse.errors.length > 0) {
         commit('setLoading', { newValue: false });
       }
-      commit('deleteIntervention', rootGetters['interventionsUI/interventionIdInFocus']);
+      commit('deleteIntervention', {
+        interventionId: rootGetters['interventionsUI/getInterventionIdInFocus'],
+      });
       commit('interventionsUI/setInterventionIdInFocus', { newValue: null }, { root: true });
       commit(
         'interventionsUI/setInterventionModalMode',
         { newValue: modalModesDict.read },
         { root: true },
       );
-      dispatch('interventionsUI/abortReadInterventionHandler', {
-        root: true,
-      });
+      dispatch(
+        'interventionsUI/abortReadInterventionHandler',
+        {},
+        {
+          root: true,
+        },
+      );
 
       commit('setLoading', { newValue: false });
     },
