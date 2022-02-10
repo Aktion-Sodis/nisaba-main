@@ -199,6 +199,19 @@ export default {
     isFormInvalid() {
       return !!this.name;
     },
+    areThereChanges() {
+      const tagIdsInComponent = new Set(this.tagIds);
+      const tagIdsInDraft = new Set(this.entityDraft.tagIds);
+      return (
+        this.name !== this.entityDraft.name
+        || this.description !== this.entityDraft.description
+        || this.upperEntityId !== this.entityDraft.upperEntityId
+        || !(
+          tagIdsInComponent.size === tagIdsInDraft.size
+          && [...tagIdsInComponent].every((value) => tagIdsInDraft.has(value))
+        )
+      );
+    },
   },
   methods: {
     ...mapActions({
