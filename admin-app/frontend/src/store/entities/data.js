@@ -197,6 +197,10 @@ const entitiesData = {
     setLoading: (state, { newValue }) => {
       state.loading = newValue;
     },
+
+    deleteEntitiesByLevelId: (state, { levelId }) => {
+      state.entities = state.entities.filter((e) => e.levelId !== levelId);
+    },
   },
   actions: {
     APIpostNewEntity: async ({ commit, dispatch }, entityDraft) => {
