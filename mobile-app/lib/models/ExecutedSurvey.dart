@@ -39,7 +39,6 @@ class ExecutedSurvey extends Model {
   final int? _schemeVersion;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
-  final String? _appliedInterventionExecutedSurveysId;
   final String? _executedSurveySurveyId;
   final String? _executedSurveyWhoExecutedItId;
 
@@ -132,10 +131,6 @@ class ExecutedSurvey extends Model {
     return _updatedAt;
   }
   
-  String? get appliedInterventionExecutedSurveysId {
-    return _appliedInterventionExecutedSurveysId;
-  }
-  
   String get executedSurveySurveyId {
     try {
       return _executedSurveySurveyId!;
@@ -162,9 +157,9 @@ class ExecutedSurvey extends Model {
     }
   }
   
-  const ExecutedSurvey._internal({required this.id, required appliedIntervention, required survey, required whoExecutedIt, required date, location, required answers, schemeVersion, createdAt, updatedAt, appliedInterventionExecutedSurveysId, required executedSurveySurveyId, required executedSurveyWhoExecutedItId}): _appliedIntervention = appliedIntervention, _survey = survey, _whoExecutedIt = whoExecutedIt, _date = date, _location = location, _answers = answers, _schemeVersion = schemeVersion, _createdAt = createdAt, _updatedAt = updatedAt, _appliedInterventionExecutedSurveysId = appliedInterventionExecutedSurveysId, _executedSurveySurveyId = executedSurveySurveyId, _executedSurveyWhoExecutedItId = executedSurveyWhoExecutedItId;
+  const ExecutedSurvey._internal({required this.id, required appliedIntervention, required survey, required whoExecutedIt, required date, location, required answers, schemeVersion, createdAt, updatedAt, required executedSurveySurveyId, required executedSurveyWhoExecutedItId}): _appliedIntervention = appliedIntervention, _survey = survey, _whoExecutedIt = whoExecutedIt, _date = date, _location = location, _answers = answers, _schemeVersion = schemeVersion, _createdAt = createdAt, _updatedAt = updatedAt, _executedSurveySurveyId = executedSurveySurveyId, _executedSurveyWhoExecutedItId = executedSurveyWhoExecutedItId;
   
-  factory ExecutedSurvey({String? id, required AppliedIntervention appliedIntervention, required Survey survey, required User whoExecutedIt, required TemporalDateTime date, Location? location, required List<QuestionAnswer> answers, int? schemeVersion, String? appliedInterventionExecutedSurveysId, required String executedSurveySurveyId, required String executedSurveyWhoExecutedItId}) {
+  factory ExecutedSurvey({String? id, required AppliedIntervention appliedIntervention, required Survey survey, required User whoExecutedIt, required TemporalDateTime date, Location? location, required List<QuestionAnswer> answers, int? schemeVersion, required String executedSurveySurveyId, required String executedSurveyWhoExecutedItId}) {
     return ExecutedSurvey._internal(
       id: id == null ? UUID.getUUID() : id,
       appliedIntervention: appliedIntervention,
@@ -174,7 +169,6 @@ class ExecutedSurvey extends Model {
       location: location,
       answers: answers != null ? List<QuestionAnswer>.unmodifiable(answers) : answers,
       schemeVersion: schemeVersion,
-      appliedInterventionExecutedSurveysId: appliedInterventionExecutedSurveysId,
       executedSurveySurveyId: executedSurveySurveyId,
       executedSurveyWhoExecutedItId: executedSurveyWhoExecutedItId);
   }
@@ -195,7 +189,6 @@ class ExecutedSurvey extends Model {
       _location == other._location &&
       DeepCollectionEquality().equals(_answers, other._answers) &&
       _schemeVersion == other._schemeVersion &&
-      _appliedInterventionExecutedSurveysId == other._appliedInterventionExecutedSurveysId &&
       _executedSurveySurveyId == other._executedSurveySurveyId &&
       _executedSurveyWhoExecutedItId == other._executedSurveyWhoExecutedItId;
   }
@@ -216,7 +209,6 @@ class ExecutedSurvey extends Model {
     buffer.write("schemeVersion=" + (_schemeVersion != null ? _schemeVersion!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null") + ", ");
-    buffer.write("appliedInterventionExecutedSurveysId=" + "$_appliedInterventionExecutedSurveysId" + ", ");
     buffer.write("executedSurveySurveyId=" + "$_executedSurveySurveyId" + ", ");
     buffer.write("executedSurveyWhoExecutedItId=" + "$_executedSurveyWhoExecutedItId");
     buffer.write("}");
@@ -224,7 +216,7 @@ class ExecutedSurvey extends Model {
     return buffer.toString();
   }
   
-  ExecutedSurvey copyWith({String? id, AppliedIntervention? appliedIntervention, Survey? survey, User? whoExecutedIt, TemporalDateTime? date, Location? location, List<QuestionAnswer>? answers, int? schemeVersion, String? appliedInterventionExecutedSurveysId, String? executedSurveySurveyId, String? executedSurveyWhoExecutedItId}) {
+  ExecutedSurvey copyWith({String? id, AppliedIntervention? appliedIntervention, Survey? survey, User? whoExecutedIt, TemporalDateTime? date, Location? location, List<QuestionAnswer>? answers, int? schemeVersion, String? executedSurveySurveyId, String? executedSurveyWhoExecutedItId}) {
     return ExecutedSurvey._internal(
       id: id ?? this.id,
       appliedIntervention: appliedIntervention ?? this.appliedIntervention,
@@ -234,7 +226,6 @@ class ExecutedSurvey extends Model {
       location: location ?? this.location,
       answers: answers ?? this.answers,
       schemeVersion: schemeVersion ?? this.schemeVersion,
-      appliedInterventionExecutedSurveysId: appliedInterventionExecutedSurveysId ?? this.appliedInterventionExecutedSurveysId,
       executedSurveySurveyId: executedSurveySurveyId ?? this.executedSurveySurveyId,
       executedSurveyWhoExecutedItId: executedSurveyWhoExecutedItId ?? this.executedSurveyWhoExecutedItId);
   }
@@ -263,12 +254,11 @@ class ExecutedSurvey extends Model {
       _schemeVersion = (json['schemeVersion'] as num?)?.toInt(),
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null,
-      _appliedInterventionExecutedSurveysId = json['appliedInterventionExecutedSurveysId'],
       _executedSurveySurveyId = json['executedSurveySurveyId'],
       _executedSurveyWhoExecutedItId = json['executedSurveyWhoExecutedItId'];
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'appliedIntervention': _appliedIntervention?.toJson(), 'survey': _survey?.toJson(), 'whoExecutedIt': _whoExecutedIt?.toJson(), 'date': _date?.format(), 'location': _location?.toJson(), 'answers': _answers?.map((QuestionAnswer? e) => e?.toJson()).toList(), 'schemeVersion': _schemeVersion, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'appliedInterventionExecutedSurveysId': _appliedInterventionExecutedSurveysId, 'executedSurveySurveyId': _executedSurveySurveyId, 'executedSurveyWhoExecutedItId': _executedSurveyWhoExecutedItId
+    'id': id, 'appliedIntervention': _appliedIntervention?.toJson(), 'survey': _survey?.toJson(), 'whoExecutedIt': _whoExecutedIt?.toJson(), 'date': _date?.format(), 'location': _location?.toJson(), 'answers': _answers?.map((QuestionAnswer? e) => e?.toJson()).toList(), 'schemeVersion': _schemeVersion, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'executedSurveySurveyId': _executedSurveySurveyId, 'executedSurveyWhoExecutedItId': _executedSurveyWhoExecutedItId
   };
 
   static final QueryField ID = QueryField(fieldName: "executedSurvey.id");
@@ -285,7 +275,6 @@ class ExecutedSurvey extends Model {
   static final QueryField LOCATION = QueryField(fieldName: "location");
   static final QueryField ANSWERS = QueryField(fieldName: "answers");
   static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
-  static final QueryField APPLIEDINTERVENTIONEXECUTEDSURVEYSID = QueryField(fieldName: "appliedInterventionExecutedSurveysId");
   static final QueryField EXECUTEDSURVEYSURVEYID = QueryField(fieldName: "executedSurveySurveyId");
   static final QueryField EXECUTEDSURVEYWHOEXECUTEDITID = QueryField(fieldName: "executedSurveyWhoExecutedItId");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
@@ -352,12 +341,6 @@ class ExecutedSurvey extends Model {
       isRequired: false,
       isReadOnly: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: ExecutedSurvey.APPLIEDINTERVENTIONEXECUTEDSURVEYSID,
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(

@@ -278,7 +278,7 @@ class Intervention extends Model {
       key: Intervention.SURVEYS,
       isRequired: true,
       ofModelName: (Survey).toString(),
-      associatedKey: Survey.INTERVENTIONSURVEYSID
+      associatedKey: Survey.INTERVENTION
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
