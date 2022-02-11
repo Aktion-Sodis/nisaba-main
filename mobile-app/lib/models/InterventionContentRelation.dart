@@ -29,8 +29,6 @@ import 'package:flutter/foundation.dart';
 class InterventionContentRelation extends Model {
   static const classType = const _InterventionContentRelationModelType();
   final String id;
-  final String? _interventionID;
-  final String? _contentID;
   final Intervention? _intervention;
   final Content? _content;
   final TemporalDateTime? _createdAt;
@@ -42,32 +40,6 @@ class InterventionContentRelation extends Model {
   @override
   String getId() {
     return id;
-  }
-  
-  String get interventionID {
-    try {
-      return _interventionID!;
-    } catch(e) {
-      throw new DataStoreException(
-      DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-      recoverySuggestion:
-        DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-      underlyingException: e.toString()
-    );
-    }
-  }
-  
-  String get contentID {
-    try {
-      return _contentID!;
-    } catch(e) {
-      throw new DataStoreException(
-      DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-      recoverySuggestion:
-        DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-      underlyingException: e.toString()
-    );
-    }
   }
   
   Intervention get intervention {
@@ -104,13 +76,11 @@ class InterventionContentRelation extends Model {
     return _updatedAt;
   }
   
-  const InterventionContentRelation._internal({required this.id, required interventionID, required contentID, required intervention, required content, createdAt, updatedAt}): _interventionID = interventionID, _contentID = contentID, _intervention = intervention, _content = content, _createdAt = createdAt, _updatedAt = updatedAt;
+  const InterventionContentRelation._internal({required this.id, required intervention, required content, createdAt, updatedAt}): _intervention = intervention, _content = content, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory InterventionContentRelation({String? id, required String interventionID, required String contentID, required Intervention intervention, required Content content}) {
+  factory InterventionContentRelation({String? id, required Intervention intervention, required Content content}) {
     return InterventionContentRelation._internal(
       id: id == null ? UUID.getUUID() : id,
-      interventionID: interventionID,
-      contentID: contentID,
       intervention: intervention,
       content: content);
   }
@@ -124,8 +94,6 @@ class InterventionContentRelation extends Model {
     if (identical(other, this)) return true;
     return other is InterventionContentRelation &&
       id == other.id &&
-      _interventionID == other._interventionID &&
-      _contentID == other._contentID &&
       _intervention == other._intervention &&
       _content == other._content;
   }
@@ -139,8 +107,6 @@ class InterventionContentRelation extends Model {
     
     buffer.write("InterventionContentRelation {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("interventionID=" + "$_interventionID" + ", ");
-    buffer.write("contentID=" + "$_contentID" + ", ");
     buffer.write("intervention=" + (_intervention != null ? _intervention!.toString() : "null") + ", ");
     buffer.write("content=" + (_content != null ? _content!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
@@ -150,19 +116,15 @@ class InterventionContentRelation extends Model {
     return buffer.toString();
   }
   
-  InterventionContentRelation copyWith({String? id, String? interventionID, String? contentID, Intervention? intervention, Content? content}) {
+  InterventionContentRelation copyWith({String? id, Intervention? intervention, Content? content}) {
     return InterventionContentRelation._internal(
       id: id ?? this.id,
-      interventionID: interventionID ?? this.interventionID,
-      contentID: contentID ?? this.contentID,
       intervention: intervention ?? this.intervention,
       content: content ?? this.content);
   }
   
   InterventionContentRelation.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
-      _interventionID = json['interventionID'],
-      _contentID = json['contentID'],
       _intervention = json['intervention']?['serializedData'] != null
         ? Intervention.fromJson(new Map<String, dynamic>.from(json['intervention']['serializedData']))
         : null,
@@ -173,12 +135,10 @@ class InterventionContentRelation extends Model {
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'interventionID': _interventionID, 'contentID': _contentID, 'intervention': _intervention?.toJson(), 'content': _content?.toJson(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'intervention': _intervention?.toJson(), 'content': _content?.toJson(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "interventionContentRelation.id");
-  static final QueryField INTERVENTIONID = QueryField(fieldName: "interventionID");
-  static final QueryField CONTENTID = QueryField(fieldName: "contentID");
   static final QueryField INTERVENTION = QueryField(
     fieldName: "intervention",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Intervention).toString()));
@@ -190,18 +150,6 @@ class InterventionContentRelation extends Model {
     modelSchemaDefinition.pluralName = "InterventionContentRelations";
     
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: InterventionContentRelation.INTERVENTIONID,
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: InterventionContentRelation.CONTENTID,
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: InterventionContentRelation.INTERVENTION,

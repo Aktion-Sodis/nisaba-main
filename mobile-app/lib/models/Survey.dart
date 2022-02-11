@@ -38,7 +38,6 @@ class Survey extends Model {
   final int? _schemeVersion;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
-  final String? _interventionSurveysId;
 
   @override
   getInstanceType() => classType;
@@ -107,13 +106,9 @@ class Survey extends Model {
     return _updatedAt;
   }
   
-  String? get interventionSurveysId {
-    return _interventionSurveysId;
-  }
+  const Survey._internal({required this.id, required name, description, intervention, required questions, required tags, schemeVersion, createdAt, updatedAt}): _name = name, _description = description, _intervention = intervention, _questions = questions, _tags = tags, _schemeVersion = schemeVersion, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  const Survey._internal({required this.id, required name, description, intervention, required questions, required tags, schemeVersion, createdAt, updatedAt, interventionSurveysId}): _name = name, _description = description, _intervention = intervention, _questions = questions, _tags = tags, _schemeVersion = schemeVersion, _createdAt = createdAt, _updatedAt = updatedAt, _interventionSurveysId = interventionSurveysId;
-  
-  factory Survey({String? id, required String name, String? description, Intervention? intervention, required List<Question> questions, required List<String> tags, int? schemeVersion, String? interventionSurveysId}) {
+  factory Survey({String? id, required String name, String? description, Intervention? intervention, required List<Question> questions, required List<String> tags, int? schemeVersion}) {
     return Survey._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
@@ -121,8 +116,7 @@ class Survey extends Model {
       intervention: intervention,
       questions: questions != null ? List<Question>.unmodifiable(questions) : questions,
       tags: tags != null ? List<String>.unmodifiable(tags) : tags,
-      schemeVersion: schemeVersion,
-      interventionSurveysId: interventionSurveysId);
+      schemeVersion: schemeVersion);
   }
   
   bool equals(Object other) {
@@ -139,8 +133,7 @@ class Survey extends Model {
       _intervention == other._intervention &&
       DeepCollectionEquality().equals(_questions, other._questions) &&
       DeepCollectionEquality().equals(_tags, other._tags) &&
-      _schemeVersion == other._schemeVersion &&
-      _interventionSurveysId == other._interventionSurveysId;
+      _schemeVersion == other._schemeVersion;
   }
   
   @override
@@ -159,14 +152,13 @@ class Survey extends Model {
     buffer.write("tags=" + (_tags != null ? _tags!.toString() : "null") + ", ");
     buffer.write("schemeVersion=" + (_schemeVersion != null ? _schemeVersion!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
-    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null") + ", ");
-    buffer.write("interventionSurveysId=" + "$_interventionSurveysId");
+    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Survey copyWith({String? id, String? name, String? description, Intervention? intervention, List<Question>? questions, List<String>? tags, int? schemeVersion, String? interventionSurveysId}) {
+  Survey copyWith({String? id, String? name, String? description, Intervention? intervention, List<Question>? questions, List<String>? tags, int? schemeVersion}) {
     return Survey._internal(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -174,8 +166,7 @@ class Survey extends Model {
       intervention: intervention ?? this.intervention,
       questions: questions ?? this.questions,
       tags: tags ?? this.tags,
-      schemeVersion: schemeVersion ?? this.schemeVersion,
-      interventionSurveysId: interventionSurveysId ?? this.interventionSurveysId);
+      schemeVersion: schemeVersion ?? this.schemeVersion);
   }
   
   Survey.fromJson(Map<String, dynamic> json)  
@@ -194,11 +185,10 @@ class Survey extends Model {
       _tags = json['tags']?.cast<String>(),
       _schemeVersion = (json['schemeVersion'] as num?)?.toInt(),
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
-      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null,
-      _interventionSurveysId = json['interventionSurveysId'];
+      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'description': _description, 'intervention': _intervention?.toJson(), 'questions': _questions?.map((Question? e) => e?.toJson()).toList(), 'tags': _tags, 'schemeVersion': _schemeVersion, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'interventionSurveysId': _interventionSurveysId
+    'id': id, 'name': _name, 'description': _description, 'intervention': _intervention?.toJson(), 'questions': _questions?.map((Question? e) => e?.toJson()).toList(), 'tags': _tags, 'schemeVersion': _schemeVersion, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "survey.id");
@@ -210,7 +200,6 @@ class Survey extends Model {
   static final QueryField QUESTIONS = QueryField(fieldName: "questions");
   static final QueryField TAGS = QueryField(fieldName: "tags");
   static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
-  static final QueryField INTERVENTIONSURVEYSID = QueryField(fieldName: "interventionSurveysId");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Survey";
     modelSchemaDefinition.pluralName = "Surveys";
@@ -268,12 +257,6 @@ class Survey extends Model {
       isRequired: false,
       isReadOnly: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Survey.INTERVENTIONSURVEYSID,
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
   });
 }

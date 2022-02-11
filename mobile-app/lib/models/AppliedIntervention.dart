@@ -275,7 +275,7 @@ class AppliedIntervention extends Model {
       key: AppliedIntervention.EXECUTEDSURVEYS,
       isRequired: true,
       ofModelName: (ExecutedSurvey).toString(),
-      associatedKey: ExecutedSurvey.APPLIEDINTERVENTIONEXECUTEDSURVEYSID
+      associatedKey: ExecutedSurvey.APPLIEDINTERVENTION
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(

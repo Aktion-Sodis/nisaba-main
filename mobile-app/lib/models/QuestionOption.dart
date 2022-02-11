@@ -19,7 +19,6 @@
 
 // ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
 
-import 'ModelProvider.dart';
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'package:flutter/foundation.dart';
 
@@ -29,7 +28,7 @@ import 'package:flutter/foundation.dart';
 class QuestionOption {
   final String id;
   final String? _text;
-  final Question? _followUpQuestion;
+  final String? _followUpQuestionID;
 
   String get text {
     try {
@@ -44,17 +43,17 @@ class QuestionOption {
     }
   }
   
-  Question? get followUpQuestion {
-    return _followUpQuestion;
+  String? get followUpQuestionID {
+    return _followUpQuestionID;
   }
   
-  const QuestionOption._internal({required this.id, required text, followUpQuestion}): _text = text, _followUpQuestion = followUpQuestion;
+  const QuestionOption._internal({required this.id, required text, followUpQuestionID}): _text = text, _followUpQuestionID = followUpQuestionID;
   
-  factory QuestionOption({String? id, required String text, Question? followUpQuestion}) {
+  factory QuestionOption({String? id, required String text, String? followUpQuestionID}) {
     return QuestionOption._internal(
       id: id == null ? UUID.getUUID() : id,
       text: text,
-      followUpQuestion: followUpQuestion);
+      followUpQuestionID: followUpQuestionID);
   }
   
   bool equals(Object other) {
@@ -67,7 +66,7 @@ class QuestionOption {
     return other is QuestionOption &&
       id == other.id &&
       _text == other._text &&
-      _followUpQuestion == other._followUpQuestion;
+      _followUpQuestionID == other._followUpQuestionID;
   }
   
   @override
@@ -80,28 +79,26 @@ class QuestionOption {
     buffer.write("QuestionOption {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("text=" + "$_text" + ", ");
-    buffer.write("followUpQuestion=" + (_followUpQuestion != null ? _followUpQuestion!.toString() : "null"));
+    buffer.write("followUpQuestionID=" + "$_followUpQuestionID");
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  QuestionOption copyWith({String? id, String? text, Question? followUpQuestion}) {
+  QuestionOption copyWith({String? id, String? text, String? followUpQuestionID}) {
     return QuestionOption._internal(
       id: id ?? this.id,
       text: text ?? this.text,
-      followUpQuestion: followUpQuestion ?? this.followUpQuestion);
+      followUpQuestionID: followUpQuestionID ?? this.followUpQuestionID);
   }
   
   QuestionOption.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _text = json['text'],
-      _followUpQuestion = json['followUpQuestion']?['serializedData'] != null
-        ? Question.fromJson(new Map<String, dynamic>.from(json['followUpQuestion']['serializedData']))
-        : null;
+      _followUpQuestionID = json['followUpQuestionID'];
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'text': _text, 'followUpQuestion': _followUpQuestion?.toJson()
+    'id': id, 'text': _text, 'followUpQuestionID': _followUpQuestionID
   };
 
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
@@ -120,10 +117,10 @@ class QuestionOption {
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
-      fieldName: 'followUpQuestion',
+    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+      fieldName: 'followUpQuestionID',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'Question')
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
   });
 }

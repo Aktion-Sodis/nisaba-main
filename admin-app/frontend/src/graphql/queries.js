@@ -546,7 +546,9 @@ export const getSurvey = /* GraphQL */ `
         questionOptions {
           id
           text
+          followUpQuestionID
         }
+        isFollowUpQuestion
       }
       tags
       schemeVersion
@@ -588,6 +590,7 @@ export const listSurveys = /* GraphQL */ `
           id
           text
           type
+          isFollowUpQuestion
         }
         tags
         schemeVersion
@@ -638,6 +641,7 @@ export const syncSurveys = /* GraphQL */ `
           id
           text
           type
+          isFollowUpQuestion
         }
         tags
         schemeVersion
@@ -1103,6 +1107,7 @@ export const getExecutedSurvey = /* GraphQL */ `
           id
           text
           type
+          isFollowUpQuestion
         }
         tags
         schemeVersion
@@ -1144,6 +1149,7 @@ export const getExecutedSurvey = /* GraphQL */ `
         questionOptions {
           id
           text
+          followUpQuestionID
         }
         markings {
           x

@@ -578,7 +578,9 @@ export const createSurvey = /* GraphQL */ `
         questionOptions {
           id
           text
+          followUpQuestionID
         }
+        isFollowUpQuestion
       }
       tags
       schemeVersion
@@ -629,7 +631,9 @@ export const updateSurvey = /* GraphQL */ `
         questionOptions {
           id
           text
+          followUpQuestionID
         }
+        isFollowUpQuestion
       }
       tags
       schemeVersion
@@ -680,7 +684,9 @@ export const deleteSurvey = /* GraphQL */ `
         questionOptions {
           id
           text
+          followUpQuestionID
         }
+        isFollowUpQuestion
       }
       tags
       schemeVersion
@@ -1208,6 +1214,7 @@ export const createExecutedSurvey = /* GraphQL */ `
           id
           text
           type
+          isFollowUpQuestion
         }
         tags
         schemeVersion
@@ -1249,6 +1256,7 @@ export const createExecutedSurvey = /* GraphQL */ `
         questionOptions {
           id
           text
+          followUpQuestionID
         }
         markings {
           x
@@ -1344,6 +1352,7 @@ export const updateExecutedSurvey = /* GraphQL */ `
           id
           text
           type
+          isFollowUpQuestion
         }
         tags
         schemeVersion
@@ -1385,6 +1394,7 @@ export const updateExecutedSurvey = /* GraphQL */ `
         questionOptions {
           id
           text
+          followUpQuestionID
         }
         markings {
           x
@@ -1480,6 +1490,7 @@ export const deleteExecutedSurvey = /* GraphQL */ `
           id
           text
           type
+          isFollowUpQuestion
         }
         tags
         schemeVersion
@@ -1521,6 +1532,7 @@ export const deleteExecutedSurvey = /* GraphQL */ `
         questionOptions {
           id
           text
+          followUpQuestionID
         }
         markings {
           x
