@@ -29,7 +29,7 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" sm="6" class="pb-0 px-0 px-md-3">
+              <v-col cols="12" sm="6" class="pb-0 px-0 px-sm-3">
                 <h2 v-if="read && interventionInFocus">
                   {{ interventionInFocus.name }}
                 </h2>
@@ -68,9 +68,9 @@
                   />
                 </v-img>
               </v-col>
-              <v-col cols="12" sm="6" class="pt-4 px-0 px-md-3">
+              <v-col cols="12" sm="6" class="pt-6 pt-sm-3 px-0 px-sm-3">
                 <div v-if="read && interventionInFocus">
-                  <v-card-title>
+                  <v-card-title class="pt-0">
                     {{ $t('baseData.tags') }}
                   </v-card-title>
                   <v-chip v-for="tagId in interventionInFocus.tagIds" :key="tagId">

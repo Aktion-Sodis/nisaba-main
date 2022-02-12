@@ -1,5 +1,5 @@
 <template>
-  <v-card class="px-4 pt-4">
+  <v-card class="px-0 pt-0 px-md-4 pt-md-4">
     <v-form lazy-validation>
       <v-card-title>
         <h2 v-if="edit">
@@ -13,7 +13,9 @@
         <v-spacer></v-spacer>
         <v-btn x-large text class="text-none" @click="nextStepHandler" :disabled="!canAdvance">
           {{
-            read
+            $vuetify.breakpoint.name === 'xs'
+              ? ''
+              : read
               ? $t('interventions.surveyModal.firstCard.questions')
               : $t(`interventions.surveyModal.firstCard.next-step`)
           }}
@@ -24,7 +26,7 @@
       <v-card-text>
         <v-container>
           <v-row>
-            <v-col cols="12" md="6">
+            <v-col cols="12" sm="6" class="pb-0 px-0 px-md-3">
               <h2 v-if="read">
                 {{ surveyName }}
               </h2>
@@ -51,7 +53,7 @@
                 class="mt-4"
               ></v-textarea>
             </v-col>
-            <v-col cols="12" md="6">
+            <v-col cols="12" sm="6" class="pt-0 px-0 px-md-3">
               <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" max-height="200px">
                 <div v-if="!read" class="iv-edit-icon">
                   <v-btn fab color="primary" @click="selectImg">

@@ -24,7 +24,7 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" sm="6" class="pb-0 px-0 px-md-3">
+              <v-col cols="12" sm="6" class="pb-0 px-0 px-sm-3">
                 <h2 v-if="read && entityInFocus">
                   {{ entityInFocus.name }}
                 </h2>
@@ -77,8 +77,8 @@
                 ></v-select>
               </v-col>
 
-              <v-col cols="12" sm="6" class="pt-0 px-0 px-md-3">
-                <v-card-title>
+              <v-col cols="12" sm="6" class="pt-0 px-0 px-sm-3">
+                <v-card-title class="pt-0 pt-sm-2">
                   {{ $t('baseData.tags') }}
                 </v-card-title>
                 <div v-if="read && entityInFocus">

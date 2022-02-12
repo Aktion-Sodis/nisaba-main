@@ -1,40 +1,52 @@
 <template>
-  <v-card class="px-4 pt-4">
+  <v-card class="px-0 pt-0 px-md-4 pt-md-4">
     <v-form lazy-validation>
-      <v-card-title>
+      <v-card-title class="flex-column flex-sm-row">
         <h2 v-if="read">
           {{ surveyNameInFocus }}
         </h2>
         <h2 v-else>
           {{ surveyDraft.name }}
         </h2>
-        <v-spacer></v-spacer>
-        <v-btn
-          x-large
-          text
-          class="text-none"
-          @click="backToDetailsHandler"
-          :disabled="!canGoBackToDetails"
-        >
-          <v-icon large class="ml-2"> mdi-chevron-left </v-icon>
-          {{ $t('interventions.surveyModal.questionCard.backToDetails') }}
-        </v-btn>
-        <v-btn
-          x-large
-          text
-          class="text-none"
-          @click="finalizeSurveyHandler"
-          :disabled="!canFinalize"
-        >
-          {{ $t('interventions.surveyModal.questionCard.finalizeSurvey') }}
-          <v-icon large class="ml-2"> mdi-chevron-right </v-icon>
-        </v-btn>
+        <v-spacer v-if="$vuetify.breakpoint.name !== 'xs'"></v-spacer>
+        <div class="d-flex">
+          <v-btn
+            :x-large="$vuetify.breakpoint.name !== 'xs'"
+            text
+            :fab="$vuetify.breakpoint.name === 'xs'"
+            class="text-none"
+            @click="backToDetailsHandler"
+            :disabled="!canGoBackToDetails"
+          >
+            <v-icon large class="ml-0 ml-sm-2"> mdi-chevron-left </v-icon>
+            {{
+              $vuetify.breakpoint.name === 'xs'
+                ? ''
+                : $t('interventions.surveyModal.questionCard.backToDetails')
+            }}
+          </v-btn>
+          <v-btn
+            :x-large="$vuetify.breakpoint.name !== 'xs'"
+            text
+            :fab="$vuetify.breakpoint.name === 'xs'"
+            class="text-none"
+            @click="finalizeSurveyHandler"
+            :disabled="!canFinalize"
+          >
+            {{
+              $vuetify.breakpoint.name === 'xs'
+                ? ''
+                : $t('interventions.surveyModal.questionCard.finalizeSurvey')
+            }}
+            <v-icon large class="ml-2"> mdi-chevron-right </v-icon>
+          </v-btn>
+        </div>
       </v-card-title>
 
       <v-card-text>
         <v-container>
           <v-row>
-            <v-col cols="12" md="6">
+            <v-col cols="12" sm="6" class="pb-0 px-0 px-sm-3">
               <h2 class="mb-2">
                 {{ $t('interventions.surveyModal.questionCard.form.question.title') }}
               </h2>
@@ -104,7 +116,7 @@
               </div>
             </v-col>
 
-            <v-col cols="12" md="6">
+            <v-col cols="12" sm="6" class="pt-4 px-0 px-sm-3 pt-sm-0">
               <h2 class="mb-2">
                 {{ $t('interventions.surveyModal.questionCard.form.answer.title') }}
               </h2>
@@ -199,35 +211,54 @@
       </v-card-text>
       <v-card-actions>
         <v-btn x-large text color="warning" class="text-none" @click="discardQuestionHandler">
-          {{ $t('interventions.surveyModal.questionCard.discardQuestion') }}
+          {{
+            $vuetify.breakpoint.name === 'xs'
+              ? ''
+              : $t('interventions.surveyModal.questionCard.discardQuestion')
+          }}
           <v-icon large> mdi-delete </v-icon>
         </v-btn>
         <v-spacer v-if="!isAtLastQuestion"></v-spacer>
-        <v-btn
-          x-large
-          text
-          class="text-none"
-          @click="priorQuestion"
-          :disabled="!canAdvanceBack"
-          v-if="!isAtLastQuestion"
-        >
-          <v-icon large> mdi-skip-previous </v-icon>
-          {{ $t('interventions.surveyModal.questionCard.priorQuestion') }}
-        </v-btn>
-        <v-btn
-          x-large
-          text
-          class="text-none"
-          @click="nextQuestion"
-          :disabled="!canAdvance"
-          v-if="!isAtLastQuestion"
-        >
-          {{ $t('interventions.surveyModal.questionCard.nextQuestion') }}
-          <v-icon large> mdi-skip-next </v-icon>
-        </v-btn>
+        <div class="d-flex" v-if="$vuetify.breakpoint.name !== 'xs'">
+          <v-btn
+            x-large
+            text
+            class="text-none"
+            @click="priorQuestion"
+            :disabled="!canAdvanceBack"
+            v-if="!isAtLastQuestion"
+          >
+            <v-icon large> mdi-skip-previous </v-icon>
+            {{
+              $vuetify.breakpoint.name === 'xs'
+                ? ''
+                : $t('interventions.surveyModal.questionCard.priorQuestion')
+            }}
+          </v-btn>
+          <v-btn
+            x-large
+            text
+            class="text-none"
+            @click="nextQuestion"
+            :disabled="!canAdvance"
+            v-if="!isAtLastQuestion"
+          >
+            {{
+              $vuetify.breakpoint.name === 'xs'
+                ? ''
+                : $t('interventions.surveyModal.questionCard.nextQuestion')
+            }}
+            <v-icon large> mdi-skip-next </v-icon>
+          </v-btn>
+        </div>
+
         <v-spacer></v-spacer>
         <v-btn x-large text class="text-none" @click="saveQuestion" :disabled="!canSave">
-          {{ $t('interventions.surveyModal.questionCard.saveDraft') }}
+          {{
+            $vuetify.breakpoint.name === 'xs'
+              ? ''
+              : $t('interventions.surveyModal.questionCard.saveDraft')
+          }}
           <v-icon large class="ml-2"> mdi-content-save-outline </v-icon>
         </v-btn>
       </v-card-actions>
