@@ -2,12 +2,12 @@
   <div>
     <InterventionModal v-if="showInterventionModal" />
     <SurveyModal v-if="showSurveyModal" />
-    <h1 class="ml-8 mt-6">
+    <h1 class="ml-8">
       {{ $t('interventions.title') }}
     </h1>
     <v-container class="mt-8">
-      <v-row class="mr-2 mr-md-0">
-        <v-col cols="12" sm="6" md="4" lg="3">
+      <v-row class="">
+        <v-col cols="12" sm="6" md="4" xl="3">
           <div style="height: 100%" class="pa-2">
             <div style="height: 100%" class="d-flex flex-column justify-space-around">
               <div class="d-flex flex-column align-center">
@@ -38,7 +38,7 @@
           cols="12"
           sm="6"
           md="4"
-          lg="3"
+          xl="3"
         >
           <Intervention
             :id="intervention.id"

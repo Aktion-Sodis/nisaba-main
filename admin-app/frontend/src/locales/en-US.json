@@ -1,6 +1,6 @@
 {
   "development": {
-    "not-yet-implemented": "This feature is yet to be implemented. Please ignore if you are on bug hunting! 🐞🔍"
+    "notYetImplemented": "This feature is yet to be implemented. Please ignore if you are on bug hunting! 🐞🔍"
   },
   "general": {
     "searchBox": "Search anything",
@@ -12,11 +12,13 @@
       "required": "Required.",
       "unsavedChanges": "There are unsaved changes. Are you sure you want to leave?"
     },
-    "sideBar": {
+    "routes": {
       "home": "Home",
       "baseData": "Base data",
       "organizationStructure": "Organization structure",
-      "interventions": "Interventions"
+      "interventions": "Interventions",
+      "login": "Login",
+      "register": "Register"
     }
   },
   "login": {

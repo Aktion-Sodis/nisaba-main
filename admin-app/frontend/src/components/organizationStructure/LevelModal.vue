@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="isLevelModalDisplayed" max-width="800px" persistent @keydown.esc="escHandler">
-    <v-card class="px-4 pt-4">
+    <v-card class="px-0 pt-0 px-md-4 pt-md-4">
       <v-form lazy-validation>
         <v-card-title>
           <h2 v-if="edit && levelInFocus">
@@ -24,7 +24,7 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" sm="6">
+              <v-col cols="12" sm="6" class="pb-0 px-0 px-md-3">
                 <h2 v-if="read && levelInFocus">
                   {{ levelInFocus.name }}
                 </h2>
@@ -66,7 +66,7 @@
                 </div>
               </v-col>
 
-              <v-col cols="12" sm="6">
+              <v-col cols="12" sm="6" class="pt-0 px-0 px-md-3">
                 <v-card-title>
                   {{ $t('organizationStructure.levelModal.interventions') }}
                 </v-card-title>
