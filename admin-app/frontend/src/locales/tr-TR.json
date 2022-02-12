@@ -12,11 +12,13 @@
       "required": "Zorunlu alan.",
       "unsavedChanges": "Kaydedilmemiş değişiklikler var. Çıkmak istediğinizden emin misiniz?"
     },
-    "sideBar": {
+    "routes": {
       "home": "Ana sayfa",
       "baseData": "Temel veriler",
       "organizationStructure": "Organizasyonel yapı",
-      "interventions": "Müdahaleler"
+      "interventions": "Müdahaleler",
+      "login": "Giriş",
+      "regıster": "Kayıt"
     }
   },
   "login": {
