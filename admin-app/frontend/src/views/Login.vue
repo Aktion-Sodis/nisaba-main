@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="outer-wrapper grey lighten-5">
     <v-row class="inner-wrapper" no-gutters>
-      <v-col class="login-wrapper" cols="12" md="6">
+      <v-col class="login-wrapper mt-16 mt-md-0" cols="12" md="6">
         <v-container fluid>
           <v-row no-gutters class="login-row">
             <v-col cols="11" sm="10" md="8">
@@ -93,7 +93,7 @@
               </v-form>
             </v-col>
           </v-row>
-          <v-row no-gutters class="d-md-none mt-16">
+          <v-row no-gutters class="d-md-none mt-4 mt-md-16">
             <v-col cols="6" sm="4" offset="3" offset-sm="4">
               <div class="rounded-xl pa-4 lg-rounded-pill society-icon-wrapper">
                 <img
@@ -204,20 +204,6 @@ export default {
   padding: 0;
   height: 100vh;
   overflow: hidden;
-}
-
-@media only screen and (max-width: 960px) {
-  .images-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 0;
-  }
-
-  .login-wrapper {
-    background-color: rgba(255, 255, 255, 0.85);
-    height: 100vh;
-  }
 }
 
 .row-space-between {

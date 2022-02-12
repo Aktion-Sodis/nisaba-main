@@ -5,7 +5,7 @@
     persistent
     @keydown.esc="escHandler"
   >
-    <v-card class="px-4 pt-4">
+    <v-card class="px-0 pt-0 px-md-4 pt-md-4">
       <v-form lazy-validation>
         <v-card-title>
           <h2 v-if="edit">
@@ -29,7 +29,7 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" md="6">
+              <v-col cols="12" sm="6" class="pb-0 px-0 px-md-3">
                 <h2 v-if="read && interventionInFocus">
                   {{ interventionInFocus.name }}
                 </h2>
@@ -68,7 +68,7 @@
                   />
                 </v-img>
               </v-col>
-              <v-col cols="12" md="6">
+              <v-col cols="12" sm="6" class="pt-4 px-0 px-md-3">
                 <div v-if="read && interventionInFocus">
                   <v-card-title>
                     {{ $t('baseData.tags') }}

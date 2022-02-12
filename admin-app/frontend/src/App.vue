@@ -1,9 +1,6 @@
 <template>
   <v-app>
-    <SideBar v-if="isAuthenticated" :currentRouteName="currentRouteName" />
-
-    <div class="search-bar-wrapper">
-      <!-- Language switch is planned only for development -->
+    <div class="top-right-fixed" v-if="$vuetify.breakpoint.name !== 'xs'">
       <v-select
         v-model="$root.$i18n.locale"
         :items="langs"
@@ -17,7 +14,7 @@
         dark
       ></v-select>
       <v-text-field
-        v-if="currentRouteName !== 'Login'"
+        v-if="currentRouteName !== 'Login' && $vuetify.breakpoint.name !== 'xs'"
         :label="$t('general.searchBox')"
         prepend-inner-icon="mdi-magnify"
         outlined
@@ -28,17 +25,45 @@
       ></v-text-field>
     </div>
 
-    <v-main :class="currentRouteName === 'Login' ? 'ml-0' : 'ml-16 mt-12'">
+    <v-main
+      :class="
+        currentRouteName === 'Login'
+          ? 'mt-0'
+          : $vuetify.breakpoint.name === 'xs'
+          ? 'ml-0 mt-8'
+          : 'ml-16 mt-12'
+      "
+    >
       <router-view />
     </v-main>
 
-    <a href="https://github.com/Aktion-Sodis/software-main" target="_blank">
-      <v-alert class="version-wrapper" outlined color="primary" icon="🚧" border="left">
+    <a
+      href="https://github.com/Aktion-Sodis/software-main"
+      class="d-none d-md-block"
+      target="_blank"
+    >
+      <v-alert
+        class="version-wrapper"
+        :outlined="currentRouteName !== 'Login'"
+        color="primary"
+        icon="🚧"
+        border="left"
+      >
         The Admin-App v0.1, development phase 🔗
       </v-alert>
     </a>
 
     <Feedback />
+    <div class="bottom-right-fixed" v-if="$vuetify.breakpoint.name === 'xs'">
+      <v-btn fab dark small color="primary" @click="showToBeImplementedFeedback">
+        <v-icon dark> mdi-magnify </v-icon>
+      </v-btn>
+    </div>
+    <SideBar
+      v-if="isAuthenticated && $vuetify.breakpoint.name !== 'xs'"
+      :currentRouteName="currentRouteName"
+      class="d-none d-md-block"
+    />
     <BottomNav
       v-if="isAuthenticated && $vuetify.breakpoint.name === 'xs'"
       :currentRouteName="currentRouteName"
@@ -79,9 +104,17 @@ export default {
 </script>
 
 <style scoped>
-.search-bar-wrapper {
-  position: absolute;
+.top-right-fixed {
+  position: fixed;
   top: 24px;
+  right: 24px;
+  z-index: 2;
+  display: flex;
+}
+
+.bottom-right-fixed {
+  position: fixed;
+  bottom: 68px;
   right: 24px;
   z-index: 2;
   display: flex;
