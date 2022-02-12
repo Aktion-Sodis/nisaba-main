@@ -257,6 +257,22 @@ export default {
       answers: [new EmptyAnswer()],
     };
   },
+  beforeRouteLeave(to, from, next) {
+    // If the form is dirty and the user did not confirm leave,
+    // prevent losing unsaved changes by canceling navigation
+    if (this.confirmStayInDirtyForm()) {
+      next(false);
+    } else {
+      // Navigate to next view
+      next();
+    }
+  },
+  created() {
+    window.addEventListener('beforeunload', this.beforeWindowUnload);
+  },
+  beforeDestroy() {
+    window.removeEventListener('beforeunload', this.beforeWindowUnload);
+  },
   computed: {
     ...mapGetters({
       dataIdInFocus: 'dataModal/getDataIdInFocus',
@@ -343,6 +359,21 @@ export default {
       incrementCompletionIndex: 'incrementSurveyModalCompletionIndex',
       decrementCompletionIndex: 'decrementSurveyModalCompletionIndex',
     }),
+    confirmLeave() {
+      // eslint-disable-next-line
+      return window.confirm(this.$t('general.form.unsavedChanges'));
+    },
+    confirmStayInDirtyForm() {
+      return this.areThereChanges && !this.confirmLeave();
+    },
+    beforeWindowUnload(e) {
+      if (this.confirmStayInDirtyForm()) {
+        // Cancel the event
+        e.preventDefault();
+        // Chrome requires returnValue to be set
+        e.returnValue = '';
+      }
+    },
     finalizeSurveyHandler() {
       this.incrementCompletionIndex();
     },
