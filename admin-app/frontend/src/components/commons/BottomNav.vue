@@ -1,26 +1,15 @@
 <template>
-  <v-bottom-navigation
-    v-model="value"
-    fixed
-    app
-    background-color="primary-dark"
-    class="align-center"
-    height="44"
-  >
-    <v-btn value="0" large class="primary-dark" :to="{ name: routes[value] }">
-      <v-icon color="white">mdi-home-outline</v-icon>
-    </v-btn>
-
-    <v-btn value="1" large class="primary-dark" :to="{ name: routes[value] }">
-      <v-icon color="white">mdi-domain</v-icon>
-    </v-btn>
-
-    <v-btn value="2" large class="primary-dark" :to="{ name: routes[value] }">
-      <v-icon color="white">mdi-clipboard-text-outline</v-icon>
-    </v-btn>
-
-    <v-btn value="3" large class="primary-dark" :to="{ name: routes[value] }">
-      <v-icon color="white">mdi-wrench-outline</v-icon>
+  <v-bottom-navigation fixed app background-color="primary-dark" class="align-center" height="44">
+    <v-btn
+      v-for="route in routes"
+      :key="route.name"
+      :to="{ name: route.name }"
+      :exact="route.name === 'Home'"
+      large
+      class="primary-dark"
+      active-class="primary darken-2"
+    >
+      <v-icon color="white">{{ route.icon }}</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>
@@ -31,8 +20,16 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'BottomNav',
   data: () => ({
-    value: 0,
-    routes: ['Home', 'BaseData', 'OrganizationStructure', 'Interventions'],
+    routes: [
+      { icon: 'mdi-home-outline', name: 'Home', i18nKey: 'home' },
+      { icon: 'mdi-domain', name: 'BaseData', i18nKey: 'baseData' },
+      {
+        icon: 'mdi-clipboard-text-outline',
+        name: 'OrganizationStructure',
+        i18nKey: 'organizationStructure',
+      },
+      { icon: 'mdi-wrench-outline', name: 'Interventions', i18nKey: 'interventions' },
+    ],
   }),
   computed: {
     ...mapGetters({
