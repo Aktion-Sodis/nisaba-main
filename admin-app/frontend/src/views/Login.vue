@@ -30,13 +30,24 @@
                     class="my-0"
                     v-model="rememberMe"
                     :label="$t('login.rememberMe')"
+                    @click="showToBeImplementedFeedback"
                   ></v-checkbox>
-                  <p class="mt-1 py-0">{{ $t('login.forgotPassword') }}</p>
+                  <div class="mt-1" @click="showToBeImplementedFeedback" style="cursor: pointer">
+                    <p class="py-0">{{ $t('login.forgotPassword') }}</p>
+                  </div>
                 </div>
                 <v-btn type="submit" block large color="primary" class="text-none">{{
                   $t('login.signIn')
                 }}</v-btn>
-                <v-btn type="submit" block outlined large color="grey" class="mt-2 text-none">
+                <v-btn
+                  type="submit"
+                  block
+                  outlined
+                  large
+                  color="grey"
+                  class="mt-2 text-none"
+                  @click.prevent="showToBeImplementedFeedback"
+                >
                   <svg
                     viewBox="0 0 24 24"
                     width="24"
@@ -70,9 +81,13 @@
                 <div class="push-to-end mt-4">
                   <p>
                     {{ $t('login.dontHaveAnAccount') }}
-                    <a href="#" class="font-weight-bold font-italic text-decoration-none">{{
-                      $t('login.registerHere')
-                    }}</a>
+                    <a
+                      href="#"
+                      class="font-weight-bold font-italic text-decoration-none"
+                      @click="showToBeImplementedFeedback"
+                    >
+                      {{ $t('login.registerHere') }}
+                    </a>
                   </p>
                 </div>
               </v-form>
@@ -111,7 +126,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'Login',
@@ -135,6 +150,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions({
+      showToBeImplementedFeedback: 'FEEDBACK_UI/showToBeImplementedFeedback',
+    }),
     submit() {
       const valid = this.$refs.form.validate();
       if (valid) {
