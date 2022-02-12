@@ -53,10 +53,11 @@ const levelsData = {
     sortedLevels: (_, getters) => getters.getLevels.sort((a, b) => getters.hierarchySort(a, b)),
     // used in the getter "sortedLevels". Don't use directly outside of Vuex environment.
     hierarchySort: (_, getters) => (a, b) => {
+      console.log(JSON.stringify(a, b));
       if (a.upperLevelId === null) return -1;
       if (b.upperLevelId === null) return 1;
       if (a.id === b.upperLevelId) return -1;
-      return getters.hierarchySort(a, getters.LEVELById(b.upperLevelId));
+      return getters.hierarchySort(a, getters.LEVELById({ id: b.upperLevelId }));
     },
 
     lowestLevelId: (_, { sortedLevels }) => sortedLevels[sortedLevels.length - 1].id,
