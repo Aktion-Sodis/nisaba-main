@@ -32,6 +32,7 @@ class Question {
   final String? _text;
   final QuestionType? _type;
   final List<QuestionOption>? _questionOptions;
+  final bool? _isFollowUpQuestion;
 
   String get text {
     try {
@@ -63,14 +64,28 @@ class Question {
     return _questionOptions;
   }
   
-  const Question._internal({required this.id, required text, required type, questionOptions}): _text = text, _type = type, _questionOptions = questionOptions;
+  bool get isFollowUpQuestion {
+    try {
+      return _isFollowUpQuestion!;
+    } catch(e) {
+      throw new DataStoreException(
+      DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      recoverySuggestion:
+        DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+      underlyingException: e.toString()
+    );
+    }
+  }
   
-  factory Question({String? id, required String text, required QuestionType type, List<QuestionOption>? questionOptions}) {
+  const Question._internal({required this.id, required text, required type, questionOptions, required isFollowUpQuestion}): _text = text, _type = type, _questionOptions = questionOptions, _isFollowUpQuestion = isFollowUpQuestion;
+  
+  factory Question({String? id, required String text, required QuestionType type, List<QuestionOption>? questionOptions, required bool isFollowUpQuestion}) {
     return Question._internal(
       id: id == null ? UUID.getUUID() : id,
       text: text,
       type: type,
-      questionOptions: questionOptions != null ? List<QuestionOption>.unmodifiable(questionOptions) : questionOptions);
+      questionOptions: questionOptions != null ? List<QuestionOption>.unmodifiable(questionOptions) : questionOptions,
+      isFollowUpQuestion: isFollowUpQuestion);
   }
   
   bool equals(Object other) {
@@ -84,7 +99,8 @@ class Question {
       id == other.id &&
       _text == other._text &&
       _type == other._type &&
-      DeepCollectionEquality().equals(_questionOptions, other._questionOptions);
+      DeepCollectionEquality().equals(_questionOptions, other._questionOptions) &&
+      _isFollowUpQuestion == other._isFollowUpQuestion;
   }
   
   @override
@@ -98,18 +114,20 @@ class Question {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("text=" + "$_text" + ", ");
     buffer.write("type=" + (_type != null ? enumToString(_type)! : "null") + ", ");
-    buffer.write("questionOptions=" + (_questionOptions != null ? _questionOptions!.toString() : "null"));
+    buffer.write("questionOptions=" + (_questionOptions != null ? _questionOptions!.toString() : "null") + ", ");
+    buffer.write("isFollowUpQuestion=" + (_isFollowUpQuestion != null ? _isFollowUpQuestion!.toString() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Question copyWith({String? id, String? text, QuestionType? type, List<QuestionOption>? questionOptions}) {
+  Question copyWith({String? id, String? text, QuestionType? type, List<QuestionOption>? questionOptions, bool? isFollowUpQuestion}) {
     return Question._internal(
       id: id ?? this.id,
       text: text ?? this.text,
       type: type ?? this.type,
-      questionOptions: questionOptions ?? this.questionOptions);
+      questionOptions: questionOptions ?? this.questionOptions,
+      isFollowUpQuestion: isFollowUpQuestion ?? this.isFollowUpQuestion);
   }
   
   Question.fromJson(Map<String, dynamic> json)  
@@ -121,10 +139,11 @@ class Question {
           .where((e) => e != null)
           .map((e) => QuestionOption.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
           .toList()
-        : null;
+        : null,
+      _isFollowUpQuestion = json['isFollowUpQuestion'];
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'text': _text, 'type': enumToString(_type), 'questionOptions': _questionOptions?.map((QuestionOption? e) => e?.toJson()).toList()
+    'id': id, 'text': _text, 'type': enumToString(_type), 'questionOptions': _questionOptions?.map((QuestionOption? e) => e?.toJson()).toList(), 'isFollowUpQuestion': _isFollowUpQuestion
   };
 
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
@@ -154,6 +173,12 @@ class Question {
       isRequired: false,
       isArray: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.embeddedCollection, ofCustomTypeName: 'QuestionOption')
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+      fieldName: 'isFollowUpQuestion',
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.bool)
     ));
   });
 }

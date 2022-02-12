@@ -1,7 +1,7 @@
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
-import 'package:amplify_flutter/amplify.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/amplifyconfiguration.dart';
 import 'package:mobile_app/models/ModelProvider.dart';
@@ -22,15 +22,9 @@ class AmplifyIntegration {
   ///prior to any actions regarding amplify in app, this method has to be awaited once
   /// -> integrated as first step in app start
   static Future<bool> initialize() async {
-    try {
-      await Amplify.addPlugins(
-          [_amplifyDataStore, _amplifyAPI, _amplifyAuthCognito]);
-      await Amplify.configure(amplifyconfig);
-      return true;
-    } catch (e) {
-      debugPrint("error in amplify initialization");
-      debugPrint(e.toString());
-      return false;
-    }
+    await Amplify.addPlugins(
+        [_amplifyDataStore, _amplifyAPI, _amplifyAuthCognito]);
+    await Amplify.configure(amplifyconfig);
+    return true;
   }
 }

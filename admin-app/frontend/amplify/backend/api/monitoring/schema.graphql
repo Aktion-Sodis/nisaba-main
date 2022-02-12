@@ -126,16 +126,17 @@ enum QuestionType {
 }
 
 type Question {
-  id: ID! # todo: dependent ID
+  id: ID! # todo: dependent ID; unique for survey
   text: String!
   type: QuestionType!
   questionOptions: [QuestionOption!]
+  isFollowUpQuestion: Boolean!
 }
 
 type QuestionOption {
   id: ID!
   text: String!
-  followUpQuestion: Question
+  followUpQuestionID: ID
 }
 
 # entityCollection
