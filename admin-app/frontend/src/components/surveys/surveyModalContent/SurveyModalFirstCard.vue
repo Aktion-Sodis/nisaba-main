@@ -173,7 +173,7 @@ export default {
     selectImg() {
       const imgInput = this.$refs['img-upload'];
       imgInput.click();
-      console.log('TODO: do something with', imgInput);
+      // console.log('TODO: do something with', imgInput);
     },
     nextStepHandler() {
       this.setSurveyDraft({

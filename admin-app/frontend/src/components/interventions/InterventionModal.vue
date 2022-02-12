@@ -362,7 +362,7 @@ export default {
       this.showToBeImplementedFeedback();
       const imgInput = this.$refs['img-upload'];
       imgInput.click();
-      console.log('TODO: do something with', imgInput);
+      // console.log('TODO: do something with', imgInput);
     },
     prefillComponentDataFromInterventionDraft() {
       this.name = this.interventionDraft?.name ?? '';

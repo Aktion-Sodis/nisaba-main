@@ -406,19 +406,18 @@ export default {
       });
     },
     clickOnAddImage() {
-      console.log(JSON.stringify(this.$refs));
       const imgInput = this.$refs['question-img-upload'];
       if (Array.isArray(imgInput)) imgInput[0].click();
       else imgInput.click();
       this.showToBeImplementedFeedback();
-      console.log('TODO: do something with', imgInput);
+      // console.log('TODO: do something with', imgInput);
     },
     clickOnAddAudio() {
       const audioInput = this.$refs['question-audio-upload'];
       if (Array.isArray(audioInput)) audioInput[0].click();
       else audioInput.click();
       this.showToBeImplementedFeedback();
-      console.log('TODO: do something with', audioInput);
+      // console.log('TODO: do something with', audioInput);
     },
     clickOnAddAnswer() {
       this.answers.push({ answerText: '' });
@@ -428,7 +427,7 @@ export default {
       if (Array.isArray(imgInput)) imgInput[0].click();
       else imgInput.click();
       this.showToBeImplementedFeedback();
-      console.log('TODO: hanle adding image to answer');
+      // console.log('TODO: handle adding image to answer');
     },
     clickOnRemoveAnswer(index) {
       this.answers.splice(index, 1);
