@@ -54,7 +54,10 @@
     </a>
 
     <Feedback />
-    <div class="bottom-right-fixed" v-if="$vuetify.breakpoint.name === 'xs'">
+    <div
+      class="bottom-right-fixed"
+      v-if="$vuetify.breakpoint.name === 'xs' && currentRouteName !== 'Login'"
+    >
       <v-btn fab dark small color="primary" @click="showToBeImplementedFeedback">
         <v-icon dark> mdi-magnify </v-icon>
       </v-btn>
