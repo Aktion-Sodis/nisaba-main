@@ -106,7 +106,7 @@
           </v-row>
         </v-container>
       </v-col>
-      <v-col class="images-wrapper" cols="12" md="6">
+      <v-col class="images-wrapper d-none d-md-block" cols="12" md="6">
         <v-container style="height: 100%" fluid>
           <v-row style="height: 100%" no-gutters>
             <v-col cols="6" offset="3" class="login-row">
@@ -182,7 +182,6 @@ export default {
 }
 
 .login-wrapper {
-  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
