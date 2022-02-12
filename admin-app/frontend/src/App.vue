@@ -39,17 +39,22 @@
     </a>
 
     <Feedback />
+    <BottomNav
+      v-if="isAuthenticated && $vuetify.breakpoint.name === 'xs'"
+      :currentRouteName="currentRouteName"
+    />
   </v-app>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import BottomNav from './components/commons/BottomNav.vue';
 import Feedback from './components/commons/Feedback.vue';
 import SideBar from './components/commons/SideBar.vue';
 
 export default {
   name: 'App',
-  components: { SideBar, Feedback },
+  components: { SideBar, Feedback, BottomNav },
   data: () => ({
     langs: [
       { name: 'English US', abbr: 'en-US' },
