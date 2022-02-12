@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from '../store';
+import i18n from '../i18n';
 
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
@@ -17,6 +18,7 @@ const routes = [
     component: Home,
     meta: {
       requiresAuth: true,
+      title: i18n.t('general.routes.home'),
     },
   },
   {
@@ -25,6 +27,7 @@ const routes = [
     component: Login,
     meta: {
       requiresAuth: false,
+      title: i18n.t('general.routes.login'),
     },
   },
   {
@@ -33,6 +36,7 @@ const routes = [
     component: OrganizationStructure,
     meta: {
       requiresAuth: true,
+      title: i18n.t('general.routes.organizationStructure'),
     },
   },
   {
@@ -41,6 +45,7 @@ const routes = [
     component: BaseData,
     meta: {
       requiresAuth: true,
+      title: i18n.t('general.routes.baseData'),
     },
   },
   {
@@ -49,6 +54,7 @@ const routes = [
     component: Interventions,
     meta: {
       requiresAuth: true,
+      title: i18n.t('general.routes.interventions'),
     },
   },
   {
@@ -81,6 +87,15 @@ router.beforeEach((to, from, next) => {
   } else {
     next(); // does not require auth, make sure to always call next()!
   }
+});
+
+const DEFAULT_TITLE = 'Admin-App';
+router.afterEach((to) => {
+  // Use next tick to handle router history correctly
+  // see: https://github.com/vuejs/vue-router/issues/914#issuecomment-384477609
+  Vue.nextTick(() => {
+    document.title = `${to.meta.title} · Admin-App` || DEFAULT_TITLE;
+  });
 });
 
 export default router;

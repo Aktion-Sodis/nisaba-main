@@ -24,7 +24,7 @@
             <v-icon color="white">mdi-home-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-title class="white--text text-body-1">
-            {{ $t('general.sideBar.home') }}
+            {{ $t('general.routes.home') }}
           </v-list-item-title>
         </v-list-item>
         <v-list-item
@@ -36,7 +36,7 @@
             <v-icon color="white">mdi-domain</v-icon>
           </v-list-item-icon>
           <v-list-item-title class="white--text text-body-1">
-            {{ $t('general.sideBar.baseData') }}
+            {{ $t('general.routes.baseData') }}
           </v-list-item-title>
         </v-list-item>
         <v-list-item
@@ -47,7 +47,7 @@
             <v-icon color="white">mdi-clipboard-text-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-title class="white--text text-body-1">
-            {{ $t('general.sideBar.organizationStructure') }}
+            {{ $t('general.routes.organizationStructure') }}
           </v-list-item-title>
         </v-list-item>
         <v-list-item
@@ -58,7 +58,7 @@
             <v-icon color="white">mdi-wrench-outline</v-icon>
           </v-list-item-icon>
           <v-list-item-title class="white--text text-body-1">
-            {{ $t('general.sideBar.interventions') }}
+            {{ $t('general.routes.interventions') }}
           </v-list-item-title>
         </v-list-item>
       </v-list>
