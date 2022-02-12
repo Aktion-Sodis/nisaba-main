@@ -79,7 +79,9 @@ export default {
       setIQuestions: 'QUESTION_UI/setIQuestions',
     }),
     handleDrag(evt) {
-      return !evt.draggedContext.element?.isEmptyQuestion;
+      return (
+        !evt.draggedContext.element?.isEmptyQuestion && !evt.relatedContext.element?.isEmptyQuestion
+      );
     },
   },
 };
