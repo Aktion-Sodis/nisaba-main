@@ -1,6 +1,6 @@
 <template>
   <v-snackbar v-model="isFeedbackShown" :color="type" :timeout="duration" class="feedback-snackbar">
-    <v-alert border="left" :type="type" class="feedback-alert">
+    <v-alert border="left" :type="type" class="feedback-alert" prominent>
       {{ text }}
     </v-alert>
   </v-snackbar>
