@@ -1,7 +1,7 @@
 import i18n from '../../i18n';
 import { typesDictionary } from './utils';
 
-const defaultDuration = 50000;
+const defaultDuration = 5000;
 
 const FEEDBACK_UI = {
   namespaced: true,
