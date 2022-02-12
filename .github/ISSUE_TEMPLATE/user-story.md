@@ -1,6 +1,6 @@
 ---
 name: User story
-about: Suggest an idea for this project
+about: Describe a request from a user's perspective
 title: "[USER STORY]"
 labels: ''
 assignees: ''
