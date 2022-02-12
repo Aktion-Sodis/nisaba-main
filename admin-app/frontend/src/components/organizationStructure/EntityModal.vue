@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="isModalDisplayed" max-width="800px" persistent @keydown.esc="escHandler">
+  <v-dialog v-model="isEntityModalDisplayed" max-width="800px" persistent @keydown.esc="escHandler">
     <v-card class="px-4 pt-4">
       <v-form lazy-validation>
         <v-card-title>
@@ -61,7 +61,7 @@
                 <div v-if="read && entityInFocus" style="min-height: 5rem">
                   <h3 v-if="entityInFocus.upperEntityId">
                     {{ $t('organizationStructure.entityModal.upperEntity') }}:
-                    {{ entityById({ entityId: entityInFocus.upperEntityId }).name }}
+                    {{ ENTITYById({ id: entityInFocus.upperEntityId }).name }}
                   </h3>
                 </div>
                 <v-select
@@ -72,7 +72,7 @@
                   dense
                   outlined
                   persistent-hint
-                  item-value="entityId"
+                  item-value="id"
                   item-text="name"
                 ></v-select>
               </v-col>
@@ -121,7 +121,7 @@
             color="primary"
             text
             @click.prevent="submitHandler"
-            :disabled="!isFormInvalid"
+            :disabled="isFormInvalid"
           >
             {{ $t('general.save') }}
           </v-btn>
@@ -133,7 +133,7 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
-import { modalModesDict } from '../../store/constants';
+import { modalModesDict, dataTypesDict } from '../../store/constants';
 
 const entityDescriptionMaxChar = Math.max(
   parseInt(process.env.VUE_APP_ENTITY_DESCRIPTION_MAX_CHAR, 10),
@@ -160,27 +160,33 @@ export default {
   },
   computed: {
     ...mapGetters({
-      allEntitiesOfLevel: 'entitiesData/allEntitiesByLevelId',
-      upperLevelById: 'levelsData/upperLevelById',
-      levelById: 'levelsData/levelById',
+      allEntitiesOfLevel: 'ENTITY_Data/allEntitiesByLevelId',
+      upperLevelById: 'LEVEL_Data/upperLevelById',
+      LEVELById: 'LEVEL_Data/LEVELById',
 
-      modalMode: 'entitiesUI/getEntityModalMode',
-      isModalDisplayed: 'entitiesUI/getIsEntityModalDisplayed',
-      entityIdInFocus: 'entitiesUI/getEntityIdInFocus',
-      entityDraft: 'entitiesUI/getEntityDraft',
-      entityInFocus: 'entitiesUI/entityInFocus',
-      hasDescendants: 'entitiesData/hasDescendantsById',
+      dataType: 'dataModal/getDataType',
+      modalMode: 'dataModal/getMode',
+      isModalDisplayed: 'dataModal/getIsDisplayed',
+      dataIdInFocus: 'dataModal/getDataIdInFocus',
+      entityDraft: 'dataModal/getDataDraft',
+      hasDescendants: 'ENTITY_Data/hasDescendantsById',
 
-      entityById: 'entitiesData/entityById',
-      allEntityTags: 'entitiesData/getEntityTags',
-      tagById: 'entitiesData/entityTagById',
-      getCreatingEntityInLevelId: 'entitiesUI/getCreatingEntityInLevelId',
+      ENTITYById: 'ENTITY_Data/ENTITYById',
+      allEntityTags: 'ENTITY_Data/getEntityTags',
+      tagById: 'ENTITY_Data/tagById',
+      getCreatingEntityInLevelId: 'getCreatingEntityInLevelId',
     }),
+    entityInFocus() {
+      return this.dataIdInFocus ? this.ENTITYById({ id: this.dataIdInFocus }) : null;
+    },
+    isEntityModalDisplayed() {
+      return this.isModalDisplayed && this.dataType === dataTypesDict.entity;
+    },
     allEntitiesOfUpperLevel() {
-      const currentLevel = this.levelById({
-        levelId: this.edit ? this.entityInFocus?.levelId : this.getCreatingEntityInLevelId,
+      const currentLevel = this.LEVELById({
+        id: this.edit ? this.entityInFocus?.levelId : this.getCreatingEntityInLevelId,
       });
-      return this.allEntitiesOfLevel(currentLevel?.upperLevelId) ?? [];
+      return this.allEntitiesOfLevel({ levelId: currentLevel?.upperLevelId }) ?? [];
     },
     edit() {
       return this.modalMode === modalModesDict.edit;
@@ -197,7 +203,7 @@ export default {
       });
     },
     isFormInvalid() {
-      return !!this.name;
+      return !this.name || this.upperEntityId === null;
     },
     areThereChanges() {
       const tagIdsInComponent = new Set(this.tagIds);
@@ -215,43 +221,43 @@ export default {
   },
   methods: {
     ...mapActions({
-      saveEntityHandler: 'entitiesUI/saveEntityHandler',
-      deleteEntityHandler: 'entitiesUI/deleteEntityHandler',
-      abortReadEntityHandler: 'entitiesUI/abortReadEntityHandler',
-      abortNewEntityHandler: 'entitiesUI/abortNewEntityHandler',
-      abortEditEntityHandler: 'entitiesUI/abortEditEntityHandler',
-      editEntityHandler: 'entitiesUI/editEntityHandler',
+      saveData: 'dataModal/saveData',
+      deleteData: 'dataModal/deleteData',
+      abortReadData: 'dataModal/abortReadData',
+      abortCreateData: 'dataModal/abortCreateData',
+      abortEditData: 'dataModal/abortEditData',
+      editData: 'dataModal/editData',
 
-      showFeedbackForDuration: 'feedbackModule/showFeedbackForDuration',
+      showFeedbackForDuration: 'FEEDBACK_UI/showFeedbackForDuration',
     }),
     ...mapMutations({
-      setEntityDraft: 'entitiesUI/setEntityDraft',
+      setEntityDraft: 'dataModal/setENTITYDraft',
     }),
     escHandler() {
       this.closeHandler();
     },
     deleteHandler() {
       if (this.read) return;
-      if (this.hasDescendants(this.entityIdInFocus)) {
+      if (this.hasDescendants({ id: this.dataIdInFocus })) {
         this.showFeedbackForDuration({
           type: 'warning',
           text: 'Cannot delete an entity with descendants.',
         });
         return;
       }
-      this.deleteEntityHandler();
+      this.deleteData({ dataType: dataTypesDict.entity });
     },
     closeHandler() {
-      if (this.read) this.abortReadEntityHandler();
-      else if (this.create) this.abortNewEntityHandler();
-      else if (this.edit) this.abortEditEntityHandler();
+      if (this.read) this.abortReadData();
+      else if (this.create) this.abortCreateData({ dataType: dataTypesDict.entity });
+      else if (this.edit) this.abortEditData({ dataId: this.dataIdInFocus, dataType: dataTypesDict.entity });
     },
     editHandler() {
-      this.editEntityHandler({ entityId: this.entityIdInFocus });
+      this.editData({ dataId: this.dataIdInFocus, dataType: dataTypesDict.entity });
     },
     async submitHandler() {
       this.setEntityDraft({
-        entityId: this.entityIdInFocus,
+        id: this.dataIdInFocus,
         name: this.name,
         description: this.description,
         levelId: this.edit ? this.entityInFocus.levelId : this.getCreatingEntityInLevelId,
@@ -259,7 +265,7 @@ export default {
         tagIds: this.tagIds,
       });
       await this.$nextTick();
-      this.saveEntityHandler();
+      this.saveData({ dataType: dataTypesDict.entity });
     },
     prefillComponentDataFromEntityDraft() {
       this.name = this.entityDraft?.name ?? '';

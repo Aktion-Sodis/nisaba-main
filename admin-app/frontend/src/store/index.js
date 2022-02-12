@@ -4,17 +4,13 @@ import VuexPersistence from 'vuex-persist';
 
 // import modules
 import authModule from './authModule';
-
 import interventionsData from './interventions/data';
-import interventionsUI from './interventions/ui';
 import surveysData from './survey/data';
-import surveysUI from './survey/ui';
-import questionsUI from './questions/ui';
-import feedbackModule from './feedback/ui';
+import QUESTION_UI from './questions/ui';
+import FEEDBACK_UI from './feedback/ui';
 import levelsData from './levels/data';
-import levelsUI from './levels/ui';
 import entitiesData from './entities/data';
-import entitiesUI from './entities/ui';
+import dataModal from './modal/ui';
 
 // persist
 const vuexLocal = new VuexPersistence({
@@ -27,24 +23,37 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     lineColors: ['green', 'orange', 'blue', 'red', 'yellow', 'purple'],
+    creatingEntityInLevelId: null,
+    surveyModalCompletionIndex: 1,
   },
   getters: {
     getLineColors: (state) => state.lineColors,
+    getCreatingEntityInLevelId: ({ creatingEntityInLevelId }) => creatingEntityInLevelId,
+    getSurveyModalCompletionIndex: ({ surveyModalCompletionIndex }) => surveyModalCompletionIndex,
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    setCreatingEntityInLevelId: (state, { id }) => {
+      state.creatingEntityInLevelId = id;
+    },
+    incrementSurveyModalCompletionIndex: (state) => {
+      state.surveyModalCompletionIndex += 1;
+    },
+    decrementSurveyModalCompletionIndex: (state) => {
+      state.surveyModalCompletionIndex -= 1;
+    },
+  },
+  actions: {
+    publishSurveyHandler: () => {},
+  },
   modules: {
     auth: authModule,
-    levelsData,
-    levelsUI,
-    entitiesData,
-    entitiesUI,
-    interventionsData,
-    interventionsUI,
-    surveysData,
-    surveysUI,
-    questionsUI,
-    feedbackModule,
+    dataModal,
+    ENTITY_Data: entitiesData,
+    SURVEY_Data: surveysData,
+    LEVEL_Data: levelsData,
+    INTERVENTION_Data: interventionsData,
+    QUESTION_UI,
+    FEEDBACK_UI,
   },
   plugins: [vuexLocal.plugin],
 });

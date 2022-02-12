@@ -1,14 +1,14 @@
 import {
   Intervention, postNewIntervention, putIntervention, deleteIntervention,
 } from './utils';
-import { modalModesDict } from '../constants';
+import { dataTypesDict, modalModesDict } from '../constants';
 
 const interventionsData = {
   namespaced: true,
   state: () => ({
     interventions: [
       {
-        interventionId: 'bd5f6df6-a64c-4d60-9df2-8f29bb7944d5',
+        id: 'bd5f6df6-a64c-4d60-9df2-8f29bb7944d5',
         name: 'Kitchen',
         description:
           'A kitchen is a room or part of a room used for cooking and food preparation in a dwelling or in a commercial establishment.',
@@ -25,7 +25,7 @@ const interventionsData = {
         ],
       },
       {
-        interventionId: '59fe15e7-59ad-46bf-a196-cbab81885d5b',
+        id: '59fe15e7-59ad-46bf-a196-cbab81885d5b',
         name: 'Toilet',
         description:
           'A toilet is a piece of sanitary hardware that collects human urine and feces, and sometimes toilet paper, usually for disposal.',
@@ -33,7 +33,7 @@ const interventionsData = {
         contents: [],
       },
       {
-        interventionId: 'c220fb83-a0e4-4463-a28a-f21b260e609a',
+        id: 'c220fb83-a0e4-4463-a28a-f21b260e609a',
         name: 'Plantation',
         description:
           'A plantation is an agricultural estate, generally centered on a plantation house, meant for farming that specializes in cash crops, usually mainly planted with a single crop, with perhaps ancillary areas for vegetables for eating and so on.',
@@ -41,7 +41,7 @@ const interventionsData = {
         contents: [],
       },
       {
-        interventionId: '5f463cd0-22d3-4321-960d-a4e01efeeccf',
+        id: '5f463cd0-22d3-4321-960d-a4e01efeeccf',
         name: 'Birth Control',
         description:
           'Birth control, also known as contraception, anticonception, and fertility control, is a method or device used to prevent pregnancy.',
@@ -66,7 +66,7 @@ const interventionsData = {
         ],
       },
       {
-        interventionId: 'a7dcb0d2-28ca-4679-aa98-f2fc07c66066',
+        id: 'a7dcb0d2-28ca-4679-aa98-f2fc07c66066',
         name: 'Gender Equality',
         description:
           'Gender equality, also known as sexual equality or equality of the sexes, is the state of equal ease of access to resources and opportunities regardless of gender, including economic participation and decision-making; and the state of valuing different behaviors, aspirations and needs equally, regardless of gender. ',
@@ -91,18 +91,18 @@ const interventionsData = {
     getInterventionTags: ({ interventionTags }) => interventionTags,
     getLoading: ({ loading }) => loading,
 
-    interventionById:
-      (_, { getInterventions }) => ({ interventionId }) => getInterventions.find((i) => i.interventionId === interventionId),
-    interventionTagById:
+    INTERVENTIONById:
+      (_, { getInterventions }) => ({ id }) => getInterventions.find((i) => i.id === id),
+    tagById:
       (_, { getInterventionTags }) => ({ tagId }) => getInterventionTags.find((t) => t.tagId === tagId),
   },
   mutations: {
     addIntervention: (state, {
-      interventionId, name, description, tagIds, contents,
+      id, name, description, tagIds, contents,
     }) => {
       state.interventions.push(
         new Intervention({
-          interventionId,
+          id,
           name,
           description,
           tagIds,
@@ -111,13 +111,13 @@ const interventionsData = {
       );
     },
     replaceIntervention: (state, {
-      interventionId, name, description, tagIds, contents,
+      id, name, description, tagIds, contents,
     }) => {
       state.interventions.splice(
-        state.interventions.findIndex((i) => i.interventionId === interventionId),
+        state.interventions.findIndex((i) => i.id === id),
         1,
         new Intervention({
-          interventionId,
+          id,
           name,
           description,
           tagIds,
@@ -125,9 +125,9 @@ const interventionsData = {
         }),
       );
     },
-    deleteIntervention: (state, { interventionId }) => {
+    deleteIntervention: (state, { id }) => {
       state.interventions.splice(
-        Array.from(state.interventions).findIndex((i) => i.interventionId === interventionId),
+        Array.from(state.interventions).findIndex((i) => i.id === id),
         1,
       );
     },
@@ -136,14 +136,15 @@ const interventionsData = {
     },
   },
   actions: {
-    APIpostNewIntervention: async ({ commit, dispatch }, interventionDraft) => {
+    APIpost: async ({ commit, dispatch }, interventionDraft) => {
       commit('setLoading', { newValue: true });
       const postResponse = await postNewIntervention(interventionDraft);
       commit('addIntervention', postResponse);
       dispatch(
-        'interventionsUI/readInterventionHandler',
+        'dataModal/readData',
         {
-          interventionId: postResponse.interventionId,
+          dataId: postResponse.id,
+          dataType: dataTypesDict.intervention,
         },
         {
           root: true,
@@ -152,14 +153,15 @@ const interventionsData = {
 
       commit('setLoading', { newValue: false });
     },
-    APIputIntervention: async ({ commit, dispatch }, interventionDraft) => {
+    APIput: async ({ commit, dispatch }, interventionDraft) => {
       commit('setLoading', { newValue: true });
       const putResponse = await putIntervention(interventionDraft);
       commit('replaceIntervention', putResponse);
       dispatch(
-        'interventionsUI/readInterventionHandler',
+        'dataModal/readData',
         {
-          interventionId: putResponse.interventionId,
+          dataId: putResponse.id,
+          dataType: dataTypesDict.intervention,
         },
         {
           root: true,
@@ -167,23 +169,19 @@ const interventionsData = {
       );
       commit('setLoading', { newValue: false });
     },
-    APIdeleteIntervention: async ({ commit, dispatch, rootGetters }) => {
+    APIdelete: async ({ commit, dispatch }, { id }) => {
       commit('setLoading', { newValue: true });
       const deleteResponse = await deleteIntervention();
       if (deleteResponse.errors.length > 0) {
         commit('setLoading', { newValue: false });
       }
       commit('deleteIntervention', {
-        interventionId: rootGetters['interventionsUI/getInterventionIdInFocus'],
+        id,
       });
-      commit('interventionsUI/setInterventionIdInFocus', { newValue: null }, { root: true });
-      commit(
-        'interventionsUI/setInterventionModalMode',
-        { newValue: modalModesDict.read },
-        { root: true },
-      );
+      commit('dataModal/setDataIdInFocus', { newValue: null }, { root: true });
+      commit('dataModal/setMode', { newValue: modalModesDict.read }, { root: true });
       dispatch(
-        'interventionsUI/abortReadInterventionHandler',
+        'dataModal/abortReadData',
         {},
         {
           root: true,

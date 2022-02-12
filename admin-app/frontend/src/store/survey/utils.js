@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class EmptySurvey {
   constructor() {
-    this.surveyId = uuidv4();
+    this.id = uuidv4();
     this.name = '';
     this.description = '';
     this.type = 'Default';
@@ -16,16 +16,9 @@ export class EmptySurvey {
 
 export class Survey {
   constructor({
-    surveyId,
-    name,
-    description,
-    type,
-    questionIds,
-    creationDate,
-    lastEditDate,
-    tags,
+    id, name, description, type, questionIds, creationDate, lastEditDate, tags,
   }) {
-    this.surveyId = surveyId ?? uuidv4();
+    this.id = id ?? uuidv4();
     this.name = name ?? '';
     this.description = description ?? '';
     this.type = type ?? 'Default';

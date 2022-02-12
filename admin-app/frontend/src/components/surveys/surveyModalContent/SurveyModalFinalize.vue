@@ -28,9 +28,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      surveyName: 'surveysUI/surveyNameInFocus',
-      surveyModalMode: 'surveysUI/getSurveyModalMode',
+      dataIdInFocus: 'dataModal/getDataIdInFocus',
+      SURVEYById: 'SURVEY_Data/SURVEYById',
+      surveyModalMode: 'dataModal/getMode',
     }),
+    surveyName() {
+      return this.SURVEYById({ id: this.dataIdInFocus })?.name ?? '';
+    },
     edit() {
       return this.surveyModalMode === this.modalModesDict.edit;
     },
@@ -43,12 +47,12 @@ export default {
   },
   methods: {
     ...mapActions({
-      publishSurveyHandler: 'surveysUI/publishSurveyHandler',
-      showToBeImplementedFeedback: 'feedbackModule/showToBeImplementedFeedback',
+      publishSurveyHandler: 'publishSurveyHandler',
+      showToBeImplementedFeedback: 'FEEDBACK_UI/showToBeImplementedFeedback',
     }),
     ...mapMutations({
-      incrementCompletionIndex: 'surveysUI/incrementSurveyModalCompletionIndex',
-      decrementCompletionIndex: 'surveysUI/decrementSurveyModalCompletionIndex',
+      incrementCompletionIndex: 'incrementSurveyModalCompletionIndex',
+      decrementCompletionIndex: 'decrementSurveyModalCompletionIndex',
     }),
     handlePublishSurvey() {
       this.showToBeImplementedFeedback();

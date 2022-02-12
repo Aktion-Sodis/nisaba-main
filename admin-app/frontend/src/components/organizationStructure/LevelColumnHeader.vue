@@ -11,13 +11,13 @@
         style="width: 100%"
         v-if="allowedInterventions.length > 0"
       >
-        <v-tooltip top v-for="interventionId in allowedInterventions" :key="interventionId">
+        <v-tooltip top v-for="id in allowedInterventions" :key="id">
           <template v-slot:activator="{ on, attrs }">
             <v-avatar v-bind="attrs" v-on="on">
               <v-icon> mdi-hammer-wrench </v-icon>
             </v-avatar>
           </template>
-          <span>{{ interventionById({ interventionId }).name }}</span>
+          <span>{{ INTERVENTIONById({ id }).name }}</span>
         </v-tooltip>
       </div>
       <div v-else style="height: 48px; overflow: hidden">
@@ -32,6 +32,7 @@
 <script>
 import { validate as uuidValidate } from 'uuid';
 import { mapActions, mapGetters } from 'vuex';
+import { dataTypesDict } from '../../store/constants';
 
 export default {
   name: 'LevelColumnHeader',
@@ -45,7 +46,7 @@ export default {
       type: String,
       required: true,
     },
-    levelId: {
+    id: {
       type: String,
       required: true,
       validator: (i) => uuidValidate(i),
@@ -53,15 +54,15 @@ export default {
   },
   computed: {
     ...mapGetters({
-      interventionById: 'interventionsData/interventionById',
+      INTERVENTIONById: 'INTERVENTION_Data/INTERVENTIONById',
     }),
   },
   methods: {
     ...mapActions({
-      readLevelHandler: 'levelsUI/readLevelHandler',
+      readData: 'dataModal/readData',
     }),
     clickOnLevelHandler() {
-      this.readLevelHandler({ levelId: this.levelId });
+      this.readData({ dataId: this.id, dataType: dataTypesDict.level });
     },
   },
 };

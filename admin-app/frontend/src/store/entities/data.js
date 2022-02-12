@@ -1,14 +1,14 @@
 import {
   Entity, postNewEntity, putEntity, deleteEntity,
 } from './utils';
-import { modalModesDict } from '../constants';
+import { dataTypesDict, modalModesDict } from '../constants';
 
 const entitiesData = {
   namespaced: true,
   state: () => ({
     entities: [
       {
-        entityId: 'f77a7d3f-fb7f-434e-8be3-32b74269083c',
+        id: 'f77a7d3f-fb7f-434e-8be3-32b74269083c',
         name: 'Aachen',
         description: 'Some description',
         levelId: '5a93459f-f23d-44e6-a112-c41e90473a2d',
@@ -16,7 +16,7 @@ const entitiesData = {
         tagIds: ['2b6e7572-c026-48bf-aa54-0201d1a98e39'],
       },
       {
-        entityId: 'afd8874d-ac52-4508-8351-f35f8f7e28a0',
+        id: 'afd8874d-ac52-4508-8351-f35f8f7e28a0',
         name: 'Sinop',
         description: 'Some description',
         levelId: '5a93459f-f23d-44e6-a112-c41e90473a2d',
@@ -24,7 +24,7 @@ const entitiesData = {
         tagIds: [],
       },
       {
-        entityId: '0b38df2a-84f5-4066-9c0c-f447b93e8278',
+        id: '0b38df2a-84f5-4066-9c0c-f447b93e8278',
         name: 'Nizzaallee',
         description: 'Some description',
         levelId: 'e7a03934-90b9-405b-807b-3f748b15ae69',
@@ -32,7 +32,7 @@ const entitiesData = {
         tagIds: [],
       },
       {
-        entityId: '3d29c7aa-f422-41bc-99ae-35480a1f415e',
+        id: '3d29c7aa-f422-41bc-99ae-35480a1f415e',
         name: 'Mies van der Rohe Straße',
         description: 'Some description',
         levelId: 'e7a03934-90b9-405b-807b-3f748b15ae69',
@@ -40,7 +40,7 @@ const entitiesData = {
         tagIds: [],
       },
       {
-        entityId: '327ac9b8-ab56-47e0-a1c5-bd4c978645a0',
+        id: '327ac9b8-ab56-47e0-a1c5-bd4c978645a0',
         name: 'Atatürk Caddesi',
         description: 'Some description',
         levelId: 'e7a03934-90b9-405b-807b-3f748b15ae69',
@@ -48,7 +48,7 @@ const entitiesData = {
         tagIds: [],
       },
       {
-        entityId: 'b046cde7-4f18-4fc9-9b13-eb49c98f226c',
+        id: 'b046cde7-4f18-4fc9-9b13-eb49c98f226c',
         name: 'Eine 4er WG',
         description: 'Some description',
         levelId: 'd1faef12-cf15-4b5e-9637-b4ffbd156954',
@@ -70,18 +70,18 @@ const entitiesData = {
     getEntityTags: ({ entityTags }) => entityTags,
     getLoading: ({ loading }) => loading,
 
-    // sort by entityId for consistency
+    // sort by id for consistency
     allEntitiesByLevelId:
-      (_, { getEntities }) => (levelId) => getEntities.filter((e) => e.levelId === levelId).sort((a, b) => a.entityId - b.entityId),
+      (_, { getEntities }) => ({ levelId }) => getEntities.filter((e) => e.levelId === levelId).sort((a, b) => a.id - b.id),
 
     verticalOrderByEntityId:
-      (_, { allEntitiesByLevelId }) => (entityId, levelId) => allEntitiesByLevelId(levelId).findIndex((e) => e.entityId === entityId),
+      (_, { allEntitiesByLevelId }) => ({ entityId, levelId }) => allEntitiesByLevelId({ levelId }).findIndex((e) => e.id === entityId),
 
     maxVerticalOrderOfChildren:
-      (_, { allEntitiesByLevelId }, rootState, rootGetters) => (entityId, levelId) => {
-        const allEntitiesInLowerLevel = allEntitiesByLevelId(
-          rootGetters['levelsData/getLevels'].find((l) => l.upperLevelId === levelId).levelId,
-        );
+      (_, { allEntitiesByLevelId }, rootState, rootGetters) => ({ entityId, levelId }) => {
+        const allEntitiesInLowerLevel = allEntitiesByLevelId({
+          levelId: rootGetters['LEVEL_Data/getLevels'].find((l) => l.upperLevelId === levelId)?.id,
+        });
         const lowerLevelContainsChildren = allEntitiesInLowerLevel.some(
           (e) => e.upperEntityId === entityId,
         );
@@ -92,10 +92,10 @@ const entitiesData = {
           : -1;
       },
     minVerticalOrderOfChildren:
-      (_, { allEntitiesByLevelId }, rootState, rootGetters) => (entityId, levelId) => {
-        const allEntitiesInLowerLevel = allEntitiesByLevelId(
-          rootGetters['levelsData/getLevels'].find((l) => l.upperLevelId === levelId).levelId,
-        );
+      (_, { allEntitiesByLevelId }, rootState, rootGetters) => ({ entityId, levelId }) => {
+        const allEntitiesInLowerLevel = allEntitiesByLevelId({
+          levelId: rootGetters['LEVEL_Data/getLevels'].find((l) => l.upperLevelId === levelId)?.id,
+        });
         const lowerLevelContainsChildren = allEntitiesInLowerLevel.some(
           (e) => e.upperEntityId === entityId,
         );
@@ -105,17 +105,17 @@ const entitiesData = {
       },
 
     hasDescendantsById:
-      (_, { getEntities }) => (entityId) => getEntities.some((e) => e.upperEntityId === entityId),
+      (_, { getEntities }) => ({ id }) => getEntities.some((e) => e.upperEntityId === id),
 
     hasParentByUpperEntityId:
-      (_, { getEntities }) => (upperEntityId) => upperEntityId && getEntities.some((e) => e.entityId === upperEntityId),
+      (_, { getEntities }) => ({ upperEntityId }) => upperEntityId && getEntities.some((e) => e.id === upperEntityId),
 
-    entityById:
-      (_, { getEntities }) => ({ entityId }) => getEntities.find((i) => i.entityId === entityId),
-    entityTagById:
+    ENTITYById:
+      (_, { getEntities }) => ({ id }) => getEntities.find((i) => i.id === id),
+    tagById:
       (_, { getEntityTags }) => ({ tagId }) => getEntityTags.find((t) => t.tagId === tagId),
 
-    /* returns "lines" with the schema {levelId, entityId, indentation, y0, y1} */
+    /* returns "lines" with the schema {id, id, indentation, y0, y1} */
     calculatedLines: (
       _,
       {
@@ -129,16 +129,25 @@ const entitiesData = {
       rootGetters,
     ) => {
       const lines = [];
-      rootGetters['levelsData/sortedLevels'].forEach((h) => {
-        const allParentsInLevel = allEntitiesByLevelId(h.levelId).filter((e) => hasDescendantsById(e.entityId));
+      rootGetters['LEVEL_Data/sortedLevels'].forEach((l) => {
+        const allParentsInLevel = allEntitiesByLevelId({ levelId: l.id }).filter((e) => hasDescendantsById({ id: e.id }));
         allParentsInLevel.forEach((p, index) => {
-          const parentVerticalOrder = verticalOrderByEntityId(p.entityId, p.levelId);
+          const parentVerticalOrder = verticalOrderByEntityId({
+            entityId: p.id,
+            levelId: p.levelId,
+          });
           const newLine = {
-            levelId: h.levelId,
-            entityId: p.entityId,
+            levelId: l.id,
+            entityId: p.id,
             indentation: index,
-            y0: Math.min(minVerticalOrderOfChildren(p.entityId, h.levelId), parentVerticalOrder),
-            y1: Math.max(maxVerticalOrderOfChildren(p.entityId, h.levelId), parentVerticalOrder),
+            y0: Math.min(
+              minVerticalOrderOfChildren({ entityId: p.id, levelId: l.id }),
+              parentVerticalOrder,
+            ),
+            y1: Math.max(
+              maxVerticalOrderOfChildren({ entityId: p.id, levelId: l.id }),
+              parentVerticalOrder,
+            ),
           };
           lines.push(newLine);
         });
@@ -147,23 +156,23 @@ const entitiesData = {
     },
 
     calculatedLinesByLevelId:
-      (_, { calculatedLines }, rootState, rootGetters) => (levelId) => calculatedLines.filter(
-        (li) => rootGetters['levelsData/getLevels'].find((le) => le.upperLevelId === li.levelId)
-          .levelId === levelId,
+      (_, { calculatedLines }, rootState, rootGetters) => ({ levelId }) => calculatedLines.filter(
+        (li) => rootGetters['LEVEL_Data/getLevels'].find((le) => le.upperLevelId === li.levelId).id
+            === levelId,
       ),
 
     lineByEntityId:
-      (_, { calculatedLines }) => (entityId) => calculatedLines.find((l) => l.entityId === entityId) || {
+      (_, { calculatedLines }) => ({ id }) => calculatedLines.find((l) => l.entityId === id) || {
         indentation: 0,
       },
   },
   mutations: {
     addEntity: (state, {
-      entityId, name, description, levelId, upperEntityId, tagIds,
+      id, name, description, levelId, upperEntityId, tagIds,
     }) => {
       state.entities.push(
         new Entity({
-          entityId,
+          id,
           name,
           description,
           levelId,
@@ -173,13 +182,13 @@ const entitiesData = {
       );
     },
     replaceEntity: (state, {
-      entityId, name, description, levelId, upperEntityId, tagIds,
+      id, name, description, levelId, upperEntityId, tagIds,
     }) => {
       state.entities.splice(
-        state.entities.findIndex((i) => i.entityId === entityId),
+        state.entities.findIndex((i) => i.id === id),
         1,
         new Entity({
-          entityId,
+          id,
           name,
           description,
           levelId,
@@ -188,9 +197,9 @@ const entitiesData = {
         }),
       );
     },
-    deleteEntity: (state, { entityId }) => {
+    deleteEntity: (state, { id }) => {
       state.entities.splice(
-        Array.from(state.entities).findIndex((i) => i.entityId === entityId),
+        Array.from(state.entities).findIndex((i) => i.id === id),
         1,
       );
     },
@@ -203,14 +212,15 @@ const entitiesData = {
     },
   },
   actions: {
-    APIpostNewEntity: async ({ commit, dispatch }, entityDraft) => {
+    APIpost: async ({ commit, dispatch }, entityDraft) => {
       commit('setLoading', { newValue: true });
       const postResponse = await postNewEntity(entityDraft);
       commit('addEntity', postResponse);
       dispatch(
-        'entitiesUI/readEntityHandler',
+        'dataModal/readData',
         {
-          entityId: postResponse.entityId,
+          dataId: postResponse.id,
+          dataType: dataTypesDict.entity,
         },
         {
           root: true,
@@ -219,14 +229,15 @@ const entitiesData = {
 
       commit('setLoading', { newValue: false });
     },
-    APIputEntity: async ({ commit, dispatch }, entityDraft) => {
+    APIput: async ({ commit, dispatch }, entityDraft) => {
       commit('setLoading', { newValue: true });
       const putResponse = await putEntity(entityDraft);
       commit('replaceEntity', putResponse);
       dispatch(
-        'entitiesUI/readEntityHandler',
+        'dataModal/readData',
         {
-          entityId: putResponse.entityId,
+          dataId: putResponse.id,
+          dataType: dataTypesDict.entity,
         },
         {
           root: true,
@@ -234,19 +245,19 @@ const entitiesData = {
       );
       commit('setLoading', { newValue: false });
     },
-    APIdeleteEntity: async ({ commit, dispatch, rootGetters }) => {
+    APIdelete: async ({ commit, dispatch }, { id }) => {
       commit('setLoading', { newValue: true });
       const deleteResponse = await deleteEntity();
       if (deleteResponse.errors.length > 0) {
         commit('setLoading', { newValue: false });
       }
       commit('deleteEntity', {
-        entityId: rootGetters['entitiesUI/getEntityIdInFocus'],
+        id,
       });
-      commit('entitiesUI/setEntityIdInFocus', { newValue: null }, { root: true });
-      commit('entitiesUI/setEntityModalMode', { newValue: modalModesDict.read }, { root: true });
+      commit('dataModal/setDataIdInFocus', { newValue: null }, { root: true });
+      commit('dataModal/setMode', { newValue: modalModesDict.read }, { root: true });
       dispatch(
-        'entitiesUI/abortReadEntityHandler',
+        'dataModal/abortReadData',
         {},
         {
           root: true,

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-if="entityHasParent(upperEntityId) && index !== 0"
+      v-if="entityHasParent({ upperEntityId }) && index !== 0"
       class="entity-connection-left-line"
       :style="`width: ${60 - leftLineOfEntity.indentation * 12}px; left: ${
         -60 + leftLineOfEntity.indentation * 12
@@ -10,7 +10,7 @@
       }px; z-index: ${leftLineOfEntity.indentation}`"
     ></div>
     <div
-      v-if="hasDescendants(entityId)"
+      v-if="hasDescendants({ id })"
       class="entity-connection-right-line"
       :style="`width: ${72 + rightLineOfEntity.indentation * 12}px; left: calc(12rem - 26px + ${
         rightLineOfEntity.indentation * 6
@@ -39,11 +39,11 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   entityName: 'Entity',
   props: {
-    levelId: {
+    id: {
       required: true,
       validator: (e) => uuidValidate(e) || e === null,
     },
-    entityId: {
+    levelId: {
       required: true,
       validator: (e) => uuidValidate(e) || e === null,
     },
@@ -57,24 +57,24 @@ export default {
   },
   computed: {
     ...mapGetters({
-      entityHasParent: 'entitiesData/hasParentByUpperEntityId',
-      hasDescendants: 'entitiesData/hasDescendantsById',
+      entityHasParent: 'ENTITY_Data/hasParentByUpperEntityId',
+      hasDescendants: 'ENTITY_Data/hasDescendantsById',
       lineColors: 'getLineColors',
-      lineOfEntity: 'entitiesData/lineByEntityId',
+      lineByEntityId: 'ENTITY_Data/lineByEntityId',
     }),
     leftLineOfEntity() {
-      return this.lineOfEntity(this.upperEntityId);
+      return this.lineByEntityId({ id: this.upperEntityId });
     },
     rightLineOfEntity() {
-      return this.lineOfEntity(this.entityId);
+      return this.lineByEntityId({ id: this.id });
     },
   },
   methods: {
     ...mapActions({
-      readEntityHandler: 'entitiesUI/readEntityHandler',
+      readData: 'dataModal/readData',
     }),
     clickHandler() {
-      this.readEntityHandler({ entityId: this.entityId });
+      this.readData({ dataId: this.id, dataType: 'ENTITY' });
     },
   },
 };

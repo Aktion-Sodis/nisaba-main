@@ -110,7 +110,7 @@ export default {
   methods: {
     ...mapActions({
       deleteSession: 'auth/deleteSession',
-      showToBeImplementedFeedback: 'feedbackModule/showToBeImplementedFeedback',
+      showToBeImplementedFeedback: 'FEEDBACK_UI/showToBeImplementedFeedback',
     }),
     logout() {
       this.deleteSession();

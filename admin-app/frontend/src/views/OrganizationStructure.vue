@@ -4,16 +4,16 @@
     <div class="my-8 d-flex">
       <div
         v-for="(level, index) in levels"
-        :key="level.levelId"
+        :key="level.id"
         class="column-wrapper px-16"
         :class="level.upperLevelId === null || 'dotted-left-border'"
       >
         <LevelColumnHeader
-          :levelId="level.levelId"
+          :id="level.id"
           :allowedInterventions="level.allowedInterventions"
           :name="level.name"
         />
-        <EntitiesColumn :levelId="level.levelId" :index="index" />
+        <EntitiesColumn :levelId="level.id" :index="index" />
       </div>
       <div class="column-wrapper dotted-left-border d-flex align-center justify-center">
         <LevelModal v-if="showLevelModal" />
@@ -34,6 +34,7 @@ import LevelModal from '../components/organizationStructure/LevelModal.vue';
 import EntityModal from '../components/organizationStructure/EntityModal.vue';
 import EntitiesColumn from '../components/organizationStructure/EntitiesColumn.vue';
 import LevelColumnHeader from '../components/organizationStructure/LevelColumnHeader.vue';
+import { dataTypesDict } from '../store/constants';
 
 export default {
   name: 'OrganizationStructure',
@@ -51,10 +52,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      levels: 'levelsData/sortedLevels',
-      interventionById: 'interventionsData/interventionById',
-      isLevelModalDisplayed: 'levelsUI/getIsLevelModalDisplayed',
-      entityModalIsDisplayed: 'entitiesUI/getIsEntityModalDisplayed',
+      levels: 'LEVEL_Data/sortedLevels',
+      isLevelModalDisplayed: 'dataModal/getIsDisplayed',
+      entityModalIsDisplayed: 'dataModal/getIsDisplayed',
     }),
   },
   watch: {
@@ -63,10 +63,10 @@ export default {
   },
   methods: {
     ...mapActions({
-      newLevelHandler: 'levelsUI/newLevelHandler',
+      newLevelHandler: 'dataModal/createData',
     }),
     clickOnAddNewLevel() {
-      this.newLevelHandler();
+      this.newLevelHandler({ dataType: dataTypesDict.level });
     },
     async destroyLevelModalAfterDelay(newValue) {
       // If closed, wait for 500, if still closed, destroy component instance

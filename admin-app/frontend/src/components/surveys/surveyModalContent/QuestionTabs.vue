@@ -1,11 +1,5 @@
 <template>
-  <v-tabs
-    background-color="grey lighten-3"
-    show-arrows
-    centered
-    center-active
-    v-model="iQ"
-  >
+  <v-tabs background-color="grey lighten-3" show-arrows centered center-active v-model="iQ">
     <v-tabs-slider color="primary"></v-tabs-slider>
     <v-tab v-for="(q, i) in questions" :key="i" :value="i">
       <v-icon v-if="i === nQuestions - 1" large> mdi-plus </v-icon>
@@ -42,6 +36,9 @@ export default {
       questionTypesIconDict,
     };
   },
+  mounted() {
+    this.iQ = Math.max(this.nQuestions - 1, 0);
+  },
   watch: {
     iQ(newVal) {
       // update the index in state only if it is caused by iQ
@@ -53,14 +50,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      questions: 'questionsUI/questionWithAnswersDrafts',
-      iQuestions: 'questionsUI/getIQuestions',
-      nQuestions: 'questionsUI/nQuestions',
+      questions: 'QUESTION_UI/questionWithAnswersDrafts',
+      iQuestions: 'QUESTION_UI/getIQuestions',
+      nQuestions: 'QUESTION_UI/nQuestions',
     }),
   },
   methods: {
     ...mapMutations({
-      setIQuestions: 'questionsUI/setIQuestions',
+      setIQuestions: 'QUESTION_UI/setIQuestions',
     }),
   },
 };

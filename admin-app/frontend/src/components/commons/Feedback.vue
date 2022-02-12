@@ -13,15 +13,15 @@ export default {
   name: 'Feedback',
   computed: {
     ...mapGetters({
-      type: 'feedbackModule/getType',
-      text: 'feedbackModule/getText',
-      isDisplayed: 'feedbackModule/getIsDisplayed',
-      duration: 'feedbackModule/getDuration',
+      type: 'FEEDBACK_UI/getType',
+      text: 'FEEDBACK_UI/getText',
+      isDisplayed: 'FEEDBACK_UI/getIsDisplayed',
+      duration: 'FEEDBACK_UI/getDuration',
     }),
   },
   methods: {
     ...mapMutations({
-      setIsDisplayed: 'feedbackModule/setIsDisplayed',
+      setIsDisplayed: 'FEEDBACK_UI/setIsDisplayed',
     }),
   },
   watch: {

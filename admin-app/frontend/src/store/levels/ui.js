@@ -18,8 +18,8 @@ const levelsUI = {
     getIsLevelModalDisplayed: ({ isLevelModalDisplayed }) => isLevelModalDisplayed,
     getLevelModalMode: ({ levelModalMode }) => levelModalMode,
 
-    levelInFocus: (state, { getLevelIdInFocus }, rootState, rootGetters) => rootGetters['levelsData/levelById']({
-      levelId: getLevelIdInFocus,
+    levelInFocus: (state, { getLevelIdInFocus }, rootState, rootGetters) => rootGetters['LEVEL_Data/LEVELById']({
+      id: getLevelIdInFocus,
     }) ?? null,
   },
   mutations: {
@@ -27,11 +27,11 @@ const levelsUI = {
     setLevelDraft: (
       state,
       {
-        levelId, name, description, upperLevelId, allowedInterventions, tagIds,
+        id, name, description, upperLevelId, allowedInterventions, tagIds,
       },
     ) => {
       state.levelDraft = new Level({
-        levelId,
+        id,
         name,
         description,
         upperLevelId,
@@ -53,9 +53,9 @@ const levelsUI = {
     },
   },
   actions: {
-    readLevelHandler: ({ commit }, { levelId }) => {
+    readLevelHandler: ({ commit }, { id }) => {
       commit('setLevelModalMode', { newValue: modalModesDict.read });
-      commit('setLevelIdInFocus', { newValue: levelId });
+      commit('setLevelIdInFocus', { newValue: id });
       commit('resetLevelDraft');
       commit('setIsLevelModalDisplayed', { newValue: true });
     },
@@ -76,10 +76,10 @@ const levelsUI = {
       commit('resetLevelDraft');
       commit('setLevelModalMode', { newValue: modalModesDict.read });
     },
-    editLevelHandler: ({ commit, rootGetters }, { levelId }) => {
+    editLevelHandler: ({ commit, rootGetters }, { id }) => {
       commit('setLevelModalMode', { newValue: modalModesDict.edit });
-      commit('setLevelIdInFocus', { newValue: levelId });
-      const level = rootGetters['levelsData/levelById']({ levelId });
+      commit('setLevelIdInFocus', { newValue: id });
+      const level = rootGetters['LEVEL_Data/LEVELById']({ id });
       commit('setLevelDraft', level);
       commit('setIsLevelModalDisplayed', { newValue: true });
     },
@@ -96,7 +96,7 @@ const levelsUI = {
         // 1. POST this in the ./data.js
         // 2. Await the response DB object
         // 3. Put the response DB object to levels
-        await dispatch('levelsData/APIpostNewLevel', levelDraft, {
+        await dispatch('LEVEL_Data/APIpost', levelDraft, {
           root: true,
         });
         return;
@@ -105,8 +105,7 @@ const levelsUI = {
         // 1. POST this in the ./data.js
         // 2. Await the response DB object
         // 3. Put the response DB object to levels
-        console.log(JSON.stringify({ levelDraft }));
-        await dispatch('levelsData/APIputLevel', levelDraft, { root: true });
+        await dispatch('LEVEL_Data/APIput', levelDraft, { root: true });
       }
     },
     deleteLevelHandler: async ({ dispatch, getters }) => {
@@ -115,7 +114,7 @@ const levelsUI = {
       // 1. DELETE this in the ./data.js
       // 2. Await the response DB object
       // 3. Put the response DB object to levels
-      await dispatch('levelsData/APIdeleteLevel', getters.getLevelIdInFocus, {
+      await dispatch('LEVEL_Data/APIdelete', getters.getLevelIdInFocus, {
         root: true,
       });
     },

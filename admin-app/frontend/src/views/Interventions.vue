@@ -11,7 +11,12 @@
           <div style="height: 100%" class="pa-2">
             <div style="height: 100%" class="d-flex flex-column justify-space-around">
               <div class="d-flex flex-column align-center">
-                <v-btn fab x-large color="primary" @click="newInterventionHandler">
+                <v-btn
+                  fab
+                  x-large
+                  color="primary"
+                  @click="newInterventionHandler({ dataType: 'INTERVENTION' })"
+                >
                   <v-icon dark> mdi-wrench </v-icon>
                 </v-btn>
                 <h2 class="mt-2 mb-4">
@@ -19,7 +24,7 @@
                 </h2>
               </div>
               <div class="d-flex flex-column align-center">
-                <v-btn fab small color="primary" @click="newSurveyHandler">
+                <v-btn fab small color="primary" @click="newSurveyHandler({ dataType: 'SURVEY' })">
                   <v-icon dark> mdi-crosshairs-question </v-icon>
                 </v-btn>
                 <h3 class="mt-2">{{ $t('interventions.newSurvey') }}</h3>
@@ -29,14 +34,14 @@
         </v-col>
         <v-col
           v-for="intervention in interventions"
-          :key="intervention.interventionId"
+          :key="intervention.id"
           cols="12"
           sm="6"
           md="4"
           lg="3"
         >
           <Intervention
-            :interventionId="intervention.interventionId"
+            :id="intervention.id"
             :interventionName="intervention.name"
             :interventionDescription="intervention.description"
             :interventionTagIds="intervention.tagIds"
@@ -66,9 +71,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      interventions: 'interventionsData/getInterventions',
-      isInterventionModalDisplayed: 'interventionsUI/getIsInterventionModalDisplayed',
-      isSurveyModalDisplayed: 'surveysUI/getIsSurveyModalDisplayed',
+      interventions: 'INTERVENTION_Data/getInterventions',
+      isInterventionModalDisplayed: 'dataModal/getIsDisplayed',
+      isSurveyModalDisplayed: 'dataModal/getIsDisplayed',
     }),
   },
   watch: {
@@ -78,8 +83,8 @@ export default {
 
   methods: {
     ...mapActions({
-      newSurveyHandler: 'surveysUI/newSurveyHandler',
-      newInterventionHandler: 'interventionsUI/newInterventionHandler',
+      newSurveyHandler: 'dataModal/createData',
+      newInterventionHandler: 'dataModal/createData',
     }),
     // If closed, wait for 500, if still closed, destroy component instance
     async destroyInterventionModalAfterDelay(newValue) {

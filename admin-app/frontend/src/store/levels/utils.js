@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class EmptyLevel {
   constructor() {
-    this.levelId = uuidv4();
+    this.id = uuidv4();
     this.name = '';
     this.description = '';
     this.upperLevelId = null;
@@ -13,9 +13,9 @@ export class EmptyLevel {
 
 export class Level {
   constructor({
-    levelId, name, upperLevelId, tagIds, allowedInterventions, description,
+    id, name, upperLevelId, tagIds, allowedInterventions, description,
   }) {
-    this.levelId = levelId ?? uuidv4();
+    this.id = id ?? uuidv4();
     this.name = name;
     this.description = description;
     this.upperLevelId = upperLevelId;

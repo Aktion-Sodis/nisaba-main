@@ -1,6 +1,6 @@
 import { EmptyQuestion, EmptyAnswer } from './utils';
 
-const questionsUI = {
+const QUESTION_UI = {
   namespaced: true,
   state: () => ({
     iQuestions: 0,
@@ -26,7 +26,8 @@ const questionsUI = {
       ...getQuestionDrafts[getIQuestions],
       answerDrafts: getAnswerDrafts[getIQuestions],
     }),
-    questionTextInFocus: (state, { getIQuestions }, rootState, rootGetters) => rootGetters['surveysUI/surveyInFocus']?.questions[getIQuestions] ?? '',
+    questionTextInFocus: (state, { getIQuestions }, rootState, rootGetters) => rootGetters['SURVEY_Data/SURVEYById']({ id: rootGetters['modalData/getDataIdInFocus'] })
+      ?.questions[getIQuestions] ?? '',
   },
   mutations: {
     /* INDEX OPERATIONS */
@@ -143,4 +144,4 @@ const questionsUI = {
   },
 };
 
-export default questionsUI;
+export default QUESTION_UI;

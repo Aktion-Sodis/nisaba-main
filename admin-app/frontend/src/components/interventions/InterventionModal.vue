@@ -238,7 +238,7 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
-import { modalModesDict } from '../../store/constants';
+import { modalModesDict, dataTypesDict } from '../../store/constants';
 
 const interventionDescriptionMaxChar = Math.max(
   parseInt(process.env.VUE_APP_INTERVENTION_DESCRIPTION_MAX_CHAR, 10),
@@ -253,7 +253,7 @@ export default {
       rules: {
         maxChar: (value) => value.length <= interventionDescriptionMaxChar || this.maxCharExceededi18n,
       },
-      interventionId: null,
+      id: null,
       name: '',
       description: '',
       tagIds: [],
@@ -266,20 +266,27 @@ export default {
   },
   computed: {
     ...mapGetters({
-      interventionModalMode: 'interventionsUI/getInterventionModalMode',
-      isInterventionModalDisplayed: 'interventionsUI/getIsInterventionModalDisplayed',
-      interventionIdInFocus: 'interventionsUI/getInterventionIdInFocus',
-      interventionDraft: 'interventionsUI/getInterventionDraft',
-      interventionInFocus: 'interventionsUI/interventionInFocus',
+      dataModalMode: 'dataModal/getMode',
+      isDataModalDisplayed: 'dataModal/getIsDisplayed',
+      dataType: 'dataModal/getDataType',
+      dataIdInFocus: 'dataModal/getDataIdInFocus',
+      interventionDraft: 'dataModal/getDataDraft',
+      INTERVENTIONById: 'INTERVENTION_Data/INTERVENTIONById',
 
-      allInterventionTags: 'interventionsData/getInterventionTags',
-      tagById: 'interventionsData/interventionTagById',
-      interventionContentTagById: 'interventionsData/interventionContentTagById',
+      allInterventionTags: 'INTERVENTION_Data/getInterventionTags',
+      tagById: 'INTERVENTION_Data/tagById',
+      interventionContentTagById: 'INTERVENTION_Data/interventionContentTagById',
     }),
+    isInterventionModalDisplayed() {
+      return this.isDataModalDisplayed && this.dataType === dataTypesDict.intervention;
+    },
     maxCharExceededi18n() {
       return this.$t('general.form.maxCharExceeded', {
         maxChar: interventionDescriptionMaxChar,
       });
+    },
+    interventionInFocus() {
+      return this.INTERVENTIONById({ id: this.dataIdInFocus });
     },
     interventionFormIsInvalid() {
       return !!this.name;
@@ -295,53 +302,61 @@ export default {
       return this.interventionInFocus.contents.filter((c) => c.type === 'Image') || [];
     },
     edit() {
-      return this.interventionModalMode === modalModesDict.edit;
+      return this.dataModalMode === modalModesDict.edit;
     },
     create() {
-      return this.interventionModalMode === modalModesDict.create;
+      return this.dataModalMode === modalModesDict.create;
     },
     read() {
-      return this.interventionModalMode === modalModesDict.read;
+      return this.dataModalMode === modalModesDict.read;
     },
   },
   methods: {
     ...mapActions({
-      saveInterventionHandler: 'interventionsUI/saveInterventionHandler',
-      deleteInterventionHandler: 'interventionsUI/deleteInterventionHandler',
-      abortReadInterventionHandler: 'interventionsUI/abortReadInterventionHandler',
-      abortNewInterventionHandler: 'interventionsUI/abortNewInterventionHandler',
-      abortEditInterventionHandler: 'interventionsUI/abortEditInterventionHandler',
-      editInterventionHandler: 'interventionsUI/editInterventionHandler',
-      showToBeImplementedFeedback: 'feedbackModule/showToBeImplementedFeedback',
+      saveInterventionHandler: 'dataModal/saveData',
+      deleteInterventionHandler: 'dataModal/deleteData',
+      abortReadInterventionHandler: 'dataModal/abortReadData',
+      abortNewInterventionHandler: 'dataModal/abortCreateData',
+      abortEditInterventionHandler: 'dataModal/abortEditData',
+      editInterventionHandler: 'dataModal/editData',
+      showToBeImplementedFeedback: 'FEEDBACK_UI/showToBeImplementedFeedback',
     }),
     ...mapMutations({
-      setInterventionDraft: 'interventionsUI/setInterventionDraft',
+      setINTERVENTIONDraft: 'dataModal/setINTERVENTIONDraft',
     }),
     deleteHandler() {
       if (this.read) return;
-      this.deleteInterventionHandler();
+      this.deleteInterventionHandler({ dataType: dataTypesDict.intervention });
     },
     closeHandler() {
       if (this.read) this.abortReadInterventionHandler();
-      else if (this.create) this.abortNewInterventionHandler();
-      else if (this.edit) this.abortEditInterventionHandler();
+      else if (this.create) this.abortNewInterventionHandler({ dataType: dataTypesDict.intervention });
+      else if (this.edit) {
+        this.abortEditInterventionHandler({
+          dataId: this.dataIdInFocus,
+          dataType: dataTypesDict.intervention,
+        });
+      }
     },
     editHandler() {
-      this.editInterventionHandler({ interventionId: this.interventionIdInFocus });
+      this.editInterventionHandler({
+        dataId: this.dataIdInFocus,
+        dataType: dataTypesDict.intervention,
+      });
     },
     escHandler() {
       this.closeInterventionModal();
     },
     async submitHandler() {
-      this.setInterventionDraft({
-        interventionId: this.interventionIdInFocus,
+      this.setINTERVENTIONDraft({
+        id: this.dataIdInFocus,
         name: this.name,
         description: this.description,
         tagIds: this.tagIds,
         contents: this.contents,
       });
       await this.$nextTick();
-      this.saveInterventionHandler();
+      this.saveInterventionHandler({ dataType: dataTypesDict.intervention });
     },
     selectImg() {
       this.showToBeImplementedFeedback();

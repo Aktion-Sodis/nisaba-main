@@ -20,9 +20,9 @@ const surveysUI = {
     getSurveyModalCompletionIndex: ({ surveyModalCompletionIndex }) => surveyModalCompletionIndex,
     getSurveyDraft: ({ surveyDraft }) => surveyDraft,
     getLoading: ({ loading }) => loading,
-    surveyInFocus: (state, { getSurveyIdInFocus }, rootState, rootGetters) => getSurveyIdInFocus && (rootGetters['surveysData/surveyById'](getSurveyIdInFocus) ?? null),
+    surveyInFocus: (state, { getSurveyIdInFocus }, rootState, rootGetters) => getSurveyIdInFocus
+      && (rootGetters['SURVEY_Data/SURVEYById']({ id: getSurveyIdInFocus }) ?? null),
     surveyNameInFocus: (_, { surveyIdInFocus }) => surveyIdInFocus?.name ?? '',
-    tagsInFocus: (state, { surveyInFocus }, rootState, rootGetters) => (surveyInFocus && surveyInFocus.tags.map((t) => rootGetters['surveysData/tagById'](t))) ?? [],
   },
   mutations: {
     /* CREATE, UPDATE, DELETE */
@@ -50,11 +50,11 @@ const surveysUI = {
     setSurveyDraft: (
       state,
       {
-        surveyId, name, description, tags, type, questionIds, creationDate, lastEditDate,
+        id, name, description, tags, type, questionIds, creationDate, lastEditDate,
       },
     ) => {
       state.surveyDraft = new Survey({
-        surveyId,
+        id,
         name,
         description,
         type,
@@ -69,10 +69,10 @@ const surveysUI = {
     },
   },
   actions: {
-    readSurveyHandler: ({ commit }, { surveyId }) => {
+    readSurveyHandler: ({ commit }, { id }) => {
       commit('setSurveyModalMode', { newValue: modalModesDict.read });
       commit('setSurveyModalCompletionIndex', { newValue: 1 });
-      commit('setSurveyIdInFocus', { newValue: surveyId });
+      commit('setSurveyIdInFocus', { newValue: id });
       commit('setIsSurveyModalDisplayed', { newValue: true });
     },
     abortReadSurveyHandler: ({ commit }) => {
@@ -93,10 +93,10 @@ const surveysUI = {
       commit('resetSurveyDraft');
       commit('setSurveyModalMode', { newValue: modalModesDict.read });
     },
-    editSurveyHandler: ({ commit, rootGetters }, { surveyId }) => {
+    editSurveyHandler: ({ commit, rootGetters }, { id }) => {
       commit('setSurveyModalMode', { newValue: modalModesDict.edit });
-      commit('setSurveyIdInFocus', { newValue: surveyId });
-      const survey = rootGetters['surveysData/surveyById']({ surveyId });
+      commit('setSurveyIdInFocus', { newValue: id });
+      const survey = rootGetters['SURVEY_Data/SURVEYById']({ id });
       commit('setSurveyDraft', survey);
       commit('setSurveyModalCompletionIndex', { newValue: 1 });
       commit('setIsSurveyModalDisplayed', { newValue: true });
@@ -117,17 +117,15 @@ const surveysUI = {
         // 1. POST this in the ./data.js
         // 2. Await the response DB object
         // 3. Put the response DB object to surveys
-        const createdSurvey = await dispatch('surveysData/APIpostNewSurvey', surveyDraft, {
+        const createdSurvey = await dispatch('SURVEY_Data/APIpost', surveyDraft, {
           root: true,
         });
-        commit('surveysData/addSurvey', createdSurvey, { root: true });
-        commit('setSurveyIdInFocus', { newValue: createdSurvey.surveyId });
+        commit('SURVEY_Data/addSurvey', createdSurvey, { root: true });
+        commit('setSurveyIdInFocus', { newValue: createdSurvey.id });
         commit('setSurveyModalMode', { newValue: modalModesDict.read });
         commit('setLoading', { newValue: false });
       }
     },
-
-    publishSurveyHandler: () => {},
   },
 };
 

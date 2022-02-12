@@ -16,13 +16,13 @@
 
 <script>
 import { validate as uuidValidate } from 'uuid';
-
 import { mapGetters, mapActions } from 'vuex';
+import { dataTypesDict } from '../../store/constants';
 
 export default {
   name: 'Intervention',
   props: {
-    interventionId: {
+    id: {
       required: true,
       validator: (e) => uuidValidate(e) || e === null,
     },
@@ -45,15 +45,15 @@ export default {
   },
   computed: {
     ...mapGetters({
-      tagById: 'interventionsData/interventionTagById',
+      tagById: 'INTERVENTION_Data/tagById',
     }),
   },
   methods: {
     clickHandler() {
-      this.readInterventionHandler({ interventionId: this.interventionId });
+      this.readData({ dataId: this.id, dataType: dataTypesDict.intervention });
     },
     ...mapActions({
-      readInterventionHandler: 'interventionsUI/readInterventionHandler',
+      readData: 'dataModal/readData',
     }),
   },
 };

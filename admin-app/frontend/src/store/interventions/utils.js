@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class EmptyIntervention {
   constructor() {
-    this.interventionId = uuidv4();
+    this.id = uuidv4();
     this.name = '';
     this.description = '';
     this.tagIds = [];
@@ -13,9 +13,9 @@ export class EmptyIntervention {
 
 export class Intervention {
   constructor({
-    interventionId, name, description, tagIds, contents,
+    id, name, description, tagIds, contents,
   }) {
-    this.interventionId = interventionId ?? uuidv4();
+    this.id = id ?? uuidv4();
     this.name = name ?? '';
     this.description = description ?? '';
     this.tagIds = tagIds ?? [];

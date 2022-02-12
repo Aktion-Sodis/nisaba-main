@@ -18,17 +18,17 @@ const interventionsUI = {
     getIsInterventionModalDisplayed: ({ isInterventionModalDisplayed }) => isInterventionModalDisplayed,
     getInterventionModalMode: ({ interventionModalMode }) => interventionModalMode,
 
-    interventionInFocus: (state, { getInterventionIdInFocus }, rootState, rootGetters) => rootGetters['interventionsData/interventionById']({
-      interventionId: getInterventionIdInFocus,
+    interventionInFocus: (state, { getInterventionIdInFocus }, rootState, rootGetters) => rootGetters['INTERVENTION_Data/INTERVENTIONById']({
+      id: getInterventionIdInFocus,
     }) ?? null,
   },
   mutations: {
     /* CREATE, UPDATE, DELETE */
-    setInterventionDraft: (state, {
-      interventionId, name, description, tagIds, contents,
+    setINTERVENTIONDraft: (state, {
+      id, name, description, tagIds, contents,
     }) => {
       state.interventionDraft = new Intervention({
-        interventionId,
+        id,
         name,
         description,
         tagIds,
@@ -49,9 +49,9 @@ const interventionsUI = {
     },
   },
   actions: {
-    readInterventionHandler: ({ commit }, { interventionId }) => {
+    readInterventionHandler: ({ commit }, { id }) => {
       commit('setInterventionModalMode', { newValue: modalModesDict.read });
-      commit('setInterventionIdInFocus', { newValue: interventionId });
+      commit('setInterventionIdInFocus', { newValue: id });
       commit('resetInterventionDraft');
       commit('setIsInterventionModalDisplayed', { newValue: true });
     },
@@ -72,11 +72,11 @@ const interventionsUI = {
       commit('resetInterventionDraft');
       commit('setInterventionModalMode', { newValue: modalModesDict.read });
     },
-    editInterventionHandler: ({ commit, rootGetters }, { interventionId }) => {
+    editInterventionHandler: ({ commit, rootGetters }, { id }) => {
       commit('setInterventionModalMode', { newValue: modalModesDict.edit });
-      commit('setInterventionIdInFocus', { newValue: interventionId });
-      const intervention = rootGetters['interventionsData/interventionById']({ interventionId });
-      commit('setInterventionDraft', intervention);
+      commit('setInterventionIdInFocus', { newValue: id });
+      const intervention = rootGetters['INTERVENTION_Data/INTERVENTIONById']({ id });
+      commit('setINTERVENTIONDraft', intervention);
       commit('setIsInterventionModalDisplayed', { newValue: true });
     },
     abortEditInterventionHandler: async ({ commit }) => {
@@ -92,7 +92,7 @@ const interventionsUI = {
         // 1. POST this in the ./data.js
         // 2. Await the response DB object
         // 3. Put the response DB object to interventions
-        await dispatch('interventionsData/APIpostNewIntervention', interventionDraft, {
+        await dispatch('INTERVENTION_Data/APIpost', interventionDraft, {
           root: true,
         });
         return;
@@ -101,7 +101,7 @@ const interventionsUI = {
         // 1. POST this in the ./data.js
         // 2. Await the response DB object
         // 3. Put the response DB object to interventions
-        await dispatch('interventionsData/APIputIntervention', interventionDraft, { root: true });
+        await dispatch('INTERVENTION_Data/APIput', interventionDraft, { root: true });
       }
     },
     deleteInterventionHandler: async ({ dispatch, getters }) => {
@@ -110,7 +110,7 @@ const interventionsUI = {
       // 1. DELETE this in the ./data.js
       // 2. Await the response DB object
       // 3. Put the response DB object to interventions
-      await dispatch('interventionsData/APIdeleteIntervention', getters.getInterventionIdInFocus, {
+      await dispatch('INTERVENTION_Data/APIpost', getters.getInterventionIdInFocus, {
         root: true,
       });
     },

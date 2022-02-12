@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      showToBeImplementedFeedback: 'feedbackModule/showToBeImplementedFeedback',
+      showToBeImplementedFeedback: 'FEEDBACK_UI/showToBeImplementedFeedback',
     }),
   },
 };

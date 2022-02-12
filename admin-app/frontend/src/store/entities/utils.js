@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class EmptyEntity {
   constructor() {
-    this.entityId = uuidv4();
+    this.id = uuidv4();
     this.name = '';
     this.description = '';
     this.levelId = '';
@@ -13,9 +13,9 @@ export class EmptyEntity {
 
 export class Entity {
   constructor({
-    entityId, name, description, levelId, upperEntityId, tagIds,
+    id, name, description, levelId, upperEntityId, tagIds,
   }) {
-    this.entityId = entityId ?? uuidv4();
+    this.id = id ?? uuidv4();
     this.name = name;
     this.description = description;
     this.levelId = levelId;
@@ -25,6 +25,6 @@ export class Entity {
 }
 
 // Mock API calls
-export const postNewEntity = async (levelDraft) => levelDraft;
-export const putEntity = async (levelDraft) => levelDraft;
+export const postNewEntity = async (x) => x;
+export const putEntity = async (x) => x;
 export const deleteEntity = async () => ({ errors: [] });

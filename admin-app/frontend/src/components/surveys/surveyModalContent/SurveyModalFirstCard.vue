@@ -129,12 +129,19 @@ export default {
   },
   computed: {
     ...mapGetters({
-      surveyModalMode: 'surveysUI/getSurveyModalMode',
-      surveyInFocus: 'surveysUI/surveyInFocus',
-      surveyDraft: 'surveysUI/getSurveyDraft',
-      allSurveyTags: 'surveysData/getSurveyTags',
-      tagsInFocus: 'surveysUI/tagsInFocus',
+      surveyModalMode: 'dataModal/getMode',
+      dataIdInFocus: 'dataModal/getDataIdInFocus',
+      surveyDraft: 'dataModal/getDataDraft',
+      SURVEYById: 'SURVEY_Data/SURVEYById',
+      allSurveyTags: 'SURVEY_Data/getSurveyTags',
+      tagById: 'SURVEY_Data/tagById',
     }),
+    surveyInFocus() {
+      return this.SURVEYById({ id: this.dataIdInFocus });
+    },
+    tagsInFocus() {
+      return this.surveyInFocus.tagIds.map((t) => this.tagById(t));
+    },
     edit() {
       return this.surveyModalMode === modalModesDict.edit;
     },
@@ -155,13 +162,13 @@ export default {
   },
   methods: {
     ...mapActions({
-      abortNewSurveyHandler: 'surveysUI/abortNewSurveyHandler',
-      abortReadSurveyHandler: 'surveysUI/abortReadSurveyHandler',
-      abortEditSurveyHandler: 'surveysUI/abortEditSurveyHandler',
+      abortNewSurveyHandler: 'dataModal/abortCreateData',
+      abortReadSurveyHandler: 'dataModal/abortReadData',
+      abortEditSurveyHandler: 'dataModal/abortEditData',
     }),
     ...mapMutations({
-      setSurveyDraft: 'surveysUI/setSurveyDraft',
-      incrementCompletionIndex: 'surveysUI/incrementSurveyModalCompletionIndex',
+      setSurveyDraft: 'dataModal/setSURVEYDraft',
+      incrementCompletionIndex: 'incrementSurveyModalCompletionIndex',
     }),
     selectImg() {
       const imgInput = this.$refs['img-upload'];
@@ -187,11 +194,11 @@ export default {
         return;
       }
       if (this.edit) {
-        this.abortEditSurveyHandler();
+        this.abortEditSurveyHandler({ dataId: this.dataIdInFocus, dataType: 'SURVEY' });
         return;
       }
       if (this.create) {
-        this.abortNewSurveyHandler();
+        this.abortNewSurveyHandler({ dataType: 'SURVEY' });
       }
     },
   },

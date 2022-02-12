@@ -68,6 +68,13 @@
                     {{ $t('interventions.surveyModal.questionCard.form.question.addImage') }}
                   </span>
                 </v-btn>
+                <input
+                  v-if="edit || create"
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  ref="question-img-upload"
+                  style="display: none"
+                />
               </div>
 
               <h3 class="mt-8">
@@ -87,6 +94,13 @@
                     {{ $t('interventions.surveyModal.questionCard.form.question.addAudio') }}
                   </span>
                 </v-btn>
+                <input
+                  v-if="edit || create"
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  ref="question-audio-upload"
+                  style="display: none"
+                />
               </div>
             </v-col>
 
@@ -139,7 +153,7 @@
                         v-if="edit || create"
                         type="file"
                         accept="image/png, image/jpeg"
-                        ref="question-img-upload"
+                        :ref="`answer-img-upload`"
                         style="display: none"
                       />
                       <v-btn
@@ -238,8 +252,6 @@ export default {
       rules: {
         maxChar: (value) => value.length <= questionTextMaxChar || this.maxCharExceededi18n,
       },
-      modalModesDict,
-      questionTypesDict,
       questionText: new EmptyQuestion().questionText,
       questionType: new EmptyQuestion().questionType,
       answers: [new EmptyAnswer()],
@@ -247,17 +259,21 @@ export default {
   },
   computed: {
     ...mapGetters({
-      surveyNameInFocus: 'surveysUI/surveyNameInFocus',
-      surveyModalMode: 'surveysUI/getSurveyModalMode',
-      questionCurrentDraft: 'questionsUI/questionCurrentDraft',
-      answersCurrentDraft: 'questionsUI/answersCurrentDraft',
-      nQuestions: 'questionsUI/nQuestions',
-      iQuestions: 'questionsUI/getIQuestions',
-      isAtLastQuestion: 'questionsUI/isAtLastQuestion',
-      isAtFirstQuestion: 'questionsUI/isAtFirstQuestion',
-      surveyDraft: 'surveysUI/getSurveyDraft',
-      questionTextInFocus: 'surveysUI/questionTextInFocus',
+      dataIdInFocus: 'dataModal/getDataIdInFocus',
+      SURVEYById: 'SURVEY_Data/SURVEYById',
+      surveyModalMode: 'dataModal/getMode',
+      questionCurrentDraft: 'QUESTION_UI/questionCurrentDraft',
+      answersCurrentDraft: 'QUESTION_UI/answersCurrentDraft',
+      nQuestions: 'QUESTION_UI/nQuestions',
+      iQuestions: 'QUESTION_UI/getIQuestions',
+      isAtLastQuestion: 'QUESTION_UI/isAtLastQuestion',
+      isAtFirstQuestion: 'QUESTION_UI/isAtFirstQuestion',
+      surveyDraft: 'dataModal/getDataDraft',
+      questionTextInFocus: 'QUESTION_UI/questionTextInFocus',
     }),
+    surveyNameInFocus() {
+      return this.SURVEYById({ id: this.dataIdInFocus });
+    },
     questionTypesItemValue() {
       return Object.keys(questionTypesDict).map((key) => ({
         text: this.$t(`interventions.surveyModal.questionCard.form.answer.questionTypes.${key}`),
@@ -282,13 +298,13 @@ export default {
       return false;
     },
     edit() {
-      return this.surveyModalMode === this.modalModesDict.edit;
+      return this.surveyModalMode === modalModesDict.edit;
     },
     create() {
-      return this.surveyModalMode === this.modalModesDict.create;
+      return this.surveyModalMode === modalModesDict.create;
     },
     read() {
-      return this.surveyModalMode === this.modalModesDict.read;
+      return this.surveyModalMode === modalModesDict.read;
     },
     canAdvanceBack() {
       return !this.isAtFirstQuestion && !this.areThereChanges;
@@ -316,14 +332,16 @@ export default {
   },
   methods: {
     ...mapActions({
-      nextQuestionHandler: 'questionsUI/nextQuestionHandler',
-      priorQuestionHandler: 'questionsUI/priorQuestionHandler',
-      discardQuestionHandler: 'questionsUI/discardQuestionHandler',
-      saveQuestionHandler: 'questionsUI/saveQuestionHandler',
+      nextQuestionHandler: 'QUESTION_UI/nextQuestionHandler',
+      priorQuestionHandler: 'QUESTION_UI/priorQuestionHandler',
+      discardQuestionHandler: 'QUESTION_UI/discardQuestionHandler',
+      saveQuestionHandler: 'QUESTION_UI/saveQuestionHandler',
+
+      showToBeImplementedFeedback: 'FEEDBACK_UI/showToBeImplementedFeedback',
     }),
     ...mapMutations({
-      incrementCompletionIndex: 'surveysUI/incrementSurveyModalCompletionIndex',
-      decrementCompletionIndex: 'surveysUI/decrementSurveyModalCompletionIndex',
+      incrementCompletionIndex: 'incrementSurveyModalCompletionIndex',
+      decrementCompletionIndex: 'decrementSurveyModalCompletionIndex',
     }),
     finalizeSurveyHandler() {
       this.incrementCompletionIndex();
@@ -357,23 +375,28 @@ export default {
       });
     },
     clickOnAddImage() {
+      console.log(JSON.stringify(this.$refs));
       const imgInput = this.$refs['question-img-upload'];
-      if (Array.isArray(imgInput)) {
-        imgInput[0].click();
-        return;
-      }
-      imgInput.click();
+      if (Array.isArray(imgInput)) imgInput[0].click();
+      else imgInput.click();
+      this.showToBeImplementedFeedback();
       console.log('TODO: do something with', imgInput);
     },
     clickOnAddAudio() {
       const audioInput = this.$refs['question-audio-upload'];
-      audioInput.click();
+      if (Array.isArray(audioInput)) audioInput[0].click();
+      else audioInput.click();
+      this.showToBeImplementedFeedback();
       console.log('TODO: do something with', audioInput);
     },
     clickOnAddAnswer() {
       this.answers.push({ answerText: '' });
     },
     clickOnAddImgToAnswer() {
+      const imgInput = this.$refs['answer-img-upload'];
+      if (Array.isArray(imgInput)) imgInput[0].click();
+      else imgInput.click();
+      this.showToBeImplementedFeedback();
       console.log('TODO: hanle adding image to answer');
     },
     clickOnRemoveAnswer(index) {

@@ -1,9 +1,9 @@
 import i18n from '../../i18n';
 import { typesDictionary } from './utils';
 
-const defaultDuration = 5000;
+const defaultDuration = 50000;
 
-const feedbackUI = {
+const FEEDBACK_UI = {
   namespaced: true,
   state: () => ({
     type: typesDictionary.success,
@@ -48,4 +48,4 @@ const feedbackUI = {
   },
 };
 
-export default feedbackUI;
+export default FEEDBACK_UI;

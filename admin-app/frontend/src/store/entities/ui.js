@@ -20,20 +20,19 @@ const entitiesUI = {
     getEntityModalMode: ({ entityModalMode }) => entityModalMode,
     getCreatingEntityInLevelId: ({ creatingEntityInLevelId }) => creatingEntityInLevelId,
 
-    entityInFocus: (state, { getEntityIdInFocus }, rootState, rootGetters) => rootGetters['entitiesData/entityById']({
-      entityId: getEntityIdInFocus,
-    }) ?? null,
+    entityInFocus: (state, { getEntityIdInFocus }, rootState, rootGetters) =>
+      rootGetters['ENTITY_Data/ENTITYById']({
+        id: getEntityIdInFocus,
+      }) ?? null,
   },
   mutations: {
     /* CREATE, UPDATE, DELETE */
-    setEntityDraft: (state, {
-      entityId, name, description, levelId, upperEntityId, tagIds,
-    }) => {
+    setEntityDraft: (state, { id, name, description, id, upperEntityId, tagIds }) => {
       state.entityDraft = new Entity({
-        entityId,
+        id,
         name,
         description,
-        levelId,
+        id,
         upperEntityId,
         tagIds,
       });
@@ -50,14 +49,14 @@ const entitiesUI = {
     setEntityModalMode: (state, { newValue }) => {
       state.entityModalMode = newValue;
     },
-    setCreatingEntityInLevelId: (state, { levelId }) => {
-      state.creatingEntityInLevelId = levelId;
+    setCreatingEntityInLevelId: (state, { id }) => {
+      state.creatingEntityInLevelId = id;
     },
   },
   actions: {
-    readEntityHandler: ({ commit }, { entityId }) => {
+    readEntityHandler: ({ commit }, { id }) => {
       commit('setEntityModalMode', { newValue: modalModesDict.read });
-      commit('setEntityIdInFocus', { newValue: entityId });
+      commit('setEntityIdInFocus', { newValue: id });
       commit('resetEntityDraft');
       commit('setIsEntityModalDisplayed', { newValue: true });
     },
@@ -76,31 +75,30 @@ const entitiesUI = {
       commit('setIsEntityModalDisplayed', { newValue: false });
       await Vue.nextTick();
       commit('resetEntityDraft');
-      commit('setCreatingEntityInLevelId', { levelId: null });
+      commit('setCreatingEntityInLevelId', { id: null });
       commit('setEntityModalMode', { newValue: modalModesDict.read });
     },
-    editEntityHandler: ({ commit, rootGetters }, { entityId }) => {
+    editEntityHandler: ({ commit, rootGetters }, { id }) => {
       commit('setEntityModalMode', { newValue: modalModesDict.edit });
-      commit('setEntityIdInFocus', { newValue: entityId });
-      const entity = rootGetters['entitiesData/entityById']({ entityId });
+      commit('setEntityIdInFocus', { newValue: id });
+      const entity = rootGetters['ENTITY_Data/ENTITYById']({ id });
       commit('setEntityDraft', entity);
       commit('setIsEntityModalDisplayed', { newValue: true });
     },
     abortEditEntityHandler: async ({ commit }) => {
-      await Vue.nextTick();
       commit('resetEntityDraft');
+      await Vue.nextTick();
       commit('setEntityModalMode', { newValue: modalModesDict.read });
     },
 
     saveEntityHandler: async ({ dispatch, getters }) => {
       if (getters.getEntityModalMode === modalModesDict.read) return;
       const entityDraft = getters.getEntityDraft;
-      console.log(JSON.stringify({ entityDraft }));
       if (getters.getEntityModalMode === modalModesDict.create) {
         // 1. POST this in the ./data.js
         // 2. Await the response DB object
         // 3. Put the response DB object to entities
-        await dispatch('entitiesData/APIpostNewEntity', entityDraft, {
+        await dispatch('ENTITY_Data/APIpost', entityDraft, {
           root: true,
         });
         return;
@@ -109,7 +107,7 @@ const entitiesUI = {
         // 1. POST this in the ./data.js
         // 2. Await the response DB object
         // 3. Put the response DB object to entities
-        await dispatch('entitiesData/APIputEntity', entityDraft, { root: true });
+        await dispatch('ENTITY_Data/APIput', entityDraft, { root: true });
       }
     },
     deleteEntityHandler: async ({ dispatch, getters }) => {
@@ -118,7 +116,7 @@ const entitiesUI = {
       // 1. DELETE this in the ./data.js
       // 2. Await the response DB object
       // 3. Put the response DB object to entities
-      await dispatch('entitiesData/APIdeleteEntity', getters.getEntityIdInFocus, {
+      await dispatch('ENTITY_Data/APIdelete', getters.getEntityIdInFocus, {
         root: true,
       });
     },

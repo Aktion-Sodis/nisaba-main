@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="isModalDisplayed" max-width="800px" persistent @keydown.esc="escHandler">
+  <v-dialog v-model="isLevelModalDisplayed" max-width="800px" persistent @keydown.esc="escHandler">
     <v-card class="px-4 pt-4">
       <v-form lazy-validation>
         <v-card-title>
@@ -61,7 +61,7 @@
                 <div v-if="read && levelInFocus" style="min-height: 5rem">
                   <h3 v-if="levelInFocus.upperLevelId">
                     {{ $t('organizationStructure.levelModal.upperLevel') }}:
-                    {{ levelById({ levelId: levelInFocus.upperLevelId }).name }}
+                    {{ LEVELById({ id: levelInFocus.upperLevelId }).name }}
                   </h3>
                 </div>
               </v-col>
@@ -71,14 +71,11 @@
                   {{ $t('organizationStructure.levelModal.interventions') }}
                 </v-card-title>
                 <div v-if="read && levelInFocus">
-                  <div
-                    v-for="interventionId in levelInFocus.allowedInterventions"
-                    :key="interventionId"
-                  >
+                  <div v-for="id in levelInFocus.allowedInterventions" :key="id">
                     <v-avatar>
                       <v-icon> mdi-hammer-wrench </v-icon>
                     </v-avatar>
-                    {{ interventionById({ interventionId }).name }}
+                    {{ INTERVENTIONById({ id }).name }}
                   </div>
                 </div>
                 <v-select
@@ -90,7 +87,7 @@
                   dense
                   outlined
                   persistent-hint
-                  item-value="interventionId"
+                  item-value="id"
                   item-text="name"
                 ></v-select>
 
@@ -149,7 +146,7 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
-import { modalModesDict } from '../../store/constants';
+import { modalModesDict, dataTypesDict } from '../../store/constants';
 
 const levelDescriptionMaxChar = Math.max(
   parseInt(process.env.VUE_APP_LEVEL_DESCRIPTION_MAX_CHAR, 10),
@@ -173,21 +170,27 @@ export default {
   watch: { levelDraft: 'prefillComponentDataFromLevelDraft' },
   computed: {
     ...mapGetters({
-      interventions: 'interventionsData/getInterventions',
+      interventions: 'INTERVENTION_Data/getInterventions',
 
-      modalMode: 'levelsUI/getLevelModalMode',
-      isModalDisplayed: 'levelsUI/getIsLevelModalDisplayed',
-      levelIdInFocus: 'levelsUI/getLevelIdInFocus',
-      levelDraft: 'levelsUI/getLevelDraft',
-      levelInFocus: 'levelsUI/levelInFocus',
+      dataType: 'dataModal/getDataType',
+      modalMode: 'dataModal/getMode',
+      isModalDisplayed: 'dataModal/getIsDisplayed',
+      dataIdInFocus: 'dataModal/getDataIdInFocus',
+      levelDraft: 'dataModal/getDataDraft',
 
-      allLevelTags: 'levelsData/getLevelTags',
-      tagById: 'levelsData/levelTagById',
-      lowestLevelId: 'levelsData/lowestLevelId',
-      levelById: 'levelsData/levelById',
+      allLevelTags: 'LEVEL_Data/getLevelTags',
+      tagById: 'LEVEL_Data/tagById',
+      lowestLevelId: 'LEVEL_Data/lowestLevelId',
+      LEVELById: 'LEVEL_Data/LEVELById',
 
-      interventionById: 'interventionsData/interventionById',
+      INTERVENTIONById: 'INTERVENTION_Data/INTERVENTIONById',
     }),
+    isLevelModalDisplayed() {
+      return this.isModalDisplayed && this.dataType === dataTypesDict.level;
+    },
+    levelInFocus() {
+      return this.LEVELById({ id: this.dataIdInFocus });
+    },
     requiredi18n() {
       return this.$t('general.form.required');
     },
@@ -230,50 +233,50 @@ export default {
   },
   methods: {
     ...mapActions({
-      saveLevelHandler: 'levelsUI/saveLevelHandler',
-      deleteLevelHandler: 'levelsUI/deleteLevelHandler',
-      abortReadLevelHandler: 'levelsUI/abortReadLevelHandler',
-      abortNewLevelHandler: 'levelsUI/abortNewLevelHandler',
-      abortEditLevelHandler: 'levelsUI/abortEditLevelHandler',
-      editLevelHandler: 'levelsUI/editLevelHandler',
+      saveData: 'dataModal/saveData',
+      deleteData: 'dataModal/deleteData',
+      abortReadData: 'dataModal/abortReadData',
+      abortCreateData: 'dataModal/abortCreateData',
+      abortEditData: 'dataModal/abortEditData',
+      editData: 'dataModal/editData',
 
-      showFeedbackForDuration: 'feedbackModule/showFeedbackForDuration',
+      showFeedbackForDuration: 'FEEDBACK_UI/showFeedbackForDuration',
     }),
     ...mapMutations({
-      setLevelDraft: 'levelsUI/setLevelDraft',
+      setLevelDraft: 'dataModal/setLEVELDraft',
     }),
     deleteHandler() {
       if (this.read) return;
-      if (this.levelIdInFocus !== this.lowestLevelId) {
+      if (this.dataIdInFocus !== this.lowestLevelId) {
         this.showFeedbackForDuration({
           type: 'warning',
           text: 'Only the lowest level can be deleted.',
         });
         return;
       }
-      this.deleteLevelHandler();
+      this.deleteData({ dataType: 'LEVEL' });
     },
     closeHandler() {
-      if (this.read) this.abortReadLevelHandler();
-      else if (this.create) this.abortNewLevelHandler();
-      else if (this.edit) this.abortEditLevelHandler();
+      if (this.read) this.abortReadData();
+      else if (this.create) this.abortCreateData({ dataType: 'LEVEL' });
+      else if (this.edit) this.abortEditData({ dataId: this.dataIdInFocus, dataType: 'LEVEL' });
     },
     editHandler() {
-      this.editLevelHandler({ levelId: this.levelIdInFocus });
+      this.editData({ dataId: this.dataIdInFocus, dataType: 'LEVEL' });
     },
     escHandler() {
       this.closeHandler();
     },
     submitHandler() {
       this.setLevelDraft({
-        levelId: this.levelIdInFocus,
+        id: this.dataIdInFocus,
         name: this.name,
         description: this.description,
         upperLevelId: this.create ? this.lowestLevelId : this.levelInFocus.upperLevelId,
         allowedInterventions: this.allowedInterventions || [],
         tagIds: this.tagIds || [],
       });
-      this.saveLevelHandler();
+      this.saveData({ dataType: 'LEVEL' });
     },
     prefillComponentDataFromLevelDraft() {
       this.name = this.levelDraft?.name ?? '';

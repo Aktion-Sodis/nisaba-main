@@ -89,3 +89,19 @@ export const questionTypesIconDict = Object.freeze({
   pictureWithTags: 'mdi-message-image',
   audio: 'mdi-waveform',
 });
+
+export const dataTypesDict = Object.freeze({
+  entity: 'ENTITY',
+  survey: 'SURVEY',
+  question: 'QUESTION',
+  level: 'LEVEL',
+  intervention: 'INTERVENTION',
+});
+
+export const dataModulesDict = Object.freeze({
+  entity: `${dataTypesDict.entity}Data`,
+  survey: `${dataTypesDict.survey}Data`,
+  question: `${dataTypesDict.question}Data`,
+  level: `${dataTypesDict.level}Data`,
+  intervention: `${dataTypesDict.intervention}Data`,
+});

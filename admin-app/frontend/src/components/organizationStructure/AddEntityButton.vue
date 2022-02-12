@@ -49,14 +49,14 @@ export default {
       this.isHovered = payload;
     },
     ...mapActions({
-      newEntityHandler: 'entitiesUI/newEntityHandler',
+      newEntityHandler: 'dataModal/createData',
     }),
     ...mapMutations({
-      setCreatingEntityInLevelId: 'entitiesUI/setCreatingEntityInLevelId',
+      setCreatingEntityInLevelId: 'setCreatingEntityInLevelId',
     }),
     clickHandler() {
-      this.setCreatingEntityInLevelId({ levelId: this.levelId });
-      this.newEntityHandler();
+      this.setCreatingEntityInLevelId({ id: this.levelId });
+      this.newEntityHandler({ dataType: 'ENTITY' });
     },
   },
 };

@@ -1,14 +1,14 @@
 import {
   Level, postNewLevel, putLevel, deleteLevel,
 } from './utils';
-import { modalModesDict } from '../constants';
+import { dataTypesDict, modalModesDict } from '../constants';
 
 const levelsData = {
   namespaced: true,
   state: () => ({
     levels: [
       {
-        levelId: '5a93459f-f23d-44e6-a112-c41e90473a2d',
+        id: '5a93459f-f23d-44e6-a112-c41e90473a2d',
         name: 'Gemeinde',
         description: 'Some description',
         upperLevelId: null,
@@ -16,7 +16,7 @@ const levelsData = {
         tagIds: [],
       },
       {
-        levelId: 'e7a03934-90b9-405b-807b-3f748b15ae69',
+        id: 'e7a03934-90b9-405b-807b-3f748b15ae69',
         name: 'Dorf',
         description: 'Some description',
         upperLevelId: '5a93459f-f23d-44e6-a112-c41e90473a2d',
@@ -24,7 +24,7 @@ const levelsData = {
         tagIds: ['468084f3-6ec4-42ea-bdb2-40900816b64f', 'e5ebc38b-abed-498d-9052-6c8767cc341e'],
       },
       {
-        levelId: 'd1faef12-cf15-4b5e-9637-b4ffbd156954',
+        id: 'd1faef12-cf15-4b5e-9637-b4ffbd156954',
         name: 'Family',
         description: 'Some description',
         upperLevelId: 'e7a03934-90b9-405b-807b-3f748b15ae69',
@@ -55,37 +55,31 @@ const levelsData = {
     hierarchySort: (_, getters) => (a, b) => {
       if (a.upperLevelId === null) return -1;
       if (b.upperLevelId === null) return 1;
-      if (a.levelId === b.upperLevelId) return -1;
-      return getters.hierarchySort(a, getters.levelById(b.upperLevelId));
+      if (a.id === b.upperLevelId) return -1;
+      return getters.hierarchySort(a, getters.LEVELById(b.upperLevelId));
     },
 
-    lowestLevelId: (_, { sortedLevels }) => {
-      console.log(JSON.stringify(sortedLevels[sortedLevels.length - 1].levelId));
-      return sortedLevels[sortedLevels.length - 1].levelId;
-    },
+    lowestLevelId: (_, { sortedLevels }) => sortedLevels[sortedLevels.length - 1].id,
     upperLevelById:
-      (_, { getLevels }) => (levelId) => {
-        const currentLevel = getLevels.find((l) => l.levelId === levelId);
+      (_, { getLevels }) => ({ id }) => {
+        const currentLevel = getLevels.find((l) => l.id === id);
         if (!currentLevel) return null;
-        const upperLevel = getLevels.find((l) => l.levelId === currentLevel.upperLevelId);
+        const upperLevel = getLevels.find((l) => l.id === currentLevel.upperLevelId);
         return upperLevel || null;
       },
 
-    levelById:
-      (_, { getLevels }) => ({ levelId }) => getLevels.find((i) => i.levelId === levelId),
-    levelTagById:
+    LEVELById:
+      (_, { getLevels }) => ({ id }) => getLevels.find((i) => i.id === id),
+    tagById:
       (_, { getLevelTags }) => ({ tagId }) => getLevelTags.find((t) => t.tagId === tagId),
   },
   mutations: {
-    addLevel: (
-      state,
-      {
-        levelId, name, description, upperLevelId, allowedInterventions, tagIds,
-      },
-    ) => {
+    addLevel: (state, {
+      id, name, description, upperLevelId, allowedInterventions, tagIds,
+    }) => {
       state.levels.push(
         new Level({
-          levelId,
+          id,
           name,
           description,
           upperLevelId,
@@ -97,14 +91,14 @@ const levelsData = {
     replaceLevel: (
       state,
       {
-        levelId, name, upperLevelId, tagIds, allowedInterventions, description,
+        id, name, upperLevelId, tagIds, allowedInterventions, description,
       },
     ) => {
       state.levels.splice(
-        state.levels.findIndex((i) => i.levelId === levelId),
+        state.levels.findIndex((i) => i.id === id),
         1,
         new Level({
-          levelId,
+          id,
           name,
           description,
           upperLevelId,
@@ -113,9 +107,9 @@ const levelsData = {
         }),
       );
     },
-    deleteLevel: (state, { levelId }) => {
+    deleteLevel: (state, { id }) => {
       state.levels.splice(
-        Array.from(state.levels).findIndex((i) => i.levelId === levelId),
+        Array.from(state.levels).findIndex((i) => i.id === id),
         1,
       );
     },
@@ -124,14 +118,15 @@ const levelsData = {
     },
   },
   actions: {
-    APIpostNewLevel: async ({ commit, dispatch }, levelDraft) => {
+    APIpost: async ({ commit, dispatch }, levelDraft) => {
       commit('setLoading', { newValue: true });
       const postResponse = await postNewLevel(levelDraft);
       commit('addLevel', postResponse);
       dispatch(
-        'levelsUI/readLevelHandler',
+        'dataModal/readData',
         {
-          levelId: postResponse.levelId,
+          dataId: postResponse.id,
+          dataType: dataTypesDict.level,
         },
         {
           root: true,
@@ -140,15 +135,15 @@ const levelsData = {
 
       commit('setLoading', { newValue: false });
     },
-    APIputLevel: async ({ commit, dispatch }, levelDraft) => {
+    APIput: async ({ commit, dispatch }, levelDraft) => {
       commit('setLoading', { newValue: true });
       const putResponse = await putLevel(levelDraft);
-      console.log(JSON.stringify({ putResponse }));
       commit('replaceLevel', putResponse);
       dispatch(
-        'levelsUI/readLevelHandler',
+        'dataModal/readData',
         {
-          levelId: putResponse.levelId,
+          dataId: putResponse.id,
+          dataType: dataTypesDict.level,
         },
         {
           root: true,
@@ -156,24 +151,20 @@ const levelsData = {
       );
       commit('setLoading', { newValue: false });
     },
-    APIdeleteLevel: async ({ commit, dispatch, rootGetters }) => {
+    APIdelete: async ({ commit, dispatch }, { id }) => {
       commit('setLoading', { newValue: true });
       const deleteResponse = await deleteLevel();
       if (deleteResponse.errors.length > 0) {
         commit('setLoading', { newValue: false });
       }
       commit('deleteLevel', {
-        levelId: rootGetters['levelsUI/getLevelIdInFocus'],
+        id,
       });
-      commit(
-        'entitiesData/deleteEntitiesByLevelId',
-        { levelId: rootGetters['levelsUI/getLevelIdInFocus'] },
-        { root: true },
-      );
-      commit('levelsUI/setLevelIdInFocus', { newValue: null }, { root: true });
-      commit('levelsUI/setLevelModalMode', { newValue: modalModesDict.read }, { root: true });
+      commit('ENTITY_Data/deleteEntitiesByLevelId', { levelId: id }, { root: true });
+      commit('dataModal/setDataIdInFocus', { newValue: null }, { root: true });
+      commit('dataModal/setMode', { newValue: modalModesDict.read }, { root: true });
       dispatch(
-        'levelsUI/abortReadLevelHandler',
+        'dataModal/abortReadData',
         {},
         {
           root: true,
