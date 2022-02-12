@@ -9,7 +9,8 @@
     "delete": "Sil",
     "form": {
       "maxCharExceeded": "Maksimum {maxChar} karakter.",
-      "required": "Zorunlu alan."
+      "required": "Zorunlu alan.",
+      "unsavedChanges": "Kaydedilmemiş değişiklikler var. Çıkmak istediğinizden emin misiniz?"
     },
     "sideBar": {
       "home": "Ana sayfa",
