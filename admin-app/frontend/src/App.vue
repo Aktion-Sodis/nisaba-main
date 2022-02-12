@@ -18,42 +18,60 @@
       ></v-select>
       <v-text-field
         v-if="currentRouteName !== 'Login'"
-        :label="$t('general.search-box')"
+        :label="$t('general.searchBox')"
         prepend-inner-icon="mdi-magnify"
         outlined
         dense
         background-color="grey"
         dark
+        @focus="showToBeImplementedFeedback"
       ></v-text-field>
     </div>
 
     <v-main :class="currentRouteName === 'Login' ? 'ml-0' : 'ml-16 mt-12'">
       <router-view />
     </v-main>
+
+    <a href="https://github.com/Aktion-Sodis/software-main" target="_blank">
+      <v-alert class="version-wrapper" outlined color="primary" icon="🚧" border="left">
+        The Admin-App v0.1, development phase 🔗
+      </v-alert>
+    </a>
+
+    <Feedback />
   </v-app>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import SideBar from './components/commons/SideBar.vue'
+import { mapActions, mapGetters } from 'vuex';
+import Feedback from './components/commons/Feedback.vue';
+import SideBar from './components/commons/SideBar.vue';
 
 export default {
-  name: "App",
-  components: { SideBar },
+  name: 'App',
+  components: { SideBar, Feedback },
   data: () => ({
-    langs: [{ name: 'English US', abbr: 'en-US' }, { name: 'Spanish Spain', abbr: 'es-ES' }]
+    langs: [
+      { name: 'English US', abbr: 'en-US' },
+      { name: 'Español España', abbr: 'es-ES' },
+      { name: 'Türkçe Türkiye', abbr: 'tr-TR' },
+    ],
   }),
   computed: {
     ...mapGetters({
-      isAuthenticated: "auth/getIsAuthenticated",
+      isAuthenticated: 'auth/getIsAuthenticated',
     }),
     currentRouteName() {
       return this.$route.name;
-    }
+    },
+  },
+  methods: {
+    ...mapActions({
+      showToBeImplementedFeedback: 'FEEDBACK_UI/showToBeImplementedFeedback',
+    }),
   },
 };
 </script>
-
 
 <style scoped>
 .search-bar-wrapper {
@@ -66,5 +84,11 @@ export default {
 
 .lang-select {
   max-width: 10.5rem;
+}
+
+.version-wrapper {
+  position: fixed;
+  right: 1rem;
+  bottom: 0;
 }
 </style>

@@ -5,8 +5,8 @@
         <v-container fluid>
           <v-row no-gutters class="login-row">
             <v-col cols="11" sm="10" md="8">
-              <h1>{{ $t("login.title") }}</h1>
-              <p class="mb-8 mt-4">{{ $t("login.subtitle") }}</p>
+              <h1>{{ $t('login.title') }}</h1>
+              <p class="mb-8 mt-4">{{ $t('login.subtitle') }}</p>
               <v-form ref="form" @submit.prevent="submit" lazy-validation>
                 <v-text-field
                   v-model="username"
@@ -29,26 +29,14 @@
                   <v-checkbox
                     class="my-0"
                     v-model="rememberMe"
-                    :label="$t('login.remember-me')"
+                    :label="$t('login.rememberMe')"
                   ></v-checkbox>
-                  <p class="mt-1 py-0">{{ $t("login.forgot-password") }}</p>
+                  <p class="mt-1 py-0">{{ $t('login.forgotPassword') }}</p>
                 </div>
-                <v-btn
-                  type="submit"
-                  block
-                  large
-                  color="primary"
-                  class="text-none"
-                  >{{ $t("login.sign-in") }}</v-btn
-                >
-                <v-btn
-                  type="submit"
-                  block
-                  outlined
-                  large
-                  color="grey"
-                  class="mt-2 text-none"
-                >
+                <v-btn type="submit" block large color="primary" class="text-none">{{
+                  $t('login.signIn')
+                }}</v-btn>
+                <v-btn type="submit" block outlined large color="grey" class="mt-2 text-none">
                   <svg
                     viewBox="0 0 24 24"
                     width="24"
@@ -56,6 +44,7 @@
                     xmlns="http://www.w3.org/2000/svg"
                     class="mr-2"
                   >
+                    <!-- eslint-disable max-len -->
                     <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
                       <path
                         fill="#4285F4"
@@ -74,17 +63,16 @@
                         d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"
                       />
                     </g>
+                    <!-- eslint-enable max-len -->
                   </svg>
-                  {{ $t("login.sign-in-with-google") }}
+                  {{ $t('login.signInWithGoogle') }}
                 </v-btn>
                 <div class="push-to-end mt-4">
                   <p>
-                    {{ $t("login.dont-have-an-account") }}
-                    <a
-                      href="#"
-                      class="font-weight-bold font-italic text-decoration-none"
-                      >{{ $t("login.register-here") }}</a
-                    >
+                    {{ $t('login.dontHaveAnAccount') }}
+                    <a href="#" class="font-weight-bold font-italic text-decoration-none">{{
+                      $t('login.registerHere')
+                    }}</a>
                   </p>
                 </div>
               </v-form>
@@ -107,9 +95,7 @@
         <v-container style="height: 100%" fluid>
           <v-row style="height: 100%" no-gutters>
             <v-col cols="6" offset="3" class="login-row">
-              <div
-                class="rounded-xl pa-4 lg-rounded-pill d-none d-md-block society-icon-wrapper"
-              >
+              <div class="rounded-xl pa-4 lg-rounded-pill d-none d-md-block society-icon-wrapper">
                 <img
                   src="../static/aktionSodisBig.png"
                   style="width: 100%"
@@ -125,14 +111,14 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     return {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
       showPassword: false,
       rules: {
         required: (value) => !!value || this.requiredi18n,
@@ -142,21 +128,24 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isAuthenticated: "auth/getIsAuthenticated",
+      isAuthenticated: 'auth/getIsAuthenticated',
     }),
-    requiredi18n: function () {
-      return this.$t("login.required");
+    requiredi18n() {
+      return this.$t('general.form.required');
     },
   },
   methods: {
     submit() {
       const valid = this.$refs.form.validate();
       if (valid) {
-        const signInSuccess = this.$store.dispatch("auth/signIn", {
-          username: this.username,
+        const signInSuccess = this.$store.dispatch('auth/signIn', {
+          credentials: {
+            username: this.username,
+            rememberMe: this.rememberMe,
+          },
         });
         if (signInSuccess) {
-          this.$router.push({ name: "Home" });
+          this.$router.push({ name: 'Home' });
         }
       }
     },
@@ -191,7 +180,7 @@ export default {
   z-index: 1;
 }
 .images-wrapper {
-  background-image: url("../static/colleagues.jpeg");
+  background-image: url('../static/colleagues.jpeg');
   background-size: cover;
   background-position: center;
   padding: 0;
@@ -220,7 +209,7 @@ export default {
 
 .push-to-end {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .background-img {
