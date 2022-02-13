@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="outer-wrapper grey lighten-5">
     <v-row class="inner-wrapper" no-gutters>
-      <v-col class="login-wrapper mt-16 mt-md-0" cols="12" md="6">
+      <v-col class="login-wrapper mt-0" cols="12" md="6">
         <v-container fluid>
           <v-row no-gutters class="login-row">
             <v-col cols="11" sm="10" md="8">
