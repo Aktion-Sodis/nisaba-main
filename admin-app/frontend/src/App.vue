@@ -43,11 +43,12 @@
       target="_blank"
     >
       <v-alert
-        class="version-wrapper"
+        class="version-wrapper white--text"
         :outlined="currentRouteName !== 'Login'"
         color="primary"
         icon="🚧"
         border="left"
+        style="z-index: 3"
       >
         The Admin-App v0.1, development phase 🔗
       </v-alert>
