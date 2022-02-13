@@ -1,68 +1,21 @@
 <template>
   <v-app>
-    <div class="top-right-fixed" v-if="$vuetify.breakpoint.name !== 'xs'">
-      <v-select
-        v-model="$root.$i18n.locale"
-        :items="langs"
-        item-text="name"
-        item-value="abbr"
-        outlined
-        dense
-        background-color="grey"
-        class="lang-select"
+    <div class="top-right-fixed">
+      <LangSelect
+        v-if="$vuetify.breakpoint.name !== 'xs'"
         :style="currentRouteName === 'Login' ? '' : 'margin-right: 1rem;'"
-        dark
-      ></v-select>
-      <v-text-field
-        v-if="currentRouteName !== 'Login' && $vuetify.breakpoint.name !== 'xs'"
-        :label="$t('general.searchBox')"
-        prepend-inner-icon="mdi-magnify"
-        outlined
-        dense
-        background-color="grey"
-        dark
-        @focus="showToBeImplementedFeedback"
-      ></v-text-field>
+      />
+      <SearchBox v-if="currentRouteName !== 'Login'" />
     </div>
 
-    <v-main
-      :class="
-        currentRouteName === 'Login'
-          ? 'mt-0'
-          : $vuetify.breakpoint.name === 'xs'
-          ? 'ml-0 mt-8'
-          : 'ml-16 mt-12'
-      "
-    >
+    <v-main :class="vMainClass">
       <router-view />
     </v-main>
 
-    <a
-      href="https://github.com/Aktion-Sodis/software-main"
-      class="d-none d-md-block"
-      target="_blank"
-    >
-      <v-alert
-        class="version-wrapper white--text"
-        :outlined="currentRouteName !== 'Login'"
-        color="primary"
-        icon="🚧"
-        border="left"
-        style="z-index: 3"
-      >
-        The Admin-App v0.1, development phase 🔗
-      </v-alert>
-    </a>
+    <DevPhaseSnackbar />
 
     <Feedback />
-    <div
-      class="bottom-right-fixed"
-      v-if="$vuetify.breakpoint.name === 'xs' && currentRouteName !== 'Login'"
-    >
-      <v-btn fab dark small color="primary" @click="showToBeImplementedFeedback">
-        <v-icon dark> mdi-magnify </v-icon>
-      </v-btn>
-    </div>
+
     <SideBar
       v-if="isAuthenticated && $vuetify.breakpoint.name !== 'xs'"
       :currentRouteName="currentRouteName"
@@ -78,12 +31,22 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import BottomNav from './components/commons/BottomNav.vue';
+import DevPhaseSnackbar from './components/commons/DevPhaseSnackbar.vue';
 import Feedback from './components/commons/Feedback.vue';
+import LangSelect from './components/commons/LangSelect.vue';
+import SearchBox from './components/commons/SearchBox.vue';
 import SideBar from './components/commons/SideBar.vue';
 
 export default {
   name: 'App',
-  components: { SideBar, Feedback, BottomNav },
+  components: {
+    SideBar,
+    Feedback,
+    BottomNav,
+    LangSelect,
+    SearchBox,
+    DevPhaseSnackbar,
+  },
   data: () => ({
     langs: [
       { name: 'English US', abbr: 'en-US' },
@@ -98,6 +61,10 @@ export default {
     currentRouteName() {
       return this.$route.name;
     },
+    vMainClass() {
+      if (this.currentRouteName === 'Login') return 'mt-0';
+      return this.$vuetify.breakpoint.name === 'xs' ? 'ml-0 mt-8' : 'ml-16 mt-12';
+    },
   },
   methods: {
     ...mapActions({
@@ -107,7 +74,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .top-right-fixed {
   position: fixed;
   top: 24px;
@@ -122,15 +89,5 @@ export default {
   right: 24px;
   z-index: 2;
   display: flex;
-}
-
-.lang-select {
-  max-width: 10.5rem;
-}
-
-.version-wrapper {
-  position: fixed;
-  right: 1rem;
-  bottom: 0;
 }
 </style>
