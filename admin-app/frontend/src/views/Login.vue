@@ -95,13 +95,15 @@
           </v-row>
           <v-row no-gutters class="d-md-none mt-4 mt-md-16">
             <v-col cols="6" sm="4" offset="3" offset-sm="4">
-              <div class="rounded-xl pa-4 lg-rounded-pill society-icon-wrapper">
-                <img
-                  src="../static/aktionSodisBig.png"
-                  style="width: 100%"
-                  alt="Aktion Sodis Logo"
-                />
-              </div>
+              <a href="https://aktion-sodis.org/" target="_blank">
+                <div class="rounded-xl pa-4 lg-rounded-pill society-icon-wrapper">
+                  <img
+                    src="../static/aktionSodisBig.png"
+                    style="width: 100%"
+                    alt="Aktion Sodis Logo"
+                  />
+                </div>
+              </a>
             </v-col>
           </v-row>
         </v-container>
@@ -110,13 +112,15 @@
         <v-container style="height: 100%" fluid>
           <v-row style="height: 100%" no-gutters>
             <v-col cols="6" offset="3" class="login-row">
-              <div class="rounded-xl pa-4 lg-rounded-pill d-none d-md-block society-icon-wrapper">
-                <img
-                  src="../static/aktionSodisBig.png"
-                  style="width: 100%"
-                  alt="Aktion Sodis Logo"
-                />
-              </div>
+              <a href="https://aktion-sodis.org/" target="_blank">
+                <div class="rounded-xl pa-4 lg-rounded-pill d-none d-md-block society-icon-wrapper">
+                  <img
+                    src="../static/aktionSodisBig.png"
+                    style="width: 100%"
+                    alt="Aktion Sodis Logo"
+                  />
+                </div>
+              </a>
             </v-col>
           </v-row>
         </v-container>
