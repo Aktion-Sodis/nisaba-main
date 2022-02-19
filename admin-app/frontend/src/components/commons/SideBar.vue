@@ -77,9 +77,9 @@
               <v-list-item-title class="text-h6 white--text"
                 >{{ credentials.firstname }} {{ credentials.lastname }}</v-list-item-title
               >
-              <v-list-item-subtitle class="white--text">{{
-                credentials.email
-              }}</v-list-item-subtitle>
+              <v-list-item-subtitle class="white--text" style="white-space: initial">
+                {{ credentials.email }}
+              </v-list-item-subtitle>
             </v-list-item-content>
             <v-btn @click="logout" class="mx-2" fab elevation="0" small color="primary">
               <v-icon color="white">mdi-exit-to-app</v-icon>
