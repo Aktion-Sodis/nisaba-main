@@ -1,6 +1,5 @@
 <template>
   <v-navigation-drawer permanent expand-on-hover class="primary-dark" width="17rem" fixed>
-    <!-- expand-on-hover -->
     <div class="side-bar-inner-wrapper overflow-hidden">
       <v-list>
         <v-list-item class="px-2">
