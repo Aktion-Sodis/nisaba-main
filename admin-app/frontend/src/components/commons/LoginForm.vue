@@ -99,7 +99,7 @@ export default {
           rememberMe: this.rememberMe,
         });
         if (signInStatus === 'success') {
-          this.$router.push({ name: 'Home' });
+          this.$router.push({ name: 'OrganizationStructure' });
           return;
         }
         if (signInStatus === 'failed') {

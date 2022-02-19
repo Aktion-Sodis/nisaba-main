@@ -66,7 +66,7 @@ export default {
         lastName: this.lastName,
       });
       if (signInStatus === 'success') {
-        this.$router.push({ name: 'Home' });
+        this.$router.push({ name: 'OrganizationStructure' });
         return;
       }
       if (signInStatus === 'failed') {
