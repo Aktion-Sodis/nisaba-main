@@ -82,7 +82,28 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+  console.log(from);
+  store.commit('auth/updateRouteActivity', { root: true });
+  await Vue.nextTick();
+  if (
+    (!from.name || from.meta.requiresAuth)
+    && store.getters['auth/lastRouteActivityDiffTooLarge']
+    && store.getters['auth/getIsAuthenticated']
+    && !store.getters['auth/getRememberSession']
+  ) {
+    console.log('hey');
+    store.dispatch('auth/deleteSession', { root: true });
+    next({ name: 'Login' });
+    store.dispatch(
+      'FEEDBACK_UI/showFeedbackForDuration',
+      {
+        type: 'warning',
+        text: 'Your session has expired. Please sign in again.',
+      },
+      { root: true },
+    );
+  }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
