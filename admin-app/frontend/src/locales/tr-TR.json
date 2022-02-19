@@ -18,21 +18,34 @@
       "organizationStructure": "Organizasyonel yapı",
       "interventions": "Müdahaleler",
       "login": "Giriş",
+      "completeUserInfo": "Kullanıcı bilgilerini tamamla"
+    },
+    "errorCodes": {
+      "UserNotFoundException": "Üzgünüz, girilen bilgilerle eşleşen bir kullanıcı bulunamadı.",
+      "ConditionalCheckFailedException": "Üzgünüz, bir şeyler yanlış gitti."
+    },
     "warningCodes": {
       "sessionExpired": "Oturumun süresi doldu. Lütfen yeniden giriş yap."
     }
   },
   "login": {
     "title": "Hoş geldin!",
-    "subtitle": "Lütfen giriş yap ya da kaydol.",
-    "username": "Kullanıcı adı",
+    "subtitle": "Lütfen giriş yap.",
+    "email": "Email",
     "password": "Şifre",
     "rememberMe": "Oturumu hatırla",
     "forgotPassword": "Şifremi unuttum",
     "signIn": "Giriş yap",
-    "signInWithGoogle": "Google'la giriş yap",
+    "withGoogle": "Google'la giriş yap",
     "dontHaveAnAccount": "Hesabın yok mu?",
-    "registerHere": "Buradan kaydol"
+    "askYourAdmin": "Erişim için bir dernek yetkilisine danış."
+  },
+  "completeUserInfo": {
+    "title": "Bir şey daha...",
+    "subtitle": "Görünen o ki sen buralarda yenisin. Lütfen Admin-App'i kullanmaya başlamak için profilini tamamla.",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "start": "Başla"
   },
   "home": {
     "title": "Ana Sayfa"
