@@ -7,39 +7,38 @@ const authModule = {
     token: null,
     userId: null,
     email: null,
-    username: null,
-    firstname: null,
-    lastname: null,
+    firstName: null,
+    lastName: null,
+
   }),
   getters: {
     getIsAuthenticated: ({ isAuthenticated }) => isAuthenticated,
     getToken: ({ token }) => token,
     getUserId: ({ userId }) => userId,
     getEmail: ({ email }) => email,
-    getUsername: ({ username }) => username,
-    getFirstname: ({ firstname }) => firstname,
-    getLastname: ({ lastname }) => lastname,
+    getFirstName: ({ firstName }) => firstName,
+    getLastName: ({ lastName }) => lastName,
 
     credentials: (_, {
       getUserId, getEmail, getUsername, getFirstname, getLastname,
     }) => ({
       userId: getUserId,
       email: getEmail,
-      username: getUsername,
-      firstname: getFirstname,
-      lastname: getLastname,
+      firstName: getFirstName,
+      lastName: getLastName,
     }),
   },
   mutations: {
     setIsAuthenticated(state, { newValue }) {
       state.isAuthenticated = newValue;
     },
-    setCredentials(state, { newCredentials }) {
-      state.userId = newCredentials.userId;
-      state.email = newCredentials.email;
-      state.username = newCredentials.username;
-      state.firstname = newCredentials.firstname;
-      state.lastname = newCredentials.lastname;
+    setCredentials(state, {
+      userId, email, firstName, lastName,
+    }) {
+      state.userId = userId;
+      state.email = email;
+      state.firstName = firstName;
+      state.lastName = lastName;
     },
     setToken(state, { newToken }) {
       state.token = newToken;
@@ -69,14 +68,12 @@ const authModule = {
       // const persistSession = payload.rememberMe;
 
       commit('setCredentials', {
-        newCredentials: {
-          userId: null,
-          email: null,
-          username: null,
-          firstname: null,
-          lastname: null,
-        },
+        userId: null,
+        email: null,
+        firstName: null,
+        lastName: null,
       });
+      commit('deleteRouteActivity');
       commit('setToken', { newToken: null });
       commit('setIsAuthenticated', { newValue: false });
     },

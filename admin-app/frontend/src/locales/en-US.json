@@ -31,7 +31,9 @@
     "signIn": "Sign in",
     "signInWithGoogle": "Sign in with Google",
     "dontHaveAnAccount": "Don't have an account?",
-    "registerHere": "Register here"
+  "completeUserInfo": {
+    "firstName": "Firstname",
+    "lastName": "Lastname",
   },
   "home": {
     "title": "Home"

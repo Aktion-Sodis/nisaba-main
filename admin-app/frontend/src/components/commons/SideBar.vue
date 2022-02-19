@@ -74,8 +74,8 @@
           </v-list-item-avatar>
           <div class="next-to-avatar">
             <v-list-item-content>
-              <v-list-item-title class="text-h6 white--text"
-                >{{ credentials.firstname }} {{ credentials.lastname }}</v-list-item-title
+              <v-list-item-title class="text-h6 white--text" style="white-space: initial"
+                >{{ credentials.firstName }} {{ credentials.lastName }}</v-list-item-title
               >
               <v-list-item-subtitle class="white--text" style="white-space: initial">
                 {{ credentials.email }}
