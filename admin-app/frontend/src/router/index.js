@@ -4,7 +4,6 @@ import store from '../store';
 import i18n from '../i18n';
 
 import Home from '../views/Home.vue';
-import Login from '../views/Login.vue';
 import OrganizationStructure from '../views/OrganizationStructure.vue';
 import BaseData from '../views/BaseData.vue';
 import Interventions from '../views/Interventions.vue';
