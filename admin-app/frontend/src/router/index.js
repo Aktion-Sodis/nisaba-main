@@ -8,6 +8,7 @@ import Login from '../views/Login.vue';
 import OrganizationStructure from '../views/OrganizationStructure.vue';
 import BaseData from '../views/BaseData.vue';
 import Interventions from '../views/Interventions.vue';
+import Auth from '../views/Auth.vue';
 
 Vue.use(VueRouter);
 
@@ -24,10 +25,19 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login,
+    component: Auth,
     meta: {
       requiresAuth: false,
       title: i18n.t('general.routes.login'),
+    },
+  },
+  {
+    path: '/complete-user-info',
+    name: 'CompleteUserInfo',
+    component: Auth,
+    meta: {
+      requiresAuth: false,
+      title: i18n.t('general.routes.completeUserInfo'),
     },
   },
   {
