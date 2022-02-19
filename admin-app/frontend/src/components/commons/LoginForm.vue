@@ -24,7 +24,6 @@
         v-model="rememberMe"
         :label="$t('login.rememberMe')"
         :disabled="loading"
-        @click="showToBeImplementedFeedback"
       ></v-checkbox>
       <div class="mt-1" @click="showToBeImplementedFeedback" style="cursor: pointer">
         <p class="py-0">{{ $t('login.forgotPassword') }}</p>
