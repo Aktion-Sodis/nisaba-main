@@ -99,7 +99,7 @@ router.beforeEach(async (to, from, next) => {
       'FEEDBACK_UI/showFeedbackForDuration',
       {
         type: 'warning',
-        text: 'Your session has expired. Please sign in again.',
+        text: i18n.t('general.warningCodes.sessionExpired'),
       },
       { root: true },
     );

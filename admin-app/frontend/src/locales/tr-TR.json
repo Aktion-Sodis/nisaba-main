@@ -18,7 +18,8 @@
       "organizationStructure": "Organizasyonel yapı",
       "interventions": "Müdahaleler",
       "login": "Giriş",
-      "regıster": "Kayıt"
+    "warningCodes": {
+      "sessionExpired": "Oturumun süresi doldu. Lütfen yeniden giriş yap."
     }
   },
   "login": {

@@ -23,6 +23,9 @@
     "errorCodes": {
       "UserNotFoundException": "Sorry, there is no matcing account for the given credentials.",
       "ConditionalCheckFailedException": "Sorry, something went wrong."
+    },
+    "warningCodes": {
+      "sessionExpired": "Your session has expired. Please sign in again."
     }
   },
   "login": {
