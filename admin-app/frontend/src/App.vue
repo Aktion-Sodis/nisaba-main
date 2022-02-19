@@ -3,9 +3,9 @@
     <div class="top-right-fixed">
       <LangSelect
         v-if="$vuetify.breakpoint.name !== 'xs'"
-        :style="currentRouteName === 'Login' ? '' : 'margin-right: 1rem;'"
+        :style="isInAuthView ? '' : 'margin-right: 1rem;'"
       />
-      <SearchBox v-if="currentRouteName !== 'Login'" />
+      <SearchBox v-if="!isInAuthView" />
     </div>
 
     <v-main :class="vMainClass">
@@ -18,13 +18,9 @@
 
     <SideBar
       v-if="isAuthenticated && $vuetify.breakpoint.name !== 'xs'"
-      :currentRouteName="currentRouteName"
       class="d-none d-md-block"
     />
-    <BottomNav
-      v-if="isAuthenticated && $vuetify.breakpoint.name === 'xs'"
-      :currentRouteName="currentRouteName"
-    />
+    <BottomNav v-if="isAuthenticated && $vuetify.breakpoint.name === 'xs'" />
   </v-app>
 </template>
 
@@ -58,11 +54,11 @@ export default {
     ...mapGetters({
       isAuthenticated: 'auth/getIsAuthenticated',
     }),
-    currentRouteName() {
-      return this.$route.name;
+    isInAuthView() {
+      return this.$route.name === 'Login' || this.$route.name === 'CompleteUserInfo';
     },
     vMainClass() {
-      if (this.currentRouteName === 'Login') return 'mt-0';
+      if (this.isInAuthView) return 'mt-0';
       return this.$vuetify.breakpoint.name === 'xs' ? 'ml-0 mt-8' : 'ml-16 mt-12';
     },
   },
