@@ -18,20 +18,34 @@
       "organizationStructure": "Organization structure",
       "interventions": "Interventions",
       "login": "Login",
-      "register": "Register"
+      "completeUserInfo": "Complete user information"
+    },
+    "errorCodes": {
+      "UserNotFoundException": "Sorry, there is no matcing account for the given credentials.",
+      "ConditionalCheckFailedException": "Sorry, something went wrong."
+    },
+    "warningCodes": {
+      "sessionExpired": "Your session has expired. Please sign in again."
     }
   },
   "login": {
     "title": "Welcome back!",
-    "subtitle": "Please sign in with your credentials or register.",
-    "username": "Username",
+    "subtitle": "Please sign in with your credentials.",
+    "email": "Email",
     "password": "Password",
     "rememberMe": "Remember me",
     "forgotPassword": "Forgot Password",
     "signIn": "Sign in",
-    "signInWithGoogle": "Sign in with Google",
+    "withGoogle": "Sign in with Google",
     "dontHaveAnAccount": "Don't have an account?",
-    "registerHere": "Register here"
+    "askYourAdmin": "Ask your administrator for access."
+  },
+  "completeUserInfo": {
+    "title": "One more thing...",
+    "subtitle": "Looks like you are new here. Please finish your profile to start using the Admin-App.",
+    "firstName": "Firstname",
+    "lastName": "Lastname",
+    "start": "Start"
   },
   "home": {
     "title": "Home"
