@@ -86,4 +86,10 @@ export default {
   z-index: 2;
   display: flex;
 }
+
+/* fix the white stripe at the right of the screen bug */
+html {
+  overflow-x: visible;
+  overflow-y: visible;
+}
 </style>

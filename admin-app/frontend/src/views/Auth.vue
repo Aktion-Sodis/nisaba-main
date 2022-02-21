@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="ma-0 pa-0 overflow-hidden">
+  <v-container fluid class="ma-0 pa-0">
     <v-row no-gutters>
       <v-col class="d-flex flex-column justify-center align-center" cols="12" md="6">
         <v-container fluid class="pt-16 pt-md-0">
