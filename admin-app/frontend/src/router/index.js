@@ -83,7 +83,6 @@ const router = new VueRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  console.log(from);
   store.commit('auth/updateRouteActivity', { root: true });
   await Vue.nextTick();
   if (
