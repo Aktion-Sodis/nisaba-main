@@ -18,7 +18,8 @@
       "organizationStructure": "Organizasyonel yapı",
       "interventions": "Müdahaleler",
       "login": "Giriş",
-      "completeUserInfo": "Kullanıcı bilgilerini tamamla"
+      "completeUserInfo": "Kullanıcı bilgilerini tamamla",
+      "about": "Hakkımızda"
     },
     "errorCodes": {
       "UserNotFoundException": "Üzgünüz, girilen bilgilerle eşleşen bir kullanıcı bulunamadı.",

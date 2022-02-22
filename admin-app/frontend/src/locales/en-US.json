@@ -18,7 +18,8 @@
       "organizationStructure": "Organization structure",
       "interventions": "Interventions",
       "login": "Login",
-      "completeUserInfo": "Complete user information"
+      "completeUserInfo": "Complete user information",
+      "about": "About"
     },
     "errorCodes": {
       "UserNotFoundException": "Sorry, there is no matcing account for the given credentials.",

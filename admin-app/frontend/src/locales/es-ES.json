@@ -13,12 +13,7 @@
       "unsavedChanges": "There are unsaved changes. Are you sure you want to leave?"
     },
     "routes": {
-      "home": "Home",
-      "baseData": "Base data",
-      "organizationStructure": "Organization structure",
-      "interventions": "Interventions",
-      "login": "Login",
-      "completeUserInfo": "Complete user information"
+      "about": "Acerca de"
     },
     "errorCodes": {
       "UserNotFoundException": "Sorry, there is no matcing account for the given credentials.",
