@@ -27,6 +27,11 @@
     },
     "warningCodes": {
       "sessionExpired": "Your session has expired. Please sign in again."
+    },
+    "api": {
+      "inSync": "Refresh",
+      "synched": "In sync",
+      "synchronizing": "synchronizing..."
     }
   },
   "login": {

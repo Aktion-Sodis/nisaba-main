@@ -27,6 +27,11 @@
     },
     "warningCodes": {
       "sessionExpired": "Su sesión ha caducado. Inicie sesión de nuevo."
+    },
+    "api": {
+      "inSync": "Refrescar",
+      "synched": "En sintonía",
+      "synchronizing": "sincronizando..."
     }
   },
   "login": {

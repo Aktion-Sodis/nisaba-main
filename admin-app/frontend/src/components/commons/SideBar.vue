@@ -6,10 +6,11 @@
           <v-list-item-avatar class="my-0">
             <v-img src="../../static/aktionSodisSmall.png"></v-img>
           </v-list-item-avatar>
-          <v-list-item-title class="white--text text-body-1 ml-3">{{
-            societyName
-          }}</v-list-item-title>
+          <v-list-item-title class="white--text text-body-1 ml-3">
+            {{ societyName }}
+          </v-list-item-title>
         </v-list-item>
+        <SyncAction />
       </v-list>
 
       <v-list nav dense class="mt-12">
@@ -93,10 +94,12 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import SyncAction from './SyncAction.vue';
 
 const societyName = process.env.VUE_APP_SOCIETY_VERBOSE_NAME;
 
 export default {
+  components: { SyncAction },
   name: 'SideBar',
   data: () => ({ societyName }),
   computed: {

@@ -27,6 +27,11 @@
     },
     "warningCodes": {
       "sessionExpired": "Oturumun süresi doldu. Lütfen yeniden giriş yap."
+    },
+    "api": {
+      "inSync": "Yenile",
+      "synched": "Senkronize",
+      "synchronizing": "senkronize ediliyor..."
     }
   },
   "login": {
