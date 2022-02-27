@@ -1,41 +1,43 @@
 import {
-  Level, postNewLevel, putLevel, deleteLevel,
+  Level, postNewLevel, putLevel, deleteLevel, getAllLevels,
 } from './utils';
 import { dataTypesDict, modalModesDict } from '../constants';
 
 const levelsData = {
   namespaced: true,
   state: () => ({
-    levels: [
-      {
-        id: '5a93459f-f23d-44e6-a112-c41e90473a2d',
-        name: 'Gemeinde',
-        description: 'Some description',
-        upperLevelId: null,
-        allowedInterventions: [],
-        tagIds: [],
-      },
-      {
-        id: 'e7a03934-90b9-405b-807b-3f748b15ae69',
-        name: 'Dorf',
-        description: 'Some description',
-        upperLevelId: '5a93459f-f23d-44e6-a112-c41e90473a2d',
-        allowedInterventions: ['bd5f6df6-a64c-4d60-9df2-8f29bb7944d5'],
-        tagIds: ['468084f3-6ec4-42ea-bdb2-40900816b64f', 'e5ebc38b-abed-498d-9052-6c8767cc341e'],
-      },
-      {
-        id: 'd1faef12-cf15-4b5e-9637-b4ffbd156954',
-        name: 'Family',
-        description: 'Some description',
-        upperLevelId: 'e7a03934-90b9-405b-807b-3f748b15ae69',
-        allowedInterventions: [
-          'bd5f6df6-a64c-4d60-9df2-8f29bb7944d5',
-          '59fe15e7-59ad-46bf-a196-cbab81885d5b',
-          'c220fb83-a0e4-4463-a28a-f21b260e609a',
-        ],
-        tagIds: ['468084f3-6ec4-42ea-bdb2-40900816b64f'],
-      },
-    ],
+    // levels: [
+    //   {
+    //     id: '5a93459f-f23d-44e6-a112-c41e90473a2d',
+    //     name: 'Gemeinde',
+    //     description: 'Some description',
+    //     upperLevelId: null,
+    //     allowedInterventions: [],
+    //     tagIds: [],
+    //   },
+    //   {
+    //     id: 'e7a03934-90b9-405b-807b-3f748b15ae69',
+    //     name: 'Dorf',
+    //     description: 'Some description',
+    //     upperLevelId: '5a93459f-f23d-44e6-a112-c41e90473a2d',
+    //     allowedInterventions: ['bd5f6df6-a64c-4d60-9df2-8f29bb7944d5'],
+    //     tagIds: ['468084f3-6ec4-42ea-bdb2-40900816b64f', 'e5ebc38b-abed-498d-9052-6c8767cc341e'],
+    //   },
+    //   {
+    //     id: 'd1faef12-cf15-4b5e-9637-b4ffbd156954',
+    //     name: 'Family',
+    //     description: 'Some description',
+    //     upperLevelId: 'e7a03934-90b9-405b-807b-3f748b15ae69',
+    //     allowedInterventions: [
+    //       'bd5f6df6-a64c-4d60-9df2-8f29bb7944d5',
+    //       '59fe15e7-59ad-46bf-a196-cbab81885d5b',
+    //       'c220fb83-a0e4-4463-a28a-f21b260e609a',
+    //     ],
+    //     tagIds: ['468084f3-6ec4-42ea-bdb2-40900816b64f'],
+    //   },
+    // ],
+
+    levels: [],
 
     levelTags: [
       { tagId: '468084f3-6ec4-42ea-bdb2-40900816b64f', name: 'Tag 1' },
@@ -116,6 +118,9 @@ const levelsData = {
     setLoading: (state, { newValue }) => {
       state.loading = newValue;
     },
+    setLevels: (state, { newValue }) => {
+      state.levels = newValue;
+    },
   },
   actions: {
     APIpost: async ({ commit, dispatch }, levelDraft) => {
@@ -173,6 +178,15 @@ const levelsData = {
 
       commit('setLoading', { newValue: false });
     },
+    sync: async ({ commit, dispatch }) => {
+      commit('setLoading', { newValue: true });
+      const apiLevels = await dispatch('APIgetAll');
+      const apiEntities = await dispatch('ENTITY_Data/APIgetAll', null, { root: true });
+      commit('setLevels', { newValue: apiLevels });
+      commit('ENTITY_Data/setEntities', { newValue: apiEntities });
+      commit('setLoading', { newValue: false });
+    },
+    APIgetAll: async () => (await getAllLevels()).data.listLevels.items,
   },
 };
 

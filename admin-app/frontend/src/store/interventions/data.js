@@ -1,5 +1,9 @@
 import {
-  Intervention, postNewIntervention, putIntervention, deleteIntervention,
+  Intervention,
+  // postNewIntervention,
+  putIntervention,
+  deleteIntervention,
+  getAllInterventions,
 } from './utils';
 import { dataTypesDict, modalModesDict } from '../constants';
 
@@ -8,7 +12,7 @@ const interventionsData = {
   state: () => ({
     interventions: [
       {
-        id: 'bd5f6df6-a64c-4d60-9df2-8f29bb7944d5',
+        id: '50ca35bf-336c-423d-a0e2-058d8dc66f63',
         name: 'Kitchen',
         description:
           'A kitchen is a room or part of a room used for cooking and food preparation in a dwelling or in a commercial establishment.',
@@ -25,7 +29,7 @@ const interventionsData = {
         ],
       },
       {
-        id: '59fe15e7-59ad-46bf-a196-cbab81885d5b',
+        id: 'aa41deae-71cf-4b89-aa10-45c0fa526b6b',
         name: 'Toilet',
         description:
           'A toilet is a piece of sanitary hardware that collects human urine and feces, and sometimes toilet paper, usually for disposal.',
@@ -134,25 +138,13 @@ const interventionsData = {
     setLoading: (state, { newValue }) => {
       state.loading = newValue;
     },
+    setInterventions: (state, { newValue }) => {
+      state.interventions = newValue;
+    },
   },
   actions: {
-    APIpost: async ({ commit, dispatch }, interventionDraft) => {
-      commit('setLoading', { newValue: true });
-      const postResponse = await postNewIntervention(interventionDraft);
-      commit('addIntervention', postResponse);
-      dispatch(
-        'dataModal/readData',
-        {
-          dataId: postResponse.id,
-          dataType: dataTypesDict.intervention,
-        },
-        {
-          root: true,
-        },
-      );
+    // APIpost: async (, { intervention }) => postNewIntervention(intervention), // commit('addIntervention', postResponse);
 
-      commit('setLoading', { newValue: false });
-    },
     APIput: async ({ commit, dispatch }, interventionDraft) => {
       commit('setLoading', { newValue: true });
       const putResponse = await putIntervention(interventionDraft);
@@ -190,6 +182,30 @@ const interventionsData = {
 
       commit('setLoading', { newValue: false });
     },
+    sync: async ({ commit, dispatch }) => {
+      commit('setLoading', { newValue: true });
+
+      const apiInterventions = await dispatch('APIgetAll');
+      // const localInterventions = getters.getInterventions;
+
+      // what the client has in the localStorage but doesn't exist in the DB
+      // const localDiffApi = localInterventions.filter(
+      //   (l) => !apiInterventions.find((a) => a.id === l.id),
+      // );
+
+      /* eslint-disable no-restricted-syntax */
+      // for (const localNovel of localDiffApi) {
+      //   postNewIntervention(localNovel);
+      //   // dispatch('APIpost', { intervention: localNovel });
+      // }
+      /* eslint-enable no-restricted-syntax */
+
+      // priority goes to the API over possibly old versions of same objects
+      // commit('setInterventions', { newValue: [...apiInterventions, ...localDiffApi] });
+      commit('setInterventions', { newValue: apiInterventions });
+      commit('setLoading', { newValue: false });
+    },
+    APIgetAll: async () => (await getAllInterventions()).data.listInterventions.items,
   },
 };
 

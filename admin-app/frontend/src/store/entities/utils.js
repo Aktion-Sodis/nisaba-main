@@ -1,4 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
+import { API, graphqlOperation } from 'aws-amplify';
+import { listEntities } from '../../graphql/queries';
 
 export class EmptyEntity {
   constructor() {
@@ -28,3 +30,4 @@ export class Entity {
 export const postNewEntity = async (x) => x;
 export const putEntity = async (x) => x;
 export const deleteEntity = async () => ({ errors: [] });
+export const getAllEntities = async () => API.graphql(graphqlOperation(listEntities));

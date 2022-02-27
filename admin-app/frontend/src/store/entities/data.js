@@ -1,61 +1,63 @@
 import {
-  Entity, postNewEntity, putEntity, deleteEntity,
+  Entity, postNewEntity, putEntity, deleteEntity, getAllEntities,
 } from './utils';
 import { dataTypesDict, modalModesDict } from '../constants';
 
 const entitiesData = {
   namespaced: true,
   state: () => ({
-    entities: [
-      {
-        id: 'f77a7d3f-fb7f-434e-8be3-32b74269083c',
-        name: 'Aachen',
-        description: 'Some description',
-        levelId: '5a93459f-f23d-44e6-a112-c41e90473a2d',
-        upperEntityId: null,
-        tagIds: ['2b6e7572-c026-48bf-aa54-0201d1a98e39'],
-      },
-      {
-        id: 'afd8874d-ac52-4508-8351-f35f8f7e28a0',
-        name: 'Sinop',
-        description: 'Some description',
-        levelId: '5a93459f-f23d-44e6-a112-c41e90473a2d',
-        upperEntityId: null,
-        tagIds: [],
-      },
-      {
-        id: '0b38df2a-84f5-4066-9c0c-f447b93e8278',
-        name: 'Nizzaallee',
-        description: 'Some description',
-        levelId: 'e7a03934-90b9-405b-807b-3f748b15ae69',
-        upperEntityId: 'f77a7d3f-fb7f-434e-8be3-32b74269083c',
-        tagIds: [],
-      },
-      {
-        id: '3d29c7aa-f422-41bc-99ae-35480a1f415e',
-        name: 'Mies van der Rohe Straße',
-        description: 'Some description',
-        levelId: 'e7a03934-90b9-405b-807b-3f748b15ae69',
-        upperEntityId: 'f77a7d3f-fb7f-434e-8be3-32b74269083c',
-        tagIds: [],
-      },
-      {
-        id: '327ac9b8-ab56-47e0-a1c5-bd4c978645a0',
-        name: 'Atatürk Caddesi',
-        description: 'Some description',
-        levelId: 'e7a03934-90b9-405b-807b-3f748b15ae69',
-        upperEntityId: 'afd8874d-ac52-4508-8351-f35f8f7e28a0',
-        tagIds: [],
-      },
-      {
-        id: 'b046cde7-4f18-4fc9-9b13-eb49c98f226c',
-        name: 'Eine 4er WG',
-        description: 'Some description',
-        levelId: 'd1faef12-cf15-4b5e-9637-b4ffbd156954',
-        upperEntityId: '0b38df2a-84f5-4066-9c0c-f447b93e8278',
-        tagIds: [],
-      },
-    ],
+    // entities: [
+    //   {
+    //     id: 'f77a7d3f-fb7f-434e-8be3-32b74269083c',
+    //     name: 'Aachen',
+    //     description: 'Some description',
+    //     levelId: '5a93459f-f23d-44e6-a112-c41e90473a2d',
+    //     upperEntityId: null,
+    //     tagIds: ['2b6e7572-c026-48bf-aa54-0201d1a98e39'],
+    //   },
+    //   {
+    //     id: 'afd8874d-ac52-4508-8351-f35f8f7e28a0',
+    //     name: 'Sinop',
+    //     description: 'Some description',
+    //     levelId: '5a93459f-f23d-44e6-a112-c41e90473a2d',
+    //     upperEntityId: null,
+    //     tagIds: [],
+    //   },
+    //   {
+    //     id: '0b38df2a-84f5-4066-9c0c-f447b93e8278',
+    //     name: 'Nizzaallee',
+    //     description: 'Some description',
+    //     levelId: 'e7a03934-90b9-405b-807b-3f748b15ae69',
+    //     upperEntityId: 'f77a7d3f-fb7f-434e-8be3-32b74269083c',
+    //     tagIds: [],
+    //   },
+    //   {
+    //     id: '3d29c7aa-f422-41bc-99ae-35480a1f415e',
+    //     name: 'Mies van der Rohe Straße',
+    //     description: 'Some description',
+    //     levelId: 'e7a03934-90b9-405b-807b-3f748b15ae69',
+    //     upperEntityId: 'f77a7d3f-fb7f-434e-8be3-32b74269083c',
+    //     tagIds: [],
+    //   },
+    //   {
+    //     id: '327ac9b8-ab56-47e0-a1c5-bd4c978645a0',
+    //     name: 'Atatürk Caddesi',
+    //     description: 'Some description',
+    //     levelId: 'e7a03934-90b9-405b-807b-3f748b15ae69',
+    //     upperEntityId: 'afd8874d-ac52-4508-8351-f35f8f7e28a0',
+    //     tagIds: [],
+    //   },
+    //   {
+    //     id: 'b046cde7-4f18-4fc9-9b13-eb49c98f226c',
+    //     name: 'Eine 4er WG',
+    //     description: 'Some description',
+    //     levelId: 'd1faef12-cf15-4b5e-9637-b4ffbd156954',
+    //     upperEntityId: '0b38df2a-84f5-4066-9c0c-f447b93e8278',
+    //     tagIds: [],
+    //   },
+    // ],
+
+    entities: [],
 
     entityTags: [
       { tagId: '2b6e7572-c026-48bf-aa54-0201d1a98e39', name: 'Tag 1' },
@@ -210,6 +212,9 @@ const entitiesData = {
     deleteEntitiesByLevelId: (state, { levelId }) => {
       state.entities = state.entities.filter((e) => e.levelId !== levelId);
     },
+    setEntities: (state, { newValue }) => {
+      state.entities = newValue;
+    },
   },
   actions: {
     APIpost: async ({ commit, dispatch }, entityDraft) => {
@@ -266,6 +271,8 @@ const entitiesData = {
 
       commit('setLoading', { newValue: false });
     },
+    // sync is handled over LEVEL_Data module
+    APIgetAll: async () => (await getAllEntities()).data.listEntities.items,
   },
 };
 

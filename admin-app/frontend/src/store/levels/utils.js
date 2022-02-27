@@ -1,4 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
+import { API, graphqlOperation } from 'aws-amplify';
+import { listLevels } from '../../graphql/queries';
 
 export class EmptyLevel {
   constructor() {
@@ -28,3 +30,4 @@ export class Level {
 export const postNewLevel = async (levelDraft) => levelDraft;
 export const putLevel = async (levelDraft) => levelDraft;
 export const deleteLevel = async () => ({ errors: [] });
+export const getAllLevels = async () => API.graphql(graphqlOperation(listLevels));
