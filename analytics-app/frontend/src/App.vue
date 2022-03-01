@@ -1,12 +1,20 @@
 <script setup>
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + Test" />
+  <div class="navbar">
+    <span> <router-link :to="{ name: 'Home' }"> Home </router-link> </span>
+    <span>
+      <router-link :to="{ name: 'DummyView1' }"> Dummy View 1 </router-link>
+    </span>
+    <span>
+      <router-link :to="{ name: 'DummyView2' }"> Dummy View 2 </router-link>
+    </span>
+  </div>
+  <router-view></router-view>
 </template>
 
 <style>
@@ -17,5 +25,11 @@ import HelloWorld from './components/HelloWorld.vue'
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
 }
 </style>
