@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "chart.js": "^3.7.1",
+    "element-plus": "^2.0.4",
     "vue": "^3.2.25",
     "vue-chartjs": "^3.5.1",
     "vue-router": "^4.0.13",
@@ -17,6 +18,8 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.2.0",
+    "unplugin-auto-import": "^0.6.1",
+    "unplugin-vue-components": "^0.17.21",
     "vite": "^2.8.0"
   }
 }
