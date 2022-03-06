@@ -9,6 +9,7 @@ import 'package:mobile_app/frontend/theme.dart';
 
 import 'package:mobile_app/services/amplify.dart';
 import 'package:mobile_app/app_navigator.dart';
+import 'package:mobile_app/services/photo_capturing.dart';
 
 void main() {
   runApp(const MyApp());
