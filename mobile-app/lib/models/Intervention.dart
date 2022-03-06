@@ -54,11 +54,11 @@ class Intervention extends Model {
       return _name!;
     } catch(e) {
       throw new DataStoreException(
-      DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-      recoverySuggestion:
-        DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-      underlyingException: e.toString()
-    );
+          DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
   
@@ -71,11 +71,11 @@ class Intervention extends Model {
       return _interventionType!;
     } catch(e) {
       throw new DataStoreException(
-      DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-      recoverySuggestion:
-        DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-      underlyingException: e.toString()
-    );
+          DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
   
@@ -84,11 +84,11 @@ class Intervention extends Model {
       return _contents!;
     } catch(e) {
       throw new DataStoreException(
-      DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-      recoverySuggestion:
-        DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-      underlyingException: e.toString()
-    );
+          DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
   
@@ -97,11 +97,11 @@ class Intervention extends Model {
       return _surveys!;
     } catch(e) {
       throw new DataStoreException(
-      DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-      recoverySuggestion:
-        DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-      underlyingException: e.toString()
-    );
+          DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
   
@@ -110,11 +110,11 @@ class Intervention extends Model {
       return _tags!;
     } catch(e) {
       throw new DataStoreException(
-      DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-      recoverySuggestion:
-        DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-      underlyingException: e.toString()
-    );
+          DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
     }
   }
   
