@@ -1,5 +1,5 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
+import { routes } from './router';
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 </script>
 
@@ -7,14 +7,11 @@
   <div>
     <img alt="Vue logo" src="./assets/logo.png" />
     <div class="navbar">
-      <span> <router-link :to="{ name: 'Home' }"> Home </router-link> </span>
-      <span>
-        <router-link :to="{ name: 'DummyView1' }"> Dummy View 1 </router-link>
-      </span>
-      <span>
-        <router-link :to="{ name: 'DummyView2' }"> Dummy View 2 </router-link>
+      <span v-for="route in routes" :key="route.name">
+        <router-link :to="{ name: route.name }"> {{ route.name }} </router-link>
       </span>
     </div>
+    <h1>This is the {{ $route.name }} view.</h1>
     <router-view> </router-view>
   </div>
 </template>
