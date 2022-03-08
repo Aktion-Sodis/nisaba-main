@@ -4,17 +4,19 @@
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <div class="navbar">
-    <span> <router-link :to="{ name: 'Home' }"> Home </router-link> </span>
-    <span>
-      <router-link :to="{ name: 'DummyView1' }"> Dummy View 1 </router-link>
-    </span>
-    <span>
-      <router-link :to="{ name: 'DummyView2' }"> Dummy View 2 </router-link>
-    </span>
+  <div>
+    <img alt="Vue logo" src="./assets/logo.png" />
+    <div class="navbar">
+      <span> <router-link :to="{ name: 'Home' }"> Home </router-link> </span>
+      <span>
+        <router-link :to="{ name: 'DummyView1' }"> Dummy View 1 </router-link>
+      </span>
+      <span>
+        <router-link :to="{ name: 'DummyView2' }"> Dummy View 2 </router-link>
+      </span>
+    </div>
+    <router-view> </router-view>
   </div>
-  <router-view></router-view>
 </template>
 
 <style>
