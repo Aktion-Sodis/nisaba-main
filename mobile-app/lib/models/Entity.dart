@@ -20,7 +20,7 @@
 // ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
 
 import 'ModelProvider.dart';
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
+import 'package:amplify_core/amplify_core.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
@@ -30,8 +30,8 @@ import 'package:flutter/foundation.dart';
 class Entity extends Model {
   static const classType = const _EntityModelType();
   final String id;
-  final String? _name;
-  final String? _description;
+  final I18nString? _name;
+  final I18nString? _description;
   final String? _parentEntityID;
   final Level? _level;
   final Location? _location;
@@ -50,21 +50,30 @@ class Entity extends Model {
     return id;
   }
   
-  String get name {
+  I18nString get name {
     try {
       return _name!;
     } catch(e) {
-      throw new DataStoreException(
-          DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
   }
   
-  String? get description {
-    return _description;
+  I18nString get description {
+    try {
+      return _description!;
+    } catch(e) {
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
   }
   
   String? get parentEntityID {
@@ -75,10 +84,10 @@ class Entity extends Model {
     try {
       return _level!;
     } catch(e) {
-      throw new DataStoreException(
-          DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -92,10 +101,10 @@ class Entity extends Model {
     try {
       return _customData!;
     } catch(e) {
-      throw new DataStoreException(
-          DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -105,10 +114,10 @@ class Entity extends Model {
     try {
       return _appliedInterventions!;
     } catch(e) {
-      throw new DataStoreException(
-          DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -130,18 +139,18 @@ class Entity extends Model {
     try {
       return _entityLevelId!;
     } catch(e) {
-      throw new DataStoreException(
-          DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
   }
   
-  const Entity._internal({required this.id, required name, description, parentEntityID, required level, location, required customData, required appliedInterventions, schemeVersion, createdAt, updatedAt, required entityLevelId}): _name = name, _description = description, _parentEntityID = parentEntityID, _level = level, _location = location, _customData = customData, _appliedInterventions = appliedInterventions, _schemeVersion = schemeVersion, _createdAt = createdAt, _updatedAt = updatedAt, _entityLevelId = entityLevelId;
+  const Entity._internal({required this.id, required name, required description, parentEntityID, required level, location, required customData, required appliedInterventions, schemeVersion, createdAt, updatedAt, required entityLevelId}): _name = name, _description = description, _parentEntityID = parentEntityID, _level = level, _location = location, _customData = customData, _appliedInterventions = appliedInterventions, _schemeVersion = schemeVersion, _createdAt = createdAt, _updatedAt = updatedAt, _entityLevelId = entityLevelId;
   
-  factory Entity({String? id, required String name, String? description, String? parentEntityID, required Level level, Location? location, required List<AppliedCustomData> customData, required List<AppliedIntervention> appliedInterventions, int? schemeVersion, required String entityLevelId}) {
+  factory Entity({String? id, required I18nString name, required I18nString description, String? parentEntityID, required Level level, Location? location, required List<AppliedCustomData> customData, required List<AppliedIntervention> appliedInterventions, int? schemeVersion, required String entityLevelId}) {
     return Entity._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
@@ -184,8 +193,8 @@ class Entity extends Model {
     
     buffer.write("Entity {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("name=" + "$_name" + ", ");
-    buffer.write("description=" + "$_description" + ", ");
+    buffer.write("name=" + (_name != null ? _name!.toString() : "null") + ", ");
+    buffer.write("description=" + (_description != null ? _description!.toString() : "null") + ", ");
     buffer.write("parentEntityID=" + "$_parentEntityID" + ", ");
     buffer.write("location=" + (_location != null ? _location!.toString() : "null") + ", ");
     buffer.write("customData=" + (_customData != null ? _customData!.toString() : "null") + ", ");
@@ -198,7 +207,7 @@ class Entity extends Model {
     return buffer.toString();
   }
   
-  Entity copyWith({String? id, String? name, String? description, String? parentEntityID, Level? level, Location? location, List<AppliedCustomData>? customData, List<AppliedIntervention>? appliedInterventions, int? schemeVersion, String? entityLevelId}) {
+  Entity copyWith({String? id, I18nString? name, I18nString? description, String? parentEntityID, Level? level, Location? location, List<AppliedCustomData>? customData, List<AppliedIntervention>? appliedInterventions, int? schemeVersion, String? entityLevelId}) {
     return Entity._internal(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -214,8 +223,12 @@ class Entity extends Model {
   
   Entity.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
-      _name = json['name'],
-      _description = json['description'],
+      _name = json['name']?['serializedData'] != null
+        ? I18nString.fromJson(new Map<String, dynamic>.from(json['name']['serializedData']))
+        : null,
+      _description = json['description']?['serializedData'] != null
+        ? I18nString.fromJson(new Map<String, dynamic>.from(json['description']['serializedData']))
+        : null,
       _parentEntityID = json['parentEntityID'],
       _level = json['level']?['serializedData'] != null
         ? Level.fromJson(new Map<String, dynamic>.from(json['level']['serializedData']))
@@ -241,7 +254,7 @@ class Entity extends Model {
       _entityLevelId = json['entityLevelId'];
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'description': _description, 'parentEntityID': _parentEntityID, 'level': _level?.toJson(), 'location': _location?.toJson(), 'customData': _customData?.map((AppliedCustomData? e) => e?.toJson()).toList(), 'appliedInterventions': _appliedInterventions?.map((AppliedIntervention? e) => e?.toJson()).toList(), 'schemeVersion': _schemeVersion, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'entityLevelId': _entityLevelId
+    'id': id, 'name': _name?.toJson(), 'description': _description?.toJson(), 'parentEntityID': _parentEntityID, 'level': _level?.toJson(), 'location': _location?.toJson(), 'customData': _customData?.map((AppliedCustomData? e) => e?.toJson()).toList(), 'appliedInterventions': _appliedInterventions?.map((AppliedIntervention? e) => e?.toJson()).toList(), 'schemeVersion': _schemeVersion, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'entityLevelId': _entityLevelId
   };
 
   static final QueryField ID = QueryField(fieldName: "entity.id");
@@ -264,16 +277,16 @@ class Entity extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Entity.NAME,
+    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+      fieldName: 'name',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'I18nString')
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Entity.DESCRIPTION,
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+      fieldName: 'description',
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'I18nString')
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(

@@ -2,13 +2,14 @@ import 'package:mobile_app/backend/callableModels/AppliedCustomData.dart';
 import 'package:mobile_app/backend/callableModels/AppliedIntervention.dart';
 import 'package:mobile_app/backend/callableModels/Level.dart';
 import 'package:mobile_app/backend/callableModels/Location.dart';
+import 'package:mobile_app/backend/callableModels/I18nString.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 class Entity {
   String? id;
-  late String name;
-  String? description;
+  late I18nString name_ml;
+  late I18nString description_ml;
   String? parentEntityID;
   late Level level;
   Location? location;
@@ -18,10 +19,18 @@ class Entity {
   DateTime? createdAt;
   DateTime? updatedAt;
 
+  String get description => description_ml.text;
+
+  set description(String description) => description_ml.text = description;
+
+  String get name => name_ml.text;
+
+  set name(String name) => name_ml.text = name;
+
   Entity(
       {this.id,
-      required this.name,
-      this.description,
+      required this.name_ml,
+      required this.description_ml,
       this.parentEntityID,
       required this.level,
       this.location,
@@ -33,8 +42,8 @@ class Entity {
 
   Entity.fromAmplifyModel(amp.Entity entity) {
     id = entity.id;
-    name = entity.name;
-    description = entity.description;
+    name_ml = I18nString.fromAmplifyModel(entity.name);
+    description_ml = I18nString.fromAmplifyModel(entity.description);
     parentEntityID = entity.parentEntityID;
     level = Level.fromAmplifyModel(entity.level);
     location = entity.location == null
@@ -56,8 +65,8 @@ class Entity {
   amp.Entity toAmplifyModel() {
     return (amp.Entity(
         id: id,
-        name: name,
-        description: description,
+        name: name_ml.toAmplifyModel(),
+        description: description_ml.toAmplifyModel(),
         parentEntityID: parentEntityID,
         level: level.toAmplifyModel(),
         location: location?.toAmplifyModel(),
