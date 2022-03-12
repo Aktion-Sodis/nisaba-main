@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
+import 'package:mobile_app/frontend/components/audio/player_widget.dart';
+import 'package:mobile_app/frontend/components/audio/recorder_widget.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/services/audio.dart';
 import 'package:mobile_app/services/storage.dart';
@@ -16,7 +18,8 @@ class AudioTest extends StatefulWidget {
 
 class _AudioTestState extends State<AudioTest> {
   final Audio audio = Audio();
-  String? _recorderURI;
+  final Audio audio_for_widgets = Audio();
+  String? _recordedURI;
 
   Future<void> _openSession() => audio.openSession();
 
@@ -37,12 +40,13 @@ class _AudioTestState extends State<AudioTest> {
   }
 
   Future<void> _stopRecording() async {
-    _recorderURI = await audio.recorder.stopRecorder();
+    _recordedURI = await audio.recorder.stopRecorder();
+    if (mounted) setState(() {});
   }
 
   void _startPlaying() {
-    if (_recorderURI != null)
-      audio.player.startPlayer(fromURI: _recorderURI);
+    if (_recordedURI != null)
+      audio.player.startPlayer(fromURI: _recordedURI);
     else
       print("Nothing has been recorded yet");
   }
@@ -53,37 +57,79 @@ class _AudioTestState extends State<AudioTest> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Test of flutter_sound"),
+        title: const Text("Test of flutter_sound"),
       ),
       body: ListView(
         padding: EdgeInsets.all(defaultPadding(context)),
         children: [
           ElevatedButton(
             onPressed: _openSession,
-            child: Text("Open session"),
+            child: const Text("Open session"),
           ),
           ElevatedButton(
             onPressed: _closeSession,
-            child: Text("Close session"),
+            child: const Text("Close session"),
           ),
-          Divider(),
+          const Divider(),
           ElevatedButton(
             onPressed: _startRecording,
-            child: Text("Start recorder"),
+            child: const Text("Start recorder"),
           ),
           ElevatedButton(
             onPressed: _stopRecording,
-            child: Text("Stop recorder"),
+            child: const Text("Stop recorder"),
           ),
-          Divider(),
+          const Divider(),
           ElevatedButton(
             onPressed: _startPlaying,
-            child: Text("Start player"),
+            child: const Text("Start player"),
           ),
           ElevatedButton(
             onPressed: _stopPlaying,
-            child: Text("Stop player"),
+            child: const Text("Stop player"),
           ),
+          const Divider(),
+          SizedBox(height: 20),
+          Text("Tests of widgets with another instance of Audio()"),
+          SizedBox(height: 10),
+          RecorderWidget(
+              audio: audio_for_widgets,
+              loadingViewBuilder: () {
+                return const ElevatedButton(
+                    onPressed: null, child: Text("Start recording"));
+              },
+              restingViewBuilder: (startRecording) {
+                return ElevatedButton(
+                    onPressed: startRecording, child: Text("Start recording"));
+              },
+              recordingViewBuilder: (stopRecording) {
+                return ElevatedButton(
+                    onPressed: stopRecording, child: Text("Stop recording"));
+              },
+              onAudioRecorded: (url) {
+                _recordedURI = url;
+
+                if (mounted) setState(() {});
+              }),
+          _recordedURI == null
+              ? const ElevatedButton(
+                  onPressed: null, child: Text("Start playing"))
+              : PlayerWidget(
+                  audio: audio_for_widgets,
+                  audioURL: _recordedURI!,
+                  restingViewBuilder: (startPlaying) {
+                    return ElevatedButton(
+                        onPressed: startPlaying,
+                        child: const Text("Start playing"));
+                  },
+                  loadingViewBuilder: () {
+                    return Text("loading");
+                  },
+                  recordingViewBuilder: (stopPlaying) {
+                    return ElevatedButton(
+                        onPressed: stopPlaying,
+                        child: const Text("Stop playing"));
+                  })
         ],
       ),
     );
