@@ -85,10 +85,6 @@ export const createConfig = /* GraphQL */ `
         backgroundOneDark
         backgroundTwoDark
       }
-      storagePaths {
-        ownerPic
-        ownerIcon
-      }
       schemeVersion
       id
       createdAt
@@ -113,10 +109,6 @@ export const updateConfig = /* GraphQL */ `
         backgroundTwoLight
         backgroundOneDark
         backgroundTwoDark
-      }
-      storagePaths {
-        ownerPic
-        ownerIcon
       }
       schemeVersion
       id
@@ -143,10 +135,6 @@ export const deleteConfig = /* GraphQL */ `
         backgroundOneDark
         backgroundTwoDark
       }
-      storagePaths {
-        ownerPic
-        ownerIcon
-      }
       schemeVersion
       id
       createdAt
@@ -163,14 +151,18 @@ export const createLevel = /* GraphQL */ `
     $condition: ModelLevelConditionInput
   ) {
     createLevel(input: $input, condition: $condition) {
-      name
-      description
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
       parentLevelID
       interventionsAreAllowed
       allowedInterventions {
         items {
-          name
-          description
           interventionType
           schemeVersion
           id
@@ -186,7 +178,10 @@ export const createLevel = /* GraphQL */ `
       }
       customData {
         id
-        name
+        name {
+          languageKeys
+          languageTexts
+        }
         type
       }
       schemeVersion
@@ -205,14 +200,18 @@ export const updateLevel = /* GraphQL */ `
     $condition: ModelLevelConditionInput
   ) {
     updateLevel(input: $input, condition: $condition) {
-      name
-      description
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
       parentLevelID
       interventionsAreAllowed
       allowedInterventions {
         items {
-          name
-          description
           interventionType
           schemeVersion
           id
@@ -228,7 +227,10 @@ export const updateLevel = /* GraphQL */ `
       }
       customData {
         id
-        name
+        name {
+          languageKeys
+          languageTexts
+        }
         type
       }
       schemeVersion
@@ -247,14 +249,18 @@ export const deleteLevel = /* GraphQL */ `
     $condition: ModelLevelConditionInput
   ) {
     deleteLevel(input: $input, condition: $condition) {
-      name
-      description
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
       parentLevelID
       interventionsAreAllowed
       allowedInterventions {
         items {
-          name
-          description
           interventionType
           schemeVersion
           id
@@ -270,7 +276,10 @@ export const deleteLevel = /* GraphQL */ `
       }
       customData {
         id
-        name
+        name {
+          languageKeys
+          languageTexts
+        }
         type
       }
       schemeVersion
@@ -289,8 +298,14 @@ export const createIntervention = /* GraphQL */ `
     $condition: ModelInterventionConditionInput
   ) {
     createIntervention(input: $input, condition: $condition) {
-      name
-      description
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
       interventionType
       contents {
         items {
@@ -308,8 +323,6 @@ export const createIntervention = /* GraphQL */ `
       }
       surveys {
         items {
-          name
-          description
           surveyType
           schemeVersion
           id
@@ -325,7 +338,6 @@ export const createIntervention = /* GraphQL */ `
       }
       tags {
         items {
-          text
           schemeVersion
           id
           createdAt
@@ -355,8 +367,14 @@ export const updateIntervention = /* GraphQL */ `
     $condition: ModelInterventionConditionInput
   ) {
     updateIntervention(input: $input, condition: $condition) {
-      name
-      description
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
       interventionType
       contents {
         items {
@@ -374,8 +392,6 @@ export const updateIntervention = /* GraphQL */ `
       }
       surveys {
         items {
-          name
-          description
           surveyType
           schemeVersion
           id
@@ -391,7 +407,6 @@ export const updateIntervention = /* GraphQL */ `
       }
       tags {
         items {
-          text
           schemeVersion
           id
           createdAt
@@ -421,8 +436,14 @@ export const deleteIntervention = /* GraphQL */ `
     $condition: ModelInterventionConditionInput
   ) {
     deleteIntervention(input: $input, condition: $condition) {
-      name
-      description
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
       interventionType
       contents {
         items {
@@ -440,8 +461,6 @@ export const deleteIntervention = /* GraphQL */ `
       }
       surveys {
         items {
-          name
-          description
           surveyType
           schemeVersion
           id
@@ -457,7 +476,6 @@ export const deleteIntervention = /* GraphQL */ `
       }
       tags {
         items {
-          text
           schemeVersion
           id
           createdAt
@@ -487,8 +505,14 @@ export const createContent = /* GraphQL */ `
     $condition: ModelContentConditionInput
   ) {
     createContent(input: $input, condition: $condition) {
-      name
-      description
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
       interventions {
         items {
           id
@@ -505,7 +529,6 @@ export const createContent = /* GraphQL */ `
       }
       tags {
         items {
-          text
           schemeVersion
           id
           createdAt
@@ -534,8 +557,14 @@ export const updateContent = /* GraphQL */ `
     $condition: ModelContentConditionInput
   ) {
     updateContent(input: $input, condition: $condition) {
-      name
-      description
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
       interventions {
         items {
           id
@@ -552,7 +581,6 @@ export const updateContent = /* GraphQL */ `
       }
       tags {
         items {
-          text
           schemeVersion
           id
           createdAt
@@ -581,8 +609,14 @@ export const deleteContent = /* GraphQL */ `
     $condition: ModelContentConditionInput
   ) {
     deleteContent(input: $input, condition: $condition) {
-      name
-      description
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
       interventions {
         items {
           id
@@ -599,7 +633,6 @@ export const deleteContent = /* GraphQL */ `
       }
       tags {
         items {
-          text
           schemeVersion
           id
           createdAt
@@ -628,11 +661,23 @@ export const createSurvey = /* GraphQL */ `
     $condition: ModelSurveyConditionInput
   ) {
     createSurvey(input: $input, condition: $condition) {
-      name
-      description
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
       intervention {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         interventionType
         contents {
           nextToken
@@ -657,18 +702,19 @@ export const createSurvey = /* GraphQL */ `
       }
       questions {
         id
-        text
+        text {
+          languageKeys
+          languageTexts
+        }
         type
         questionOptions {
           id
-          text
           followUpQuestionID
         }
         isFollowUpQuestion
       }
       tags {
         items {
-          text
           schemeVersion
           id
           createdAt
@@ -699,11 +745,23 @@ export const updateSurvey = /* GraphQL */ `
     $condition: ModelSurveyConditionInput
   ) {
     updateSurvey(input: $input, condition: $condition) {
-      name
-      description
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
       intervention {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         interventionType
         contents {
           nextToken
@@ -728,18 +786,19 @@ export const updateSurvey = /* GraphQL */ `
       }
       questions {
         id
-        text
+        text {
+          languageKeys
+          languageTexts
+        }
         type
         questionOptions {
           id
-          text
           followUpQuestionID
         }
         isFollowUpQuestion
       }
       tags {
         items {
-          text
           schemeVersion
           id
           createdAt
@@ -770,11 +829,23 @@ export const deleteSurvey = /* GraphQL */ `
     $condition: ModelSurveyConditionInput
   ) {
     deleteSurvey(input: $input, condition: $condition) {
-      name
-      description
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
       intervention {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         interventionType
         contents {
           nextToken
@@ -799,18 +870,19 @@ export const deleteSurvey = /* GraphQL */ `
       }
       questions {
         id
-        text
+        text {
+          languageKeys
+          languageTexts
+        }
         type
         questionOptions {
           id
-          text
           followUpQuestionID
         }
         isFollowUpQuestion
       }
       tags {
         items {
-          text
           schemeVersion
           id
           createdAt
@@ -841,12 +913,24 @@ export const createEntity = /* GraphQL */ `
     $condition: ModelEntityConditionInput
   ) {
     createEntity(input: $input, condition: $condition) {
-      name
-      description
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
       parentEntityID
       level {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         parentLevelID
         interventionsAreAllowed
         allowedInterventions {
@@ -855,7 +939,6 @@ export const createEntity = /* GraphQL */ `
         }
         customData {
           id
-          name
           type
         }
         schemeVersion
@@ -910,12 +993,24 @@ export const updateEntity = /* GraphQL */ `
     $condition: ModelEntityConditionInput
   ) {
     updateEntity(input: $input, condition: $condition) {
-      name
-      description
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
       parentEntityID
       level {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         parentLevelID
         interventionsAreAllowed
         allowedInterventions {
@@ -924,7 +1019,6 @@ export const updateEntity = /* GraphQL */ `
         }
         customData {
           id
-          name
           type
         }
         schemeVersion
@@ -979,12 +1073,24 @@ export const deleteEntity = /* GraphQL */ `
     $condition: ModelEntityConditionInput
   ) {
     deleteEntity(input: $input, condition: $condition) {
-      name
-      description
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
       parentEntityID
       level {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         parentLevelID
         interventionsAreAllowed
         allowedInterventions {
@@ -993,7 +1099,6 @@ export const deleteEntity = /* GraphQL */ `
         }
         customData {
           id
-          name
           type
         }
         schemeVersion
@@ -1065,8 +1170,14 @@ export const createAppliedIntervention = /* GraphQL */ `
         _lastChangedAt
       }
       intervention {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         interventionType
         contents {
           nextToken
@@ -1146,8 +1257,14 @@ export const updateAppliedIntervention = /* GraphQL */ `
         _lastChangedAt
       }
       intervention {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         interventionType
         contents {
           nextToken
@@ -1227,8 +1344,14 @@ export const deleteAppliedIntervention = /* GraphQL */ `
         _lastChangedAt
       }
       intervention {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         interventionType
         contents {
           nextToken
@@ -1305,8 +1428,6 @@ export const createExecutedSurvey = /* GraphQL */ `
           _lastChangedAt
         }
         intervention {
-          name
-          description
           interventionType
           schemeVersion
           id
@@ -1337,11 +1458,15 @@ export const createExecutedSurvey = /* GraphQL */ `
         appliedInterventionInterventionId
       }
       survey {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         intervention {
-          name
-          description
           interventionType
           schemeVersion
           id
@@ -1354,7 +1479,6 @@ export const createExecutedSurvey = /* GraphQL */ `
         }
         questions {
           id
-          text
           type
           isFollowUpQuestion
         }
@@ -1401,7 +1525,6 @@ export const createExecutedSurvey = /* GraphQL */ `
         text
         questionOptions {
           id
-          text
           followUpQuestionID
         }
         markings {
@@ -1445,8 +1568,6 @@ export const updateExecutedSurvey = /* GraphQL */ `
           _lastChangedAt
         }
         intervention {
-          name
-          description
           interventionType
           schemeVersion
           id
@@ -1477,11 +1598,15 @@ export const updateExecutedSurvey = /* GraphQL */ `
         appliedInterventionInterventionId
       }
       survey {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         intervention {
-          name
-          description
           interventionType
           schemeVersion
           id
@@ -1494,7 +1619,6 @@ export const updateExecutedSurvey = /* GraphQL */ `
         }
         questions {
           id
-          text
           type
           isFollowUpQuestion
         }
@@ -1541,7 +1665,6 @@ export const updateExecutedSurvey = /* GraphQL */ `
         text
         questionOptions {
           id
-          text
           followUpQuestionID
         }
         markings {
@@ -1585,8 +1708,6 @@ export const deleteExecutedSurvey = /* GraphQL */ `
           _lastChangedAt
         }
         intervention {
-          name
-          description
           interventionType
           schemeVersion
           id
@@ -1617,11 +1738,15 @@ export const deleteExecutedSurvey = /* GraphQL */ `
         appliedInterventionInterventionId
       }
       survey {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         intervention {
-          name
-          description
           interventionType
           schemeVersion
           id
@@ -1634,7 +1759,6 @@ export const deleteExecutedSurvey = /* GraphQL */ `
         }
         questions {
           id
-          text
           type
           isFollowUpQuestion
         }
@@ -1681,7 +1805,6 @@ export const deleteExecutedSurvey = /* GraphQL */ `
         text
         questionOptions {
           id
-          text
           followUpQuestionID
         }
         markings {
@@ -1736,12 +1859,16 @@ export const createTask = /* GraphQL */ `
         _lastChangedAt
       }
       entity {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         parentEntityID
         level {
-          name
-          description
           parentLevelID
           interventionsAreAllowed
           schemeVersion
@@ -1790,8 +1917,6 @@ export const createTask = /* GraphQL */ `
           _lastChangedAt
         }
         intervention {
-          name
-          description
           interventionType
           schemeVersion
           id
@@ -1835,8 +1960,6 @@ export const createTask = /* GraphQL */ `
           appliedInterventionInterventionId
         }
         survey {
-          name
-          description
           surveyType
           schemeVersion
           id
@@ -1927,12 +2050,16 @@ export const updateTask = /* GraphQL */ `
         _lastChangedAt
       }
       entity {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         parentEntityID
         level {
-          name
-          description
           parentLevelID
           interventionsAreAllowed
           schemeVersion
@@ -1981,8 +2108,6 @@ export const updateTask = /* GraphQL */ `
           _lastChangedAt
         }
         intervention {
-          name
-          description
           interventionType
           schemeVersion
           id
@@ -2026,8 +2151,6 @@ export const updateTask = /* GraphQL */ `
           appliedInterventionInterventionId
         }
         survey {
-          name
-          description
           surveyType
           schemeVersion
           id
@@ -2118,12 +2241,16 @@ export const deleteTask = /* GraphQL */ `
         _lastChangedAt
       }
       entity {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         parentEntityID
         level {
-          name
-          description
           parentLevelID
           interventionsAreAllowed
           schemeVersion
@@ -2172,8 +2299,6 @@ export const deleteTask = /* GraphQL */ `
           _lastChangedAt
         }
         intervention {
-          name
-          description
           interventionType
           schemeVersion
           id
@@ -2217,8 +2342,6 @@ export const deleteTask = /* GraphQL */ `
           appliedInterventionInterventionId
         }
         survey {
-          name
-          description
           surveyType
           schemeVersion
           id
@@ -2284,7 +2407,10 @@ export const createContentTag = /* GraphQL */ `
     $condition: ModelContentTagConditionInput
   ) {
     createContentTag(input: $input, condition: $condition) {
-      text
+      text {
+        languageKeys
+        languageTexts
+      }
       schemeVersion
       id
       createdAt
@@ -2302,7 +2428,10 @@ export const updateContentTag = /* GraphQL */ `
     $condition: ModelContentTagConditionInput
   ) {
     updateContentTag(input: $input, condition: $condition) {
-      text
+      text {
+        languageKeys
+        languageTexts
+      }
       schemeVersion
       id
       createdAt
@@ -2320,7 +2449,10 @@ export const deleteContentTag = /* GraphQL */ `
     $condition: ModelContentTagConditionInput
   ) {
     deleteContentTag(input: $input, condition: $condition) {
-      text
+      text {
+        languageKeys
+        languageTexts
+      }
       schemeVersion
       id
       createdAt
@@ -2338,7 +2470,10 @@ export const createInterventionTag = /* GraphQL */ `
     $condition: ModelInterventionTagConditionInput
   ) {
     createInterventionTag(input: $input, condition: $condition) {
-      text
+      text {
+        languageKeys
+        languageTexts
+      }
       schemeVersion
       id
       createdAt
@@ -2356,7 +2491,10 @@ export const updateInterventionTag = /* GraphQL */ `
     $condition: ModelInterventionTagConditionInput
   ) {
     updateInterventionTag(input: $input, condition: $condition) {
-      text
+      text {
+        languageKeys
+        languageTexts
+      }
       schemeVersion
       id
       createdAt
@@ -2374,7 +2512,10 @@ export const deleteInterventionTag = /* GraphQL */ `
     $condition: ModelInterventionTagConditionInput
   ) {
     deleteInterventionTag(input: $input, condition: $condition) {
-      text
+      text {
+        languageKeys
+        languageTexts
+      }
       schemeVersion
       id
       createdAt
@@ -2392,7 +2533,10 @@ export const createSurveyTag = /* GraphQL */ `
     $condition: ModelSurveyTagConditionInput
   ) {
     createSurveyTag(input: $input, condition: $condition) {
-      text
+      text {
+        languageKeys
+        languageTexts
+      }
       schemeVersion
       id
       createdAt
@@ -2410,7 +2554,10 @@ export const updateSurveyTag = /* GraphQL */ `
     $condition: ModelSurveyTagConditionInput
   ) {
     updateSurveyTag(input: $input, condition: $condition) {
-      text
+      text {
+        languageKeys
+        languageTexts
+      }
       schemeVersion
       id
       createdAt
@@ -2428,7 +2575,10 @@ export const deleteSurveyTag = /* GraphQL */ `
     $condition: ModelSurveyTagConditionInput
   ) {
     deleteSurveyTag(input: $input, condition: $condition) {
-      text
+      text {
+        languageKeys
+        languageTexts
+      }
       schemeVersion
       id
       createdAt
@@ -2437,6 +2587,72 @@ export const deleteSurveyTag = /* GraphQL */ `
       _deleted
       _lastChangedAt
       surveyTagsId
+    }
+  }
+`;
+export const createSessionData = /* GraphQL */ `
+  mutation CreateSessionData(
+    $input: CreateSessionDataInput!
+    $condition: ModelSessionDataConditionInput
+  ) {
+    createSessionData(input: $input, condition: $condition) {
+      date
+      userID
+      app
+      version
+      buildNumber
+      remoteConfig
+      platform
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateSessionData = /* GraphQL */ `
+  mutation UpdateSessionData(
+    $input: UpdateSessionDataInput!
+    $condition: ModelSessionDataConditionInput
+  ) {
+    updateSessionData(input: $input, condition: $condition) {
+      date
+      userID
+      app
+      version
+      buildNumber
+      remoteConfig
+      platform
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteSessionData = /* GraphQL */ `
+  mutation DeleteSessionData(
+    $input: DeleteSessionDataInput!
+    $condition: ModelSessionDataConditionInput
+  ) {
+    deleteSessionData(input: $input, condition: $condition) {
+      date
+      userID
+      app
+      version
+      buildNumber
+      remoteConfig
+      platform
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -2450,8 +2666,14 @@ export const createInterventionContentRelation = /* GraphQL */ `
       interventionID
       contentID
       intervention {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         interventionType
         contents {
           nextToken
@@ -2475,8 +2697,14 @@ export const createInterventionContentRelation = /* GraphQL */ `
         levelAllowedInterventionsId
       }
       content {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         interventions {
           nextToken
           startedAt
@@ -2511,8 +2739,14 @@ export const updateInterventionContentRelation = /* GraphQL */ `
       interventionID
       contentID
       intervention {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         interventionType
         contents {
           nextToken
@@ -2536,8 +2770,14 @@ export const updateInterventionContentRelation = /* GraphQL */ `
         levelAllowedInterventionsId
       }
       content {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         interventions {
           nextToken
           startedAt
@@ -2572,8 +2812,14 @@ export const deleteInterventionContentRelation = /* GraphQL */ `
       interventionID
       contentID
       intervention {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         interventionType
         contents {
           nextToken
@@ -2597,8 +2843,14 @@ export const deleteInterventionContentRelation = /* GraphQL */ `
         levelAllowedInterventionsId
       }
       content {
-        name
-        description
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
         interventions {
           nextToken
           startedAt
