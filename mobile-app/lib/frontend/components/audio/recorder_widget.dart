@@ -7,7 +7,14 @@ import 'package:mobile_app/services/audio.dart';
 import 'package:mobile_app/services/storage.dart';
 import 'package:path_provider/path_provider.dart';
 
-// ignore: must_be_immutable
+/// Widget for recording audio data
+///
+/// Try to use just one instance of `Audio` for all active AudioStatefulWidgets
+/// in order to keep device resources free. Remember that an audio session will
+/// usually be closed after destroying all attached widgets like that.
+///
+/// You may need take advantage of setting `audio.keepSessionOpened = true;` in
+/// order to keep session opened, even if all attached widgets are destroyed.
 class RecorderWidget extends AudioStatefulWidget {
   RecorderWidget(
       {Key? key,

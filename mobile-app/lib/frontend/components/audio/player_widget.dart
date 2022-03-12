@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/frontend/components/audio/audio_stateful_widget.dart';
 import 'package:mobile_app/services/audio.dart';
 
-// ignore: must_be_immutable
+/// Widget for playing some audio data
+///
+/// Try to use just one instance of `Audio` for all active AudioStatefulWidgets
+/// in order to keep device resources free. Remember that an audio session will
+/// usually be closed after destroying all attached widgets like that.
+///
+/// You may need take advantage of setting `audio.keepSessionOpened = true;` in
+/// order to keep session opened, even if all attached widgets are destroyed.
 class PlayerWidget extends AudioStatefulWidget {
   PlayerWidget(
       {Key? key,
