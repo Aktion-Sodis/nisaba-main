@@ -28,7 +28,8 @@ Map<String, dynamic> stringMap = {
     "change_password_text":
         "For security reasons, please set your own password!",
     "new_password": "New password",
-    "new_password_validation": "New password (validation)"
+    "new_password_validation": "New password (validation)",
+    "test_list": "Tests"
   }
 };
 
@@ -70,3 +71,5 @@ String get login => stringMap[currentLanguage]["login"];
 String get or => stringMap[currentLanguage]["or"];
 
 String get google_sign_in => stringMap[currentLanguage]["google_sign_in"];
+
+String get test_list => stringMap[currentLanguage]["test_list"];
