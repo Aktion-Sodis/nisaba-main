@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-wrapper">
     <div class="return">
       <el-button class="sodis"
         ><i class="fa-solid fa-arrow-left"></i
@@ -210,7 +210,7 @@ export default {
   background-color: #2d91be;
   color: white;
 }
-.container {
+.container-wrapper {
   box-sizing: border-box;
   margin: var(--container-margin);
   height: calc(100vh - var(--navbar-height));

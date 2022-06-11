@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-wrapper">
     <div class="return-wrapper">
       <el-button class="sodis return"
         ><i class="fa-solid fa-arrow-left"></i
@@ -94,7 +94,7 @@ export default {
 </style>
 
 <style scoped>
-.container {
+.container-wrapper {
   box-sizing: border-box;
   margin-left: var(--container-margin);
   margin-right: var(--container-margin);

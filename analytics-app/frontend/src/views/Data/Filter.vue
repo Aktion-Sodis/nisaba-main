@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-wrapper">
     <div class="return-wrapper">
       <el-button class="sodis return"
         ><i class="fa-solid fa-arrow-left"></i
@@ -8,13 +8,6 @@
     <div class="header">Filter</div>
     <div class="continue-wrapper">
       <el-button-group class="ml-4">
-        <el-button
-          class="sodis"
-          :disabled="!this.continue"
-          @click="resetSelection"
-        >
-          Reset
-        </el-button>
         <el-button class="sodis return" :disabled="!this.continue">
           <i class="fa-solid fa-arrow-right"></i
         ></el-button>
@@ -29,7 +22,7 @@
           :class="{ selected: tag === selectedTag }"
           v-for="tag in uniqueInterventionTypes(interventions)"
           :key="tag"
-          @click="setActive(tag)"
+          @click="setTag(tag)"
         >
           {{ tag }}
         </div>
@@ -57,7 +50,7 @@
           v-for="survey in selectedIntervention.surveys"
           :key="survey.id"
           :survey="survey"
-          :class="{ selected: surveySelected(survey) }"
+          :class="{ selected: survey.id === selectedSurveyID }"
           @click="selectSurvey(survey)"
         >
         </SurveyCard>
@@ -87,45 +80,31 @@ export default {
       });
       return entitiesByTag;
     },
-    setActive(tag) {
+    setTag(tag) {
       this.selectedTag = tag;
-      this.selectedIntervention = "";
-      this.resetSelection();
+      this.selectedSurveyID = "";
+      this.continue = false;
+      this.setIntervention("");
       return this.selectedTag, this.selectedIntervention;
     },
     setIntervention(intervention) {
       this.selectedIntervention = intervention;
-      this.resetSelection();
+      this.selectedSurveyID = "";
+      this.continue = false;
       return this.selectedIntervention;
     },
     selectSurvey(survey) {
       //check if id is already in selected array
-      if (this.selectedSurveys.includes(survey.id)) {
-        console.log("DUPLIKAT: Noch nicht implementiert");
-        return;
-      }
-
-      this.selectedSurveys.push(survey.id);
-      console.log(this.selectedSurveys);
+      this.selectedSurveyID = survey.id;
       this.continue = true;
       return;
-    },
-    surveySelected(survey) {
-      if (this.selectedSurveys.includes(survey.id)) {
-        return true;
-      }
-      return false;
-    },
-    resetSelection() {
-      this.selectedSurveys = [];
-      this.continue = false;
     },
   },
   data() {
     return {
       selectedTag: "",
       selectedIntervention: "",
-      selectedSurveys: [],
+      selectedSurveyID: "",
       continue: false,
       interventions: [
         {
@@ -361,7 +340,7 @@ export default {
 </style>
 
 <style scoped>
-.container {
+.container-wrapper {
   box-sizing: border-box;
   margin-left: var(--container-margin);
   margin-right: var(--container-margin);
