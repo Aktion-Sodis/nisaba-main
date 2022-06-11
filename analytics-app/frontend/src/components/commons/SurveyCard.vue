@@ -1,20 +1,11 @@
 <template>
   <div class="survey-card">
-    <div class="survey-card-inner">
-      <el-image class="image" :src="src" />
-      <div class="survey-description-wrap">
-        <el-row>
-          <el-col :span="21">
-            <div class="survey-title">
-              {{ survey.name }}
-            </div>
-            <div class="survey-date">14.12.1996</div>
-          </el-col>
-          <el-col :span="3">
-            <i class="fa-solid fa-ellipsis-vertical"></i>
-          </el-col>
-        </el-row>
+    <el-image class="image" :src="src" />
+    <div class="survey-description-wrap">
+      <div class="survey-title">
+        {{ survey.name }}
       </div>
+      <div class="survey-date">14.12.1996</div>
     </div>
   </div>
 </template>
@@ -34,8 +25,7 @@ export default {
 <style scoped>
 .survey-card {
   width: 250px;
-  margin-left: 5px;
-  margin-right: 5px;
+  margin: 5px;
   border-radius: 5px;
   display: inline-block;
   box-shadow: 0px 0px 1px rgb(0, 0, 0, 0.5);
@@ -52,6 +42,7 @@ export default {
 }
 .survey-description-wrap {
   background-color: rgb(45, 145, 190, 0.2);
+  border-radius: 0 0 5px 5px;
   padding: 10px;
 }
 .survey-title {
