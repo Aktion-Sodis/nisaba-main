@@ -38,7 +38,7 @@ export default {
 }
 .image {
   height: 200px;
-  padding: 10px;
+  padding: 5px;
 }
 .survey-description-wrap {
   background-color: rgb(45, 145, 190, 0.2);
