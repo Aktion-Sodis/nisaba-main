@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-wrapper">
     <div class="return-wrapper">
       <el-button class="sodis return"
         ><i class="fa-solid fa-arrow-left"></i
@@ -39,32 +39,20 @@
           >
         </div>
       </div>
-      <div class="surveys">
-        <div class="survey-wrapper" v-for="survey in surveys" :key="survey.id">
-          <div class="survey-name-wrapper">
-            <div class="survey-placeholder">
-              <i class="sodis-icon fa-solid fa-bars-staggered"></i>
-            </div>
-            <div class="survey-name" :class="{ collapsed: collapsed }">
-              {{ survey.survey_name }}
-            </div>
-          </div>
-          <div class="questions">
-            <div
-              class="question"
-              :class="{
-                collapsed: collapsed,
-                active: selectedID === question.question_id,
-              }"
-              v-for="(question, index) in survey.questions"
-              :key="question.id"
-              @click="setActive(question)"
-            >
-              <div class="index-wrapper">{{ index + 1 }}</div>
-              <div class="question-wrapper" :class="{ collapsed: collapsed }">
-                {{ question.question_text }}
-              </div>
-            </div>
+      <div class="questions">
+        <div
+          class="question"
+          :class="{
+            collapsed: collapsed,
+            active: selectedID === question.question_id,
+          }"
+          v-for="(question, index) in questions"
+          :key="question.id"
+          @click="setActive(question)"
+        >
+          <div class="index-wrapper">{{ index + 1 }}</div>
+          <div class="question-wrapper" :class="{ collapsed: collapsed }">
+            {{ question.question_text }}
           </div>
         </div>
       </div>
@@ -196,202 +184,6 @@ export default {
           question_type: "text",
         },
       ],
-      surveys: [
-        {
-          survey_id: 1,
-          survey_name: "Umfrage 1",
-          questions: [
-            {
-              question_id: 1,
-              question_text: "Wie geht's?",
-              question_answer: "gut",
-              question_type: "image",
-            },
-            {
-              question_id: "2abs",
-              question_text:
-                "natoque penatibus et magnis dis p natoque penatibus et magnis dis",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 3,
-              question_text: "Machst du viel Sport?",
-              question_answer: "Nein",
-              question_type: "chart",
-            },
-            {
-              question_id: 4,
-              question_text: "Kannst du schwimmen?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 5,
-              question_text: "Kannst du kochen?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 6,
-              question_text: "Wie geht's?",
-              question_answer: "gut",
-              question_type: "text",
-            },
-            {
-              question_id: "2abs",
-              question_text: "Trinkst du ausreichend Wasser?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 7,
-              question_text: "Machst du viel Sport?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 8,
-              question_text: "Kannst du schwimmen?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 9,
-              question_text: "Kannst du kochen?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 10,
-              question_text: "Wie geht's?",
-              question_answer: "gut",
-              question_type: "text",
-            },
-            {
-              question_id: "11",
-              question_text: "Trinkst du ausreichend Wasser?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 12,
-              question_text: "Machst du viel Sport?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 13,
-              question_text: "Kannst du schwimmen?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 14,
-              question_text: "Kannst du kochen?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-          ],
-        },
-        {
-          survey_id: 2,
-          survey_name: "Umfrage 2",
-          questions: [
-            {
-              question_id: 1,
-              question_text: "Wie geht's?",
-              question_answer: "gut",
-              question_type: "image",
-            },
-            {
-              question_id: "2abs",
-              question_text:
-                "natoque penatibus et magnis dis p natoque penatibus et magnis dis",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 3,
-              question_text: "Machst du viel Sport?",
-              question_answer: "Nein",
-              question_type: "chart",
-            },
-            {
-              question_id: 4,
-              question_text: "Kannst du schwimmen?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 5,
-              question_text: "Kannst du kochen?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 6,
-              question_text: "Wie geht's?",
-              question_answer: "gut",
-              question_type: "text",
-            },
-            {
-              question_id: "2abs",
-              question_text: "Trinkst du ausreichend Wasser?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 7,
-              question_text: "Machst du viel Sport?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 8,
-              question_text: "Kannst du schwimmen?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 9,
-              question_text: "Kannst du kochen?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 10,
-              question_text: "Wie geht's?",
-              question_answer: "gut",
-              question_type: "text",
-            },
-            {
-              question_id: "11",
-              question_text: "Trinkst du ausreichend Wasser?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 12,
-              question_text: "Machst du viel Sport?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 13,
-              question_text: "Kannst du schwimmen?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-            {
-              question_id: 14,
-              question_text: "Kannst du kochen?",
-              question_answer: "Nein",
-              question_type: "text",
-            },
-          ],
-        },
-      ],
     };
   },
 };
@@ -404,7 +196,7 @@ export default {
 </style>
 
 <style scoped>
-.container {
+.container-wrapper {
   box-sizing: border-box;
   margin-left: var(--container-margin);
   margin-right: var(--container-margin);
@@ -526,10 +318,11 @@ export default {
 .collapse-info.collapseInfo {
   display: none;
 }
-.surveys {
+.surveys-wrapper {
   border-right: 2px solid var(--bg-color);
   overflow-y: scroll;
   overflow-x: hidden;
+  margin-left: 12px;
 
   position: absolute;
   left: calc(var(--left-menu-width) + var(--container-margin));
@@ -541,33 +334,23 @@ export default {
 
   direction: rtl;
 }
-.survey-name-wrapper {
-  height: 40px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  direction: ltr;
-}
-
-.survey-placeholder {
-  padding-left: 20px;
-}
-
-.survey-name {
-  text-align: left;
-  padding-left: 13px;
-}
-.survey-name.collapsed {
-  display: none;
-}
 
 .questions {
   box-sizing: border-box;
   overflow-y: scroll;
   overflow-x: hidden;
 
+  border-right: 2px solid var(--bg-color);
+
   transition: var(--transition-time);
+
+  position: absolute;
+  left: calc(var(--left-menu-width) + var(--container-margin));
+  top: calc(var(--navbar-height) + 60px + 50px);
+  bottom: var(--container-margin);
+  z-index: 1;
+
+  direction: rtl;
 }
 
 .question {
