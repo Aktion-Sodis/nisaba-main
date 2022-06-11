@@ -5,7 +5,7 @@
         ><i class="fa-solid fa-arrow-left"></i
       ></el-button>
     </div>
-    <div class="header">Technologie - Fragebogen</div>
+    <div class="header">Fragebogen XY</div>
     <div class="button-wrapper">
       <el-button class="sodis download"
         ><i class="fa-solid fa-filter"></i

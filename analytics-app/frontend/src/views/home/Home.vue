@@ -5,17 +5,15 @@
         ><i class="fa-solid fa-arrow-left"></i
       ></el-button>
     </div>
-    <div class="header">Technologie - Fragebogen</div>
-    <div class="continue-wrapper">
-      <el-button-group>
-        <el-button class="sodis" :disabled="true"> Reset </el-button>
-        <el-button class="sodis return" :disabled="true">
-          <i class="fa-solid fa-arrow-right"></i
-        ></el-button>
-      </el-button-group>
-    </div>
+    <div class="header">Home</div>
+    <div class="continue-wrapper"></div>
 
-    <div class="main">Main</div>
+    <div class="main">
+      <h1>
+        Hier können in Zukunft Basedata zu Projekten/Technologien etc. angezeigt
+        werden
+      </h1>
+    </div>
   </div>
 </template>
 
@@ -70,7 +68,7 @@ export default {};
   overflow-x: hidden;
   overflow-y: scroll;
 
-  border: 1px solid blue;
+  background-color: white;
 }
 
 .continue-wrapper {
