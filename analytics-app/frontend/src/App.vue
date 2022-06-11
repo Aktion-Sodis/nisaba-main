@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <div class="navbar-wrapper">
-      <Navbar2 v-if="!$route.meta.hideNavbar" />
+      <Navbar v-if="!$route.meta.hideNavbar" />
     </div>
     <div class="main-wrapper" v-if="!$route.meta.hideNavbar">
       <router-view></router-view>
@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import Navbar2 from "./components/navbar/Navbar2.vue";
+import Navbar from "./components/navbar/Navbar.vue";
 
 export default {
-  components: { Navbar2 },
+  components: { Navbar },
 };
 </script>
 
