@@ -1,6 +1,6 @@
 const NavbarAtributes = {
     state: () => ({
-        SideBarCollapsed: true,
+        SideBarCollapsed: false,
         SidebarWidth: "260px",
         SidebarWidthCollapsed: "70px",
         SidebarWidthExpanded: "260px"
