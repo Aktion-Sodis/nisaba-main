@@ -12,30 +12,21 @@
       ></el-button>
     </div>
     <div class="main">
-      <div class="tabs-wrapper">
-        <div class="tabs">
-          <div
-            class="tab"
-            :class="{ active: tab.id === selectedTabID }"
-            v-for="tab in tabs"
-            :key="tab.id"
-            @click="selectTab(tab.id)"
-          >
-            {{ tab.name }}
-          </div>
-        </div>
-        <div class="add-tab">
-          <el-button class="sodis plus"
-            ><i class="fa-solid fa-plus"></i
-          ></el-button>
-        </div>
-      </div>
-      <div class="content-wrapper">
-        <div
-          class="preview"
-          v-for="content in selectedTab().content"
-          :key="content.id"
+      <div class="nav nav-tabs" id="nav-tab">
+        <button
+          v-for="tab in tabs"
+          :key="tab.id"
+          class="nav-link"
+          :class="{ active: tab.id === selectedTabID }"
+          id="nav-home-tab"
+          aria-selected="true"
+          @click="selectTab(tab.id)"
         >
+          {{ tab.name }}
+        </button>
+      </div>
+      <div class="tab-content" id="tab-nav-content">
+        <div v-for="content in selectedTab().content" :key="content.id">
           {{ content.name }}
         </div>
       </div>
@@ -188,7 +179,7 @@ export default {
   border-left: 0.5px solid black;
   border-right: 0.5px solid black;
 }
-.tab.active {
+.tab.active1 {
   border-bottom: 0.5px solid rgb(255, 255, 255);
 }
 
