@@ -5,6 +5,7 @@ import VuexPersistence from 'vuex-persist';
 import persistedDummyModule from './persistedDummyModule';
 import volatileDummyModule from './volatileDummyModule';
 import NavbarAtributes from './navbar';
+import surveyData from './surveyData'
 
 const vuexPersistence = new VuexPersistence({
   storage: localStorage,
@@ -36,6 +37,7 @@ const store = createStore({
   },
   modules: {
     NavbarAtributes,
+    surveyData,
     persistedDummyModule,
     volatileDummyModule,
   },

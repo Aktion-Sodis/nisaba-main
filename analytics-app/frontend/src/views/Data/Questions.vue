@@ -68,21 +68,24 @@
 
 <script>
 import { ref } from "vue";
+import { mapState } from "vuex";
 import "element-plus/theme-chalk/display.css";
 
 import ChartComponent from "../../components/data/ChartComponent.vue";
-import ChartComponentPlotly from "../../components/data/ChartComponentPlotly.vue";
 import ImageComponent from "../../components/data/ImageComponent.vue";
 
 var collapsed = ref(true);
 var collapseInfo = ref(true);
 
 export default {
-  components: { ChartComponentPlotly, ImageComponent, ChartComponent },
+  components: { ImageComponent, ChartComponent },
   setup() {
     return { collapsed, collapseInfo };
   },
   computed: {
+    ...mapState({
+      questions: (state) => state.surveyData.questions,
+    }),
     selectedQuestion() {
       return (
         this.questions.find((item) => item.question_id === this.selectedID) || 0
@@ -109,81 +112,6 @@ export default {
     return {
       selectedID: 1,
       isSurveyModalVisible: false,
-      questions: [
-        {
-          question_id: 1,
-          question_text: "Wie geht's?",
-          question_answer: "gut",
-          question_type: "image",
-        },
-        {
-          question_id: "2abs",
-          question_text:
-            "natoque penatibus et magnis dis p natoque penatibus et magnis dis",
-          question_answer: "Nein",
-          question_type: "text",
-        },
-        {
-          question_id: 3,
-          question_text: "Machst du viel Sport?",
-          question_answer: "Nein",
-          question_type: "chart",
-        },
-        {
-          question_id: 4,
-          question_text: "Kannst du schwimmen?",
-          question_answer: "Nein",
-          question_type: "text",
-        },
-        {
-          question_id: 5,
-          question_text: "Kannst du kochen?",
-          question_answer: "Nein",
-          question_type: "text",
-        },
-        {
-          question_id: 6,
-          question_text: "Wie geht's?",
-          question_answer: "gut",
-          question_type: "text",
-        },
-        {
-          question_id: 4,
-          question_text: "Kannst du schwimmen?",
-          question_answer: "Nein",
-          question_type: "text",
-        },
-        {
-          question_id: 5,
-          question_text: "Kannst du kochen?",
-          question_answer: "Nein",
-          question_type: "text",
-        },
-        {
-          question_id: 6,
-          question_text: "Wie geht's?",
-          question_answer: "gut",
-          question_type: "text",
-        },
-        {
-          question_id: 4,
-          question_text: "Kannst du schwimmen?",
-          question_answer: "Nein",
-          question_type: "text",
-        },
-        {
-          question_id: 5,
-          question_text: "Kannst du kochen?",
-          question_answer: "Nein",
-          question_type: "text",
-        },
-        {
-          question_id: 6,
-          question_text: "Wie geht's?",
-          question_answer: "gut",
-          question_type: "text",
-        },
-      ],
     };
   },
 };

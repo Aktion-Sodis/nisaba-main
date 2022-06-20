@@ -8,7 +8,11 @@
     <div class="header">Filter</div>
     <div class="continue-wrapper">
       <el-button-group class="ml-4">
-        <el-button class="sodis return" :disabled="!this.continue">
+        <el-button
+          class="sodis return"
+          :disabled="!this.continue"
+          @click="getInterventions()"
+        >
           <i class="fa-solid fa-arrow-right"></i
         ></el-button>
       </el-button-group>
@@ -36,7 +40,7 @@
           :class="{
             selected: intervention.id === selectedIntervention.id,
           }"
-          v-for="intervention in getEntitiesByTag(selectedTag, interventions)"
+          v-for="intervention in getEntitiesByTag(selectedTag)"
           :key="intervention.id"
           @click="setIntervention(intervention)"
         >
@@ -54,6 +58,9 @@
           @click="selectSurvey(survey)"
         >
         </SurveyCard>
+        <div v-for="item in getInterventionTypes()" :key="item">
+          {{ item }}
+        </div>
       </div>
     </div>
   </div>
@@ -61,21 +68,49 @@
 
 <script>
 import { ref } from "vue";
+import { mapState } from "vuex";
+
+import axios from "axios";
+
 import "element-plus/theme-chalk/display.css";
 
 import SurveyCard from "../../components/commons/SurveyCard.vue";
 
 export default {
   components: { SurveyCard },
+  computed: {
+    ...mapState({
+      interventions: (state) => state.surveyData.interventions,
+    }),
+  },
+  mounted() {
+    this.getInterventions();
+  },
   methods: {
+    getInterventions() {
+      const path = "http://127.0.0.1:5000/uniqueInterventions";
+      axios
+        .get(path)
+        .then((res) => {
+          this.interventionTypes = res.data.interventions;
+          console.log(this.interventionTypes);
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(error);
+        });
+    },
+    getInterventionTypes() {
+      return Object.keys(this.interventionTypes[0]);
+    },
     uniqueInterventionTypes(interventions) {
       var uniqueTags = interventions
         .map((item) => item.tag)
         .filter((value, index, self) => self.indexOf(value) === index);
       return uniqueTags;
     },
-    getEntitiesByTag(tag, interventions) {
-      var entitiesByTag = interventions.filter((item) => {
+    getEntitiesByTag(tag) {
+      var entitiesByTag = this.interventions.filter((item) => {
         return item.tag === tag;
       });
       return entitiesByTag;
@@ -106,228 +141,8 @@ export default {
       selectedIntervention: "",
       selectedSurveyID: "",
       continue: false,
-      interventions: [
-        {
-          id: 1,
-          name: "Kitchen",
-          tag: "Technology",
-          src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-          surveys: [
-            {
-              id: 1,
-              name: "Survey Kitchen 1",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 2,
-              name: "Survey Kitchen 2",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 3,
-              name: "Survey Kitchen 3",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 4,
-              name: "Survey Kitchen 4",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-          ],
-        },
-        {
-          id: 2,
-          name: "Garden",
-          tag: "Technology",
-          src: "https://www.thespruce.com/thmb/YDnlBqJp9Z0F-dApUJW9ZgZmI2s=/4711x3141/filters:fill(auto,1)/how-to-start-a-garden-from-scratch-2132778-hero-5f6138784a034bad8bf9607ccb18dbed.jpg",
-          surveys: [
-            {
-              id: 1,
-              name: "Survey Garden 1",
-              src: "https://www.thespruce.com/thmb/YDnlBqJp9Z0F-dApUJW9ZgZmI2s=/4711x3141/filters:fill(auto,1)/how-to-start-a-garden-from-scratch-2132778-hero-5f6138784a034bad8bf9607ccb18dbed.jpg",
-            },
-            {
-              id: 2,
-              name: "Survey Garden 2",
-              src: "https://www.thespruce.com/thmb/YDnlBqJp9Z0F-dApUJW9ZgZmI2s=/4711x3141/filters:fill(auto,1)/how-to-start-a-garden-from-scratch-2132778-hero-5f6138784a034bad8bf9607ccb18dbed.jpg",
-            },
-            {
-              id: 3,
-              name: "Survey Garden 3",
-              src: "https://www.thespruce.com/thmb/YDnlBqJp9Z0F-dApUJW9ZgZmI2s=/4711x3141/filters:fill(auto,1)/how-to-start-a-garden-from-scratch-2132778-hero-5f6138784a034bad8bf9607ccb18dbed.jpg",
-            },
-            {
-              id: 4,
-              name: "Survey Garden 4",
-              src: "https://www.thespruce.com/thmb/YDnlBqJp9Z0F-dApUJW9ZgZmI2s=/4711x3141/filters:fill(auto,1)/how-to-start-a-garden-from-scratch-2132778-hero-5f6138784a034bad8bf9607ccb18dbed.jpg",
-            },
-          ],
-        },
-        {
-          id: 3,
-          name: "Baños",
-          tag: "Technology",
-          src: "https://blogs.iadb.org/agua/wp-content/uploads/sites/8/2021/02/WSA_BES_BLOG-2.jpg",
-          surveys: [
-            {
-              id: 1,
-              name: "Survey Baños 1",
-              src: "https://blogs.iadb.org/agua/wp-content/uploads/sites/8/2021/02/WSA_BES_BLOG-2.jpg",
-            },
-            {
-              id: 2,
-              name: "Survey Baños 2",
-              src: "https://blogs.iadb.org/agua/wp-content/uploads/sites/8/2021/02/WSA_BES_BLOG-2.jpg",
-            },
-            {
-              id: 3,
-              name: "Survey Baños 3",
-              src: "https://blogs.iadb.org/agua/wp-content/uploads/sites/8/2021/02/WSA_BES_BLOG-2.jpg",
-            },
-            {
-              id: 4,
-              name: "Survey Baños 4",
-              src: "https://blogs.iadb.org/agua/wp-content/uploads/sites/8/2021/02/WSA_BES_BLOG-2.jpg",
-            },
-          ],
-        },
-        {
-          id: 4,
-          name: "Irgendwas",
-          tag: "Education",
-          src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-          surveys: [
-            {
-              id: 1,
-              name: "Survey Education 1",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 2,
-              name: "Survey Education 2",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 3,
-              name: "Survey Education 3",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 4,
-              name: "Survey Education 4",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 5,
-              name: "Survey Education 1",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 6,
-              name: "Survey Education 2",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 7,
-              name: "Survey Education 3",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 8,
-              name: "Survey Education 4",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 9,
-              name: "Survey Education 1",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 10,
-              name: "Survey Education 2",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 11,
-              name: "Survey Education 3",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 12,
-              name: "Survey Education 4",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-          ],
-        },
-        {
-          id: 4,
-          name: "Irgendwas",
-          tag: "Application",
-          src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-          surveys: [
-            {
-              id: 1,
-              name: "Survey Application 1",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 2,
-              name: "Survey Application 2",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 3,
-              name: "Survey Application 3",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 4,
-              name: "Survey Application 4",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 5,
-              name: "Survey Application 1",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 6,
-              name: "Survey Application 2",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 7,
-              name: "Survey Application 3",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 8,
-              name: "Survey Application 4",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 9,
-              name: "Survey Application 1",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 10,
-              name: "Survey Application 2",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 11,
-              name: "Survey Application 3",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-            {
-              id: 12,
-              name: "Survey Application 4",
-              src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",
-            },
-          ],
-        },
-      ],
+      interventionTypes: [],
+      interventionType: [1, 2, 3],
     };
   },
 };
