@@ -1040,6 +1040,13 @@ export const schema = {
                         "targetName": "executedSurveySurveyId"
                     }
                 },
+                "surveyID": {
+                    "name": "surveyID",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "whoExecutedIt": {
                     "name": "whoExecutedIt",
                     "isArray": false,
@@ -1124,6 +1131,16 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "bySurveyID",
+                        "queryField": "executedSurveyBySurveyID",
+                        "fields": [
+                            "surveyID"
+                        ]
+                    }
                 }
             ]
         },
@@ -1468,6 +1485,24 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byLevel",
+                        "fields": [
+                            "levelID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byIntervention",
+                        "fields": [
+                            "interventionID"
+                        ]
+                    }
                 }
             ]
         },
@@ -1530,6 +1565,24 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byIntervention",
+                        "fields": [
+                            "interventionID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byContent",
+                        "fields": [
+                            "contentID"
+                        ]
+                    }
                 }
             ]
         },
@@ -1592,6 +1645,24 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byIntervention",
+                        "fields": [
+                            "interventionID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byInterventionTag",
+                        "fields": [
+                            "interventionTagID"
+                        ]
+                    }
                 }
             ]
         },
@@ -1654,6 +1725,24 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byContent",
+                        "fields": [
+                            "contentID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byContentTag",
+                        "fields": [
+                            "contentTagID"
+                        ]
+                    }
                 }
             ]
         },
@@ -1716,6 +1805,24 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "bySurvey",
+                        "fields": [
+                            "surveyID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "bySurveyTag",
+                        "fields": [
+                            "surveyTagID"
+                        ]
+                    }
                 }
             ]
         }
@@ -2152,6 +2259,5 @@ export const schema = {
             }
         }
     },
-
-    "version": "dc6306969dd366139fcc9a6c28e81f80"
+    "version": "fe86bdae59901e725a34655631155e50"
 };
