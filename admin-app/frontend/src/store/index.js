@@ -6,12 +6,12 @@ import i18n from '../i18n';
 // import modules
 import authModule from './modules/auth';
 import interventionsData from './modules/interventionData';
-import surveyData from './modules/surveyData';
+import survey from './modules/survey';
 import QUESTION_UI from './modules/questionUI';
 import FEEDBACK_UI from './modules/feedbackUI';
 // eslint-disable-next-line
 import levelsData from './modules/levelData';
-import entitiesData from './modules/entityData';
+import entitiesData from './modules/entity';
 import dataModal from './modules/dataModal';
 import SYNC_UI from './modules/syncUI';
 import { vuexModulesDict } from '../lib/constants';
@@ -94,14 +94,20 @@ export default new Vuex.Store({
     uiLocaleIndex: () => i18n.availableLocales.findIndex((l) => l === i18n.locale),
 
     calculateLocalizedString:
-      (_, { fallbackLocaleIndex }) => ({ languageTexts }) => languageTexts[fallbackLocaleIndex] || i18n.t('general.noTextProvided'),
+      (_, { fallbackLocaleIndex }) =>
+      ({ languageTexts }) =>
+        languageTexts[fallbackLocaleIndex] || i18n.t('general.noTextProvided'),
 
     // For the localization, you will most probably only need this getter and no other! Please don't consider using the others.
     calculateUILocaleString:
-      (_, { uiLocaleIndex, calculateLocalizedString }) => ({ languageTexts }) => languageTexts[uiLocaleIndex] || calculateLocalizedString({ languageTexts }),
+      (_, { uiLocaleIndex, calculateLocalizedString }) =>
+      ({ languageTexts }) =>
+        languageTexts[uiLocaleIndex] || calculateLocalizedString({ languageTexts }),
 
     calculateIndexByLocale:
-      () => ({ locale }) => i18n.availableLocales.findIndex((l) => l === locale),
+      () =>
+      ({ locale }) =>
+        i18n.availableLocales.findIndex((l) => l === locale),
   },
   mutations: {
     setCreatingEntityInLevelId: (state, { id }) => {
@@ -121,7 +127,7 @@ export default new Vuex.Store({
     [vuexModulesDict.auth]: authModule,
     [vuexModulesDict.dataModal]: dataModal,
     [vuexModulesDict.entity]: entitiesData,
-    [vuexModulesDict.survey]: surveyData,
+    [vuexModulesDict.survey]: survey,
     [vuexModulesDict.level]: levelsData,
     [vuexModulesDict.intervention]: interventionsData,
     [vuexModulesDict.question]: QUESTION_UI,
