@@ -1,6 +1,8 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 
+from QueryMethods import get_interventions
+
 images = [
     {
         "img_id": 1,
@@ -78,15 +80,16 @@ DEBUG = True
 # instantiate the app
 app = Flask(__name__)
 app.config.from_object(__name__)
+app.config['JSON_AS_ASCII'] = False
 
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
 
 
 # sanity check route
-@app.route('/ping', methods=['GET'])
+@app.route('/', methods=['GET'])
 def ping_pong():
-    return jsonify('pong!')
+    return jsonify('Home')
 
 
 @app.route('/images', methods=['GET'])
@@ -101,6 +104,15 @@ def get_graphData():
     return jsonify({
         'status': 'success',
         'data': graphData,
+    })
+
+@app.route('/uniqueInterventions', methods=['GET'])
+def get_unique_interventions():
+    interventions = [get_interventions()]
+    print(interventions)
+    return jsonify({
+        'status': 'success',
+        'interventions': interventions
     })
 
 
