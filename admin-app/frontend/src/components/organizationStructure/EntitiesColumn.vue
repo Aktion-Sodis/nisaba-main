@@ -1,5 +1,9 @@
 <template>
-  <div class="d-flex flex-column px-2" v-if="entities.length > 0">
+  <div
+    class="d-flex flex-column px-2"
+    style="height: calc(100% - 72px); overflow-y: scroll"
+    v-if="entities.length > 0"
+  >
     <Entity
       v-for="entity in entities"
       :key="entity.id"
@@ -12,13 +16,11 @@
       "
       :index="index"
     />
-    <AddEntityButton class="mt-4" :levelId="levelId" />
   </div>
   <div v-else class="d-flex flex-column mt-8 align-center" style="width: 100%">
     <p>
       {{ $t('organizationStructure.hasNoEntities', { parentName: nameOfParentEntity, levelName }) }}
     </p>
-    <AddEntityButton class="mt-4" :levelId="levelId" />
   </div>
 </template>
 
@@ -26,12 +28,11 @@
 import { mapGetters } from 'vuex';
 import { vuexModulesDict } from '../../lib/constants';
 
-import AddEntityButton from './AddEntityButton.vue';
 import Entity from './Entity.vue';
 
 export default {
   name: 'EntitiesColumn',
-  components: { AddEntityButton, Entity },
+  components: { Entity },
   props: {
     levelId: {
       required: true,
