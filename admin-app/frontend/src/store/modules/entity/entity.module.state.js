@@ -2,6 +2,7 @@
 const state = {
   entities: [],
   loading: false,
+  chosenEntityIds: [],
 };
 
 export default state;

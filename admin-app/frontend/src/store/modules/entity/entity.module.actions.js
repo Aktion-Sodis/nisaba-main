@@ -69,7 +69,6 @@ const actions = {
 
       if (rootGetters['dataModal/getImageFile'] instanceof File) {
         try {
-          console.log(deriveFilePath('entityPicPath', { entityID: putResponse.id }));
           await Storage.put(
             deriveFilePath('entityPicPath', { entityID: putResponse.id }),
             rootGetters['dataModal/getImageFile']
@@ -138,6 +137,26 @@ const actions = {
     } catch {
       return [];
     }
+  },
+  setChosenEntityIdsFromApiLevels: ({ getters, commit, dispatch }, { apiLevelIds }) => {
+    for (const levelId of apiLevelIds) {
+      const firstEntity = getters.allEntitiesByLevelId({ levelId })[0] ?? null;
+      if (firstEntity) {
+        dispatch('addChosenEntityId', { entityId: firstEntity.id, levelId });
+      }
+    }
+  },
+  addChosenEntityId: ({ state, getters, commit }, { entityId, levelId }) => {
+    const alreadyChosenId = getters.getChosenEntityIds.find((id) => {
+      const entity = getters.ENTITYById({ id });
+      return entity.entityLevelId === levelId;
+    });
+    if (alreadyChosenId) {
+      commit('removeChosenEntityId', { entityId: alreadyChosenId });
+    }
+    const asSet = new Set(state.chosenEntityIds);
+    asSet.add(entityId);
+    state.chosenEntityIds = Array.from(asSet);
   },
 };
 

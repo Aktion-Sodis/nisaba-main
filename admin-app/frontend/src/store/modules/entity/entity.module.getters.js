@@ -7,16 +7,34 @@ import { deriveFilePath } from '../../../lib/utils';
 
 /** @type {import("vuex").GetterTree<import("./entity.module").EntityState>} */
 const getters = {
-  /* READ */
   getEntities: ({ entities }) => entities.filter((e) => !e._deleted),
   getLoading: ({ loading }) => loading,
+  getChosenEntityIds: ({ chosenEntityIds }) => chosenEntityIds,
 
   // sort by id for consistency
   allEntitiesByLevelId:
     (_, { getEntities }) =>
-    ({ entityLevelId }) =>
-      getEntities.filter((e) => e.entityLevelId === entityLevelId).sort((a, b) => a.id - b.id),
+    ({ levelId }) =>
+      getEntities.filter((e) => e.entityLevelId === levelId).sort((a, b) => a.id - b.id),
 
+  isEntityChosen:
+    (_, { getChosenEntityIds }) =>
+    ({ entityId }) =>
+      getChosenEntityIds.includes(entityId),
+
+  isEntityActive:
+    (_, { getChosenEntityIds }) =>
+    ({ parentEntityId }) =>
+      !!getChosenEntityIds.find((id) => id === parentEntityId) || parentEntityId === null,
+
+  allActiveEntitiesByLevelId:
+    (_, { isEntityActive, allEntitiesByLevelId }) =>
+    ({ levelId }) =>
+      allEntitiesByLevelId({ levelId }).filter((e) =>
+        isEntityActive({ parentEntityId: e.parentEntityID })
+      ),
+
+  /** @returns { (payload: {entityId: string, entityLevelId: string}) => number } */
   verticalOrderByEntityId:
     (_, { allEntitiesByLevelId }) =>
     ({ entityId, entityLevelId }) =>
@@ -69,65 +87,6 @@ const getters = {
     (_, { getEntities }) =>
     ({ id }) =>
       getEntities.find((i) => i.id === id),
-
-  /* returns "lines" with the schema {id, id, indentation, y0, y1} */
-  calculatedLines: (
-    _,
-    {
-      allEntitiesByLevelId,
-      hasDescendantsById,
-      verticalOrderByEntityId,
-      minVerticalOrderOfChildren,
-      maxVerticalOrderOfChildren,
-    },
-    rootState,
-    rootGetters
-  ) => {
-    const lines = [];
-    rootGetters[`${vuexModulesDict.level}/sortedLevels`].forEach((l) => {
-      const allParentsInLevel = allEntitiesByLevelId({ entityLevelId: l.id }).filter((e) =>
-        hasDescendantsById({ id: e.id })
-      );
-      allParentsInLevel.forEach((p, index) => {
-        const parentVerticalOrder = verticalOrderByEntityId({
-          entityId: p.id,
-          entityLevelId: p.entityLevelId,
-        });
-        const newLine = {
-          entityLevelId: l.id,
-          entityId: p.id,
-          indentation: index,
-          y0: Math.min(
-            minVerticalOrderOfChildren({ entityId: p.id, entityLevelId: l.id }),
-            parentVerticalOrder
-          ),
-          y1: Math.max(
-            maxVerticalOrderOfChildren({ entityId: p.id, entityLevelId: l.id }),
-            parentVerticalOrder
-          ),
-        };
-        lines.push(newLine);
-      });
-    });
-    return lines;
-  },
-
-  calculatedLinesByLevelId:
-    (_, { calculatedLines }, rootState, rootGetters) =>
-    ({ entityLevelId }) =>
-      calculatedLines.filter(
-        (li) =>
-          rootGetters[`${vuexModulesDict.level}/getLevels`].find(
-            (le) => le.parentLevelID === li.entityLevelId
-          ).id === entityLevelId
-      ),
-
-  lineByEntityId:
-    (_, { calculatedLines }) =>
-    ({ id }) =>
-      calculatedLines.find((l) => l.entityId === id) || {
-        indentation: 0,
-      },
 };
 
 export default getters;

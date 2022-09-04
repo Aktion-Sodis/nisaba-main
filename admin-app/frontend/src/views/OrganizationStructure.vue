@@ -7,12 +7,13 @@
         :key="level.id"
         class="px-24"
         :class="level.parentLevelID === null || 'dotted-left-border'"
+        style="width: 256px"
       >
         <LevelColumnHeader
           :id="level.id"
           :name="calculateUILocaleString({ languageTexts: level.name.languageTexts })"
         />
-        <EntitiesColumn :entityLevelId="level.id" :index="index" />
+        <EntitiesColumn :levelId="level.id" :index="index" />
       </div>
       <div class="dotted-left-border d-flex align-center justify-center">
         <v-btn :disabled="getLoading" rounded x-large color="primary" @click="clickOnAddNewLevel">
@@ -68,7 +69,7 @@ export default {
 
 <style scoped>
 .dotted-left-border {
-  border-left: 4px rgb(0, 0, 0, 0.2) dotted;
+  border-left: 2px rgb(0, 0, 0, 0.2) dotted;
 }
 
 .edit-level-icon {

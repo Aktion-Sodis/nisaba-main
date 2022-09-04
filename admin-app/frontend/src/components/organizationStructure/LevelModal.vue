@@ -365,7 +365,7 @@ import {
 
 const levelDescriptionMaxChar = Math.max(
   parseInt(process.env.VUE_APP_LEVEL_DESCRIPTION_MAX_CHAR, 10),
-  0,
+  0
 );
 
 export default {
@@ -452,15 +452,17 @@ export default {
       const allowedInterventionsInComponent = new Set(this.allowedInterventionIds);
       const allowedInterventionsInDraft = new Set(this.levelDraft.allowedInterventionIds);
       return (
-        this.name !== this.levelDraft.name
-        || this.description !== this.levelDraft.description
+        this.name !== this.levelDraft.name ||
+        this.description !== this.levelDraft.description ||
         // || !(
         // tagIdsInComponent.size === tagIdsInDraft.size
         // && [...tagIdsInComponent].every((value) => tagIdsInDraft.has(value))
         // )
-        || !(
-          allowedInterventionsInComponent.size === allowedInterventionsInDraft.size
-          && [...allowedInterventionsInComponent].every((value) => allowedInterventionsInDraft.has(value))
+        !(
+          allowedInterventionsInComponent.size === allowedInterventionsInDraft.size &&
+          [...allowedInterventionsInComponent].every((value) =>
+            allowedInterventionsInDraft.has(value)
+          )
         )
       );
     },
@@ -520,7 +522,7 @@ export default {
             name: cd.name,
             type: this.customDataTypeIndices[i] === 0 ? Type.INT : Type.STRING,
           })),
-        }),
+        })
       );
       await this.$nextTick();
       const originalVersion = this.levelInFocus ? this.levelInFocus._version : 0;
@@ -532,11 +534,11 @@ export default {
         languageTexts: this.levelDraft?.description.languageTexts,
       });
       // this.tagIds = this.levelDraft?.tagIds ?? [];
-      this.allowedInterventionIds = this.interventionsOfLevelById({ levelId: this.dataIdInFocus }).map((i) => i.id) ?? [];
+      this.allowedInterventionIds =
+        this.interventionsOfLevelById({ levelId: this.dataIdInFocus }).map((i) => i.id) ?? [];
       this.customData = Array.from(this.levelDraft?.customData ?? []);
-      console.log(this.customData);
-      this.customDataTypeIndices = Array.from(this.levelDraft?.customData.map((cd) => (cd.type === Type.INT ? 0 : 1))) ?? [];
-      console.log(this.customDataTypeIndices);
+      this.customDataTypeIndices =
+        Array.from(this.levelDraft?.customData.map((cd) => (cd.type === Type.INT ? 0 : 1))) ?? [];
     },
     nameUpdatedHandler(res) {
       this.name = res;

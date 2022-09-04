@@ -1,47 +1,49 @@
 <template>
-  <div>
-    <div v-if="!getLoading">
-      <div
-        v-if="entityHasParent({ parentEntityID }) && index !== 0"
-        class="entity-connection-left-line"
-        :style="`width: ${378 - leftLineOfEntity.indentation * 12}px; left: ${
-          -378 + leftLineOfEntity.indentation * 12
-        }px; background-color: ${lineColors[leftLineOfEntity.indentation]}; top: ${
-          16 + leftLineOfEntity.indentation * 3
-        }px; z-index: ${leftLineOfEntity.indentation}`"
-      ></div>
-      <div
-        v-if="hasDescendants({ id })"
-        class="entity-connection-right-line"
-        :style="`width: ${(rightLineOfEntity.indentation + 1) * 12}px; left: calc(128px + ${
-          (rightLineOfEntity.indentation + 1) * 6
-        }px); background-color: ${lineColors[rightLineOfEntity.indentation]}; top: ${
-          16 + rightLineOfEntity.indentation * 3
-        }px; z-index: ${rightLineOfEntity.indentation}`"
-      ></div>
+  <v-hover v-slot="{ hover }">
+    <div
+      class="entity-sheet lighten-4 rounded-lg pl-4 pb-1"
+      style="margin-bottom: 1px; margin-top: 1px"
+      :class="[
+        hover && !isChosen ? 'lighten-2' : '',
+        getLoading ? 'nonClickable' : '',
+        isChosen ? 'blue' : 'grey',
+      ]"
+      elevation="4"
+      @click="clickHandler"
+    >
+      <v-skeleton-loader
+        v-if="getLoading"
+        class="entitiy-skeleton"
+        type="list-item-two-line"
+      ></v-skeleton-loader>
+      <div :title="entityName" v-else>
+        <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap" class="mx-4">
+          <v-slide-x-transition>
+            <v-btn
+              class="mx-2"
+              plain
+              fab
+              x-small
+              v-if="isChosen && hover"
+              style="position: absolute; left: -8px; top: -4px"
+            >
+              <v-icon> mdi-pencil </v-icon>
+            </v-btn>
+          </v-slide-x-transition>
+          <span>
+            {{ entityName }}
+          </span>
+          <span v-if="hasDescendants({ id })" style="position: absolute; right: 0">
+            <v-icon> mdi-chevron-right </v-icon>
+          </span>
+        </div>
+      </div>
     </div>
-    <v-hover v-slot="{ hover }">
-      <v-sheet
-        class="entity-sheet mx-auto grey lighten-5 rounded-lg pa-4 d-flex flex-column justify-center align-center"
-        :class="[hover ? 'lighten-4' : '', getLoading ? 'nonClickable' : '']"
-        elevation="4"
-        @click="clickHandler"
-      >
-        <v-skeleton-loader
-          v-if="getLoading"
-          class="entitiySkeleton"
-          type="list-item-two-line"
-        ></v-skeleton-loader>
-        <div v-else>{{ entityName }}</div>
-      </v-sheet>
-    </v-hover>
-  </div>
+  </v-hover>
 </template>
 
 <script>
-// import { validate as uuidValidate } from 'uuid';
-
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { vuexModulesDict } from '../../lib/constants';
 
 export default {
@@ -49,15 +51,12 @@ export default {
   props: {
     id: {
       required: true,
-      // validator: (v) => uuidValidate(v) || v === null || v.slice(0, 11) === 'dummyEntity',
     },
-    entityLevelId: {
+    levelId: {
       required: true,
-      // validator: (v) => uuidValidate(v) || v === null || v.slice(0, 10) === 'dummyLevel',
     },
-    parentEntityID: {
+    parentEntityId: {
       required: true,
-      // validator: (v) => uuidValidate(v) || v === null || v.slice(0, 11) === 'dummyEntity',
     },
     entityName: { type: String, required: true },
     entityDescription: { type: String, required: true },
@@ -67,23 +66,25 @@ export default {
     ...mapGetters({
       entityHasParent: `${vuexModulesDict.entity}/hasParentByUpperEntityId`,
       hasDescendants: `${vuexModulesDict.entity}/hasDescendantsById`,
-      lineColors: 'getLineColors',
-      lineByEntityId: `${vuexModulesDict.entity}/lineByEntityId`,
       getLoading: `${vuexModulesDict.level}/getLoading`,
+      isEntityChosen: `${vuexModulesDict.entity}/isEntityChosen`,
     }),
-    leftLineOfEntity() {
-      return this.lineByEntityId({ id: this.parentEntityID });
-    },
-    rightLineOfEntity() {
-      return this.lineByEntityId({ id: this.id });
+    isChosen: function () {
+      return this.isEntityChosen({ entityId: this.id });
     },
   },
   methods: {
     ...mapActions({
       readData: `${vuexModulesDict.dataModal}/readData`,
+      addChosenEntityId: `${vuexModulesDict.entity}/addChosenEntityId`,
+    }),
+    ...mapMutations({
+      removeChosenEntityId: `${vuexModulesDict.entity}/removeChosenEntityId`,
     }),
     clickHandler() {
-      this.readData({ dataId: this.id, dataType: 'ENTITY' });
+      this.isChosen
+        ? this.readData({ dataId: this.id, dataType: 'ENTITY' })
+        : this.addChosenEntityId({ entityId: this.id, levelId: this.levelId });
     },
   },
 };
@@ -92,25 +93,6 @@ export default {
 <style scoped>
 .nonClickable {
   pointer-events: none;
-}
-.entitiySkeleton {
-  width: 100%;
-}
-
-.entity-connection-left-line {
-  position: absolute;
-  height: 3px;
-}
-
-.entity-connection-right-line {
-  position: relative;
-  height: 3px;
-}
-
-.entity-icon {
-  position: absolute;
-  top: 0;
-  right: 0;
 }
 
 .entity-sheet {

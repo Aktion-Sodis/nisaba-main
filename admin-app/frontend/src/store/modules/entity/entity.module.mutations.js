@@ -27,6 +27,12 @@ const mutations = {
     state.loading = newValue;
   },
 
+  removeChosenEntityId: (state, { entityId }) => {
+    const asSet = new Set(state.chosenEntityIds);
+    asSet.delete(entityId);
+    state.chosenEntityIds = Array.from(asSet);
+  },
+
   deleteEntitiesByLevelId: (state, { entityLevelId }) => {
     state.entities = state.entities.filter((e) => e.entityLevelId !== entityLevelId);
   },
