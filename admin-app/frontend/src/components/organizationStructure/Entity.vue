@@ -2,7 +2,7 @@
   <v-hover v-slot="{ hover }">
     <div
       class="entity-sheet lighten-4 rounded-lg pl-4 pb-1"
-      style="margin-bottom: 1px; margin-top: 1px"
+      style="margin-bottom: 1px; margin-top: 1px; height: auto"
       :class="[
         hover && !isChosen ? 'lighten-2' : '',
         getLoading ? 'nonClickable' : '',
