@@ -22,6 +22,11 @@ const getters = {
     ({ entityId }) =>
       getChosenEntityIds.includes(entityId),
 
+  chosenEntityByLevelId:
+    (_, { getChosenEntityIds, getEntities }) =>
+    ({ levelId }) =>
+      getEntities.find((e) => e.entityLevelId === levelId && getChosenEntityIds.includes(e.id)),
+
   isEntityActive:
     (_, { getChosenEntityIds }) =>
     ({ parentEntityId }) =>

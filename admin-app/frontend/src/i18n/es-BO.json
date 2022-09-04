@@ -157,7 +157,7 @@
     "addNewEntity": "Añadir entidad",
     "addNewLevel": "Añadir un nuevo nivel",
     "hasNoInterventions": "No existen intervenciones para este nivel.",
-    "hasNoEntities": "No hay entidades para este nivel.",
+    "hasNoEntities": "No hay {levelName} en este {parentName}.",
     "hasNoCustomData": "There are no custom data for this level.",
     "thereAreMoreInterventions": "Hay {count} intervenciones más para este nivel.",
     "levelModal": {

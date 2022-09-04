@@ -13,7 +13,12 @@
           :id="level.id"
           :name="calculateUILocaleString({ languageTexts: level.name.languageTexts })"
         />
-        <EntitiesColumn :levelId="level.id" :index="index" />
+        <EntitiesColumn
+          :levelName="calculateUILocaleString({ languageTexts: level.name.languageTexts })"
+          :levelId="level.id"
+          :index="index"
+          :parentLevelId="level.parentLevelID"
+        />
       </div>
       <div class="dotted-left-border d-flex align-center justify-center">
         <v-btn :disabled="getLoading" rounded x-large color="primary" @click="clickOnAddNewLevel">

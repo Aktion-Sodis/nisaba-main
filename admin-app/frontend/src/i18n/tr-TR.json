@@ -157,7 +157,7 @@
     "addNewEntity": "Yeni oluşum ekle",
     "addNewLevel": "Yeni seviye ekle",
     "hasNoInterventions": "Bu seviyede henüz hiç müdahale yok.",
-    "hasNoEntities": "Bu seviyede henüz hiç oluşum yok.",
+    "hasNoEntities": "{parentName} hiçbir {levelName} içermiyor.",
     "hasNoCustomData": "Henüz bu seviyeye özgü hiçbir veri yok.",
     "thereAreMoreInterventions": "Bu seviye için {count} müdahale daha var.",
     "levelModal": {

@@ -15,7 +15,9 @@
     <AddEntityButton class="mt-4" :levelId="levelId" />
   </div>
   <div v-else class="d-flex flex-column mt-8 align-center" style="width: 100%">
-    <p>{{ $t('organizationStructure.hasNoEntities') }}</p>
+    <p>
+      {{ $t('organizationStructure.hasNoEntities', { parentName: nameOfParentEntity, levelName }) }}
+    </p>
     <AddEntityButton class="mt-4" :levelId="levelId" />
   </div>
 </template>
@@ -34,15 +36,31 @@ export default {
     levelId: {
       required: true,
     },
+    levelName: {
+      required: true,
+    },
+    parentLevelId: {
+      required: true,
+    },
     index: { type: Number, required: true },
   },
   computed: {
     ...mapGetters({
       allActiveEntitiesByLevelId: `${vuexModulesDict.entity}/allActiveEntitiesByLevelId`,
       calculateUILocaleString: 'calculateUILocaleString',
+      chosenEntityByLevelId: `${vuexModulesDict.entity}/chosenEntityByLevelId`,
     }),
     entities() {
       return this.allActiveEntitiesByLevelId({ levelId: this.levelId });
+    },
+    nameOfParentEntity() {
+      const chosenEntityIdFromUpperLevel = this.chosenEntityByLevelId({
+        levelId: this.parentLevelId,
+      });
+      console.log('chosenEntityIdFromUpperLevel', chosenEntityIdFromUpperLevel);
+      return this.calculateUILocaleString({
+        languageTexts: chosenEntityIdFromUpperLevel.name.languageTexts,
+      });
     },
   },
 };

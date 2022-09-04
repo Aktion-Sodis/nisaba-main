@@ -147,12 +147,9 @@ const actions = {
     }
   },
   addChosenEntityId: ({ state, getters, commit }, { entityId, levelId }) => {
-    const alreadyChosenId = getters.getChosenEntityIds.find((id) => {
-      const entity = getters.ENTITYById({ id });
-      return entity.entityLevelId === levelId;
-    });
-    if (alreadyChosenId) {
-      commit('removeChosenEntityId', { entityId: alreadyChosenId });
+    const alreadyChosenEntity = getters.chosenEntityByLevelId({ levelId });
+    if (alreadyChosenEntity) {
+      commit('removeChosenEntityId', { entityId: alreadyChosenEntity.id });
     }
     const asSet = new Set(state.chosenEntityIds);
     asSet.add(entityId);
