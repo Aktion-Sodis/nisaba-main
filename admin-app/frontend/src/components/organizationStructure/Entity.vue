@@ -30,7 +30,7 @@
               <v-icon> mdi-pencil </v-icon>
             </v-btn>
           </v-slide-x-transition>
-          <span>
+          <span style="user-select: none">
             {{ entityName }}
           </span>
           <span v-if="hasDescendants({ id })" style="position: absolute; right: 0">
