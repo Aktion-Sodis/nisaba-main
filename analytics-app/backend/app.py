@@ -95,23 +95,19 @@ def ping_pong():
 @app.route('/images', methods=['GET'])
 def get_images():
     return jsonify({
-        'status': 'success',
         'data': images,
     })
 
 @app.route('/graphdata', methods=['GET'])
 def get_graphData():
     return jsonify({
-        'status': 'success',
         'data': graphData,
     })
 
-@app.route('/uniqueInterventions', methods=['GET'])
+@app.route('/getInterventions', methods=['GET'])
 def get_unique_interventions():
-    interventions = [get_interventions()]
-    print(interventions)
+    interventions = get_interventions()
     return jsonify({
-        'status': 'success',
         'interventions': interventions
     })
 

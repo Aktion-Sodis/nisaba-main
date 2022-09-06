@@ -24,7 +24,7 @@
         <div
           class="tag"
           :class="{ selected: tag === selectedTag }"
-          v-for="tag in uniqueInterventionTypes(interventions)"
+          v-for="tag in interventionTypes"
           :key="tag"
           @click="setTag(tag)"
         >
@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     getInterventions() {
-      const path = "http://127.0.0.1:5000/uniqueInterventions";
+      const path = "http://127.0.0.1:5000/getInterventions";
       axios
         .get(path)
         .then((res) => {
@@ -101,7 +101,8 @@ export default {
         });
     },
     getInterventionTypes() {
-      return Object.keys(this.interventionTypes[0]);
+      //console.log(Object.keys(this.interventionTypes[0]));
+      return ["hallo", "tschüss"];
     },
     uniqueInterventionTypes(interventions) {
       var uniqueTags = interventions
