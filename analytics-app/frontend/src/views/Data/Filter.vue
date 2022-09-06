@@ -137,8 +137,11 @@ export default {
     },
     selectSurveyID(survey) {
       this.selectedSurveyID = survey["id"];
-      // console.log(this.selectedSurveyID);
-      return this.selectedSurveyID;
+      console.log(this.selectedSurveyID);
+      this.$router.push({
+        name: "Questions",
+        params: { id: this.selectedSurveyID },
+      });
     },
   },
   data() {

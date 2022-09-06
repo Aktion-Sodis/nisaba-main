@@ -5,7 +5,7 @@
         ><i class="fa-solid fa-arrow-left"></i
       ></el-button>
     </div>
-    <div class="header">Fragebogen XY</div>
+    <div class="header">{{ $route.params.id }}</div>
     <div class="button-wrapper">
       <el-button class="sodis download"
         ><i class="fa-solid fa-filter"></i
@@ -110,6 +110,7 @@ export default {
   },
   data() {
     return {
+      surveyID: "",
       selectedID: 1,
       isSurveyModalVisible: false,
     };
