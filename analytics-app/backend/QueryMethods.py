@@ -3,7 +3,7 @@ import json
 
 from AppSyncClient import GraphqlClient
 
-from queries import listInterventionTypes
+from queries import listInterventionTypes, listSurveys
 from collections import defaultdict
 
 gql_client = GraphqlClient(
@@ -31,7 +31,7 @@ gql_client = GraphqlClient(
 
 #     return uniqueInterventions
 
-def get_interventions():
+def get_intervention_types():
     result = gql_client.execute(
         query=listInterventionTypes["query"], 
         operation_name=listInterventionTypes["operationName"],
@@ -51,13 +51,17 @@ def get_interventions():
     
     return unique_interventions
 
+
+
 def get_intervention_categories():
     result = gql_client.execute(
         query=listInterventionTypes["query"], 
         operation_name=listInterventionTypes["operationName"],
         variables={}
     )
-    result_list = result["data"]["listInterventions"]["items"]
+    result_list = result["data"]
+
+    print(result_list)
 
     # create new dict 
     unique_interventions = []
@@ -71,8 +75,6 @@ def get_intervention_categories():
             unique_interventions.append(interventionType)
             new_dict["interventions"][interventionType]
 
-        print(unique_interventions)
-
     for item in result_list:
         languageKeys = item["name"]["languageKeys"]
         languageTexts = item["name"]["languageTexts"]
@@ -84,3 +86,30 @@ def get_intervention_categories():
     final_dict = dict(new_dict["interventions"])
 
     return final_dict
+
+
+
+def get_interventions():
+
+    result = gql_client.execute(
+        query=listInterventionTypes["query"], 
+        operation_name=listInterventionTypes["operationName"],
+        variables={}
+    )
+    result_list = result["data"]["listInterventions"]["items"]
+
+    return result_list
+
+
+
+def get_surveys():
+    result = gql_client.execute(
+        query=listSurveys["query"], 
+        operation_name=listSurveys["operationName"],
+        variables={}
+    )
+    result_list = result["data"]
+
+    print(result_list)
+
+    return result_list

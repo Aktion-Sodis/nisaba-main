@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 
-from QueryMethods import get_interventions, get_intervention_categories
+from QueryMethods import get_intervention_types, get_intervention_categories, get_surveys, get_interventions
 
 images = [
     {
@@ -104,11 +104,11 @@ def get_graphData():
         'data': graphData,
     })
 
-@app.route('/getInterventions', methods=['GET'])
-def getUniqueInterventions():
-    interventions = get_interventions()
+@app.route('/getInterventionTypes', methods=['GET'])
+def getInterventionTypes():
+    interventionTypes = get_intervention_types()
     return jsonify({
-        'interventions': interventions
+        'inteventionTypes': interventionTypes
     })
 
 @app.route('/getInterventionCategories', methods=['GET'])
@@ -116,6 +116,20 @@ def getInterventionCategories():
     interventionCategories = get_intervention_categories()
     return jsonify({
         'interventions': interventionCategories
+    })
+
+@app.route('/getInterventions', methods=['GET'])
+def getInterventions():
+    interventions = get_interventions()
+    return jsonify({
+        'interventions': interventions
+    })
+
+@app.route('/getSurveys', methods=['GET'])
+def getSurveys():
+    surveys = get_surveys()
+    return jsonify({
+        'surveys': surveys
     })
 
 

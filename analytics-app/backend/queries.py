@@ -18,11 +18,30 @@ listInterventionTypes = {
     "query": """query listInterventionTypes {
       listInterventions {
         items {
-          interventionType
           name {
             languageKeys
             languageTexts
           }
+          interventionType
+          id
+        }
+      }
+    }
+  """
+}
+
+listSurveys = {
+    "operationName": "listAllSurveys",
+    "query": """query listAllSurveys {
+      listSurveys {
+        items {
+          name {
+            languageKeys
+            languageTexts
+          }
+          interventionSurveysId
+          createdAt
+          id
         }
       }
     }
