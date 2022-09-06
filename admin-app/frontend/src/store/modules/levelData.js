@@ -1,28 +1,27 @@
 import { DataStore } from '@aws-amplify/datastore';
 import { API, Storage } from 'aws-amplify';
-import { Level, I18nString, LevelInterventionRelation, CustomData } from '../../models';
+import {
+  Level, I18nString, LevelInterventionRelation, CustomData,
+} from '../../models';
 import { dataTypesDict, modalModesDict, vuexModulesDict } from '../../lib/constants';
 import { deleteLevel /* , updateLevel */ } from '../../graphql/mutations';
 import { deriveFilePath } from '../../lib/utils';
 
-/** @type {{levels: Level[], loading: boolean}} */
-const state = { levels: [], loading: false, relationLevelIntervention: [] };
+/** @type {{levels: Level[], loading: boolean, relationLevelIntervention: LevelInterventionRelation[]}} */
+const moduleState = { levels: [], loading: false, relationLevelIntervention: [] };
 
-/** @type {import("vuex").GetterTree<typeof state>} */
-const getters = {
+/** @type {import("vuex").GetterTree<typeof moduleState>} */
+const moduleGetters = {
   /* READ */
   getLevels: ({ levels }) => levels.filter((l) => !l._deleted),
   // getLevelTags: ({ levelTags }) => levelTags,
   getLoading: ({ loading }) => loading,
-  getRelationLevelIntervention: ({ relationLevelIntervention }) =>
-    relationLevelIntervention.filter((r) => r?.level),
+  getRelationLevelIntervention: ({ relationLevelIntervention }) => relationLevelIntervention.filter((r) => r?.level),
 
   interventionsOfLevelById:
-    (_, { getRelationLevelIntervention }) =>
-    ({ levelId }) =>
-      getRelationLevelIntervention
-        .filter((rel) => rel.level.id === levelId)
-        .map((rel) => rel.intervention),
+    (_, { getRelationLevelIntervention }) => ({ levelId }) => getRelationLevelIntervention
+      .filter((rel) => rel.level.id === levelId)
+      .map((rel) => rel.intervention),
 
   sortedLevels: (_, getters) => getters.getLevels.sort((a, b) => getters.hierarchySort(a, b)),
   // used in the getter "sortedLevels". Don't use directly outside of Vuex environment.
@@ -36,8 +35,7 @@ const getters = {
   lowestLevelId: (_, { sortedLevels }) => sortedLevels[sortedLevels.length - 1].id,
   highestLevelId: (_, { sortedLevels }) => sortedLevels[0].id,
   upperLevelById:
-    (_, { getLevels }) =>
-    ({ id }) => {
+    (_, { getLevels }) => ({ id }) => {
       const currentLevel = getLevels.find((l) => l.id === id);
       if (!currentLevel) return null;
       const upperLevel = getLevels.find((l) => l.id === currentLevel.parentLevelID);
@@ -45,15 +43,13 @@ const getters = {
     },
 
   LEVELById:
-    (_, { getLevels }) =>
-    ({ id }) =>
-      getLevels.find((i) => i.id === id),
+    (_, { getLevels }) => ({ id }) => getLevels.find((i) => i.id === id),
 
   nLevels: (_, { getLevels }) => getLevels.length,
 };
 
-/** @type {import("vuex").MutationTree<typeof state>} */
-const mutations = {
+/** @type {import("vuex").MutationTree<typeof moduleState>} */
+const moduleMutations = {
   addLevel: (state, level) => {
     state.levels.push(level);
   },
@@ -61,13 +57,13 @@ const mutations = {
     state.levels.splice(
       state.levels.findIndex((i) => i.id === level.id),
       1,
-      level
+      level,
     );
   },
   deleteLevel: (state, { id }) => {
     state.levels.splice(
       Array.from(state.levels).findIndex((i) => i.id === id),
-      1
+      1,
     );
   },
   setLoading: (state, { newValue }) => {
@@ -81,8 +77,8 @@ const mutations = {
   },
 };
 
-/** @type {import("vuex").ActionTree<typeof state>} */
-const actions = {
+/** @type {import("vuex").ActionTree<typeof moduleState>} */
+const moduleActions = {
   APIpost: async ({ commit, dispatch, rootGetters }, levelDraft) => {
     let success = true;
     commit('setLoading', { newValue: true });
@@ -106,7 +102,7 @@ const actions = {
               intervention: rootGetters[`${vuexModulesDict.intervention}/INTERVENTIONById`]({
                 id: interventionId,
               }),
-            })
+            }),
           );
         } catch (error) {
           success = false;
@@ -118,7 +114,7 @@ const actions = {
         try {
           await Storage.put(
             deriveFilePath('levelPicPath', { levelID: postResponse.id }),
-            rootGetters['dataModal/getImageFile']
+            rootGetters['dataModal/getImageFile'],
           );
         } catch {
           success = false;
@@ -134,7 +130,7 @@ const actions = {
         },
         {
           root: true,
-        }
+        },
       );
     } catch {
       success = false;
@@ -142,13 +138,15 @@ const actions = {
     commit('setLoading', { newValue: false });
     return success;
   },
-  APIput: async ({ commit, dispatch, getters, rootGetters }, { newData, originalId }) => {
+  APIput: async ({
+    commit, dispatch, getters, rootGetters,
+  }, { newData, originalId }) => {
     commit('setLoading', { newValue: true });
     let success = true;
 
     const original = getters.LEVELById({ id: originalId });
     const relationsOfOriginal = getters.getRelationLevelIntervention.filter(
-      (rel) => rel.level.id === original.id
+      (rel) => rel.level.id === original.id,
     );
 
     try {
@@ -160,14 +158,14 @@ const actions = {
           updated.interventionsAreAllowed = newData.interventionsAreAllowed;
           updated.tags = [];
           updated.customData = newData.customData.map((cd) => new CustomData(cd));
-        })
+        }),
       );
 
       if (rootGetters['dataModal/getImageFile'] instanceof File) {
         try {
           await Storage.put(
             deriveFilePath('levelPicPath', { levelID: putResponse.id }),
-            rootGetters['dataModal/getImageFile']
+            rootGetters['dataModal/getImageFile'],
           );
         } catch {
           success = false;
@@ -200,7 +198,7 @@ const actions = {
               intervention: rootGetters[`${vuexModulesDict.intervention}/INTERVENTIONById`]({
                 id: interventionId,
               }),
-            })
+            }),
           );
         } catch {
           success = false;
@@ -218,7 +216,7 @@ const actions = {
         },
         {
           root: true,
-        }
+        },
       );
     }
 
@@ -236,7 +234,7 @@ const actions = {
     }
 
     const relationsOfOriginal = getters.getRelationLevelIntervention.filter(
-      (rel) => rel.level.id === id
+      (rel) => rel.level.id === id,
     );
 
     // eslint-disable-next-line no-restricted-syntax
@@ -259,14 +257,14 @@ const actions = {
       commit(
         `${vuexModulesDict.dataModal}/setMode`,
         { newValue: modalModesDict.read },
-        { root: true }
+        { root: true },
       );
       dispatch(
         `${vuexModulesDict.dataModal}/abortReadData`,
         {},
         {
           root: true,
-        }
+        },
       );
     }
 
@@ -292,10 +290,10 @@ const actions = {
 
 const levelsData = {
   namespaced: true,
-  state,
-  getters,
-  mutations,
-  actions,
+  state: moduleState,
+  getters: moduleGetters,
+  mutations: moduleMutations,
+  actions: moduleActions,
 };
 
 export default levelsData;

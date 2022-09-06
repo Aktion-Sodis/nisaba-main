@@ -69,7 +69,7 @@ export default {
       getLoading: `${vuexModulesDict.level}/getLoading`,
       isEntityChosen: `${vuexModulesDict.entity}/isEntityChosen`,
     }),
-    isChosen: function () {
+    isChosen() {
       return this.isEntityChosen({ entityId: this.id });
     },
   },
@@ -82,9 +82,8 @@ export default {
       removeChosenEntityId: `${vuexModulesDict.entity}/removeChosenEntityId`,
     }),
     clickHandler() {
-      this.isChosen
-        ? this.readData({ dataId: this.id, dataType: 'ENTITY' })
-        : this.addChosenEntityId({ entityId: this.id, levelId: this.levelId });
+      if (this.isChosen) this.readData({ dataId: this.id, dataType: 'ENTITY' });
+      else this.addChosenEntityId({ entityId: this.id, levelId: this.levelId });
     },
   },
 };

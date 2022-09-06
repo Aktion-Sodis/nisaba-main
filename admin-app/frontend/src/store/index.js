@@ -94,20 +94,14 @@ export default new Vuex.Store({
     uiLocaleIndex: () => i18n.availableLocales.findIndex((l) => l === i18n.locale),
 
     calculateLocalizedString:
-      (_, { fallbackLocaleIndex }) =>
-      ({ languageTexts }) =>
-        languageTexts[fallbackLocaleIndex] || i18n.t('general.noTextProvided'),
+      (_, { fallbackLocaleIndex }) => ({ languageTexts }) => languageTexts[fallbackLocaleIndex] || i18n.t('general.noTextProvided'),
 
     // For the localization, you will most probably only need this getter and no other! Please don't consider using the others.
     calculateUILocaleString:
-      (_, { uiLocaleIndex, calculateLocalizedString }) =>
-      ({ languageTexts }) =>
-        languageTexts[uiLocaleIndex] || calculateLocalizedString({ languageTexts }),
+      (_, { uiLocaleIndex, calculateLocalizedString }) => ({ languageTexts }) => languageTexts[uiLocaleIndex] || calculateLocalizedString({ languageTexts }),
 
     calculateIndexByLocale:
-      () =>
-      ({ locale }) =>
-        i18n.availableLocales.findIndex((l) => l === locale),
+      () => ({ locale }) => i18n.availableLocales.findIndex((l) => l === locale),
   },
   mutations: {
     setCreatingEntityInLevelId: (state, { id }) => {

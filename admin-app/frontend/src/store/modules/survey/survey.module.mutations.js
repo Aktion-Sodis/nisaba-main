@@ -7,13 +7,13 @@ const mutations = {
     state.surveys.splice(
       state.surveys.findIndex((i) => i.id === survey.id),
       1,
-      survey
+      survey,
     );
   },
   deleteSurvey: (state, { id }) => {
     state.surveys.splice(
       Array.from(state.surveys).findIndex((i) => i.id === id),
-      1
+      1,
     );
   },
   setLoading: (state, { newValue }) => {

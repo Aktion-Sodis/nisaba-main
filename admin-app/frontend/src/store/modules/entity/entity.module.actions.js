@@ -25,7 +25,7 @@ const actions = {
         try {
           await Storage.put(
             deriveFilePath('entityPicPath', { entityID: postResponse.id }),
-            rootGetters['dataModal/getImageFile']
+            rootGetters['dataModal/getImageFile'],
           );
         } catch {
           success = false;
@@ -41,7 +41,7 @@ const actions = {
         },
         {
           root: true,
-        }
+        },
       );
     } catch (error) {
       success = false;
@@ -51,7 +51,9 @@ const actions = {
     commit('setLoading', { newValue: false });
     return success;
   },
-  APIput: async ({ commit, dispatch, getters, rootGetters }, { newData, originalId }) => {
+  APIput: async ({
+    commit, dispatch, getters, rootGetters,
+  }, { newData, originalId }) => {
     commit('setLoading', { newValue: true });
     let success = true;
 
@@ -64,14 +66,14 @@ const actions = {
           updated.description = newData.description;
           updated.parentEntityID = newData.parentEntityID;
           updated.customData = newData.customData.map((cd) => new AppliedCustomData(cd));
-        })
+        }),
       );
 
       if (rootGetters['dataModal/getImageFile'] instanceof File) {
         try {
           await Storage.put(
             deriveFilePath('entityPicPath', { entityID: putResponse.id }),
-            rootGetters['dataModal/getImageFile']
+            rootGetters['dataModal/getImageFile'],
           );
         } catch {
           success = false;
@@ -88,7 +90,7 @@ const actions = {
         },
         {
           root: true,
-        }
+        },
       );
     } catch (error) {
       console.log('hey', error);
@@ -118,14 +120,14 @@ const actions = {
     commit(
       `${vuexModulesDict.dataModal}/setMode`,
       { newValue: modalModesDict.read },
-      { root: true }
+      { root: true },
     );
     dispatch(
       `${vuexModulesDict.dataModal}/abortReadData`,
       {},
       {
         root: true,
-      }
+      },
     );
 
     commit('setLoading', { newValue: false });
@@ -138,7 +140,8 @@ const actions = {
       return [];
     }
   },
-  setChosenEntityIdsFromApiLevels: ({ getters, commit, dispatch }, { apiLevelIds }) => {
+  setChosenEntityIdsFromApiLevels: ({ getters, dispatch }, { apiLevelIds }) => {
+    // eslint-disable-next-line
     for (const levelId of apiLevelIds) {
       const firstEntity = getters.allEntitiesByLevelId({ levelId })[0] ?? null;
       if (firstEntity) {

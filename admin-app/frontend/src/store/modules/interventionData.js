@@ -6,25 +6,22 @@ import { deleteIntervention } from '../../graphql/mutations';
 import { I18nString, Intervention } from '../../models';
 
 /** @type {{interventions: Intervention[], loading: boolean}} */
-const state = {
+const moduleState = {
   interventions: [],
   loading: false,
 };
 
-/** @type {import("vuex").GetterTree<typeof state>} */
-const getters = {
+/** @type {import("vuex").GetterTree<typeof moduleState>} */
+const moduleGetters = {
   /* READ */
-  getInterventions: ({ interventions }) =>
-    interventions.filter((i) => !i._deleted).sort((a, b) => a.id - b.id),
+  getInterventions: ({ interventions }) => interventions.filter((i) => !i._deleted).sort((a, b) => a.id - b.id),
   getLoading: ({ loading }) => loading,
   INTERVENTIONById:
-    (_, { getInterventions }) =>
-    ({ id }) =>
-      getInterventions.find((i) => i.id === id) ?? null,
+    (_, { getInterventions }) => ({ id }) => getInterventions.find((i) => i.id === id) ?? null,
 };
 
-/** @type {import("vuex").MutationTree<typeof state>} */
-const mutations = {
+/** @type {import("vuex").MutationTree<typeof moduleState>} */
+const moduleMutations = {
   addIntervention: (state, intervention) => {
     state.interventions.push(intervention);
   },
@@ -32,13 +29,13 @@ const mutations = {
     state.interventions.splice(
       state.interventions.findIndex((i) => i.id === intervention.id),
       1,
-      intervention
+      intervention,
     );
   },
   deleteIntervention: (state, { id }) => {
     state.interventions.splice(
       Array.from(state.interventions).findIndex((i) => i.id === id),
-      1
+      1,
     );
   },
   setLoading: (state, { newValue }) => {
@@ -49,8 +46,8 @@ const mutations = {
   },
 };
 
-/** @type {import("vuex").ActionTree<typeof state>} */
-const actions = {
+/** @type {import("vuex").ActionTree<typeof moduleState>} */
+const moduleActions = {
   APIpost: async ({ commit, dispatch, rootGetters }, interventionDraft) => {
     let success = true;
     commit('setLoading', { newValue: true });
@@ -79,7 +76,7 @@ const actions = {
         try {
           await Storage.put(
             deriveFilePath('interventionPicPath', { interventionID: postResponse.id }),
-            rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]
+            rootGetters[`${vuexModulesDict.dataModal}/getImageFile`],
           );
         } catch {
           success = false;
@@ -95,7 +92,7 @@ const actions = {
         },
         {
           root: true,
-        }
+        },
       );
     } catch {
       success = false;
@@ -103,7 +100,9 @@ const actions = {
     commit('setLoading', { newValue: false });
     return success;
   },
-  APIput: async ({ commit, dispatch, getters, rootGetters }, { newData, originalId }) => {
+  APIput: async ({
+    commit, dispatch, getters, rootGetters,
+  }, { newData, originalId }) => {
     commit('setLoading', { newValue: true });
     let success = true;
 
@@ -115,14 +114,14 @@ const actions = {
           updated.name = newData.name;
           updated.description = newData.description;
           updated.interventionType = newData.interventionType;
-        })
+        }),
       );
 
       if (rootGetters[`${vuexModulesDict.dataModal}/getImageFile`] instanceof File) {
         try {
           await Storage.put(
             deriveFilePath('interventionPicPath', { interventionID: putResponse.id }),
-            rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]
+            rootGetters[`${vuexModulesDict.dataModal}/getImageFile`],
           );
         } catch {
           success = false;
@@ -137,7 +136,7 @@ const actions = {
         },
         {
           root: true,
-        }
+        },
       );
       commit('replaceIntervention', putResponse);
     } catch {
@@ -167,14 +166,14 @@ const actions = {
       commit(
         `${vuexModulesDict.dataModal}/setMode`,
         { newValue: modalModesDict.read },
-        { root: true }
+        { root: true },
       );
       dispatch(
         `${vuexModulesDict.dataModal}/abortReadData`,
         {},
         {
           root: true,
-        }
+        },
       );
     }
 
@@ -193,10 +192,10 @@ const actions = {
 
 const interventionsData = {
   namespaced: true,
-  state,
-  getters,
-  mutations,
-  actions,
+  state: moduleState,
+  getters: moduleGetters,
+  mutations: moduleMutations,
+  actions: moduleActions,
 };
 
 export default interventionsData;
