@@ -8,11 +8,7 @@
     <div class="header">Filter</div>
     <div class="continue-wrapper">
       <el-button-group class="ml-4">
-        <el-button
-          class="sodis return"
-          :disabled="!this.continue"
-          @click="getInterventions()"
-        >
+        <el-button class="sodis return" :disabled="!this.continue">
           <i class="fa-solid fa-arrow-right"></i
         ></el-button>
       </el-button-group>
@@ -23,44 +19,40 @@
         <div class="filter-description">Filtern nach:</div>
         <div
           class="tag"
-          :class="{ selected: tag === selectedTag }"
-          v-for="tag in interventionTypes"
-          :key="tag"
-          @click="setTag(tag)"
+          :class="{ selected: interventionType === selectedInterventionType }"
+          v-for="interventionType in interventionTypes"
+          :key="interventionType"
+          @click="setInterventionType(interventionType)"
         >
-          {{ tag }}
+          {{ interventionType }}
         </div>
       </div>
       <div class="intervention-wrapper">
-        <div class="intervention-description" v-if="selectedTag">
-          {{ selectedTag }} wählen:
+        <div class="intervention-description" v-if="selectedInterventionType">
+          {{ selectedInterventionType }} wählen:
         </div>
         <div
           class="intervention"
           :class="{
             selected: intervention === selectedIntervention,
           }"
-          v-for="intervention in interventionCategories[selectedTag]"
-          :key="intervention"
+          v-for="intervention in selectedInterventions"
+          :key="intervention.id"
           @click="setIntervention(intervention)"
         >
-          {{ intervention["es-BO"] }}
+          {{ intervention["name"]["languageTexts"][1] }}
         </div>
       </div>
     </div>
     <div class="main">
       <div class="survey-wrapper">
         <SurveyCard
-          v-for="survey in selectedIntervention.surveys"
-          :key="survey.id"
+          v-for="survey in selectedSurveys"
+          :key="survey.interventionSurveysId"
           :survey="survey"
-          :class="{ selected: survey.id === selectedSurveyID }"
-          @click="selectSurvey(survey)"
+          @click="selectSurveyID(survey)"
         >
         </SurveyCard>
-        <div v-for="item in getInterventionTypes()" :key="item">
-          {{ item }}
-        </div>
       </div>
     </div>
   </div>
@@ -78,87 +70,88 @@ import SurveyCard from "../../components/commons/SurveyCard.vue";
 
 export default {
   components: { SurveyCard },
-  computed: {
-    ...mapState({
-      interventions: (state) => state.surveyData.interventions,
-    }),
-  },
   mounted() {
+    this.getInterventionTypes();
     this.getInterventions();
-    this.getInterventionCategories();
+    this.getSurveys();
   },
   methods: {
+    getInterventionTypes() {
+      const path = "http://127.0.0.1:5000/getInterventionTypes";
+      axios
+        .get(path)
+        .then((res) => {
+          this.interventionTypes = res.data.inteventionTypes;
+          // console.log(this.interventionTypes);
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(error);
+        });
+    },
     getInterventions() {
       const path = "http://127.0.0.1:5000/getInterventions";
       axios
         .get(path)
         .then((res) => {
-          this.interventionTypes = res.data.interventions;
-          console.log(this.interventionTypes);
+          this.interventions = res.data.interventions;
+          // console.log(this.interventions);
         })
         .catch((error) => {
           // eslint-disable-next-line
           console.error(error);
         });
     },
-    getInterventionCategories() {
-      const path = "http://127.0.0.1:5000/getInterventionCategories";
+    getSurveys() {
+      const path = "http://127.0.0.1:5000/getSurveys";
       axios
         .get(path)
         .then((res) => {
-          this.interventionCategories = res.data.interventions;
-          console.log(this.interventionCategories);
+          this.surveys = res.data.surveys.listSurveys.items;
+          // console.log(this.surveys);
         })
         .catch((error) => {
           // eslint-disable-next-line
           console.error(error);
         });
     },
-    getInterventionTypes() {
-      //console.log(Object.keys(this.interventionTypes[0]));
-      return ["hallo", "tschüss"];
-    },
-    uniqueInterventionTypes(interventions) {
-      var uniqueTags = interventions
-        .map((item) => item.tag)
-        .filter((value, index, self) => self.indexOf(value) === index);
-      return uniqueTags;
-    },
-    getEntitiesByTag(tag) {
-      var entitiesByTag = this.interventions.filter((item) => {
-        return item.tag === tag;
+    setInterventionType(interventionType) {
+      this.selectedInterventionType = interventionType;
+      // console.log(this.selectedInterventionType);
+      this.selectedInterventions = this.interventions.filter((item) => {
+        return item["interventionType"] === this.selectedInterventionType;
       });
-      return entitiesByTag;
-    },
-    setTag(tag) {
-      this.selectedTag = tag;
-      this.selectedSurveyID = "";
-      this.continue = false;
-      this.setIntervention("");
-      return this.selectedTag, this.selectedIntervention;
+      // console.log(this.selectedInterventions);
+      return this.selectedInterventionType, this.selectedInterventions;
     },
     setIntervention(intervention) {
       this.selectedIntervention = intervention;
-      this.selectedSurveyID = "";
-      this.continue = false;
-      return this.selectedIntervention;
+      // console.log(this.selectedIntervention["id"]);
+      this.selectedSurveys = this.surveys.filter((item) => {
+        return (
+          item["interventionSurveysId"] === this.selectedIntervention["id"]
+        );
+      });
+      console.log(this.selectedSurveys);
+      return this.selectedSurveys, this.selectedIntervention;
     },
-    selectSurvey(survey) {
-      //check if id is already in selected array
-      this.selectedSurveyID = survey.id;
-      this.continue = true;
-      return;
+    selectSurveyID(survey) {
+      this.selectedSurveyID = survey["id"];
+      // console.log(this.selectedSurveyID);
+      return this.selectedSurveyID;
     },
   },
   data() {
     return {
-      selectedTag: "",
+      interventionTypes: [],
+      selectedInterventionType: "",
+      interventions: [],
       selectedIntervention: "",
+      selectedInterventions: [],
+      surveys: [],
+      selectedSurveys: [],
       selectedSurveyID: "",
       continue: false,
-      interventionTypes: [],
-      interventionCategories: [],
-      interventionType: [1, 2, 3],
     };
   },
 };
