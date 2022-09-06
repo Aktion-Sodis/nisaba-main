@@ -60,7 +60,7 @@ export default {
       data: {
         name: "Data",
         icon: "fa-solid fa-database",
-        to: "/data/filter",
+        to: "filter",
       },
       dashboard: {
         name: "Dashboards",

@@ -33,9 +33,19 @@ export const routes = [
     component: Data,
     children: [
       { path: 'export', component: Export },
-      { path: 'filter', component: Filter },
-      { path: 'questions', component: Questions },
     ],
+    props: true
+  },
+  {
+    name: 'Filter',
+    path: '/filter',
+    component: Filter,
+  },
+  {
+    name: 'Questions',
+    path: '/questions',
+    component: Questions,
+    props: true,
   },
   {
     name: 'Dashboard',
