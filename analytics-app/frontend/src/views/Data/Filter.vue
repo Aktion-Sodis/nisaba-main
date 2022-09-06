@@ -38,13 +38,13 @@
         <div
           class="intervention"
           :class="{
-            selected: intervention.id === selectedIntervention.id,
+            selected: intervention === selectedIntervention,
           }"
-          v-for="intervention in getEntitiesByTag(selectedTag)"
-          :key="intervention.id"
+          v-for="intervention in interventionCategories[selectedTag]"
+          :key="intervention"
           @click="setIntervention(intervention)"
         >
-          {{ intervention.name }}
+          {{ intervention["es-BO"] }}
         </div>
       </div>
     </div>
@@ -85,6 +85,7 @@ export default {
   },
   mounted() {
     this.getInterventions();
+    this.getInterventionCategories();
   },
   methods: {
     getInterventions() {
@@ -94,6 +95,19 @@ export default {
         .then((res) => {
           this.interventionTypes = res.data.interventions;
           console.log(this.interventionTypes);
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(error);
+        });
+    },
+    getInterventionCategories() {
+      const path = "http://127.0.0.1:5000/getInterventionCategories";
+      axios
+        .get(path)
+        .then((res) => {
+          this.interventionCategories = res.data.interventions;
+          console.log(this.interventionCategories);
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -143,6 +157,7 @@ export default {
       selectedSurveyID: "",
       continue: false,
       interventionTypes: [],
+      interventionCategories: [],
       interventionType: [1, 2, 3],
     };
   },
@@ -212,6 +227,7 @@ export default {
   border-bottom: 1px solid var(--bg-color);
   grid-area: filter;
   background-color: rgb(255, 255, 255);
+  font-size: 15px;
 }
 
 .continue-wrapper {
@@ -232,12 +248,12 @@ export default {
 .filter-description,
 .intervention-description {
   text-align: left;
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .intervention,
 .tag {
-  font-size: 20px;
+  font-size: 15px;
   min-width: 150px;
   box-shadow: 0px 0px 1px rgb(0, 0, 0, 0.5);
   border-radius: 10px;

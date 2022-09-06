@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 
-from QueryMethods import get_interventions
+from QueryMethods import get_interventions, get_intervention_categories
 
 images = [
     {
@@ -105,10 +105,17 @@ def get_graphData():
     })
 
 @app.route('/getInterventions', methods=['GET'])
-def get_unique_interventions():
+def getUniqueInterventions():
     interventions = get_interventions()
     return jsonify({
         'interventions': interventions
+    })
+
+@app.route('/getInterventionCategories', methods=['GET'])
+def getInterventionCategories():
+    interventionCategories = get_intervention_categories()
+    return jsonify({
+        'interventions': interventionCategories
     })
 
 
