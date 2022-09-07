@@ -61,7 +61,7 @@ def get_intervention_categories():
     )
     result_list = result["data"]
 
-    print(result_list)
+    # print(result_list)
 
     # create new dict 
     unique_interventions = []
@@ -110,6 +110,6 @@ def get_surveys():
     )
     result_list = result["data"]
 
-    print(result_list)
+    # print(result_list)
 
     return result_list
