@@ -1,3 +1,4 @@
+
 import { createApp } from 'vue';
 import App from './App.vue';
 
@@ -15,7 +16,11 @@ import 'element-plus/dist/index.css';
 
 // import 'bootstrap/dist/css/bootstrap.css'
 
+import AmplifyVue from '@aws-amplify/ui-vue';
+
 const app = createApp(App);
+
+app.use(AmplifyVue);
 
 app.use(router);
 app.use(store);
