@@ -55,6 +55,7 @@ const routes = [
     name: 'Home',
     path: '/',
     component: Home,
+    meta: { requiresAuth: true}
   },
   {
     name: 'Login',
@@ -79,18 +80,21 @@ const routes = [
     children: [
       { path: 'export', component: Export },
     ],
-    props: true
+    props: true,
+    meta: { requiresAuth: true}
   },
   {
     name: 'Filter',
     path: '/filter',
     component: Filter,
+    meta: { requiresAuth: true}
   },
   {
     name: 'Questions',
     path: '/questions',
     component: Questions,
     props: true,
+    meta: { requiresAuth: true}
   },
   {
     name: 'Dashboard',

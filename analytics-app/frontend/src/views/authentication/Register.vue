@@ -26,7 +26,9 @@ export default {
           username: this.email,
           password: this.password,
         });
-        alert("User successfully registered. Please login");
+        alert(
+          "User successfully registered. Please ask your admin to verify your account"
+        );
       } catch (error) {
         alert(error.message);
       }

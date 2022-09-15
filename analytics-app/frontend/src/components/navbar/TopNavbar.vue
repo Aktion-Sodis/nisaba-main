@@ -39,7 +39,7 @@ export default {
     async signOut() {
       try {
         await Auth.signOut();
-        alert("Success");
+        alert("Success logged out!");
       } catch (error) {
         alert(error.message);
       }
