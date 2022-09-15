@@ -18,21 +18,11 @@
 </template>
 
 <script>
-import { Auth } from "aws-amplify";
 export default {
-  mounted() {
-    this.printUser();
-  },
-  methods: {
-    printUser() {
-      this.user = Auth.currentAuthenticatedUser();
-      console.log(this.user);
-    },
-  },
+  mounted() {},
+  methods: {},
   data() {
-    return {
-      user: "",
-    };
+    return {};
   },
 };
 </script>

@@ -9,12 +9,14 @@
       <NotificationPanel />
       <i class="icon fa-solid fa-gear"></i>
       <i class="icon fa-solid fa-circle-user"></i>
+      <button @click="signOut">Sign Out</button>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { Auth } from "aws-amplify";
+
 import { mapState, mapMutations, mapActions } from "vuex";
 
 import LanguageSelector from "../commons/LanguageSelector.vue";
@@ -33,6 +35,14 @@ export default {
     ...mapMutations({
       toggleSidebar: "toggleSidebar",
     }),
+    async signOut() {
+      try {
+        await Auth.signOut();
+        alert("Success");
+      } catch (error) {
+        alert(error.message);
+      }
+    },
   },
   mounted: function () {
     this.root = document.documentElement;
