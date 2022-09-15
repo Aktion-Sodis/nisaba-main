@@ -8,8 +8,9 @@
       <LanguageSelector />
       <NotificationPanel />
       <i class="icon fa-solid fa-gear"></i>
-      <i class="icon fa-solid fa-circle-user"></i>
-      <button @click="signOut">Sign Out</button>
+      <a @click="signOut">
+        <i class="icon fa-solid fa-right-from-bracket"></i>
+      </a>
     </div>
   </div>
 </template>
@@ -92,5 +93,13 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-right: 20px;
+}
+
+a {
+  all: unset;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
 </style>

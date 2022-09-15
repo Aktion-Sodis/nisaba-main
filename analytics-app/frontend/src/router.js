@@ -8,7 +8,6 @@ import store from './store';
 import Home from './views/home/Home.vue';
 
 import Login from './views/authentication/Login.vue';
-import Logout from './views/authentication/Logout.vue';
 import Register from './views/authentication/Register.vue';
 
 import Dashboard from './views/dashboards/Dashboard.vue'
@@ -61,14 +60,6 @@ const routes = [
     name: 'Login',
     path: '/login',
     component: Login,
-    meta: {
-      hideNavbar: true,
-    }
-  },
-  {
-    name: 'Logout',
-    path: '/logout',
-    component: Logout,
     meta: {
       hideNavbar: true,
     }
