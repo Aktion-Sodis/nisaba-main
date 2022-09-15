@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import Home from './views/home/Home.vue';
 
-import Login from './views/login/Login.vue';
+import Login from './views/authentication/Login.vue';
+import Register from './views/authentication/Register.vue';
 
 import Dashboard from './views/dashboards/Dashboard.vue'
 
@@ -26,6 +27,14 @@ export const routes = [
     meta: {
       hideNavbar: true,
     }
+  },
+  {
+    name: 'Register',
+    path: '/register',
+    component: Register,
+    meta: {
+      hideNavbar: true,
+    },
   },
   { 
     name: 'Data',

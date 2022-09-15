@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <form @submit.prevent="login">
-      <h2>Login</h2>
+    <form @submit.prevent="register">
+      <h2>Register</h2>
       <input type="email" v-model="email" placeholder="Email address..." />
       <input type="password" v-model="password" placeholder="password..." />
-      <button>Login</button>
+      <button>Register</button>
     </form>
   </div>
 </template>
@@ -12,7 +12,7 @@
 <script>
 import { Auth } from "aws-amplify";
 export default {
-  name: "Login",
+  name: "Register",
   data() {
     return {
       email: "",
@@ -20,11 +20,13 @@ export default {
     };
   },
   methods: {
-    async login() {
+    async register() {
       try {
-        const user = await Auth.signIn(this.email, this.password);
-        console.log("user", user);
-        alert("Successfully logged in");
+        await Auth.signUp({
+          username: this.email,
+          password: this.password,
+        });
+        alert("User successfully registered. Please login");
       } catch (error) {
         alert(error.message);
       }
