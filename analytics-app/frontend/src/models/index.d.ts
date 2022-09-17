@@ -350,6 +350,7 @@ export declare class ExecutedSurvey {
   readonly id: string;
   readonly appliedIntervention: AppliedIntervention;
   readonly survey: Survey;
+  readonly surveyID?: string | null;
   readonly whoExecutedIt: User;
   readonly date: string;
   readonly location?: Location | null;
