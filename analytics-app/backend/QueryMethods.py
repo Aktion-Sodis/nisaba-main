@@ -3,33 +3,19 @@ import json
 
 from AppSyncClient import GraphqlClient
 
-from queries import listInterventionTypes, listSurveys
+from queries import listInterventionTypes
+from queries import listSurveys
+from queries import getSurveyByID
+from queries import getExecutedSurveysBySurveyID
+from queries import listExecutedSurveys
+
+
 from collections import defaultdict
 
 gql_client = GraphqlClient(
     endpoint= os.getenv('APPSYNC_ENDPOINT'),
     headers={'x-api-key': os.getenv('X_API_KEY')}
 )
-
-# def get_intervention_types():
-#     result = gql_client.execute(
-#         query=listInterventionTypes["query"], 
-#         operation_name=listInterventionTypes["operationName"],
-#         variables={}
-#     )
-#     result_list = result["data"]["listInterventions"]["items"]
-#     for item in result_list:
-#         item.pop("name")
-
-#     print(result_list)
-
-#     uniqueInterventionsList = list(set(result_list.values()))
-#     for item in uniqueInterventionsList:
-#         print(item)
-
-#     uniqueInterventions = json.dumps(uniqueInterventionsList)
-
-#     return uniqueInterventions
 
 def get_intervention_types():
     result = gql_client.execute(
@@ -51,54 +37,6 @@ def get_intervention_types():
     
     return unique_interventions
 
-
-
-def get_intervention_categories():
-    result = gql_client.execute(
-        query=listInterventionTypes["query"], 
-        operation_name=listInterventionTypes["operationName"],
-        variables={}
-    )
-    result_list = result["data"]
-
-    # print(result_list)
-
-    # create new dict 
-    unique_interventions = []
-    new_dict = defaultdict(lambda: defaultdict(list))
-
-    for item in result_list:
-        interventionType = item["interventionType"]
-        if interventionType in unique_interventions:
-            break
-        else:
-            unique_interventions.append(interventionType)
-            new_dict["interventions"][interventionType]
-
-    for item in result_list:
-        languageKeys = item["name"]["languageKeys"]
-        languageTexts = item["name"]["languageTexts"]
-
-        name_dict = dict(zip(languageKeys, languageTexts))
-        interventionType = item["interventionType"]
-        new_dict["interventions"][interventionType].append(name_dict)
-
-    final_dict = dict(new_dict["interventions"])
-
-    return final_dict
-
-
-
-def get_interventions():
-
-    result = gql_client.execute(
-        query=listInterventionTypes["query"], 
-        operation_name=listInterventionTypes["operationName"],
-        variables={}
-    )
-    result_list = result["data"]["listInterventions"]["items"]
-
-    return result_list
 
 
 
@@ -224,56 +162,47 @@ def aggregate_survey_data(surveyID):
                                 specific_answer = dict()
                                 
                                 for language in languageKeys:
-                                    # print(language)
                                     index = answer[q_type][0]["text"]["languageKeys"].index(language)
                                     language_answer = answer[q_type][0]["text"]["languageTexts"][index]
-                                    # print(index)
-                                    # print(language_answer)
 
                                     specific_answer[language] = language_answer
 
                                 for language in languageKeys:
                                     if specific_answer[language] != "":
-                                        # print(specific_answer[language])
                                         index = answer_options[language].index(specific_answer[language])
-                                        # print(index)
                                         answer_array[index] = 1
-                                        # print(answer_array)
 
                                         break
 
                                 answers.append(answer_array)
 
-                                # specific_answer = {}
-                                # print(answer[q_type])
-                                # for language in languageKeys:
-                                #     print(language)
-                                #     specific_options = []
-                                    
-                                #     # index = answer[q_type][0]["text"]["languageKeys"].index(language)
-                                #     # specific_options.append(answer[q_type][0]["text"]["languageTexts"][index])
-                                #     # specific_answer[language] = options
-                                #     print(index)
-
-                                # print(specific_answer)
-
-                                # # print(answer_options)
-                                # print(answer_array)
                             else:
                                 answers.append(answer[q_type])
 
         question_data["answers"] = answers
 
-        # print(question_data["answer_options"])
-        # print(answers)
-        
-
-        # for answer in executed_surveys:
-        #     # if answer["answers"]["questionID"] == question["id"]:
-        #     #     print(answer["questionID"], question["id"])
-        #     # print(answer)
-        #     print(answer["answers"])
-
         data.append(question_data)
 
     return data
+
+
+def get_interventions():
+
+    result = gql_client.execute(
+        query=listInterventionTypes["query"], 
+        operation_name=listInterventionTypes["operationName"],
+        variables={}
+    )
+    interventions = result["data"]["listInterventions"]["items"]
+
+    language_keys = interventions[0]["name"]["languageKeys"]
+
+    for intervention in interventions:
+        intervention_name = {}
+        for language in language_keys:
+            index = intervention["name"]["languageKeys"].index(language)
+            specific_language_name = intervention["name"]["languageTexts"][index]
+            intervention_name[language] = specific_language_name
+        intervention["name"] = intervention_name 
+
+    return interventions

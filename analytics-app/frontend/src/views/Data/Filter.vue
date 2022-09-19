@@ -40,7 +40,7 @@
           :key="intervention.id"
           @click="setIntervention(intervention)"
         >
-          {{ intervention["name"]["languageTexts"][1] }}
+          {{ intervention["name"]["es-BO"] }}
         </div>
       </div>
     </div>
