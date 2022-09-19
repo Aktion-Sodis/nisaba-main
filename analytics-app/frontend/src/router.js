@@ -6,9 +6,8 @@ import Login from './views/login/Login.vue';
 
 import Dashboard from './views/dashboards/Dashboard.vue'
 
-import Data from './views/data/data.vue';
 import Export from './views/data/dataExport.vue';
-import Questions from './views/data/Questions.vue';
+import Survey from './views/data/Survey.vue';
 import Filter from './views/data/Filter.vue';
 
 
@@ -27,24 +26,15 @@ export const routes = [
       hideNavbar: true,
     }
   },
-  { 
-    name: 'Data',
-    path: '/data',
-    component: Data,
-    children: [
-      { path: 'export', component: Export },
-    ],
-    props: true
-  },
   {
     name: 'Filter',
     path: '/filter',
     component: Filter,
   },
   {
-    name: 'Questions',
-    path: '/questions',
-    component: Questions,
+    name: 'Survey',
+    path: '/survey',
+    component: Survey,
     props: true,
   },
   {

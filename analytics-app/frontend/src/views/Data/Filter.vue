@@ -137,7 +137,7 @@ export default {
     selectSurvey(survey) {
       this.selectedSurvey = survey;
       this.$router.push({
-        name: "Questions",
+        name: "Survey",
         params: { id: this.selectedSurvey["id"] },
       });
     },
