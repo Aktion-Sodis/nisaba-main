@@ -111,12 +111,12 @@ def getInterventionTypes():
         'inteventionTypes': interventionTypes
     })
 
-@app.route('/getInterventionCategories', methods=['GET'])
-def getInterventionCategories():
-    interventionCategories = get_intervention_categories()
-    return jsonify({
-        'interventions': interventionCategories
-    })
+# @app.route('/getInterventionCategories', methods=['GET'])
+# def getInterventionCategories():
+#     interventionCategories = get_intervention_categories()
+#     return jsonify({
+#         'interventions': interventionCategories
+#     })
 
 @app.route('/getInterventions', methods=['GET'])
 def getInterventions():
