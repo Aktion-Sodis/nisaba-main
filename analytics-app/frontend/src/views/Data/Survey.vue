@@ -100,6 +100,7 @@ export default {
     getSurveyData() {
       this.surveyID = this.$route.params.id;
       // this.surveyID = "bf2ae2f0-63e0-4bd6-9388-49a59218514f";
+      this.surveyID = "6b3175ea-e2b8-44a9-9836-99e71c2001ac";
       const path =
         "http://127.0.0.1:5000/getExecutedSurveysByID?SurveyID=" +
         this.surveyID;
@@ -115,11 +116,10 @@ export default {
         });
     },
     selectQuestion(question) {
+      console.log(question);
       return (this.selectedQuestion = question), (collapsed.value = true);
     },
     toggleQuestionList() {
-      console.log("collapsed");
-      console.log(collapsed);
       return (collapsed.value = !collapsed.value);
     },
     showInfo() {
