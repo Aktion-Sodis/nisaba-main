@@ -37,8 +37,26 @@ def get_intervention_types():
     
     return unique_interventions
 
+def get_interventions():
 
+    result = gql_client.execute(
+        query=listInterventionTypes["query"], 
+        operation_name=listInterventionTypes["operationName"],
+        variables={}
+    )
+    interventions = result["data"]["listInterventions"]["items"]
 
+    language_keys = interventions[0]["name"]["languageKeys"]
+
+    for intervention in interventions:
+        intervention_name = {}
+        for language in language_keys:
+            index = intervention["name"]["languageKeys"].index(language)
+            specific_language_name = intervention["name"]["languageTexts"][index]
+            intervention_name[language] = specific_language_name
+        intervention["name"] = intervention_name 
+
+    return interventions
 
 def get_surveys():
     result = gql_client.execute(
@@ -46,12 +64,19 @@ def get_surveys():
         operation_name=listSurveys["operationName"],
         variables={}
     )
-    result_list = result["data"]
+    surveys = result["data"]["listSurveys"]["items"]
 
-    # print(result_list)
+    language_keys = surveys[0]["name"]["languageKeys"]
 
-    return result_list
+    for survey in surveys:
+        survey_name = {}
+        for language in language_keys:
+            index = survey["name"]["languageKeys"].index(language)
+            specific_language_name = survey["name"]["languageTexts"][index]
+            survey_name[language] = specific_language_name
+        survey["name"] = survey_name 
 
+    return surveys
 
 # NEU
 
@@ -184,25 +209,3 @@ def aggregate_survey_data(surveyID):
         data.append(question_data)
 
     return data
-
-
-def get_interventions():
-
-    result = gql_client.execute(
-        query=listInterventionTypes["query"], 
-        operation_name=listInterventionTypes["operationName"],
-        variables={}
-    )
-    interventions = result["data"]["listInterventions"]["items"]
-
-    language_keys = interventions[0]["name"]["languageKeys"]
-
-    for intervention in interventions:
-        intervention_name = {}
-        for language in language_keys:
-            index = intervention["name"]["languageKeys"].index(language)
-            specific_language_name = intervention["name"]["languageTexts"][index]
-            intervention_name[language] = specific_language_name
-        intervention["name"] = intervention_name 
-
-    return interventions
