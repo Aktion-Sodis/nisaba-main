@@ -3,7 +3,8 @@
     <el-image class="image" :src="src" />
     <div class="survey-description-wrap">
       <div class="survey-title">
-        {{ survey["name"]["languageTexts"][1] }}
+        {{ survey["name"]["en-US"] }}
+        {{ "Test" }}
       </div>
       <div class="survey-date">{{ survey["createdAt"] }}</div>
     </div>

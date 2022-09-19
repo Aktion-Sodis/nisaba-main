@@ -44,21 +44,25 @@
           class="question"
           :class="{
             collapsed: collapsed,
-            active: selectedID === question.question_id,
+            active: this.selectedQuestion.question_id === question.question_id,
           }"
-          v-for="(question, index) in questions"
-          :key="question.id"
-          @click="setActive(question)"
+          v-for="(question, index) in surveyData"
+          :key="question.question_id"
+          @click="selectQuestion(question)"
         >
           <div class="index-wrapper">{{ index + 1 }}</div>
           <div class="question-wrapper" :class="{ collapsed: collapsed }">
-            {{ question.question_text }}
+            {{ question.question_name["en-US"] }}
           </div>
         </div>
       </div>
     </div>
     <div class="content-header-wrapper">
-      <div class="content-header">{{ selectedQuestion.question_text }}</div>
+      <div class="content-header">
+        <div v-if="selectedQuestion !== null">
+          {{ selectedQuestion.question_name["en-US"] }}
+        </div>
+      </div>
     </div>
     <div class="main">
       <ChartComponent></ChartComponent>
@@ -91,15 +95,11 @@ export default {
     ...mapState({
       questions: (state) => state.surveyData.questions,
     }),
-    selectedQuestion() {
-      return (
-        this.questions.find((item) => item.question_id === this.selectedID) || 0
-      );
-    },
   },
   methods: {
     getSurveyData() {
       this.surveyID = this.$route.params.id;
+      // this.surveyID = "bf2ae2f0-63e0-4bd6-9388-49a59218514f";
       const path =
         "http://127.0.0.1:5000/getExecutedSurveysByID?SurveyID=" +
         this.surveyID;
@@ -107,15 +107,15 @@ export default {
         .get(path)
         .then((res) => {
           this.surveyData = res.data.executedSurveys;
-          console.log(this.surveyData);
+          this.selectQuestion(this.surveyData[0]);
         })
         .catch((error) => {
           // eslint-disable-next-line
           console.error(error);
         });
     },
-    setActive(question) {
-      return (this.selectedID = question.question_id), (collapsed.value = true);
+    selectQuestion(question) {
+      return (this.selectedQuestion = question), (collapsed.value = true);
     },
     toggleQuestionList() {
       console.log("collapsed");
@@ -131,10 +131,10 @@ export default {
   },
   data() {
     return {
+      surveyData: null,
+      selectedQuestion: null,
       surveyID: "",
-      selectedID: 1,
       isSurveyModalVisible: false,
-      surveyData: "",
     };
   },
 };

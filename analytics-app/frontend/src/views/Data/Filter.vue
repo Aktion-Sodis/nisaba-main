@@ -40,7 +40,7 @@
           :key="intervention.id"
           @click="setIntervention(intervention)"
         >
-          {{ intervention["name"]["es-BO"] }}
+          {{ intervention["name"]["en-US"] }}
         </div>
       </div>
     </div>
@@ -48,9 +48,9 @@
       <div class="survey-wrapper">
         <SurveyCard
           v-for="survey in selectedSurveys"
-          :key="survey.interventionSurveysId"
+          :key="survey.id"
           :survey="survey"
-          @click="selectSurveyID(survey)"
+          @click="selectSurvey(survey)"
         >
         </SurveyCard>
       </div>
@@ -107,7 +107,7 @@ export default {
       axios
         .get(path)
         .then((res) => {
-          this.surveys = res.data.surveys.listSurveys.items;
+          this.surveys = res.data.surveys;
           // console.log(this.surveys);
         })
         .catch((error) => {
@@ -132,28 +132,26 @@ export default {
           item["interventionSurveysId"] === this.selectedIntervention["id"]
         );
       });
-      console.log(this.selectedSurveys);
       return this.selectedSurveys, this.selectedIntervention;
     },
-    selectSurveyID(survey) {
-      this.selectedSurveyID = survey["id"];
-      console.log(this.selectedSurveyID);
+    selectSurvey(survey) {
+      this.selectedSurvey = survey;
       this.$router.push({
         name: "Questions",
-        params: { id: this.selectedSurveyID },
+        params: { id: this.selectedSurvey["id"] },
       });
     },
   },
   data() {
     return {
-      interventionTypes: [],
-      selectedInterventionType: "",
-      interventions: [],
-      selectedIntervention: "",
-      selectedInterventions: [],
-      surveys: [],
-      selectedSurveys: [],
-      selectedSurveyID: "",
+      interventionTypes: null,
+      selectedInterventionType: null,
+      interventions: null,
+      selectedIntervention: null,
+      selectedInterventions: null,
+      surveys: null,
+      selectedSurvey: null,
+      selectedSurveys: null,
       continue: false,
     };
   },
