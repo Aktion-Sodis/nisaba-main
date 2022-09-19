@@ -5,7 +5,7 @@
         ><i class="fa-solid fa-arrow-left"></i
       ></el-button>
     </div>
-    <div class="header">{{ $route.params.id }}</div>
+    <div class="header">{{ surveyID }}</div>
     <div class="button-wrapper">
       <el-button class="sodis download"
         ><i class="fa-solid fa-filter"></i
@@ -69,6 +69,8 @@
 <script>
 import { ref } from "vue";
 import { mapState } from "vuex";
+import axios from "axios";
+
 import "element-plus/theme-chalk/display.css";
 
 import ChartComponent from "../../components/data/ChartComponent.vue";
@@ -82,6 +84,9 @@ export default {
   setup() {
     return { collapsed, collapseInfo };
   },
+  mounted() {
+    this.getSurveyData();
+  },
   computed: {
     ...mapState({
       questions: (state) => state.surveyData.questions,
@@ -93,6 +98,22 @@ export default {
     },
   },
   methods: {
+    getSurveyData() {
+      this.surveyID = this.$route.params.id;
+      const path =
+        "http://127.0.0.1:5000/getExecutedSurveysByID?SurveyID=" +
+        this.surveyID;
+      axios
+        .get(path)
+        .then((res) => {
+          this.surveyData = res.data.executedSurveys;
+          console.log(this.surveyData);
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(error);
+        });
+    },
     setActive(question) {
       return (this.selectedID = question.question_id), (collapsed.value = true);
     },
@@ -113,6 +134,7 @@ export default {
       surveyID: "",
       selectedID: 1,
       isSurveyModalVisible: false,
+      surveyData: "",
     };
   },
 };

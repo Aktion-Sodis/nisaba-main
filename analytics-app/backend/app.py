@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 from QueryMethods import get_intervention_types
@@ -130,9 +130,8 @@ def getSurveys():
 
 @app.route('/getExecutedSurveysByID', methods=['GET'])
 def getExecutedSurveysByID():
-    SURVEY_ID = '0c2fe7d7-9c87-4768-8269-c3d8f5a34856'
-    # SURVEY_ID = '512'
-    executedSurveys = aggregate_survey_data(SURVEY_ID)
+    survey_id = request.args.get("SurveyID")
+    executedSurveys = aggregate_survey_data(survey_id)
     return jsonify({
         'executedSurveys': executedSurveys
     })
