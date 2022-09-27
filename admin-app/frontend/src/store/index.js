@@ -6,12 +6,12 @@ import i18n from '../i18n';
 // import modules
 import authModule from './modules/auth';
 import interventionsData from './modules/interventionData';
-import surveyData from './modules/surveyData';
+import survey from './modules/survey';
 import QUESTION_UI from './modules/questionUI';
 import FEEDBACK_UI from './modules/feedbackUI';
 // eslint-disable-next-line
 import levelsData from './modules/levelData';
-import entitiesData from './modules/entityData';
+import entitiesData from './modules/entity';
 import dataModal from './modules/dataModal';
 import SYNC_UI from './modules/syncUI';
 import { vuexModulesDict } from '../lib/constants';
@@ -121,7 +121,7 @@ export default new Vuex.Store({
     [vuexModulesDict.auth]: authModule,
     [vuexModulesDict.dataModal]: dataModal,
     [vuexModulesDict.entity]: entitiesData,
-    [vuexModulesDict.survey]: surveyData,
+    [vuexModulesDict.survey]: survey,
     [vuexModulesDict.level]: levelsData,
     [vuexModulesDict.intervention]: interventionsData,
     [vuexModulesDict.question]: QUESTION_UI,

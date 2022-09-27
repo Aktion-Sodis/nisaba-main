@@ -534,9 +534,7 @@ export default {
       // this.tagIds = this.levelDraft?.tagIds ?? [];
       this.allowedInterventionIds = this.interventionsOfLevelById({ levelId: this.dataIdInFocus }).map((i) => i.id) ?? [];
       this.customData = Array.from(this.levelDraft?.customData ?? []);
-      console.log(this.customData);
       this.customDataTypeIndices = Array.from(this.levelDraft?.customData.map((cd) => (cd.type === Type.INT ? 0 : 1))) ?? [];
-      console.log(this.customDataTypeIndices);
     },
     nameUpdatedHandler(res) {
       this.name = res;

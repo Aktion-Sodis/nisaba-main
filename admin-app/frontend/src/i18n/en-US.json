@@ -157,7 +157,7 @@
     "addNewEntity": "Add new entity",
     "addNewLevel": "Add new level",
     "hasNoInterventions": "There are no interventions for this level.",
-    "hasNoEntities": "There are no entities for this level.",
+    "hasNoEntities": "There is no {levelName} in {parentName}.",
     "hasNoCustomData": "There are no custom data for this level.",
     "thereAreMoreInterventions": "There are {count} more interventions for this level.",
     "levelModal": {
@@ -191,19 +191,19 @@
       "moreStuffTitle": "More stuff coming soon...",
       "moreStuffDescription": "Adding Location, Custom Data and Tags will come in the next major update.",
       "modalTitle": {
-        "edit": "Edit entity ",
-        "create": "Create new entity",
-        "read": "Viewing entity"
+        "edit": "Editing {entity}",
+        "create": "Create new {entity}",
+        "read": "Viewing {entity}"
       },
       "modalDescription": {
         "edit": "This is the description of this beautiful edit dialog.",
         "create": "This is the description of this beautiful create dialog."
       },
-      "name": "Entity Name",
-      "description": "Entity Description",
+      "name": "{entity} Name",
+      "description": "{entity} Description",
       "otherInfo": "Here be some other things",
-      "upperEntity": "Upper entity",
-      "upperEntityLabel": "Choose parent entity"
+      "upperEntity": "Belonging to {entity}",
+      "upperEntityLabel": "Choose parent {entity}"
     }
   },
   "interventions": {
