@@ -1,4 +1,11 @@
 {
+    "home": {
+      "dummyMsg": "Hier können in Zukunft Basedaten angezeigt werden"
+    },
+    "surveys": {
+      "filterBy": "Filtern nach:",
+      "choose": "Wähle"
+    },
     "login": {
       "welcome": "Willkommen zurück!",
       "message": "Bitte melde dich an oder registriere dich:",
