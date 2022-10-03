@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
+import 'package:path/path.dart';
 import 'package:string_similarity/string_similarity.dart';
 
 ///hier die String jeweils in englisch hinterlegen und in allen anderen  angelegten Sprachen zumindest anlegen
@@ -154,7 +155,13 @@ Map<String, dynamic> stringMap = {
     "task_update_title": "Update Task",
     "task_later_in_future": "Later",
     "task_please_enter_task_title": "Please enter a title",
-    "task_please_set_date": "Please set the deadline"
+    "task_please_set_date": "Please set the deadline",
+    "use_wifi_only": "Use only WiFi for uploading images and audio",
+    "internet_usage": "Usage of internet",
+    "restrict_mobile_data_question":
+        "Usage of mobile data can be more expensive than usage of WiFi. Do you want to restrict uploading audio and photos via mobile data?",
+    "use_only_wifi_button": "Use only WiFi",
+    "use_wifi_and_mobile_data": "Use WiFi and mobile data"
   },
   "es-BO": {
     "emailorphonenumber": "correo electrónico/número de teléfono",
@@ -266,7 +273,13 @@ Map<String, dynamic> stringMap = {
     "task_update_title": "Actualizar tarrea",
     "task_later_in_future": "Más tarde",
     "task_please_enter_task_title": "Por favor, introduce un título",
-    "task_please_set_date": "Por favor, defina la fecha"
+    "task_please_set_date": "Por favor, defina la fecha",
+    "use_wifi_only": "Utiliza sólo WiFi para subir imágenes y audio",
+    "internet_usage": "Uso de Internet",
+    "restrict_mobile_data_question":
+        "El uso de datos móviles puede ser más caro que el uso de WiFi. Quieres restringir la carga de audio y fotos a través de los datos móviles?",
+    "use_only_wifi_button": "Usar sólo WiFi",
+    "use_wifi_and_mobile_data": "Utilizar el WiFi y los datos móviles"
   }
 };
 
@@ -485,3 +498,13 @@ String get confirmAbort => stringMap[currentLanguage]["confirm_abort"];
 String get doNotAbort => stringMap[currentLanguage]["do_not_abort"];
 
 String get yourShot => stringMap[currentLanguage]["your shot"];
+
+String get useWifiOnly => stringMap[currentLanguage]["use_wifi_only"];
+
+String get internetUsage => stringMap[currentLanguage]["internet_usage"];
+String get restrictMobileDataQuestion =>
+    stringMap[currentLanguage]["restrict_mobile_data_question"];
+String get useOnlyWifiButton =>
+    stringMap[currentLanguage]["use_only_wifi_button"];
+String get useWifiAndMobileData =>
+    stringMap[currentLanguage]["use_wifi_and_mobile_data"];

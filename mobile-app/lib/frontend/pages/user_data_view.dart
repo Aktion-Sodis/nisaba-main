@@ -41,6 +41,7 @@ class UserDataViewState extends State<UserDataView> {
   late TextEditingController textEdigtingControllerFirstName;
   late TextEditingController textEditingControllerLastName;
   late String currentLocale;
+  late bool wifiOnly;
   final _formKey = GlobalKey<FormState>();
   SyncedFile? userPicSynced;
   File? _userPicFile;
@@ -57,6 +58,7 @@ class UserDataViewState extends State<UserDataView> {
     textEdigtingControllerFirstName = TextEditingController();
     textEditingControllerLastName = TextEditingController();
     currentLocale = strings.currentLanguage;
+    wifiOnly = SettingsRepository.instance.wifiOnly;
     if (widget.userBloc.state.user != null) {
       textEdigtingControllerFirstName.text =
           widget.userBloc.state.user!.firstName;
@@ -279,6 +281,28 @@ class UserDataViewState extends State<UserDataView> {
                               margin:
                                   EdgeInsets.only(top: defaultPadding(context)),
                               child: _localeChoice(context)),
+                          Container(
+                              margin:
+                                  EdgeInsets.only(top: defaultPadding(context)),
+                              child: Row(
+                                children: [
+                                  Switch(
+                                    value: wifiOnly,
+                                    onChanged: (value) {
+                                      wifiOnly = value;
+                                      if (mounted) setState(() {});
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: defaultPadding(context),
+                                  ),
+                                  Expanded(
+                                      child: Text(
+                                    strings.useWifiOnly,
+                                    overflow: TextOverflow.clip,
+                                  ))
+                                ],
+                              )),
                           Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -309,6 +333,9 @@ class UserDataViewState extends State<UserDataView> {
                                             RepositoryProvider.of<
                                                     SettingsRepository>(context)
                                                 .locale = currentLocale;
+                                            RepositoryProvider.of<
+                                                    SettingsRepository>(context)
+                                                .wifiOnly = wifiOnly;
 
                                             if (widget.inApp) {
                                               User user = context
