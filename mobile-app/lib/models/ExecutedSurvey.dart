@@ -17,7 +17,7 @@
 // Generated files can be excluded from analysis in analysis_options.yaml
 // For more info, see: https://dart.dev/guides/language/analysis-options#excluding-code-from-analysis
 
-// ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
+// ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart';
@@ -32,6 +32,7 @@ class ExecutedSurvey extends Model {
   final String id;
   final AppliedIntervention? _appliedIntervention;
   final Survey? _survey;
+  final String? _surveyID;
   final User? _whoExecutedIt;
   final TemporalDateTime? _date;
   final Location? _location;
@@ -74,6 +75,10 @@ class ExecutedSurvey extends Model {
           underlyingException: e.toString()
           );
     }
+  }
+  
+  String? get surveyID {
+    return _surveyID;
   }
   
   User get whoExecutedIt {
@@ -157,13 +162,14 @@ class ExecutedSurvey extends Model {
     }
   }
   
-  const ExecutedSurvey._internal({required this.id, required appliedIntervention, required survey, required whoExecutedIt, required date, location, required answers, schemeVersion, createdAt, updatedAt, required executedSurveySurveyId, required executedSurveyWhoExecutedItId}): _appliedIntervention = appliedIntervention, _survey = survey, _whoExecutedIt = whoExecutedIt, _date = date, _location = location, _answers = answers, _schemeVersion = schemeVersion, _createdAt = createdAt, _updatedAt = updatedAt, _executedSurveySurveyId = executedSurveySurveyId, _executedSurveyWhoExecutedItId = executedSurveyWhoExecutedItId;
+  const ExecutedSurvey._internal({required this.id, required appliedIntervention, required survey, surveyID, required whoExecutedIt, required date, location, required answers, schemeVersion, createdAt, updatedAt, required executedSurveySurveyId, required executedSurveyWhoExecutedItId}): _appliedIntervention = appliedIntervention, _survey = survey, _surveyID = surveyID, _whoExecutedIt = whoExecutedIt, _date = date, _location = location, _answers = answers, _schemeVersion = schemeVersion, _createdAt = createdAt, _updatedAt = updatedAt, _executedSurveySurveyId = executedSurveySurveyId, _executedSurveyWhoExecutedItId = executedSurveyWhoExecutedItId;
   
-  factory ExecutedSurvey({String? id, required AppliedIntervention appliedIntervention, required Survey survey, required User whoExecutedIt, required TemporalDateTime date, Location? location, required List<QuestionAnswer> answers, int? schemeVersion, required String executedSurveySurveyId, required String executedSurveyWhoExecutedItId}) {
+  factory ExecutedSurvey({String? id, required AppliedIntervention appliedIntervention, required Survey survey, String? surveyID, required User whoExecutedIt, required TemporalDateTime date, Location? location, required List<QuestionAnswer> answers, int? schemeVersion, required String executedSurveySurveyId, required String executedSurveyWhoExecutedItId}) {
     return ExecutedSurvey._internal(
       id: id == null ? UUID.getUUID() : id,
       appliedIntervention: appliedIntervention,
       survey: survey,
+      surveyID: surveyID,
       whoExecutedIt: whoExecutedIt,
       date: date,
       location: location,
@@ -184,6 +190,7 @@ class ExecutedSurvey extends Model {
       id == other.id &&
       _appliedIntervention == other._appliedIntervention &&
       _survey == other._survey &&
+      _surveyID == other._surveyID &&
       _whoExecutedIt == other._whoExecutedIt &&
       _date == other._date &&
       _location == other._location &&
@@ -203,6 +210,7 @@ class ExecutedSurvey extends Model {
     buffer.write("ExecutedSurvey {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("appliedIntervention=" + (_appliedIntervention != null ? _appliedIntervention!.toString() : "null") + ", ");
+    buffer.write("surveyID=" + "$_surveyID" + ", ");
     buffer.write("date=" + (_date != null ? _date!.format() : "null") + ", ");
     buffer.write("location=" + (_location != null ? _location!.toString() : "null") + ", ");
     buffer.write("answers=" + (_answers != null ? _answers!.toString() : "null") + ", ");
@@ -216,11 +224,12 @@ class ExecutedSurvey extends Model {
     return buffer.toString();
   }
   
-  ExecutedSurvey copyWith({String? id, AppliedIntervention? appliedIntervention, Survey? survey, User? whoExecutedIt, TemporalDateTime? date, Location? location, List<QuestionAnswer>? answers, int? schemeVersion, String? executedSurveySurveyId, String? executedSurveyWhoExecutedItId}) {
+  ExecutedSurvey copyWith({String? id, AppliedIntervention? appliedIntervention, Survey? survey, String? surveyID, User? whoExecutedIt, TemporalDateTime? date, Location? location, List<QuestionAnswer>? answers, int? schemeVersion, String? executedSurveySurveyId, String? executedSurveyWhoExecutedItId}) {
     return ExecutedSurvey._internal(
       id: id ?? this.id,
       appliedIntervention: appliedIntervention ?? this.appliedIntervention,
       survey: survey ?? this.survey,
+      surveyID: surveyID ?? this.surveyID,
       whoExecutedIt: whoExecutedIt ?? this.whoExecutedIt,
       date: date ?? this.date,
       location: location ?? this.location,
@@ -238,6 +247,7 @@ class ExecutedSurvey extends Model {
       _survey = json['survey']?['serializedData'] != null
         ? Survey.fromJson(new Map<String, dynamic>.from(json['survey']['serializedData']))
         : null,
+      _surveyID = json['surveyID'],
       _whoExecutedIt = json['whoExecutedIt']?['serializedData'] != null
         ? User.fromJson(new Map<String, dynamic>.from(json['whoExecutedIt']['serializedData']))
         : null,
@@ -258,7 +268,7 @@ class ExecutedSurvey extends Model {
       _executedSurveyWhoExecutedItId = json['executedSurveyWhoExecutedItId'];
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'appliedIntervention': _appliedIntervention?.toJson(), 'survey': _survey?.toJson(), 'whoExecutedIt': _whoExecutedIt?.toJson(), 'date': _date?.format(), 'location': _location?.toJson(), 'answers': _answers?.map((QuestionAnswer? e) => e?.toJson()).toList(), 'schemeVersion': _schemeVersion, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'executedSurveySurveyId': _executedSurveySurveyId, 'executedSurveyWhoExecutedItId': _executedSurveyWhoExecutedItId
+    'id': id, 'appliedIntervention': _appliedIntervention?.toJson(), 'survey': _survey?.toJson(), 'surveyID': _surveyID, 'whoExecutedIt': _whoExecutedIt?.toJson(), 'date': _date?.format(), 'location': _location?.toJson(), 'answers': _answers?.map((QuestionAnswer? e) => e?.toJson()).toList(), 'schemeVersion': _schemeVersion, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'executedSurveySurveyId': _executedSurveySurveyId, 'executedSurveyWhoExecutedItId': _executedSurveyWhoExecutedItId
   };
 
   static final QueryField ID = QueryField(fieldName: "executedSurvey.id");
@@ -268,6 +278,7 @@ class ExecutedSurvey extends Model {
   static final QueryField SURVEY = QueryField(
     fieldName: "survey",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Survey).toString()));
+  static final QueryField SURVEYID = QueryField(fieldName: "surveyID");
   static final QueryField WHOEXECUTEDIT = QueryField(
     fieldName: "whoExecutedIt",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (User).toString()));
@@ -295,6 +306,12 @@ class ExecutedSurvey extends Model {
       isRequired: true,
       ofModelName: (Survey).toString(),
       associatedKey: Survey.ID
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: ExecutedSurvey.SURVEYID,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
