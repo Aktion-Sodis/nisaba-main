@@ -12,6 +12,7 @@ class HiveDBHelper {
     Hive.init(appDir);
 
     await openBox("settings");
+    await openBox("uploadQueue");
   }
 
   Box getBox(String name) {
