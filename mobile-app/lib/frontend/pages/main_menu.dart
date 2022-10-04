@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -8,6 +9,7 @@ import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_tasks.d
 import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_wiki.dart';
 
 import 'package:mobile_app/frontend/strings.dart' as strings;
+import 'package:mobile_app/frontend/test_list.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -46,27 +48,34 @@ class MainMenuState extends State<MainMenu> {
           MainMenuHome(onNavigationTap),
           MainMenuOrganization(),
           MainMenuTasks(),
-          MainMenuWiki()
+          MainMenuWiki(),
+          TestList()
         ],
       );
 
-  BottomNavigationBar bottomNavigationBar() => BottomNavigationBar(
-          currentIndex: currentIndex,
-          onTap: onNavigationTap,
-          items: [
-            BottomNavigationBarItem(
-                icon: const Icon(FontAwesomeIcons.home),
-                label: strings.main_menu_home),
-            BottomNavigationBarItem(
-                icon: const Icon(FontAwesomeIcons.folder),
-                label: strings.main_menu_organization),
-            BottomNavigationBarItem(
-                icon: const Icon(FontAwesomeIcons.tasks),
-                label: strings.main_menu_tasks),
-            BottomNavigationBarItem(
-                icon: const Icon(FontAwesomeIcons.handSparkles),
-                label: strings.main_menu_wiki),
-          ]);
+  BottomNavigationBar bottomNavigationBar() {
+    List<BottomNavigationBarItem> menuItems = [
+      BottomNavigationBarItem(
+          icon: const Icon(FontAwesomeIcons.home),
+          label: strings.main_menu_home),
+      BottomNavigationBarItem(
+          icon: const Icon(FontAwesomeIcons.folder),
+          label: strings.main_menu_organization),
+      BottomNavigationBarItem(
+          icon: const Icon(FontAwesomeIcons.tasks),
+          label: strings.main_menu_tasks),
+      BottomNavigationBarItem(
+          icon: const Icon(FontAwesomeIcons.handSparkles),
+          label: strings.main_menu_wiki),
+    ];
+    if (kDebugMode) {
+      menuItems.add(const BottomNavigationBarItem(
+          icon: Icon(FontAwesomeIcons.cubes), label: "Tests"));
+    }
+
+    return BottomNavigationBar(
+        currentIndex: currentIndex, onTap: onNavigationTap, items: menuItems);
+  }
 
   @override
   Widget build(BuildContext context) {
