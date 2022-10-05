@@ -172,6 +172,7 @@ def aggregate_survey_data(surveyID):
 
         # Get all answers
         answers = []
+        answer_IDs = []
 
         for executed_survey in executed_surveys:
             for answer in executed_survey["answers"]:
@@ -204,7 +205,10 @@ def aggregate_survey_data(surveyID):
                             else:
                                 answers.append(answer[q_type])
 
+                            answer_IDs.append(executed_survey["id"])
+
         question_data["answers"] = answers
+        question_data["answer_IDs"] = answer_IDs
 
         data.append(question_data)
 
