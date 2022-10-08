@@ -78,6 +78,7 @@
       ></TextComponent>
     </div>
   </div>
+  <SurveyFilterModalVue></SurveyFilterModalVue>
 </template>
 
 <script>
@@ -91,11 +92,18 @@ import ChartComponent from "../../components/data/ChartComponent.vue";
 import TextComponent from "../../components/data/TextComponent.vue";
 import ImageComponent from "../../components/data/ImageComponent.vue";
 
+import SurveyFilterModalVue from "../../components/commons/SurveyFilterModal.vue";
+
 var collapsed = ref(true);
 var collapseInfo = ref(true);
 
 export default {
-  components: { ImageComponent, ChartComponent, TextComponent },
+  components: {
+    ImageComponent,
+    ChartComponent,
+    TextComponent,
+    SurveyFilterModalVue,
+  },
   setup() {
     return { collapsed, collapseInfo };
   },
@@ -109,9 +117,9 @@ export default {
   },
   methods: {
     getSurveyData() {
-      this.surveyID = this.$route.params.id;
+      // this.surveyID = this.$route.params.id;
       // this.surveyID = "bf2ae2f0-63e0-4bd6-9388-49a59218514f";
-      // this.surveyID = "6b3175ea-e2b8-44a9-9836-99e71c2001ac";
+      this.surveyID = "6b3175ea-e2b8-44a9-9836-99e71c2001ac";
       const path =
         "http://127.0.0.1:5000/getExecutedSurveysByID?SurveyID=" +
         this.surveyID;
