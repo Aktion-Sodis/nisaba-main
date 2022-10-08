@@ -157,7 +157,7 @@
     "addNewEntity": "Añadir entidad",
     "addNewLevel": "Añadir un nuevo nivel",
     "hasNoInterventions": "No existen intervenciones para este nivel.",
-    "hasNoEntities": "No hay entidades para este nivel.",
+    "hasNoEntities": "No hay {levelName} en este {parentName}.",
     "hasNoCustomData": "There are no custom data for this level.",
     "thereAreMoreInterventions": "Hay {count} intervenciones más para este nivel.",
     "levelModal": {
@@ -176,8 +176,8 @@
         "name": "Name",
         "type": "Type",
         "types": {
-          "INT": "Number",
-          "STRING": "Text"
+          "INT": "Número",
+          "STRING": "Texto"
         }
       },
       "areInterventionsAllowed": "estan permitidas.",
@@ -191,19 +191,19 @@
       "moreStuffTitle": "Próximamente más cosas...",
       "moreStuffDescription": "Agregar ubicación, datos personalizados y etiquetas vendrá en la próxima actualización importante.",
       "modalTitle": {
-        "edit": "Editar entidad ",
-        "create": "Crear nueva entidad",
-        "read": "Observando entidad"
+        "edit": "Editar {entity}",
+        "create": "Crear nueva {entity}",
+        "read": "Observando {entity}"
       },
       "modalDescription": {
         "edit": "Esta es la descripción de este diálogo de edición.",
         "create": "Esta es la descripción de este diálogo de creación."
       },
-      "name": "Nombre de la entidad",
-      "description": "Descripción de la entidad",
+      "name": "Nombre de {entity}",
+      "description": "Descripción de {entity}",
       "otherInfo": "Información adicional",
-      "upperEntity": "Entidad superior",
-      "upperEntityLabel": "Elija la entidad madre"
+      "upperEntity": "Perteneciente a {entity}",
+      "upperEntityLabel": "Elija {entity} superior"
     }
   },
   "interventions": {

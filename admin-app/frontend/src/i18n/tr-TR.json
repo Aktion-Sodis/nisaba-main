@@ -157,7 +157,7 @@
     "addNewEntity": "Yeni oluşum ekle",
     "addNewLevel": "Yeni seviye ekle",
     "hasNoInterventions": "Bu seviyede henüz hiç müdahale yok.",
-    "hasNoEntities": "Bu seviyede henüz hiç oluşum yok.",
+    "hasNoEntities": "{parentName} hiçbir {levelName} içermiyor.",
     "hasNoCustomData": "Henüz bu seviyeye özgü hiçbir veri yok.",
     "thereAreMoreInterventions": "Bu seviye için {count} müdahale daha var.",
     "levelModal": {
@@ -191,19 +191,19 @@
       "moreStuffTitle": "Daha fazlası yakında...",
       "moreStuffDescription": "Konum, Özel Veriler ve Etiketlerin eklenmesi bir sonraki büyük güncellemede gelecek.",
       "modalTitle": {
-        "edit": "Oluşumu düzenle: ",
-        "create": "Yeni oluşum yarat",
-        "read": "Oluşum görüntüleniyor"
+        "edit": "{entity} düzenleniyor",
+        "create": "Yeni {entity} yarat",
+        "read": "{entity} görüntüleniyor"
       },
       "modalDescription": {
         "edit": "Bu güzel oluşum düzenleme diyaloğunun çok güzel açıklaması.",
         "create": "Bu güzel oluşum yaratma diyaloğunun çok güzel açıklaması."
       },
-      "name": "Oluşum adı",
-      "description": "Oluşum açıklaması",
-      "otherInfo": "Burada başka bir şeyler olsun",
-      "upperEntity": "Üst oluşum",
-      "upperEntityLabel": "Üst oluşumu seç"
+      "name": "{entity} adı",
+      "description": "{entity} açıklaması",
+      "otherInfo": "Diğer bilgiler",
+      "upperEntity": "Ait olduğu {entity}",
+      "upperEntityLabel": "Üst {entity} seç"
     }
   },
   "interventions": {
@@ -286,8 +286,8 @@
               "PICTURE": "Resim",
               "PICTUREWITHTAGS": "Etiketli resim",
               "AUDIO": "Ses",
-              "INT": "Integer number",
-              "DOUBLE": "Decimal number",
+              "INT": "Tamsayı",
+              "DOUBLE": "Ondalıklı sayı",
               "RATING": "Rating"
             }
           }

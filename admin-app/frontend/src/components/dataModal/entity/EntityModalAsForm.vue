@@ -2,13 +2,18 @@
   <v-form ref="form" v-model="isFormValid">
     <v-card-title>
       <h2 v-if="edit && entityInFocus">
-        {{ $t('organizationStructure.entityModal.modalTitle.edit') }}
-        <i>
-          {{ calculateUILocaleString({ languageTexts: entityInFocus.name.languageTexts }) }}
-        </i>
+        {{
+          $t('organizationStructure.entityModal.modalTitle.edit', {
+            entity: calculateUILocaleString({ languageTexts: entityInFocus.name.languageTexts }),
+          })
+        }}
       </h2>
       <h2 v-else>
-        {{ $t('organizationStructure.entityModal.modalTitle.create') }}
+        {{
+          $t('organizationStructure.entityModal.modalTitle.create', {
+            entity: calculateUILocaleString({ languageTexts: level.name.languageTexts }),
+          })
+        }}
       </h2>
     </v-card-title>
     <v-card-subtitle v-if="edit">
@@ -23,6 +28,9 @@
           <v-col cols="12" sm="6" class="pb-0 px-0 mb-3 px-sm-3">
             <LocaleTextBox
               labelPrefixI18nSelector="organizationStructure.entityModal.name"
+              :passPayloadToI18n="{
+                entity: calculateUILocaleString({ languageTexts: level.name.languageTexts }),
+              }"
               :initVal="name"
               @res="nameUpdatedHandler"
               :key="rerenderNameLocaleTextBox"
@@ -42,6 +50,9 @@
 
             <LocaleTextBox
               labelPrefixI18nSelector="organizationStructure.entityModal.description"
+              :passPayloadToI18n="{
+                entity: calculateUILocaleString({ languageTexts: level.name.languageTexts }),
+              }"
               :initVal="description"
               @res="descriptionUpdatedHandler"
               :key="rerenderDescriptionLocaleTextBox"
@@ -63,7 +74,11 @@
               v-model="parentEntityID"
               :items="allEntitiesOfUpperLevel"
               item-value="id"
-              :label="$t('organizationStructure.entityModal.upperEntityLabel')"
+              :label="
+                $t('organizationStructure.entityModal.upperEntityLabel', {
+                  entity: calculateUILocaleString({ languageTexts: upperLevelName.languageTexts }),
+                })
+              "
               dense
               outlined
               persistent-hint
@@ -112,11 +127,13 @@
               </v-card-title>
 
               <div v-for="customDatum in customData" :key="customDatum.customDataID">
-                {{ customDatum.value }}
                 <v-text-field
-                  :label="
-                    calculateUILocaleString({ languageTexts: customDatum.name.languageTexts })
-                  "
+                  :label="`${calculateUILocaleString({
+                    languageTexts: customDatum.name.languageTexts,
+                  })}
+                    (${$t(
+                      'organizationStructure.levelModal.customData.types.' + customDatum.type
+                    )})`"
                   outlined
                   v-model="customDatum.value"
                   @keypress="
@@ -222,6 +239,9 @@ export default {
       return this.LEVELById({
         id: this.edit ? this.entityInFocus.entityLevelId : this.getCreatingEntityInLevelId,
       });
+    },
+    upperLevelName() {
+      return this.LEVELById({ id: this.level.parentLevelID }).name;
     },
     deriveImgPath() {
       return this.edit ? deriveFilePath('entityPicPath', { entityID: this.dataIdInFocus }) : null;

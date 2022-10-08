@@ -25,20 +25,20 @@
             :key="intervention.id"
           >
             <template v-slot:activator="{ on, attrs }">
-              <v-avatar v-if="index < 7" v-bind="attrs" v-on="on">
+              <v-avatar v-if="index < 3" v-bind="attrs" v-on="on">
                 <v-icon>mdi-hammer-wrench</v-icon>
               </v-avatar>
-              <v-avatar v-if="index === 8" v-bind="attrs" v-on="on">
+              <v-avatar v-if="index === 4" v-bind="attrs" v-on="on">
                 <v-icon>mdi-dots-horizontal</v-icon>
               </v-avatar>
             </template>
-            <span v-if="index < 7">
+            <span v-if="index < 3">
               {{ calculateUILocaleString({ languageTexts: intervention.name.languageTexts }) }}
             </span>
-            <span v-if="index === 8">
+            <span v-if="index === 4">
               {{
                 $t('organizationStructure.thereAreMoreInterventions', {
-                  count: interventionsOfLevel.length - 8,
+                  count: interventionsOfLevel.length - 4,
                 })
               }}
             </span>

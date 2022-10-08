@@ -54,6 +54,12 @@ const SYNC_UI = {
       const apiEntities = await dispatch(`${vuexModulesDict.entity}/APIgetAll`, {}, { root: true });
       commit(`${vuexModulesDict.entity}/setEntities`, { newValue: apiEntities }, { root: true });
 
+      dispatch(
+        `${vuexModulesDict.entity}/setChosenEntityIdsFromApiLevels`,
+        { apiLevelIds: apiLevels.map((l) => l.id) },
+        { root: true },
+      );
+
       const apiInterventions = await dispatch(
         `${vuexModulesDict.intervention}/APIgetAll`,
         {},
@@ -66,7 +72,6 @@ const SYNC_UI = {
       );
 
       const apiSurveys = await dispatch(`${vuexModulesDict.survey}/APIgetAll`, {}, { root: true });
-      console.log({ apiSurveys });
       commit(`${vuexModulesDict.survey}/setSurveys`, { newValue: apiSurveys }, { root: true });
     },
   },

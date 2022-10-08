@@ -1,77 +1,70 @@
 <template>
   <div
-    class="d-flex flex-column"
-    style="min-width: 640px; position: relative"
-    v-if="allEntitiesOfLevel({ entityLevelId }).length > 0"
+    class="d-flex flex-column px-2"
+    style="height: calc(100% - 72px); overflow-y: scroll"
+    v-if="entities.length > 0"
   >
     <Entity
-      v-for="entity in allEntitiesOfLevel({ entityLevelId })"
+      v-for="entity in entities"
       :key="entity.id"
       :id="entity.id"
-      :parentEntityID="entity.parentEntityID"
-      :entityLevelId="entityLevelId"
+      :parentEntityId="entity.parentEntityID"
+      :levelId="levelId"
       :entityName="calculateUILocaleString({ languageTexts: entity.name.languageTexts })"
       :entityDescription="
         calculateUILocaleString({ languageTexts: entity.description.languageTexts })
       "
       :index="index"
-      class="d-flex flex-column align-center my-4"
-      style="position: relative; height: 128px; width: 256px; left: 192px"
     />
-
-    <AddEntityButton class="mt-4" :entityLevelId="entityLevelId" />
-    <div v-if="!getLoading">
-      <div
-        class="vertical-line"
-        v-for="line in calculatedLinesByLevelId({ entityLevelId })"
-        :key="line.entityId"
-        :style="`background-color: ${lineColors[line.indentation]}; height: ${
-          160 * (line.y1 - line.y0)
-        }px; top: ${32 + line.y0 * 160 + line.indentation * 3}px; left: ${
-          -186 + line.indentation * 12
-        }px;`"
-      ></div>
-    </div>
   </div>
   <div v-else class="d-flex flex-column mt-8 align-center" style="width: 100%">
-    <p>{{ $t('organizationStructure.hasNoEntities') }}</p>
-    <AddEntityButton class="mt-4" :entityLevelId="entityLevelId" />
+    <p>
+      {{ $t('organizationStructure.hasNoEntities', { parentName: nameOfParentEntity, levelName }) }}
+    </p>
   </div>
 </template>
 
 <script>
-// import { validate as uuidValidate } from 'uuid';
 import { mapGetters } from 'vuex';
 import { vuexModulesDict } from '../../lib/constants';
 
-import AddEntityButton from './AddEntityButton.vue';
 import Entity from './Entity.vue';
 
 export default {
   name: 'EntitiesColumn',
-  components: { AddEntityButton, Entity },
+  components: { Entity },
   props: {
-    entityLevelId: {
+    levelId: {
       required: true,
-      // validator: (v) => uuidValidate(v) || v.slice(0, 10) === 'dummyLevel' || v === null,
+    },
+    levelName: {
+      required: true,
+    },
+    parentLevelId: {
+      required: true,
     },
     index: { type: Number, required: true },
   },
   computed: {
     ...mapGetters({
-      allEntitiesOfLevel: `${vuexModulesDict.entity}/allEntitiesByLevelId`,
-      getLoading: `${vuexModulesDict.level}/getLoading`,
-      lineColors: 'getLineColors',
-      calculatedLinesByLevelId: `${vuexModulesDict.entity}/calculatedLinesByLevelId`,
+      allActiveEntitiesByLevelId: `${vuexModulesDict.entity}/allActiveEntitiesByLevelId`,
       calculateUILocaleString: 'calculateUILocaleString',
+      chosenEntityByLevelId: `${vuexModulesDict.entity}/chosenEntityByLevelId`,
     }),
+    entities() {
+      return this.allActiveEntitiesByLevelId({ levelId: this.levelId });
+    },
+    nameOfParentEntity() {
+      const chosenEntityIdFromUpperLevel = this.chosenEntityByLevelId({
+        levelId: this.parentLevelId,
+      });
+      console.log('chosenEntityIdFromUpperLevel', chosenEntityIdFromUpperLevel);
+      return this.calculateUILocaleString({
+        languageTexts: chosenEntityIdFromUpperLevel.name.languageTexts,
+      });
+    },
   },
 };
 </script>
 
-<style scoped>
-.vertical-line {
-  position: absolute;
-  width: 3px;
-}
-</style>
+<style scoped></style>
