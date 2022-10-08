@@ -92,15 +92,14 @@ class UserDataViewState extends State<UserDataView> {
   Key userPicKey = ValueKey(DateTime.now());
 
   void updatePic() async {
-    XFile? r = await CameraFunctionality.takePicture(context: context);
-    if (r != null) {
-      await userPicSynced?.updateAsPic(r);
-      userPicFile = await userPicSynced?.file();
+    XFile r = await CameraFunctionality.takePicture(context: context);
 
-      setState(() {
-        userPicFile = userPicFile;
-      });
-    }
+    await userPicSynced?.updateAsPic(r);
+    userPicFile = await userPicSynced?.file();
+
+    setState(() {
+      userPicFile = userPicFile;
+    });
   }
 
   @override

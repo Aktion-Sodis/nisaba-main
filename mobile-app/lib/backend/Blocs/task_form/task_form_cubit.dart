@@ -107,23 +107,21 @@ class TaskFormCubit extends Cubit<TaskFormState> {
   }
 
   Future<void> takePhoto(BuildContext context) async {
-    XFile? photo = await CameraFunctionality.takePicture(context: context);
+    XFile photo = await CameraFunctionality.takePicture(context: context);
 
-    if (photo != null) {
-      // Find free filepath in the temporary folder
-      Directory tempDir = await getTemporaryDirectory();
-      String filepath = tempDir.path +
-          "/photo_" +
-          DateTime.now().microsecondsSinceEpoch.toString() +
-          ".aac";
-      String freeFilepath = await getFreeFilepath(filepath);
+    // Find free filepath in the temporary folder
+    Directory tempDir = await getTemporaryDirectory();
+    String filepath = tempDir.path +
+        "/photo_" +
+        DateTime.now().microsecondsSinceEpoch.toString() +
+        ".aac";
+    String freeFilepath = await getFreeFilepath(filepath);
 
-      await photo.saveTo(freeFilepath);
-      Uri fileURI = Uri(path: freeFilepath);
+    await photo.saveTo(freeFilepath);
+    Uri fileURI = Uri(path: freeFilepath);
 
-      Attachment attachment = ImageAttachment(fileURI.toString());
-      addAttachment(attachment);
-    }
+    Attachment attachment = ImageAttachment(fileURI.toString());
+    addAttachment(attachment);
   }
 
   void updateEntity(Entity entity) {
