@@ -7,7 +7,7 @@
     </div>
     <div class="header">{{ surveyID }}</div>
     <div class="button-wrapper">
-      <el-button class="sodis download"
+      <el-button @click="openSurveyModal" class="sodis download"
         ><i class="fa-solid fa-filter"></i
       ></el-button>
       <el-button class="sodis download"
@@ -78,7 +78,12 @@
       ></TextComponent>
     </div>
   </div>
-  <SurveyFilterModalVue></SurveyFilterModalVue>
+  <SurveyFilterModalVue
+    v-if="showSurveyModal"
+    :answer-IDs="answer_IDs"
+    @save-IDs="saveIDs"
+    @close-modal="closeModal"
+  ></SurveyFilterModalVue>
 </template>
 
 <script>
@@ -116,6 +121,19 @@ export default {
     }),
   },
   methods: {
+    openSurveyModal() {
+      this.showSurveyModal = true;
+      return this.showSurveyModal;
+    },
+    saveIDs(selectedIds) {
+      this.selectedIds = selectedIds;
+      this.showSurveyModal = false;
+      return this.showSurveyModal, this.selectedIds;
+    },
+    closeModal() {
+      this.showSurveyModal = false;
+      return this.showSurveyModal;
+    },
     getSurveyData() {
       // this.surveyID = this.$route.params.id;
       // this.surveyID = "bf2ae2f0-63e0-4bd6-9388-49a59218514f";
@@ -150,10 +168,13 @@ export default {
   },
   data() {
     return {
+      showSurveyModal: false,
       surveyData: null,
       selectedQuestion: null,
       surveyID: "",
       isSurveyModalVisible: false,
+      selectedIds: [],
+      answer_IDs: ["14563245", "212341234", "1232312312"],
     };
   },
 };
