@@ -8,14 +8,17 @@
         Content
         <div v-for="id in answer_IDs" :key="id">{{ id }}</div>
       </div>
-      <div class="check-box-div">
-        <input type="checkbox" id="checkbox" v-model="checked1" />
-        <label for="checkbox">{{ checked1 }}</label>
-      </div>
-      <div class="check-box-div">
-        <input type="checkbox" id="checkbox" v-model="checked1" />
-        <label for="checkbox">{{ checked1 }}</label>
-      </div>
+      <el-checkbox
+        v-model="checkAll"
+        :indeterminate="isIndeterminate"
+        @change="handleCheckAllChange"
+        >Check all</el-checkbox
+      >
+      <el-checkbox-group v-model="selectedIds" @change="handleCheckedIDsChange">
+        <el-checkbox v-for="id in answer_IDs" :key="id" :label="id">
+          {{ id }}
+        </el-checkbox>
+      </el-checkbox-group>
       <div class="modal-footer">
         <el-button class="sodis save-btn">Save</el-button>
         <el-button class="sodis close-btn">Close</el-button>
@@ -26,19 +29,39 @@
 
 <script>
 export default {
+  mounted() {
+    this.handleCheckAllChange();
+  },
   methods: {
-    handleCheckAllChange() {},
-    handleCheckedIDsChange(id) {
-      console.log(id);
+    handleCheckAllChange(checkAll) {
+      if (this.selectedIds.length === this.answer_IDs.length) {
+        this.selectedIds = [];
+        this.checkAll = false;
+      } else {
+        this.selectedIds = this.answer_IDs;
+        this.checkAll = true;
+      }
+      return this.selectedIds, this.checkAll;
+    },
+    handleCheckedIDsChange(selectedIds) {
+      if (
+        this.selectedIds.length === 0 ||
+        this.selectedIds.length === this.answer_IDs.length
+      ) {
+        this.isIndeterminate = false;
+      } else {
+        this.isIndeterminate = true;
+      }
+      this.checkAll = this.selectedIds.length === this.answer_IDs.length;
+      return this.checkAll, this.indeterminate;
     },
   },
   data() {
     return {
       answer_IDs: ["14563245", "212341234", "1232312312"],
       selectedIds: [],
-      checkedIDs: [],
-      isIndeterminate: true,
-      checked1: true,
+      isIndeterminate: false,
+      checkAll: true,
     };
   },
 };
