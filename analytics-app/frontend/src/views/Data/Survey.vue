@@ -80,9 +80,9 @@
   </div>
   <SurveyFilterModalVue
     v-if="showSurveyModal"
-    :answer-IDs="answer_IDs"
+    :answerIDs="selectedQuestion.answer_IDs"
+    :selectedIDs="selected_IDs"
     @save-IDs="saveIDs"
-    @close-modal="closeModal"
   ></SurveyFilterModalVue>
 </template>
 
@@ -121,18 +121,18 @@ export default {
     }),
   },
   methods: {
+    initIDs() {
+      this.selected_IDs = this.selectedQuestion.answer_IDs;
+      return this.selected_IDs;
+    },
     openSurveyModal() {
       this.showSurveyModal = true;
       return this.showSurveyModal;
     },
-    saveIDs(selectedIds) {
-      this.selectedIds = selectedIds;
+    saveIDs(selectedIDs) {
+      this.selected_IDs = selectedIDs;
       this.showSurveyModal = false;
-      return this.showSurveyModal, this.selectedIds;
-    },
-    closeModal() {
-      this.showSurveyModal = false;
-      return this.showSurveyModal;
+      return this.showSurveyModal, this.selected_IDs;
     },
     getSurveyData() {
       // this.surveyID = this.$route.params.id;
@@ -146,6 +146,7 @@ export default {
         .then((res) => {
           this.surveyData = res.data.executedSurveys;
           this.selectQuestion(this.surveyData[0]);
+          this.initIDs();
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -153,7 +154,6 @@ export default {
         });
     },
     selectQuestion(question) {
-      console.log(question.answers);
       return (this.selectedQuestion = question), (collapsed.value = true);
     },
     toggleQuestionList() {
@@ -173,8 +173,7 @@ export default {
       selectedQuestion: null,
       surveyID: "",
       isSurveyModalVisible: false,
-      selectedIds: [],
-      answer_IDs: ["14563245", "212341234", "1232312312"],
+      selected_IDs: [],
     };
   },
 };

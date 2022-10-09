@@ -12,7 +12,7 @@
           >Check all</el-checkbox
         >
         <el-checkbox-group
-          v-model="selectedIds"
+          v-model="selected_IDs"
           @change="handleCheckedIDsChange"
         >
           <el-checkbox v-for="id in answer_IDs" :key="id" :label="id">
@@ -21,7 +21,7 @@
         </el-checkbox-group>
       </div>
       <div class="modal-footer">
-        <el-button class="sodis save-btn" @click="saveIDs(selectedIds)"
+        <el-button class="sodis save-btn" @click="saveIDs(selected_IDs)"
           >Save</el-button
         >
         <el-button
@@ -38,35 +38,49 @@
 export default {
   props: {
     answerIDs: Array,
+    selectedIDs: Array,
   },
   mounted() {
-    this.handleCheckAllChange();
-    this.assignOriginalIDs();
+    this.init();
+    // this.initCheckAll();
   },
   methods: {
-    assignOriginalIDs() {
-      this.originallySelectedIDs = this.answer_IDs;
-    },
-    handleCheckAllChange(checkAll) {
-      if (this.selectedIds.length === this.answer_IDs.length) {
-        this.selectedIds = [];
+    init() {
+      this.originallySelectedIDs = this.selected_IDs;
+      console.log(this.selected_IDs.length);
+      if (this.selected_IDs.length === this.answer_IDs.length) {
+        this.isIndeterminate = false;
+        this.checkAll = true;
+      } else if (this.selected_IDs.length === 0) {
+        this.isIndeterminate = false;
         this.checkAll = false;
       } else {
-        this.selectedIds = this.answer_IDs;
-        this.checkAll = true;
+        this.isIndeterminate = true;
+        this.checkAll = false;
       }
-      return this.selectedIds, this.checkAll;
+      return this.checkAll;
     },
-    handleCheckedIDsChange(selectedIds) {
+    handleCheckAllChange(checkAll) {
+      if (this.selected_IDs.length === this.answer_IDs.length) {
+        this.selected_IDs = [];
+        this.checkAll = false;
+      } else {
+        this.selected_IDs = this.answer_IDs;
+        this.checkAll = true;
+        this.isIndeterminate = false;
+      }
+      return this.selected_IDs, this.checkAll;
+    },
+    handleCheckedIDsChange(selected_IDs) {
       if (
-        this.selectedIds.length === 0 ||
-        this.selectedIds.length === this.answer_IDs.length
+        this.selected_IDs.length === 0 ||
+        this.selected_IDs.length === this.answer_IDs.length
       ) {
         this.isIndeterminate = false;
       } else {
         this.isIndeterminate = true;
       }
-      this.checkAll = this.selectedIds.length === this.answer_IDs.length;
+      this.checkAll = this.selected_IDs.length === this.answer_IDs.length;
       return this.checkAll, this.indeterminate;
     },
     saveIDs(IDs) {
@@ -79,8 +93,8 @@ export default {
   data() {
     return {
       answer_IDs: this.answerIDs,
+      selected_IDs: this.selectedIDs,
       originallySelectedIDs: [],
-      selectedIds: [],
       isIndeterminate: false,
       checkAll: true,
     };
