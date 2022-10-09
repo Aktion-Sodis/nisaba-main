@@ -2,26 +2,33 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <div class="heading">Filtern:</div>
+        <div class="heading">IDs Filtern:</div>
       </div>
       <div class="modal-body">
-        Content
-        <div v-for="id in answer_IDs" :key="id">{{ id }}</div>
+        <el-checkbox
+          v-model="checkAll"
+          :indeterminate="isIndeterminate"
+          @change="handleCheckAllChange"
+          >Check all</el-checkbox
+        >
+        <el-checkbox-group
+          v-model="selectedIds"
+          @change="handleCheckedIDsChange"
+        >
+          <el-checkbox v-for="id in answer_IDs" :key="id" :label="id">
+            {{ id }}
+          </el-checkbox>
+        </el-checkbox-group>
       </div>
-      <el-checkbox
-        v-model="checkAll"
-        :indeterminate="isIndeterminate"
-        @change="handleCheckAllChange"
-        >Check all</el-checkbox
-      >
-      <el-checkbox-group v-model="selectedIds" @change="handleCheckedIDsChange">
-        <el-checkbox v-for="id in answer_IDs" :key="id" :label="id">
-          {{ id }}
-        </el-checkbox>
-      </el-checkbox-group>
       <div class="modal-footer">
-        <el-button class="sodis save-btn">Save</el-button>
-        <el-button class="sodis close-btn">Close</el-button>
+        <el-button class="sodis save-btn" @click="saveIDs(selectedIds)"
+          >Save</el-button
+        >
+        <el-button
+          class="sodis close-btn"
+          @click="saveIDs(originallySelectedIDs)"
+          >Close</el-button
+        >
       </div>
     </div>
   </div>
@@ -29,10 +36,17 @@
 
 <script>
 export default {
+  props: {
+    answerIDs: Array,
+  },
   mounted() {
     this.handleCheckAllChange();
+    this.assignOriginalIDs();
   },
   methods: {
+    assignOriginalIDs() {
+      this.originallySelectedIDs = this.answer_IDs;
+    },
     handleCheckAllChange(checkAll) {
       if (this.selectedIds.length === this.answer_IDs.length) {
         this.selectedIds = [];
@@ -55,10 +69,17 @@ export default {
       this.checkAll = this.selectedIds.length === this.answer_IDs.length;
       return this.checkAll, this.indeterminate;
     },
+    saveIDs(IDs) {
+      this.$emit("saveIDs", IDs);
+    },
+    clsoeModal() {
+      this.$emit("closeModal");
+    },
   },
   data() {
     return {
-      answer_IDs: ["14563245", "212341234", "1232312312"],
+      answer_IDs: this.answerIDs,
+      originallySelectedIDs: [],
       selectedIds: [],
       isIndeterminate: false,
       checkAll: true,
@@ -87,18 +108,18 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 500px;
+  height: 400px;
   width: 1000px;
   border-radius: 5px;
   margin-top: 5%;
 }
 .modal-header {
   box-sizing: border-box;
-
+  color: black;
+  font-size: 20px;
   padding: 10px;
   height: 50px;
   width: 100%;
-  background-color: black;
 }
 .modal-body {
   display: flex;
