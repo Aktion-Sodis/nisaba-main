@@ -71,6 +71,7 @@
           selectedQuestion.question_type == 'SINGLECHOICE'
         "
         :question="selectedQuestion"
+        :selectedIDs="selected_IDs"
       ></ChartComponent>
       <TextComponent
         v-if="selectedQuestion.question_type == 'TEXT'"
@@ -135,7 +136,7 @@ export default {
       return this.showSurveyModal, this.selected_IDs;
     },
     getSurveyData() {
-      // this.surveyID = this.$route.params.id;
+      this.surveyID = this.$route.params.id;
       // this.surveyID = "bf2ae2f0-63e0-4bd6-9388-49a59218514f";
       this.surveyID = "6b3175ea-e2b8-44a9-9836-99e71c2001ac";
       const path =
