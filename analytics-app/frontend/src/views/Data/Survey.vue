@@ -76,6 +76,7 @@
       <TextComponent
         v-if="selectedQuestion.question_type == 'TEXT'"
         :question="selectedQuestion"
+        :selectedIDs="selected_IDs"
       ></TextComponent>
     </div>
   </div>
