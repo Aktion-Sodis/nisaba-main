@@ -1,6 +1,10 @@
 <template>
   <div class="text-wrapper">
-    <div v-for="(answer, index) in filteredAnswers" :key="index">
+    <div
+      class="text-answer"
+      v-for="(answer, index) in filteredAnswers"
+      :key="index"
+    >
       {{ answer }}
     </div>
   </div>
@@ -42,4 +46,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.text-answer {
+  border: 1px solid rgb(125, 125, 125);
+  border-radius: 5px;
+  margin-top: 20px;
+  padding: 15px 0;
+}
+</style>
