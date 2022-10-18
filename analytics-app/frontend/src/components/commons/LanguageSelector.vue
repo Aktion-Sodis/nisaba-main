@@ -41,7 +41,7 @@ export default {
     },
     changeLang(locale) {
       this.$i18n.locale = locale;
-      console.log(this.$i18n.availableLocales);
+      // console.log(this.$i18n.availableLocales);
       return this.$i18n.locale;
     },
   },

@@ -117,16 +117,13 @@ export default {
     },
     setInterventionType(interventionType) {
       this.selectedInterventionType = interventionType;
-      // console.log(this.selectedInterventionType);
       this.selectedInterventions = this.interventions.filter((item) => {
         return item["interventionType"] === this.selectedInterventionType;
       });
-      // console.log(this.selectedInterventions);
       return this.selectedInterventionType, this.selectedInterventions;
     },
     setIntervention(intervention) {
       this.selectedIntervention = intervention;
-      // console.log(this.selectedIntervention["id"]);
       this.selectedSurveys = this.surveys.filter((item) => {
         return (
           item["interventionSurveysId"] === this.selectedIntervention["id"]

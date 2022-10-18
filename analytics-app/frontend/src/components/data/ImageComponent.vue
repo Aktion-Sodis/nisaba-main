@@ -19,7 +19,7 @@ export default {
   components: { ImageCard },
   methods: {
     printIMGsrc(src) {
-      console.log(src);
+      // console.log(src);
     },
     getImageList(images) {
       var imageArray = [];
@@ -35,7 +35,7 @@ export default {
         .get(path)
         .then((res) => {
           this.images = res.data.data;
-          console.log(this.images);
+          // console.log(this.images);
         })
         .catch((error) => {
           // eslint-disable-next-line

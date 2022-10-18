@@ -86,8 +86,6 @@ export default {
       return (this.selectedID = question.question_id), (collapsed.value = true);
     },
     toggleQuestionList() {
-      console.log("collapsed");
-      console.log(collapsed);
       return (collapsed.value = !collapsed.value);
     },
     showInfo() {

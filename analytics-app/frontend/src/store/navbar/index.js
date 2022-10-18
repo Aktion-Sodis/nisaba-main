@@ -13,7 +13,6 @@ const NavbarAtributes = {
                 state.SidebarWidth = state.SidebarWidthCollapsed
             }
             state.SideBarCollapsed = !state.SideBarCollapsed
-            console.log(state.SidebarWidth)
         },
     },
 }

@@ -66,7 +66,7 @@ export default {
   methods: {
     changeChartType(chartType) {
       this.selectedChartType = chartType;
-      console.log(this.selectedChartType.tag);
+      // console.log(this.selectedChartType.tag);
     },
     updateLabels(labels) {
       this.chartOptions = {
@@ -119,9 +119,9 @@ export default {
     },
     setChartData(selected_IDs) {
       this.filteredAnswers = this.filterDataByIDs(selected_IDs);
-      console.log(this.filteredAnswers);
+      // console.log(this.filteredAnswers);
       this.aggregatedData = this.aggragateData(this.filteredAnswers);
-      console.log(this.aggregatedData);
+      // console.log(this.aggregatedData);
       this.updateDataPoints(this.aggregatedData);
       this.updateLabels(this.question["answer_options"]["en-US"]);
     },

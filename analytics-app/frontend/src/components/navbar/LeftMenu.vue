@@ -46,9 +46,6 @@ export default {
     toggleData() {
       return (dataCollapsed.value = !dataCollapsed.value);
     },
-    printSBC() {
-      console.log(this.SideBarCollapsed);
-    },
   },
   data() {
     return {

@@ -47,7 +47,7 @@ export default {
   methods: {
     init() {
       this.originallySelectedIDs = this.selected_IDs;
-      console.log(this.selected_IDs.length);
+      // console.log(this.selected_IDs.length);
       if (this.selected_IDs.length === this.answer_IDs.length) {
         this.isIndeterminate = false;
         this.checkAll = true;
