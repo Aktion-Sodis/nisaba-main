@@ -31,9 +31,6 @@
       :series="series"
       :type="this.selectedChartType.tag"
     ></apexcharts>
-    <!-- <div>{{ question.answers }}</div>
-    <div>{{ selectedIDs }}</div>
-    <button @click="filterDataByIDs()">Tets</button> -->
   </div>
 </template>
 
@@ -66,7 +63,6 @@ export default {
   methods: {
     changeChartType(chartType) {
       this.selectedChartType = chartType;
-      // console.log(this.selectedChartType.tag);
     },
     updateLabels(labels) {
       this.chartOptions = {
@@ -83,17 +79,6 @@ export default {
         },
       ];
       return this.series;
-    },
-    updateSeriesLine(dataPoints) {
-      this.$refs.realtimeChart.updateSeries(
-        [
-          {
-            data: dataPoints,
-          },
-        ],
-        false,
-        true
-      );
     },
     addArrays(a, b) {
       return a.map((e, i) => e + b[i]);
@@ -119,9 +104,7 @@ export default {
     },
     setChartData(selected_IDs) {
       this.filteredAnswers = this.filterDataByIDs(selected_IDs);
-      // console.log(this.filteredAnswers);
       this.aggregatedData = this.aggragateData(this.filteredAnswers);
-      // console.log(this.aggregatedData);
       this.updateDataPoints(this.aggregatedData);
       this.updateLabels(this.question["answer_options"]["en-US"]);
     },
