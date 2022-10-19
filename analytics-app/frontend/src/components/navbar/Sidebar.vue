@@ -68,11 +68,6 @@ export default {
             name: "Dashboard1",
             to: "/dashboard",
           },
-          {
-            id: 2,
-            name: "Dashboard2",
-            to: "/data/dummy-view-2",
-          },
         ],
       },
     };
