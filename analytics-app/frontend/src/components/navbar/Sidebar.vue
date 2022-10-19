@@ -1,5 +1,5 @@
 <template>
-  <div class="left-menu" :class="{ collapsed: SideBarCollapsed }">
+  <div class="sidebar" :class="{ collapsed: SideBarCollapsed }">
     <div class="organization-wrapper">
       <div class="icon-wrapper">
         <el-image
@@ -11,7 +11,7 @@
         Aktion Sodis
       </div>
     </div>
-    <div class="left-menu-container" :class="{ expanded: !SideBarCollapsed }">
+    <div class="sidebar-container" :class="{ expanded: !SideBarCollapsed }">
       <NavbarItem :item="home"></NavbarItem>
       <NavbarItem :item="data"></NavbarItem>
       <NavbarDropdown :items="dashboard"></NavbarDropdown>
@@ -82,8 +82,8 @@ export default {
 
 <style scoped>
 /* General Layout */
-.left-menu {
-  width: var(--left-menu-width);
+.sidebar {
+  width: var(--sidebar-width);
   background-color: var(--bg-color);
   float: left;
   position: fixed;
@@ -91,14 +91,14 @@ export default {
   left: 0;
   bottom: 0;
 }
-.left-menu.collapsed {
-  width: var(--left-menu-width-collapsed);
+.sidebar.collapsed {
+  width: var(--sidebar-width-collapsed);
 }
-.left-menu-container {
+.sidebar-container {
   display: flex;
   flex-direction: column;
 }
-.left-menu-container {
+.sidebar-container {
   height: calc(100vh - var(--navbar-height));
 }
 
@@ -111,7 +111,7 @@ export default {
 }
 .icon-wrapper {
   box-sizing: border-box;
-  width: var(--left-menu-width-collapsed);
+  width: var(--sidebar-width-collapsed);
 }
 .organization-icon {
   width: 30px;
@@ -119,9 +119,7 @@ export default {
 
 .organization-name {
   box-sizing: border-box;
-  width: calc(
-    var(--left-menu-width-expanded) - var(--left-menu-width-collapsed)
-  );
+  width: calc(var(--sidebar-width-expanded) - var(--sidebar-width-collapsed));
   text-align: left;
   padding-left: 5px;
   font-size: 20px;

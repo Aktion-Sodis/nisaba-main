@@ -175,8 +175,7 @@ export default {
     );
   grid-template-columns:
     60px calc(
-      100vw - var(--left-menu-width) - var(--container-margin) * 2 - 60px -
-        200px
+      100vw - var(--sidebar-width) - var(--container-margin) * 2 - 60px - 200px
     )
     200px;
 

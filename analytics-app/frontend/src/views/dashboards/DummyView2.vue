@@ -218,7 +218,7 @@ export default {
       100vh - var(--navbar-height) - var(--container-margin) - 60px - 50px
     );
   grid-template-columns: 60px calc(
-      100vw - var(--left-menu-width) - var(--container-margin) * 2 - 60px
+      100vw - var(--sidebar-width) - var(--container-margin) * 2 - 60px
     );
 
   grid-template-areas:

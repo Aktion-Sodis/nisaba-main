@@ -44,9 +44,9 @@ export default {
 }
 .main-wrapper {
   background-color: rgb(236, 245, 254);
-  margin-left: var(--left-menu-width);
+  margin-left: var(--sidebar-width);
   margin-top: var(--navbar-height);
   height: calc(100vh - var(--navbar-height));
-  width: calc(100vw - var(--left-menu-width));
+  width: calc(100vw - var(--sidebar-width));
 }
 </style>

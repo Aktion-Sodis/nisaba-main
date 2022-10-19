@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <LeftMenu />
+    <Sidebar />
     <TopNavbar />
   </div>
 </template>
@@ -9,10 +9,10 @@
 import { mapState } from "vuex";
 
 import TopNavbar from "./TopNavbar.vue";
-import LeftMenu from "./LeftMenu.vue";
+import Sidebar from "./Sidebar.vue";
 
 export default {
-  components: { TopNavbar, LeftMenu },
+  components: { TopNavbar, Sidebar },
   mounted: function () {
     this.root = document.documentElement;
   },
@@ -30,9 +30,9 @@ export default {
   --link-height: 50px;
   --sub-link-height: 35px;
 
-  --left-menu-width: 260px;
-  --left-menu-width-collapsed: 60px;
-  --left-menu-width-expanded: 260px;
+  --sidebar-width: 260px;
+  --sidebar-width-collapsed: 60px;
+  --sidebar-width-expanded: 260px;
 }
 </style>
 

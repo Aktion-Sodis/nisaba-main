@@ -199,8 +199,7 @@ export default {
     );
   grid-template-columns:
     60px calc(
-      100vw - var(--left-menu-width) - var(--container-margin) * 2 - 60px -
-        200px
+      100vw - var(--sidebar-width) - var(--container-margin) * 2 - 60px - 200px
     )
     200px;
 
@@ -315,7 +314,7 @@ export default {
   margin-left: 12px;
 
   position: absolute;
-  left: calc(var(--left-menu-width) + var(--container-margin));
+  left: calc(var(--sidebar-width) + var(--container-margin));
   top: calc(var(--navbar-height) + 60px + 50px);
   bottom: var(--container-margin);
   z-index: 1;
@@ -335,7 +334,7 @@ export default {
   transition: var(--transition-time);
 
   position: absolute;
-  left: calc(var(--left-menu-width) + var(--container-margin));
+  left: calc(var(--sidebar-width) + var(--container-margin));
   top: calc(var(--navbar-height) + 60px + 50px);
   bottom: var(--container-margin);
   z-index: 1;
