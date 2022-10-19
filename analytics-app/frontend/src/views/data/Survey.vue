@@ -1,7 +1,7 @@
 <template>
   <div class="container-wrapper">
     <div class="return-wrapper">
-      <el-button class="sodis return"
+      <el-button class="sodis return" @click="$router.back()"
         ><i class="fa-solid fa-arrow-left"></i
       ></el-button>
     </div>
