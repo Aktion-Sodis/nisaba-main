@@ -129,7 +129,7 @@ export default {
   justify-content: flex-end;
 }
 .image-wrapper {
-  background-image: url("../static/colleagues.jpg");
+  background-image: url("../../static/colleagues.jpg");
   background-size: cover;
   background-position: center;
   padding: 0;
