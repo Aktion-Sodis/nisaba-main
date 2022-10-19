@@ -10,8 +10,7 @@
 
     <div class="main">
       <h1>
-        Hier können in Zukunft Basedata zu Projekten/Technologien etc. angezeigt
-        werden
+        {{ $t("home.welcome") }}
       </h1>
     </div>
   </div>

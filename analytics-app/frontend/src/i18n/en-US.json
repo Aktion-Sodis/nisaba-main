@@ -18,5 +18,8 @@
       "data": "Data",
       "evaluation": "Evaluation",
       "export": "Export"
+    },
+    "home": {
+      "welcome": "Welcome!"
     }
 }

@@ -18,5 +18,8 @@
       "data": "Daten",
       "evaluation": "Auswertung",
       "export": "Exportieren"
+    },
+    "home": {
+      "welcome": "Herzlich Willkommen!"
     }
 }
