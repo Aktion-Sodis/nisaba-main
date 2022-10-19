@@ -17,10 +17,10 @@ import ImageCard from "../image/ImageCard.vue";
 
 export default {
   components: { ImageCard },
+  created() {
+    this.getImages();
+  },
   methods: {
-    printIMGsrc(src) {
-      // console.log(src);
-    },
     getImageList(images) {
       var imageArray = [];
       for (var i = 0, l = images.length; i < l; i++) {
@@ -35,16 +35,12 @@ export default {
         .get(path)
         .then((res) => {
           this.images = res.data.data;
-          // console.log(this.images);
         })
         .catch((error) => {
           // eslint-disable-next-line
           console.error(error);
         });
     },
-  },
-  created() {
-    this.getImages();
   },
   data() {
     return {
