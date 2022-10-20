@@ -47,3 +47,78 @@ listSurveys = {
     }
   """
 }
+
+
+listExecutedSurveys = {
+  "operationName": "listExecutedSurveys",
+  "query": """query listExecutedSurveys {
+    listExecutedSurveys {
+      items {
+        executedSurveySurveyId
+        answers {
+          doubleValue
+          intValue
+          questionID
+          rating
+          text
+          date
+          questionOptions {
+            text {
+              languageKeys
+              languageTexts
+            }
+            id
+          }
+        }
+        date
+      }
+    }
+  }"""
+}
+
+
+getExecutedSurveysBySurveyID = {
+    "operationName": "executedSurveyBySurveyID",
+    "query": """query executedSurveyBySurveyID($surveyID: String!) {
+      executedSurveyBySurveyID(surveyID: $surveyID) {
+        items {
+            date
+        }
+    }
+    }
+  """
+}
+
+getSurveyByID = {
+    "operationName": "getSurvey",
+    "query": """query getSurvey($id: ID!) {
+      getSurvey(id: $id) {
+        id
+        interventionSurveysId
+        name {
+          languageKeys
+          languageTexts
+        }
+        description {
+          languageKeys
+          languageTexts
+        }
+        questions {
+          text {
+            languageKeys
+            languageTexts
+          }
+          questionOptions {
+            text {
+              languageKeys
+              languageTexts
+            }
+          }
+          type
+          id
+        }
+        createdAt
+      }
+    }
+  """
+}

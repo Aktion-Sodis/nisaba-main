@@ -1,6 +1,7 @@
 <template>
   <div class="chart-wrapper">
     <div class="settings">
+      <button @click="aggregateChartData()">Update</button>
       <el-dropdown class="chart-type-dropdown" trigger="click">
         <el-button type="primary" class="dropdown-button">
           <i class="icon" :class="this.selectedChartType.icon"></i>
@@ -30,6 +31,7 @@
       :series="series"
       :type="this.selectedChartType.tag"
     ></apexcharts>
+    <div>{{ question }}</div>
   </div>
 </template>
 
@@ -37,13 +39,28 @@
 import VueApexCharts from "vue3-apexcharts";
 
 export default {
+  name: "ChartComponent",
+  props: ["question"],
   components: {
     apexcharts: VueApexCharts,
   },
+  // mounted() {
+  //   this.setChartData();
+  // },
   methods: {
     changeChartType(chartType) {
       this.selectedChartType = chartType;
       console.log(this.selectedChartType.tag);
+    },
+    setChartData() {
+      this.chartOptions.xaxis = this.question["answer_options"]["en-US"];
+      // this.series[0].data = [0, 1];
+      console.log(this.chartOptions.xaxis);
+      console.log(this.series[0].data);
+      return this.chartOptions.xaxis;
+    },
+    addArrays(a, b) {
+      return a.map((e, i) => e + b[i]);
     },
   },
   data: function () {
@@ -53,13 +70,13 @@ export default {
           id: "vuechart-example",
         },
         xaxis: {
-          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+          categories: this.question["answer_options"]["en-US"],
         },
       },
       series: [
         {
           name: "series-1",
-          data: [30, 40, 45, 50, 49, 60, 70, 91],
+          data: [1, 0],
         },
       ],
       chartTypes: [

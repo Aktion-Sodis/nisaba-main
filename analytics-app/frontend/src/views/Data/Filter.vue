@@ -16,7 +16,7 @@
 
     <div class="filter">
       <div class="filter-wrapper">
-        <div class="filter-description">Filtern nach:</div>
+        <div class="filter-description">{{ $t("surveys.filterBy") }}</div>
         <div
           class="tag"
           :class="{ selected: interventionType === selectedInterventionType }"
@@ -29,7 +29,7 @@
       </div>
       <div class="intervention-wrapper">
         <div class="intervention-description" v-if="selectedInterventionType">
-          {{ selectedInterventionType }} wählen:
+          {{ $t("surveys.choose") }} {{ selectedInterventionType }}:
         </div>
         <div
           class="intervention"
@@ -40,7 +40,7 @@
           :key="intervention.id"
           @click="setIntervention(intervention)"
         >
-          {{ intervention["name"]["languageTexts"][1] }}
+          {{ intervention["name"]["en-US"] }}
         </div>
       </div>
     </div>
@@ -48,9 +48,9 @@
       <div class="survey-wrapper">
         <SurveyCard
           v-for="survey in selectedSurveys"
-          :key="survey.interventionSurveysId"
+          :key="survey.id"
           :survey="survey"
-          @click="selectSurveyID(survey)"
+          @click="selectSurvey(survey)"
         >
         </SurveyCard>
       </div>
@@ -68,6 +68,8 @@ import "element-plus/theme-chalk/display.css";
 
 import SurveyCard from "../../components/commons/SurveyCard.vue";
 
+const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
+
 export default {
   components: { SurveyCard },
   mounted() {
@@ -77,7 +79,8 @@ export default {
   },
   methods: {
     getInterventionTypes() {
-      const path = "http://127.0.0.1:5000/getInterventionTypes";
+      // const path = "http://127.0.0.1:5000/getInterventionTypes";
+      const path = this.backendURL + "/getInterventionTypes";
       axios
         .get(path)
         .then((res) => {
@@ -90,7 +93,8 @@ export default {
         });
     },
     getInterventions() {
-      const path = "http://127.0.0.1:5000/getInterventions";
+      // const path = "http://127.0.0.1:5000/getInterventions";
+      const path = this.backendURL + "/getInterventions";
       axios
         .get(path)
         .then((res) => {
@@ -103,11 +107,12 @@ export default {
         });
     },
     getSurveys() {
-      const path = "http://127.0.0.1:5000/getSurveys";
+      // const path = "http://127.0.0.1:5000/getSurveys";
+      const path = this.backendURL + "/getSurveys";
       axios
         .get(path)
         .then((res) => {
-          this.surveys = res.data.surveys.listSurveys.items;
+          this.surveys = res.data.surveys;
           // console.log(this.surveys);
         })
         .catch((error) => {
@@ -132,28 +137,27 @@ export default {
           item["interventionSurveysId"] === this.selectedIntervention["id"]
         );
       });
-      console.log(this.selectedSurveys);
       return this.selectedSurveys, this.selectedIntervention;
     },
-    selectSurveyID(survey) {
-      this.selectedSurveyID = survey["id"];
-      console.log(this.selectedSurveyID);
+    selectSurvey(survey) {
+      this.selectedSurvey = survey;
       this.$router.push({
-        name: "Questions",
-        params: { id: this.selectedSurveyID },
+        name: "Survey",
+        params: { id: this.selectedSurvey["id"] },
       });
     },
   },
   data() {
     return {
-      interventionTypes: [],
-      selectedInterventionType: "",
-      interventions: [],
-      selectedIntervention: "",
-      selectedInterventions: [],
-      surveys: [],
-      selectedSurveys: [],
-      selectedSurveyID: "",
+      backendURL,
+      interventionTypes: null,
+      selectedInterventionType: null,
+      interventions: null,
+      selectedIntervention: null,
+      selectedInterventions: null,
+      surveys: null,
+      selectedSurvey: null,
+      selectedSurveys: null,
       continue: false,
     };
   },

@@ -5,7 +5,7 @@
         ><i class="fa-solid fa-arrow-left"></i
       ></el-button>
     </div>
-    <div class="header">{{ $route.params.id }}</div>
+    <div class="header">{{ surveyID }}</div>
     <div class="button-wrapper">
       <el-button class="sodis download"
         ><i class="fa-solid fa-filter"></i
@@ -44,24 +44,38 @@
           class="question"
           :class="{
             collapsed: collapsed,
-            active: selectedID === question.question_id,
+            active: this.selectedQuestion.question_id === question.question_id,
           }"
-          v-for="(question, index) in questions"
-          :key="question.id"
-          @click="setActive(question)"
+          v-for="(question, index) in surveyData"
+          :key="question.question_id"
+          @click="selectQuestion(question)"
         >
           <div class="index-wrapper">{{ index + 1 }}</div>
           <div class="question-wrapper" :class="{ collapsed: collapsed }">
-            {{ question.question_text }}
+            {{ question.question_name["en-US"] }}
           </div>
         </div>
       </div>
     </div>
     <div class="content-header-wrapper">
-      <div class="content-header">{{ selectedQuestion.question_text }}</div>
+      <div class="content-header">
+        <div v-if="selectedQuestion !== null">
+          {{ selectedQuestion.question_name["en-US"] }}
+        </div>
+      </div>
     </div>
-    <div class="main">
-      <ChartComponent></ChartComponent>
+    <div v-if="selectedQuestion !== null" class="main">
+      <ChartComponent
+        v-if="
+          selectedQuestion.question_type == 'MULTIPLECHOICE' ||
+          selectedQuestion.question_type == 'SINGLECHOICE'
+        "
+        :question="selectedQuestion"
+      ></ChartComponent>
+      <TextComponent
+        v-if="selectedQuestion.question_type == 'TEXT'"
+        :question="selectedQuestion"
+      ></TextComponent>
     </div>
   </div>
 </template>
@@ -69,36 +83,58 @@
 <script>
 import { ref } from "vue";
 import { mapState } from "vuex";
+import axios from "axios";
+
 import "element-plus/theme-chalk/display.css";
 
 import ChartComponent from "../../components/data/ChartComponent.vue";
+import TextComponent from "../../components/data/TextComponent.vue";
 import ImageComponent from "../../components/data/ImageComponent.vue";
 
 var collapsed = ref(true);
 var collapseInfo = ref(true);
 
+const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
+
 export default {
-  components: { ImageComponent, ChartComponent },
+  components: { ImageComponent, ChartComponent, TextComponent },
   setup() {
     return { collapsed, collapseInfo };
+  },
+  mounted() {
+    this.getSurveyData();
   },
   computed: {
     ...mapState({
       questions: (state) => state.surveyData.questions,
     }),
-    selectedQuestion() {
-      return (
-        this.questions.find((item) => item.question_id === this.selectedID) || 0
-      );
-    },
   },
   methods: {
-    setActive(question) {
-      return (this.selectedID = question.question_id), (collapsed.value = true);
+    getSurveyData() {
+      this.surveyID = this.$route.params.id;
+      // this.surveyID = "bf2ae2f0-63e0-4bd6-9388-49a59218514f";
+      // this.surveyID = "6b3175ea-e2b8-44a9-9836-99e71c2001ac";
+      // const path =
+      //   "http://127.0.0.1:5000/getExecutedSurveysByID?SurveyID=" +
+      //   this.surveyID;
+      const path =
+        this.backendURL + "/getExecutedSurveysByID?SurveyID=" + this.surveyID;
+      axios
+        .get(path)
+        .then((res) => {
+          this.surveyData = res.data.executedSurveys;
+          this.selectQuestion(this.surveyData[0]);
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.error(error);
+        });
+    },
+    selectQuestion(question) {
+      console.log(question.answers);
+      return (this.selectedQuestion = question), (collapsed.value = true);
     },
     toggleQuestionList() {
-      console.log("collapsed");
-      console.log(collapsed);
       return (collapsed.value = !collapsed.value);
     },
     showInfo() {
@@ -110,8 +146,10 @@ export default {
   },
   data() {
     return {
+      backendURL,
+      surveyData: null,
+      selectedQuestion: null,
       surveyID: "",
-      selectedID: 1,
       isSurveyModalVisible: false,
     };
   },

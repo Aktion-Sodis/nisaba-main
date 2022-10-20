@@ -12,9 +12,8 @@ import Register from './views/authentication/Register.vue';
 
 import Dashboard from './views/dashboards/Dashboard.vue'
 
-import Data from './views/data/data.vue';
 import Export from './views/data/dataExport.vue';
-import Questions from './views/data/Questions.vue';
+import Survey from './views/data/Survey.vue';
 import Filter from './views/data/Filter.vue';
 
 
@@ -90,9 +89,9 @@ const routes = [
     meta: { requiresAuth: true}
   },
   {
-    name: 'Questions',
-    path: '/questions',
-    component: Questions,
+    name: 'Survey',
+    path: '/survey',
+    component: Survey,
     props: true,
     meta: { requiresAuth: true}
   },
@@ -108,19 +107,6 @@ const router = createRouter({
    history: createWebHistory(),
    routes,
  });
-
-//  router.beforeResolve((to, from, next) => {
-//   if (to.matched.some(record => record.meta.requiresAuth)) {
-//     Auth.currentAuthenticatedUser().then(() => {
-//       next()
-//     }).catch(() => {
-//       next({
-//         path: '/login'
-//       });
-//     });
-//   }
-//   next()
-// })
 
 router.beforeResolve(async (to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {

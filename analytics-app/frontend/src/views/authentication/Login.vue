@@ -75,12 +75,18 @@
       </div>
     </div>
 
-    <div class="image-wrapper"></div>
+    <div
+      class="image-wrapper"
+      :style="{ 'background-image': `url(${backgroundImage})` }"
+    ></div>
   </div>
 </template>
 
 <script>
 import "element-plus/theme-chalk/display.css";
+
+const backgroundImage = import.meta.env.VITE_APP_LOGIN_BACKGROUND_IMAGE_SRC;
+
 import { Auth } from "aws-amplify";
 export default {
   name: "Login",
@@ -97,6 +103,7 @@ export default {
   },
   data() {
     return {
+      backgroundImage,
       email: "",
       password: "",
       rememberMe: false,
@@ -143,7 +150,6 @@ export default {
   justify-content: flex-end;
 }
 .image-wrapper {
-  background-image: url("../static/colleagues.jpg");
   background-size: cover;
   background-position: center;
   padding: 0;

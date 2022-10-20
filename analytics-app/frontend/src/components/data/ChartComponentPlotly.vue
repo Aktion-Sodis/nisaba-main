@@ -7,7 +7,8 @@
 <script>
 import axios from "axios";
 import Plotly from "plotly.js-dist";
-import { ref } from "vue";
+
+const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
 
 export default {
   setup() {
@@ -18,7 +19,8 @@ export default {
   },
   methods: {
     init() {
-      const path = "http://127.0.0.1:5000/graphdata";
+      // const path = "http://127.0.0.1:5000/graphdata";
+      const path = this.backendURL + "/graphdata";
       axios
         .get(path)
         .then((res) => {
@@ -79,6 +81,11 @@ export default {
         config: { responsive: true },
       };
     },
+  },
+  data() {
+    return {
+      backendURL,
+    };
   },
 };
 </script>
