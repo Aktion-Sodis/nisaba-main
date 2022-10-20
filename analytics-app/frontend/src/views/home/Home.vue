@@ -17,7 +17,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  mounted() {},
+  methods: {},
+  data() {
+    return {};
+  },
+};
 </script>
 
 <style scoped>

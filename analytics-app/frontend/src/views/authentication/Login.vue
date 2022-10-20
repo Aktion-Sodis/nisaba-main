@@ -6,7 +6,7 @@
         <p>{{ $t("login.message") }}</p>
         <el-form>
           <el-form-item required class="username-wrapper">
-            <el-input v-model="username" placeholder="Username" />
+            <el-input v-model="email" placeholder="Email address" />
           </el-form-item>
           <el-form-item required class="password-wrapper">
             <el-input
@@ -16,13 +16,13 @@
               show-password
             />
           </el-form-item>
-          <el-form-item class="rememberMe-wrapper">
+          <!-- <el-form-item class="rememberMe-wrapper">
             <el-checkbox v-model="rememberMe">{{
               $t("login.rememberMe")
             }}</el-checkbox>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item class="sign-in-wrapper">
-            <el-button native-type="submit" class="block sodis">
+            <el-button @click="login" class="block sodis">
               {{ $t("login.signIn") }}
             </el-button>
           </el-form-item>
@@ -61,12 +61,14 @@
           <div class="push-to-end">
             <p>
               {{ $t("login.noAccount") }}
-              <a
-                href="#"
-                class="font-weight-bold font-italic text-decoration-none"
-              >
-                {{ $t("login.registerHere") }}
-              </a>
+              <router-link to="/register">
+                <a
+                  href="#"
+                  class="font-weight-bold font-italic text-decoration-none"
+                >
+                  {{ $t("login.registerHere") }}
+                </a>
+              </router-link>
             </p>
           </div>
         </el-form>
@@ -85,12 +87,24 @@ import "element-plus/theme-chalk/display.css";
 
 const backgroundImage = import.meta.env.VITE_APP_LOGIN_BACKGROUND_IMAGE_SRC;
 
+import { Auth } from "aws-amplify";
 export default {
   name: "Login",
+  methods: {
+    async login() {
+      try {
+        const user = await Auth.signIn(this.email, this.password);
+        // console.log("user", user);
+        // alert("Successfully logged in");
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+  },
   data() {
     return {
       backgroundImage,
-      username: "",
+      email: "",
       password: "",
       rememberMe: false,
     };
