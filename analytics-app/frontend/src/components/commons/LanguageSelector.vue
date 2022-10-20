@@ -40,9 +40,9 @@ export default {
       return langdropdownCollapsed.value;
     },
     changeLang(locale) {
-      this.$i18n.locale = locale;
-      console.log(this.$i18n.availableLocales);
-      return this.$i18n.locale;
+      localStorage.setItem("lang", locale);
+      this.$i18n.locale = localStorage.getItem("lang");
+      return localStorage, this.$i18n.locale;
     },
   },
   data() {
