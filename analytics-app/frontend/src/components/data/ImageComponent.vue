@@ -15,6 +15,8 @@ import axios from "axios";
 
 import ImageCard from "../image/ImageCard.vue";
 
+const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
+
 export default {
   components: { ImageCard },
   methods: {
@@ -30,7 +32,8 @@ export default {
       return imageArray;
     },
     getImages() {
-      const path = "http://127.0.0.1:5000/images";
+      // const path = "http://127.0.0.1:5000/images";
+      const path = this.backendURL + "/images";
       axios
         .get(path)
         .then((res) => {
@@ -48,6 +51,7 @@ export default {
   },
   data() {
     return {
+      backendUrl,
       images: [],
     };
   },
