@@ -117,8 +117,8 @@ export default {
       // const path =
       //   "http://127.0.0.1:5000/getExecutedSurveysByID?SurveyID=" +
       //   this.surveyID;
-      const path = this.backendURL;
-      "/getExecutedSurveysByID?SurveyID=" + this.surveyID;
+      const path =
+        this.backendURL + "/getExecutedSurveysByID?SurveyID=" + this.surveyID;
       axios
         .get(path)
         .then((res) => {
