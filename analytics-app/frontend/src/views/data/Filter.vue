@@ -5,7 +5,7 @@
         ><i class="fa-solid fa-arrow-left"></i
       ></el-button>
     </div>
-    <div class="header">Filter</div>
+    <div class="header">{{ $t("surveyOverview.surveyOverview") }}</div>
     <div class="continue-wrapper">
       <el-button-group class="ml-4">
         <el-button class="sodis return" :disabled="!this.continue">
@@ -16,7 +16,9 @@
 
     <div class="filter">
       <div class="filter-wrapper">
-        <div class="filter-description">{{ $t("surveys.filterBy") }}</div>
+        <div class="filter-description">
+          {{ $t("surveyOverview.filterBy") }}
+        </div>
         <div
           class="tag"
           :class="{ selected: interventionType === selectedInterventionType }"
@@ -29,7 +31,7 @@
       </div>
       <div class="intervention-wrapper">
         <div class="intervention-description" v-if="selectedInterventionType">
-          {{ $t("surveys.choose") }} {{ selectedInterventionType }}:
+          {{ $t("surveyOverview.choose") }} {{ selectedInterventionType }}:
         </div>
         <div
           class="intervention"
