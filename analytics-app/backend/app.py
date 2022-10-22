@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
@@ -7,7 +9,7 @@ from QueryMethods import get_interventions
 from QueryMethods import aggregate_survey_data
 
 # configuration
-DEBUG = True
+# DEBUG = True
 
 # instantiate the app
 app = Flask(__name__)
@@ -54,4 +56,5 @@ def getExecutedSurveysByID():
 
 
 if __name__ == '__main__':
-    app.run()
+    port = int(os.environ.get('PORT', 4000))
+    app.run(debug=True, host='0.0.0.0', port=port)
