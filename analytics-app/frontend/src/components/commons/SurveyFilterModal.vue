@@ -1,5 +1,38 @@
 <template>
   <div class="modal-dialog">
+    <div class="modal-inner">
+      <div class="modal-top">
+        <div class="modal-title">Filtern</div>
+        <button
+          class="modal-close"
+          type="button"
+          @click="saveIDs(originallySelectedIDs)"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-content">
+        <el-checkbox
+          v-model="checkAll"
+          :indeterminate="isIndeterminate"
+          @change="handleCheckAllChange"
+          >Check all</el-checkbox
+        >
+        <el-checkbox-group
+          v-model="selected_IDs"
+          @change="handleCheckedIDsChange"
+        >
+          <el-checkbox v-for="id in answer_IDs" :key="id" :label="id">
+            {{ id }}
+          </el-checkbox>
+        </el-checkbox-group>
+      </div>
+      <div class="modal-bottom">
+        <div class="modal-button" @click="saveIDs(selected_IDs)">Save</div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <div class="heading">IDs Filtern:</div>
@@ -31,7 +64,7 @@
         >
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -104,6 +137,85 @@ export default {
 
 <style scoped>
 .modal-dialog {
+  --gap: 15px;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: var(--gap);
+  background: rgba(0, 0, 0, 0.5);
+  font-family: sans-serif;
+
+  z-index: 100;
+}
+
+.modal-inner {
+  background: #ffffff;
+  width: 100%;
+  max-width: 800px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.modal-top {
+  display: flex;
+  align-items: center;
+  background-color: #eeeeee;
+}
+
+.modal-title {
+  flex-grow: 1;
+  padding: 0 var(--gap);
+  font-size: 20px;
+}
+
+.modal-close {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: var(--gap);
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.modal-content {
+  padding: 0 var(--gap);
+  line-height: 1.5;
+}
+
+.modal-bottom {
+  text-align: right;
+  padding: 0 var(--gap) var(--gap) var(--gap);
+}
+
+.modal-button {
+  display: inline-block;
+  padding: 6px 12px;
+  background: var(--bg-color);
+  border: none;
+  outline: none;
+  border-radius: 3px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.modal-button:not(:last-child) {
+  margin-right: var(--gap);
+}
+
+.modal-button:hover {
+  background: var(--item-hover);
+}
+
+/* .modal-dialog {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -161,5 +273,5 @@ export default {
   background-color: var(--bg-color);
   color: white;
   width: 100px;
-}
+} */
 </style>
