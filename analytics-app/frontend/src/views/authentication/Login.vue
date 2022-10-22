@@ -6,13 +6,13 @@
         <p>{{ $t("login.message") }}</p>
         <el-form>
           <el-form-item required class="username-wrapper">
-            <el-input v-model="email" placeholder="Email address" />
+            <el-input v-model="email" :placeholder="$t('login.email')" />
           </el-form-item>
           <el-form-item required class="password-wrapper">
             <el-input
               v-model="password"
               type="password"
-              placeholder="Password"
+              :placeholder="$t('login.password')"
               show-password
             />
           </el-form-item>
