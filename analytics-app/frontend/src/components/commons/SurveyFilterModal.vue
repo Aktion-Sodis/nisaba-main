@@ -2,7 +2,7 @@
   <div class="modal-dialog">
     <div class="modal-inner">
       <div class="modal-top">
-        <div class="modal-title">Filtern</div>
+        <div class="modal-title">{{ $t("survey.surveyModal.filter") }}</div>
         <button
           class="modal-close"
           type="button"
@@ -16,7 +16,7 @@
           v-model="checkAll"
           :indeterminate="isIndeterminate"
           @change="handleCheckAllChange"
-          >Check all</el-checkbox
+          >{{ $t("survey.surveyModal.checkAll") }}</el-checkbox
         >
         <el-checkbox-group
           class="checkbox-group"
@@ -34,7 +34,9 @@
         </el-checkbox-group>
       </div>
       <div class="modal-bottom">
-        <div class="modal-button" @click="saveIDs(selected_IDs)">Save</div>
+        <div class="modal-button" @click="saveIDs(selected_IDs)">
+          {{ $t("survey.surveyModal.save") }}
+        </div>
       </div>
     </div>
   </div>

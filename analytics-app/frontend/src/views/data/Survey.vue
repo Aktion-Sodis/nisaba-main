@@ -29,13 +29,13 @@
             class="collapse-info"
             :class="{ collapseInfo: collapseInfo }"
             v-if="collapsed"
-            >Press to show questions</span
+            >{{ $t("survey.infoBox.open") }}</span
           >
           <span
             class="collapse-info"
             :class="{ collapseInfo: collapseInfo }"
             v-else
-            >Press to hide Questions</span
+            >{{ $t("survey.infoBox.close") }}</span
           >
         </div>
       </div>
