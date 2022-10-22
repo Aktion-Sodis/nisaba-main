@@ -6,77 +6,6 @@ from QueryMethods import get_surveys
 from QueryMethods import get_interventions
 from QueryMethods import aggregate_survey_data
 
-images = [
-    {
-        "img_id": 1,
-        "img_src":
-        "https://techmonitor.ai/wp-content/uploads/sites/4/2016/06/what-is-URL.jpg"
-    },
-    {
-        "img_id": 2,
-        "img_src":
-        "https://www.dignited.com/wp-content/uploads/2018/09/url_istock_nicozorn_thumb800.jpg"
-    },
-    {
-        "img_id": 3,
-        "img_src":
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/WindparkBeltheimII_%28hochkant%29.jpg/1200px-WindparkBeltheimII_%28hochkant%29.jpg"
-    },
-    {
-        "img_id": 4,
-        "img_src":
-        "https://techmonitor.ai/wp-content/uploads/sites/4/2016/06/what-is-URL.jpg"
-    },
-    {
-        "img_id": 5,
-        "img_src":
-        "https://www.dignited.com/wp-content/uploads/2018/09/url_istock_nicozorn_thumb800.jpg"
-    },
-    {
-        "img_id": 6,
-        "img_src":
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/WindparkBeltheimII_%28hochkant%29.jpg/1200px-WindparkBeltheimII_%28hochkant%29.jpg"
-    },
-    {
-        "img_id": 7,
-        "img_src":
-        "https://techmonitor.ai/wp-content/uploads/sites/4/2016/06/what-is-URL.jpg"
-    },
-    {
-        "img_id": 8,
-        "img_src":
-        "https://www.dignited.com/wp-content/uploads/2018/09/url_istock_nicozorn_thumb800.jpg"
-    },
-    {
-        "img_id": 9,
-        "img_src":
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/WindparkBeltheimII_%28hochkant%29.jpg/1200px-WindparkBeltheimII_%28hochkant%29.jpg"
-    },
-    {
-        "img_id": 10,
-        "img_src":
-        "https://techmonitor.ai/wp-content/uploads/sites/4/2016/06/what-is-URL.jpg"
-    },
-    {
-        "img_id": 11,
-        "img_src":
-        "https://www.dignited.com/wp-content/uploads/2018/09/url_istock_nicozorn_thumb800.jpg"
-    },
-    {
-        "img_id": 12,
-        "img_src":
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/WindparkBeltheimII_%28hochkant%29.jpg/1200px-WindparkBeltheimII_%28hochkant%29.jpg"
-    }
-]
-
-graphData = {
-  "titleText": "Das ist der neue Titel",
-  "xAxisTitle": "Test",
-  "yAxisTitle": "Hallo Y",
-  "xData": ["Apples", "Oranges", "Watermelon", "Birnen"],
-  "yData": [1, 2, 1, 2],
-}
-
 # configuration
 DEBUG = True
 
@@ -93,19 +22,6 @@ CORS(app, resources={r'/*': {'origins': '*'}})
 @app.route('/', methods=['GET'])
 def ping_pong():
     return jsonify('Home')
-
-
-@app.route('/images', methods=['GET'])
-def get_images():
-    return jsonify({
-        'data': images,
-    })
-
-@app.route('/graphdata', methods=['GET'])
-def get_graphData():
-    return jsonify({
-        'data': graphData,
-    })
 
 @app.route('/getInterventionTypes', methods=['GET'])
 def getInterventionTypes():
