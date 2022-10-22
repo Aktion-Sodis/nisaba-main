@@ -296,3 +296,4 @@ analytics-app/backend/env/lib/python3.10/site-packages/pip/_vendor/html5lib/tree
 .DS_Store
 analytics-app/.DS_Store
 .gitignore
+.DS_Store
