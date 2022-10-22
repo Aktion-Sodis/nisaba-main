@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import { Auth } from 'aws-amplify'
-import { Hub } from "@aws-amplify/core"
+// import { Auth } from 'aws-amplify'
+// import { Hub } from "@aws-amplify/core"
 
 import store from './store';
 
@@ -17,36 +17,36 @@ import Survey from './views/data/Survey.vue';
 import Filter from './views/data/Filter.vue';
 
 
-let user;
+// let user;
 
-getUser().then((user) => {
-    if (user) {
-        router.push({path: '/'});
-    }
-});
+// getUser().then((user) => {
+//     if (user) {
+//         router.push({path: '/'});
+//     }
+// });
 
-function getUser() {
-    return Auth.currentAuthenticatedUser().then((data) => {
-        if (data && data.signInUserSession) {
-            store.commit('setUser', data);
-            return data;
-        }
-    }).catch(() => {
-        store.commit('setUser', null);
-        return null;
-    });
-}
+// function getUser() {
+//     return Auth.currentAuthenticatedUser().then((data) => {
+//         if (data && data.signInUserSession) {
+//             store.commit('setUser', data);
+//             return data;
+//         }
+//     }).catch(() => {
+//         store.commit('setUser', null);
+//         return null;
+//     });
+// }
 
-Hub.listen("auth", async (data) => {
-    if (data.payload.event === 'signOut'){
-        user = null;
-        store.commit('setUser', null);
-        router.push({path: '/login'});
-    } else if (data.payload.event === 'signIn') {
-        user = await getUser();
-        router.push({path: '/'});
-    }
-});
+// Hub.listen("auth", async (data) => {
+//     if (data.payload.event === 'signOut'){
+//         user = null;
+//         store.commit('setUser', null);
+//         router.push({path: '/login'});
+//     } else if (data.payload.event === 'signIn') {
+//         user = await getUser();
+//         router.push({path: '/'});
+//     }
+// });
 
 
 const routes = [
@@ -54,7 +54,7 @@ const routes = [
     name: 'Home',
     path: '/',
     component: Home,
-    meta: { requiresAuth: true}
+    // meta: { requiresAuth: true}
   },
   {
     name: 'Login',
@@ -72,34 +72,34 @@ const routes = [
       hideNavbar: true,
     },
   },
-  { 
-    name: 'Data',
-    path: '/data',
-    component: Data,
-    children: [
-      { path: 'export', component: Export },
-    ],
-    props: true,
-    meta: { requiresAuth: true}
-  },
+  // { 
+  //   name: 'Data',
+  //   path: '/data',
+  //   component: Data,
+  //   children: [
+  //     { path: 'export', component: Export },
+  //   ],
+  //   props: true,
+  //   // meta: { requiresAuth: true}
+  // },
   {
     name: 'Filter',
     path: '/filter',
     component: Filter,
-    meta: { requiresAuth: true}
+    // meta: { requiresAuth: true}
   },
   {
     name: 'Survey',
     path: '/survey',
     component: Survey,
     props: true,
-    meta: { requiresAuth: true}
+    // meta: { requiresAuth: true}
   },
   {
     name: 'Dashboard',
     path: '/dashboard',
     component: Dashboard,
-    meta: { requiresAuth: true}
+    // meta: { requiresAuth: true}
   },
 ];
 
@@ -108,17 +108,17 @@ const router = createRouter({
    routes,
  });
 
-router.beforeResolve(async (to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        user = await getUser();
-        if (!user) {
-            return next({
-                path: '/login'
-            });
-        }
-        return next()
-    }
-    return next()
-});
+// router.beforeResolve(async (to, from, next) => {
+//     if (to.matched.some(record => record.meta.requiresAuth)) {
+//         user = await getUser();
+//         if (!user) {
+//             return next({
+//                 path: '/login'
+//             });
+//         }
+//         return next()
+//     }
+//     return next()
+// });
 
  export default router;
