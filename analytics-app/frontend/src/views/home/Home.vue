@@ -5,7 +5,7 @@
         ><i class="fa-solid fa-arrow-left"></i
       ></el-button>
     </div>
-    <div class="header">Home</div>
+    <div class="header">{{ $t("home.title") }}</div>
     <div class="continue-wrapper"></div>
 
     <div class="main">
