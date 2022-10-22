@@ -5,7 +5,7 @@
         ><i class="fa-solid fa-arrow-left"></i
       ></el-button>
     </div>
-    <div class="header">{{ $t("surveyOverview.surveyOverview") }}</div>
+    <div class="header">{{ $t("surveyOverview.title") }}</div>
     <div class="continue-wrapper">
       <el-button-group class="ml-4">
         <el-button class="sodis return" :disabled="!this.continue">

@@ -1,30 +1,51 @@
-{
-    "home": {
-      "dummyMsg": "Hier können in Zukunft Basedaten angezeigt werden"
-    },
-    "surveys": {
-      "filterBy": "Filtern nach:",
-      "choose": "Wähle"
-    },
-    "login": {
-      "welcome": "Willkommen zurück!",
-      "message": "Bitte melde dich an oder registriere dich:",
-      "rememberMe": "Eingeloggt bleiben",
-      "signIn": "Einloggen",
-      "googleSignIn": "Mit Google einloggen",
-      "noAccount": "Noch keinen Account?",
-      "registerHere": "Registrieren"
-    },
+{   
     "languages": {
-      "de": "Aleman",
-      "en": "Inglés",
+      "de": "Deutsch",
+      "en": "English",
       "es": "Español"
     },
     "navbar": {
-      "home": "Startseite",
+      "home": "Home",
       "dashboards": "Dashboards",
       "data": "Daten",
-      "evaluation": "Auswertung",
-      "export": "Exportieren"
+      "evaluation": "Evaluierung",
+      "export": "Export"
+    },
+    "home": {
+      "title": "Home",
+      "welcome": "Willkommen!"
+    },
+    "surveyOverview": {
+      "title": "Umfrage Übersicht",
+      "filterBy": "Filtern nach:",
+      "choose": "wähle"
+    },
+    "survey": {
+      "infoBox": {
+        "open": "Klicken um Fragen anzuzeigen",
+        "close": "Klicken um Fragen zu verstecken"
+      },
+      "surveyModal": {
+        "title": "Filter:",
+        "checkAll": "Alle auswählen",
+        "save": "Speichern"
+      }
+    },
+    "login": {
+      "welcome": "Willkommen zurück!",
+      "message": "Bitte anmelden oder registrieren:",
+      "email": "Email Adresse",
+      "password": "Passwort",
+      "rememberMe": "Angemeldet bleiben",
+      "signIn": "Anmelden",
+      "googleSignIn": "Mit Google anmelden",
+      "noAccount": "Noch keinen Account?",
+      "registerHere": "Hier registrieren"
+    },
+    "register": {
+      "title": "Registrieren",
+      "email": "Email Adresse",
+      "password": "Passwort",
+      "register": "Registrieren"
     }
 }

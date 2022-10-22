@@ -1,20 +1,4 @@
 {   
-    "home": {
-      "dummyMsg": "Basedata will be displayed here"
-    },
-    "surveys": {
-      "filterBy": "Filter by:",
-      "choose": "choose"
-    },
-    "login": {
-      "welcome": "Welcome back!",
-      "message": "Please sign or register:",
-      "rememberMe": "Remember me",
-      "signIn": "Sign in",
-      "googleSignIn": "Sign in with Google",
-      "noAccount": "Don't have an account?",
-      "registerHere": "Register here"
-    },
     "languages": {
       "de": "German",
       "en": "English",
@@ -28,6 +12,40 @@
       "export": "Export"
     },
     "home": {
+      "title": "Home",
       "welcome": "Welcome!"
+    },
+    "surveyOverview": {
+      "title": "Survey overview",
+      "filterBy": "Filter by:",
+      "choose": "choose"
+    },
+    "survey": {
+      "infoBox": {
+        "open": "Press to show questions",
+        "close": "Press to hide questions"
+      },
+      "surveyModal": {
+        "title": "Filter:",
+        "checkAll": "Check all",
+        "save": "Save"
+      }
+    },
+    "login": {
+      "welcome": "Welcome back!",
+      "message": "Please sign or register:",
+      "email": "Email address",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "signIn": "Sign in",
+      "googleSignIn": "Sign in with Google",
+      "noAccount": "Don't have an account?",
+      "registerHere": "Register here"
+    },
+    "register": {
+      "title": "Register",
+      "email": "Email address",
+      "password": "Password",
+      "register": "Register"
     }
 }

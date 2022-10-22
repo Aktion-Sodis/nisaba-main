@@ -2,7 +2,7 @@
   <div class="modal-dialog">
     <div class="modal-inner">
       <div class="modal-top">
-        <div class="modal-title">{{ $t("survey.surveyModal.filter") }}</div>
+        <div class="modal-title">{{ $t("survey.surveyModal.title") }}</div>
         <button
           class="modal-close"
           type="button"
