@@ -1,10 +1,14 @@
 <template>
   <div class="container">
     <form @submit.prevent="register">
-      <h2>Register</h2>
-      <input type="email" v-model="email" placeholder="Email address..." />
-      <input type="password" v-model="password" placeholder="password..." />
-      <button>Register</button>
+      <h2>{{ $t("register.title") }}</h2>
+      <input type="email" v-model="email" :placeholder="$t('register.email')" />
+      <input
+        type="password"
+        v-model="password"
+        :placeholder="$t('register.password')"
+      />
+      <button>{{ $t("register.register") }}</button>
     </form>
   </div>
 </template>
