@@ -4,13 +4,6 @@ service-account.json
 
 scripts/nodejs/node_modules
 
-analytics-app/backend/data/*
-analytics-app/backend/env/*
-analytics-app/backend/data/
-analytics-app/backend/env/
-
-env/
-
 
 analytics-app/backend/.env
 analytics-app/frontend/.env
