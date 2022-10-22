@@ -1,13 +1,13 @@
 <template>
   <div class="container-wrapper">
     <div class="return-wrapper">
-      <el-button class="sodis return"
+      <el-button class="sodis return" @click="$router.back()"
         ><i class="fa-solid fa-arrow-left"></i
       ></el-button>
     </div>
     <div class="header">{{ surveyID }}</div>
     <div class="button-wrapper">
-      <el-button class="sodis download"
+      <el-button @click="openSurveyModal" class="sodis download"
         ><i class="fa-solid fa-filter"></i
       ></el-button>
       <el-button class="sodis download"
@@ -71,13 +71,21 @@
           selectedQuestion.question_type == 'SINGLECHOICE'
         "
         :question="selectedQuestion"
+        :selectedIDs="selected_IDs"
       ></ChartComponent>
       <TextComponent
         v-if="selectedQuestion.question_type == 'TEXT'"
         :question="selectedQuestion"
+        :selectedIDs="selected_IDs"
       ></TextComponent>
     </div>
   </div>
+  <SurveyFilterModalVue
+    v-if="showSurveyModal"
+    :answerIDs="selectedQuestion.answer_IDs"
+    :selectedIDs="selected_IDs"
+    @save-IDs="saveIDs"
+  ></SurveyFilterModalVue>
 </template>
 
 <script>
@@ -91,13 +99,20 @@ import ChartComponent from "../../components/data/ChartComponent.vue";
 import TextComponent from "../../components/data/TextComponent.vue";
 import ImageComponent from "../../components/data/ImageComponent.vue";
 
+import SurveyFilterModalVue from "../../components/commons/SurveyFilterModal.vue";
+
 var collapsed = ref(true);
 var collapseInfo = ref(true);
 
 const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
 
 export default {
-  components: { ImageComponent, ChartComponent, TextComponent },
+  components: {
+    ImageComponent,
+    ChartComponent,
+    TextComponent,
+    SurveyFilterModalVue,
+  },
   setup() {
     return { collapsed, collapseInfo };
   },
@@ -110,6 +125,19 @@ export default {
     }),
   },
   methods: {
+    initIDs() {
+      this.selected_IDs = this.selectedQuestion.answer_IDs;
+      return this.selected_IDs;
+    },
+    openSurveyModal() {
+      this.showSurveyModal = true;
+      return this.showSurveyModal;
+    },
+    saveIDs(selectedIDs) {
+      this.selected_IDs = selectedIDs;
+      this.showSurveyModal = false;
+      return this.showSurveyModal, this.selected_IDs;
+    },
     getSurveyData() {
       this.surveyID = this.$route.params.id;
       // this.surveyID = "bf2ae2f0-63e0-4bd6-9388-49a59218514f";
@@ -124,6 +152,7 @@ export default {
         .then((res) => {
           this.surveyData = res.data.executedSurveys;
           this.selectQuestion(this.surveyData[0]);
+          this.initIDs();
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -131,7 +160,6 @@ export default {
         });
     },
     selectQuestion(question) {
-      console.log(question.answers);
       return (this.selectedQuestion = question), (collapsed.value = true);
     },
     toggleQuestionList() {
@@ -146,11 +174,13 @@ export default {
   },
   data() {
     return {
+      showSurveyModal: false,
       backendURL,
       surveyData: null,
       selectedQuestion: null,
       surveyID: "",
       isSurveyModalVisible: false,
+      selected_IDs: [],
     };
   },
 };
@@ -176,8 +206,7 @@ export default {
     );
   grid-template-columns:
     60px calc(
-      100vw - var(--left-menu-width) - var(--container-margin) * 2 - 60px -
-        200px
+      100vw - var(--sidebar-width) - var(--container-margin) * 2 - 60px - 200px
     )
     200px;
 
@@ -292,7 +321,7 @@ export default {
   margin-left: 12px;
 
   position: absolute;
-  left: calc(var(--left-menu-width) + var(--container-margin));
+  left: calc(var(--sidebar-width) + var(--container-margin));
   top: calc(var(--navbar-height) + 60px + 50px);
   bottom: var(--container-margin);
   z-index: 1;
@@ -312,7 +341,7 @@ export default {
   transition: var(--transition-time);
 
   position: absolute;
-  left: calc(var(--left-menu-width) + var(--container-margin));
+  left: calc(var(--sidebar-width) + var(--container-margin));
   top: calc(var(--navbar-height) + 60px + 50px);
   bottom: var(--container-margin);
   z-index: 1;

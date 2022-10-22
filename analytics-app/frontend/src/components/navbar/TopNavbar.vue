@@ -29,7 +29,6 @@ export default {
   computed: {
     ...mapState({
       SideBarCollapsed: (state) => state.NavbarAtributes.SideBarCollapsed,
-      LeftMenuWidth: (state) => state.NavbarAtributes.LeftMenuWidth,
     }),
   },
   methods: {
@@ -53,9 +52,9 @@ export default {
       handler: function () {
         this.$nextTick(() => {
           if (this.SideBarCollapsed) {
-            this.root.style.setProperty("--left-menu-width", "60px");
+            this.root.style.setProperty("--sidebar-width", "60px");
           } else {
-            this.root.style.setProperty("--left-menu-width", "260px");
+            this.root.style.setProperty("--sidebar-width", "260px");
           }
         });
       },
@@ -73,7 +72,7 @@ export default {
 <style scoped>
 .top-navbar {
   height: var(--navbar-height);
-  margin-left: var(--left-menu-width);
+  margin-left: var(--sidebar-width);
   background-color: white;
   position: fixed;
   top: 0;

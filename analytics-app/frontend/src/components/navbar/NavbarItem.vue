@@ -46,16 +46,14 @@ export default {
 }
 .navbar-icon {
   box-sizing: border-box;
-  width: var(--left-menu-width-collapsed);
+  width: var(--sidebar-width-collapsed);
   margin: 0;
   padding: 0;
   color: white;
 }
 .navbar-text {
   color: white;
-  width: calc(
-    var(--left-menu-width-expanded) - var(--left-menu-width-collapsed)
-  );
+  width: calc(var(--sidebar-width-expanded) - var(--sidebar-width-collapsed));
   height: var(--link-height);
   text-align: left;
   box-sizing: border-box;
@@ -65,7 +63,7 @@ export default {
   align-items: center;
 
   position: absolute;
-  left: var(--left-menu-width-collapsed);
+  left: var(--sidebar-width-collapsed);
 }
 .navbar-text.collapsed {
   display: none;
