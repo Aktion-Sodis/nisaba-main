@@ -2,13 +2,10 @@
   <div class="sidebar" :class="{ collapsed: SideBarCollapsed }">
     <div class="organization-wrapper">
       <div class="icon-wrapper">
-        <el-image
-          class="organization-icon"
-          src="/src/static/aktionSodisSmall.png"
-        />
+        <el-image class="organization-icon" :src="societyLogoSmall" />
       </div>
       <div class="organization-name" :class="{ collapsed: SideBarCollapsed }">
-        Aktion Sodis
+        {{ societyName }}
       </div>
     </div>
     <div class="sidebar-container" :class="{ expanded: !SideBarCollapsed }">
@@ -28,6 +25,9 @@ import NavbarDropdown from "./NavbarDropdown.vue";
 
 const dashboardsCollapsed = ref(true);
 const dataCollapsed = ref(true);
+
+const societyName = import.meta.env.VITE_APP_SOCIETY_VERBOSE_NAME;
+const societyLogoSmall = import.meta.env.VITE_APP_LOGO_SMALL_SRC;
 
 export default {
   components: { NavbarItem, NavbarDropdown },
@@ -49,6 +49,8 @@ export default {
   },
   data() {
     return {
+      societyName,
+      societyLogoSmall,
       home: {
         name: "Home",
         icon: "fa-solid fa-house",
