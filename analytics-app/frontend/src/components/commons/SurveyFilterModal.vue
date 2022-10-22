@@ -19,10 +19,16 @@
           >Check all</el-checkbox
         >
         <el-checkbox-group
+          class="checkbox-group"
           v-model="selected_IDs"
           @change="handleCheckedIDsChange"
         >
-          <el-checkbox v-for="id in answer_IDs" :key="id" :label="id">
+          <el-checkbox
+            class="checkbox"
+            v-for="id in answer_IDs"
+            :key="id"
+            :label="id"
+          >
             {{ id }}
           </el-checkbox>
         </el-checkbox-group>
@@ -188,6 +194,20 @@ export default {
 .modal-content {
   padding: 0 var(--gap);
   line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  margin-top: 6px;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  max-height: 400px;
+}
+
+.checkbox {
+  margin-top: 6px;
 }
 
 .modal-bottom {
