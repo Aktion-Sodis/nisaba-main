@@ -1,7 +1,7 @@
 <template>
   <div class="container-wrapper">
     <div class="return-wrapper">
-      <el-button class="sodis return"
+      <el-button class="sodis return" @click="$router.back()"
         ><i class="fa-solid fa-arrow-left"></i
       ></el-button>
     </div>
@@ -122,16 +122,13 @@ export default {
     },
     setInterventionType(interventionType) {
       this.selectedInterventionType = interventionType;
-      // console.log(this.selectedInterventionType);
       this.selectedInterventions = this.interventions.filter((item) => {
         return item["interventionType"] === this.selectedInterventionType;
       });
-      // console.log(this.selectedInterventions);
       return this.selectedInterventionType, this.selectedInterventions;
     },
     setIntervention(intervention) {
       this.selectedIntervention = intervention;
-      // console.log(this.selectedIntervention["id"]);
       this.selectedSurveys = this.surveys.filter((item) => {
         return (
           item["interventionSurveysId"] === this.selectedIntervention["id"]
@@ -184,8 +181,7 @@ export default {
     );
   grid-template-columns:
     60px calc(
-      100vw - var(--left-menu-width) - var(--container-margin) * 2 - 60px -
-        200px
+      100vw - var(--sidebar-width) - var(--container-margin) * 2 - 60px - 200px
     )
     200px;
 

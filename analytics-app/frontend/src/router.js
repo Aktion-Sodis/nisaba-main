@@ -12,7 +12,6 @@ import Register from './views/authentication/Register.vue';
 
 import Dashboard from './views/dashboards/Dashboard.vue'
 
-import Export from './views/data/dataExport.vue';
 import Survey from './views/data/Survey.vue';
 import Filter from './views/data/Filter.vue';
 

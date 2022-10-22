@@ -1,7 +1,6 @@
 <template>
   <div class="chart-wrapper">
     <div class="settings">
-      <button @click="aggregateChartData()">Update</button>
       <el-dropdown class="chart-type-dropdown" trigger="click">
         <el-button type="primary" class="dropdown-button">
           <i class="icon" :class="this.selectedChartType.icon"></i>
@@ -23,6 +22,7 @@
       </el-dropdown>
     </div>
     <apexcharts
+      ref="realtimeChart"
       class="chart"
       id="chart-example"
       width="100%"
@@ -31,7 +31,6 @@
       :series="series"
       :type="this.selectedChartType.tag"
     ></apexcharts>
-    <div>{{ question }}</div>
   </div>
 </template>
 
@@ -40,31 +39,80 @@ import VueApexCharts from "vue3-apexcharts";
 
 export default {
   name: "ChartComponent",
-  props: ["question"],
+  props: ["question", "selectedIDs"],
   components: {
     apexcharts: VueApexCharts,
   },
-  // mounted() {
-  //   this.setChartData();
-  // },
+  created() {
+    this.setChartData(this.selectedIDs);
+  },
+  watch: {
+    question: function (newVal, oldVal) {
+      this.filteredAnswers = this.filterDataByIDs(this.selectedIDs);
+      this.aggregatedData = this.aggragateData(this.filteredAnswers);
+      this.updateDataPoints(this.aggregatedData);
+      this.updateLabels(this.question["answer_options"]["en-US"]);
+    },
+    selectedIDs: function (newVal, oldVal) {
+      this.filteredAnswers = this.filterDataByIDs(newVal);
+      this.aggregatedData = this.aggragateData(this.filteredAnswers);
+      this.updateDataPoints(this.aggregatedData);
+      this.updateLabels(this.question["answer_options"]["en-US"]);
+    },
+  },
   methods: {
     changeChartType(chartType) {
       this.selectedChartType = chartType;
-      console.log(this.selectedChartType.tag);
     },
-    setChartData() {
-      this.chartOptions.xaxis = this.question["answer_options"]["en-US"];
-      // this.series[0].data = [0, 1];
-      console.log(this.chartOptions.xaxis);
-      console.log(this.series[0].data);
-      return this.chartOptions.xaxis;
+    updateLabels(labels) {
+      this.chartOptions = {
+        xaxis: {
+          categories: labels,
+        },
+      };
+      return this.chartOptions;
+    },
+    updateDataPoints(dataPoints) {
+      this.series = [
+        {
+          data: dataPoints,
+        },
+      ];
+      return this.series;
     },
     addArrays(a, b) {
       return a.map((e, i) => e + b[i]);
     },
+    aggragateData(answers) {
+      var len = answers[0].length;
+      this.aggregatedData = Array(len).fill(0);
+      for (var i in answers) {
+        this.aggregatedData = this.addArrays(this.aggregatedData, answers[i]);
+      }
+      return this.aggregatedData;
+    },
+    filterDataByIDs(selected_IDs) {
+      this.filteredAnswers = [];
+      for (var i in selected_IDs) {
+        if (selected_IDs.includes(selected_IDs[i])) {
+          var index = this.question.answer_IDs.indexOf(selected_IDs[i]);
+          var answer = this.question.answers[index];
+          this.filteredAnswers.push(answer);
+        }
+      }
+      return this.filteredAnswers;
+    },
+    setChartData(selected_IDs) {
+      this.filteredAnswers = this.filterDataByIDs(selected_IDs);
+      this.aggregatedData = this.aggragateData(this.filteredAnswers);
+      this.updateDataPoints(this.aggregatedData);
+      this.updateLabels(this.question["answer_options"]["en-US"]);
+    },
   },
   data: function () {
     return {
+      filteredAnswers: [],
+      aggregatedData: [],
       chartOptions: {
         chart: {
           id: "vuechart-example",

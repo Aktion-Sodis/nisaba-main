@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     togglePanel() {
-      console.log(isPopup);
+      // console.log(isPopup);
       return (isPopup.value = !isPopup.value);
     },
     away() {
