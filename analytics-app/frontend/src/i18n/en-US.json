@@ -1,4 +1,11 @@
-{
+{   
+    "home": {
+      "dummyMsg": "Basedata will be displayed here"
+    },
+    "surveys": {
+      "filterBy": "Filter by:",
+      "choose": "choose"
+    },
     "login": {
       "welcome": "Welcome back!",
       "message": "Please sign or register:",
@@ -10,7 +17,8 @@
     },
     "languages": {
       "de": "German",
-      "en": "English"
+      "en": "English",
+      "es": "Spanish"
     },
     "navbar": {
       "home": "Home",

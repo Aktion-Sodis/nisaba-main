@@ -104,6 +104,8 @@ import SurveyFilterModalVue from "../../components/commons/SurveyFilterModal.vue
 var collapsed = ref(true);
 var collapseInfo = ref(true);
 
+const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
+
 export default {
   components: {
     ImageComponent,
@@ -138,9 +140,13 @@ export default {
     },
     getSurveyData() {
       this.surveyID = this.$route.params.id;
+      // this.surveyID = "bf2ae2f0-63e0-4bd6-9388-49a59218514f";
+      // this.surveyID = "6b3175ea-e2b8-44a9-9836-99e71c2001ac";
+      // const path =
+      //   "http://127.0.0.1:5000/getExecutedSurveysByID?SurveyID=" +
+      //   this.surveyID;
       const path =
-        "http://127.0.0.1:5000/getExecutedSurveysByID?SurveyID=" +
-        this.surveyID;
+        this.backendURL + "/getExecutedSurveysByID?SurveyID=" + this.surveyID;
       axios
         .get(path)
         .then((res) => {
@@ -169,6 +175,7 @@ export default {
   data() {
     return {
       showSurveyModal: false,
+      backendURL,
       surveyData: null,
       selectedQuestion: null,
       surveyID: "",

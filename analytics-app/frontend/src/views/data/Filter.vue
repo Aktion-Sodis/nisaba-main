@@ -16,7 +16,7 @@
 
     <div class="filter">
       <div class="filter-wrapper">
-        <div class="filter-description">Filtern nach:</div>
+        <div class="filter-description">{{ $t("surveys.filterBy") }}</div>
         <div
           class="tag"
           :class="{ selected: interventionType === selectedInterventionType }"
@@ -29,7 +29,7 @@
       </div>
       <div class="intervention-wrapper">
         <div class="intervention-description" v-if="selectedInterventionType">
-          {{ selectedInterventionType }} wählen:
+          {{ $t("surveys.choose") }} {{ selectedInterventionType }}:
         </div>
         <div
           class="intervention"
@@ -68,6 +68,8 @@ import "element-plus/theme-chalk/display.css";
 
 import SurveyCard from "../../components/commons/SurveyCard.vue";
 
+const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
+
 export default {
   components: { SurveyCard },
   mounted() {
@@ -77,7 +79,8 @@ export default {
   },
   methods: {
     getInterventionTypes() {
-      const path = "http://127.0.0.1:5000/getInterventionTypes";
+      // const path = "http://127.0.0.1:5000/getInterventionTypes";
+      const path = this.backendURL + "/getInterventionTypes";
       axios
         .get(path)
         .then((res) => {
@@ -90,7 +93,8 @@ export default {
         });
     },
     getInterventions() {
-      const path = "http://127.0.0.1:5000/getInterventions";
+      // const path = "http://127.0.0.1:5000/getInterventions";
+      const path = this.backendURL + "/getInterventions";
       axios
         .get(path)
         .then((res) => {
@@ -103,7 +107,8 @@ export default {
         });
     },
     getSurveys() {
-      const path = "http://127.0.0.1:5000/getSurveys";
+      // const path = "http://127.0.0.1:5000/getSurveys";
+      const path = this.backendURL + "/getSurveys";
       axios
         .get(path)
         .then((res) => {
@@ -141,6 +146,7 @@ export default {
   },
   data() {
     return {
+      backendURL,
       interventionTypes: null,
       selectedInterventionType: null,
       interventions: null,

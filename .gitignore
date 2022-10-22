@@ -2549,3 +2549,4 @@ analytics-app/backend/env/lib/python3.10/site-packages/pip/_vendor/resolvelib/co
 analytics-app/backend/env/lib/python3.10/site-packages/setuptools/extern/__pycache__/__init__.cpython-310.pyc
 analytics-app/backend/env/lib/python3.10/site-packages/setuptools/extern/__pycache__/__init__.cpython-310.pyc
 analytics-app/backend/.env
+analytics-app/frontend/.env

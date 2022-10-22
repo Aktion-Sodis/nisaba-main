@@ -8,12 +8,16 @@
       <LanguageSelector />
       <NotificationPanel />
       <i class="icon fa-solid fa-gear"></i>
-      <i class="icon fa-solid fa-circle-user"></i>
+      <a @click="signOut">
+        <i class="icon fa-solid fa-right-from-bracket"></i>
+      </a>
     </div>
   </div>
 </template>
 
 <script>
+import { Auth } from "aws-amplify";
+
 import { mapState, mapMutations, mapActions } from "vuex";
 
 import LanguageSelector from "../commons/LanguageSelector.vue";
@@ -31,6 +35,14 @@ export default {
     ...mapMutations({
       toggleSidebar: "toggleSidebar",
     }),
+    async signOut() {
+      try {
+        await Auth.signOut();
+        alert("Success logged out!");
+      } catch (error) {
+        alert(error.message);
+      }
+    },
   },
   mounted: function () {
     this.root = document.documentElement;
@@ -80,5 +92,13 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-right: 20px;
+}
+
+a {
+  all: unset;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
 </style>

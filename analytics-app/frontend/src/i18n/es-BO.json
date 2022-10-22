@@ -16,9 +16,9 @@
       "registerHere": "Registrieren"
     },
     "languages": {
-      "de": "Deutsch",
-      "en": "Englisch",
-      "es": "Spanisch"
+      "de": "Aleman",
+      "en": "Inglés",
+      "es": "Español"
     },
     "navbar": {
       "home": "Startseite",
@@ -26,8 +26,5 @@
       "data": "Daten",
       "evaluation": "Auswertung",
       "export": "Exportieren"
-    },
-    "home": {
-      "welcome": "Herzlich Willkommen!"
     }
 }
