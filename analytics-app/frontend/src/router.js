@@ -13,7 +13,7 @@ import Register from './views/authentication/Register.vue';
 import Dashboard from './views/dashboards/Dashboard.vue'
 
 import Survey from './views/data/Survey.vue';
-import Filter from './views/data/Filter.vue';
+import SurveyOverview from './views/Data/SurveyOverview.vue';
 
 
 let user;
@@ -82,9 +82,9 @@ const routes = [
   //   // meta: { requiresAuth: true}
   // },
   {
-    name: 'Filter',
-    path: '/filter',
-    component: Filter,
+    name: 'Survey Overview',
+    path: '/surveyoverview',
+    component: SurveyOverview,
     meta: { requiresAuth: true}
   },
   {

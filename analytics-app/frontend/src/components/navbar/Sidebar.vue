@@ -59,7 +59,7 @@ export default {
       data: {
         name: "Data",
         icon: "fa-solid fa-database",
-        to: "filter",
+        to: "surveyoverview",
       },
       dashboard: {
         name: "Dashboards",
