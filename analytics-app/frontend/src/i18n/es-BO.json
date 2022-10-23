@@ -44,6 +44,7 @@
     },
     "register": {
       "title": "Account erstellen",
+      "message": "Email und Passwort eingeben",
       "email": "Email Adresse",
       "password": "Passwort",
       "passwordCheck": "Passwort wiederholen",

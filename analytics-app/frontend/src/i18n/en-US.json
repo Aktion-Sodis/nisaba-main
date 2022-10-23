@@ -44,6 +44,7 @@
     },
     "register": {
       "title": "Register",
+      "message": "Please enter your email and create a password",
       "email": "Email address",
       "password": "Password",
       "passwordCheck": "Repeat password",
