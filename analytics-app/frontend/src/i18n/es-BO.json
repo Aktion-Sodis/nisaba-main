@@ -46,7 +46,7 @@
     "register": {
       "title": "Account erstellen",
       "language": "Choose desired language:",
-      "message": "Email und Passwort eingeben",
+      "message": "Email und Passwort eingeben:",
       "email": "Email Adresse",
       "password": "Passwort",
       "passwordCheck": "Passwort wiederholen",

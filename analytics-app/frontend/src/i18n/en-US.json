@@ -46,7 +46,7 @@
     "register": {
       "title": "Register",
       "language": "Choose desired language:",
-      "message": "Please enter your email and create a password",
+      "message": "Please enter your email and create a password:",
       "email": "Email address",
       "password": "Password",
       "passwordCheck": "Repeat password",
