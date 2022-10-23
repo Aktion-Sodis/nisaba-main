@@ -10,7 +10,6 @@ const survey = {
   mutations: {
     setSelectedSurveyID (state, newSelectedSurveyID){
       state.selectedSurveyID = newSelectedSurveyID;
-      console.log(state.selectedSurveyID)
     },
   },
 }
