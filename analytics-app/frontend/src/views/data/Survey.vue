@@ -121,7 +121,7 @@ export default {
   },
   computed: {
     ...mapState({
-      questions: (state) => state.surveyData.questions,
+      selectedSurveyID: (state) => state.survey.selectedSurveyID,
     }),
   },
   methods: {
@@ -139,12 +139,8 @@ export default {
       return this.showSurveyModal, this.selected_IDs;
     },
     getSurveyData() {
-      this.surveyID = this.$route.params.id;
-      // this.surveyID = "bf2ae2f0-63e0-4bd6-9388-49a59218514f";
+      this.surveyID = this.selectedSurveyID;
       // this.surveyID = "6b3175ea-e2b8-44a9-9836-99e71c2001ac";
-      // const path =
-      //   "http://127.0.0.1:5000/getExecutedSurveysByID?SurveyID=" +
-      //   this.surveyID;
       const path =
         this.backendURL + "/getExecutedSurveysByID?SurveyID=" + this.surveyID;
       axios

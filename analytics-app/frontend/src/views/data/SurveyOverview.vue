@@ -62,7 +62,7 @@
 
 <script>
 import { ref } from "vue";
-import { mapState } from "vuex";
+import { mapState, mapMutations, mapGetters } from "vuex";
 
 import axios from "axios";
 
@@ -79,7 +79,21 @@ export default {
     this.getInterventions();
     this.getSurveys();
   },
+  computed: {
+    ...mapState({
+      selectedSurveyID: (state) => state.survey.selectedSurveyID,
+    }),
+  },
   methods: {
+    ...mapGetters(
+      //
+      ["getSelectedSurveyID"]
+    ),
+    ...mapMutations([
+      // `mapMutations` also supports payloads:
+      // 'incrementBy' // map `this.incrementBy(amount)` to `this.$store.commit('incrementBy', amount)`
+      "setSelectedSurveyID",
+    ]),
     getInterventionTypes() {
       // const path = "http://127.0.0.1:5000/getInterventionTypes";
       const path = this.backendURL + "/getInterventionTypes";
@@ -140,10 +154,8 @@ export default {
     },
     selectSurvey(survey) {
       this.selectedSurvey = survey;
-      this.$router.push({
-        name: "Survey",
-        params: { id: this.selectedSurvey["id"] },
-      });
+      this.setSelectedSurveyID(this.selectedSurvey["id"]);
+      this.$router.push({ name: "Survey" });
     },
   },
   data() {
