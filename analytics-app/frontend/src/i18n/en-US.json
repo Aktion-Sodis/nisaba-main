@@ -32,7 +32,7 @@
       }
     },
     "login": {
-      "welcome": "Welcome back!",
+      "title": "Welcome back!",
       "message": "Please sign or register:",
       "email": "Email address",
       "password": "Password",
@@ -46,6 +46,10 @@
       "title": "Register",
       "email": "Email address",
       "password": "Password",
-      "register": "Register"
+      "passwordCheck": "Repeat password",
+      "register": "Register",
+      "emailCheckMessage": "Please enter an email address ending with:",
+      "passwordCheckMessage": "The passwords you entered do not match. Please try again!",
+      "registerSuccessMessage": "User successfully registered. Please ask your admin to verify your account"
     }
 }
