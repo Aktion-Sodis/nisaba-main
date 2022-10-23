@@ -1,0 +1,58 @@
+{   
+    "languages": {
+      "de-DE": "Deutsch",
+      "en-US": "English",
+      "es-BO": "Español"
+    },
+    "navbar": {
+      "home": "Home",
+      "dashboards": "Dashboards",
+      "data": "Daten",
+      "evaluation": "Evaluierung",
+      "export": "Export"
+    },
+    "home": {
+      "title": "Home",
+      "welcome": "Willkommen!"
+    },
+    "surveyOverview": {
+      "title": "Umfrage Übersicht",
+      "filterBy": "Filtern nach:",
+      "choose": "wähle"
+    },
+    "survey": {
+      "infoBox": {
+        "open": "Klicken um Fragen anzuzeigen",
+        "close": "Klicken um Fragen zu verstecken"
+      },
+      "surveyModal": {
+        "title": "Filter:",
+        "checkAll": "Alle auswählen",
+        "save": "Speichern"
+      }
+    },
+    "login": {
+      "title": "Willkommen zurück!",
+      "language": "Sprache wählen:",
+      "message": "Bitte anmelden oder registrieren:",
+      "email": "Email Adresse",
+      "password": "Passwort",
+      "rememberMe": "Angemeldet bleiben",
+      "signIn": "Anmelden",
+      "googleSignIn": "Mit Google anmelden",
+      "noAccount": "Noch keinen Account?",
+      "registerHere": "Hier registrieren"
+    },
+    "register": {
+      "title": "Account erstellen",
+      "language": "Sprache wählen:",
+      "message": "Bitte Email Adresse und Passwort eingeben:",
+      "email": "Email Adresse",
+      "password": "Passwort",
+      "passwordCheck": "Passwort wiederholen",
+      "register": "Registrieren",
+      "emailCheckMessage": "Bitte nutze eine Mailadresse mit Endung:",
+      "passwordCheckMessage": "Die Passwörter stimmen nicht überein. Bitte erneut versuchen!",
+      "registerSuccessMessage": "Dein Benutzerkonto wurde erfolgreich erstelle. Bitte wende dich an deinen Admin um deinen Account freischalten zu lassen!"
+    }
+}

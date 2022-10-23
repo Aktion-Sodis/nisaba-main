@@ -1,0 +1,58 @@
+{   
+    "languages": {
+      "de-DE": "Deutsch",
+      "en-US": "English",
+      "es-BO": "Español"
+    },
+    "navbar": {
+      "home": "Home",
+      "dashboards": "Dashboards",
+      "data": "Data",
+      "evaluation": "Evaluation",
+      "export": "Export"
+    },
+    "home": {
+      "title": "Home",
+      "welcome": "Welcome!"
+    },
+    "surveyOverview": {
+      "title": "Survey overview",
+      "filterBy": "Filter by:",
+      "choose": "choose"
+    },
+    "survey": {
+      "infoBox": {
+        "open": "Press to show questions",
+        "close": "Press to hide questions"
+      },
+      "surveyModal": {
+        "title": "Filter:",
+        "checkAll": "Check all",
+        "save": "Save"
+      }
+    },
+    "login": {
+      "title": "Welcome back!",
+      "language": "Choose desired language:",
+      "message": "Please sign or register:",
+      "email": "Email address",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "signIn": "Sign in",
+      "googleSignIn": "Sign in with Google",
+      "noAccount": "Don't have an account?",
+      "registerHere": "Register here"
+    },
+    "register": {
+      "title": "Register",
+      "language": "Choose desired language:",
+      "message": "Please enter your email and create a password:",
+      "email": "Email address",
+      "password": "Password",
+      "passwordCheck": "Repeat password",
+      "register": "Register",
+      "emailCheckMessage": "Please enter an email address ending with:",
+      "passwordCheckMessage": "The passwords you entered do not match. Please try again!",
+      "registerSuccessMessage": "User successfully registered. Please ask your admin to verify your account"
+    }
+}

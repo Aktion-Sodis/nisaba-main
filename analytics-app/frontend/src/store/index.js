@@ -4,10 +4,13 @@ import VuexPersistence from 'vuex-persist';
 // import modules
 import persistedDummyModule from './persistedDummyModule';
 import volatileDummyModule from './volatileDummyModule';
+import NavbarAtributes from './navbar';
+import survey from './surveyData';
+import UserAuthantication from './auth';
 
 const vuexPersistence = new VuexPersistence({
   storage: localStorage,
-  modules: ['persistedDummyModule'],
+  modules: ['survey'],
 });
 
 const store = createStore({
@@ -34,8 +37,11 @@ const store = createStore({
     },
   },
   modules: {
+    NavbarAtributes,
+    survey,
     persistedDummyModule,
     volatileDummyModule,
+    UserAuthantication,
   },
   plugins: [vuexPersistence.plugin],
 });
