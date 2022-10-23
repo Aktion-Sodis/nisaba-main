@@ -83,7 +83,24 @@ getExecutedSurveysBySurveyID = {
     "query": """query executedSurveyBySurveyID($surveyID: String!) {
       executedSurveyBySurveyID(surveyID: $surveyID) {
         items {
+          executedSurveySurveyId
+            answers {
+              doubleValue
+              intValue
+              questionID
+              rating
+              text
+              date
+              questionOptions {
+                text {
+                  languageKeys
+                  languageTexts
+                }
+                id
+              }
+            }
             date
+            id
         }
     }
     }
