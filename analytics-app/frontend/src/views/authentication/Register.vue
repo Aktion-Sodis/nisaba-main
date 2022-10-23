@@ -40,6 +40,10 @@
             {{ $t("register.register") }}
           </button>
         </el-form>
+        <div class="language-selector">
+          <p>{{ $t("register.language") }}</p>
+          <LanguageSelector></LanguageSelector>
+        </div>
       </div>
     </div>
 
@@ -53,11 +57,16 @@
 <script>
 import { Auth } from "aws-amplify";
 
+import LanguageSelector from "../../components/commons/LanguageSelector.vue";
+
 const backgroundImage = import.meta.env.VITE_APP_LOGIN_BACKGROUND_IMAGE_SRC;
 const societyMail = import.meta.env.VITE_APP_SOCIETY_MAIL;
 
 export default {
   name: "Register",
+  components: {
+    LanguageSelector,
+  },
   data() {
     return {
       backgroundImage,
@@ -126,6 +135,12 @@ export default {
 .push-to-end {
   display: flex;
   justify-content: flex-end;
+}
+.language-selector {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
 }
 .image-wrapper {
   background-size: cover;

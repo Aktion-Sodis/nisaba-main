@@ -27,7 +27,7 @@
             </el-button>
           </el-form-item>
           <el-form-item class="google-sign-in-wrapper">
-            <el-button type="default" class="block">
+            <el-button type="default" class="block" @click="toggleAlert()">
               <svg
                 viewBox="0 0 24 24"
                 width="15"
@@ -71,6 +71,10 @@
               </router-link>
             </p>
           </div>
+          <div class="language-selector">
+            <p>{{ $t("login.language") }}</p>
+            <LanguageSelector></LanguageSelector>
+          </div>
         </el-form>
       </div>
     </div>
@@ -85,11 +89,16 @@
 <script>
 import "element-plus/theme-chalk/display.css";
 
+import LanguageSelector from "../../components/commons/LanguageSelector.vue";
+
 const backgroundImage = import.meta.env.VITE_APP_LOGIN_BACKGROUND_IMAGE_SRC;
 
 import { Auth } from "aws-amplify";
 export default {
   name: "Login",
+  components: {
+    LanguageSelector,
+  },
   methods: {
     async login() {
       try {
@@ -99,6 +108,9 @@ export default {
       } catch (error) {
         alert(error.message);
       }
+    },
+    toggleAlert() {
+      alert("Function not implemented yet :)");
     },
   },
   data() {
@@ -148,6 +160,12 @@ export default {
 .push-to-end {
   display: flex;
   justify-content: flex-end;
+}
+.language-selector {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
 }
 .image-wrapper {
   background-size: cover;
