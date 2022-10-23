@@ -2,7 +2,7 @@
   <div class="outer-wrapper">
     <div class="login-outer-wrapper">
       <div class="login-wrapper">
-        <h1>{{ $t("login.welcome") }}</h1>
+        <h1>{{ $t("login.title") }}</h1>
         <p>{{ $t("login.message") }}</p>
         <el-form>
           <el-form-item required class="username-wrapper">
