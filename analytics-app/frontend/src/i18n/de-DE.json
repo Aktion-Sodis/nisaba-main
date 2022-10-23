@@ -33,6 +33,7 @@
     },
     "login": {
       "title": "Willkommen zurück!",
+      "language": "Sprache wählen:",
       "message": "Bitte anmelden oder registrieren:",
       "email": "Email Adresse",
       "password": "Passwort",
@@ -44,6 +45,7 @@
     },
     "register": {
       "title": "Account erstellen",
+      "language": "Sprache wählen:",
       "message": "Bitte Email Adresse und Passwort eingeben!",
       "email": "Email Adresse",
       "password": "Passwort",

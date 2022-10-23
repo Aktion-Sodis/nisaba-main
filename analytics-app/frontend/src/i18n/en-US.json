@@ -33,6 +33,7 @@
     },
     "login": {
       "title": "Welcome back!",
+      "language": "Choose desired language:",
       "message": "Please sign or register:",
       "email": "Email address",
       "password": "Password",
@@ -44,6 +45,7 @@
     },
     "register": {
       "title": "Register",
+      "language": "Choose desired language:",
       "message": "Please enter your email and create a password",
       "email": "Email address",
       "password": "Password",
