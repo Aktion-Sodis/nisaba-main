@@ -11,6 +11,7 @@ import uuid from "uuid";
 import createTestSurvey from "./src/migrators/createTestSurvey.js";
 import createBaseLevels from "./src/migrators/createBaseLevels.js";
 import migrateVillages from "./src/migrators/migrateVillages.js";
+import transformexecutedsurveys from "./src/dbupdates/transformexecutedsurveys.js";
 import {
   deleteAppliedInterventions,
   deleteLevels,
@@ -29,20 +30,22 @@ import createLevelToInterventionConnections from "./src/migrators/createLevelToI
 import createTestEntities from "./src/migrators/createTestEntities.js";
 import uploadTestFiles from "./src/migrators/uploadTestFiles.js";
 import migrateProjectData from "./src/migrators/migrateProjectData.js";
-
+/*
 import {initializeApp, cert} from 'firebase-admin/app';
 import { getStorage } from "firebase-admin/storage";
-import serviceAccount from './service-account.json' assert {type: "json"};
+import serviceAccount from './service-account.json' assert {type: "json"};*/
 //import * as AWS from ""
+Amplify.default.configure(awsconfig);
+await transformexecutedsurveys();
 
-initializeApp({
+/*initializeApp({
   credential: cert(serviceAccount),
   storageBucket: 'aktion-sodis.appspot.com'
 });
 
 const googleCloudBucket = getStorage().bucket();
 
-Amplify.default.configure(awsconfig);
+
 
 
 dotenv.config();
@@ -125,4 +128,4 @@ console.log("Migrating Entities, AppliedInterventions and ExecutedSurveys");
 
 const allProjectData = await migrateProjectData(sqlPool, familyLevel, villageLevel, allSurveys, defaultUser);
 
-console.log("Finished");
+console.log("Finished");*/

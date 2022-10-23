@@ -186,7 +186,8 @@ type AppliedIntervention @model {
 
 type ExecutedSurvey @model {
   appliedIntervention: AppliedIntervention! @belongsTo
-  survey: Survey! @hasOne
+  survey: Survey! @hasOne 
+  surveyID: String @index(name: "bySurveyID", queryField: "executedSurveyBySurveyID")
   whoExecutedIt: User! @hasOne
   date: AWSDateTime!
   location: Location

@@ -1059,6 +1059,7 @@ export const getAppliedIntervention = /* GraphQL */ `
       isOkay
       executedSurveys {
         items {
+          surveyID
           date
           schemeVersion
           id
@@ -1292,6 +1293,7 @@ export const getExecutedSurvey = /* GraphQL */ `
         _lastChangedAt
         interventionSurveysId
       }
+      surveyID
       whoExecutedIt {
         firstName
         lastName
@@ -1380,6 +1382,7 @@ export const listExecutedSurveys = /* GraphQL */ `
           _lastChangedAt
           interventionSurveysId
         }
+        surveyID
         whoExecutedIt {
           firstName
           lastName
@@ -1462,6 +1465,7 @@ export const syncExecutedSurveys = /* GraphQL */ `
           _lastChangedAt
           interventionSurveysId
         }
+        surveyID
         whoExecutedIt {
           firstName
           lastName
@@ -1646,6 +1650,7 @@ export const getTask = /* GraphQL */ `
           _lastChangedAt
           interventionSurveysId
         }
+        surveyID
         whoExecutedIt {
           firstName
           lastName
@@ -1754,6 +1759,7 @@ export const listTasks = /* GraphQL */ `
           appliedInterventionInterventionId
         }
         executedSurvey {
+          surveyID
           date
           schemeVersion
           id
@@ -1845,6 +1851,7 @@ export const syncTasks = /* GraphQL */ `
           appliedInterventionInterventionId
         }
         executedSurvey {
+          surveyID
           date
           schemeVersion
           id
@@ -3049,6 +3056,91 @@ export const syncSurveySurveyTagRelations = /* GraphQL */ `
     }
   }
 `;
+export const executedSurveyBySurveyID = /* GraphQL */ `
+  query ExecutedSurveyBySurveyID(
+    $surveyID: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelExecutedSurveyFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    executedSurveyBySurveyID(
+      surveyID: $surveyID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        appliedIntervention {
+          isOkay
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+        }
+        survey {
+          surveyType
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+        }
+        surveyID
+        whoExecutedIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+        }
+        date
+        location {
+          latitude
+          longitude
+        }
+        answers {
+          id
+          questionID
+          date
+          type
+          text
+          intValue
+          doubleValue
+          rating
+        }
+        schemeVersion
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        appliedInterventionExecutedSurveysId
+        executedSurveySurveyId
+        executedSurveyWhoExecutedItId
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const taskByUserID = /* GraphQL */ `
   query TaskByUserID(
     $userID: String!
@@ -3111,6 +3203,7 @@ export const taskByUserID = /* GraphQL */ `
           appliedInterventionInterventionId
         }
         executedSurvey {
+          surveyID
           date
           schemeVersion
           id

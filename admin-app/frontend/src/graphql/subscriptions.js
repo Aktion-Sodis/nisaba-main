@@ -1207,6 +1207,7 @@ export const onCreateAppliedIntervention = /* GraphQL */ `
       isOkay
       executedSurveys {
         items {
+          surveyID
           date
           schemeVersion
           id
@@ -1295,6 +1296,7 @@ export const onUpdateAppliedIntervention = /* GraphQL */ `
       isOkay
       executedSurveys {
         items {
+          surveyID
           date
           schemeVersion
           id
@@ -1383,6 +1385,7 @@ export const onDeleteAppliedIntervention = /* GraphQL */ `
       isOkay
       executedSurveys {
         items {
+          surveyID
           date
           schemeVersion
           id
@@ -1496,6 +1499,7 @@ export const onCreateExecutedSurvey = /* GraphQL */ `
         _lastChangedAt
         interventionSurveysId
       }
+      surveyID
       whoExecutedIt {
         firstName
         lastName
@@ -1636,6 +1640,7 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `
         _lastChangedAt
         interventionSurveysId
       }
+      surveyID
       whoExecutedIt {
         firstName
         lastName
@@ -1776,6 +1781,7 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `
         _lastChangedAt
         interventionSurveysId
       }
+      surveyID
       whoExecutedIt {
         firstName
         lastName
@@ -1972,6 +1978,7 @@ export const onCreateTask = /* GraphQL */ `
           _lastChangedAt
           interventionSurveysId
         }
+        surveyID
         whoExecutedIt {
           firstName
           lastName
@@ -2167,6 +2174,7 @@ export const onUpdateTask = /* GraphQL */ `
           _lastChangedAt
           interventionSurveysId
         }
+        surveyID
         whoExecutedIt {
           firstName
           lastName
@@ -2362,6 +2370,7 @@ export const onDeleteTask = /* GraphQL */ `
           _lastChangedAt
           interventionSurveysId
         }
+        surveyID
         whoExecutedIt {
           firstName
           lastName
