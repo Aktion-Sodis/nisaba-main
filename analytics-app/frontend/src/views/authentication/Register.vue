@@ -54,12 +54,14 @@
 import { Auth } from "aws-amplify";
 
 const backgroundImage = import.meta.env.VITE_APP_LOGIN_BACKGROUND_IMAGE_SRC;
+const societyMail = import.meta.env.VITE_APP_SOCIETY_MAIL;
 
 export default {
   name: "Register",
   data() {
     return {
       backgroundImage,
+      societyMail,
       email: "",
       password: "",
       passwordCheck: "",
@@ -68,8 +70,14 @@ export default {
   },
   methods: {
     async register() {
+      let regex = new RegExp("[a-z0-9]+@" + this.societyMail);
+      if (!regex.test(this.email)) {
+        alert(this.$t("register.emailCheckMessage") + "\n" + this.societyMail);
+        return;
+      }
       if (this.passwordCheck !== this.password) {
-        alert("The passwords you entered do not match. Please try again!");
+        alert(this.$t("register.passwordCheckMessage"));
+        this.passwordCheck = this.password = "";
         return;
       }
       try {
@@ -77,9 +85,8 @@ export default {
           username: this.email,
           password: this.password,
         });
-        alert(
-          "User successfully registered. Please ask your admin to verify your account"
-        );
+        alert(this.$t("register.registerSuccessMessage"));
+        this.$router.push("Login");
       } catch (error) {
         alert(error.message);
       }
@@ -114,6 +121,7 @@ export default {
 .block.sodis {
   background-color: #2d91be;
   color: white;
+  border-radius: 5px;
 }
 .push-to-end {
   display: flex;
