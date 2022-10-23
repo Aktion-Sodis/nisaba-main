@@ -7,6 +7,10 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
+import { resolve, dirname } from 'node:path'
+import { fileURLToPath } from 'url'
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -17,12 +21,9 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
-    vueI18n({
-      // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
-      // compositionOnly: false,
-
-      // you need to set i18n resource including paths !
-      include: path.resolve(__dirname, './src/i18n')
+    VueI18nPlugin({
+      // locale messages resource pre-compile option
+      include: resolve(dirname(fileURLToPath(import.meta.url)), './src/i18n/**'),
     }),
   ],
   resolve: {
