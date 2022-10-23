@@ -12,41 +12,41 @@ from QueryMethods import aggregate_survey_data
 # DEBUG = True
 
 # instantiate the app
-app = Flask(__name__)
-app.config.from_object(__name__)
-app.config['JSON_AS_ASCII'] = False
+application = Flask(__name__)
+application.config.from_object(__name__)
+application.config['JSON_AS_ASCII'] = False
 
 # enable CORS
-CORS(app, resources={r'/*': {'origins': '*'}})
+CORS(application, resources={r'/*': {'origins': '*'}})
 
 
 # sanity check route
-@app.route('/', methods=['GET'])
+@application.route('/', methods=['GET'])
 def ping_pong():
     return jsonify('Home')
 
-@app.route('/getInterventionTypes', methods=['GET'])
+@application.route('/getInterventionTypes', methods=['GET'])
 def getInterventionTypes():
     interventionTypes = get_intervention_types()
     return jsonify({
         'inteventionTypes': interventionTypes
     })
 
-@app.route('/getInterventions', methods=['GET'])
+@application.route('/getInterventions', methods=['GET'])
 def getInterventions():
     interventions = get_interventions()
     return jsonify({
         'interventions': interventions
     })
 
-@app.route('/getSurveys', methods=['GET'])
+@application.route('/getSurveys', methods=['GET'])
 def getSurveys():
     surveys = get_surveys()
     return jsonify({
         'surveys': surveys
     })
 
-@app.route('/getExecutedSurveysByID', methods=['GET'])
+@application.route('/getExecutedSurveysByID', methods=['GET'])
 def getExecutedSurveysByID():
     survey_id = request.args.get("SurveyID")
     executedSurveys = aggregate_survey_data(survey_id)
@@ -56,5 +56,5 @@ def getExecutedSurveysByID():
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 4000))
-    app.run(debug=True, host='0.0.0.0', port=port)
+    application.debug = True
+    application.run()
