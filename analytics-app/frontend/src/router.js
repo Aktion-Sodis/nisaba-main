@@ -13,7 +13,7 @@ import Register from './views/authentication/Register.vue';
 import Dashboard from './views/dashboards/Dashboard.vue'
 
 import Survey from './views/data/Survey.vue';
-import SurveyOverview from './views/Data/SurveyOverview.vue';
+import SurveyOverview from './views/data/SurveyOverview.vue';
 
 
 let user;
