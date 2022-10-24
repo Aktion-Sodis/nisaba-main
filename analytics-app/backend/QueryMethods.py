@@ -135,11 +135,11 @@ def aggregate_survey_data(surveyID):
 
     survey = get_survey_by_ID(surveyID)
 
-    # unfiltered_executed_surveys = list_executed_surveys()
+    unfiltered_executed_surveys = list_executed_surveys()
 
-    # executed_surveys = filter_executed_surveys_by_ID(surveyID, unfiltered_executed_surveys)
+    executed_surveys = filter_executed_surveys_by_ID(surveyID, unfiltered_executed_surveys)
 
-    executed_surveys = get_executed_surveys_by_surveyID(surveyID)
+    # executed_surveys = get_executed_surveys_by_surveyID(surveyID)
 
     # get avaliable Langauge Keys
     languageKeys = survey["questions"][0]["text"]["languageKeys"]
