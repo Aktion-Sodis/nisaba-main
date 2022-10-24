@@ -42,8 +42,8 @@
           :key="intervention.id"
           @click="setIntervention(intervention)"
         >
-          <!-- {{ intervention["name"]["en-US"] }} -->
-          {{ getLanguageTextFromLanguageKey(intervention["name"]) }}
+          {{ intervention["name"]["en-US"] }}
+          <!-- {{ getLanguageTextFromLanguageKey(intervention["name"]) }} -->
         </div>
       </div>
     </div>
@@ -267,6 +267,7 @@ export default {
 .intervention-wrapper {
   display: flex;
   margin: 10px 0;
+  /* overflow-y: scroll; */
 }
 .filter-description,
 .intervention-description {
