@@ -34,45 +34,45 @@ const SYNC_UI = {
       const { apiLevelInterventionRelations, apiLevels } = await dispatch(
         `${vuexModulesDict.level}/APIgetAll`,
         {},
-        { root: true }
+        { root: true },
       );
       commit(
         `${vuexModulesDict.level}/setRelationLevelIntervention`,
         {
           newValue: apiLevelInterventionRelations,
         },
-        { root: true }
+        { root: true },
       );
       commit(
         `${vuexModulesDict.level}/setLevels`,
         {
           newValue: apiLevels,
         },
-        { root: true }
+        { root: true },
       );
 
       const apiEntities = await dispatch(
         `${vuexModulesDict.entity}/APIgetAll`,
         { apiLevels },
-        { root: true }
+        { root: true },
       );
       commit(`${vuexModulesDict.entity}/setEntities`, { newValue: apiEntities }, { root: true });
 
       dispatch(
         `${vuexModulesDict.entity}/setChosenEntityIdsFromApiLevels`,
         { apiLevelIds: apiLevels.map((l) => l.id) },
-        { root: true }
+        { root: true },
       );
 
       const apiInterventions = await dispatch(
         `${vuexModulesDict.intervention}/APIgetAll`,
         {},
-        { root: true }
+        { root: true },
       );
       commit(
         `${vuexModulesDict.intervention}/setInterventions`,
         { newValue: apiInterventions },
-        { root: true }
+        { root: true },
       );
 
       const apiSurveys = await dispatch(`${vuexModulesDict.survey}/APIgetAll`, {}, { root: true });

@@ -23,7 +23,7 @@ const APIpost = async ({ commit, dispatch, rootGetters }, entityDraft) => {
       try {
         await Storage.put(
           deriveFilePath('entityPicPath', { entityID: postResponse.id }),
-          rootGetters['dataModal/getImageFile']
+          rootGetters['dataModal/getImageFile'],
         );
       } catch {
         success = false;
@@ -39,7 +39,7 @@ const APIpost = async ({ commit, dispatch, rootGetters }, entityDraft) => {
       },
       {
         root: true,
-      }
+      },
     );
   } catch (error) {
     success = false;
@@ -53,7 +53,9 @@ const APIpost = async ({ commit, dispatch, rootGetters }, entityDraft) => {
 // because DataStore was throwing an unrepairable error.
 // Another point where we see that we are regretful for
 // choosing Amplify.
-const APIput = async ({ commit, dispatch, getters, rootGetters }, { newData, originalId }) => {
+const APIput = async ({
+  commit, dispatch, getters, rootGetters,
+}, { newData, originalId }) => {
   commit('setLoading', { newValue: true });
   let success = true;
 
@@ -81,7 +83,7 @@ const APIput = async ({ commit, dispatch, getters, rootGetters }, { newData, ori
       try {
         await Storage.put(
           deriveFilePath('entityPicPath', { entityID: newEntity.id }),
-          rootGetters['dataModal/getImageFile']
+          rootGetters['dataModal/getImageFile'],
         );
       } catch {
         success = false;
@@ -98,7 +100,7 @@ const APIput = async ({ commit, dispatch, getters, rootGetters }, { newData, ori
       },
       {
         root: true,
-      }
+      },
     );
   } catch {
     success = false;
@@ -130,12 +132,13 @@ const APIdelete = async ({ commit, dispatch }, { id, _version }) => {
     {},
     {
       root: true,
-    }
+    },
   );
 
   commit('setLoading', { newValue: false });
   return success;
 };
+// eslint-disable-next-line no-empty-pattern
 const APIgetAll = async ({}, { apiLevels }) => {
   // Apparently there is no way to get all entities in one go
   // so we have to do it in a loop over all levels
@@ -143,10 +146,10 @@ const APIgetAll = async ({}, { apiLevels }) => {
   // choosing Amplify.
   try {
     let res = [];
+    // eslint-disable-next-line no-restricted-syntax
     for (const apiLevel of apiLevels) {
-      const entitiesOApiLevel = await DataStore.query(Entity, (c) =>
-        c.entityLevelId('eq', apiLevel.id)
-      );
+      // eslint-disable-next-line no-await-in-loop
+      const entitiesOApiLevel = await DataStore.query(Entity, (c) => c.entityLevelId('eq', apiLevel.id));
       res = res.concat(entitiesOApiLevel ?? []);
     }
     return res;

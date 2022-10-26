@@ -8,65 +8,49 @@ const getters = {
 
   // sort by id for consistency
   allEntitiesByLevelId:
-    (_, { getEntities }) =>
-    ({ levelId }) =>
-      getEntities.filter((e) => e.entityLevelId === levelId).sort((a, b) => a.id - b.id),
+    (_, { getEntities }) => ({ levelId }) => getEntities.filter((e) => e.entityLevelId === levelId).sort((a, b) => a.id - b.id),
 
   isEntityChosen:
-    (_, { getChosenEntityIds }) =>
-    ({ entityId }) =>
-      getChosenEntityIds.includes(entityId),
+    (_, { getChosenEntityIds }) => ({ entityId }) => getChosenEntityIds.includes(entityId),
 
   chosenEntityByLevelId:
-    (_, { getChosenEntityIds, getEntities }) =>
-    ({ levelId }) =>
-      getEntities.find((e) => e.entityLevelId === levelId && getChosenEntityIds.includes(e.id)),
+    (_, { getChosenEntityIds, getEntities }) => ({ levelId }) => getEntities.find((e) => e.entityLevelId === levelId && getChosenEntityIds.includes(e.id)),
 
   isEntityActive:
-    (_, { getChosenEntityIds }) =>
-    ({ parentEntityId }) =>
-      !!getChosenEntityIds.find((id) => id === parentEntityId) || parentEntityId === null,
+    (_, { getChosenEntityIds }) => ({ parentEntityId }) => !!getChosenEntityIds.find((id) => id === parentEntityId) || parentEntityId === null,
 
   allActiveEntitiesByLevelId:
-    (_, { isEntityActive, allEntitiesByLevelId }) =>
-    ({ levelId }) =>
-      allEntitiesByLevelId({ levelId }).filter((e) =>
-        isEntityActive({ parentEntityId: e.parentEntityID })
-      ),
+    (_, { isEntityActive, allEntitiesByLevelId }) => ({ levelId }) => allEntitiesByLevelId({ levelId }).filter((e) => isEntityActive({ parentEntityId: e.parentEntityID })),
 
   /** @returns { (payload: {entityId: string, entityLevelId: string}) => number } */
   verticalOrderByEntityId:
-    (_, { allEntitiesByLevelId }) =>
-    ({ entityId, entityLevelId }) =>
-      allEntitiesByLevelId({ entityLevelId }).findIndex((e) => e.id === entityId),
+    (_, { allEntitiesByLevelId }) => ({ entityId, entityLevelId }) => allEntitiesByLevelId({ entityLevelId }).findIndex((e) => e.id === entityId),
 
   maxVerticalOrderOfChildren:
-    (_, { allEntitiesByLevelId }, rootState, rootGetters) =>
-    ({ entityId, entityLevelId }) => {
+    (_, { allEntitiesByLevelId }, rootState, rootGetters) => ({ entityId, entityLevelId }) => {
       const allEntitiesInLowerLevel = allEntitiesByLevelId({
         entityLevelId: rootGetters[`${vuexModulesDict.level}/getLevels`].find(
-          (l) => l.parentLevelID === entityLevelId
+          (l) => l.parentLevelID === entityLevelId,
         )?.id,
       });
       const lowerLevelContainsChildren = allEntitiesInLowerLevel.some(
-        (e) => e.parentEntityID === entityId
+        (e) => e.parentEntityID === entityId,
       );
       return lowerLevelContainsChildren
-        ? allEntitiesInLowerLevel.length -
-            allEntitiesInLowerLevel.reverse().findIndex((e) => e.parentEntityID === entityId) -
-            1
+        ? allEntitiesInLowerLevel.length
+            - allEntitiesInLowerLevel.reverse().findIndex((e) => e.parentEntityID === entityId)
+            - 1
         : -1;
     },
   minVerticalOrderOfChildren:
-    (_, { allEntitiesByLevelId }, rootState, rootGetters) =>
-    ({ entityId, entityLevelId }) => {
+    (_, { allEntitiesByLevelId }, rootState, rootGetters) => ({ entityId, entityLevelId }) => {
       const allEntitiesInLowerLevel = allEntitiesByLevelId({
         entityLevelId: rootGetters[`${vuexModulesDict.level}/getLevels`].find(
-          (l) => l.parentLevelID === entityLevelId
+          (l) => l.parentLevelID === entityLevelId,
         )?.id,
       });
       const lowerLevelContainsChildren = allEntitiesInLowerLevel.some(
-        (e) => e.parentEntityID === entityId
+        (e) => e.parentEntityID === entityId,
       );
       return lowerLevelContainsChildren
         ? allEntitiesInLowerLevel.findIndex((e) => e.parentEntityID === entityId)
@@ -74,19 +58,13 @@ const getters = {
     },
 
   hasDescendantsById:
-    (_, { getEntities }) =>
-    ({ id }) =>
-      getEntities.some((e) => e.parentEntityID === id),
+    (_, { getEntities }) => ({ id }) => getEntities.some((e) => e.parentEntityID === id),
 
   hasParentByUpperEntityId:
-    (_, { getEntities }) =>
-    ({ parentEntityID }) =>
-      parentEntityID && getEntities.some((e) => e.id === parentEntityID),
+    (_, { getEntities }) => ({ parentEntityID }) => parentEntityID && getEntities.some((e) => e.id === parentEntityID),
 
   ENTITYById:
-    (_, { getEntities }) =>
-    ({ id }) =>
-      getEntities.find((i) => i.id === id),
+    (_, { getEntities }) => ({ id }) => getEntities.find((i) => i.id === id),
 };
 
 export default getters;
