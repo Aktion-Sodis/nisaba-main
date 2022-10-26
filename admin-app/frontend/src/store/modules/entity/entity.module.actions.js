@@ -1,7 +1,7 @@
 import { DataStore } from '@aws-amplify/datastore';
 import { API } from 'aws-amplify';
 import { dataTypesDict, modalModesDict, vuexModulesDict } from '../../../lib/constants';
-import { deleteEntity } from '../../../graphql/mutations';
+import { deleteEntity, updateEntity } from '../../../graphql/mutations';
 import { AppliedCustomData, Entity, I18nString } from '../../../models';
 import { deriveFilePath } from '../../../lib/utils';
 
@@ -49,26 +49,38 @@ const APIpost = async ({ commit, dispatch, rootGetters }, entityDraft) => {
   commit('setLoading', { newValue: false });
   return success;
 };
+// We had to rewrite this by using graphql instead of DataStore,
+// because DataStore was throwing an unrepairable error.
+// Another point where we see that we are regretful for
+// choosing Amplify.
 const APIput = async ({ commit, dispatch, getters, rootGetters }, { newData, originalId }) => {
   commit('setLoading', { newValue: true });
   let success = true;
 
-  const original = getters.ENTITYById({ id: originalId });
-
   try {
-    const putResponse = await DataStore.save(
-      Entity.copyOf(original, (updated) => {
-        updated.name = newData.name;
-        updated.description = newData.description;
-        updated.parentEntityID = newData.parentEntityID;
-        updated.customData = newData.customData.map((cd) => new AppliedCustomData(cd));
-      })
-    );
+    const original = getters.ENTITYById({ id: originalId });
+    if (!original) throw new Error('Original entity not found');
+    const putResponse = await API.graphql({
+      query: updateEntity,
+      variables: {
+        input: {
+          id: originalId,
+          name: newData.name,
+          description: newData.description,
+          parentEntityID: newData.parentEntityID,
+          entityLevelId: newData.entityLevelId,
+          customData: newData.customData.map((cd) => new AppliedCustomData(cd)),
+          _version: original._version,
+        },
+      },
+    });
+
+    const newEntity = putResponse.data.updateEntity;
 
     if (rootGetters['dataModal/getImageFile'] instanceof File) {
       try {
         await Storage.put(
-          deriveFilePath('entityPicPath', { entityID: putResponse.id }),
+          deriveFilePath('entityPicPath', { entityID: newEntity.id }),
           rootGetters['dataModal/getImageFile']
         );
       } catch {
@@ -76,12 +88,12 @@ const APIput = async ({ commit, dispatch, getters, rootGetters }, { newData, ori
       }
     }
 
-    commit('replaceEntity', putResponse);
+    commit('replaceEntity', newEntity);
 
     dispatch(
       `${vuexModulesDict.dataModal}/readData`,
       {
-        dataId: putResponse.id,
+        dataId: newEntity.id,
         dataType: dataTypesDict.entity,
       },
       {
