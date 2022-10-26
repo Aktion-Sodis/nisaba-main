@@ -22,7 +22,8 @@
       "unsavedChanges": "Kaydedilmemiş değişiklikler var. Çıkmak istediğinizden emin misiniz?",
       "addInNewLocale": "Başka bir dilde",
       "invalidForm": "Geçersiz form. Lütfen girdilerin uyarılarına dikkat ediniz.",
-      "invalidNumber": "Geçersiz sayı."
+      "invalidNumber": "Geçersiz sayı.",
+      "cannotDeleteEntityWithChildren": "Bu öğeyi silemezsiniz. Lütfen önce alt öğeleri siliniz."
     },
     "noTextProvided": "Buraya bir metin girilmemiş.",
     "noNumberProvided": "Buraya bir sayı girilmemiş.",

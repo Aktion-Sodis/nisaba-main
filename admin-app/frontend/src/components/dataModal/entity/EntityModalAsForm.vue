@@ -153,7 +153,7 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-btn x-large v-if="edit" @click="deleteData" color="warning" text>
+      <v-btn x-large v-if="edit" @click="deleteHandler" color="warning" text>
         {{ $t('general.delete') }}
         <v-icon large> mdi-delete </v-icon>
       </v-btn>
@@ -178,7 +178,7 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { emptyMutableI18nString, mutableI18nString } from '../../../lib/classes';
-import { modalModesDict } from '../../../lib/constants';
+import { modalModesDict, vuexModulesDict } from '../../../lib/constants';
 import { deriveFilePath } from '../../../lib/utils';
 import { Entity, Type } from '../../../models';
 
@@ -227,6 +227,7 @@ export default {
       calculateLocalizedString: 'calculateLocalizedString',
       calculateUILocaleString: 'calculateUILocaleString',
       getCreatingEntityInLevelId: 'getCreatingEntityInLevelId',
+      getHasChildren: 'ENTITY_Data/hasParentByUpperEntityId',
     }),
     entityInFocus() {
       return this.ENTITYById({ id: this.dataIdInFocus });
@@ -282,6 +283,17 @@ export default {
     ...mapMutations({
       setDraft: 'dataModal/setDraft',
     }),
+    deleteHandler() {
+      const hasChildren = this.getHasChildren({ parentEntityID: this.dataIdInFocus });
+      if (hasChildren) {
+        this.$store.dispatch(`${vuexModulesDict.feedback}/showFeedbackForDuration`, {
+          type: 'error',
+          text: this.$t('general.form.cannotDeleteEntityWithChildren'),
+        });
+        return;
+      }
+      this.deleteData({ id: this.dataIdInFocus });
+    },
     closeHandler() {
       if (this.edit) this.abortEditData();
       else this.abortCreateData();

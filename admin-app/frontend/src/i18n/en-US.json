@@ -22,7 +22,8 @@
       "unsavedChanges": "There are unsaved changes. Are you sure you want to leave?",
       "addInNewLocale": "In another language",
       "invalidForm": "The form is invalid. Please pay attention to warnings of inputs.",
-      "invalidNumber": "This is an invalid number."
+      "invalidNumber": "This is an invalid number.",
+      "cannotDeleteEntityWithChildren": "This entity has children and cannot be deleted."
     },
     "noTextProvided": "No text was provided.",
     "noNumberProvided": "No number was provided.",
