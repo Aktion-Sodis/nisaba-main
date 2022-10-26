@@ -88,8 +88,7 @@ const APIput = async ({ commit, dispatch, getters, rootGetters }, { newData, ori
         root: true,
       }
     );
-  } catch (error) {
-    console.log('hey', error);
+  } catch {
     success = false;
   }
 
@@ -138,7 +137,6 @@ const APIgetAll = async ({}, { apiLevels }) => {
       );
       res = res.concat(entitiesOApiLevel ?? []);
     }
-    console.log({ res });
     return res;
   } catch (error) {
     console.log({ error });
