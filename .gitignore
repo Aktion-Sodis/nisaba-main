@@ -299,3 +299,4 @@ analytics-app/.DS_Store
 .DS_Store
 .DS_Store
 analytics-app/backend/.DS_Store
+analytics-app/backend/.ebextensions/01_flask.config
