@@ -104,7 +104,8 @@ import SurveyFilterModalVue from "../../components/commons/SurveyFilterModal.vue
 var collapsed = ref(true);
 var collapseInfo = ref(true);
 
-const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
+const backendURL = process.env.VITE_APP_BACKEND_URL;
+// const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
 
 export default {
   components: {

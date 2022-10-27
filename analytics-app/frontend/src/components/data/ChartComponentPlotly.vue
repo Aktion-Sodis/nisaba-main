@@ -8,7 +8,8 @@
 import axios from "axios";
 import Plotly from "plotly.js-dist";
 
-const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
+// const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
+const backendURL = process.env.VITE_APP_BACKEND_URL;
 
 export default {
   setup() {

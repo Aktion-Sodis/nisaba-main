@@ -71,7 +71,8 @@ import "element-plus/theme-chalk/display.css";
 
 import SurveyCard from "../../components/commons/SurveyCard.vue";
 
-const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
+const backendURL = process.env.VITE_APP_BACKEND_URL;
+// const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
 
 export default {
   components: { SurveyCard },
@@ -93,8 +94,10 @@ export default {
         console.log(languageText[languageKey]);
         return languageText[languageKey];
       }
-      const defaultLocale = import.meta.env.VITE_APP_I18N_LOCALE;
-      const fallbackLocale = import.meta.env.VITE_APP_I18N_FALLBACK_LOCALE;
+      const defaultLocale = process.env.VITE_APP_I18N_LOCALE;
+      const fallbackLocale = process.env.VITE_APP_I18N_FALLBACK_LOCALE;
+      // const defaultLocale = import.meta.env.VITE_APP_I18N_LOCALE;
+      // const fallbackLocale = import.meta.env.VITE_APP_I18N_FALLBACK_LOCALE;
       console.log(defaultLocale, fallbackLocale);
       return languageText;
     },
