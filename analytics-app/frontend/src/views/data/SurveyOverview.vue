@@ -90,17 +90,17 @@ export default {
   },
   methods: {
     getLanguageTextFromLanguageKey(languageText) {
-      console.log(languageText);
+      // console.log(languageText);
       const languageKey = localStorage.getItem("lang");
       if (languageKey in languageText) {
-        console.log(languageText[languageKey]);
+        // console.log(languageText[languageKey]);
         return languageText[languageKey];
       }
       // const defaultLocale = process.env.VITE_APP_I18N_LOCALE;
       // const fallbackLocale = process.env.VITE_APP_I18N_FALLBACK_LOCALE;
       const defaultLocale = import.meta.env.VITE_APP_I18N_LOCALE;
       const fallbackLocale = import.meta.env.VITE_APP_I18N_FALLBACK_LOCALE;
-      console.log(defaultLocale, fallbackLocale);
+      // console.log(defaultLocale, fallbackLocale);
       return languageText;
     },
     ...mapGetters(
