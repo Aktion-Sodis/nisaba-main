@@ -15,6 +15,8 @@
 <script>
 import Navbar from "./components/navbar/Navbar.vue";
 
+console.log(import.meta.env);
+
 export default {
   components: { Navbar },
 };

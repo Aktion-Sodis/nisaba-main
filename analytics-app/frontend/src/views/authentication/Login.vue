@@ -91,8 +91,7 @@ import "element-plus/theme-chalk/display.css";
 
 import LanguageSelector from "../../components/commons/LanguageSelector.vue";
 
-const backgroundImage = process.env.VITE_APP_LOGIN_BACKGROUND_IMAGE_SRC;
-// const backgroundImage = import.meta.env.VITE_APP_LOGIN_BACKGROUND_IMAGE_SRC;
+const backgroundImage = import.meta.env.VITE_APP_LOGIN_BACKGROUND_IMAGE_SRC;
 
 import { Auth } from "aws-amplify";
 export default {

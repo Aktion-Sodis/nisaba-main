@@ -59,10 +59,8 @@ import { Auth } from "aws-amplify";
 
 import LanguageSelector from "../../components/commons/LanguageSelector.vue";
 
-const backgroundImage = process.env.VITE_APP_LOGIN_BACKGROUND_IMAGE_SRC;
-const societyMail = process.env.VITE_APP_SOCIETY_MAIL;
-// const backgroundImage = import.meta.env.VITE_APP_LOGIN_BACKGROUND_IMAGE_SRC;
-// const societyMail = import.meta.env.VITE_APP_SOCIETY_MAIL;
+const backgroundImage = import.meta.env.VITE_APP_LOGIN_BACKGROUND_IMAGE_SRC;
+const societyMail = import.meta.env.VITE_APP_SOCIETY_MAIL;
 
 export default {
   name: "Register",

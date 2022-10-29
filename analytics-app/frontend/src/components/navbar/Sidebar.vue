@@ -26,10 +26,8 @@ import NavbarDropdown from "./NavbarDropdown.vue";
 const dashboardsCollapsed = ref(true);
 const dataCollapsed = ref(true);
 
-const societyName = process.env.VITE_APP_SOCIETY_VERBOSE_NAME;
-const societyLogoSmall = process.env.VITE_APP_LOGO_SMALL_SRC;
-// const societyName = import.meta.env.VITE_APP_SOCIETY_VERBOSE_NAME;
-// const societyLogoSmall = import.meta.env.VITE_APP_LOGO_SMALL_SRC;
+const societyName = import.meta.env.VITE_APP_SOCIETY_VERBOSE_NAME;
+const societyLogoSmall = import.meta.env.VITE_APP_LOGO_SMALL_SRC;
 
 export default {
   components: { NavbarItem, NavbarDropdown },
