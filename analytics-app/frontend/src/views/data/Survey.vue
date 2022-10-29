@@ -141,6 +141,7 @@ export default {
     },
     getSurveyData() {
       this.surveyID = this.selectedSurveyID;
+      console.log(this.surveyID);
       // this.surveyID = "6b3175ea-e2b8-44a9-9836-99e71c2001ac";
       const path =
         this.backendURL + "/getExecutedSurveysByID?SurveyID=" + this.surveyID;
