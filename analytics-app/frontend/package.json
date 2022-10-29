@@ -3,9 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "build1": "vite build",
+    "build": "vite build",
     "dev": "vite",
     "preview": "vite preview",
     "devWithNetwork": "vite --host"
