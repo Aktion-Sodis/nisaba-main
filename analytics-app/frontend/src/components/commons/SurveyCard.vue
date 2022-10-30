@@ -3,8 +3,7 @@
     <el-image class="image" :src="src" />
     <div class="survey-description-wrap">
       <div class="survey-title">
-        {{ survey["name"]["en-US"] }}
-        {{ "Test" }}
+        {{ getLanguageTextFromLanguageKey(survey["name"]) }}
       </div>
       <div class="survey-date">{{ survey["createdAt"] }}</div>
     </div>
@@ -15,6 +14,46 @@
 export default {
   name: "SurveyCard",
   props: ["survey"],
+  watch: {
+    "$i18n.locale": function (newVal, oldVal) {
+      this.$forceUpdate();
+    },
+  },
+  methods: {
+    getLanguageTextFromLanguageKey(languageText) {
+      // check selected Locale
+      const languageKey = localStorage.getItem("lang");
+      if (
+        languageText[languageKey] !== undefined &&
+        languageText[languageKey] !== ""
+      ) {
+        return languageText[languageKey];
+      }
+      // Check default Locale
+      const defaultLocale = import.meta.env.VITE_APP_I18N_LOCALE;
+      if (
+        languageText[defaultLocale] !== undefined &&
+        languageText[defaultLocale] !== ""
+      ) {
+        return languageText[defaultLocale];
+      }
+      // Check fallback Locale
+      const fallbackLocale = import.meta.env.VITE_APP_I18N_FALLBACK_LOCALE;
+      if (
+        languageText[fallbackLocale] !== undefined &&
+        languageText[fallbackLocale] !== ""
+      ) {
+        return languageText[fallbackLocale];
+      }
+
+      // Use first Locale thats in the Data
+      for (const [key, value] of Object.entries(languageText)) {
+        if (value != "") {
+          return value;
+        }
+      }
+    },
+  },
   data() {
     return {
       src: "https://sanito.org/wp-content/uploads/2017/12/Öko-Küchen-2-768x1024.jpg",

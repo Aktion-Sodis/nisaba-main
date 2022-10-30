@@ -52,7 +52,8 @@
         >
           <div class="index-wrapper">{{ index + 1 }}</div>
           <div class="question-wrapper" :class="{ collapsed: collapsed }">
-            {{ question.question_name["en-US"] }}
+            <!-- {{ question.question_name["en-US"] }} -->
+            {{ getLanguageTextFromLanguageKey(question.question_name) }}
           </div>
         </div>
       </div>
@@ -60,7 +61,8 @@
     <div class="content-header-wrapper">
       <div class="content-header">
         <div v-if="selectedQuestion !== null">
-          {{ selectedQuestion.question_name["en-US"] }}
+          <!-- {{ selectedQuestion.question_name["en-US"] }} -->
+          {{ getLanguageTextFromLanguageKey(selectedQuestion.question_name) }}
         </div>
       </div>
     </div>
@@ -105,9 +107,9 @@ var collapsed = ref(true);
 var collapseInfo = ref(true);
 
 // const backendURL = process.env.VITE_APP_BACKEND_URL;
-// const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
-const backendURL =
-  "http://analytics-app-demo-backend-env.eba-j42cqsa2.eu-central-1.elasticbeanstalk.com";
+const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
+// const backendURL =
+//   "http://analytics-app-demo-backend-env.eba-j42cqsa2.eu-central-1.elasticbeanstalk.com";
 
 export default {
   components: {
@@ -127,7 +129,45 @@ export default {
       selectedSurveyID: (state) => state.survey.selectedSurveyID,
     }),
   },
+  watch: {
+    "$i18n.locale": function (newVal, oldVal) {
+      this.$forceUpdate();
+    },
+  },
   methods: {
+    getLanguageTextFromLanguageKey(languageText) {
+      // check selected Locale
+      const languageKey = localStorage.getItem("lang");
+      if (
+        languageText[languageKey] !== undefined &&
+        languageText[languageKey] !== ""
+      ) {
+        return languageText[languageKey];
+      }
+      // Check default Locale
+      const defaultLocale = import.meta.env.VITE_APP_I18N_LOCALE;
+      if (
+        languageText[defaultLocale] !== undefined &&
+        languageText[defaultLocale] !== ""
+      ) {
+        return languageText[defaultLocale];
+      }
+      // Check fallback Locale
+      const fallbackLocale = import.meta.env.VITE_APP_I18N_FALLBACK_LOCALE;
+      if (
+        languageText[fallbackLocale] !== undefined &&
+        languageText[fallbackLocale] !== ""
+      ) {
+        return languageText[fallbackLocale];
+      }
+
+      // Use first Locale thats in the Data
+      for (const [key, value] of Object.entries(languageText)) {
+        if (value != "") {
+          return value;
+        }
+      }
+    },
     initIDs() {
       this.selected_IDs = this.selectedQuestion.answer_IDs;
       return this.selected_IDs;
