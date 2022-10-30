@@ -105,9 +105,9 @@ var collapsed = ref(true);
 var collapseInfo = ref(true);
 
 // const backendURL = process.env.VITE_APP_BACKEND_URL;
-// const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
-const backendURL =
-  "http://analytics-app-demo-backend-env.eba-j42cqsa2.eu-central-1.elasticbeanstalk.com";
+const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
+// const backendURL =
+//   "http://analytics-app-demo-backend-env.eba-j42cqsa2.eu-central-1.elasticbeanstalk.com";
 
 export default {
   components: {
