@@ -81,7 +81,7 @@
 
     <div
       class="image-wrapper"
-      :style="{ 'background-image': `url(${backgroundImage})` }"
+      :style="{ 'background-image': `url(${this.backgroundImage})` }"
     ></div>
   </div>
 </template>
@@ -103,8 +103,6 @@ export default {
     async login() {
       try {
         const user = await Auth.signIn(this.email, this.password);
-        // console.log("user", user);
-        // alert("Successfully logged in");
       } catch (error) {
         alert(error.message);
       }
