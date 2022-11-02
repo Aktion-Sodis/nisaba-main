@@ -42,7 +42,6 @@
           :key="intervention.id"
           @click="setIntervention(intervention)"
         >
-          <!-- {{ intervention["name"]["en-US"] }} -->
           {{ getLanguageTextFromLanguageKey(intervention["name"]) }}
         </div>
       </div>
@@ -71,7 +70,10 @@ import "element-plus/theme-chalk/display.css";
 
 import SurveyCard from "../../components/commons/SurveyCard.vue";
 
+// const backendURL = process.env.VITE_APP_BACKEND_URL;
 const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
+// const backendURL =
+//   "http://analytics-app-demo-backend-env.eba-j42cqsa2.eu-central-1.elasticbeanstalk.com";
 
 export default {
   components: { SurveyCard },
@@ -85,18 +87,44 @@ export default {
       selectedSurveyID: (state) => state.survey.selectedSurveyID,
     }),
   },
+  watch: {
+    "$i18n.locale": function (newVal, oldVal) {
+      this.$forceUpdate();
+    },
+  },
   methods: {
     getLanguageTextFromLanguageKey(languageText) {
-      console.log(languageText);
+      // check selected Locale
       const languageKey = localStorage.getItem("lang");
-      if (languageKey in languageText) {
-        console.log(languageText[languageKey]);
+      if (
+        languageText[languageKey] !== undefined &&
+        languageText[languageKey] !== ""
+      ) {
         return languageText[languageKey];
       }
+      // Check default Locale
       const defaultLocale = import.meta.env.VITE_APP_I18N_LOCALE;
+      if (
+        languageText[defaultLocale] !== undefined &&
+        languageText[defaultLocale] !== ""
+      ) {
+        return languageText[defaultLocale];
+      }
+      // Check fallback Locale
       const fallbackLocale = import.meta.env.VITE_APP_I18N_FALLBACK_LOCALE;
-      console.log(defaultLocale, fallbackLocale);
-      return languageText;
+      if (
+        languageText[fallbackLocale] !== undefined &&
+        languageText[fallbackLocale] !== ""
+      ) {
+        return languageText[fallbackLocale];
+      }
+
+      // Use first Locale thats in the Data
+      for (const [key, value] of Object.entries(languageText)) {
+        if (value != "") {
+          return value;
+        }
+      }
     },
     ...mapGetters(
       //
@@ -267,6 +295,7 @@ export default {
 .intervention-wrapper {
   display: flex;
   margin: 10px 0;
+  /* overflow-y: scroll; */
 }
 .filter-description,
 .intervention-description {

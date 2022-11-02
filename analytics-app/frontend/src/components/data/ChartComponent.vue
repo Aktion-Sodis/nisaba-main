@@ -51,16 +51,57 @@ export default {
       this.filteredAnswers = this.filterDataByIDs(this.selectedIDs);
       this.aggregatedData = this.aggragateData(this.filteredAnswers);
       this.updateDataPoints(this.aggregatedData);
-      this.updateLabels(this.question["answer_options"]["en-US"]);
+      // const label = this.question["answer_options"]["en-US"];
+      const label = this.getLanguageTextFromLanguageKey(
+        this.question["answer_options"]
+      );
+      this.updateLabels(label);
     },
     selectedIDs: function (newVal, oldVal) {
       this.filteredAnswers = this.filterDataByIDs(newVal);
       this.aggregatedData = this.aggragateData(this.filteredAnswers);
       this.updateDataPoints(this.aggregatedData);
-      this.updateLabels(this.question["answer_options"]["en-US"]);
+      // const label = this.question["answer_options"]["en-US"];
+      const label = this.getLanguageTextFromLanguageKey(
+        this.question["answer_options"]
+      );
+      this.updateLabels(label);
     },
   },
   methods: {
+    getLanguageTextFromLanguageKey(languageText) {
+      // check selected Locale
+      const languageKey = localStorage.getItem("lang");
+      if (
+        languageText[languageKey] !== undefined &&
+        languageText[languageKey] !== ""
+      ) {
+        return languageText[languageKey];
+      }
+      // Check default Locale
+      const defaultLocale = import.meta.env.VITE_APP_I18N_LOCALE;
+      if (
+        languageText[defaultLocale] !== undefined &&
+        languageText[defaultLocale] !== ""
+      ) {
+        return languageText[defaultLocale];
+      }
+      // Check fallback Locale
+      const fallbackLocale = import.meta.env.VITE_APP_I18N_FALLBACK_LOCALE;
+      if (
+        languageText[fallbackLocale] !== undefined &&
+        languageText[fallbackLocale] !== ""
+      ) {
+        return languageText[fallbackLocale];
+      }
+
+      // Use first Locale thats in the Data
+      for (const [key, value] of Object.entries(languageText)) {
+        if (value != "") {
+          return value;
+        }
+      }
+    },
     changeChartType(chartType) {
       this.selectedChartType = chartType;
     },
@@ -106,7 +147,11 @@ export default {
       this.filteredAnswers = this.filterDataByIDs(selected_IDs);
       this.aggregatedData = this.aggragateData(this.filteredAnswers);
       this.updateDataPoints(this.aggregatedData);
-      this.updateLabels(this.question["answer_options"]["en-US"]);
+      // const label = this.question["answer_options"]["en-US"];
+      const label = this.getLanguageTextFromLanguageKey(
+        this.question["answer_options"]
+      );
+      this.updateLabels(label);
     },
   },
   data: function () {
@@ -118,7 +163,10 @@ export default {
           id: "vuechart-example",
         },
         xaxis: {
-          categories: this.question["answer_options"]["en-US"],
+          categories: this.getLanguageTextFromLanguageKey(
+            this.question["answer_options"]
+          ),
+          // categories: this.question["answer_options"]["en-US"],
         },
       },
       series: [
