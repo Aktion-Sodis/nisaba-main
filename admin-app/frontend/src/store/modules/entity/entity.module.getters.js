@@ -2,7 +2,7 @@ import { vuexModulesDict } from '../../../lib/constants';
 
 /** @type {import("vuex").GetterTree<import("./entity.module").EntityState>} */
 const getters = {
-  getEntities: ({ entities }) => entities.filter((e) => !e._deleted),
+  getEntities: ({ entities }) => entities.filter((e) => !e?._deleted),
   getLoading: ({ loading }) => loading,
   getChosenEntityIds: ({ chosenEntityIds }) => chosenEntityIds,
 

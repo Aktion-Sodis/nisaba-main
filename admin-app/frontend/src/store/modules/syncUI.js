@@ -51,7 +51,11 @@ const SYNC_UI = {
         { root: true },
       );
 
-      const apiEntities = await dispatch(`${vuexModulesDict.entity}/APIgetAll`, {}, { root: true });
+      const apiEntities = await dispatch(
+        `${vuexModulesDict.entity}/APIgetAll`,
+        { apiLevels },
+        { root: true },
+      );
       commit(`${vuexModulesDict.entity}/setEntities`, { newValue: apiEntities }, { root: true });
 
       dispatch(
