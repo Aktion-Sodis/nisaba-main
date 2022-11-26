@@ -1,3 +1,4 @@
+import { DataStore, Hub } from 'aws-amplify';
 import { syncStatusDict, vuexModulesDict } from '../../lib/constants';
 import { waitForMilliseconds } from '../../lib/utils';
 
@@ -6,10 +7,12 @@ const SYNC_UI = {
   state: () => ({
     status: syncStatusDict.synched,
     isStatusLocked: false,
+    isDataStoreReady: false,
   }),
   getters: {
     getStatus: ({ status }) => status,
     syncActionIcon: (_, { getState }) => getState,
+    getIsDataStoreReady: ({ isDataStoreReady }) => isDataStoreReady,
   },
   mutations: {
     setStatus: (state, { newStatus }) => {
@@ -18,10 +21,26 @@ const SYNC_UI = {
     setIsStatusLocked: (state, { newValue }) => {
       state.isStatusLocked = newValue;
     },
+    setIsDataStoreReady: (state, { newValue }) => {
+      state.isDataStoreReady = newValue;
+    },
   },
   actions: {
-    refreshHandler: async ({ commit, dispatch }) => {
+    refreshHandler: async ({ commit, dispatch, getters }) => {
       commit('setStatus', { newStatus: syncStatusDict.synchronizing });
+      await DataStore.start();
+      if (!getters.getIsDataStoreReady) {
+        Hub.listen('datastore', async ({ payload: { event } }) => {
+          if (event === 'ready') {
+            await dispatch('syncRoutine');
+            commit('setIsDataStoreReady', { newValue: true });
+          }
+        });
+      } else {
+        await dispatch('syncRoutine');
+      }
+    },
+    async syncRoutine({ commit, dispatch }) {
       await dispatch('syncAll');
       commit('setStatus', { newStatus: syncStatusDict.synched });
       commit('setIsStatusLocked', { newValue: true });

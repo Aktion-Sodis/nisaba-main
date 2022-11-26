@@ -58,7 +58,9 @@ export default {
       const chosenEntityIdFromUpperLevel = this.chosenEntityByLevelId({
         levelId: this.parentLevelId,
       });
-      console.log('chosenEntityIdFromUpperLevel', chosenEntityIdFromUpperLevel);
+      if (!chosenEntityIdFromUpperLevel) {
+        return '';
+      }
       return this.calculateUILocaleString({
         languageTexts: chosenEntityIdFromUpperLevel.name.languageTexts,
       });
