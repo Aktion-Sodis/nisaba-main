@@ -1,0 +1,223 @@
+PODS:
+  - advance_pdf_viewer_fork (1.1.7):
+    - Flutter
+  - Amplify (1.23.0):
+    - Amplify/Default (= 1.23.0)
+  - Amplify/Default (1.23.0)
+  - amplify_api (0.0.1):
+    - Amplify (= 1.23.0)
+    - amplify_core
+    - AmplifyPlugins/AWSAPIPlugin (= 1.23.0)
+    - Flutter
+    - SwiftFormat/CLI
+    - SwiftLint
+  - amplify_auth_cognito_ios (0.0.1):
+    - Amplify (= 1.23.0)
+    - amplify_core
+    - AmplifyPlugins/AWSCognitoAuthPlugin (= 1.23.0)
+    - Flutter
+    - ObjectMapper
+  - amplify_core (0.0.1):
+    - Flutter
+    - SwiftFormat/CLI
+    - SwiftLint
+  - amplify_datastore (0.0.1):
+    - Amplify (= 1.23.0)
+    - amplify_core
+    - AmplifyPlugins/AWSDataStorePlugin (= 1.23.0)
+    - Flutter
+  - amplify_flutter (0.0.1):
+    - Amplify (= 1.23.0)
+    - amplify_core
+    - AmplifyPlugins/AWSCognitoAuthPlugin (= 1.23.0)
+    - AWSPluginsCore (= 1.23.0)
+    - Flutter
+    - SwiftFormat/CLI
+    - SwiftLint
+  - amplify_storage_s3_ios (0.0.1):
+    - Amplify (= 1.23.0)
+    - amplify_core
+    - AmplifyPlugins/AWSS3StoragePlugin (= 1.23.0)
+    - Flutter
+  - AmplifyPlugins/AWSAPIPlugin (1.23.0):
+    - AppSyncRealTimeClient (~> 1.8)
+    - AWSCore (~> 2.27.0)
+    - AWSPluginsCore (= 1.23.0)
+  - AmplifyPlugins/AWSCognitoAuthPlugin (1.23.0):
+    - AWSAuthCore (~> 2.27.0)
+    - AWSCognitoIdentityProvider (~> 2.27.0)
+    - AWSCognitoIdentityProviderASF (~> 2.27.0)
+    - AWSCore (~> 2.27.0)
+    - AWSMobileClient (~> 2.27.0)
+    - AWSPluginsCore (= 1.23.0)
+  - AmplifyPlugins/AWSDataStorePlugin (1.23.0):
+    - AWSCore (~> 2.27.0)
+    - AWSPluginsCore (= 1.23.0)
+    - SQLite.swift (= 0.13.2)
+  - AmplifyPlugins/AWSS3StoragePlugin (1.23.0):
+    - AWSCore (~> 2.27.0)
+    - AWSPluginsCore (= 1.23.0)
+    - AWSS3 (~> 2.27.0)
+  - AppSyncRealTimeClient (1.9.1):
+    - Starscream (~> 4.0.4)
+  - AWSAuthCore (2.27.9):
+    - AWSCore (= 2.27.9)
+  - AWSCognitoIdentityProvider (2.27.9):
+    - AWSCognitoIdentityProviderASF (= 2.27.9)
+    - AWSCore (= 2.27.9)
+  - AWSCognitoIdentityProviderASF (2.27.9):
+    - AWSCore (= 2.27.9)
+  - AWSCore (2.27.9)
+  - AWSMobileClient (2.27.9):
+    - AWSAuthCore (= 2.27.9)
+    - AWSCognitoIdentityProvider (= 2.27.9)
+    - AWSCognitoIdentityProviderASF (= 2.27.9)
+    - AWSCore (= 2.27.9)
+  - AWSPluginsCore (1.23.0):
+    - Amplify (= 1.23.0)
+    - AWSCore (~> 2.27.0)
+  - AWSS3 (2.27.9):
+    - AWSCore (= 2.27.9)
+  - connectivity_plus (0.0.1):
+    - Flutter
+    - ReachabilitySwift
+  - Flutter (1.0.0)
+  - flutter_sound (8.5.0):
+    - Flutter
+    - flutter_sound_core (= 8.5.0)
+    - mobile-ffmpeg-audio (= 4.4.LTS)
+  - flutter_sound_core (8.5.0)
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - geolocator_apple (1.2.0):
+    - Flutter
+  - image_picker_ios (0.0.1):
+    - Flutter
+  - mobile-ffmpeg-audio (4.4.LTS)
+  - ObjectMapper (4.2.0)
+  - path_provider_ios (0.0.1):
+    - Flutter
+  - permission_handler_apple (9.0.4):
+    - Flutter
+  - ReachabilitySwift (5.0.0)
+  - sqflite (0.0.2):
+    - Flutter
+    - FMDB (>= 2.7.5)
+  - SQLite.swift (0.13.2):
+    - SQLite.swift/standard (= 0.13.2)
+  - SQLite.swift/standard (0.13.2)
+  - Starscream (4.0.4)
+  - SwiftFormat/CLI (0.49.8)
+  - SwiftLint (0.47.1)
+
+DEPENDENCIES:
+  - advance_pdf_viewer_fork (from `.symlinks/plugins/advance_pdf_viewer_fork/ios`)
+  - amplify_api (from `.symlinks/plugins/amplify_api/ios`)
+  - amplify_auth_cognito_ios (from `.symlinks/plugins/amplify_auth_cognito_ios/ios`)
+  - amplify_core (from `.symlinks/plugins/amplify_core/ios`)
+  - amplify_datastore (from `.symlinks/plugins/amplify_datastore/ios`)
+  - amplify_flutter (from `.symlinks/plugins/amplify_flutter/ios`)
+  - amplify_storage_s3_ios (from `.symlinks/plugins/amplify_storage_s3_ios/ios`)
+  - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
+  - Flutter (from `Flutter`)
+  - flutter_sound (from `.symlinks/plugins/flutter_sound/ios`)
+  - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
+  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
+  - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Amplify
+    - AmplifyPlugins
+    - AppSyncRealTimeClient
+    - AWSAuthCore
+    - AWSCognitoIdentityProvider
+    - AWSCognitoIdentityProviderASF
+    - AWSCore
+    - AWSMobileClient
+    - AWSPluginsCore
+    - AWSS3
+    - flutter_sound_core
+    - FMDB
+    - mobile-ffmpeg-audio
+    - ObjectMapper
+    - ReachabilitySwift
+    - SQLite.swift
+    - Starscream
+    - SwiftFormat
+    - SwiftLint
+
+EXTERNAL SOURCES:
+  advance_pdf_viewer_fork:
+    :path: ".symlinks/plugins/advance_pdf_viewer_fork/ios"
+  amplify_api:
+    :path: ".symlinks/plugins/amplify_api/ios"
+  amplify_auth_cognito_ios:
+    :path: ".symlinks/plugins/amplify_auth_cognito_ios/ios"
+  amplify_core:
+    :path: ".symlinks/plugins/amplify_core/ios"
+  amplify_datastore:
+    :path: ".symlinks/plugins/amplify_datastore/ios"
+  amplify_flutter:
+    :path: ".symlinks/plugins/amplify_flutter/ios"
+  amplify_storage_s3_ios:
+    :path: ".symlinks/plugins/amplify_storage_s3_ios/ios"
+  connectivity_plus:
+    :path: ".symlinks/plugins/connectivity_plus/ios"
+  Flutter:
+    :path: Flutter
+  flutter_sound:
+    :path: ".symlinks/plugins/flutter_sound/ios"
+  geolocator_apple:
+    :path: ".symlinks/plugins/geolocator_apple/ios"
+  image_picker_ios:
+    :path: ".symlinks/plugins/image_picker_ios/ios"
+  path_provider_ios:
+    :path: ".symlinks/plugins/path_provider_ios/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
+
+SPEC CHECKSUMS:
+  advance_pdf_viewer_fork: 7364d9c1ea71ec070d35b78d4341eadbabe84549
+  Amplify: 010d6a71db20812d9e3062db1fe827393d01e584
+  amplify_api: e002dc6c1abab0d50bd8e4fca5327eed2cab2eee
+  amplify_auth_cognito_ios: c67d4bf0901717cb193f16ed24c389be7f4d7daf
+  amplify_core: e67fe0c53845db08aced670bfc7370b1329d2798
+  amplify_datastore: 8c35a89e553716222b33cc8cc587ea978a982244
+  amplify_flutter: 0cfb67a9864be1605c6659635c2b98700fe8c34d
+  amplify_storage_s3_ios: 9f909ed387be893ee4a26b040ad1fb7212b9e14d
+  AmplifyPlugins: d939707cf36dfcd53c5fd6533e842e323a2287ab
+  AppSyncRealTimeClient: cdee78ab78249cb87a71d975e1436e692813a606
+  AWSAuthCore: 5d43a450e93ff6c9a5218c90e1cdb1069cd1f3a4
+  AWSCognitoIdentityProvider: 7b4835e094cec4f35a988c5eabea5b8980fb7953
+  AWSCognitoIdentityProviderASF: 3adc532f5f7e3641ea954cd30adc2e7b5768488f
+  AWSCore: 3419bcaeec8d7809efa32f0e83f151ef8e93ad78
+  AWSMobileClient: f942269e300b23031fbd62892e5642d3cf35cb97
+  AWSPluginsCore: 120cfa265293694921b6595fe00d1cb5ab558847
+  AWSS3: e2040a6ddf05ae4cef4abe2b9d91295deef92565
+  connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  flutter_sound: ba7daf658dea78e9f18b79657338bfc222489f4f
+  flutter_sound_core: d9396f10752a0df9aa3197f4c431d62d934918cc
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
+  image_picker_ios: b786a5dcf033a8336a657191401bfdf12017dabb
+  mobile-ffmpeg-audio: 1e0a053f8a6de57114e50ff48b3a85ff1c60f902
+  ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
+  path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
+  permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
+  sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  SQLite.swift: 4fc2be46c36392e3b87afe6fe7f1801c1daa07ef
+  Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
+  SwiftFormat: e2342d528f9aee7062abb644ba6c7c01446919d7
+  SwiftLint: f80f1be7fa96d30e0aa68e58d45d4ea1ccaac519
+
+PODFILE CHECKSUM: b66cab050dc51f90662170a4f8d6a2a3c8e35bff
+
+COCOAPODS: 1.11.2

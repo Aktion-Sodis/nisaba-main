@@ -485,6 +485,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  isolate_flutter:
+    dependency: transitive
+    description:
+      name: isolate_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  isolate_image_compress:
+    dependency: "direct main"
+    description:
+      name: isolate_image_compress
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   js:
     dependency: transitive
     description:
@@ -527,6 +541,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.12.11"
+  material_color_utilities:
+    dependency: transitive
+    description:
+      name: material_color_utilities
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.3"
   material_design_icons_flutter:
     dependency: "direct main"
     description:
@@ -783,7 +804,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.3"
+    version: "0.4.8"
   typed_data:
     dependency: transitive
     description:

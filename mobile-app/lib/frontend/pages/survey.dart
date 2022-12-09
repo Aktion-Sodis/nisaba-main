@@ -1005,11 +1005,10 @@ class SurveyWidgetState extends State<SurveyWidget> {
       required BuildContext context}) {
     //return CustomIconButton(onPressed, iconData, size, true)
     return CustomIconButton(() async {
-      XFile? r = await CameraFunctionality.takePicture(context: context);
-      if (r != null) {
-        await syncedFile.updateAsPic(r);
-        callback.call(syncedFile);
-      }
+      XFile r = await CameraFunctionality.takePicture(context: context);
+
+      await syncedFile.updateAsPic(r);
+      callback.call(syncedFile);
     }, MdiIcons.camera, const Size(50, 50), true);
   }
 

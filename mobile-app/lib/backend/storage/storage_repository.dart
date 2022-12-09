@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
 
 import 'dataStorePaths.dart';
 
@@ -30,9 +31,11 @@ class StorageRepository {
       {bool checkConnection = true}) async {
     try {
       if (checkConnection) {
+        bool wifiOnly = SettingsRepository.instance.wifiOnly;
+
         InternetConnectionType internetConnectionType =
             await StorageRepository.currentInternetConnectionType();
-        if (internetConnectionType != InternetConnectionType.WIFI) {
+        if (wifiOnly && internetConnectionType != InternetConnectionType.WIFI) {
           return dataStorePath;
         }
       }
