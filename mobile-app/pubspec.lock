@@ -485,6 +485,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  isolate_flutter:
+    dependency: transitive
+    description:
+      name: isolate_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  isolate_image_compress:
+    dependency: "direct main"
+    description:
+      name: isolate_image_compress
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   js:
     dependency: transitive
     description:

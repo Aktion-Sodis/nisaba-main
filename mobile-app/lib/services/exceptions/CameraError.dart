@@ -1,0 +1,1 @@
+class CameraError implements Exception {}

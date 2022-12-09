@@ -412,12 +412,11 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
   late SyncedFile syncedFile;
 
   void updatePic() async {
-    XFile? r = await CameraFunctionality.takePicture(context: context);
-    if (r != null) {
-      print("updating entity image: ${syncedFile.key.toString()}");
-      await syncedFile.updateAsPic(r);
-      setStateIfMounted(() {});
-    }
+    XFile r = await CameraFunctionality.takePicture(context: context);
+
+    print("updating entity image: ${syncedFile.key.toString()}");
+    await syncedFile.updateAsPic(r);
+    setStateIfMounted(() {});
   }
 
   void setStateIfMounted(Function function) {
@@ -1102,11 +1101,10 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
   late SyncedFile imageFileSynced;
 
   updatePic() async {
-    XFile? r = await CameraFunctionality.takePicture(context: context);
-    if (r != null) {
-      await imageFileSynced.updateAsPic(r);
-      setState(() {});
-    }
+    XFile r = await CameraFunctionality.takePicture(context: context);
+
+    await imageFileSynced.updateAsPic(r);
+    setState(() {});
   }
 
   void updateState(bool? okay) async {
@@ -1293,8 +1291,8 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
   }
 
   updatePic() async {
-    XFile? r = await CameraFunctionality.takePicture(context: context);
-    if (r != null && appliedIntervention != null) {
+    XFile r = await CameraFunctionality.takePicture(context: context);
+    if (appliedIntervention != null) {
       syncedFile ??= AppliedInterventionRepository.appliedInterventionPic(
           appliedIntervention!);
       await syncedFile!.updateAsPic(r);
