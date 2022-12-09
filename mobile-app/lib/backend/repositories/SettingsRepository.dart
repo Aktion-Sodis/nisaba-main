@@ -9,4 +9,8 @@ class SettingsRepository {
 
   String? get locale => _table.get("locale");
   set locale(String? value) => _table.put("locale", value);
+
+  bool get wifiOnly => _table.get("wifiOnly", defaultValue: true);
+  bool? get wifiOnlyRawValue => _table.get("wifiOnly");
+  set wifiOnly(bool value) => _table.put("wifiOnly", value);
 }

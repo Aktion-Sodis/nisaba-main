@@ -11,6 +11,7 @@ import 'package:mobile_app/frontend/components/hive_db_initializer.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/frontend/pages/permissions_checker.dart';
 import 'package:mobile_app/frontend/pages/survey.dart';
+import 'package:mobile_app/frontend/pages/wifi_only_setting_checker.dart';
 import 'package:mobile_app/frontend/theme.dart';
 
 import 'package:mobile_app/services/amplify.dart';
@@ -80,7 +81,9 @@ class MyAppState extends State<MyApp> {
                                   userRepo: context.read<UserRepository>(),
                                 ),
                                 child: Builder(
-                                    builder: (context) => AppNavigator()),
+                                    builder: (context) =>
+                                        WifiOnlySettingChecker(
+                                            child: AppNavigator())),
                               ),
                             )),
                   ),
