@@ -35,5 +35,11 @@ export type AmplifyDependentResourcesAttributes = {
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
         }
+    },
+    "storage": {
+        "s3nisaba": {
+            "BucketName": "string",
+            "Region": "string"
+        }
     }
 }
