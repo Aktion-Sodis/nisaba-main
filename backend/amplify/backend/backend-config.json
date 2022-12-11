@@ -84,6 +84,39 @@
           ]
         }
       ]
+    },
+    "nisaba": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "nisaba",
+          "attributes": [
+            "UserPoolId"
+          ]
+        }
+      ],
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 120,
+              "apiKeyExpirationDate": "2023-04-10T12:57:53.197Z",
+              "description": "Nisaba API Key"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authnisaba"
+              }
+            }
+          ]
+        }
+      }
     }
   }
 }
