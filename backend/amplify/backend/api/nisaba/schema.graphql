@@ -10,7 +10,7 @@ type I18nString {
   languageTexts: [String!]!
 } 
 
-type User @model {
+type User @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
   firstName: String!
   lastName: String!
   bio: String
@@ -34,7 +34,7 @@ enum PermissionType {
 
 # config collection
 
-type Config @model {
+type Config @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
   name: String!
   colorTheme: ColorTheme
   schemeVersion: Int @default(value: "0")
@@ -51,7 +51,7 @@ type ColorTheme {
 
 # level collection
 
-type Level @model {
+type Level @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
   name: I18nString!
   description: I18nString!
   parentLevelID: ID
@@ -74,7 +74,7 @@ enum Type {
 
 # intervention collection
 
-type Intervention @model {
+type Intervention @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
   name: I18nString!
   description: I18nString!
   interventionType: InterventionType!
@@ -91,7 +91,7 @@ enum InterventionType {
 }
 
 # content collection
-type Content @model {
+type Content @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
   name: I18nString!
   description: I18nString!
   interventions: [Intervention!]!
@@ -101,7 +101,7 @@ type Content @model {
 }
 
 # survey collection
-type Survey @model {
+type Survey @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
   name: I18nString!
   description: I18nString!
   intervention: Intervention @belongsTo
@@ -146,7 +146,7 @@ type QuestionOption {
 # entityCollection
 
 # todo: check whether binding the children makes sense
-type Entity @model {
+type Entity @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
   name: I18nString!
   description: I18nString!
   parentEntityID: ID
@@ -173,7 +173,7 @@ type AppliedCustomData {
 # appliedInterventionCollection
 
 # todo: possibly add bidirectional reference entity
-type AppliedIntervention @model {
+type AppliedIntervention @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
   whoDidIt: User! @hasOne
   intervention: Intervention! @hasOne
   location: Location
@@ -184,7 +184,7 @@ type AppliedIntervention @model {
 
 # executedSurveyCollection
 
-type ExecutedSurvey @model {
+type ExecutedSurvey @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
   appliedIntervention: AppliedIntervention! @belongsTo
   survey: Survey! @hasOne 
   surveyID: String @index(name: "bySurveyID", queryField: "executedSurveyBySurveyID")
@@ -217,7 +217,7 @@ type Marking {
   text: String!
 }
 
-type Task @model {
+type Task @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
   title: String!
   text: String
   dueDate: AWSDateTime
@@ -233,25 +233,25 @@ type Task @model {
   audioIDs: [Int!]!
 }
 
-type ContentTag @model {
+type ContentTag @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
   text: I18nString!
   schemeVersion: Int @default(value: "0")
   contents: [Content!]! @manyToMany(relationName: "ContentContentTagRelation")
 }
 
-type InterventionTag @model {
+type InterventionTag @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
   text: I18nString!
   schemeVersion: Int @default(value: "0")
   interventions: [Intervention!]! @manyToMany(relationName: "InterventionInterventionTagRelation")
 }
 
-type SurveyTag @model {
+type SurveyTag @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
   text: I18nString!
   schemeVersion: Int @default(value: "0")
   surveys: [Survey!]! @manyToMany(relationName: "SurveySurveyTagRelation")
 }
 
-type SessionData @model {
+type SessionData @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
   date: AWSDateTime!
   userID: String
   app: String
