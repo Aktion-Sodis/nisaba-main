@@ -10,6 +10,13 @@ type I18nString {
   languageTexts: [String!]!
 } 
 
+type Organization @model {
+    nameCamelCase: String!
+    nameKebabCase: String!
+    nameVerbose: String!
+
+}
+
 type User @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
   firstName: String!
   lastName: String!
