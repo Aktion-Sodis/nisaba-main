@@ -15,7 +15,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: lib/cicd/node/
+        working-directory: lib/cicd/node/release
 
     steps:
       - uses: actions/checkout@v3
@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: 16
           cache: 'npm'
-          cache-dependency-path: lib/cicd/node/package-lock.json
+          cache-dependency-path: lib/cicd/node/release/package-lock.json
       - name: main
         env:
           APOLAT2000PERSONALACCESSTOKEN: ${{ secrets.APOLAT2000PERSONALACCESSTOKEN }}
