@@ -1,0 +1,18 @@
+{
+  "name": "deploy",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "label-check": "node label-check"
+  },
+  "author": "apolat2000",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-amplify/cli": "^10.5.2",
+    "octokit": "^2.0.10"
+  },
+  "devDependencies": {
+    "@octokit/types": "^8.0.0"
+  },
+  "type": "module"
+}
