@@ -107,6 +107,7 @@ export const vuexModulesDict = Object.freeze({
   sync: 'SYNC_UI',
   auth: 'auth',
   dataModal: 'dataModal',
+  user: 'user',
 });
 
 export const syncStatusDict = Object.freeze({
@@ -142,6 +143,7 @@ export const routeNamesDict = Object.freeze({
   ForgotPassword: 'ForgotPassword',
   Surveys: 'Surveys',
   Interventions: 'Interventions',
+  UserManagement: 'UserManagement',
 });
 
 const archived = new Map();

@@ -38,9 +38,10 @@ const Type = {
   "STRING": "STRING"
 };
 
-const { User, Config, Level, Intervention, Content, ContentTag, Survey, SurveyTag, InterventionTag, Entity, AppliedIntervention, ExecutedSurvey, Task, SessionData, LevelInterventionRelation, InterventionContentRelation, InterventionInterventionTagRelation, ContentContentTagRelation, SurveySurveyTagRelation, I18nString, Permission, ColorTheme, Question, QuestionOption, CustomData, Location, AppliedCustomData, QuestionAnswer, Marking } = initSchema(schema);
+const { Organization, User, Config, Level, Intervention, Content, ContentTag, Survey, SurveyTag, InterventionTag, Entity, AppliedIntervention, ExecutedSurvey, Task, SessionData, LevelInterventionRelation, InterventionContentRelation, InterventionInterventionTagRelation, ContentContentTagRelation, SurveySurveyTagRelation, I18nString, Permission, ColorTheme, Question, QuestionOption, CustomData, Location, AppliedCustomData, QuestionAnswer, Marking } = initSchema(schema);
 
 export {
+  Organization,
   User,
   Config,
   Level,

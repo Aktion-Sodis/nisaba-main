@@ -23,7 +23,8 @@
       "addInNewLocale": "En otra lengua",
       "invalidForm": "El formulario no es válido. Preste atención a las advertencias de las entradas.",
       "invalidNumber": "Este es un número inválido.",
-      "cannotDeleteEntityWithChildren": "No se puede eliminar esta entidad porque tiene hijos."
+      "cannotDeleteEntityWithChildren": "No se puede eliminar esta entidad porque tiene hijos.",
+      "email": "Correo electrónico"
     },
     "noTextProvided": "No text was provided.",
     "noNumberProvided": "No number was provided.",
@@ -38,7 +39,8 @@
       "ChangePassword": "Cambiar mi contraseña",
       "ForgotPassword": "Olvidé mi contraseña",
       "About": "Acerca de",
-      "Surveys": "Encuestas"
+      "Surveys": "Encuestas",
+      "UserManagement": "Gestión de usuarios"
     },
     "errorCodes": {
       "InternalErrorException": "Ha ocurrido un error interno. Vuelva a intentarlo más tarde. Código de error: 6001",
@@ -236,6 +238,10 @@
       "noVideos": "No se han subido vídeos.",
       "noSurveys": "No se han subido encuestas."
     }
+  },
+  "userManagement": {
+    "title": "Gestión de usuarios",
+    "sendInvitation": "Enviar invitación"
   },
   "surveys": {
     "title": "Encuestas",

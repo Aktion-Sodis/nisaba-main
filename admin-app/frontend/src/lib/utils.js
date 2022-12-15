@@ -12,6 +12,7 @@ export const formValidators = {
     return value.length >= process.env.VUE_APP_MIN_PASSWORD_LENGTH || minCharI18n;
   },
   notEmpty: (value) => !value || value.replace(/ /g, '') !== '' || i18n.t('general.form.required'),
+  isEmail: (value) => /.+@.+\..+/.test(value) || i18n.t('general.form.email'),
 };
 
 /* eslint-disable-next-line no-unused-vars */
@@ -35,4 +36,5 @@ export const compareI18nStrings = (a, b) => {
   return true;
 };
 
-export const waitForMilliseconds = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+export const waitForMilliseconds = (milliseconds) =>
+  new Promise((resolve) => setTimeout(resolve, milliseconds));

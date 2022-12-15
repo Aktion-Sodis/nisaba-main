@@ -1,5 +1,62 @@
 export const schema = {
     "models": {
+        "Organization": {
+            "name": "Organization",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "nameCamelCase": {
+                    "name": "nameCamelCase",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "nameKebabCase": {
+                    "name": "nameKebabCase",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "nameVerbose": {
+                    "name": "nameVerbose",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Organizations",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                }
+            ]
+        },
         "User": {
             "name": "User",
             "fields": {
@@ -71,6 +128,25 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "organization_id",
+                                "allow": "owner",
+                                "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -130,6 +206,25 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "organization_id",
+                                "allow": "owner",
+                                "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -186,7 +281,9 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "level"
+                        "associatedWith": [
+                            "level"
+                        ]
                     }
                 },
                 "customData": {
@@ -229,6 +326,25 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "organization_id",
+                                "allow": "owner",
+                                "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -280,7 +396,9 @@ export const schema = {
                     "isArrayNullable": false,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "intervention"
+                        "associatedWith": [
+                            "intervention"
+                        ]
                     }
                 },
                 "surveys": {
@@ -294,7 +412,9 @@ export const schema = {
                     "isArrayNullable": false,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "interventionSurveysId"
+                        "associatedWith": [
+                            "interventionSurveysId"
+                        ]
                     }
                 },
                 "tags": {
@@ -308,7 +428,9 @@ export const schema = {
                     "isArrayNullable": false,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "intervention"
+                        "associatedWith": [
+                            "intervention"
+                        ]
                     }
                 },
                 "schemeVersion": {
@@ -329,7 +451,9 @@ export const schema = {
                     "isArrayNullable": false,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "intervention"
+                        "associatedWith": [
+                            "intervention"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -355,6 +479,25 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "organization_id",
+                                "allow": "owner",
+                                "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -397,7 +540,9 @@ export const schema = {
                     "isArrayNullable": false,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "content"
+                        "associatedWith": [
+                            "content"
+                        ]
                     }
                 },
                 "tags": {
@@ -411,7 +556,9 @@ export const schema = {
                     "isArrayNullable": false,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "content"
+                        "associatedWith": [
+                            "content"
+                        ]
                     }
                 },
                 "schemeVersion": {
@@ -444,6 +591,25 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "organization_id",
+                                "allow": "owner",
+                                "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -484,7 +650,9 @@ export const schema = {
                     "isArrayNullable": false,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "contentTag"
+                        "associatedWith": [
+                            "contentTag"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -510,6 +678,25 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "organization_id",
+                                "allow": "owner",
+                                "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -551,7 +738,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "interventionSurveysId"
+                        "targetNames": [
+                            "interventionSurveysId"
+                        ]
                     }
                 },
                 "questions": {
@@ -575,7 +764,9 @@ export const schema = {
                     "isArrayNullable": false,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "survey"
+                        "associatedWith": [
+                            "survey"
+                        ]
                     }
                 },
                 "surveyType": {
@@ -616,6 +807,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
+                },
+                "interventionSurveysId": {
+                    "name": "interventionSurveysId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -624,6 +822,25 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "organization_id",
+                                "allow": "owner",
+                                "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -664,7 +881,9 @@ export const schema = {
                     "isArrayNullable": false,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "surveyTag"
+                        "associatedWith": [
+                            "surveyTag"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -690,6 +909,25 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "organization_id",
+                                "allow": "owner",
+                                "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -730,7 +968,9 @@ export const schema = {
                     "isArrayNullable": false,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "interventionTag"
+                        "associatedWith": [
+                            "interventionTag"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -756,6 +996,25 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "organization_id",
+                                "allow": "owner",
+                                "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -804,8 +1063,12 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "HAS_ONE",
-                        "associatedWith": "id",
-                        "targetName": "entityLevelId"
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "entityLevelId"
+                        ]
                     }
                 },
                 "location": {
@@ -838,7 +1101,9 @@ export const schema = {
                     "isArrayNullable": false,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "entityAppliedInterventionsId"
+                        "associatedWith": [
+                            "entityAppliedInterventionsId"
+                        ]
                     }
                 },
                 "schemeVersion": {
@@ -878,6 +1143,25 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "organization_id",
+                                "allow": "owner",
+                                "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -901,8 +1185,12 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "HAS_ONE",
-                        "associatedWith": "id",
-                        "targetName": "appliedInterventionWhoDidItId"
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "appliedInterventionWhoDidItId"
+                        ]
                     }
                 },
                 "intervention": {
@@ -915,8 +1203,12 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "HAS_ONE",
-                        "associatedWith": "id",
-                        "targetName": "appliedInterventionInterventionId"
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "appliedInterventionInterventionId"
+                        ]
                     }
                 },
                 "location": {
@@ -946,7 +1238,9 @@ export const schema = {
                     "isArrayNullable": false,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "appliedInterventionExecutedSurveysId"
+                        "associatedWith": [
+                            "appliedInterventionExecutedSurveysId"
+                        ]
                     }
                 },
                 "schemeVersion": {
@@ -1000,6 +1294,34 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "gsi-Entity.appliedInterventions",
+                        "fields": [
+                            "entityAppliedInterventionsId"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "organization_id",
+                                "allow": "owner",
+                                "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -1023,7 +1345,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "appliedInterventionExecutedSurveysId"
+                        "targetNames": [
+                            "appliedInterventionExecutedSurveysId"
+                        ]
                     }
                 },
                 "survey": {
@@ -1036,8 +1360,12 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "HAS_ONE",
-                        "associatedWith": "id",
-                        "targetName": "executedSurveySurveyId"
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "executedSurveySurveyId"
+                        ]
                     }
                 },
                 "surveyID": {
@@ -1057,8 +1385,12 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "HAS_ONE",
-                        "associatedWith": "id",
-                        "targetName": "executedSurveyWhoExecutedItId"
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "executedSurveyWhoExecutedItId"
+                        ]
                     }
                 },
                 "date": {
@@ -1110,6 +1442,13 @@ export const schema = {
                     "attributes": [],
                     "isReadOnly": true
                 },
+                "appliedInterventionExecutedSurveysId": {
+                    "name": "appliedInterventionExecutedSurveysId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "executedSurveySurveyId": {
                     "name": "executedSurveySurveyId",
                     "isArray": false,
@@ -1139,6 +1478,25 @@ export const schema = {
                         "queryField": "executedSurveyBySurveyID",
                         "fields": [
                             "surveyID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "organization_id",
+                                "allow": "owner",
+                                "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
                         ]
                     }
                 }
@@ -1201,8 +1559,12 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "HAS_ONE",
-                        "associatedWith": "id",
-                        "targetName": "taskUserId"
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "taskUserId"
+                        ]
                     }
                 },
                 "userID": {
@@ -1222,8 +1584,12 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "HAS_ONE",
-                        "associatedWith": "id",
-                        "targetName": "taskEntityId"
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "taskEntityId"
+                        ]
                     }
                 },
                 "appliedIntervention": {
@@ -1236,8 +1602,12 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "HAS_ONE",
-                        "associatedWith": "id",
-                        "targetName": "taskAppliedInterventionId"
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "taskAppliedInterventionId"
+                        ]
                     }
                 },
                 "executedSurvey": {
@@ -1250,8 +1620,12 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "HAS_ONE",
-                        "associatedWith": "id",
-                        "targetName": "taskExecutedSurveyId"
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "taskExecutedSurveyId"
+                        ]
                     }
                 },
                 "schemeVersion": {
@@ -1336,6 +1710,25 @@ export const schema = {
                         "queryField": "taskByUserID",
                         "fields": [
                             "userID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "organization_id",
+                                "allow": "owner",
+                                "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
                         ]
                     }
                 }
@@ -1423,6 +1816,25 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "organization_id",
+                                "allow": "owner",
+                                "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -1436,6 +1848,20 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "levelId": {
+                    "name": "levelId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "interventionId": {
+                    "name": "interventionId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "level": {
                     "name": "level",
                     "isArray": false,
@@ -1446,7 +1872,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "levelID"
+                        "targetNames": [
+                            "levelId"
+                        ]
                     }
                 },
                 "intervention": {
@@ -1459,7 +1887,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "interventionID"
+                        "targetNames": [
+                            "interventionId"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -1491,7 +1921,7 @@ export const schema = {
                     "properties": {
                         "name": "byLevel",
                         "fields": [
-                            "levelID"
+                            "levelId"
                         ]
                     }
                 },
@@ -1500,7 +1930,7 @@ export const schema = {
                     "properties": {
                         "name": "byIntervention",
                         "fields": [
-                            "interventionID"
+                            "interventionId"
                         ]
                     }
                 }
@@ -1516,6 +1946,20 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "interventionId": {
+                    "name": "interventionId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "contentId": {
+                    "name": "contentId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "intervention": {
                     "name": "intervention",
                     "isArray": false,
@@ -1526,7 +1970,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "interventionID"
+                        "targetNames": [
+                            "interventionId"
+                        ]
                     }
                 },
                 "content": {
@@ -1539,7 +1985,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "contentID"
+                        "targetNames": [
+                            "contentId"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -1571,7 +2019,7 @@ export const schema = {
                     "properties": {
                         "name": "byIntervention",
                         "fields": [
-                            "interventionID"
+                            "interventionId"
                         ]
                     }
                 },
@@ -1580,7 +2028,7 @@ export const schema = {
                     "properties": {
                         "name": "byContent",
                         "fields": [
-                            "contentID"
+                            "contentId"
                         ]
                     }
                 }
@@ -1596,6 +2044,20 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "interventionId": {
+                    "name": "interventionId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "interventionTagId": {
+                    "name": "interventionTagId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "intervention": {
                     "name": "intervention",
                     "isArray": false,
@@ -1606,7 +2068,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "interventionID"
+                        "targetNames": [
+                            "interventionId"
+                        ]
                     }
                 },
                 "interventionTag": {
@@ -1619,7 +2083,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "interventionTagID"
+                        "targetNames": [
+                            "interventionTagId"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -1651,7 +2117,7 @@ export const schema = {
                     "properties": {
                         "name": "byIntervention",
                         "fields": [
-                            "interventionID"
+                            "interventionId"
                         ]
                     }
                 },
@@ -1660,7 +2126,7 @@ export const schema = {
                     "properties": {
                         "name": "byInterventionTag",
                         "fields": [
-                            "interventionTagID"
+                            "interventionTagId"
                         ]
                     }
                 }
@@ -1676,6 +2142,20 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "contentId": {
+                    "name": "contentId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "contentTagId": {
+                    "name": "contentTagId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "content": {
                     "name": "content",
                     "isArray": false,
@@ -1686,7 +2166,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "contentID"
+                        "targetNames": [
+                            "contentId"
+                        ]
                     }
                 },
                 "contentTag": {
@@ -1699,7 +2181,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "contentTagID"
+                        "targetNames": [
+                            "contentTagId"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -1731,7 +2215,7 @@ export const schema = {
                     "properties": {
                         "name": "byContent",
                         "fields": [
-                            "contentID"
+                            "contentId"
                         ]
                     }
                 },
@@ -1740,7 +2224,7 @@ export const schema = {
                     "properties": {
                         "name": "byContentTag",
                         "fields": [
-                            "contentTagID"
+                            "contentTagId"
                         ]
                     }
                 }
@@ -1756,6 +2240,20 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "surveyId": {
+                    "name": "surveyId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "surveyTagId": {
+                    "name": "surveyTagId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "survey": {
                     "name": "survey",
                     "isArray": false,
@@ -1766,7 +2264,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "surveyID"
+                        "targetNames": [
+                            "surveyId"
+                        ]
                     }
                 },
                 "surveyTag": {
@@ -1779,7 +2279,9 @@ export const schema = {
                     "attributes": [],
                     "association": {
                         "connectionType": "BELONGS_TO",
-                        "targetName": "surveyTagID"
+                        "targetNames": [
+                            "surveyTagId"
+                        ]
                     }
                 },
                 "createdAt": {
@@ -1811,7 +2313,7 @@ export const schema = {
                     "properties": {
                         "name": "bySurvey",
                         "fields": [
-                            "surveyID"
+                            "surveyId"
                         ]
                     }
                 },
@@ -1820,7 +2322,7 @@ export const schema = {
                     "properties": {
                         "name": "bySurveyTag",
                         "fields": [
-                            "surveyTagID"
+                            "surveyTagId"
                         ]
                     }
                 }
@@ -2259,5 +2761,6 @@ export const schema = {
             }
         }
     },
-    "version": "fe86bdae59901e725a34655631155e50"
+    "codegenVersion": "3.3.2",
+    "version": "2161272b038905461bb600c14b4081b4"
 };
