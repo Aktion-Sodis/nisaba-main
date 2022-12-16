@@ -19,7 +19,7 @@
             <v-col cols="6" sm="4" offset="3" offset-sm="4">
               <a :href="societyWebsiteHref" target="_blank">
                 <div
-                  class="d-flex justify-center align-center rounded-xl pa-4 lg-rounded-pill grey"
+                  class="d-flex justify-center align-center rounded-xl pa-4 lg-rounded-pill grey lighten-3"
                 >
                   <img
                     :src="requireSocietyLogoBig()"
@@ -37,7 +37,7 @@
           <v-row style="height: 100%" no-gutters>
             <v-col cols="6" offset="3" class="d-flex justify-center align-center">
               <a :href="societyWebsiteHref" target="_blank">
-                <div class="rounded-xl pa-4 lg-rounded-pill d-none d-md-block grey">
+                <div class="rounded-xl pa-4 lg-rounded-pill d-none d-md-block grey lighten-3">
                   <img
                     :src="requireSocietyLogoBig()"
                     style="width: 100%"
