@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import store from './store';
 import i18n from './i18n';
+import { Auth as AmplifyAuth } from 'aws-amplify';
 
 // import Home from './views/Home.vue';
 import OrganizationStructure from './views/OrganizationStructure.vue';
@@ -164,34 +165,37 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
   store.commit(`${vuexModulesDict.auth}/updateRouteActivity`, { root: true });
   await Vue.nextTick();
-  if (
-    store.getters[`${vuexModulesDict.auth}/getIsAuthenticated`] &&
-    (to.name === routeNamesDict.Login || to.name === routeNamesDict.CompleteUserInfo)
-  )
-    next({ name: from?.name ?? routeNamesDict.OrganizationStructure });
-  if (
-    (!from.name || from.meta.requiresAuth) &&
-    store.getters[`${vuexModulesDict.auth}/lastRouteActivityDiffTooLarge`] &&
-    store.getters[`${vuexModulesDict.auth}/getIsAuthenticated`] &&
-    !store.getters[`${vuexModulesDict.auth}/getRememberSession`]
-  ) {
-    store.dispatch(`${vuexModulesDict.auth}/deleteSession`, { root: true });
-    next({ name: routeNamesDict.Login });
-    store.dispatch(
-      `${vuexModulesDict.feedback}/showFeedbackForDuration`,
-      {
-        type: 'warning',
-        text: i18n.t('general.warningCodes.sessionExpired'),
-      },
-      { root: true }
-    );
+  let cognitoUserSession;
+  try {
+    cognitoUserSession = await AmplifyAuth.currentSession();
+  } catch {
+    cognitoUserSession = null;
   }
+
+  if (
+    cognitoUserSession &&
+    (to.name === routeNamesDict.Login || to.name === routeNamesDict.CompleteUserInfo)
+  ) {
+    next({ name: from?.name ?? routeNamesDict.OrganizationStructure });
+  }
+  // if ((!from.name || from.meta.requiresAuth) && cognitoUserSession) {
+  //   store.dispatch(`${vuexModulesDict.auth}/deleteSession`, { root: true });
+  //   next({ name: routeNamesDict.Login });
+  //   store.dispatch(
+  //     `${vuexModulesDict.feedback}/showFeedbackForDuration`,
+  //     {
+  //       type: 'warning',
+  //       text: i18n.t('general.warningCodes.sessionExpired'),
+  //     },
+  //     { root: true }
+  //   );
+  // }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    if (!store.getters[`${vuexModulesDict.auth}/getIsAuthenticated`]) {
+    if (!cognitoUserSession) {
       // redirect to login page if not authenticated
-      store.dispatch(`${vuexModulesDict.auth}/deleteSession`); // delete state data for consistency
+      store.dispatch(`${vuexModulesDict.auth}/deleteSession`);
       next({ name: routeNamesDict.Login });
     } else {
       if (to.meta.shouldBeSynced) {
@@ -223,7 +227,7 @@ router.beforeEach(async (to, from, next) => {
         { root: true }
       );
     }
-    next(); // does not require auth, make sure to always call next()!
+    next();
   }
 });
 
