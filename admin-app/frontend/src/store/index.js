@@ -17,11 +17,12 @@ import dataModal from './modules/dataModal';
 import SYNC_UI from './modules/syncUI';
 import { vuexModulesDict } from '../lib/constants';
 import { deriveFilePath } from '../lib/utils';
+import organizationModule from './modules/organization';
 
 // persist
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
-  modules: ['auth'],
+  modules: [vuexModulesDict.auth, vuexModulesDict.organization],
 });
 
 Vue.use(Vuex);
@@ -87,6 +88,7 @@ export default new Vuex.Store({
     [vuexModulesDict.feedback]: FEEDBACK_UI,
     [vuexModulesDict.sync]: SYNC_UI,
     [vuexModulesDict.user]: userModule,
+    [vuexModulesDict.organization]: organizationModule,
   },
   plugins: [vuexLocal.plugin],
 });

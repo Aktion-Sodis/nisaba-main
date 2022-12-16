@@ -63,10 +63,10 @@
       <v-list>
         <v-list-item class="px-2">
           <v-list-item-avatar class="my-0">
-            <v-img src="../../../static/aktionSodisSmall.png"></v-img>
+            <v-img src="../../../static/nisabaSmall.png"></v-img>
           </v-list-item-avatar>
           <v-list-item-title class="white--text text-body-1 ml-3">
-            {{ societyName }}
+            Nisaba <span v-if="societyName"> 🤍 {{ societyName }} </span>
           </v-list-item-title>
         </v-list-item>
         <SyncAction />
@@ -128,8 +128,6 @@ import { routes } from '../../../router';
 import { routeNamesDict, vuexModulesDict } from '../../../lib/constants';
 import LangSelect from '../floating/LangSelect.vue';
 
-const societyName = process.env.VUE_APP_SOCIETY_VERBOSE_NAME;
-
 export default {
   components: { SyncAction, LangSelect },
   name: 'NavBar',
@@ -151,12 +149,13 @@ export default {
     ...mapGetters({
       isAuthenticated: `${vuexModulesDict.auth}/getIsAuthenticated`,
       credentials: `${vuexModulesDict.auth}/credentials`,
+      organizationNameVerbose: `${vuexModulesDict.organization}/getNameVerbose`,
     }),
     currentRouteName() {
       return this.$route.name;
     },
     societyName() {
-      return societyName;
+      return this.organizationNameVerbose ?? '';
     },
   },
   methods: {

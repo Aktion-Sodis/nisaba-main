@@ -113,6 +113,8 @@ const authModule = {
           lastName,
         });
 
+        dispatch(`${vuexModulesDict.organization}/APIGet`, organizationId, { root: true });
+
         // if password is finalized
         commit('setIdToken', { newToken: x.signInUserSession.idToken.jwtToken });
         commit('setIsAuthenticated', { newValue: true });
@@ -169,8 +171,6 @@ const authModule = {
       }
 
       const user = await Auth.currentAuthenticatedUser();
-
-      console.log({ user });
 
       try {
         await Auth.updateUserAttributes(user, {

@@ -108,6 +108,7 @@ export const vuexModulesDict = Object.freeze({
   auth: 'auth',
   dataModal: 'dataModal',
   user: 'user',
+  organization: 'organization',
 });
 
 export const syncStatusDict = Object.freeze({

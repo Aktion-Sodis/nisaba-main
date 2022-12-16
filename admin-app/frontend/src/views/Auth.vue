@@ -73,24 +73,24 @@ export default {
       return routeNamesDict;
     },
     societyVerboseName() {
-      return process.env.VUE_APP_SOCIETY_VERBOSE_NAME || 'Aktion Sodis';
+      return 'Nisaba';
     },
     societyWebsiteHref() {
-      return process.env.VUE_APP_SOCIETY_WEBSITE_HREF || 'https://aktion-sodis.org';
+      return 'https://www.linkedin.com/company/nisaba-by-aktion-sodis/';
     },
   },
   methods: {
     requireSocietyLogoBig() {
-      const societyLogoBigName = process.env.VUE_APP_LOGO_BIG;
-      let res;
-      try {
-        // eslint-disable-next-line
-        res = require(`../static/${societyLogoBigName}`);
-      } catch {
-        // eslint-disable-next-line
-        res = require(`../static/aktionSodisBig.png`);
-      }
-      return res;
+      // const societyLogoBigName = process.env.VUE_APP_LOGO_BIG;
+      // let res;
+      // try {
+      //   // eslint-disable-next-line
+      //   res = require(`../static/${societyLogoBigName}`);
+      // } catch {
+      //   // eslint-disable-next-line
+      //   res = require(`../static/aktionSodisBig.png`);
+      // }
+      return require(`../static/nisabaBig.png`);
     },
   },
 };
