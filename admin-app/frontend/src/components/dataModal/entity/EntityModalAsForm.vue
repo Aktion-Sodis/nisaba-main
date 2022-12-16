@@ -179,7 +179,6 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { emptyMutableI18nString, mutableI18nString } from '../../../lib/classes';
 import { modalModesDict, vuexModulesDict } from '../../../lib/constants';
-import { deriveFilePath } from '../../../lib/utils';
 import { Entity, Type } from '../../../models';
 
 import LocaleTextBox from '../../commons/form/LocaleTextBox.vue';
@@ -228,6 +227,7 @@ export default {
       calculateUILocaleString: 'calculateUILocaleString',
       getCreatingEntityInLevelId: 'getCreatingEntityInLevelId',
       getHasChildren: 'ENTITY_Data/hasParentByUpperEntityId',
+      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
     }),
     entityInFocus() {
       return this.ENTITYById({ id: this.dataIdInFocus });
@@ -245,17 +245,19 @@ export default {
       return this.LEVELById({ id: this.level.parentLevelID }).name;
     },
     deriveImgPath() {
-      return this.edit ? deriveFilePath('entityPicPath', { entityID: this.dataIdInFocus }) : null;
+      return this.edit
+        ? this.deriveFilePath('entityPicPath', { entityID: this.dataIdInFocus })
+        : null;
     },
     assumedSrc() {
       return this.imageFile ?? this.deriveImgPath;
     },
     isSubmitDisabled() {
       return (
-        this.calculateLocalizedString({ languageTexts: this.name.languageTexts })
-          === this.$t('general.noTextProvided')
-        || (this.allEntitiesOfUpperLevel.length > 0 && !this.parentEntityID)
-        || !this.isFormValid
+        this.calculateLocalizedString({ languageTexts: this.name.languageTexts }) ===
+          this.$t('general.noTextProvided') ||
+        (this.allEntitiesOfUpperLevel.length > 0 && !this.parentEntityID) ||
+        !this.isFormValid
       );
     },
     allEntitiesOfUpperLevel() {
@@ -316,16 +318,14 @@ export default {
             : this.getCreatingEntityInLevelId,
           parentEntityID: this.parentEntityID ?? null,
           appliedInterventions: [],
-          customData: this.customData.map(({
-            customDataID, type, name, value,
-          }) => ({
+          customData: this.customData.map(({ customDataID, type, name, value }) => ({
             customDataID,
             type,
             name,
             intValue: type === Type.INT && value !== null ? Number(value) : null,
             stringValue: type === Type.STRING ? value : null,
           })),
-        }),
+        })
       );
       await this.$nextTick();
       this.saveData();
@@ -354,7 +354,8 @@ export default {
       this.customData = customData.map(({ id, name, type }, index) => {
         let value = null;
         if (this.edit && this.entityInFocus.customData[index]) {
-          value = this.entityInFocus.customData[index][type === Type.INT ? 'intValue' : 'stringValue'];
+          value =
+            this.entityInFocus.customData[index][type === Type.INT ? 'intValue' : 'stringValue'];
         }
         return {
           name: mutableI18nString(name),

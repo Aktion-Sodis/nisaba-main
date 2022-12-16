@@ -70,15 +70,15 @@ const actions = {
         async (questionImg, index) => {
           if (questionImg) {
             await Storage.put(
-              deriveFilePath('questionPicPath', {
+              rootGetters.callDeriveFilePathWithOrganizationId('questionPicPath', {
                 interventionID: survey.interventionSurveysId,
                 surveyId: postResponse.id,
                 questionId: survey.questions[index].id,
               }),
-              questionImg,
+              questionImg
             );
           }
-        },
+        }
       );
 
       commit('addSurvey', postResponse);
@@ -137,11 +137,11 @@ const actions = {
 
       if (rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]) {
         await Storage.put(
-          deriveFilePath('interventionSurveyPicPath', {
+          rootGetters.callDeriveFilePathWithOrganizationId('interventionSurveyPicPath', {
             interventionID: res.intervention.id,
             surveyId: res.id,
           }),
-          rootGetters[`${vuexModulesDict.dataModal}/getImageFile`],
+          rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]
         );
       }
 
@@ -178,10 +178,10 @@ const actions = {
       });
 
       Storage.remove(
-        deriveFilePath('interventionSurveyPicPath', {
+        rootGetters.callDeriveFilePathWithOrganizationId('interventionSurveyPicPath', {
           interventionID: survey.intervention.id,
           surveyId: survey.id,
-        }),
+        })
       );
 
       commit(`${vuexModulesDict.dataModal}/setDataIdInFocus`, { newValue: null }, { root: true });

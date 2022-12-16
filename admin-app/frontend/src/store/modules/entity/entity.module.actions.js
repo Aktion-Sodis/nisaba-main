@@ -22,8 +22,10 @@ const APIpost = async ({ commit, dispatch, rootGetters }, entityDraft) => {
     if (rootGetters['dataModal/getImageFile'] instanceof File) {
       try {
         await Storage.put(
-          deriveFilePath('entityPicPath', { entityID: postResponse.id }),
-          rootGetters['dataModal/getImageFile'],
+          rootGetters.callDeriveFilePathWithOrganizationId('entityPicPath', {
+            entityID: postResponse.id,
+          }),
+          rootGetters['dataModal/getImageFile']
         );
       } catch {
         success = false;
@@ -82,8 +84,10 @@ const APIput = async ({
     if (rootGetters['dataModal/getImageFile'] instanceof File) {
       try {
         await Storage.put(
-          deriveFilePath('entityPicPath', { entityID: newEntity.id }),
-          rootGetters['dataModal/getImageFile'],
+          rootGetters.callDeriveFilePathWithOrganizationId('entityPicPath', {
+            entityID: newEntity.id,
+          }),
+          rootGetters['dataModal/getImageFile']
         );
       } catch {
         success = false;

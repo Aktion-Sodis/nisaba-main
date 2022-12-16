@@ -113,8 +113,10 @@ const moduleActions = {
       if (rootGetters['dataModal/getImageFile'] instanceof File) {
         try {
           await Storage.put(
-            deriveFilePath('levelPicPath', { levelID: postResponse.id }),
-            rootGetters['dataModal/getImageFile'],
+            rootGetters.callDeriveFilePathWithOrganizationId('levelPicPath', {
+              levelID: postResponse.id,
+            }),
+            rootGetters['dataModal/getImageFile']
           );
         } catch {
           success = false;
@@ -164,8 +166,10 @@ const moduleActions = {
       if (rootGetters['dataModal/getImageFile'] instanceof File) {
         try {
           await Storage.put(
-            deriveFilePath('levelPicPath', { levelID: putResponse.id }),
-            rootGetters['dataModal/getImageFile'],
+            rootGetters.callDeriveFilePathWithOrganizationId('levelPicPath', {
+              levelID: putResponse.id,
+            }),
+            rootGetters['dataModal/getImageFile']
           );
         } catch {
           success = false;
@@ -248,7 +252,9 @@ const moduleActions = {
     }
 
     if (success) {
-      Storage.put(deriveFilePath('levelPicPath', { levelID: id }));
+      Storage.put(
+        rootGetters.callDeriveFilePathWithOrganizationId('levelPicPath', { levelID: id })
+      );
 
       commit('deleteLevel', {
         id,

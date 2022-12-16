@@ -372,11 +372,10 @@ import { Intervention, InterventionType } from '../../models';
 import { emptyMutableI18nString, mutableI18nString } from '../../lib/classes';
 import FileInput from '../commons/form/FileInput.vue';
 import ImgFromS3 from '../commons/ImgFromS3.vue';
-import { deriveFilePath } from '../../lib/utils';
 
 const interventionDescriptionMaxChar = Math.max(
   parseInt(process.env.VUE_APP_INTERVENTION_DESCRIPTION_MAX_CHAR, 10),
-  0,
+  0
 );
 
 export default {
@@ -387,7 +386,8 @@ export default {
       interventionDescriptionMaxChar,
       InterventionType,
       rules: {
-        maxChar: (value) => value.length <= interventionDescriptionMaxChar || this.maxCharExceededi18n,
+        maxChar: (value) =>
+          value.length <= interventionDescriptionMaxChar || this.maxCharExceededi18n,
       },
       id: null,
       name: emptyMutableI18nString(),
@@ -421,11 +421,10 @@ export default {
 
       imageFile: `${vuexModulesDict.dataModal}/getImageFile`,
 
-      // allInterventionTags: vuexModulesDict.intervention + 'getInterventionTags',
-      // tagById: vuexModulesDict.intervention + 'tagById',
       interventionContentTagById: `${vuexModulesDict.intervention}/interventionContentTagById`,
 
       calculateUILocaleString: 'calculateUILocaleString',
+      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
     }),
     isInterventionModalDisplayed() {
       return this.isDataModalDisplayed && this.dataType === dataTypesDict.intervention;
@@ -437,7 +436,7 @@ export default {
     },
     deriveImgPath() {
       if (this.create) return null;
-      return deriveFilePath('interventionPicPath', { interventionID: this.dataIdInFocus });
+      return this.deriveFilePath('interventionPicPath', { interventionID: this.dataIdInFocus });
     },
     interventionInFocus() {
       return this.INTERVENTIONById({ id: this.dataIdInFocus });
@@ -494,7 +493,8 @@ export default {
     },
     closeHandler() {
       if (this.read) this.abortReadInterventionHandler();
-      else if (this.create) this.abortNewInterventionHandler({ dataType: dataTypesDict.intervention });
+      else if (this.create)
+        this.abortNewInterventionHandler({ dataType: dataTypesDict.intervention });
       else if (this.edit) {
         this.abortEditInterventionHandler({
           dataId: this.dataIdInFocus,
@@ -524,7 +524,7 @@ export default {
           surveys: [], // TODO
           levels: [],
           contents: this.contents, // TODO
-        }),
+        })
       );
       await this.$nextTick();
       this.saveInterventionHandler({ dataType: dataTypesDict.intervention, originalVersion });

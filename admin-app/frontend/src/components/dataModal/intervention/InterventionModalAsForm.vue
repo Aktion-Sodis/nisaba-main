@@ -141,7 +141,6 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { emptyMutableI18nString, mutableI18nString } from '../../../lib/classes';
 import { modalModesDict } from '../../../lib/constants';
-import { deriveFilePath } from '../../../lib/utils';
 import { Intervention, InterventionType } from '../../../models';
 
 import LocaleTextBox from '../../commons/form/LocaleTextBox.vue';
@@ -183,6 +182,7 @@ export default {
       INTERVENTIONById: 'INTERVENTION_Data/INTERVENTIONById',
       calculateLocalizedString: 'calculateLocalizedString',
       calculateUILocaleString: 'calculateUILocaleString',
+      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
     }),
     interventionInFocus() {
       return this.INTERVENTIONById({ id: this.dataIdInFocus });
@@ -193,7 +193,7 @@ export default {
     },
     deriveImgPath() {
       return this.edit
-        ? deriveFilePath('interventionPicPath', { interventionID: this.dataIdInFocus })
+        ? this.deriveFilePath('interventionPicPath', { interventionID: this.dataIdInFocus })
         : null;
     },
     assumedSrc() {
@@ -204,8 +204,8 @@ export default {
     },
     isSubmitDisabled() {
       return (
-        this.calculateLocalizedString({ languageTexts: this.name.languageTexts })
-        === this.$t('general.noTextProvided')
+        this.calculateLocalizedString({ languageTexts: this.name.languageTexts }) ===
+        this.$t('general.noTextProvided')
       );
     },
   },
@@ -234,7 +234,7 @@ export default {
           surveys: [], // TODO
           levels: [],
           contents: this.contents, // TODO
-        }),
+        })
       );
       await this.$nextTick();
       this.saveData();

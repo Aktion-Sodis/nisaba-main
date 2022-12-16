@@ -75,8 +75,10 @@ const moduleActions = {
       if (rootGetters[`${vuexModulesDict.dataModal}/getImageFile`] instanceof File) {
         try {
           await Storage.put(
-            deriveFilePath('interventionPicPath', { interventionID: postResponse.id }),
-            rootGetters[`${vuexModulesDict.dataModal}/getImageFile`],
+            rootGetters.callDeriveFilePathWithOrganizationId('interventionPicPath', {
+              interventionID: postResponse.id,
+            }),
+            rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]
           );
         } catch {
           success = false;
@@ -120,8 +122,10 @@ const moduleActions = {
       if (rootGetters[`${vuexModulesDict.dataModal}/getImageFile`] instanceof File) {
         try {
           await Storage.put(
-            deriveFilePath('interventionPicPath', { interventionID: putResponse.id }),
-            rootGetters[`${vuexModulesDict.dataModal}/getImageFile`],
+            rootGetters.callDeriveFilePathWithOrganizationId('interventionPicPath', {
+              interventionID: putResponse.id,
+            }),
+            rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]
           );
         } catch {
           success = false;
@@ -158,7 +162,11 @@ const moduleActions = {
     }
 
     if (success) {
-      Storage.remove(deriveFilePath('interventionPicPath', { interventionID: id }));
+      Storage.remove(
+        rootGetters.callDeriveFilePathWithOrganizationId('interventionPicPath', {
+          interventionID: id,
+        })
+      );
       commit('deleteIntervention', {
         id,
       });

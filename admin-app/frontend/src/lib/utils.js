@@ -16,10 +16,10 @@ export const formValidators = {
 };
 
 /* eslint-disable-next-line no-unused-vars */
-export const deriveFilePath = (wantedDerivative, paramsObj) => {
+export const deriveFilePath = (organizationId, wantedDerivative, paramsObj) => {
   const derivative = databaseOntologies[wantedDerivative];
   if (Object.keys(paramsObj).length !== derivative.toBeReplaced.length) return -1;
-  let res = derivative.path;
+  let res = `organization/${organizationId}/${derivative.path}`;
 
   Object.keys(paramsObj).forEach((k, i) => {
     res = res.replace(derivative.toBeReplaced[i], paramsObj[k]);

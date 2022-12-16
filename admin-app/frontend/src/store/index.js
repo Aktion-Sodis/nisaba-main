@@ -16,6 +16,7 @@ import entitiesData from './modules/entity';
 import dataModal from './modules/dataModal';
 import SYNC_UI from './modules/syncUI';
 import { vuexModulesDict } from '../lib/constants';
+import { deriveFilePath } from '../lib/utils';
 
 // persist
 const vuexLocal = new VuexPersistence({
@@ -53,6 +54,13 @@ export default new Vuex.Store({
       () =>
       ({ locale }) =>
         i18n.availableLocales.findIndex((l) => l === locale),
+
+    callDeriveFilePathWithOrganizationId:
+      (state, getters, rootState, rootGetters) => (arg1, arg2) => {
+        const organizationId = rootGetters[`${vuexModulesDict.auth}/getOrganizationId`];
+        console.log(organizationId);
+        return deriveFilePath(organizationId, arg1, arg2);
+      },
   },
   mutations: {
     setCreatingEntityInLevelId: (state, { id }) => {

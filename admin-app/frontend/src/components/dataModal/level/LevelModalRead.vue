@@ -155,7 +155,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { deriveFilePath } from '../../../lib/utils';
 import { Type, InterventionType } from '../../../models';
 
 import ImgFromS3 from '../../commons/ImgFromS3.vue';
@@ -178,17 +177,16 @@ export default {
   computed: {
     ...mapGetters({
       dataIdInFocus: 'dataModal/getDataIdInFocus',
-
       LEVELById: 'LEVEL_Data/LEVELById',
       interventionsOfLevelById: 'LEVEL_Data/interventionsOfLevelById',
-
       calculateUILocaleString: 'calculateUILocaleString',
+      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
     }),
     levelInFocus() {
       return this.LEVELById({ id: this.dataIdInFocus });
     },
     deriveImgPath() {
-      return deriveFilePath('levelPicPath', { levelID: this.dataIdInFocus });
+      return this.deriveFilePath('levelPicPath', { levelID: this.dataIdInFocus });
     },
   },
   methods: {
