@@ -26,7 +26,17 @@ const moduleMutations = {
 const moduleActions = {
   createUser: async ({ commit, dispatch }, userDraft) => {
     const { email } = userDraft;
-    //
+    // TODO arthur
+    dispatch(
+      `${vuexModulesDict.feedback}/showFeedbackForDuration`,
+      {
+        type: 'success',
+        text: i18n.t(`general.operationFeedback.data.success.create`),
+      },
+      {
+        root: true,
+      }
+    );
   },
 };
 
