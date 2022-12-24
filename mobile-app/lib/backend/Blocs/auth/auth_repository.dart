@@ -13,19 +13,29 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
 
 import 'auth_credentials.dart';
 
 class AuthRepository {
-  Future<String?> _getUserIdFromAttributes() async {
-    print("getting attributes");
-
+  Future<String> _getAttribute(String key) async {
     final attributes = await Amplify.Auth.fetchUserAttributes();
-    final userId = attributes
-        .firstWhere((element) => element.userAttributeKey.toString() == 'sub')
-        .value;
-    print("userID from attributes: $userId");
-    return userId;
+    final entry =
+        attributes.firstWhere((element) => element.userAttributeKey.key == key);
+    return Future.value(entry.value);
+  }
+
+  Future<String> _getUserIdFromAttributes() {
+    return _getAttribute("sub");
+  }
+
+  Future<String> _getOrganizationIdFromAttributes() {
+    return _getAttribute("custom:organization_id");
+  }
+
+  Future<void> _rememberUserAttributesLocally() async {
+    final organizaitonID = await _getOrganizationIdFromAttributes();
+    SettingsRepository.instance.organizationID = organizaitonID;
   }
 
   Future<String?> attemptAutoLogin() async {
@@ -83,7 +93,13 @@ class AuthRepository {
       return ("CONFIRM_SIGN_IN_WITH_NEW_PASSWORD");
     }
 
-    return result.isSignedIn ? (await _getUserIdFromAttributes()) : null;
+    if (result.isSignedIn) {
+      final userID = await _getUserIdFromAttributes();
+      await _rememberUserAttributesLocally();
+      return userID;
+    } else {
+      return null;
+    }
   }
 
   Future<AuthCredentials?> updatePasswordInitially(
