@@ -4,6 +4,8 @@
 
 import 'dart:core';
 
+import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
+
 /// -- important --
 ///todo: when integrating into the app the method has to be tested
 ///this was not possible when creating the cluss due to a missing runnable environment
@@ -108,9 +110,17 @@ String dataStorePath(DataStorePaths path, List<String> parameters) {
       filledPath =
           filledPath.replaceAll(replacementParameters[i], parameters[i]);
     }
+
+    filledPath = addOrganizationPrefix(filledPath);
+
     return filledPath;
   } else {
     throw new FormatException(
         "Wrong parameters passed for dataStorePath $path");
   }
+}
+
+String addOrganizationPrefix(String path) {
+  String organizationID = SettingsRepository.instance.organizationID;
+  return "organization/" + organizationID + "/" + path;
 }
