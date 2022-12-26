@@ -1637,95 +1637,6 @@ export const syncExecutedSurveys = /* GraphQL */ `
     }
   }
 `;
-export const executedSurveyBySurveyID = /* GraphQL */ `
-  query ExecutedSurveyBySurveyID(
-    $surveyID: String!
-    $sortDirection: ModelSortDirection
-    $filter: ModelExecutedSurveyFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    executedSurveyBySurveyID(
-      surveyID: $surveyID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        appliedIntervention {
-          isOkay
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          entityAppliedInterventionsId
-          appliedInterventionWhoDidItId
-          appliedInterventionInterventionId
-          organization_id
-        }
-        survey {
-          surveyType
-          schemeVersion
-          archived
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          interventionSurveysId
-          organization_id
-        }
-        surveyID
-        whoExecutedIt {
-          firstName
-          lastName
-          bio
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        date
-        location {
-          latitude
-          longitude
-        }
-        answers {
-          id
-          questionID
-          date
-          type
-          text
-          intValue
-          doubleValue
-          rating
-        }
-        schemeVersion
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        appliedInterventionExecutedSurveysId
-        executedSurveySurveyId
-        executedSurveyWhoExecutedItId
-        organization_id
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const getTask = /* GraphQL */ `
   query GetTask($id: ID!) {
     getTask(id: $id) {
@@ -2036,105 +1947,6 @@ export const syncTasks = /* GraphQL */ `
       limit: $limit
       nextToken: $nextToken
       lastSync: $lastSync
-    ) {
-      items {
-        title
-        text
-        dueDate
-        finishedDate
-        location {
-          latitude
-          longitude
-        }
-        user {
-          firstName
-          lastName
-          bio
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        userID
-        entity {
-          parentEntityID
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          entityLevelId
-          organization_id
-        }
-        appliedIntervention {
-          isOkay
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          entityAppliedInterventionsId
-          appliedInterventionWhoDidItId
-          appliedInterventionInterventionId
-          organization_id
-        }
-        executedSurvey {
-          surveyID
-          date
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          appliedInterventionExecutedSurveysId
-          executedSurveySurveyId
-          executedSurveyWhoExecutedItId
-          organization_id
-        }
-        schemeVersion
-        picIDs
-        audioIDs
-        id
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        taskUserId
-        taskEntityId
-        taskAppliedInterventionId
-        taskExecutedSurveyId
-        organization_id
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const taskByUserID = /* GraphQL */ `
-  query TaskByUserID(
-    $userID: String!
-    $sortDirection: ModelSortDirection
-    $filter: ModelTaskFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    taskByUserID(
-      userID: $userID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
     ) {
       items {
         title
@@ -2783,114 +2595,6 @@ export const syncLevelInterventionRelations = /* GraphQL */ `
     }
   }
 `;
-export const levelInterventionRelationsByLevelId = /* GraphQL */ `
-  query LevelInterventionRelationsByLevelId(
-    $levelId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelLevelInterventionRelationFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    levelInterventionRelationsByLevelId(
-      levelId: $levelId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        levelId
-        interventionId
-        level {
-          parentLevelID
-          interventionsAreAllowed
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        intervention {
-          interventionType
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        organization_id
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const levelInterventionRelationsByInterventionId = /* GraphQL */ `
-  query LevelInterventionRelationsByInterventionId(
-    $interventionId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelLevelInterventionRelationFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    levelInterventionRelationsByInterventionId(
-      interventionId: $interventionId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        levelId
-        interventionId
-        level {
-          parentLevelID
-          interventionsAreAllowed
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        intervention {
-          interventionType
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        organization_id
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const getInterventionContentRelation = /* GraphQL */ `
   query GetInterventionContentRelation($id: ID!) {
     getInterventionContentRelation(id: $id) {
@@ -3027,110 +2731,6 @@ export const syncInterventionContentRelations = /* GraphQL */ `
       limit: $limit
       nextToken: $nextToken
       lastSync: $lastSync
-    ) {
-      items {
-        id
-        interventionId
-        contentId
-        intervention {
-          interventionType
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        content {
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        organization_id
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const interventionContentRelationsByInterventionId = /* GraphQL */ `
-  query InterventionContentRelationsByInterventionId(
-    $interventionId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelInterventionContentRelationFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    interventionContentRelationsByInterventionId(
-      interventionId: $interventionId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        interventionId
-        contentId
-        intervention {
-          interventionType
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        content {
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        organization_id
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const interventionContentRelationsByContentId = /* GraphQL */ `
-  query InterventionContentRelationsByContentId(
-    $contentId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelInterventionContentRelationFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    interventionContentRelationsByContentId(
-      contentId: $contentId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
     ) {
       items {
         id
@@ -3335,110 +2935,6 @@ export const syncInterventionInterventionTagRelations = /* GraphQL */ `
     }
   }
 `;
-export const interventionInterventionTagRelationsByInterventionId = /* GraphQL */ `
-  query InterventionInterventionTagRelationsByInterventionId(
-    $interventionId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelInterventionInterventionTagRelationFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    interventionInterventionTagRelationsByInterventionId(
-      interventionId: $interventionId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        interventionId
-        interventionTagId
-        intervention {
-          interventionType
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        interventionTag {
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        organization_id
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const interventionInterventionTagRelationsByInterventionTagId = /* GraphQL */ `
-  query InterventionInterventionTagRelationsByInterventionTagId(
-    $interventionTagId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelInterventionInterventionTagRelationFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    interventionInterventionTagRelationsByInterventionTagId(
-      interventionTagId: $interventionTagId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        interventionId
-        interventionTagId
-        intervention {
-          interventionType
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        interventionTag {
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        organization_id
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const getContentContentTagRelation = /* GraphQL */ `
   query GetContentContentTagRelation($id: ID!) {
     getContentContentTagRelation(id: $id) {
@@ -3557,108 +3053,6 @@ export const syncContentContentTagRelations = /* GraphQL */ `
       limit: $limit
       nextToken: $nextToken
       lastSync: $lastSync
-    ) {
-      items {
-        id
-        contentId
-        contentTagId
-        content {
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        contentTag {
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        organization_id
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const contentContentTagRelationsByContentId = /* GraphQL */ `
-  query ContentContentTagRelationsByContentId(
-    $contentId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelContentContentTagRelationFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    contentContentTagRelationsByContentId(
-      contentId: $contentId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        contentId
-        contentTagId
-        content {
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        contentTag {
-          schemeVersion
-          id
-          createdAt
-          updatedAt
-          _version
-          _deleted
-          _lastChangedAt
-          organization_id
-        }
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        organization_id
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const contentContentTagRelationsByContentTagId = /* GraphQL */ `
-  query ContentContentTagRelationsByContentTagId(
-    $contentTagId: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelContentContentTagRelationFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    contentContentTagRelationsByContentTagId(
-      contentTagId: $contentTagId
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
     ) {
       items {
         id
@@ -3851,6 +3245,612 @@ export const syncSurveySurveyTagRelations = /* GraphQL */ `
           organization_id
         }
         surveyTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        organization_id
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const executedSurveyBySurveyID = /* GraphQL */ `
+  query ExecutedSurveyBySurveyID(
+    $surveyID: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelExecutedSurveyFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    executedSurveyBySurveyID(
+      surveyID: $surveyID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        appliedIntervention {
+          isOkay
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+          organization_id
+        }
+        survey {
+          surveyType
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+        }
+        surveyID
+        whoExecutedIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        date
+        location {
+          latitude
+          longitude
+        }
+        answers {
+          id
+          questionID
+          date
+          type
+          text
+          intValue
+          doubleValue
+          rating
+        }
+        schemeVersion
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        appliedInterventionExecutedSurveysId
+        executedSurveySurveyId
+        executedSurveyWhoExecutedItId
+        organization_id
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const taskByUserID = /* GraphQL */ `
+  query TaskByUserID(
+    $userID: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelTaskFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    taskByUserID(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        title
+        text
+        dueDate
+        finishedDate
+        location {
+          latitude
+          longitude
+        }
+        user {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        userID
+        entity {
+          parentEntityID
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityLevelId
+          organization_id
+        }
+        appliedIntervention {
+          isOkay
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+          organization_id
+        }
+        executedSurvey {
+          surveyID
+          date
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          appliedInterventionExecutedSurveysId
+          executedSurveySurveyId
+          executedSurveyWhoExecutedItId
+          organization_id
+        }
+        schemeVersion
+        picIDs
+        audioIDs
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        taskUserId
+        taskEntityId
+        taskAppliedInterventionId
+        taskExecutedSurveyId
+        organization_id
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const levelInterventionRelationsByLevelId = /* GraphQL */ `
+  query LevelInterventionRelationsByLevelId(
+    $levelId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelLevelInterventionRelationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    levelInterventionRelationsByLevelId(
+      levelId: $levelId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        levelId
+        interventionId
+        level {
+          parentLevelID
+          interventionsAreAllowed
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        organization_id
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const levelInterventionRelationsByInterventionId = /* GraphQL */ `
+  query LevelInterventionRelationsByInterventionId(
+    $interventionId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelLevelInterventionRelationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    levelInterventionRelationsByInterventionId(
+      interventionId: $interventionId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        levelId
+        interventionId
+        level {
+          parentLevelID
+          interventionsAreAllowed
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        organization_id
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const interventionContentRelationsByInterventionId = /* GraphQL */ `
+  query InterventionContentRelationsByInterventionId(
+    $interventionId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelInterventionContentRelationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    interventionContentRelationsByInterventionId(
+      interventionId: $interventionId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        interventionId
+        contentId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        organization_id
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const interventionContentRelationsByContentId = /* GraphQL */ `
+  query InterventionContentRelationsByContentId(
+    $contentId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelInterventionContentRelationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    interventionContentRelationsByContentId(
+      contentId: $contentId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        interventionId
+        contentId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        organization_id
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const interventionInterventionTagRelationsByInterventionId = /* GraphQL */ `
+  query InterventionInterventionTagRelationsByInterventionId(
+    $interventionId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelInterventionInterventionTagRelationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    interventionInterventionTagRelationsByInterventionId(
+      interventionId: $interventionId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        interventionId
+        interventionTagId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        interventionTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        organization_id
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const interventionInterventionTagRelationsByInterventionTagId = /* GraphQL */ `
+  query InterventionInterventionTagRelationsByInterventionTagId(
+    $interventionTagId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelInterventionInterventionTagRelationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    interventionInterventionTagRelationsByInterventionTagId(
+      interventionTagId: $interventionTagId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        interventionId
+        interventionTagId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        interventionTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        organization_id
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const contentContentTagRelationsByContentId = /* GraphQL */ `
+  query ContentContentTagRelationsByContentId(
+    $contentId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelContentContentTagRelationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    contentContentTagRelationsByContentId(
+      contentId: $contentId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        contentId
+        contentTagId
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        contentTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        organization_id
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const contentContentTagRelationsByContentTagId = /* GraphQL */ `
+  query ContentContentTagRelationsByContentTagId(
+    $contentTagId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelContentContentTagRelationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    contentContentTagRelationsByContentTagId(
+      contentTagId: $contentTagId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        contentId
+        contentTagId
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+        }
+        contentTag {
           schemeVersion
           id
           createdAt
