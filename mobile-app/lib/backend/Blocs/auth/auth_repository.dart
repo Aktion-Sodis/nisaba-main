@@ -14,6 +14,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
+import 'package:mobile_app/services/amplify.dart';
 
 import 'auth_credentials.dart';
 
@@ -43,6 +44,7 @@ class AuthRepository {
       print("trying auto login");
 
       final session = await Amplify.Auth.fetchAuthSession();
+      await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
       print("autoLogin logged in?: ${session.isSignedIn}");
 
       return session.isSignedIn ? (await _getUserIdFromAttributes()) : null;
@@ -96,6 +98,7 @@ class AuthRepository {
     if (result.isSignedIn) {
       final userID = await _getUserIdFromAttributes();
       await _rememberUserAttributesLocally();
+      await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
       return userID;
     } else {
       return null;
