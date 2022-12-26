@@ -12,10 +12,7 @@ from queries import listExecutedSurveys
 
 from collections import defaultdict
 
-gql_client = GraphqlClient(
-    endpoint= os.getenv('APPSYNC_ENDPOINT'),
-    headers={'x-api-key': os.getenv('X_API_KEY')}
-)
+gql_client = GraphqlClient()
 
 def get_intervention_types():
     result = gql_client.execute(
