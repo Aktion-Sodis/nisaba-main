@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
 import 'package:mobile_app/services/amplify.dart';
 
+import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'auth_credentials.dart';
 
 class AuthRepository {
@@ -37,6 +38,30 @@ class AuthRepository {
   Future<void> _rememberUserAttributesLocally() async {
     final organizaitonID = await _getOrganizationIdFromAttributes();
     SettingsRepository.instance.organizationID = organizaitonID;
+  }
+
+  // TODO: rewrite auth section according to bloc logic
+  // As this section does not correspond with block rules, the following method
+  // is temporarily implemented in this ugly style
+  Future<void> _rememberUserOrganization(String organizationID) async {
+    String organizationID = SettingsRepository.instance.organizationID;
+
+    try {
+      final result = await Amplify.DataStore.query(amp.Organization.classType,
+          where: amp.Organization.ID.eq(organizationID));
+
+      amp.Organization organization = result.first;
+      SettingsRepository.instance.organizationNameVerbose =
+          organization.nameVerbose;
+      SettingsRepository.instance.organizationNameKebabCase =
+          organization.nameKebabCase;
+      SettingsRepository.instance.organizationNameCamelCase =
+          organization.nameCamelCase;
+      print("Organization information saved: " +
+          SettingsRepository.instance.organizationNameVerbose.toString());
+    } on DataStoreException catch (e) {
+      // TODO: implement exception handling
+    }
   }
 
   Future<String?> attemptAutoLogin() async {
@@ -99,6 +124,8 @@ class AuthRepository {
       final userID = await _getUserIdFromAttributes();
       await _rememberUserAttributesLocally();
       await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
+      await _rememberUserOrganization(
+          SettingsRepository.instance.organizationID);
       return userID;
     } else {
       return null;

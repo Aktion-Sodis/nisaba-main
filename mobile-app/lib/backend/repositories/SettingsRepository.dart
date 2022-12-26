@@ -24,4 +24,18 @@ class SettingsRepository {
   }
 
   set organizationID(String? value) => _table.put("organizationID", value);
+
+  String? get organizationNameVerbose => _table.get("organizationNameVerbose");
+  set organizationNameVerbose(String? value) =>
+      _table.put("organizationNameVerbose", value);
+
+  String? get organizationNameCamelCase =>
+      _table.get("organizationNameCamelCase");
+  set organizationNameCamelCase(String? value) =>
+      _table.put("organizationNameCamelCase", value);
+
+  String? get organizationNameKebabCase =>
+      _table.get("organizationNameKebabCase");
+  set organizationNameKebabCase(String? value) =>
+      _table.put("organizationNameKebabCase", value);
 }
