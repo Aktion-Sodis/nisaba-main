@@ -28,7 +28,7 @@ class AmplifyApiTest extends StatelessWidget {
     }
   }
 
-  Future<void> _createEntity() async {
+  Future<void> _createLevel() async {
     try {
       final response = await Amplify.API
           .mutate(
@@ -41,6 +41,7 @@ class AmplifyApiTest extends StatelessWidget {
                   customData: [])))
           .response;
       print("SUCCESSFUL");
+      print(response.errors);
     } on ApiException catch (e) {
       safePrint('Mutation failed: $e');
     }
@@ -83,8 +84,8 @@ class AmplifyApiTest extends StatelessWidget {
                 height: 20,
               ),
               ElevatedButton(
-                onPressed: _createEntity,
-                child: const Text("Create entity"),
+                onPressed: _createLevel,
+                child: const Text("Create level"),
               ),
             ],
           ),
