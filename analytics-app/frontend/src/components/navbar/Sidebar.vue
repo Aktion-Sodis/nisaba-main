@@ -5,7 +5,7 @@
         <el-image class="organization-icon" :src="societyLogoSmall" />
       </div>
       <div class="organization-name" :class="{ collapsed: SideBarCollapsed }">
-        {{ societyName }}
+        {{ rememberedOrganizationName.value }}
       </div>
     </div>
     <div class="sidebar-container" :class="{ expanded: !SideBarCollapsed }">
@@ -19,6 +19,7 @@
 <script>
 import { ref } from "vue";
 import { mapState } from "vuex";
+import { rememberedOrganizationName } from '../../local_storage/organization.js';
 
 import NavbarItem from "./NavbarItem.vue";
 import NavbarDropdown from "./NavbarDropdown.vue";
@@ -26,7 +27,7 @@ import NavbarDropdown from "./NavbarDropdown.vue";
 const dashboardsCollapsed = ref(true);
 const dataCollapsed = ref(true);
 
-const societyName = import.meta.env.VITE_APP_SOCIETY_VERBOSE_NAME;
+//const societyName = import.meta.env.VITE_APP_SOCIETY_VERBOSE_NAME;
 const societyLogoSmall = import.meta.env.VITE_APP_LOGO_SMALL_SRC;
 
 export default {
@@ -49,7 +50,7 @@ export default {
   },
   data() {
     return {
-      societyName,
+      rememberedOrganizationName,
       societyLogoSmall,
       home: {
         name: "Home",

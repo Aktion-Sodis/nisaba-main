@@ -93,7 +93,10 @@ import LanguageSelector from "../../components/commons/LanguageSelector.vue";
 
 const backgroundImage = import.meta.env.VITE_APP_LOGIN_BACKGROUND_IMAGE_SRC;
 
-import { Auth } from "aws-amplify";
+import { Auth, DataStore } from "aws-amplify";
+import { Organization } from '../../models';
+import { rememberOrganization } from '../../local_storage/organization.js';
+
 export default {
   name: "Login",
   components: {
@@ -103,6 +106,11 @@ export default {
     async login() {
       try {
         const user = await Auth.signIn(this.email, this.password);
+        const organizationID = user["attributes"]["custom:organization_id"]
+        
+        // Save the organization name locally
+        const apiOrganization = await DataStore.query(Organization, organizationID);
+        rememberOrganization(apiOrganization)
       } catch (error) {
         alert(error.message);
       }
