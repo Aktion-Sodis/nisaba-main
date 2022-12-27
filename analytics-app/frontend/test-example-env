@@ -14,9 +14,9 @@ VITE_APP_SOCIETY_ITEM_HOVER_COLOR=""
 ## image paths
 
 VITE_APP_LOGO_BIG=""
-VITE_APP_LOGO_SMALL_SRC=""
-VITE_APP_LOGO_ICON_SRC=
-VITE_APP_LOGIN_BACKGROUND_IMAGE_SRC=""
+VITE_APP_LOGO_SMALL_SRC="/src/static/NisabaSmall.png"
+VITE_APP_LOGO_ICON_SRC="/public/favicon.ico"
+VITE_APP_LOGIN_BACKGROUND_IMAGE_SRC="/src/static/colleagues.jpg"
 
 ## backend base url
 
