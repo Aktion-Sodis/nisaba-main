@@ -19,8 +19,19 @@ import 'element-plus/dist/index.css';
 import AmplifyVue from '@aws-amplify/ui-vue';
 import '@aws-amplify/ui-vue'
 
-import { Amplify } from 'aws-amplify';
+import { Amplify, Auth } from 'aws-amplify';
 import awsExports from './aws-exports';
+
+awsExports.graphql_headers = async () => {
+  try {
+    const token = (await Auth.currentSession()).idToken.jwtToken;
+    return { Authorization: token }
+  }
+  catch (e) {
+      console.error(e);
+      return {};
+  }
+}
 Amplify.configure(awsExports);
 
 const app = createApp(App);
