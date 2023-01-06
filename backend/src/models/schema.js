@@ -54,6 +54,22 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -1294,15 +1310,6 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "gsi-Entity.appliedInterventions",
-                        "fields": [
-                            "entityAppliedInterventionsId"
-                        ]
-                    }
                 },
                 {
                     "type": "auth",
@@ -2761,6 +2768,6 @@ export const schema = {
             }
         }
     },
-    "codegenVersion": "3.3.2",
+    "codegenVersion": "3.3.1",
     "version": "2161272b038905461bb600c14b4081b4"
 };

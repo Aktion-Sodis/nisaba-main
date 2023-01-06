@@ -115,18 +115,18 @@
       "output": {
         "authConfig": {
           "defaultAuthentication": {
-            "authenticationType": "API_KEY",
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 120,
-              "apiKeyExpirationDate": "2023-04-13T12:06:27.956Z",
-              "description": "Nisaba API Key"
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authauthnisaba"
             }
           },
           "additionalAuthenticationProviders": [
             {
-              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "userPoolConfig": {
-                "userPoolId": "authauthnisaba"
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 120,
+                "apiKeyExpirationDate": "2023-04-24T21:56:53.757Z",
+                "description": "Nisaba API Key"
               }
             }
           ]

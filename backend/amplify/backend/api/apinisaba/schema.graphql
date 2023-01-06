@@ -10,7 +10,7 @@ type I18nString {
   languageTexts: [String!]!
 } 
 
-type Organization @model {
+type Organization @model @auth(rules: [{allow: private, }]) {
     nameCamelCase: String!
     nameKebabCase: String!
     nameVerbose: String!
