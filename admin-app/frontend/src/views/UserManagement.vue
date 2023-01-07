@@ -60,9 +60,10 @@ export default {
         return;
       }
       this.loading = true;
-      const res = await this.createUser(`${vuexModulesDict.user}/sendInvitation`, {
+      await this.createUser({
         email: this.email,
       });
+      this.loading = false;
     },
   },
 };

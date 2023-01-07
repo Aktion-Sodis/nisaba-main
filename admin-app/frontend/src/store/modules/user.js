@@ -24,7 +24,7 @@ const moduleMutations = {
 
 /** @type {import("vuex").ActionTree<typeof moduleState>} */
 const moduleActions = {
-  createUser: async ({ commit, dispatch }, userDraft) => {
+  createUser: async ({ dispatch }, userDraft) => {
     const { email } = userDraft;
     // TODO arthur
     dispatch(
