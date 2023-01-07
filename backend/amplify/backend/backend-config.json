@@ -75,6 +75,25 @@
           ]
         }
       ]
+    },
+    "nisabaAdminSdkLayer": {
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer",
+      "build": true
+    },
+    "nisabaUserManagement": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "nisabaAdminSdkLayer",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
     }
   },
   "api": {

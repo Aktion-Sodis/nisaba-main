@@ -29,6 +29,9 @@ export type AmplifyDependentResourcesAttributes = {
             "Arn": "string",
             "Region": "string",
             "LambdaExecutionRole": "string"
+        },
+        "nisabaAdminSdkLayer": {
+            "Arn": "string"
         }
     },
     "api": {
