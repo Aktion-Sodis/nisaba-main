@@ -241,7 +241,9 @@
   },
   "userManagement": {
     "title": "Gestión de usuarios",
-    "sendInvitation": "Enviar invitación"
+    "sendInvitation": "Enviar invitación",
+    "successfulSentInvitation" : "Se ha enviado una invitación con éxito al correo electrónico",
+    "emailAlreadyInUse": "Este correo electrónico ya está en uso"
   },
   "surveys": {
     "title": "Encuestas",

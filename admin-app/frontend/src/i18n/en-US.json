@@ -241,7 +241,9 @@
   },
   "userManagement": {
     "title": "User Management",
-    "sendInvitation": "Send Invitation"
+    "sendInvitation": "Send Invitation",
+    "successfulSentInvitation" : "An invitation has been successfully sent to the email",
+    "emailAlreadyInUse": "This email is already in use"
   },
   "surveys": {
     "title": "Surveys",

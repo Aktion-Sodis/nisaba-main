@@ -241,7 +241,9 @@
   },
   "userManagement": {
     "title": "Kullanıcı Yönetimi",
-    "sendInvitation": "Davetiye Gönder"
+    "sendInvitation": "Davetiye Gönder",
+    "successfulSentInvitation" : "E-posta adresine bir davetiyenin başarıyla gönderildi",
+    "emailAlreadyInUse": "Bu e-posta zaten kullanımda"
   },
   "surveys": {
     "title": "Anketler",

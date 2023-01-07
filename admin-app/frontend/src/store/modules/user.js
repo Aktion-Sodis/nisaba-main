@@ -1,9 +1,7 @@
-import { Auth, API, graphqlOperation } from 'aws-amplify';
-import { getUser } from '../../graphql/queries';
-import { createUser } from '../../graphql/mutations';
+import { Auth, API } from 'aws-amplify';
 
 import i18n from '../../i18n';
-import { authChallengeNamesDict, signInStatusDict, vuexModulesDict } from '../../lib/constants';
+import { vuexModulesDict } from '../../lib/constants';
 
 /** @type {{isAuthenticated: boolean}} */
 const moduleState = {
@@ -26,17 +24,59 @@ const moduleMutations = {
 const moduleActions = {
   createUser: async ({ dispatch }, userDraft) => {
     const { email } = userDraft;
-    // TODO arthur
-    dispatch(
-      `${vuexModulesDict.feedback}/showFeedbackForDuration`,
-      {
-        type: 'success',
-        text: i18n.t(`general.operationFeedback.data.success.create`),
-      },
-      {
-        root: true,
+
+    // console log the id token
+    const { idToken } = await Auth.currentSession();
+    const { jwtToken } = idToken;
+
+    try {
+      // Call the API `nisabaUserManagementApi` to create a user and pass the email as a parameter
+      await API.post('nisabaUserManagementApi', '/users', {
+        headers: { Authorization: `Bearer ${jwtToken}` },
+        body: { email },
+      });
+
+      // Show a success message
+      dispatch(
+        `${vuexModulesDict.feedback}/showFeedbackForDuration`,
+        {
+          type: 'success',
+          text: i18n.t('userManagement.successfulSentInvitation'),
+        },
+        {
+          root: true,
+        },
+      );
+    } catch (e) {
+      const { data } = e.response;
+      const { error } = data;
+
+      if (error === 'UsernameExistsException') {
+        // Show an error message
+        dispatch(
+          `${vuexModulesDict.feedback}/showFeedbackForDuration`,
+          {
+            type: 'error',
+            text: i18n.t('userManagement.emailAlreadyInUse'),
+          },
+          {
+            root: true,
+          },
+        );
+      } else {
+        // Show a general error message
+        dispatch(
+          `${vuexModulesDict.feedback}/showFeedbackForDuration`,
+          {
+            type: 'error',
+            text: i18n.t('general.operationFeedback.data.error.create'),
+          },
+          {
+            root: true,
+          },
+        );
       }
-    );
+    }
   },
 };
 
