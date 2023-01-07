@@ -1,5 +1,14 @@
 {
-  "permissions": {},
+  "permissions": {
+    "auth": {
+      "authnisaba": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
   "lambdaLayers": [
     {
       "type": "ProjectLayer",
@@ -9,10 +18,5 @@
       "isLatestVersionSelected": true
     }
   ],
-  "environmentVariableList": [
-    {
-      "cloudFormationParameterName": "apiKey",
-      "environmentVariableName": "API_KEY"
-    }
-  ]
+  "environmentVariableList": []
 }

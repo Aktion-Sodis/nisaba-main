@@ -32,6 +32,12 @@ export type AmplifyDependentResourcesAttributes = {
         },
         "nisabaAdminSdkLayer": {
             "Arn": "string"
+        },
+        "nisabaUserManagement": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string"
         }
     },
     "api": {
@@ -44,6 +50,11 @@ export type AmplifyDependentResourcesAttributes = {
             "GraphQLAPIKeyOutput": "string",
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
+        },
+        "nisabaUserManagementApi": {
+            "RootUrl": "string",
+            "ApiName": "string",
+            "ApiId": "string"
         }
     },
     "storage": {
