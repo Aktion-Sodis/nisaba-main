@@ -82,29 +82,27 @@ export default {
       }
 
       this.loading = true;
-      try {
-        const signInStatus = await this.completeUserInformation({
-          firstName: this.firstName,
-          lastName: this.lastName,
-          newPassword: this.password,
-        });
-        if (signInStatus === signInStatusDict.success) {
-          this.$router.push({ name: routeNamesDict.OrganizationStructure });
-          return;
-        }
-        if (signInStatus === signInStatusDict.failed) {
-          this.showFeedbackForDuration({
-            type: typesDictionary.error,
-            text: this.$t('general.errorCodes.InternalErrorException'),
-          });
-          return;
-        }
-        if (signInStatus === signInStatusDict.completeUserInfo) {
-          this.$router.push({ name: routeNamesDict.CompleteUserInfo });
-        }
-      } catch (error) {
-        this.loading = false;
+      const signInStatus = await this.completeUserInformation({
+        firstName: this.firstName,
+        lastName: this.lastName,
+        newPassword: this.password,
+      });
+
+      if (signInStatus === signInStatusDict.success) {
+        this.$router.push({ name: routeNamesDict.OrganizationStructure });
+        return;
       }
+      if (signInStatus === signInStatusDict.failed) {
+        this.showFeedbackForDuration({
+          type: typesDictionary.error,
+          text: this.$t('general.errorCodes.InternalErrorException'),
+        });
+        return;
+      }
+      if (signInStatus === signInStatusDict.completeUserInfo) {
+        this.$router.push({ name: routeNamesDict.CompleteUserInfo });
+      }
+      
     },
   },
 };

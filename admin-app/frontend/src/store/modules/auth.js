@@ -170,9 +170,8 @@ const authModule = {
         return signInStatusDict.failed;
       }
 
-      const user = await Auth.currentAuthenticatedUser();
-
       try {
+        const user = await Auth.currentAuthenticatedUser();
         await Auth.updateUserAttributes(user, {
           given_name: firstName,
           family_name: lastName,
