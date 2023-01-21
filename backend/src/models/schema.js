@@ -1312,6 +1312,15 @@ export const schema = {
                     "properties": {}
                 },
                 {
+                    "type": "key",
+                    "properties": {
+                        "name": "gsi-Entity.appliedInterventions",
+                        "fields": [
+                            "entityAppliedInterventionsId"
+                        ]
+                    }
+                },
+                {
                     "type": "auth",
                     "properties": {
                         "rules": [
@@ -2768,6 +2777,6 @@ export const schema = {
             }
         }
     },
-    "codegenVersion": "3.3.1",
+    "codegenVersion": "3.3.5",
     "version": "2161272b038905461bb600c14b4081b4"
 };
