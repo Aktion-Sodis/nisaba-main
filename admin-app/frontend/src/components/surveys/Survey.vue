@@ -31,7 +31,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import { dataTypesDict, vuexModulesDict } from '../../lib/constants';
-import { deriveFilePath } from '../../lib/utils';
 import ImgFromS3 from '../commons/ImgFromS3.vue';
 
 export default {
@@ -67,9 +66,10 @@ export default {
     ...mapGetters({
       tagById: `${vuexModulesDict.survey}/tagById`,
       calculateUILocaleString: 'calculateUILocaleString',
+      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
     }),
     deriveImgPath() {
-      return deriveFilePath('interventionSurveyPicPath', {
+      return this.deriveFilePath('interventionSurveyPicPath', {
         interventionID: this.interventionId,
         surveyId: this.id,
       });

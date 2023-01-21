@@ -13,19 +13,55 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
+import 'package:mobile_app/services/amplify.dart';
 
+import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'auth_credentials.dart';
 
 class AuthRepository {
-  Future<String?> _getUserIdFromAttributes() async {
-    print("getting attributes");
-
+  Future<String> _getAttribute(String key) async {
     final attributes = await Amplify.Auth.fetchUserAttributes();
-    final userId = attributes
-        .firstWhere((element) => element.userAttributeKey.toString() == 'sub')
-        .value;
-    print("userID from attributes: $userId");
-    return userId;
+    final entry =
+        attributes.firstWhere((element) => element.userAttributeKey.key == key);
+    return Future.value(entry.value);
+  }
+
+  Future<String> _getUserIdFromAttributes() {
+    return _getAttribute("sub");
+  }
+
+  Future<String> _getOrganizationIdFromAttributes() {
+    return _getAttribute("custom:organization_id");
+  }
+
+  Future<void> _rememberUserAttributesLocally() async {
+    final organizaitonID = await _getOrganizationIdFromAttributes();
+    SettingsRepository.instance.organizationID = organizaitonID;
+  }
+
+  // TODO: rewrite auth section according to bloc logic
+  // As this section does not correspond with block rules, the following method
+  // is temporarily implemented in this ugly style
+  Future<void> _rememberUserOrganization(String organizationID) async {
+    String organizationID = SettingsRepository.instance.organizationID;
+
+    try {
+      final result = await Amplify.DataStore.query(amp.Organization.classType,
+          where: amp.Organization.ID.eq(organizationID));
+
+      amp.Organization organization = result.first;
+      SettingsRepository.instance.organizationNameVerbose =
+          organization.nameVerbose;
+      SettingsRepository.instance.organizationNameKebabCase =
+          organization.nameKebabCase;
+      SettingsRepository.instance.organizationNameCamelCase =
+          organization.nameCamelCase;
+      print("Organization information saved: " +
+          SettingsRepository.instance.organizationNameVerbose.toString());
+    } on DataStoreException catch (e) {
+      // TODO: implement exception handling
+    }
   }
 
   Future<String?> attemptAutoLogin() async {
@@ -33,6 +69,7 @@ class AuthRepository {
       print("trying auto login");
 
       final session = await Amplify.Auth.fetchAuthSession();
+      await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
       print("autoLogin logged in?: ${session.isSignedIn}");
 
       return session.isSignedIn ? (await _getUserIdFromAttributes()) : null;
@@ -83,7 +120,16 @@ class AuthRepository {
       return ("CONFIRM_SIGN_IN_WITH_NEW_PASSWORD");
     }
 
-    return result.isSignedIn ? (await _getUserIdFromAttributes()) : null;
+    if (result.isSignedIn) {
+      final userID = await _getUserIdFromAttributes();
+      await _rememberUserAttributesLocally();
+      await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
+      await _rememberUserOrganization(
+          SettingsRepository.instance.organizationID);
+      return userID;
+    } else {
+      return null;
+    }
   }
 
   Future<AuthCredentials?> updatePasswordInitially(

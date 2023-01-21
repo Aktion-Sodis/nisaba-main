@@ -5,6 +5,7 @@ import i18n from '../i18n';
 
 // import modules
 import authModule from './modules/auth';
+import userModule from './modules/user';
 import interventionsData from './modules/interventionData';
 import survey from './modules/survey';
 import QUESTION_UI from './modules/questionUI';
@@ -15,11 +16,13 @@ import entitiesData from './modules/entity';
 import dataModal from './modules/dataModal';
 import SYNC_UI from './modules/syncUI';
 import { vuexModulesDict } from '../lib/constants';
+import { deriveFilePath } from '../lib/utils';
+import organizationModule from './modules/organization';
 
 // persist
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
-  modules: ['auth'],
+  modules: [vuexModulesDict.auth, vuexModulesDict.organization],
 });
 
 Vue.use(Vuex);
@@ -38,14 +41,27 @@ export default new Vuex.Store({
     uiLocaleIndex: () => i18n.availableLocales.findIndex((l) => l === i18n.locale),
 
     calculateLocalizedString:
-      (_, { fallbackLocaleIndex }) => ({ languageTexts }) => languageTexts[fallbackLocaleIndex] || i18n.t('general.noTextProvided'),
+      (_, { fallbackLocaleIndex }) =>
+      ({ languageTexts }) =>
+        languageTexts[fallbackLocaleIndex] || i18n.t('general.noTextProvided'),
 
     // For the localization, you will most probably only need this getter and no other! Please don't consider using the others.
     calculateUILocaleString:
-      (_, { uiLocaleIndex, calculateLocalizedString }) => ({ languageTexts }) => languageTexts[uiLocaleIndex] || calculateLocalizedString({ languageTexts }),
+      (_, { uiLocaleIndex, calculateLocalizedString }) =>
+      ({ languageTexts }) =>
+        languageTexts[uiLocaleIndex] || calculateLocalizedString({ languageTexts }),
 
     calculateIndexByLocale:
-      () => ({ locale }) => i18n.availableLocales.findIndex((l) => l === locale),
+      () =>
+      ({ locale }) =>
+        i18n.availableLocales.findIndex((l) => l === locale),
+
+    callDeriveFilePathWithOrganizationId:
+      (state, getters, rootState, rootGetters) => (arg1, arg2) => {
+        const organizationId = rootGetters[`${vuexModulesDict.auth}/getOrganizationId`];
+        console.log(organizationId);
+        return deriveFilePath(organizationId, arg1, arg2);
+      },
   },
   mutations: {
     setCreatingEntityInLevelId: (state, { id }) => {
@@ -71,6 +87,8 @@ export default new Vuex.Store({
     [vuexModulesDict.question]: QUESTION_UI,
     [vuexModulesDict.feedback]: FEEDBACK_UI,
     [vuexModulesDict.sync]: SYNC_UI,
+    [vuexModulesDict.user]: userModule,
+    [vuexModulesDict.organization]: organizationModule,
   },
   plugins: [vuexLocal.plugin],
 });

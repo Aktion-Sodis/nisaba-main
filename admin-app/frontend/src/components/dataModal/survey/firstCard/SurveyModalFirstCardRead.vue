@@ -115,7 +115,6 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import ImgFromS3 from '../../../commons/ImgFromS3.vue';
-import { deriveFilePath } from '../../../../lib/utils';
 import { SurveyType } from '../../../../models';
 
 export default {
@@ -138,12 +137,13 @@ export default {
       calculateUILocaleString: 'calculateUILocaleString',
       INTERVENTIONById: 'INTERVENTION_Data/INTERVENTIONById',
       interventions: 'INTERVENTION_Data/getInterventions',
+      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
     }),
     surveyInFocus() {
       return this.SURVEYById({ id: this.dataIdInFocus });
     },
     deriveImgPath() {
-      return deriveFilePath('interventionSurveyPicPath', {
+      return this.deriveFilePath('interventionSurveyPicPath', {
         interventionID: this.surveyInFocus.intervention.id,
         surveyID: this.dataIdInFocus,
       });

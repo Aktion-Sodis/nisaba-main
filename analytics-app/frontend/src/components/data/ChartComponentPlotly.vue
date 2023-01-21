@@ -5,10 +5,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import { getRequest } from '../../backend/backend-api.js';
 import Plotly from "plotly.js-dist";
-
-const backendURL = import.meta.env.VITE_APP_BACKEND_URL;
 
 export default {
   setup() {
@@ -19,9 +17,7 @@ export default {
   },
   methods: {
     init() {
-      const path = this.backendURL + "/graphdata";
-      axios
-        .get(path)
+      getRequest("/graphdata")
         .then((res) => {
           var data = res.data.data;
 

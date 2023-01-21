@@ -64,7 +64,7 @@
 import { ref } from "vue";
 import { mapState, mapMutations, mapGetters } from "vuex";
 
-import axios from "axios";
+import { getRequest } from '../../backend/backend-api.js';
 
 import "element-plus/theme-chalk/display.css";
 
@@ -136,10 +136,7 @@ export default {
       "setSelectedSurveyID",
     ]),
     getInterventionTypes() {
-      // const path = "http://127.0.0.1:5000/getInterventionTypes";
-      const path = this.backendURL + "/getInterventionTypes";
-      axios
-        .get(path)
+      getRequest("/getInterventionTypes")
         .then((res) => {
           this.interventionTypes = res.data.inteventionTypes;
           // console.log(this.interventionTypes);
@@ -150,10 +147,7 @@ export default {
         });
     },
     getInterventions() {
-      // const path = "http://127.0.0.1:5000/getInterventions";
-      const path = this.backendURL + "/getInterventions";
-      axios
-        .get(path)
+      getRequest("/getInterventions")
         .then((res) => {
           this.interventions = res.data.interventions;
           // console.log(this.interventions);
@@ -164,10 +158,7 @@ export default {
         });
     },
     getSurveys() {
-      // const path = "http://127.0.0.1:5000/getSurveys";
-      const path = this.backendURL + "/getSurveys";
-      axios
-        .get(path)
+      getRequest("/getSurveys")
         .then((res) => {
           this.surveys = res.data.surveys;
           // console.log(this.surveys);

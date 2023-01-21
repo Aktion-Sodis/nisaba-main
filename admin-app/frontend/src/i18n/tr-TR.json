@@ -23,7 +23,8 @@
       "addInNewLocale": "Başka bir dilde",
       "invalidForm": "Geçersiz form. Lütfen girdilerin uyarılarına dikkat ediniz.",
       "invalidNumber": "Geçersiz sayı.",
-      "cannotDeleteEntityWithChildren": "Bu öğeyi silemezsiniz. Lütfen önce alt öğeleri siliniz."
+      "cannotDeleteEntityWithChildren": "Bu öğeyi silemezsiniz. Lütfen önce alt öğeleri siliniz.",
+      "email": "Geçersiz e-posta adresi."
     },
     "noTextProvided": "Buraya bir metin girilmemiş.",
     "noNumberProvided": "Buraya bir sayı girilmemiş.",
@@ -38,7 +39,8 @@
       "ChangePassword": "Şifre Değiştir",
       "ForgotPassword": "Şifremi Unuttum",
       "About": "Hakkımızda",
-      "Surveys": "Anketler"
+      "Surveys": "Anketler",
+      "UserManagement": "Kullanıcı Yönetimi"
     },
     "errorCodes": {
       "InternalErrorException": "Bir dahili hata oluştu. Lütfen daha sonra tekrar deneyin. Hata Kodu: 6001",
@@ -236,6 +238,12 @@
       "noVideos": "Henüz hiç video yüklenmemiş.",
       "noSurveys": "Henüz hiç anket yüklenmemiş."
     }
+  },
+  "userManagement": {
+    "title": "Kullanıcı Yönetimi",
+    "sendInvitation": "Davetiye Gönder",
+    "successfulSentInvitation" : "E-posta adresine bir davetiyenin başarıyla gönderildi",
+    "emailAlreadyInUse": "Bu e-posta zaten kullanımda"
   },
   "surveys": {
     "title": "Anketler",

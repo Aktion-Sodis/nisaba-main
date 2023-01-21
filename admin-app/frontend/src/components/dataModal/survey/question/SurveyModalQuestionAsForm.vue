@@ -256,7 +256,7 @@ import {
 } from '../../../../lib/classes';
 import { modalModesDict, questionTypesIconDict, vuexModulesDict } from '../../../../lib/constants';
 // eslint-disable-next-line import/named
-import { compareI18nStrings, deriveFilePath } from '../../../../lib/utils';
+import { compareI18nStrings } from '../../../../lib/utils';
 
 import LocaleTextBox from '../../../commons/form/LocaleTextBox.vue';
 import FileInput from '../../../commons/form/FileInput.vue';
@@ -313,6 +313,7 @@ export default {
 
       calculateUILocaleString: 'calculateUILocaleString',
       fallbackLocaleIndex: 'fallbackLocaleIndex',
+      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
     }),
     surveyInFocus() {
       return this.SURVEYById({ id: this.dataIdInFocus });
@@ -332,9 +333,10 @@ export default {
         if (this.options.length !== this.optionsCurrentDraft.length) return true;
         if (
           this.options.filter(
-            (a, i) => !compareI18nStrings(a.text, this.optionsCurrentDraft[i].text),
+            (a, i) => !compareI18nStrings(a.text, this.optionsCurrentDraft[i].text)
           ).length > 0
-        ) return true;
+        )
+          return true;
       }
       return false;
     },
@@ -349,10 +351,10 @@ export default {
     },
     canSave() {
       return (
-        (!this.areAnswersNeeded
-          || (this.options.length > 0
-            && !this.options.find((a) => a.text[this.fallbackLocaleIndex] === '')))
-        && (!(this.questionCurrentDraft.isEmptyQuestion ?? true) || this.areThereChanges)
+        (!this.areAnswersNeeded ||
+          (this.options.length > 0 &&
+            !this.options.find((a) => a.text[this.fallbackLocaleIndex] === ''))) &&
+        (!(this.questionCurrentDraft.isEmptyQuestion ?? true) || this.areThereChanges)
       );
     },
     canFinalize() {
@@ -368,7 +370,7 @@ export default {
       return this.options.length >= maxNOptions;
     },
     deriveImgPath() {
-      return deriveFilePath('questionPicPath', {
+      return this.deriveFilePath('questionPicPath', {
         interventionID: this.surveyInFocus.intervention.id,
         surveyID: this.dataIdInFocus,
         questionID: this.surveyInFocus.questions[this.iQuestions].id,

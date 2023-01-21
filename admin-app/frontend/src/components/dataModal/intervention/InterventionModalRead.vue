@@ -88,7 +88,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { deriveFilePath } from '../../../lib/utils';
 import { InterventionType } from '../../../models';
 
 import ImgFromS3 from '../../commons/ImgFromS3.vue';
@@ -111,12 +110,13 @@ export default {
       dataIdInFocus: 'dataModal/getDataIdInFocus',
       INTERVENTIONById: 'INTERVENTION_Data/INTERVENTIONById',
       calculateUILocaleString: 'calculateUILocaleString',
+      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
     }),
     interventionInFocus() {
       return this.INTERVENTIONById({ id: this.dataIdInFocus });
     },
     deriveImgPath() {
-      return deriveFilePath('interventionPicPath', { interventionID: this.dataIdInFocus });
+      return this.deriveFilePath('interventionPicPath', { interventionID: this.dataIdInFocus });
     },
     technology() {
       return InterventionType.TECHNOLOGY;
