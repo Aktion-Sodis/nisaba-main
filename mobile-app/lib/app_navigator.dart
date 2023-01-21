@@ -17,6 +17,7 @@ import 'package:mobile_app/backend/repositories/ContentRepository.dart';
 import 'package:mobile_app/backend/repositories/SurveyRepository.dart';
 import 'package:mobile_app/backend/repositories/TaskRepository.dart';
 import 'package:mobile_app/backend/repositories/UserRepository.dart';
+import 'package:mobile_app/frontend/components/sync_trigger.dart';
 import 'package:mobile_app/frontend/pages/loading_view.dart';
 import 'package:mobile_app/frontend/pages/login_view.dart';
 import 'package:mobile_app/frontend/pages/main_menu.dart';
@@ -122,9 +123,10 @@ class AppNavigator extends StatelessWidget {
                                                             userBloc:
                                                                 context.read<
                                                                     UserBloc>()),
-                                                        child: BlocBuilder<
-                                                            OrganizationViewBloc,
-                                                            OrganizationViewState>(
+                                                        child: SyncTrigger(
+                                                            child: BlocBuilder<
+                                                                OrganizationViewBloc,
+                                                                OrganizationViewState>(
                                                           builder: (context,
                                                                   orgState) =>
                                                               BlocBuilder<
@@ -154,7 +156,7 @@ class AppNavigator extends StatelessWidget {
                                                                       Container());
                                                             }
                                                           }),
-                                                        ))),
+                                                        )))),
                                           ))))
 
                         ///hier beginnt der beef/App-Inhalt

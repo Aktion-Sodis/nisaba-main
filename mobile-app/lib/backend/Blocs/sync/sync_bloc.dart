@@ -33,7 +33,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     required this.userBloc,
   }) : super(PrepareSyncState()) {
     on<SyncEvent>(_mapEventToState);
-    fulfillSync();
+    fulfillSync(true);
   }
 
   void _mapEventToState(SyncEvent event, Emitter<SyncState> emit) async {
@@ -64,7 +64,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     }
   }
 
-  void fulfillSync() async {
+  void fulfillSync(bool filesSyncEnabled) async {
     InternetConnectionType internetConnectionType =
         await StorageRepository.currentInternetConnectionType();
     if (SettingsRepository.instance.wifiOnly &&
@@ -226,13 +226,16 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
         }
       }
     }
-    syncLevels(allLevels);
-    syncInterventions(allInterventions);
-    syncTasks(allTasksToSync);
-    syncContents(allContents);
-    syncEntities(allEntities);
-    if (userBloc.state.user != null) {
-      syncUser(userBloc.state.user!);
+
+    if (filesSyncEnabled) {
+      syncLevels(allLevels);
+      syncInterventions(allInterventions);
+      syncTasks(allTasksToSync);
+      syncContents(allContents);
+      syncEntities(allEntities);
+      if (userBloc.state.user != null) {
+        syncUser(userBloc.state.user!);
+      }
     }
   }
 
