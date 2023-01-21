@@ -93,7 +93,7 @@
 <script>
 import { ref } from "vue";
 import { mapState } from "vuex";
-import axios from "axios";
+import { getRequest } from '../../backend/backend-api.js';
 
 import "element-plus/theme-chalk/display.css";
 
@@ -185,10 +185,7 @@ export default {
       this.surveyID = this.selectedSurveyID;
       console.log(this.surveyID);
       // this.surveyID = "6b3175ea-e2b8-44a9-9836-99e71c2001ac";
-      const path =
-        this.backendURL + "/getExecutedSurveysByID?SurveyID=" + this.surveyID;
-      axios
-        .get(path)
+      getRequest("/getExecutedSurveysByID",{SurveyID: this.surveyID})
         .then((res) => {
           this.surveyData = res.data.executedSurveys;
           this.selectQuestion(this.surveyData[0]);
