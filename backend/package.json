@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "create-organization": "node ./src/create-organization.mjs"
+    "create-organization": "node ./src/create-organization.mjs",
+    "complete-new-password": "node ./src/complete-new-password.mjs"
   },
   "author": "apolat2000",
   "license": "ISC",
