@@ -23,7 +23,8 @@
       "addInNewLocale": "In another language",
       "invalidForm": "The form is invalid. Please pay attention to warnings of inputs.",
       "invalidNumber": "This is an invalid number.",
-      "cannotDeleteEntityWithChildren": "This entity has children and cannot be deleted."
+      "cannotDeleteEntityWithChildren": "This entity has children and cannot be deleted.",
+      "email": "This is an invalid email address."
     },
     "noTextProvided": "No text was provided.",
     "noNumberProvided": "No number was provided.",
@@ -38,7 +39,8 @@
       "ChangePassword": "Change password",
       "ForgotPassword": "Forgot password",
       "About": "About",
-      "Surveys": "Surveys"
+      "Surveys": "Surveys",
+      "UserManagement": "User Management"
     },
     "errorCodes": {
       "InternalErrorException": "An internal error has occurred. Please try again later. Error Code: 6001",
@@ -236,6 +238,12 @@
       "noVideos": "No videos uploaded.",
       "noSurveys": "No surveys uploaded."
     }
+  },
+  "userManagement": {
+    "title": "User Management",
+    "sendInvitation": "Send Invitation",
+    "successfulSentInvitation" : "An invitation has been successfully sent to the email",
+    "emailAlreadyInUse": "This email is already in use"
   },
   "surveys": {
     "title": "Surveys",

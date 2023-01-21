@@ -131,8 +131,6 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { questionTypesIconDict } from '../../../../lib/constants';
-// eslint-disable-next-line import/named
-import { deriveFilePath } from '../../../../lib/utils';
 
 import ImgFromS3 from '../../../commons/ImgFromS3.vue';
 
@@ -156,6 +154,7 @@ export default {
 
       calculateUILocaleString: 'calculateUILocaleString',
       fallbackLocaleIndex: 'fallbackLocaleIndex',
+      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
     }),
     nQuestions() {
       return this.surveyInFocus.questions.length;
@@ -170,7 +169,7 @@ export default {
       return this.iQuestions === this.nQuestions - 1;
     },
     deriveImgPath() {
-      return deriveFilePath('questionPicPath', {
+      return this.deriveFilePath('questionPicPath', {
         interventionID: this.surveyInFocus.intervention.id,
         surveyID: this.dataIdInFocus,
         questionID: this.surveyInFocus.questions[this.iQuestions].id,

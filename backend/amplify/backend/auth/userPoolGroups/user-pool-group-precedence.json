@@ -1,0 +1,18 @@
+[
+  {
+    "groupName": "superadmin",
+    "precedence": 1
+  },
+  {
+    "groupName": "admin",
+    "precedence": 2
+  },
+  {
+    "groupName": "mobile",
+    "precedence": 3
+  },
+  {
+    "groupName": "analytics",
+    "precedence": 4
+  }
+]

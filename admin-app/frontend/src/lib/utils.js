@@ -12,13 +12,14 @@ export const formValidators = {
     return value.length >= process.env.VUE_APP_MIN_PASSWORD_LENGTH || minCharI18n;
   },
   notEmpty: (value) => !value || value.replace(/ /g, '') !== '' || i18n.t('general.form.required'),
+  isEmail: (value) => /.+@.+\..+/.test(value) || i18n.t('general.form.email'),
 };
 
 /* eslint-disable-next-line no-unused-vars */
-export const deriveFilePath = (wantedDerivative, paramsObj) => {
+export const deriveFilePath = (organizationId, wantedDerivative, paramsObj) => {
   const derivative = databaseOntologies[wantedDerivative];
   if (Object.keys(paramsObj).length !== derivative.toBeReplaced.length) return -1;
-  let res = derivative.path;
+  let res = `organization/${organizationId}/${derivative.path}`;
 
   Object.keys(paramsObj).forEach((k, i) => {
     res = res.replace(derivative.toBeReplaced[i], paramsObj[k]);
@@ -35,4 +36,5 @@ export const compareI18nStrings = (a, b) => {
   return true;
 };
 
-export const waitForMilliseconds = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+export const waitForMilliseconds = (milliseconds) =>
+  new Promise((resolve) => setTimeout(resolve, milliseconds));

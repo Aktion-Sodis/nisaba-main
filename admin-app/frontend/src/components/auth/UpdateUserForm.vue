@@ -87,6 +87,8 @@ export default {
         lastName: this.lastName,
         newPassword: this.password,
       });
+      this.loading = false;
+
       if (signInStatus === signInStatusDict.success) {
         this.$router.push({ name: routeNamesDict.OrganizationStructure });
         return;
@@ -101,6 +103,7 @@ export default {
       if (signInStatus === signInStatusDict.completeUserInfo) {
         this.$router.push({ name: routeNamesDict.CompleteUserInfo });
       }
+      
     },
   },
 };

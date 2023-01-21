@@ -127,7 +127,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { deriveFilePath } from '../../../lib/utils';
 import { Type } from '../../../models';
 
 import ImgFromS3 from '../../commons/ImgFromS3.vue';
@@ -152,6 +151,7 @@ export default {
       ENTITYById: 'ENTITY_Data/ENTITYById',
       LEVELById: 'LEVEL_Data/LEVELById',
       calculateUILocaleString: 'calculateUILocaleString',
+      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
     }),
     entityInFocus() {
       return this.ENTITYById({ id: this.dataIdInFocus });
@@ -163,7 +163,7 @@ export default {
       return this.LEVELById({ id: this.level.parentLevelID }).name;
     },
     deriveImgPath() {
-      return deriveFilePath('entityPicPath', { entityID: this.dataIdInFocus });
+      return this.deriveFilePath('entityPicPath', { entityID: this.dataIdInFocus });
     },
   },
   methods: {

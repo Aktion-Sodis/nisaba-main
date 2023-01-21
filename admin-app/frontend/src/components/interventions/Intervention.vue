@@ -22,7 +22,6 @@
 // import { validate as uuidValidate } from 'uuid';
 import { mapGetters, mapActions } from 'vuex';
 import { dataTypesDict, vuexModulesDict } from '../../lib/constants';
-import { deriveFilePath } from '../../lib/utils';
 import ImgFromS3 from '../commons/ImgFromS3.vue';
 
 export default {
@@ -54,9 +53,10 @@ export default {
     ...mapGetters({
       // tagById: vuexModulesDict.intervention + 'tagById',
       calculateUILocaleString: 'calculateUILocaleString',
+      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
     }),
     deriveImgPath() {
-      return deriveFilePath('interventionPicPath', { interventionID: this.id });
+      return this.deriveFilePath('interventionPicPath', { interventionID: this.id });
     },
   },
   methods: {

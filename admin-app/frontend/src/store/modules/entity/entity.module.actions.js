@@ -1,9 +1,7 @@
 import { DataStore } from '@aws-amplify/datastore';
-import { API } from 'aws-amplify';
+import { Storage } from 'aws-amplify';
 import { dataTypesDict, modalModesDict, vuexModulesDict } from '../../../lib/constants';
-import { deleteEntity, updateEntity } from '../../../graphql/mutations';
 import { AppliedCustomData, Entity, I18nString } from '../../../models';
-import { deriveFilePath } from '../../../lib/utils';
 
 const APIpost = async ({ commit, dispatch, rootGetters }, entityDraft) => {
   let success = true;
@@ -22,8 +20,10 @@ const APIpost = async ({ commit, dispatch, rootGetters }, entityDraft) => {
     if (rootGetters['dataModal/getImageFile'] instanceof File) {
       try {
         await Storage.put(
-          deriveFilePath('entityPicPath', { entityID: postResponse.id }),
-          rootGetters['dataModal/getImageFile'],
+          rootGetters.callDeriveFilePathWithOrganizationId('entityPicPath', {
+            entityID: postResponse.id,
+          }),
+          rootGetters['dataModal/getImageFile']
         );
       } catch {
         success = false;
@@ -39,7 +39,7 @@ const APIpost = async ({ commit, dispatch, rootGetters }, entityDraft) => {
       },
       {
         root: true,
-      },
+      }
     );
   } catch (error) {
     success = false;
@@ -53,37 +53,31 @@ const APIpost = async ({ commit, dispatch, rootGetters }, entityDraft) => {
 // because DataStore was throwing an unrepairable error.
 // Another point where we see that we are regretful for
 // choosing Amplify.
-const APIput = async ({
-  commit, dispatch, getters, rootGetters,
-}, { newData, originalId }) => {
+const APIput = async ({ commit, dispatch, getters, rootGetters }, { newData, originalId }) => {
   commit('setLoading', { newValue: true });
   let success = true;
 
   try {
     const original = getters.ENTITYById({ id: originalId });
     if (!original) throw new Error('Original entity not found');
-    const putResponse = await API.graphql({
-      query: updateEntity,
-      variables: {
-        input: {
-          id: originalId,
-          name: newData.name,
-          description: newData.description,
-          parentEntityID: newData.parentEntityID,
-          entityLevelId: newData.entityLevelId,
-          customData: newData.customData.map((cd) => new AppliedCustomData(cd)),
-          _version: original._version,
-        },
-      },
-    });
+    const putResponse = await DataStore.save(
+      Entity.copyOf(original, (updated) => {
+        updated.name = newData.name;
+        updated.description = newData.description;
+        updated.parentEntityID = newData.parentEntityID;
+        updated.customData = newData.customData.map((cd) => new AppliedCustomData(cd));
+      })
+    );
 
-    const newEntity = putResponse.data.updateEntity;
+    const newEntity = putResponse;
 
     if (rootGetters['dataModal/getImageFile'] instanceof File) {
       try {
         await Storage.put(
-          deriveFilePath('entityPicPath', { entityID: newEntity.id }),
-          rootGetters['dataModal/getImageFile'],
+          rootGetters.callDeriveFilePathWithOrganizationId('entityPicPath', {
+            entityID: newEntity.id,
+          }),
+          rootGetters['dataModal/getImageFile']
         );
       } catch {
         success = false;
@@ -100,7 +94,7 @@ const APIput = async ({
       },
       {
         root: true,
-      },
+      }
     );
   } catch {
     success = false;
@@ -114,10 +108,8 @@ const APIdelete = async ({ commit, dispatch }, { id, _version }) => {
   commit('setLoading', { newValue: true });
 
   try {
-    await API.graphql({
-      query: deleteEntity,
-      variables: { input: { id, _version } },
-    });
+    const toDelete = await DataStore.query(Entity, id);
+    await DataStore.delete(toDelete);
   } catch {
     success = false;
   }
@@ -132,7 +124,7 @@ const APIdelete = async ({ commit, dispatch }, { id, _version }) => {
     {},
     {
       root: true,
-    },
+    }
   );
 
   commit('setLoading', { newValue: false });
@@ -149,7 +141,9 @@ const APIgetAll = async ({}, { apiLevels }) => {
     // eslint-disable-next-line no-restricted-syntax
     for (const apiLevel of apiLevels) {
       // eslint-disable-next-line no-await-in-loop
-      const entitiesOApiLevel = await DataStore.query(Entity, (c) => c.entityLevelId('eq', apiLevel.id));
+      const entitiesOApiLevel = await DataStore.query(Entity, (c) =>
+        c.entityLevelId('eq', apiLevel.id)
+      );
       res = res.concat(entitiesOApiLevel ?? []);
     }
     return res;

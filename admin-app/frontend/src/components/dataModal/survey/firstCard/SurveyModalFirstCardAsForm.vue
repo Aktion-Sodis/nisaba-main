@@ -184,7 +184,6 @@ import { Survey, SurveyType } from '../../../../models';
 import { emptyMutableI18nString, mutableI18nString } from '../../../../lib/classes';
 import LocaleTextBox from '../../../commons/form/LocaleTextBox.vue';
 import FileInput from '../../../commons/form/FileInput.vue';
-import { deriveFilePath } from '../../../../lib/utils';
 
 export default {
   name: 'SurveyModalFirstCardAsForm',
@@ -216,13 +215,12 @@ export default {
       dataIdInFocus: 'dataModal/getDataIdInFocus',
       dataDraft: 'dataModal/getDataDraft',
       imageFile: 'dataModal/getImageFile',
-
       SURVEYById: 'SURVEY_Data/SURVEYById',
-
       fallbackLocaleIndex: 'fallbackLocaleIndex',
       calculateUILocaleString: 'calculateUILocaleString',
       INTERVENTIONById: 'INTERVENTION_Data/INTERVENTIONById',
       interventions: 'INTERVENTION_Data/getInterventions',
+      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
     }),
     surveyInFocus() {
       return this.SURVEYById({ id: this.dataIdInFocus });
@@ -238,10 +236,10 @@ export default {
     },
     deriveImgPath() {
       return this.edit
-        ? deriveFilePath('interventionSurveyPicPath', {
-          interventionID: this.surveyInFocus.intervention.id,
-          surveyID: this.dataIdInFocus,
-        })
+        ? this.deriveFilePath('interventionSurveyPicPath', {
+            interventionID: this.surveyInFocus.intervention.id,
+            surveyID: this.dataIdInFocus,
+          })
         : null;
     },
     assumedSrc() {
@@ -275,7 +273,7 @@ export default {
           surveyType: this.type,
           intervention: this.INTERVENTIONById({ id: this.interventionId }),
           interventionSurveysId: this.interventionId,
-        }),
+        })
       );
     },
     selectImg() {
@@ -287,10 +285,12 @@ export default {
       this.incrementCompletionIndex();
     },
     prefillComponentDataFromDataDraft() {
-      this.name = mutableI18nString({ languageTexts: this.dataDraft?.name.languageTexts })
-        ?? emptyMutableI18nString();
-      this.description = mutableI18nString({ languageTexts: this.dataDraft?.description.languageTexts })
-        ?? emptyMutableI18nString();
+      this.name =
+        mutableI18nString({ languageTexts: this.dataDraft?.name.languageTexts }) ??
+        emptyMutableI18nString();
+      this.description =
+        mutableI18nString({ languageTexts: this.dataDraft?.description.languageTexts }) ??
+        emptyMutableI18nString();
       // this.surveyTags = this.tagIdsBySurveyId({ surveyId: this.dataIdInFocus }) ?? [];
       this.interventionId = this.dataDraft?.intervention?.id ?? null;
 

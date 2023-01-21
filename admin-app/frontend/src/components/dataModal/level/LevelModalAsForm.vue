@@ -225,7 +225,6 @@ import {
   mutableI18nString,
 } from '../../../lib/classes';
 import { modalModesDict, customDataTypesIconDict } from '../../../lib/constants';
-import { deriveFilePath } from '../../../lib/utils';
 import { Level, Type } from '../../../models';
 
 import LocaleTextBox from '../../commons/form/LocaleTextBox.vue';
@@ -273,6 +272,7 @@ export default {
       fallbackLocaleIndex: 'fallbackLocaleIndex',
       calculateLocalizedString: 'calculateLocalizedString',
       calculateUILocaleString: 'calculateUILocaleString',
+      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
     }),
     levelInFocus() {
       return this.LEVELById({ id: this.dataIdInFocus });
@@ -282,15 +282,17 @@ export default {
       return this.modalMode === modalModesDict.edit;
     },
     deriveImgPath() {
-      return this.edit ? deriveFilePath('levelPicPath', { levelID: this.dataIdInFocus }) : null;
+      return this.edit
+        ? this.deriveFilePath('levelPicPath', { levelID: this.dataIdInFocus })
+        : null;
     },
     assumedSrc() {
       return this.imageFile ?? this.deriveImgPath;
     },
     isSubmitDisabled() {
       return (
-        this.calculateLocalizedString({ languageTexts: this.name.languageTexts })
-        === this.$t('general.noTextProvided')
+        this.calculateLocalizedString({ languageTexts: this.name.languageTexts }) ===
+        this.$t('general.noTextProvided')
       );
     },
     localizeInterventions() {
@@ -340,7 +342,7 @@ export default {
             name: cd.name,
             type: this.customDataTypeIndices[i] === 0 ? Type.INT : Type.STRING,
           })),
-        }),
+        })
       );
       await this.$nextTick();
       this.saveData();
@@ -356,14 +358,16 @@ export default {
       this.description = mutableI18nString({
         languageTexts: this.dataDraft?.description.languageTexts,
       });
-      this.allowedInterventionIds = this.interventionsOfLevelById({ levelId: this.dataIdInFocus }).map((i) => i.id) ?? [];
-      this.customData = this.dataDraft?.customData.map((cd) => ({
-        id: cd.id,
-        name: mutableI18nString(cd.name),
-        type: cd.type,
-      })) ?? [];
+      this.allowedInterventionIds =
+        this.interventionsOfLevelById({ levelId: this.dataIdInFocus }).map((i) => i.id) ?? [];
+      this.customData =
+        this.dataDraft?.customData.map((cd) => ({
+          id: cd.id,
+          name: mutableI18nString(cd.name),
+          type: cd.type,
+        })) ?? [];
       this.customDataTypeIndices = Array.from(
-        this.dataDraft?.customData.map((cd) => (cd.type === Type.INT ? 0 : 1)) ?? [],
+        this.dataDraft?.customData.map((cd) => (cd.type === Type.INT ? 0 : 1)) ?? []
       );
 
       // changing the keys so that the initVal prop retriggers.

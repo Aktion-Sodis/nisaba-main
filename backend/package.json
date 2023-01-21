@@ -1,0 +1,19 @@
+{
+  "name": "admin-crud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "create-organization": "node ./src/create-organization.mjs"
+  },
+  "author": "apolat2000",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.229.0",
+    "aws-amplify": "^5.0.5",
+    "aws-sdk": "^2.1274.0",
+    "dotenv": "^16.0.3",
+    "voca": "^1.4.0"
+  },
+  "type": "module"
+}

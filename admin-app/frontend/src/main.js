@@ -7,6 +7,16 @@ import store from './store';
 import vuetify from './plugins/vuetify';
 import i18n from './i18n';
 
+awsconfig.graphql_headers = async () => {
+  try {
+    const token = (await Amplify.Auth.currentSession()).idToken.jwtToken;
+    return { Authorization: token };
+  } catch (e) {
+    console.log(e);
+    return {};
+  }
+};
+
 Amplify.configure(awsconfig);
 
 Vue.config.productionTip = false;
