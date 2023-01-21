@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobile_app/backend/Blocs/auth/auth_repository.dart';
 import 'package:mobile_app/backend/Blocs/request_permissions/request_permissions_cubit.dart';
 import 'package:mobile_app/backend/Blocs/session/session_cubit.dart';
@@ -21,6 +22,7 @@ import 'package:mobile_app/services/photo_capturing.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await HiveDBHelper.instance.init();
   SystemChrome.setPreferredOrientations(
           [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp])

@@ -9,6 +9,8 @@ from collections import defaultdict
 
 from dotenv import load_dotenv
 
+from flask import request as flask_request
+
 load_dotenv()
 
 # Benötigte Queries für Surveys
@@ -22,16 +24,15 @@ load_dotenv()
 
 class GraphqlClient:
 
-    def __init__(self, endpoint, headers):
-        self.endpoint = endpoint
-        self.headers = headers
-
     @staticmethod
     def serialization_helper(o):
         if isinstance(o, datetime):
             return o.strftime('%Y-%m-%dT%H:%M:%S.000Z')
 
     def execute(self, query, operation_name, variables):
+        headers = {"Authorization": flask_request.headers.get("Authorization")}
+        endpoint = flask_request.args.get("endpoint")
+
         data = simplejson.dumps({
             "query": query,
             "variables": variables,
@@ -41,8 +42,8 @@ class GraphqlClient:
             ignore_nan=True
         )
         r = request.Request(
-            headers=self.headers,
-            url=self.endpoint,
+            headers=headers,
+            url=endpoint,
             method='POST',
             data=data.encode('utf8')
         )

@@ -34,10 +34,10 @@ class LoginView extends StatelessWidget {
                         : MediaQuery.of(context).padding.bottom),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _logo(context),
-                    _pic(context),
+                    //_pic(context),
                     _loginForm(),
                   ],
                 )),
@@ -46,16 +46,15 @@ class LoginView extends StatelessWidget {
   }
 
   Widget _logo(BuildContext context) {
-    return Expanded(
-        flex: 2,
-        child: Container(
-            margin: EdgeInsets.all(width(context) * .1),
-            constraints: BoxConstraints(maxHeight: height(context) * .07),
-            child: Hero(
-                tag: 'Logo_Hero',
-                child: ClipRRect(
-                    child: Image.asset("assets/specificAssets/logo.png"),
-                    borderRadius: BorderRadius.circular(8)))));
+    return Container(
+        alignment: Alignment.bottomCenter,
+        margin: EdgeInsets.all(width(context) * .1),
+        //constraints: BoxConstraints(maxHeight: height(context) * .07),
+        child: Hero(
+            tag: 'Logo_Hero',
+            child: ClipRRect(
+                child: Image.asset("assets/fixAssets/nisaba_logo.png"),
+                borderRadius: BorderRadius.circular(8))));
   }
 
   Widget _pic(BuildContext context) {
@@ -73,7 +72,7 @@ class LoginView extends StatelessWidget {
     return BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) => Form(
               key: _formKey,
-              child: Padding(
+              child: Container(
                 padding: EdgeInsets.only(
                     left: width(context) * .1,
                     right: width(context) * .1,
