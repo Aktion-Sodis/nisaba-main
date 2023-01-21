@@ -9,6 +9,7 @@ import 'package:mobile_app/backend/Blocs/sync/sync_state.dart';
 import 'package:mobile_app/backend/Blocs/task/task_bloc.dart';
 import 'package:mobile_app/backend/Blocs/task/task_state.dart';
 import 'package:mobile_app/backend/callableModels/Task.dart';
+import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
 import 'package:mobile_app/frontend/components/buttons.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/frontend/pages/main_menu.dart';
@@ -29,6 +30,17 @@ class MainMenuHome extends StatefulWidget {
 }
 
 class MainMenuHomeState extends State<MainMenuHome> {
+  Widget _nisabaLogo() {
+    return SettingsRepository.instance.organizationNameVerbose != null
+        ? Text(
+            "For " +
+                SettingsRepository.instance.organizationNameVerbose! +
+                " \u2661",
+            style: TextStyle(fontStyle: FontStyle.italic),
+          )
+        : SizedBox.shrink();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -42,8 +54,26 @@ class MainMenuHomeState extends State<MainMenuHome> {
               //todo: add back button
               Container(
                   margin: EdgeInsets.only(left: width(context) * .1),
-                  child: Image.asset("assets/specificAssets/logo.png",
-                      height: width(context) * .1)),
+                  width: width(context) * 0.3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      /*Image.asset("assets/fixAssets/nisaba_logo.png",
+                          height: width(context) * .15),*/
+                      AspectRatio(
+                          aspectRatio: 1 / 0.45,
+                          child: Container(
+                              decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                            fit: BoxFit.fitWidth,
+                            alignment: FractionalOffset.topCenter,
+                            image:
+                                AssetImage("assets/fixAssets/nisaba_logo.png"),
+                          )))),
+                      _nisabaLogo()
+                    ],
+                  )),
               SizedBox(width: width(context) * .1),
               BlocBuilder<SyncBloc, SyncState>(builder: (context, state) {
                 if (state is FullySyncedState) {
