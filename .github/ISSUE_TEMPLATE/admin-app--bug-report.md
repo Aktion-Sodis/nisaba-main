@@ -1,9 +1,9 @@
 ---
 name: 'Admin-App: Bug report'
 about: Create a report to help us improve
-title: "[Admin-App] [BUG]"
+title: "[Admin-App] [BUG] Your title"
 labels: admin-app, bug
-assignees: ''
+assignees: '@apolat2000'
 
 ---
 
