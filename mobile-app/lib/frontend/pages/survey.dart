@@ -54,6 +54,7 @@ class AudioPlayerWidgetFromSyncFile extends StatefulWidget {
       _AudioPlayerWidgetFromSyncFileState();
 }
 
+// TODO: Change name. Conflict with SurveyWidget in main_menu_organization.dart
 class SurveyWidget extends StatefulWidget {
   final Survey survey;
   const SurveyWidget({Key? key, required this.survey}) : super(key: key);
