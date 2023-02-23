@@ -17,8 +17,8 @@ import 'package:mobile_app/frontend/pages/main_menu.dart';
 import 'package:mobile_app/frontend/pages/survey.dart';
 import 'package:mobile_app/frontend/pages/user_data_view.dart';
 
-import 'backend/Blocs/user/user_bloc.dart';
-import 'backend/Blocs/user/user_state.dart';
+import '../backend/Blocs/user/user_bloc.dart';
+import '../backend/Blocs/user/user_state.dart';
 
 /// This widget is responsible for forcing the user to fill in their profile date
 class UserStateBuilder extends StatelessWidget {

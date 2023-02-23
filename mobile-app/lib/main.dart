@@ -16,7 +16,7 @@ import 'package:mobile_app/frontend/pages/wifi_only_setting_checker.dart';
 import 'package:mobile_app/frontend/theme.dart';
 
 import 'package:mobile_app/services/amplify.dart';
-import 'package:mobile_app/authentication_state_builder.dart';
+import 'package:mobile_app/frontend/authentication_state_builder.dart';
 import 'package:mobile_app/services/hive_db_helper.dart';
 import 'package:mobile_app/services/photo_capturing.dart';
 

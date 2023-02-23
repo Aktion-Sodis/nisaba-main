@@ -10,7 +10,7 @@ import 'package:mobile_app/backend/repositories/UserRepository.dart';
 import 'package:mobile_app/frontend/pages/loading_view.dart';
 import 'package:mobile_app/frontend/pages/login_view.dart';
 import 'package:mobile_app/frontend/pages/update_password_view.dart';
-import 'package:mobile_app/user_state_builder.dart';
+import 'package:mobile_app/frontend/user_state_builder.dart';
 
 class AuthenticationStateBuilder extends StatelessWidget {
   const AuthenticationStateBuilder({Key? key}) : super(key: key);
