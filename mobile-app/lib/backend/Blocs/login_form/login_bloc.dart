@@ -51,10 +51,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } catch (e) {
         print("error in authentication");
         print(e.toString());
+        sessionCubit.signOut();
 
         //todo: hier error management einbauen
-        emit(state.copyWith(
-            formStatus: SubmissionFailed(e as Exception, e.toString())));
+        emit(state.copyWith(formStatus: SubmissionFailed(e, e.toString())));
       }
     }
   }

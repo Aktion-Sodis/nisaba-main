@@ -87,4 +87,8 @@ class CognitoOIDCAuthProvider extends OIDCAuthProvider {
 
     return Future.value(_token);
   }
+
+  static void forgetAuthToken() {
+    _token = null;
+  }
 }

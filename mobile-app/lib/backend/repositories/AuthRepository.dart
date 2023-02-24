@@ -72,6 +72,33 @@ class AuthRepository {
     }
   }
 
+  bool _sessionDataIsConsistent() {
+    if (SettingsRepository.instance.organizationID == null) {
+      return false;
+    }
+
+    if (SettingsRepository.instance.organizationNameVerbose == null) {
+      return false;
+    }
+
+    if (SettingsRepository.instance.organizationNameKebabCase == null) {
+      return false;
+    }
+
+    if (SettingsRepository.instance.organizationNameCamelCase == null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  void _clearSessionData() {
+    SettingsRepository.instance.organizationID = null;
+    SettingsRepository.instance.organizationNameVerbose = null;
+    SettingsRepository.instance.organizationNameKebabCase = null;
+    SettingsRepository.instance.organizationNameCamelCase = null;
+  }
+
   Future<String?> attemptAutoLogin() async {
     try {
       print("trying auto login");
@@ -80,12 +107,20 @@ class AuthRepository {
       await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
       print("autoLogin logged in?: ${session.isSignedIn}");
 
+      if (!_sessionDataIsConsistent()) {
+        throw SessionDataInconsistentException();
+      }
+
       return session.isSignedIn ? (await _getUserIdFromAttributes()) : null;
+    } on SessionDataInconsistentException catch (e) {
+      throw e;
     } catch (e) {
       try {
         print("tryining offline login");
         AuthUser authUser = await Amplify.Auth.getCurrentUser();
         return authUser.userId;
+      } on SessionDataInconsistentException catch (e) {
+        throw e;
       } catch (e) {
         print("offline login not possible");
         return null;
@@ -129,6 +164,7 @@ class AuthRepository {
     }
 
     if (result.isSignedIn) {
+      await Amplify.DataStore.clear();
       final userID = await _getUserIdFromAttributes();
       await _rememberUserAttributesLocally();
       await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
@@ -223,6 +259,9 @@ class AuthRepository {
   Future<bool> signOut() async {
     await Amplify.Auth.signOut(
         options: const SignOutOptions(globalSignOut: true));
+
+    CognitoOIDCAuthProvider.forgetAuthToken();
+    _clearSessionData();
     return true;
   }
 }
