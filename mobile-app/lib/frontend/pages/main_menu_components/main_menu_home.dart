@@ -9,7 +9,7 @@ import 'package:mobile_app/backend/Blocs/sync/sync_state.dart';
 import 'package:mobile_app/backend/Blocs/task/task_bloc.dart';
 import 'package:mobile_app/backend/Blocs/task/task_state.dart';
 import 'package:mobile_app/backend/callableModels/Task.dart';
-import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
+import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/frontend/components/buttons.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/frontend/pages/main_menu.dart';
@@ -31,10 +31,10 @@ class MainMenuHome extends StatefulWidget {
 
 class MainMenuHomeState extends State<MainMenuHome> {
   Widget _nisabaLogo() {
-    return SettingsRepository.instance.organizationNameVerbose != null
+    return LocalDataRepository.instance.organizationNameVerbose != null
         ? Text(
             "For " +
-                SettingsRepository.instance.organizationNameVerbose! +
+                LocalDataRepository.instance.organizationNameVerbose! +
                 " \u2661",
             style: TextStyle(fontStyle: FontStyle.italic),
           )

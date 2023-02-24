@@ -2,11 +2,11 @@ import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
+import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
-import 'package:mobile_app/services/amplify.dart';
+import 'package:mobile_app/utils/amplify.dart';
 
 import '../../backend/callableModels/Entity.dart';
 
@@ -48,7 +48,7 @@ class AmplifyApiTest extends StatelessWidget {
   }
 
   Future<void> _getMyOrganizationData() async {
-    String organizationID = SettingsRepository.instance.organizationID;
+    String organizationID = LocalDataRepository.instance.organizationID;
     print("My organization ID: " + organizationID);
 
     try {

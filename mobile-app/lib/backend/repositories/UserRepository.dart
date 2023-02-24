@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:amplify_api/model_queries.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
@@ -8,6 +10,19 @@ import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 
 class UserRepository {
+  static final UserRepository instance = UserRepository._();
+
+  UserRepository._();
+
+  Future<User?> fetchUserByID(String id) async {
+    GraphQLResponse<amp.User> result = await Amplify.API
+        .query(
+          request: ModelQueries.get(amp.User.classType, id),
+        )
+        .response;
+    return result.data != null ? User.fromAmplifyModel(result.data!) : null;
+  }
+
   Future<User?> getUserById(String userId) async {
     try {
       final List<amp.User> users = await Amplify.DataStore.query(
@@ -34,13 +49,16 @@ class UserRepository {
     ///ID always has to be set as it should equal the authentication ID
     amp.User newUser = user.toAmplifyModel();
     await Amplify.DataStore.save(newUser);
+    LocalDataRepository.instance.user = User.fromAmplifyModel(newUser);
   }
 
   Future updateUser(User user) async {
     ///updates an existing User
     ///ID always has to be set
 
-    await Amplify.DataStore.save(user.toAmplifyModel());
+    amp.User ampUser = user.toAmplifyModel();
+    await Amplify.DataStore.save(ampUser);
+    LocalDataRepository.instance.user = User.fromAmplifyModel(ampUser);
   }
 
   static SyncedFile getUserPicFile(User user) {

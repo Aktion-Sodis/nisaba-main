@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/services/audio.dart';
+import 'package:mobile_app/utils/audio.dart';
 
 // ignore: must_be_immutable
 abstract class AudioStatefulWidget extends StatefulWidget {

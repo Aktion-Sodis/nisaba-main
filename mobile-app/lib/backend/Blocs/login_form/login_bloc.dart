@@ -1,16 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_app/backend/Blocs/auth/auth_credentials.dart';
-import 'package:mobile_app/backend/Blocs/auth/auth_cubit.dart';
-import 'package:mobile_app/backend/Blocs/auth/auth_repository.dart';
-import 'package:mobile_app/backend/Blocs/auth/form_submission_status.dart';
-import 'package:mobile_app/backend/Blocs/auth/login/login_event.dart';
-import 'package:mobile_app/backend/Blocs/auth/login/login_state.dart';
+import 'package:mobile_app/backend/Blocs/session/auth_credentials.dart';
+import 'package:mobile_app/backend/Blocs/session/session_cubit.dart';
+import 'package:mobile_app/backend/repositories/AuthRepository.dart';
+import 'package:mobile_app/backend/Blocs/login_form/form_submission_status.dart';
+import 'package:mobile_app/backend/Blocs/login_form/login_event.dart';
+import 'package:mobile_app/backend/Blocs/login_form/login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthRepository authRepo;
-  final AuthCubit authCubit;
+  final SessionCubit sessionCubit;
 
-  LoginBloc({required this.authRepo, required this.authCubit})
+  LoginBloc({required this.authRepo, required this.sessionCubit})
       : super(LoginState()) {
     on<LoginEvent>(_mapEventToState);
   }
@@ -40,7 +40,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         print("now launching session");
         //todo: hier bezüglich offline login arbeiten
 
-        authCubit.launchSession(AuthCredentials(
+        sessionCubit.showSession(AuthCredentials(
           userName: state.emailOrPhoneNumber,
           email: state.isPhoneNumber ? null : state.emailOrPhoneNumber,
           phoneNumber: state.isPhoneNumber ? state.emailOrPhoneNumber : null,
@@ -51,10 +51,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } catch (e) {
         print("error in authentication");
         print(e.toString());
+        sessionCubit.signOut();
 
         //todo: hier error management einbauen
-        emit(state.copyWith(
-            formStatus: SubmissionFailed(e as Exception, e.toString())));
+        emit(state.copyWith(formStatus: SubmissionFailed(e, e.toString())));
       }
     }
   }

@@ -15,7 +15,7 @@ import 'package:mobile_app/backend/repositories/EntityRepository.dart';
 import 'package:mobile_app/backend/repositories/ExecutedSurveyRepository.dart';
 import 'package:mobile_app/backend/repositories/InterventionRepository.dart';
 import 'package:mobile_app/backend/repositories/LevelRepository.dart';
-import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
+import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/backend/repositories/SurveyRepository.dart';
 import 'package:mobile_app/backend/repositories/TaskRepository.dart';
 import 'package:mobile_app/backend/repositories/UserRepository.dart';
@@ -67,7 +67,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   void fulfillSync(bool filesSyncEnabled) async {
     InternetConnectionType internetConnectionType =
         await StorageRepository.currentInternetConnectionType();
-    if (SettingsRepository.instance.wifiOnly &&
+    if (LocalDataRepository.instance.wifiOnly &&
         internetConnectionType != InternetConnectionType.WIFI) {
       add(CancelSyncEvent());
       return;

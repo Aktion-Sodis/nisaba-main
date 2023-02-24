@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/frontend/components/audio/audio_stateful_widget.dart';
-import 'package:mobile_app/services/audio.dart';
+import 'package:mobile_app/utils/audio.dart';
 
 /// Widget for playing some audio data
 ///

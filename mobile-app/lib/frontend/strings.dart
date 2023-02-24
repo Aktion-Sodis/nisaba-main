@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
+import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:path/path.dart';
 import 'package:string_similarity/string_similarity.dart';
 
@@ -18,7 +18,7 @@ Map<String, String> availableLocals = const {
 String get currentLanguage {
   String? savedLocale;
   try {
-    savedLocale = SettingsRepository.instance.locale;
+    savedLocale = LocalDataRepository.instance.locale;
   } catch (e) {}
 
   if (savedLocale != null) {

@@ -80,7 +80,9 @@ class MainMenuState extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
-        providers: [RepositoryProvider(create: (context) => UserRepository())],
+        providers: [
+          RepositoryProvider(create: (context) => UserRepository.instance)
+        ],
         child: Scaffold(
             bottomNavigationBar: bottomNavigationBar(),
             body: SafeArea(child: mainPageView())));

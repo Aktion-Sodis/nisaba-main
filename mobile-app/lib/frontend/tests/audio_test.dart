@@ -5,8 +5,8 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:mobile_app/frontend/components/audio/player_widget.dart';
 import 'package:mobile_app/frontend/components/audio/recorder_widget.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
-import 'package:mobile_app/services/audio.dart';
-import 'package:mobile_app/services/storage.dart';
+import 'package:mobile_app/utils/audio.dart';
+import 'package:mobile_app/utils/storage.dart';
 import 'package:path_provider/path_provider.dart';
 
 class AudioTest extends StatefulWidget {

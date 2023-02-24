@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mobile_app/backend/Blocs/auth/auth_cubit.dart';
-import 'package:mobile_app/backend/Blocs/auth/auth_repository.dart';
-import 'package:mobile_app/backend/Blocs/auth/form_submission_status.dart';
-import 'package:mobile_app/backend/Blocs/auth/login/login_bloc.dart';
-import 'package:mobile_app/backend/Blocs/auth/login/login_event.dart';
-import 'package:mobile_app/backend/Blocs/auth/login/login_state.dart';
+import 'package:mobile_app/backend/Blocs/session/session_cubit.dart';
+import 'package:mobile_app/backend/repositories/AuthRepository.dart';
+import 'package:mobile_app/backend/Blocs/login_form/form_submission_status.dart';
+import 'package:mobile_app/backend/Blocs/login_form/login_bloc.dart';
+import 'package:mobile_app/backend/Blocs/login_form/login_event.dart';
+import 'package:mobile_app/backend/Blocs/login_form/login_state.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/frontend/strings.dart' as strings;
 
@@ -24,7 +24,7 @@ class LoginView extends StatelessWidget {
               child: BlocProvider(
             create: (context) => LoginBloc(
               authRepo: context.read<AuthRepository>(),
-              authCubit: context.read<AuthCubit>(),
+              sessionCubit: context.read<SessionCubit>(),
             ),
             child: Padding(
                 padding: EdgeInsets.only(

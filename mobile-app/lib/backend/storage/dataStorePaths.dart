@@ -4,7 +4,7 @@
 
 import 'dart:core';
 
-import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
+import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 
 /// -- important --
 ///todo: when integrating into the app the method has to be tested
@@ -121,6 +121,6 @@ String dataStorePath(DataStorePaths path, List<String> parameters) {
 }
 
 String addOrganizationPrefix(String path) {
-  String organizationID = SettingsRepository.instance.organizationID;
+  String organizationID = LocalDataRepository.instance.organizationID;
   return "organization/" + organizationID + "/" + path;
 }

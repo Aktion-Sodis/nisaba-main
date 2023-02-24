@@ -44,4 +44,29 @@ class User {
       id: id,
     ));
   }
+
+  User.fromMap(Map<dynamic, dynamic> map) {
+    id = map['id'];
+    firstName = map['firstName'];
+    lastName = map['lastName'];
+    bio = map['bio'];
+    /*permissions = List.generate(map['permissions'].length,
+        (index) => Permission.fromMap(map['permissions'][index]));*/
+    schemeVersion = map['schemeVersion'];
+    createdAt = map['createdAt'];
+    updatedAt = map['updatedAt'];
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'firstName': firstName,
+      'lastName': lastName,
+      'bio': bio,
+      // 'permissions': permissions.map((e) => e.toMap()).toList(),
+      'schemeVersion': schemeVersion,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+    };
+  }
 }

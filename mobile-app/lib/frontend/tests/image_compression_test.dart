@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:isolate_image_compress/isolate_image_compress.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
-import 'package:mobile_app/services/photo_capturing.dart';
+import 'package:mobile_app/utils/photo_capturing.dart';
 
 class ImageCompressionTest extends StatelessWidget {
   const ImageCompressionTest({Key? key}) : super(key: key);

@@ -13,7 +13,7 @@ import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
 import 'package:mobile_app/backend/Blocs/user/user_events.dart';
 import 'package:mobile_app/backend/Blocs/user/user_state.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
-import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
+import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/backend/repositories/UserRepository.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/frontend/common_widgets.dart';
@@ -21,7 +21,7 @@ import 'package:mobile_app/frontend/common_widgets.dart';
 import 'package:mobile_app/frontend/components/buttons.dart';
 
 import 'package:mobile_app/frontend/strings.dart' as strings;
-import 'package:mobile_app/services/photo_capturing.dart';
+import 'package:mobile_app/utils/photo_capturing.dart';
 
 import '../dependentsizes.dart';
 
@@ -58,7 +58,7 @@ class UserDataViewState extends State<UserDataView> {
     textEdigtingControllerFirstName = TextEditingController();
     textEditingControllerLastName = TextEditingController();
     currentLocale = strings.currentLanguage;
-    wifiOnly = SettingsRepository.instance.wifiOnly;
+    wifiOnly = LocalDataRepository.instance.wifiOnly;
     if (widget.userBloc.state.user != null) {
       textEdigtingControllerFirstName.text =
           widget.userBloc.state.user!.firstName;
@@ -330,10 +330,12 @@ class UserDataViewState extends State<UserDataView> {
                                           if (_formKey.currentState!
                                               .validate()) {
                                             RepositoryProvider.of<
-                                                    SettingsRepository>(context)
+                                                        LocalDataRepository>(
+                                                    context)
                                                 .locale = currentLocale;
                                             RepositoryProvider.of<
-                                                    SettingsRepository>(context)
+                                                        LocalDataRepository>(
+                                                    context)
                                                 .wifiOnly = wifiOnly;
 
                                             if (widget.inApp) {

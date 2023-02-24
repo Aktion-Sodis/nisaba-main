@@ -1,11 +1,13 @@
 import 'package:hive/hive.dart';
 import 'package:mobile_app/frontend/strings.dart';
-import 'package:mobile_app/services/hive_db_helper.dart';
+import 'package:mobile_app/utils/hive_db_helper.dart';
 
-class SettingsRepository {
-  static final SettingsRepository instance = SettingsRepository();
+import '../callableModels/User.dart';
 
-  Box get _table => HiveDBHelper.instance.getBox("settings");
+class LocalDataRepository {
+  static final LocalDataRepository instance = LocalDataRepository();
+
+  Box get _table => HiveDBHelper.instance.getBox(HiveDBBoxNames.localData);
 
   String? get locale => _table.get("locale");
   set locale(String? value) => _table.put("locale", value);
@@ -38,4 +40,8 @@ class SettingsRepository {
       _table.get("organizationNameKebabCase");
   set organizationNameKebabCase(String? value) =>
       _table.put("organizationNameKebabCase", value);
+
+  User? get user => User.fromMap(_table.get("user"));
+
+  set user(User? value) => _table.put("user", value?.toMap());
 }

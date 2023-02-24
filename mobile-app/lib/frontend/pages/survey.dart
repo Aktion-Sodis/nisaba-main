@@ -29,7 +29,7 @@ import 'package:mobile_app/frontend/components/imageWidget.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/frontend/strings.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:mobile_app/services/photo_capturing.dart';
+import 'package:mobile_app/utils/photo_capturing.dart';
 
 import '../../backend/callableModels/ExecutedSurvey.dart';
 import '../../backend/callableModels/Survey.dart';
@@ -54,6 +54,7 @@ class AudioPlayerWidgetFromSyncFile extends StatefulWidget {
       _AudioPlayerWidgetFromSyncFileState();
 }
 
+// TODO: Change name. Conflict with SurveyWidget in main_menu_organization.dart
 class SurveyWidget extends StatefulWidget {
   final Survey survey;
   const SurveyWidget({Key? key, required this.survey}) : super(key: key);

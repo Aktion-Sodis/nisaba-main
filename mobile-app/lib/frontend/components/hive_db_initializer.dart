@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/services/hive_db_helper.dart';
+import 'package:mobile_app/utils/hive_db_helper.dart';
 
 class HiveDBInitializer extends StatefulWidget {
   const HiveDBInitializer({Key? key, required this.child}) : super(key: key);
