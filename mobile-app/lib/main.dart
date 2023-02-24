@@ -65,7 +65,8 @@ class MyAppState extends State<MyApp> {
                 child: MultiRepositoryProvider(
                   providers: [
                     RepositoryProvider(create: (context) => AuthRepository()),
-                    RepositoryProvider(create: (context) => UserRepository()),
+                    RepositoryProvider(
+                        create: (context) => UserRepository.instance),
                     RepositoryProvider(
                         create: (context) => LocalDataRepository())
                   ],

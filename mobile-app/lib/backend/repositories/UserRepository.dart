@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:amplify_api/model_queries.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
@@ -8,6 +10,9 @@ import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 
 class UserRepository {
+  static final UserRepository instance = UserRepository._();
+
+  UserRepository._();
   Future<User?> getUserById(String userId) async {
     try {
       final List<amp.User> users = await Amplify.DataStore.query(
