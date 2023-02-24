@@ -22,6 +22,7 @@ import 'package:mobile_app/utils/amplify.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import '../Blocs/session/auth_credentials.dart';
+import '../callableModels/User.dart';
 
 class AuthRepository {
   Future<String> _getAttribute(String key) async {
@@ -89,6 +90,10 @@ class AuthRepository {
       return false;
     }
 
+    if (LocalDataRepository.instance.user == null) {
+      return false;
+    }
+
     return true;
   }
 
@@ -97,6 +102,7 @@ class AuthRepository {
     LocalDataRepository.instance.organizationNameVerbose = null;
     LocalDataRepository.instance.organizationNameKebabCase = null;
     LocalDataRepository.instance.organizationNameCamelCase = null;
+    LocalDataRepository.instance.user = null;
   }
 
   Future<String?> attemptAutoLogin() async {
@@ -170,6 +176,14 @@ class AuthRepository {
       await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
       await _rememberUserOrganization(
           LocalDataRepository.instance.organizationID);
+
+      // TODO: loading a user
+      User? user = await UserRepository.instance.fetchUserByID(userID);
+      if (user == null) {
+        throw UserNotFoundInDatabaseException();
+      }
+      LocalDataRepository.instance.user = user;
+
       return userID;
     } else {
       return null;

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_app/backend/Blocs/session/auth_credentials.dart';
 import 'package:mobile_app/backend/repositories/AuthRepository.dart';
 import 'package:mobile_app/backend/Blocs/session/session_state.dart';
+import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/backend/repositories/UserRepository.dart';
 
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
@@ -22,11 +23,7 @@ class SessionCubit extends Cubit<SessionState> {
     try {
       final userId = await authRepo.attemptAutoLogin();
       if (userId != null) {
-        User? user = await userRepo.getUserById(userId);
-        if (user == null) {
-          await Future.delayed(Duration(seconds: 1));
-          user = await userRepo.getUserById(userId);
-        }
+        User? user = LocalDataRepository.instance.user;
         emit(FullyAuthenticatedSessionState(userID: userId, user: user));
         //todo: differ when password is necessary
       } else {
@@ -53,7 +50,7 @@ class SessionCubit extends Cubit<SessionState> {
       } else {
         print("popping fully quthenticated state");
         //todo: hier liegt fehler bezüglich user laden
-        User? user = await userRepo.getUserById(credentials.userId!);
+        User? user = LocalDataRepository.instance.user;
         emit(FullyAuthenticatedSessionState(
             userID: credentials.userId!, user: user));
       }

@@ -13,6 +13,16 @@ class UserRepository {
   static final UserRepository instance = UserRepository._();
 
   UserRepository._();
+
+  Future<User?> fetchUserByID(String id) async {
+    GraphQLResponse<amp.User> result = await Amplify.API
+        .query(
+          request: ModelQueries.get(amp.User.classType, id),
+        )
+        .response;
+    return result.data != null ? User.fromAmplifyModel(result.data!) : null;
+  }
+
   Future<User?> getUserById(String userId) async {
     try {
       final List<amp.User> users = await Amplify.DataStore.query(
