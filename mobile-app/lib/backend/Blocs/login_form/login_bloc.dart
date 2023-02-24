@@ -1,10 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_app/backend/Blocs/auth/auth_credentials.dart';
+import 'package:mobile_app/backend/Blocs/session/auth_credentials.dart';
 import 'package:mobile_app/backend/Blocs/auth/auth_cubit.dart';
-import 'package:mobile_app/backend/Blocs/auth/auth_repository.dart';
-import 'package:mobile_app/backend/Blocs/auth/form_submission_status.dart';
-import 'package:mobile_app/backend/Blocs/auth/login/login_event.dart';
-import 'package:mobile_app/backend/Blocs/auth/login/login_state.dart';
+import 'package:mobile_app/backend/repositories/AuthRepository.dart';
+import 'package:mobile_app/backend/Blocs/login_form/form_submission_status.dart';
+import 'package:mobile_app/backend/Blocs/login_form/login_event.dart';
+import 'package:mobile_app/backend/Blocs/login_form/login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthRepository authRepo;

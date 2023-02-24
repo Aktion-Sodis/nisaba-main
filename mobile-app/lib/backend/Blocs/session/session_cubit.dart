@@ -1,7 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_app/backend/Blocs/auth/auth_credentials.dart';
-import 'package:mobile_app/backend/Blocs/auth/auth_repository.dart';
+import 'package:mobile_app/backend/Blocs/session/auth_credentials.dart';
+import 'package:mobile_app/backend/repositories/AuthRepository.dart';
 import 'package:mobile_app/backend/Blocs/session/session_state.dart';
 import 'package:mobile_app/backend/repositories/UserRepository.dart';
 

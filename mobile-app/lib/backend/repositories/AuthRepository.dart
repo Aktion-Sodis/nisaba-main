@@ -17,7 +17,7 @@ import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
 import 'package:mobile_app/services/amplify.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
-import 'auth_credentials.dart';
+import '../Blocs/session/auth_credentials.dart';
 
 class AuthRepository {
   Future<String> _getAttribute(String key) async {

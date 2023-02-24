@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mobile_app/backend/Blocs/auth/auth_credentials.dart';
+import 'package:mobile_app/backend/Blocs/session/auth_credentials.dart';
 import 'package:mobile_app/backend/Blocs/session/session_cubit.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 

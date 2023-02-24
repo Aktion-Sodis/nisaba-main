@@ -1,4 +1,4 @@
-import 'package:mobile_app/backend/Blocs/auth/form_submission_status.dart';
+import 'package:mobile_app/backend/Blocs/login_form/form_submission_status.dart';
 
 class LoginState {
   final String emailOrPhoneNumber;
