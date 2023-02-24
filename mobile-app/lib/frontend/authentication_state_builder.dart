@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_app/backend/Blocs/auth/auth_cubit.dart';
 import 'package:mobile_app/backend/repositories/AuthRepository.dart';
 import 'package:mobile_app/backend/Blocs/session/session_cubit.dart';
 import 'package:mobile_app/backend/Blocs/session/session_state.dart';
@@ -65,11 +64,7 @@ class AuthenticationStateBuilder extends StatelessWidget {
   MaterialPage _buildRequiresAuthenticationSessionState(
       BuildContext context, RequiresAuthentificationSessionState state) {
     return MaterialPage(
-      child: BlocProvider(
-        create: (context) =>
-            AuthCubit(sessionCubit: context.read<SessionCubit>()),
-        child: LoginView(),
-      ),
+      child: LoginView(),
     );
   }
 }

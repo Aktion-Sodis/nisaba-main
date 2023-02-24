@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_app/backend/Blocs/auth/auth_cubit.dart';
 import 'package:mobile_app/backend/repositories/AuthRepository.dart';
 import 'package:mobile_app/backend/Blocs/user/user_events.dart';
 import 'package:mobile_app/backend/Blocs/user/user_state.dart';
