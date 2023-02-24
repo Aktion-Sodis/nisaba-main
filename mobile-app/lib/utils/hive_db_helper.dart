@@ -5,21 +5,21 @@ import 'package:path_provider/path_provider.dart';
 class HiveDBHelper {
   static final HiveDBHelper instance = HiveDBHelper();
 
-  final Map<String, Box> _openedBoxes = {};
+  final Map<HiveDBBoxNames, Box> _openedBoxes = {};
 
   Future<void> init() async {
     String appDir = (await getApplicationDocumentsDirectory()).path;
     Hive.init(appDir);
 
-    await openBox("settings");
+    await openBox(HiveDBBoxNames.localData);
   }
 
-  Box getBox(String name) {
+  Box getBox(HiveDBBoxNames name) {
     return _openedBoxes[name]!;
   }
 
-  Future<Box> openBox(String name) async {
-    Box result = await Hive.openBox(name);
+  Future<Box> openBox(HiveDBBoxNames name) async {
+    Box result = await Hive.openBox(name.toString());
 
     if (!_openedBoxes.containsKey(name)) {
       _openedBoxes[name] = result;
@@ -30,9 +30,13 @@ class HiveDBHelper {
 
   Future<void> close() async {
     var copy = _openedBoxes.keys.toSet();
-    for (String key in copy) {
+    for (HiveDBBoxNames key in copy) {
       await _openedBoxes[key]!.close();
       _openedBoxes.remove(key);
     }
   }
+}
+
+enum HiveDBBoxNames {
+  localData,
 }

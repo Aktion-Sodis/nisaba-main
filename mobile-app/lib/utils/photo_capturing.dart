@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:isolate_image_compress/isolate_image_compress.dart';
-import 'package:mobile_app/services/exceptions/CameraError.dart';
+import 'package:mobile_app/utils/exceptions/CameraError.dart';
 
 abstract class CameraFunctionality {
   static const int maxSize = 500 * 1000; // 500MB

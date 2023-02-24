@@ -15,10 +15,10 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
-import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
+import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/backend/repositories/UserRepository.dart';
 import 'package:mobile_app/backend/repositories/exceptions/AuthRepositoryExceptions.dart';
-import 'package:mobile_app/services/amplify.dart';
+import 'package:mobile_app/utils/amplify.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import '../Blocs/session/auth_credentials.dart';
@@ -41,7 +41,7 @@ class AuthRepository {
 
   Future<void> _rememberUserAttributesLocally() async {
     final organizaitonID = await _getOrganizationIdFromAttributes();
-    SettingsRepository.instance.organizationID = organizaitonID;
+    LocalDataRepository.instance.organizationID = organizaitonID;
   }
 
   // TODO: rewrite auth section according to bloc logic
@@ -59,33 +59,33 @@ class AuthRepository {
           .response;
 
       amp.Organization organization = result.data!;
-      SettingsRepository.instance.organizationNameVerbose =
+      LocalDataRepository.instance.organizationNameVerbose =
           organization.nameVerbose;
-      SettingsRepository.instance.organizationNameKebabCase =
+      LocalDataRepository.instance.organizationNameKebabCase =
           organization.nameKebabCase;
-      SettingsRepository.instance.organizationNameCamelCase =
+      LocalDataRepository.instance.organizationNameCamelCase =
           organization.nameCamelCase;
       print("Organization information saved: " +
-          SettingsRepository.instance.organizationNameVerbose.toString());
+          LocalDataRepository.instance.organizationNameVerbose.toString());
     } on DataStoreException catch (e) {
       // TODO: implement exception handling
     }
   }
 
   bool _sessionDataIsConsistent() {
-    if (SettingsRepository.instance.organizationID == null) {
+    if (LocalDataRepository.instance.organizationID == null) {
       return false;
     }
 
-    if (SettingsRepository.instance.organizationNameVerbose == null) {
+    if (LocalDataRepository.instance.organizationNameVerbose == null) {
       return false;
     }
 
-    if (SettingsRepository.instance.organizationNameKebabCase == null) {
+    if (LocalDataRepository.instance.organizationNameKebabCase == null) {
       return false;
     }
 
-    if (SettingsRepository.instance.organizationNameCamelCase == null) {
+    if (LocalDataRepository.instance.organizationNameCamelCase == null) {
       return false;
     }
 
@@ -93,10 +93,10 @@ class AuthRepository {
   }
 
   void _clearSessionData() {
-    SettingsRepository.instance.organizationID = null;
-    SettingsRepository.instance.organizationNameVerbose = null;
-    SettingsRepository.instance.organizationNameKebabCase = null;
-    SettingsRepository.instance.organizationNameCamelCase = null;
+    LocalDataRepository.instance.organizationID = null;
+    LocalDataRepository.instance.organizationNameVerbose = null;
+    LocalDataRepository.instance.organizationNameKebabCase = null;
+    LocalDataRepository.instance.organizationNameCamelCase = null;
   }
 
   Future<String?> attemptAutoLogin() async {
@@ -169,7 +169,7 @@ class AuthRepository {
       await _rememberUserAttributesLocally();
       await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
       await _rememberUserOrganization(
-          SettingsRepository.instance.organizationID);
+          LocalDataRepository.instance.organizationID);
       return userID;
     } else {
       return null;

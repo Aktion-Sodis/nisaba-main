@@ -9,7 +9,7 @@ import 'package:mobile_app/backend/repositories/EntityRepository.dart';
 import 'package:mobile_app/backend/repositories/LevelRepository.dart';
 import 'package:mobile_app/frontend/pages/task_form/task_form.dart';
 import 'package:mobile_app/frontend/strings.dart' as strings;
-import 'package:mobile_app/services/gps.dart';
+import 'package:mobile_app/utils/gps.dart';
 
 class OrganizationViewBloc
     extends Bloc<OrganizationViewEvent, OrganizationViewState> {

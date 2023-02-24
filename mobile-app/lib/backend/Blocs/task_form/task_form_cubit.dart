@@ -19,8 +19,8 @@ import 'package:mobile_app/backend/repositories/TaskRepository.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/backend/storage/storage_repository.dart';
 import 'package:mobile_app/frontend/pages/task_form/task_form.dart';
-import 'package:mobile_app/services/photo_capturing.dart';
-import 'package:mobile_app/services/storage.dart';
+import 'package:mobile_app/utils/photo_capturing.dart';
+import 'package:mobile_app/utils/storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:mobile_app/frontend/strings.dart' as strings;
 

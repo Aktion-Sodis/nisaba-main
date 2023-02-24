@@ -6,7 +6,7 @@ import 'package:mobile_app/backend/callableModels/localModels/audio_attachment.d
 import 'package:mobile_app/frontend/components/audio/player_widget.dart';
 import 'package:mobile_app/frontend/pages/task_form/task_attachment_box.dart';
 import 'package:mobile_app/frontend/theme.dart';
-import 'package:mobile_app/services/audio.dart';
+import 'package:mobile_app/utils/audio.dart';
 
 class AudioAttachmentBox extends StatefulWidget {
   AudioAttachmentBox({

@@ -30,7 +30,7 @@ import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_commonw
 import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_tasks.dart';
 import 'package:mobile_app/frontend/strings.dart' as strings;
 import 'package:mobile_app/frontend/common_widgets.dart';
-import 'package:mobile_app/services/photo_capturing.dart';
+import 'package:mobile_app/utils/photo_capturing.dart';
 import 'package:mobile_app/frontend/pages/survey.dart' as surveyarea;
 
 class MainMenuOrganization extends StatelessWidget {

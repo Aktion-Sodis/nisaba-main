@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
+import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/frontend/components/nisaba_app_bar.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/frontend/theme.dart';
@@ -18,13 +18,13 @@ class _WifiOnlySettingCheckerState extends State<WifiOnlySettingChecker> {
   Widget get child => widget.child;
 
   void _useOnlyWifi(bool value) {
-    SettingsRepository.instance.wifiOnly = value;
+    LocalDataRepository.instance.wifiOnly = value;
     if (mounted) setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    if (SettingsRepository.instance.wifiOnlyRawValue == null) {
+    if (LocalDataRepository.instance.wifiOnlyRawValue == null) {
       return getRequestWifiOnlySettingPage(context);
     } else {
       return child;

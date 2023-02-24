@@ -7,7 +7,7 @@ import 'package:mobile_app/backend/Blocs/organization_view/organization_view_eve
 import 'package:mobile_app/backend/callableModels/ExecutedSurvey.dart';
 import 'package:mobile_app/backend/callableModels/Location.dart';
 import 'package:mobile_app/backend/repositories/ExecutedSurveyRepository.dart';
-import 'package:mobile_app/services/gps.dart';
+import 'package:mobile_app/utils/gps.dart';
 
 class InAppBloc extends Bloc<InAppEvent, InAppState> {
   InAppBloc() : super(MainInAppState()) {
