@@ -10,10 +10,14 @@
 /// - bei login immer an device erinnern
 /// - bei logout device vergewssen
 
+import 'package:amplify_api/model_queries.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
 import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
+import 'package:mobile_app/backend/repositories/UserRepository.dart';
+import 'package:mobile_app/backend/repositories/exceptions/AuthRepositoryExceptions.dart';
 import 'package:mobile_app/services/amplify.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
@@ -44,13 +48,17 @@ class AuthRepository {
   // As this section does not correspond with block rules, the following method
   // is temporarily implemented in this ugly style
   Future<void> _rememberUserOrganization(String organizationID) async {
-    String organizationID = SettingsRepository.instance.organizationID;
-
     try {
-      final result = await Amplify.DataStore.query(amp.Organization.classType,
-          where: amp.Organization.ID.eq(organizationID));
+      /*final result = await Amplify.DataStore.query(amp.Organization.classType,
+          where: amp.Organization.ID.eq(organizationID));*/
 
-      amp.Organization organization = result.first;
+      final result = await Amplify.API
+          .query(
+              request:
+                  ModelQueries.get(amp.Organization.classType, organizationID))
+          .response;
+
+      amp.Organization organization = result.data!;
       SettingsRepository.instance.organizationNameVerbose =
           organization.nameVerbose;
       SettingsRepository.instance.organizationNameKebabCase =
