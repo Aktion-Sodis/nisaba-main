@@ -39,13 +39,16 @@ class UserRepository {
     ///ID always has to be set as it should equal the authentication ID
     amp.User newUser = user.toAmplifyModel();
     await Amplify.DataStore.save(newUser);
+    LocalDataRepository.instance.user = User.fromAmplifyModel(newUser);
   }
 
   Future updateUser(User user) async {
     ///updates an existing User
     ///ID always has to be set
 
-    await Amplify.DataStore.save(user.toAmplifyModel());
+    amp.User ampUser = user.toAmplifyModel();
+    await Amplify.DataStore.save(ampUser);
+    LocalDataRepository.instance.user = User.fromAmplifyModel(ampUser);
   }
 
   static SyncedFile getUserPicFile(User user) {

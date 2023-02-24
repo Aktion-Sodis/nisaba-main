@@ -2,6 +2,8 @@ import 'package:hive/hive.dart';
 import 'package:mobile_app/frontend/strings.dart';
 import 'package:mobile_app/utils/hive_db_helper.dart';
 
+import '../callableModels/User.dart';
+
 class LocalDataRepository {
   static final LocalDataRepository instance = LocalDataRepository();
 
@@ -38,4 +40,8 @@ class LocalDataRepository {
       _table.get("organizationNameKebabCase");
   set organizationNameKebabCase(String? value) =>
       _table.put("organizationNameKebabCase", value);
+
+  User? get user => User.fromMap(_table.get("user"));
+
+  set user(User? value) => _table.put("user", value?.toMap());
 }
