@@ -70,6 +70,7 @@ class EntityRepository {
   }
 
   static Future<String> createEntity(Entity entity) async {
+    // TODO: Check if entity already exists. Maybe, generating a new ID is not necessary.
     String id = UUID.getUUID();
     entity.id = entity.id ?? id;
     Amplify.DataStore.save(
