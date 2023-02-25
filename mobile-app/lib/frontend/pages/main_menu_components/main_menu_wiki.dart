@@ -87,7 +87,7 @@ class PDFViewWidgetState extends State<PDFViewWidget> {
 
   @override
   void initState() {
-    syncedFile = ContentRepository.getContentPDFFile(widget.content);
+    syncedFile = ContentRepository.instance.getContentPDFFile(widget.content);
     print("asked for synced file");
     pdfFuture = getPDF();
     print("init state completed");

@@ -21,7 +21,7 @@ class OrganizationViewBloc
       this.entityRepository, this.appliedInterventionRepository, this.inAppBloc)
       : super(LoadingOrganizationViewState()) {
     on<OrganizationViewEvent>(_mapEventToState);
-    LevelRepository.getAllLevels().then((allLevels) {
+    LevelRepository.instance.getAllLevels().then((allLevels) {
       String startingAppBarString = allLevels.first.name;
       // ignore: invalid_use_of_visible_for_testing_member
       emit(EntitiesLoadedOrganizationViewState(
@@ -111,10 +111,11 @@ class OrganizationViewBloc
         add(LoadDaughterEntities(event.parent, 0));
       } else if (event is LoadDaughterEntities &&
           loadedState.currentLevelContent.hasMoreToLoad) {
-        List<Entity> loadedEntities = await EntityRepository.getEntities(
-            byParentEntityID: true,
-            parentEntityID: event.parent == null ? null : event.parent!.id,
-            page: event.page);
+        List<Entity> loadedEntities = await EntityRepository.instance
+            .getEntities(
+                byParentEntityID: true,
+                parentEntityID: event.parent == null ? null : event.parent!.id,
+                page: event.page);
 
         loadedState.levelContentList
             .where(
@@ -198,13 +199,13 @@ class OrganizationViewBloc
         } catch (e) {
           // Probably: LocationServiceDisabledException or TimeoutException
         }
-        String id = await EntityRepository.createEntity(newEntity);
+        String id = await EntityRepository.instance.createEntity(newEntity);
         newEntity.id = id;
         loadedState.levelContentList.last.daughterEntities.add(newEntity);
 
         emit(loadedState.copyWith());
       } else if (event is UpdateEntity) {
-        EntityRepository.updateEntity(event.entity);
+        EntityRepository.instance.updateEntity(event.entity);
         emit(loadedState.copyWith(
             appBarString: event.entity.name,
             currentDetailEntity: event.entity));
@@ -215,9 +216,8 @@ class OrganizationViewBloc
         } catch (e) {
           // Probably: LocationServiceDisabledException or TimeoutException
         }
-        String id =
-            await AppliedInterventionRepository.createAppliedIntervention(
-                event.appliedIntervention, event.entity);
+        String id = await AppliedInterventionRepository.instance
+            .createAppliedIntervention(event.appliedIntervention, event.entity);
         print("new InterventionID: $id");
         AppliedIntervention toAdd = event.appliedIntervention;
         toAdd.id = id;
@@ -243,8 +243,8 @@ class OrganizationViewBloc
         emit(loadedState.copyWith(
             currentDetailEntity: loadedState.currentDetailEntity));
       } else if (event is UpdateAppliedIntervention) {
-        AppliedInterventionRepository.updateAppliedIntervention(
-            event.appliedIntervention, event.entity);
+        AppliedInterventionRepository.instance
+            .updateAppliedIntervention(event.appliedIntervention, event.entity);
         AppliedIntervention toAdd = event.appliedIntervention;
         Entity toSet = event.entity;
 

@@ -76,8 +76,8 @@ class InterventionRepositoryAmplifyDataStore
         tags: await interventionInterventionTagRelationsByInterventionID(
             intervention),
         levels: await levelInterventionRelationsByInterventionID(intervention),
-        surveys:
-            await SurveyRepository.getAmpSurveysByIntervention(intervention));
+        surveys: await SurveyRepository.instance
+            .getAmpSurveysByIntervention(intervention));
     return toReturn;
   }
 

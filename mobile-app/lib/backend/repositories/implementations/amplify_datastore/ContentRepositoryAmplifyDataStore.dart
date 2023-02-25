@@ -35,8 +35,8 @@ class ContentRepositoryAmplifyDataStore extends definition.ContentRepository {
           amp.InterventionContentRelation relation) async {
     amp.InterventionContentRelation toReturn = relation.copyWith(
         content: await _populate(relation.content),
-        intervention:
-            await InterventionRepository.populate(relation.intervention));
+        intervention: await InterventionRepository.instance
+            .populate(relation.intervention));
     return toReturn;
   }
 

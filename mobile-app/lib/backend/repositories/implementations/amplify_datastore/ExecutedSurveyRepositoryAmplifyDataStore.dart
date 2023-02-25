@@ -58,10 +58,10 @@ class ExecutedSurveyRepositoryAmplifyDataStore
         appliedIntervention: appliedIntervention ??
             await AppliedInterventionRepository.instance
                 .appliedInterventionByExecutedSurvey(executedSurvey),
-        whoExecutedIt: await UserRepository.getAmpUserByID(
-            executedSurvey.executedSurveyWhoExecutedItId),
-        survey: await SurveyRepository.getAmpSurveyByID(
-            executedSurvey.executedSurveySurveyId));
+        whoExecutedIt: await UserRepository.instance
+            .getAmpUserByID(executedSurvey.executedSurveyWhoExecutedItId),
+        survey: await SurveyRepository.instance
+            .getAmpSurveyByID(executedSurvey.executedSurveySurveyId));
     return toReturn;
   }
 

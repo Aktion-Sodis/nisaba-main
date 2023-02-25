@@ -34,15 +34,17 @@ class TaskRepository {
     toReturn = toReturn.copyWith(
         user: user.toAmplifyModel(),
         entity: toReturn.taskEntityId != null
-            ? await EntityRepository.ampEntityByID(toReturn.taskEntityId!)
+            ? await EntityRepository.instance
+                .ampEntityByID(toReturn.taskEntityId!)
             : null,
         appliedIntervention: toReturn.taskAppliedInterventionId != null
-            ? await AppliedInterventionRepository.getAmpAppliedInterventionByID(
-                toReturn.taskAppliedInterventionId!)
+            ? await AppliedInterventionRepository.instance
+                .getAmpAppliedInterventionByID(
+                    toReturn.taskAppliedInterventionId!)
             : null,
         executedSurvey: toReturn.taskExecutedSurveyId != null
-            ? await ExecutedSurveyRepository.ampExecutedSurveyByID(
-                toReturn.taskExecutedSurveyId!)
+            ? await ExecutedSurveyRepository.instance
+                .ampExecutedSurveyByID(toReturn.taskExecutedSurveyId!)
             : null);
     return toReturn;
   }

@@ -10,7 +10,8 @@ class ContentBloc extends Bloc<ContentEvent, ContentState> {
 
   ContentBloc(this.contentRepository) : super(LoadingContentState()) {
     on<ContentEvent>(_mapEventToState);
-    ContentRepository.getAllRelationsWithPopulatedContentsAndInterventions()
+    ContentRepository.instance
+        .getAllRelationsWithPopulatedContentsAndInterventions()
         .then((value) {
       List<InterventionContentRelation> all = value;
       List<Content> allContents = List.generate(

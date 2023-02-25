@@ -62,8 +62,8 @@ class EntityRepositoryAmplifyDataStore extends definition.EntityRepository {
   Future<amp.Entity> _populateConnections(amp.Entity entity) async {
     amp.Entity amplifyEntity = entity;
     amplifyEntity = amplifyEntity.copyWith(
-        level:
-            await LevelRepository.getAmpLevelByID(amplifyEntity.entityLevelId),
+        level: await LevelRepository.instance
+            .getAmpLevelByID(amplifyEntity.entityLevelId),
         appliedInterventions: await AppliedInterventionRepository.instance
             .getAmpAppliedInterventionsByEntityID(amplifyEntity.id));
     return amplifyEntity;

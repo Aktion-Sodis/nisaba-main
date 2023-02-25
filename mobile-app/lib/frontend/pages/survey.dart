@@ -181,19 +181,20 @@ class SurveyWidgetState extends State<SurveyWidget> {
     _pageController.addListener(() {
       setState(() {});
     });
-    syncedSurveyImageFile = SurveyRepository.getSurveyPic(widget.survey);
+    syncedSurveyImageFile =
+        SurveyRepository.instance.getSurveyPic(widget.survey);
     picAndAudioAnswerFiles = {};
     widget.survey.questions.forEach((element) {
       if (element.type == QuestionType.PICTURE) {
-        picAndAudioAnswerFiles[element.id!] =
-            ExecutedSurveyRepository.getQuestionAnswerPic(
+        picAndAudioAnswerFiles[element.id!] = ExecutedSurveyRepository.instance
+            .getQuestionAnswerPic(
                 (context.read<InAppBloc>().state as SurveyInAppState)
                     .appliedIntervention,
                 preliminaryExecutedSurveyId,
                 element);
       } else if (element.type == QuestionType.AUDIO) {
-        picAndAudioAnswerFiles[element.id!] =
-            ExecutedSurveyRepository.getQuestionAnswerAudio(
+        picAndAudioAnswerFiles[element.id!] = ExecutedSurveyRepository.instance
+            .getQuestionAnswerAudio(
                 (context.read<InAppBloc>().state as SurveyInAppState)
                     .appliedIntervention,
                 preliminaryExecutedSurveyId,
@@ -334,7 +335,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -408,7 +410,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -487,7 +490,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -541,7 +545,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -595,7 +600,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -629,7 +635,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -667,7 +674,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -716,7 +724,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),

@@ -17,7 +17,7 @@ class AmplifyDatastoreSyncTest extends StatelessWidget {
     // Generate random int
     int randomInt = Random().nextInt(1000000);
 
-    List<Level> levels = await LevelRepository.getAllLevels();
+    List<Level> levels = await LevelRepository.instance.getAllLevels();
     Level rootLevel =
         levels.firstWhere((element) => element.parentLevelID == null);
 
@@ -30,7 +30,7 @@ class AmplifyDatastoreSyncTest extends StatelessWidget {
       name_ml: I18nString(
           languageKeys: ["en-US"], languageTexts: ["Entity $randomInt"]),
     );
-    String id1 = await EntityRepository.createEntity(entity1);
+    String id1 = await EntityRepository.instance.createEntity(entity1);
 
     print(
         "[Amplify Datastore Sync Test] Created entity ${entity1.name} with id: $id1");
