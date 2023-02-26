@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import { Auth as AmplifyAuth } from 'aws-amplify';
 import store from './store';
 import i18n from './i18n';
-import { Auth as AmplifyAuth } from 'aws-amplify';
 
 // import Home from './views/Home.vue';
 import OrganizationStructure from './views/OrganizationStructure.vue';
@@ -173,8 +173,8 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (
-    cognitoUserSession &&
-    (to.name === routeNamesDict.Login || to.name === routeNamesDict.CompleteUserInfo)
+    cognitoUserSession
+    && (to.name === routeNamesDict.Login || to.name === routeNamesDict.CompleteUserInfo)
   ) {
     next({ name: from?.name ?? routeNamesDict.OrganizationStructure });
   }
@@ -202,13 +202,13 @@ router.beforeEach(async (to, from, next) => {
         store.dispatch(
           `${vuexModulesDict.sync}/refreshHandler`,
           { routeName: to.name },
-          { root: true }
+          { root: true },
         );
       } else {
         store.commit(
           `${vuexModulesDict.sync}/setStatus`,
           { newStatus: syncStatusDict.synched },
-          { root: true }
+          { root: true },
         );
       }
       next();
@@ -218,13 +218,13 @@ router.beforeEach(async (to, from, next) => {
       store.dispatch(
         `${vuexModulesDict.sync}/refreshHandler`,
         { routeName: to.name },
-        { root: true }
+        { root: true },
       );
     } else {
       store.commit(
         `${vuexModulesDict.sync}/setStatus`,
         { newStatus: syncStatusDict.synched },
-        { root: true }
+        { root: true },
       );
     }
     next();

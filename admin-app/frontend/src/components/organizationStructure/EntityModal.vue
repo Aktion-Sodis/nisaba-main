@@ -168,7 +168,7 @@ import ImgFromS3 from '../commons/ImgFromS3.vue';
 
 const entityDescriptionMaxChar = Math.max(
   parseInt(process.env.VUE_APP_ENTITY_DESCRIPTION_MAX_CHAR, 10),
-  0
+  0,
 );
 
 export default {
@@ -251,9 +251,9 @@ export default {
     },
     areThereChanges() {
       return (
-        this.name !== this.entityDraft.name.en ||
-        this.description !== this.entityDraft.description ||
-        this.parentEntityID !== this.entityDraft.parentEntityID
+        this.name !== this.entityDraft.name.en
+        || this.description !== this.entityDraft.description
+        || this.parentEntityID !== this.entityDraft.parentEntityID
       );
     },
     deriveImgPath() {
@@ -291,8 +291,7 @@ export default {
     closeHandler() {
       if (this.read) this.abortReadData();
       else if (this.create) this.abortCreateData({ dataType: dataTypesDict.entity });
-      else if (this.edit)
-        this.abortEditData({ dataId: this.dataIdInFocus, dataType: dataTypesDict.entity });
+      else if (this.edit) this.abortEditData({ dataId: this.dataIdInFocus, dataType: dataTypesDict.entity });
     },
     editHandler() {
       this.editData({ dataId: this.dataIdInFocus, dataType: dataTypesDict.entity });
@@ -309,7 +308,7 @@ export default {
           parentEntityID: this.parentEntityID ?? null,
           appliedInterventions: [], //
           customData: [], // TODO
-        })
+        }),
       );
       await this.$nextTick();
       const originalVersion = this.entityInFocus != null ? this.entityInFocus._version : 0;

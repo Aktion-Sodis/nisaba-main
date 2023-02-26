@@ -204,8 +204,8 @@ export default {
     },
     isSubmitDisabled() {
       return (
-        this.calculateLocalizedString({ languageTexts: this.name.languageTexts }) ===
-        this.$t('general.noTextProvided')
+        this.calculateLocalizedString({ languageTexts: this.name.languageTexts })
+        === this.$t('general.noTextProvided')
       );
     },
   },
@@ -234,7 +234,7 @@ export default {
           surveys: [], // TODO
           levels: [],
           contents: this.contents, // TODO
-        })
+        }),
       );
       await this.$nextTick();
       this.saveData();

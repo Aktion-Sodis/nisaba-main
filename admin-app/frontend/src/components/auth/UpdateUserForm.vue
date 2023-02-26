@@ -103,7 +103,6 @@ export default {
       if (signInStatus === signInStatusDict.completeUserInfo) {
         this.$router.push({ name: routeNamesDict.CompleteUserInfo });
       }
-      
     },
   },
 };

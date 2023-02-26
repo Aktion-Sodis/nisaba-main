@@ -23,7 +23,7 @@ const APIpost = async ({ commit, dispatch, rootGetters }, entityDraft) => {
           rootGetters.callDeriveFilePathWithOrganizationId('entityPicPath', {
             entityID: postResponse.id,
           }),
-          rootGetters['dataModal/getImageFile']
+          rootGetters['dataModal/getImageFile'],
         );
       } catch {
         success = false;
@@ -39,7 +39,7 @@ const APIpost = async ({ commit, dispatch, rootGetters }, entityDraft) => {
       },
       {
         root: true,
-      }
+      },
     );
   } catch (error) {
     success = false;
@@ -53,7 +53,9 @@ const APIpost = async ({ commit, dispatch, rootGetters }, entityDraft) => {
 // because DataStore was throwing an unrepairable error.
 // Another point where we see that we are regretful for
 // choosing Amplify.
-const APIput = async ({ commit, dispatch, getters, rootGetters }, { newData, originalId }) => {
+const APIput = async ({
+  commit, dispatch, getters, rootGetters,
+}, { newData, originalId }) => {
   commit('setLoading', { newValue: true });
   let success = true;
 
@@ -66,7 +68,7 @@ const APIput = async ({ commit, dispatch, getters, rootGetters }, { newData, ori
         updated.description = newData.description;
         updated.parentEntityID = newData.parentEntityID;
         updated.customData = newData.customData.map((cd) => new AppliedCustomData(cd));
-      })
+      }),
     );
 
     const newEntity = putResponse;
@@ -77,7 +79,7 @@ const APIput = async ({ commit, dispatch, getters, rootGetters }, { newData, ori
           rootGetters.callDeriveFilePathWithOrganizationId('entityPicPath', {
             entityID: newEntity.id,
           }),
-          rootGetters['dataModal/getImageFile']
+          rootGetters['dataModal/getImageFile'],
         );
       } catch {
         success = false;
@@ -94,7 +96,7 @@ const APIput = async ({ commit, dispatch, getters, rootGetters }, { newData, ori
       },
       {
         root: true,
-      }
+      },
     );
   } catch {
     success = false;
@@ -124,7 +126,7 @@ const APIdelete = async ({ commit, dispatch }, { id, _version }) => {
     {},
     {
       root: true,
-    }
+    },
   );
 
   commit('setLoading', { newValue: false });
@@ -141,9 +143,7 @@ const APIgetAll = async ({}, { apiLevels }) => {
     // eslint-disable-next-line no-restricted-syntax
     for (const apiLevel of apiLevels) {
       // eslint-disable-next-line no-await-in-loop
-      const entitiesOApiLevel = await DataStore.query(Entity, (c) =>
-        c.entityLevelId('eq', apiLevel.id)
-      );
+      const entitiesOApiLevel = await DataStore.query(Entity, (c) => c.entityLevelId('eq', apiLevel.id));
       res = res.concat(entitiesOApiLevel ?? []);
     }
     return res;

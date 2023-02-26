@@ -36,5 +36,4 @@ export const compareI18nStrings = (a, b) => {
   return true;
 };
 
-export const waitForMilliseconds = (milliseconds) =>
-  new Promise((resolve) => setTimeout(resolve, milliseconds));
+export const waitForMilliseconds = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
