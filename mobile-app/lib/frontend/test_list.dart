@@ -7,6 +7,7 @@ import 'package:mobile_app/frontend/tests/amplify_api_test.dart';
 import 'package:mobile_app/frontend/tests/amplify_cognito_test.dart';
 import 'package:mobile_app/frontend/tests/amplify_datastore_sync_test.dart';
 import 'package:mobile_app/frontend/tests/audio_test.dart';
+import 'package:mobile_app/frontend/tests/db_test.dart';
 import 'package:mobile_app/frontend/tests/gps_test.dart';
 import 'package:mobile_app/frontend/tests/image_compression_test.dart';
 
@@ -20,6 +21,7 @@ class TestList extends StatelessWidget {
     "isolate_image_compress": () => ImageCompressionTest(),
     "Amplify Cognito": () => AmplifyCognitoTest(),
     "Amplify API": () => AmplifyApiTest(),
+    "DB": () => DBTest(),
   };
 
   Widget _itemBuilder(BuildContext context, int index) {
