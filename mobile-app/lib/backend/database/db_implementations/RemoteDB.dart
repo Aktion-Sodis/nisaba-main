@@ -3,33 +3,34 @@ import 'package:mobile_app/backend/database/Query.dart';
 
 import '../DB.dart';
 
-class RemoteDB<G extends DBObject> extends DB<G> {
+class RemoteDB extends DB {
   @override
-  Future<void> create(G object) {
+  Future<void> create<G extends DBObject>(G object) {
+    G.toString();
     // TODO: implement create
     throw UnimplementedError();
   }
 
   @override
-  Future<void> delete(G object) {
+  Future<void> delete<G extends DBObject>(G object) {
     // TODO: implement delete
     throw UnimplementedError();
   }
 
   @override
-  Future<List<G>> get(Query query) {
+  Future<List<G>> get<G extends DBObject>(Query query) {
     // TODO: implement get
     throw UnimplementedError();
   }
 
   @override
-  Future<G> getById(String id) {
+  Future<G> getById<G extends DBObject>(String id) {
     // TODO: implement getById
     throw UnimplementedError();
   }
 
   @override
-  Future<void> update(G object) {
+  Future<void> update<G extends DBObject>(G object) {
     // TODO: implement update
     throw UnimplementedError();
   }
