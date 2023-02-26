@@ -3,7 +3,7 @@ import 'package:mobile_app/backend/database/Query.dart';
 
 import '../DB.dart';
 
-class LocalDB<G extends DBObject> extends DB {
+class LocalDB extends DB {
   @override
   Future<void> create<G extends DBObject>(G object) {
     // TODO: implement create
