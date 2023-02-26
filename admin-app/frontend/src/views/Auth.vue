@@ -90,6 +90,7 @@ export default {
       //   // eslint-disable-next-line
       //   res = require(`../static/aktionSodisBig.png`);
       // }
+      // eslint-disable-next-line
       return require(`../static/nisabaBig.png`);
     },
   },
