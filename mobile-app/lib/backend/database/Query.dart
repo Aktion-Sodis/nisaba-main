@@ -6,5 +6,5 @@ class Query<G> {
   final G attr1;
   final G? attr2;
 
-  Query(this.predicate, this.key, this.attr1, this.attr2);
+  Query(this.predicate, this.key, this.attr1, [this.attr2]);
 }
