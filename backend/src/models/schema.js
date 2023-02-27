@@ -1854,6 +1854,75 @@ export const schema = {
                 }
             ]
         },
+        "TestObject": {
+            "name": "TestObject",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "age": {
+                    "name": "age",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "TestObjects",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "organization_id",
+                                "allow": "owner",
+                                "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "LevelInterventionRelation": {
             "name": "LevelInterventionRelation",
             "fields": {
@@ -2777,6 +2846,6 @@ export const schema = {
             }
         }
     },
-    "codegenVersion": "3.3.5",
-    "version": "2161272b038905461bb600c14b4081b4"
+    "codegenVersion": "3.3.2",
+    "version": "cc0397e401109c26c23f5281c025ca7e"
 };
