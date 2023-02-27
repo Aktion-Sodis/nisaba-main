@@ -10,7 +10,7 @@ const USER_POOL_ID = process.env.AUTH_AUTHNISABA_USERPOOLID;
 const createUser = async (event) => {
 
     // Get the email from the request body
-    const { email } = JSON.parse(event.body);
+    const { email, group } = JSON.parse(event.body);
 
     // Get the custom claim `custom:organization_id` from event.requestContext.authorizer.claims
     const { claims } = event.requestContext.authorizer;
@@ -33,6 +33,12 @@ const createUser = async (event) => {
 
     try {
         const user = await cognitoIdentityServiceProvider.adminCreateUser(params).promise();
+
+        const res2 = await cognitoIdentityServiceProvider.adminAddUserToGroup({
+            UserPoolId: USER_POOL_ID,
+            Username: email,
+            GroupName: group
+        }).promise();
 
         return {
             statusCode: 200,
