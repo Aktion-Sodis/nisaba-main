@@ -68,13 +68,13 @@ class RemoteDB extends DB {
   }
 
   @override
-  Future<List<G>> get<G extends DBObject>(Query query) {
+  Future<List<G>> get<G extends DBObject>(Query? query) {
     try {
       ModelType modelType = _modelCollection.getRegisteredModel<G>().modelType;
 
       //TODO: Implement limit and offset
-      final request =
-          ModelQueries.list(modelType, where: _createAmplifyQuery<G>(query));
+      final whereQuery = query != null ? _createAmplifyQuery<G>(query) : null;
+      final request = ModelQueries.list(modelType, where: whereQuery);
       final response = Amplify.API.query(request: request).response;
       return response.then((value) {
         final data = value.data;
