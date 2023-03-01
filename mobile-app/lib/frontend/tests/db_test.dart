@@ -3,9 +3,11 @@ import 'package:mobile_app/backend/database/DB.dart';
 import 'package:mobile_app/backend/database/DBObject.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDB.dart';
+import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDB.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 
 import '../../backend/database/Query.dart';
+import '../../backend/database/db_implementations/SyncedDB.dart';
 
 class TestObject implements DBObject {
   String? name;
@@ -39,7 +41,7 @@ class TestObject implements DBObject {
 class DBTest extends StatelessWidget {
   DBTest({Key? key}) : super(key: key);
 
-  final DB db = RemoteDB();
+  final DB db = LocalDB();
 
   Future<void> _dbTest() async {
     TestObject testObject1 = TestObject("Test1", 1);
@@ -164,6 +166,10 @@ class DBTest extends StatelessWidget {
     }
   }
 
+  Future<void> _initDB() async {
+    await (db as LocalDB).initLocalDB();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,6 +180,13 @@ class DBTest extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(defaultPadding(context)),
             children: [
+              ElevatedButton(
+                onPressed: _initDB,
+                child: const Text("Init DB"),
+              ),
+              SizedBox(
+                height: defaultPadding(context),
+              ),
               ElevatedButton(
                 onPressed: _startTest,
                 child: const Text("Start DB Test"),

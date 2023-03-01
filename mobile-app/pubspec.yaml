@@ -53,6 +53,7 @@ dependencies:
 
   geolocator: ^8.2.1
   flutter_dotenv: ^5.0.2
+  sembast: ^3.4.0+6
 
 
 

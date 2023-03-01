@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:mobile_app/backend/database/db_implementations/SyncedDB.dart';
 import 'package:mobile_app/backend/repositories/AuthRepository.dart';
 import 'package:mobile_app/backend/Blocs/request_permissions/request_permissions_cubit.dart';
 import 'package:mobile_app/backend/Blocs/session/session_cubit.dart';
@@ -16,10 +17,14 @@ import 'package:mobile_app/utils/amplify.dart';
 import 'package:mobile_app/frontend/authentication_state_builder.dart';
 import 'package:mobile_app/utils/hive_db_helper.dart';
 
+import 'backend/database/db_implementations/LocalDB.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await HiveDBHelper.instance.init();
+  await (SyncedDB.instance.localDB as LocalDB).initLocalDB();
+  // await (SyncedDB.instance.localDB as LocalDB).initLocalDB();
   SystemChrome.setPreferredOrientations(
           [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp])
       .then((_) => runApp(const MyApp()));
