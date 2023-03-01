@@ -1,11 +1,14 @@
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:mobile_app/backend/database/db_implementations/remote_db/DBExceptions.dart';
 import 'package:mobile_app/backend/database/DBModelCollection.dart';
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/DBObject.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDBModelRegistration.dart';
+import 'package:mobile_app/utils/connectivity.dart';
 
 import '../../../../models/ModelProvider.dart' as amp;
 import '../../../callableModels/CallableModels.dart';
@@ -50,6 +53,10 @@ class RemoteDB extends DB {
 
       object.id = createdObject.id;
     } on ApiException catch (e) {
+      bool connected = await isThereInternetConnection();
+      if (!connected) {
+        throw NoConnectionException();
+      }
       rethrow;
     }
   }
@@ -64,31 +71,38 @@ class RemoteDB extends DB {
 
       object.id = null;
     } on ApiException catch (e) {
+      bool connected = await isThereInternetConnection();
+      if (!connected) {
+        throw NoConnectionException();
+      }
       rethrow;
     }
   }
 
   @override
-  Future<List<G>> get<G extends DBObject>([Query? query]) {
+  Future<List<G>> get<G extends DBObject>([Query? query]) async {
     try {
       ModelType modelType = _modelCollection.getRegisteredModel<G>().modelType;
 
       //TODO: Implement limit and offset
       final whereQuery = query != null ? _createAmplifyQuery<G>(query) : null;
       final request = ModelQueries.list(modelType, where: whereQuery);
-      final response = Amplify.API.query(request: request).response;
-      return response.then((value) {
-        final data = value.data;
-        if (data == null) {
-          return Future.value([]);
-        }
-        final List<G> dbObjects = data.items
-            .where((element) => element != null)
-            .map((e) => _modelToDBObject<G>(e!) as G)
-            .toList();
-        return Future.value(dbObjects);
-      });
+      final response = await Amplify.API.query(request: request).response;
+
+      final data = response.data;
+      if (data == null) {
+        return Future.value([]);
+      }
+      final List<G> dbObjects = data.items
+          .where((element) => element != null)
+          .map((e) => _modelToDBObject<G>(e!) as G)
+          .toList();
+      return Future.value(dbObjects);
     } on ApiException catch (e) {
+      bool connected = await isThereInternetConnection();
+      if (!connected) {
+        throw NoConnectionException();
+      }
       rethrow;
     }
   }
@@ -106,6 +120,10 @@ class RemoteDB extends DB {
       final DBObject dbObject = _modelToDBObject<G>(data);
       return Future.value(dbObject as G);
     } on ApiException catch (e) {
+      bool connected = await isThereInternetConnection();
+      if (!connected) {
+        throw NoConnectionException();
+      }
       rethrow;
     }
   }
@@ -119,6 +137,10 @@ class RemoteDB extends DB {
       final response = await Amplify.API.mutate(request: request).response;
       print(response.data);
     } on ApiException catch (e) {
+      bool connected = await isThereInternetConnection();
+      if (!connected) {
+        throw NoConnectionException();
+      }
       rethrow;
     }
   }
