@@ -6,7 +6,4 @@ abstract class DBObject {
   int version = 0;
 
   DBObject();
-
-  Map<String, dynamic> toMap();
-  void fromMap(Map<String, dynamic> map);
 }
