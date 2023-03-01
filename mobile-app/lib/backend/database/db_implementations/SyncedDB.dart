@@ -4,7 +4,7 @@ import 'package:mobile_app/backend/database/Synchronizer.dart';
 import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDB.dart';
 import '../DB.dart';
 import '../DBQueue.dart';
-import 'LocalDB.dart';
+import 'local_db/LocalDB.dart';
 
 class SyncedDB extends DB {
   final DB localDB;

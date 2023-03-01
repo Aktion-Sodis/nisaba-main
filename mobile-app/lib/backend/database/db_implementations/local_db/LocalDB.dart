@@ -1,7 +1,7 @@
 import 'package:mobile_app/backend/database/DBObject.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 
-import '../DB.dart';
+import '../../DB.dart';
 
 class LocalDB extends DB {
   @override
