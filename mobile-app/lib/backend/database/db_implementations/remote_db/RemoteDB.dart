@@ -5,16 +5,18 @@ import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/DBObject.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/Query.dart';
+import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDBModelRegistration.dart';
 import 'package:mobile_app/frontend/tests/db_test.dart';
 
-import '../../../models/ModelProvider.dart' as amp;
-import '../../callableModels/CallableModels.dart';
-import '../DB.dart';
+import '../../../../models/ModelProvider.dart' as amp;
+import '../../../callableModels/CallableModels.dart';
+import '../../DB.dart';
 
 class RemoteDB extends DB {
-  final DBModelCollection _modelCollection = DBModelCollection();
+  final DBModelCollection<RemoteDBModelRegistration> _modelCollection =
+      DBModelCollection<RemoteDBModelRegistration>();
 
-  void registerModel(Type type, DBModelRegistration registration) {
+  void registerModel(Type type, RemoteDBModelRegistration registration) {
     _modelCollection.registerModel(type, registration);
   }
 

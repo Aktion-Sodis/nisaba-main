@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/backend/database/DB.dart';
 import 'package:mobile_app/backend/database/DBObject.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
-import 'package:mobile_app/backend/database/db_implementations/RemoteDB.dart';
+import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDB.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 
 import '../../backend/database/Query.dart';

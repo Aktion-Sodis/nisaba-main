@@ -5,17 +5,17 @@ import 'package:mobile_app/backend/database/DBObject.dart';
 import 'QPredicate.dart';
 import 'Query.dart';
 
-class DBModelCollection {
-  final Map<Type, DBModelRegistration> _registeredModels = {};
+class DBModelCollection<R extends DBModelRegistration> {
+  final Map<Type, R> _registeredModels = {};
 
-  DBModelRegistration getRegisteredModel<G>() {
+  R getRegisteredModel<G>() {
     if (_registeredModels[G] == null) {
       throw Exception("Model not registered");
     }
     return _registeredModels[G]!;
   }
 
-  void registerModel(Type type, DBModelRegistration registration) {
+  void registerModel(Type type, R registration) {
     if (!checkRequiredPredicates(registration)) {
       throw Exception(
           "Required predicates are not registered for ${type.toString()}");

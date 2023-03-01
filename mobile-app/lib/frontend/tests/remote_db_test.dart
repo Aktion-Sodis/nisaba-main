@@ -1,12 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/database/DBModelCollection.dart';
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
+import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDBModelRegistration.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:flutter/material.dart';
 import 'package:mobile_app/backend/database/DB.dart';
 import 'package:mobile_app/backend/database/DBObject.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
-import 'package:mobile_app/backend/database/db_implementations/RemoteDB.dart';
+import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDB.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 
 import '../../backend/database/Query.dart';
@@ -48,7 +49,7 @@ class RemoteDBTest extends StatelessWidget {
   void initDB() {
     (db as RemoteDB).registerModel(
         TO,
-        DBModelRegistration(
+        RemoteDBModelRegistration(
             modelType: amp.TestObject.classType,
             fromDBModel: (DBObject object) {
               TO to = object as TO;

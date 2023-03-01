@@ -8,16 +8,12 @@ import 'Query.dart';
 /// and the translation from and to the DBObject
 ///
 /// You can find all the predicates to be implemented in QPredicate.dart
-class DBModelRegistration {
-  final ModelType modelType;
-  final Map<QPredicate, QueryPredicate? Function(Query)> predicatesTranslations;
+abstract class DBModelRegistration<G, Q> {
+  final Map<QPredicate, Q? Function(Query)> predicatesTranslations;
 
-  final Model Function(DBObject) fromDBModel;
-  final DBObject Function(Model) toDBModel;
+  final G Function(DBObject) fromDBModel;
+  final DBObject Function(G) toDBModel;
 
   DBModelRegistration(
-      {required this.modelType,
-      required this.predicatesTranslations,
-      required this.fromDBModel,
-      required this.toDBModel});
+      this.predicatesTranslations, this.fromDBModel, this.toDBModel);
 }
