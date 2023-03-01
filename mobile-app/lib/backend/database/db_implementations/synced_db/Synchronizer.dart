@@ -1,7 +1,7 @@
-import 'package:mobile_app/backend/database/DBQueue.dart';
+import 'package:mobile_app/backend/database/db_implementations/synced_db/DBQueue.dart';
 
-import 'DB.dart';
-import 'DBErrorType.dart';
+import '../../DB.dart';
+import '../../DBErrorType.dart';
 import 'SyncStatus.dart';
 
 class Synchronizer {
