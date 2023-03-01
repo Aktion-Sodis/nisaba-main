@@ -23,6 +23,7 @@ import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/backend/storage/storage_repository.dart';
 import 'package:mobile_app/models/InterventionContentRelation.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
+import 'package:mobile_app/utils/connectivity.dart';
 
 class SyncBloc extends Bloc<SyncEvent, SyncState> {
   TaskBloc taskBloc;
