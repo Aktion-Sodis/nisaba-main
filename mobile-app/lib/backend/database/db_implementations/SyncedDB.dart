@@ -32,7 +32,7 @@ class SyncedDB extends DB {
   }
 
   @override
-  Future<List<G>> get<G extends DBObject>(Query query) {
+  Future<List<G>> get<G extends DBObject>([Query? query]) {
     // TODO: implement get
     throw UnimplementedError();
   }

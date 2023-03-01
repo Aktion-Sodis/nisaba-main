@@ -6,7 +6,6 @@ import 'package:mobile_app/backend/database/DBObject.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDBModelRegistration.dart';
-import 'package:mobile_app/frontend/tests/db_test.dart';
 
 import '../../../../models/ModelProvider.dart' as amp;
 import '../../../callableModels/CallableModels.dart';
@@ -70,7 +69,7 @@ class RemoteDB extends DB {
   }
 
   @override
-  Future<List<G>> get<G extends DBObject>(Query? query) {
+  Future<List<G>> get<G extends DBObject>([Query? query]) {
     try {
       ModelType modelType = _modelCollection.getRegisteredModel<G>().modelType;
 

@@ -46,16 +46,20 @@ class LocalDB extends DB {
 
     var store = stringMapStoreFactory.store(object.runtimeType.toString());
     await store.record(object.id!).delete(db);
+    object.id = null;
     return Future.value();
   }
 
   @override
-  Future<List<G>> get<G extends DBObject>(Query query) async {
+  Future<List<G>> get<G extends DBObject>([Query? query]) async {
     var store = stringMapStoreFactory.store(G.toString());
 
-    var finder = _modelCollection
-        .getRegisteredModel<G>()
-        .queryPredicateTranslation(query);
+    Finder? finder;
+    if (query != null) {
+      finder = _modelCollection
+          .getRegisteredModel<G>()
+          .queryPredicateTranslation(query);
+    }
     var snapshotList = await store.find(db, finder: finder);
 
     List<G> objectList = [];
