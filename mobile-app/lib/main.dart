@@ -17,7 +17,7 @@ import 'package:mobile_app/utils/amplify.dart';
 import 'package:mobile_app/frontend/authentication_state_builder.dart';
 import 'package:mobile_app/utils/hive_db_helper.dart';
 
-import 'backend/database/db_implementations/LocalDB.dart';
+import 'backend/database/db_implementations/local_db/LocalDB.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
