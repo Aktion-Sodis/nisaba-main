@@ -31,6 +31,11 @@ class TestObject implements DBObject {
 
   @override
   String? id;
+
+  @override
+  void fromMap(Map<String, dynamic> map) {
+    // TODO: implement fromMap
+  }
 }
 
 class DBTest extends StatelessWidget {
