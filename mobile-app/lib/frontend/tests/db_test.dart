@@ -161,6 +161,10 @@ class DBTest extends StatelessWidget {
     }
   }
 
+  Future<void> _initDB() async {
+    await (db as LocalDB).initLocalDB();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,6 +175,13 @@ class DBTest extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.all(defaultPadding(context)),
             children: [
+              ElevatedButton(
+                onPressed: _initDB,
+                child: const Text("Init DB"),
+              ),
+              SizedBox(
+                height: defaultPadding(context),
+              ),
               ElevatedButton(
                 onPressed: _startTest,
                 child: const Text("Start DB Test"),
