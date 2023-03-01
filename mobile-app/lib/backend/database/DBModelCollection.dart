@@ -37,28 +37,30 @@ class DBModelCollection<R extends DBModelRegistration> {
   /// - QPredicate.BETWEEN
   /// - QPredicate.CONTAINS
   bool checkRequiredPredicates(DBModelRegistration registration) {
-    if (!registration.predicatesTranslations.containsKey(QPredicate.EQ)) {
+    if (!registration.predicateIsSupported(QPredicate.EQ)) {
       return false;
     }
-    if (!registration.predicatesTranslations.containsKey(QPredicate.NE)) {
+    if (!registration.predicateIsSupported(QPredicate.NE)) {
       return false;
     }
-    if (!registration.predicatesTranslations.containsKey(QPredicate.GT)) {
+    if (!registration.predicateIsSupported(QPredicate.GT)) {
       return false;
     }
-    if (!registration.predicatesTranslations.containsKey(QPredicate.GE)) {
+    if (!registration.predicateIsSupported(QPredicate.GE)) {
       return false;
     }
-    if (!registration.predicatesTranslations.containsKey(QPredicate.LT)) {
+    if (!registration.predicateIsSupported(QPredicate.LT)) {
       return false;
     }
-    if (!registration.predicatesTranslations.containsKey(QPredicate.LE)) {
+    if (!registration.predicateIsSupported(QPredicate.LE)) {
       return false;
     }
-    /* if(!registration.predicatesTranslations.containsKey(QPredicate.BETWEEN)){
+    /* 
+    if (!registration.predicateIsSupported(QPredicate.BETWEEN)) {
       return false;
     }
-    if(!registration.predicatesTranslations.containsKey(QPredicate.CONTAINS)){
+    
+    if (!registration.predicateIsSupported(QPredicate.CONTAINS)) {
       return false;
     } */
 

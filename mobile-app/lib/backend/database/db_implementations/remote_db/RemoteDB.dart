@@ -28,7 +28,7 @@ class RemoteDB extends DB {
     DBModelRegistration modelRegistration =
         _modelCollection.getRegisteredModel<G>();
     QueryPredicate? queryPredicate =
-        modelRegistration.predicatesTranslations[query.predicate]!(query);
+        modelRegistration.queryPredicateTranslation(query);
     if (queryPredicate == null) {
       throw "Predicate not registered";
     }
