@@ -50,7 +50,7 @@ class LocalDB extends DB {
   }
 
   Future<void> initLocalDB() async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
+    Directory appDocDir = await getApplicationSupportDirectory();
     String dbPath = appDocDir.path + '/LocalDB.db';
     final DatabaseFactory dbFactory = databaseFactoryIo;
     db = await dbFactory.openDatabase(dbPath);
