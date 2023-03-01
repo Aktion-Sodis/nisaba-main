@@ -2,9 +2,9 @@ import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/DBObject.dart';
 import 'package:mobile_app/backend/database/Synchronizer.dart';
 import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDB.dart';
-import '../DB.dart';
-import '../DBQueue.dart';
-import 'local_db/LocalDB.dart';
+import '../../DB.dart';
+import '../../DBQueue.dart';
+import '../local_db/LocalDB.dart';
 
 class SyncedDB extends DB {
   final DB localDB;
