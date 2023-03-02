@@ -176,7 +176,7 @@ class LocalDBTest extends StatelessWidget {
     print("Test Create: OK");
 
     // Test GetByID
-    TO? receivedObject1 = await db.getById<TO>(testObject1.id!);
+    TO? receivedObject1 = await db.getById(TO, testObject1.id!);
     if (receivedObject1 == null) {
       throw "testObject1 has not been received. Probably, testObject1 has not been created";
     }
@@ -187,7 +187,7 @@ class LocalDBTest extends StatelessWidget {
     print("Test GetByID: OK");
 
     List<TO> receivedObjects =
-        await db.get<TO>(Query(QPredicate.EQ, "name", "Test2"));
+        await db.get<TO>(TO, Query(QPredicate.EQ, "name", "Test2"));
     if (receivedObjects.isNotEmpty) {
       throw "testObject2 has been received. Probably, the query is not working";
     }
@@ -205,7 +205,7 @@ class LocalDBTest extends StatelessWidget {
     // Test Update
     testObject1.name = "Test1Updated";
     await db.update(testObject1);
-    receivedObject1 = await db.getById<TO>(testObject1.id!);
+    receivedObject1 = await db.getById<TO>(TO, testObject1.id!);
     if (receivedObject1 == null) {
       throw "testObject1 has not been received. Probably, testObject1 has not been updated";
     }
@@ -217,35 +217,36 @@ class LocalDBTest extends StatelessWidget {
     // Test Predicates
 
     //Query 1
-    receivedObjects = await db.get<TO>(Query(QPredicate.NE, "name", "Test2"));
+    receivedObjects =
+        await db.get<TO>(TO, Query(QPredicate.NE, "name", "Test2"));
     List<int> ages = _getAges(receivedObjects);
     if (!listElementsEqual(ages, [1, 3])) {
       throw "Query 1 failed";
     }
 
     //Query 2
-    receivedObjects = await db.get<TO>(Query(QPredicate.GT, "age", 1));
+    receivedObjects = await db.get<TO>(TO, Query(QPredicate.GT, "age", 1));
     ages = _getAges(receivedObjects);
     if (!listElementsEqual(ages, [2, 3])) {
       throw "Query 2 failed";
     }
 
     //Query 3
-    receivedObjects = await db.get<TO>(Query(QPredicate.GE, "age", 2));
+    receivedObjects = await db.get<TO>(TO, Query(QPredicate.GE, "age", 2));
     ages = _getAges(receivedObjects);
     if (!listElementsEqual(ages, [2, 3])) {
       throw "Query 3 failed";
     }
 
     //Query 4
-    receivedObjects = await db.get<TO>(Query(QPredicate.LT, "age", 3));
+    receivedObjects = await db.get<TO>(TO, Query(QPredicate.LT, "age", 3));
     ages = _getAges(receivedObjects);
     if (!listElementsEqual(ages, [1, 2])) {
       throw "Query 4 failed";
     }
 
     //Query 5
-    receivedObjects = await db.get<TO>(Query(QPredicate.LE, "age", 2));
+    receivedObjects = await db.get<TO>(TO, Query(QPredicate.LE, "age", 2));
     ages = _getAges(receivedObjects);
     if (!listElementsEqual(ages, [1, 2])) {
       throw "Query 5 failed";
@@ -269,7 +270,7 @@ class LocalDBTest extends StatelessWidget {
     // Test Delete
     String testObject1Id = testObject1.id!;
     await db.delete(testObject1);
-    receivedObject1 = await db.getById<TO>(testObject1Id);
+    receivedObject1 = await db.getById<TO>(TO, testObject1Id);
     if (receivedObject1 != null) {
       throw "testObject1 has not been deleted";
     }
@@ -278,7 +279,7 @@ class LocalDBTest extends StatelessWidget {
   }
 
   Future<void> _clearDB() async {
-    List<TO> objectList = await db.get<TO>();
+    List<TO> objectList = await db.get<TO>(TO);
     for (TO object in objectList) {
       await db.delete(object);
     }
