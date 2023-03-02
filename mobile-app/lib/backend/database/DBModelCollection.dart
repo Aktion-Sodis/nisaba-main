@@ -8,11 +8,15 @@ import 'Query.dart';
 class DBModelCollection<R extends DBModelRegistration> {
   final Map<Type, R> _registeredModels = {};
 
-  R getRegisteredModel<G>() {
-    if (_registeredModels[G] == null) {
+  List<Type> getRegisteredModelTypes() {
+    return _registeredModels.keys.toList();
+  }
+
+  R getRegisteredModel(Type type) {
+    if (_registeredModels[type] == null) {
       throw Exception("Model not registered");
     }
-    return _registeredModels[G]!;
+    return _registeredModels[type]!;
   }
 
   void registerModel(Type type, R registration) {

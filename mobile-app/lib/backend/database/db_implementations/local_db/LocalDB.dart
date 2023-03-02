@@ -11,16 +11,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast_io.dart';
 import 'package:sembast/sembast.dart';
 
-class LocalDB extends DB {
+class LocalDB extends DB<LocalDBModelRegistration> {
   // late String dbPath;
   late final Database db;
-
-  final DBModelCollection<LocalDBModelRegistration> _modelCollection =
-      DBModelCollection();
-
-  void registerModel(Type type, LocalDBModelRegistration registration) {
-    _modelCollection.registerModel(type, registration);
-  }
 
   String generateID() {
     return UUID.getUUID();
@@ -28,10 +21,10 @@ class LocalDB extends DB {
 
   @override
   // creates specific store for g
-  Future<void> create<G extends DBObject>(G object) async {
-    object.id = generateID();
-    var objectAsMap =
-        _modelCollection.getRegisteredModel<G>().fromDBModel(object);
+  Future<void> create(DBObject object) async {
+    Type modelType = object.runtimeType;
+    object.id = object.id ?? generateID();
+    var objectAsMap = getRegisteredModel(modelType).fromDBModel(object);
 
     var store = stringMapStoreFactory.store(object.runtimeType.toString());
     await store.record(object.id!).put(db, objectAsMap);
@@ -39,61 +32,59 @@ class LocalDB extends DB {
   }
 
   @override
-  Future<void> delete<G extends DBObject>(G object) async {
+  Future<void> delete(DBObject object) async {
+    Type modelType = object.runtimeType;
     if (object.id == null) {
       throw "Object has no id. Cannot delete";
     }
 
-    var store = stringMapStoreFactory.store(object.runtimeType.toString());
+    var store = stringMapStoreFactory.store(modelType.toString());
     await store.record(object.id!).delete(db);
     object.id = null;
     return Future.value();
   }
 
   @override
-  Future<List<G>> get<G extends DBObject>([Query? query]) async {
-    var store = stringMapStoreFactory.store(G.toString());
+  Future<List<G>> get<G extends DBObject>(Type modelType,
+      [Query? query]) async {
+    var store = stringMapStoreFactory.store(modelType.toString());
 
     Finder? finder;
     if (query != null) {
-      finder = _modelCollection
-          .getRegisteredModel<G>()
-          .queryPredicateTranslation(query);
+      finder = getRegisteredModel(modelType).queryPredicateTranslation(query);
     }
     var snapshotList = await store.find(db, finder: finder);
 
-    List<G> objectList = [];
+    List<DBObject> objectList = [];
     for (var snapshot in snapshotList) {
-      G object = _modelCollection
-          .getRegisteredModel<G>()
-          .toDBModel(snapshot.value) as G;
+      DBObject object = getRegisteredModel(modelType).toDBModel(snapshot.value);
       object.id = snapshot.key;
       objectList.add(object);
     }
-    return Future.value(objectList);
+    return Future.value(objectList.map((e) => e as G).toList());
   }
 
   @override
-  Future<G?> getById<G extends DBObject>(String id) async {
-    var store = stringMapStoreFactory.store(G.toString());
+  Future<G?> getById<G extends DBObject>(Type modelType, String id) async {
+    var store = stringMapStoreFactory.store(modelType.toString());
     var snapshot = await store.record(id).get(db);
     if (snapshot == null) {
       return Future.value(null);
     }
-    G object =
-        _modelCollection.getRegisteredModel<G>().toDBModel(snapshot) as G;
+    DBObject object = getRegisteredModel(modelType).toDBModel(snapshot);
     object.id = id;
-    return Future.value(object);
+    return Future.value(object as G);
   }
 
   @override
-  Future<void> update<G extends DBObject>(G object) async {
+  Future<void> update(DBObject object) async {
+    Type modelType = object.runtimeType;
+
     if (object.id == null) {
       throw "Object has no id. Cannot update";
     }
 
-    var objectAsMap =
-        _modelCollection.getRegisteredModel<G>().fromDBModel(object);
+    var objectAsMap = getRegisteredModel(modelType).fromDBModel(object);
 
     var store = stringMapStoreFactory.store(object.runtimeType.toString());
     await store.record(object.id!).put(db, objectAsMap);
@@ -101,9 +92,9 @@ class LocalDB extends DB {
     return Future.value();
   }
 
-  Future<void> initLocalDB() async {
+  Future<void> initLocalDB([String dbName = "LocalDB"]) async {
     Directory appDocDir = await getApplicationSupportDirectory();
-    String dbPath = appDocDir.path + '/LocalDB.db';
+    String dbPath = appDocDir.path + '/$dbName.db';
     final DatabaseFactory dbFactory = databaseFactoryIo;
     db = await dbFactory.openDatabase(dbPath);
   }
