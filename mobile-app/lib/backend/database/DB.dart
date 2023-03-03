@@ -1,28 +1,28 @@
 import 'package:mobile_app/backend/database/DBModelCollection.dart';
 
 import 'DBModelRegistration.dart';
-import 'DBObject.dart';
+import 'DBModel.dart';
 import 'Query.dart';
 
 abstract class DB<R extends DBModelRegistration> {
   /// DB actions
 
-  Future<void> create(DBObject object);
+  Future<void> create(DBModel object);
 
-  Future<void> update(DBObject object);
+  Future<void> update(DBModel object);
 
-  Future<void> delete(DBObject object);
+  Future<void> delete(DBModel object);
 
-  Future<List<G>> get<G extends DBObject>(Type modelType, [Query? query]);
+  Future<List<G>> get<G extends DBModel>(Type modelType, [Query? query]);
 
-  Future<G?> getById<G extends DBObject>(Type modelType, String id);
+  Future<G?> getById<G extends DBModel>(Type modelType, String id);
 
   // TODO: test this for LocalDB, SyncedDB and RemoteDB
   Future<void> clear() async {
     List<Type> types = getRegisteredModelTypes();
     for (Type type in types) {
-      List<DBObject> objects = await get(type);
-      for (DBObject object in objects) {
+      List<DBModel> objects = await get(type);
+      for (DBModel object in objects) {
         await delete(object);
       }
     }

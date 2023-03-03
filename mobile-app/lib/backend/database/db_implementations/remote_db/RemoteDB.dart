@@ -4,7 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:mobile_app/backend/database/db_implementations/remote_db/DBExceptions.dart';
 import 'package:mobile_app/backend/database/DBModelCollection.dart';
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
-import 'package:mobile_app/backend/database/DBObject.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDBModelRegistration.dart';
@@ -30,7 +30,7 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
   }
 
   @override
-  Future<void> create(DBObject object) async {
+  Future<void> create(DBModel object) async {
     Type modelType = object.runtimeType;
     try {
       DBModelRegistration modelRegistration = getRegisteredModel(modelType);
@@ -54,7 +54,7 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
   }
 
   @override
-  Future<void> delete(DBObject object) async {
+  Future<void> delete(DBModel object) async {
     Type modelType = object.runtimeType;
     try {
       Model amplifyObject = getRegisteredModel(modelType).fromDBModel(object);
@@ -72,7 +72,7 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
   }
 
   @override
-  Future<List<G>> get<G extends DBObject>(Type type, [Query? query]) async {
+  Future<List<G>> get<G extends DBModel>(Type type, [Query? query]) async {
     try {
       ModelType modelType = getRegisteredModel(type).modelType;
 
@@ -88,7 +88,7 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
       }
       final List<G> dbObjects = data.items
           .where((element) => element != null)
-          .map((e) => _modelToDBObject(type, e!) as G)
+          .map((e) => _modelToDBModel(type, e!) as G)
           .toList();
       return Future.value(dbObjects);
     } on ApiException catch (e) {
@@ -101,7 +101,7 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
   }
 
   @override
-  Future<G?> getById<G extends DBObject>(Type type, String id) async {
+  Future<G?> getById<G extends DBModel>(Type type, String id) async {
     try {
       ModelType modelType = getRegisteredModel(type).modelType;
       final request = ModelQueries.get(modelType, id);
@@ -110,7 +110,7 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
       if (data == null) {
         return Future.value(null);
       }
-      final G dbObject = _modelToDBObject(type, data) as G;
+      final G dbObject = _modelToDBModel(type, data) as G;
       return Future.value(dbObject);
     } on ApiException catch (e) {
       bool connected = await isThereInternetConnection();
@@ -122,7 +122,7 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
   }
 
   @override
-  Future<void> update(DBObject object) async {
+  Future<void> update(DBModel object) async {
     Type modelType = object.runtimeType;
     try {
       Model amplifyObject = getRegisteredModel(modelType).fromDBModel(object);
@@ -137,7 +137,7 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
     }
   }
 
-  DBObject _modelToDBObject(Type type, Model model) {
+  DBModel _modelToDBModel(Type type, Model model) {
     return getRegisteredModel(type).toDBModel(model);
   }
 }

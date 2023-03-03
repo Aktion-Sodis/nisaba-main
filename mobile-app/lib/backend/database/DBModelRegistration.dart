@@ -1,11 +1,11 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 
-import 'DBObject.dart';
+import 'DBModel.dart';
 import 'QPredicate.dart';
 import 'Query.dart';
 
 /// Represents a model type and implements both all the query predicates traslation
-/// and the translation from and to the DBObject
+/// and the translation from and to the DBModel
 ///
 /// You can find all the predicates to be implemented in QPredicate.dart
 ///
@@ -14,8 +14,8 @@ import 'Query.dart';
 abstract class DBModelRegistration<G, Q> {
   final Map<QPredicate, Q? Function(Query)> _predicatesTranslations;
 
-  final G Function(DBObject) fromDBModel;
-  final DBObject Function(G) toDBModel;
+  final G Function(DBModel) fromDBModel;
+  final DBModel Function(G) toDBModel;
 
   DBModelRegistration(
       this._predicatesTranslations, this.fromDBModel, this.toDBModel);

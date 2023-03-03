@@ -1,7 +1,7 @@
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
-import 'package:mobile_app/backend/database/DBObject.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:sembast/sembast.dart';
 
 class LocalDBModelRegistration
@@ -36,7 +36,7 @@ class LocalDBModelRegistration
   };
 
   LocalDBModelRegistration(
-      {required Map<String, Object?> Function(DBObject) fromDBModel,
-      required DBObject Function(Map<String, Object?>) toDBModel})
+      {required Map<String, Object?> Function(DBModel) fromDBModel,
+      required DBModel Function(Map<String, Object?>) toDBModel})
       : super(_predefinedPredicatesTranslations, fromDBModel, toDBModel);
 }

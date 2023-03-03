@@ -1,6 +1,6 @@
-import 'package:mobile_app/backend/database/DBObject.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 
-class DBQueueObject implements DBObject {
+class DBQueueObject implements DBModel {
   @override
   String? id;
 
@@ -12,13 +12,13 @@ class DBQueueObject implements DBObject {
 
   DBAction action;
   String modelType;
-  DBObject object;
+  DBModel object;
 
   /// modelType: The type of the model that is being queued which can be get
-  /// using [object.runtimeType.toString()] for an object [DBObject object].
+  /// using [object.runtimeType.toString()] for an object [DBModel object].
   DBQueueObject(this.modelType, this.object, this.action, [this.id]) {
     if (object.id == null) {
-      throw Exception('DBObject.id is null');
+      throw Exception('DBModel.id is null');
     }
   }
 

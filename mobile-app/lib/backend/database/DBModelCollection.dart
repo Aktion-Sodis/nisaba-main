@@ -1,6 +1,6 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
-import 'package:mobile_app/backend/database/DBObject.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'QPredicate.dart';
 import 'Query.dart';

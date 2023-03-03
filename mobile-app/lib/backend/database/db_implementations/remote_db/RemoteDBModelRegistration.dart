@@ -1,7 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 
-import '../../DBObject.dart';
+import '../../DBModel.dart';
 import '../../QPredicate.dart';
 import '../../Query.dart';
 
@@ -11,8 +11,8 @@ class RemoteDBModelRegistration
 
   RemoteDBModelRegistration(
       {required List<QueryField> modelAttributes,
-      required Model Function(DBObject object) fromDBModel,
-      required DBObject Function(Model amplifyModel) toDBModel,
+      required Model Function(DBModel object) fromDBModel,
+      required DBModel Function(Model amplifyModel) toDBModel,
       required this.modelType})
       : super(generatePredicatesTranslations(modelAttributes), fromDBModel,
             toDBModel);

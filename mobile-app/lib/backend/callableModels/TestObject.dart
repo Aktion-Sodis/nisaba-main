@@ -1,6 +1,6 @@
-import 'package:mobile_app/backend/database/DBObject.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 
-class TestObject implements DBObject {
+class TestObject implements DBModel {
   @override
   String? id;
 

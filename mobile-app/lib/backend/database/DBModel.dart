@@ -1,9 +1,8 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 
-abstract class DBObject {
+abstract class DBModel {
   String? id;
   bool isPopulated = true;
-  int version = 0;
 
-  DBObject();
+  DBModel();
 }

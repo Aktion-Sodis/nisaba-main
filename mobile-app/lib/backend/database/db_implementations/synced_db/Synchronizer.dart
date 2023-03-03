@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
-import 'package:mobile_app/backend/database/DBObject.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDB.dart';
 import 'package:mobile_app/backend/database/db_implementations/remote_db/DBExceptions.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/DBQueue.dart';
@@ -68,8 +68,8 @@ class Synchronizer {
       downstreamSyncStatus = SyncStatus.SYNCING;
       try {
         for (Type modelType in modelsToSyncDownstream) {
-          List<DBObject> entries = await remoteDB.get(modelType);
-          for (DBObject entry in entries) {
+          List<DBModel> entries = await remoteDB.get(modelType);
+          for (DBModel entry in entries) {
             await localDB.update(entry);
           }
         }

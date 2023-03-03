@@ -1,5 +1,5 @@
 import 'package:mobile_app/backend/database/Query.dart';
-import 'package:mobile_app/backend/database/DBObject.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDBModelRegistration.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/DBQueueObject.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDBModelRegistration.dart';
@@ -56,7 +56,7 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
         LocalDBModelRegistration(fromDBModel: (model) {
           DBQueueObject queueObject = model as DBQueueObject;
 
-          DBObject object = queueObject.object;
+          DBModel object = queueObject.object;
           Map<String, Object?> objectMap = localDB
               .getRegisteredModel(object.runtimeType)
               .fromDBModel(object);
@@ -70,7 +70,7 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
         }, toDBModel: (map) {
           String modelTypeAsString = map['modelType'] as String;
           Type modelType = _getRegisteredTypeByString(modelTypeAsString);
-          DBObject dbObject = localDB
+          DBModel dbObject = localDB
               .getRegisteredModel(modelType)
               .toDBModel(map['object'] as Map<String, dynamic>);
 
@@ -83,7 +83,7 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
   }
 
   @override
-  Future<void> create(DBObject object) async {
+  Future<void> create(DBModel object) async {
     await localDB.create(object);
     await queue.enqueue(object, DBAction.CREATE);
 
@@ -93,7 +93,7 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
   }
 
   @override
-  Future<void> delete(DBObject object) async {
+  Future<void> delete(DBModel object) async {
     await queue.enqueue(object, DBAction.DELETE);
     await localDB.delete(object);
 
@@ -103,7 +103,7 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
   }
 
   @override
-  Future<void> update(DBObject object) async {
+  Future<void> update(DBModel object) async {
     await localDB.update(object);
     await queue.enqueue(object, DBAction.UPDATE);
 
@@ -119,12 +119,12 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
   }
 
   @override
-  Future<G?> getById<G extends DBObject>(Type type, String id) {
+  Future<G?> getById<G extends DBModel>(Type type, String id) {
     return localDB.getById(type, id);
   }
 
   @override
-  Future<List<G>> get<G extends DBObject>(Type type, [Query? query]) {
+  Future<List<G>> get<G extends DBModel>(Type type, [Query? query]) {
     return localDB.get(type, query);
   }
 }

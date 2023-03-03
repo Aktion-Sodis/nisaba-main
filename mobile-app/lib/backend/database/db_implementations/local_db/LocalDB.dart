@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:mobile_app/backend/database/DB.dart';
 import 'package:mobile_app/backend/database/DBModelCollection.dart';
-import 'package:mobile_app/backend/database/DBObject.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDBModelRegistration.dart';
@@ -22,7 +22,7 @@ class LocalDB extends DB<LocalDBModelRegistration> {
 
   @override
   // creates specific store for g
-  Future<void> create(DBObject object) async {
+  Future<void> create(DBModel object) async {
     Type modelType = object.runtimeType;
     object.id = object.id ?? generateID();
     var objectAsMap = getRegisteredModel(modelType).fromDBModel(object);
@@ -33,7 +33,7 @@ class LocalDB extends DB<LocalDBModelRegistration> {
   }
 
   @override
-  Future<void> delete(DBObject object) async {
+  Future<void> delete(DBModel object) async {
     Type modelType = object.runtimeType;
     if (object.id == null) {
       throw "Object has no id. Cannot delete";
@@ -46,8 +46,7 @@ class LocalDB extends DB<LocalDBModelRegistration> {
   }
 
   @override
-  Future<List<G>> get<G extends DBObject>(Type modelType,
-      [Query? query]) async {
+  Future<List<G>> get<G extends DBModel>(Type modelType, [Query? query]) async {
     var store = stringMapStoreFactory.store(modelType.toString());
 
     Finder? finder;
@@ -56,9 +55,9 @@ class LocalDB extends DB<LocalDBModelRegistration> {
     }
     var snapshotList = await store.find(db, finder: finder);
 
-    List<DBObject> objectList = [];
+    List<DBModel> objectList = [];
     for (var snapshot in snapshotList) {
-      DBObject object = getRegisteredModel(modelType).toDBModel(snapshot.value);
+      DBModel object = getRegisteredModel(modelType).toDBModel(snapshot.value);
       object.id = snapshot.key;
       objectList.add(object);
     }
@@ -66,19 +65,19 @@ class LocalDB extends DB<LocalDBModelRegistration> {
   }
 
   @override
-  Future<G?> getById<G extends DBObject>(Type modelType, String id) async {
+  Future<G?> getById<G extends DBModel>(Type modelType, String id) async {
     var store = stringMapStoreFactory.store(modelType.toString());
     var snapshot = await store.record(id).get(db);
     if (snapshot == null) {
       return Future.value(null);
     }
-    DBObject object = getRegisteredModel(modelType).toDBModel(snapshot);
+    DBModel object = getRegisteredModel(modelType).toDBModel(snapshot);
     object.id = id;
     return Future.value(object as G);
   }
 
   @override
-  Future<void> update(DBObject object) async {
+  Future<void> update(DBModel object) async {
     Type modelType = object.runtimeType;
 
     if (object.id == null) {

@@ -1,5 +1,5 @@
 import 'package:mobile_app/backend/database/DB.dart';
-import 'package:mobile_app/backend/database/DBObject.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDB.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/DBQueueObject.dart';
 import 'package:sembast/sembast.dart';
@@ -14,7 +14,7 @@ class DBQueue {
 
   DBQueue(this.localDB);
 
-  Future<void> enqueue<G extends DBObject>(G object, DBAction action) async {
+  Future<void> enqueue<G extends DBModel>(G object, DBAction action) async {
     var store = intMapStoreFactory.store(queueStoreName);
     var entry = DBQueueObject(object.runtimeType.toString(), object, action);
     await store.add(localDB.db,

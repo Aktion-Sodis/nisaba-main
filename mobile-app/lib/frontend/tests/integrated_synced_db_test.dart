@@ -12,7 +12,7 @@ import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedD
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:flutter/material.dart';
 import 'package:mobile_app/backend/database/DB.dart';
-import 'package:mobile_app/backend/database/DBObject.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDB.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
