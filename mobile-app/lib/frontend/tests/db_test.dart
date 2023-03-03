@@ -74,92 +74,24 @@ class LocalDBTest extends StatelessWidget {
     (db as RemoteDB).registerModel(
         TO,
         RemoteDBModelRegistration(
-            modelType: amp.TestObject.classType,
-            fromDBModel: (DBObject object) {
-              TO to = object as TO;
-              return amp.TestObject(
-                id: to.id,
-                name: to.name,
-                age: to.age,
-              );
-            },
-            toDBModel: (model) {
-              amp.TestObject testObject = model as amp.TestObject;
-              return TO(testObject.name, testObject.age, testObject.id);
-            },
-            predicatesTranslations: {
-              QPredicate.EQ: (Query query) {
-                if (query.key == "name") {
-                  return amp.TestObject.NAME.eq(query.attr1);
-                }
-                if (query.key == "age") {
-                  return amp.TestObject.AGE.eq(query.attr1);
-                }
-                throw "Unknown key";
-              },
-              QPredicate.NE: (Query query) {
-                if (query.key == "name") {
-                  return amp.TestObject.NAME.ne(query.attr1);
-                }
-                if (query.key == "age") {
-                  return amp.TestObject.AGE.ne(query.attr1);
-                }
-                throw "Unknown key";
-              },
-              QPredicate.GT: (Query query) {
-                if (query.key == "age") {
-                  return amp.TestObject.AGE.gt(query.attr1);
-                }
-                if (query.key == "name") {
-                  return amp.TestObject.NAME.gt(query.attr1);
-                }
-                throw "Unknown key";
-              },
-              QPredicate.LT: (Query query) {
-                if (query.key == "age") {
-                  return amp.TestObject.AGE.lt(query.attr1);
-                }
-                if (query.key == "name") {
-                  return amp.TestObject.NAME.lt(query.attr1);
-                }
-                throw "Unknown key";
-              },
-              QPredicate.GE: (Query query) {
-                if (query.key == "age") {
-                  return amp.TestObject.AGE.ge(query.attr1);
-                }
-                if (query.key == "name") {
-                  return amp.TestObject.NAME.ge(query.attr1);
-                }
-                throw "Unknown key";
-              },
-              QPredicate.LE: (Query query) {
-                if (query.key == "age") {
-                  return amp.TestObject.AGE.le(query.attr1);
-                }
-                if (query.key == "name") {
-                  return amp.TestObject.NAME.le(query.attr1);
-                }
-                throw "Unknown key";
-              },
-              QPredicate.BETWEEN: (Query query) {
-                if (query.key == "age") {
-                  return amp.TestObject.AGE
-                      .between(query.attr1 as int, query.attr2 as int);
-                }
-                if (query.key == "name") {
-                  return amp.TestObject.NAME
-                      .between(query.attr1 as String, query.attr2 as String);
-                }
-                throw "Unknown key";
-              },
-              QPredicate.CONTAINS: (Query query) {
-                if (query.key == "name") {
-                  return amp.TestObject.NAME.contains(query.attr1);
-                }
-                throw "Unknown key";
-              },
-            }));
+          modelType: amp.TestObject.classType,
+          fromDBModel: (DBObject object) {
+            TO to = object as TO;
+            return amp.TestObject(
+              id: to.id,
+              name: to.name,
+              age: to.age,
+            );
+          },
+          toDBModel: (model) {
+            amp.TestObject testObject = model as amp.TestObject;
+            return TO(testObject.name, testObject.age, testObject.id);
+          },
+          modelAttributes: [
+            amp.TestObject.NAME,
+            amp.TestObject.AGE,
+          ],
+        ));
     print("DBTest: DB initialized");
   }
 
