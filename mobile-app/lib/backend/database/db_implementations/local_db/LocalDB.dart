@@ -14,6 +14,7 @@ import 'package:sembast/sembast.dart';
 class LocalDB extends DB<LocalDBModelRegistration> {
   // late String dbPath;
   late final Database db;
+  bool _isInitialized = false;
 
   String generateID() {
     return UUID.getUUID();
@@ -93,9 +94,18 @@ class LocalDB extends DB<LocalDBModelRegistration> {
   }
 
   Future<void> initLocalDB([String dbName = "LocalDB"]) async {
+    if (_isInitialized) {
+      return;
+    }
+
     Directory appDocDir = await getApplicationSupportDirectory();
     String dbPath = appDocDir.path + '/$dbName.db';
     final DatabaseFactory dbFactory = databaseFactoryIo;
     db = await dbFactory.openDatabase(dbPath);
+    _isInitialized = true;
+  }
+
+  Future<void> closeDB() async {
+    await db.close();
   }
 }
