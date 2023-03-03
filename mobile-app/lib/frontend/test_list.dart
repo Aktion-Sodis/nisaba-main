@@ -10,6 +10,7 @@ import 'package:mobile_app/frontend/tests/audio_test.dart';
 import 'package:mobile_app/frontend/tests/gps_test.dart';
 import 'package:mobile_app/frontend/tests/image_compression_test.dart';
 import 'package:mobile_app/frontend/tests/db_test.dart';
+import 'package:mobile_app/frontend/tests/integrated_synced_db_test.dart';
 import 'package:mobile_app/frontend/tests/synced_db_test.dart';
 
 class TestList extends StatelessWidget {
@@ -24,6 +25,7 @@ class TestList extends StatelessWidget {
     "Amplify API": () => AmplifyApiTest(),
     "DB Test": () => LocalDBTest(),
     "SyncedDB Test": () => SyncedDBTest(),
+    "Integrated SyncedDB Test": () => IntegratedSyncedDBTest(),
   };
 
   Widget _itemBuilder(BuildContext context, int index) {
