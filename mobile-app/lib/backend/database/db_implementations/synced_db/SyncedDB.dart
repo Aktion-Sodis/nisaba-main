@@ -14,17 +14,17 @@ List<Type> _modelsToSyncDownstream = [];
 class SyncedDB extends DB<SyncedDBModelRegistration> {
   final LocalDB localDB;
   final DB remoteDB;
-  final List<Type> modelsToSyncDownstream;
+  final Set<Type> _modelsToSyncDownstream = {};
   final List<Type> registeredModelTypes = [];
   late final DBQueue queue;
   late final Synchronizer synchronizer;
 
   bool syncUpstreamAutomatically = true;
 
-  SyncedDB(this.localDB, this.remoteDB, this.modelsToSyncDownstream) {
+  SyncedDB(this.localDB, this.remoteDB) {
     queue = DBQueue(localDB);
-    synchronizer = Synchronizer(
-        localDB, remoteDB, queue, modelsToSyncDownstream, registeredModelTypes);
+    synchronizer = Synchronizer(localDB, remoteDB, queue,
+        _modelsToSyncDownstream, registeredModelTypes);
     _registerQueueObject();
   }
 
@@ -33,11 +33,13 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
     super.registerModel(type, registration);
     localDB.registerModel(type, registration.localDBModelRegistration);
     remoteDB.registerModel(type, registration.remoteDBModelRegistration);
+    if (registration.haveToSyncDownstream) {
+      _modelsToSyncDownstream.add(type);
+    }
     registeredModelTypes.add(type);
   }
 
-  static final SyncedDB instance =
-      SyncedDB(LocalDB(), RemoteDB(), _modelsToSyncDownstream);
+  static final SyncedDB instance = SyncedDB(LocalDB(), RemoteDB());
 
   Type _getRegisteredTypeByString(String typeString) {
     for (Type type in registeredModelTypes) {

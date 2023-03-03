@@ -57,7 +57,7 @@ class SyncedDBTest extends StatelessWidget {
 
   Future<void> _initDB() async {
     print("DBTest: Initializing SyncedDB");
-    db = SyncedDB(LocalDB(), RemoteDB(), [TO]);
+    db = SyncedDB(LocalDB(), RemoteDB());
     (db as SyncedDB).syncUpstreamAutomatically = false;
 
     RemoteDBModelRegistration remoteDBModelRegistration =
@@ -95,6 +95,7 @@ class SyncedDBTest extends StatelessWidget {
     db.registerModel(
         TO,
         SyncedDBModelRegistration(
+            haveToSyncDownstream: true,
             localDBModelRegistration: localDBModelRegistration,
             remoteDBModelRegistration: RemoteDBModelRegistration(
               fromDBModel: (object) {
@@ -110,6 +111,7 @@ class SyncedDBTest extends StatelessWidget {
     db.registerModel(
         TO,
         SyncedDBModelRegistration(
+            haveToSyncDownstream: true,
             localDBModelRegistration: localDBModelRegistration,
             remoteDBModelRegistration: remoteDBModelRegistration));
 

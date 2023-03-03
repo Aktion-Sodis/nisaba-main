@@ -6,6 +6,7 @@ import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDBM
 import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDBModelRegistration.dart';
 
 class SyncedDBModelRegistration extends DBModelRegistration<Object?, Object?> {
+  final bool haveToSyncDownstream;
   final LocalDBModelRegistration localDBModelRegistration;
   final RemoteDBModelRegistration remoteDBModelRegistration;
 
@@ -27,7 +28,8 @@ class SyncedDBModelRegistration extends DBModelRegistration<Object?, Object?> {
   };
 
   SyncedDBModelRegistration(
-      {required this.localDBModelRegistration,
+      {required this.haveToSyncDownstream,
+      required this.localDBModelRegistration,
       required this.remoteDBModelRegistration})
       : super(_predicatesTranlation, (object) {
           // Unimplemented, as this is not used in the synced db

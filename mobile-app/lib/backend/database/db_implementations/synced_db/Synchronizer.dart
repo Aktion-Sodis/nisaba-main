@@ -15,7 +15,7 @@ import 'SyncStatus.dart';
 class Synchronizer {
   final DB localDB;
   final DB remoteDB;
-  final List<Type> modelsToSyncDownstream;
+  final Set<Type> modelsToSyncDownstream;
   final List<Type> registeredTypes;
   final DBQueue queue;
 
