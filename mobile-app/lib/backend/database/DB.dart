@@ -17,6 +17,18 @@ abstract class DB<R extends DBModelRegistration> {
 
   Future<G?> getById<G extends DBObject>(Type modelType, String id);
 
+  // TODO: test this for LocalDB, SyncedDB and RemoteDB
+  @override
+  Future<void> clear() async {
+    List<Type> types = getRegisteredModelTypes();
+    for (Type type in types) {
+      List<DBObject> objects = await get(type);
+      for (DBObject object in objects) {
+        await delete(object);
+      }
+    }
+  }
+
   /// Model registration
   final DBModelCollection<R> _modelCollection = DBModelCollection();
 

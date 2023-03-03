@@ -44,4 +44,10 @@ class DBQueue {
     await store.record(int.parse(queueObject.id!)).delete(localDB.db);
     return Future.value(queueObject);
   }
+
+  // TODO: Test this
+  Future<void> clear() async {
+    var store = intMapStoreFactory.store(queueStoreName);
+    await store.delete(localDB.db);
+  }
 }

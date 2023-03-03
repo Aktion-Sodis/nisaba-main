@@ -30,7 +30,6 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
 
   @override
   void registerModel(Type type, SyncedDBModelRegistration registration) {
-    // TODO: implement registerModel
     super.registerModel(type, registration);
     localDB.registerModel(type, registration.localDBModelRegistration);
     remoteDB.registerModel(type, registration.remoteDBModelRegistration);
@@ -109,6 +108,12 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
     if (syncUpstreamAutomatically) {
       synchronizer.syncUpstream();
     }
+  }
+
+  @override
+  Future<void> clear() async {
+    await localDB.clear();
+    await queue.clear();
   }
 
   @override
