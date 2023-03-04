@@ -99,14 +99,25 @@ const SYNC_UI = {
         { root: true }
       );
 
-      const apiSurveys = await dispatch(
-        `${vuexModulesDict.survey}/APIgetAll`,
-        {},
-        { root: true }
-      );
+      const { apiSurveys, apiSurveyTags, apiSurveyTagRelations } =
+        await dispatch(
+          `${vuexModulesDict.survey}/APIgetAll`,
+          {},
+          { root: true }
+        );
       commit(
         `${vuexModulesDict.survey}/setSurveys`,
         { newValue: apiSurveys },
+        { root: true }
+      );
+      commit(
+        `${vuexModulesDict.survey}/setTags`,
+        { newValue: apiSurveyTags },
+        { root: true }
+      );
+      commit(
+        `${vuexModulesDict.survey}/setTagRelations`,
+        { newValue: apiSurveyTagRelations },
         { root: true }
       );
     },

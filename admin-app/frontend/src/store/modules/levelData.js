@@ -26,14 +26,28 @@ const moduleGetters = {
   // getLevelTags: ({ levelTags }) => levelTags,
   getLoading: ({ loading }) => loading,
   getRelationLevelIntervention: ({ relationLevelIntervention }) =>
-    relationLevelIntervention.filter((r) => r?.level),
+    relationLevelIntervention.filter((r) => r?.levelId),
 
-  interventionsOfLevelById:
+  hasEntities:
+    (state, getters, rootState, rootGetters) =>
+    ({ id }) =>
+      rootGetters[`${vuexModulesDict.entity}/allEntitiesByLevelId`]({
+        levelId: id,
+      }).length > 0,
+
+  interventionIdsOfLevelById:
     (_, { getRelationLevelIntervention }) =>
     ({ levelId }) =>
       getRelationLevelIntervention
-        .filter((rel) => rel.level.id === levelId)
-        .map((rel) => rel.intervention),
+        .filter((rel) => rel.levelId === levelId)
+        .map(({ interventionId }) => interventionId),
+
+  interventionsOfLevelById:
+    (_, { interventionIdsOfLevelById }, rootState, rootGetters) =>
+    ({ levelId }) =>
+      interventionIdsOfLevelById({ levelId }).map((id) =>
+        rootGetters[`${vuexModulesDict.intervention}/INTERVENTIONById`]({ id })
+      ),
 
   sortedLevels: (_, getters) =>
     getters.getLevels.sort((a, b) => getters.hierarchySort(a, b)),
@@ -170,8 +184,9 @@ const moduleActions = {
 
     const original = getters.LEVELById({ id: originalId });
     const relationsOfOriginal = getters.getRelationLevelIntervention.filter(
-      (rel) => rel.level.id === original.id
+      (rel) => rel.levelId === original.id
     );
+    console.log({ relationsOfOriginal });
 
     try {
       const putResponse = await DataStore.save(
@@ -186,6 +201,8 @@ const moduleActions = {
           );
         })
       );
+
+      console.log({ putResponse });
 
       if (rootGetters["dataModal/getImageFile"] instanceof File) {
         try {
@@ -220,7 +237,7 @@ const moduleActions = {
       for (const interventionId of newData.allowedInterventions) {
         try {
           // eslint-disable-next-line no-await-in-loop
-          await DataStore.save(
+          const rel = await DataStore.save(
             new LevelInterventionRelation({
               level: putResponse,
               intervention: rootGetters[
@@ -230,6 +247,7 @@ const moduleActions = {
               }),
             })
           );
+          console.log({ rel });
         } catch {
           success = false;
         }
@@ -253,10 +271,7 @@ const moduleActions = {
     commit("setLoading", { newValue: false });
     return success;
   },
-  APIdelete: async (
-    { commit, dispatch, getters, rootGetters },
-    { id, _version }
-  ) => {
+  APIdelete: async ({ commit, dispatch, getters, rootGetters }, { id }) => {
     let success = true;
     commit("setLoading", { newValue: true });
 
@@ -268,7 +283,7 @@ const moduleActions = {
     }
 
     const relationsOfOriginal = getters.getRelationLevelIntervention.filter(
-      (rel) => rel.level.id === id
+      (rel) => rel.levelId === id
     );
 
     // eslint-disable-next-line no-restricted-syntax

@@ -1,5 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
-import { I18nString, Question, QuestionOption, Survey } from "../../../models";
+import {
+  I18nString,
+  Question,
+  QuestionOption,
+  Survey,
+  SurveySurveyTagRelation,
+  SurveyTag,
+} from "../../../models";
 import { emptyQuestion, emptyQuestionOption } from "../../../lib/classes";
 import {
   dataTypesDict,
@@ -236,11 +243,25 @@ const actions = {
     return success;
   },
   APIgetAll: async () => {
+    let apiSurveys;
+    let apiSurveyTags;
+    let apiSurveyTagRelations;
     try {
-      return await DataStore.query(Survey);
+      apiSurveys = await DataStore.query(Survey);
     } catch {
-      return [];
+      apiSurveys = [];
     }
+    try {
+      apiSurveyTags = await DataStore.query(SurveyTag);
+    } catch {
+      apiSurveyTags = [];
+    }
+    try {
+      apiSurveyTagRelations = await DataStore.query(SurveySurveyTagRelation);
+    } catch {
+      apiSurveyTagRelations = [];
+    }
+    return { apiSurveys, apiSurveyTags, apiSurveyTagRelations };
   },
 };
 

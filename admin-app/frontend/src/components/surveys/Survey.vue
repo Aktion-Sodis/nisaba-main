@@ -18,24 +18,32 @@
           </v-avatar>
         </template>
         <span>
-          {{ calculateUILocaleString({ languageTexts: interventionName.languageTexts }) }}
+          {{
+            calculateUILocaleString({
+              languageTexts: interventionName.languageTexts,
+            })
+          }}
         </span>
       </v-tooltip>
     </v-card-title>
     <v-card-subtitle class="mt-0">
-      {{ calculateUILocaleString({ languageTexts: surveyDescription.languageTexts }) }}
+      {{
+        calculateUILocaleString({
+          languageTexts: surveyDescription.languageTexts,
+        })
+      }}
     </v-card-subtitle>
   </v-card>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import { dataTypesDict, vuexModulesDict } from '../../lib/constants';
-import ImgFromS3 from '../commons/ImgFromS3.vue';
+import { mapGetters, mapActions } from "vuex";
+import { dataTypesDict, vuexModulesDict } from "../../lib/constants";
+import ImgFromS3 from "../commons/ImgFromS3.vue";
 
 export default {
   components: { ImgFromS3 },
-  name: 'Survey',
+  name: "Survey",
   props: {
     id: {
       type: String,
@@ -65,11 +73,11 @@ export default {
   computed: {
     ...mapGetters({
       tagById: `${vuexModulesDict.survey}/tagById`,
-      calculateUILocaleString: 'calculateUILocaleString',
-      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
+      calculateUILocaleString: "calculateUILocaleString",
+      deriveFilePath: "callDeriveFilePathWithOrganizationId",
     }),
     deriveImgPath() {
-      return this.deriveFilePath('interventionSurveyPicPath', {
+      return this.deriveFilePath("interventionSurveyPicPath", {
         interventionID: this.interventionId,
         surveyId: this.id,
       });

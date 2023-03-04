@@ -1,9 +1,16 @@
-import Vue from 'vue';
-import { dataTypesDict, modalModesDict, vuexModulesDict } from '../../lib/constants';
+import Vue from "vue";
 import {
-  emptySurvey, emptyIntervention, emptyLevel, emptyEntity,
-} from '../../lib/classes';
-import i18n from '../../i18n';
+  dataTypesDict,
+  modalModesDict,
+  vuexModulesDict,
+} from "../../lib/constants";
+import {
+  emptySurvey,
+  emptyIntervention,
+  emptyLevel,
+  emptyEntity,
+} from "../../lib/classes";
+import i18n from "../../i18n";
 
 const dataModal = {
   namespaced: true,
@@ -61,52 +68,59 @@ const dataModal = {
   },
   actions: {
     readData: ({ commit }, { dataId, dataType }) => {
-      commit('setDataType', { newValue: dataType });
-      commit('setMode', { newValue: modalModesDict.read });
-      commit('setDataIdInFocus', { newValue: dataId });
-      commit('setIsDisplayed', { newValue: true });
-      commit('setImageFile', { newValue: null });
+      commit("setDataType", { newValue: dataType });
+      commit("setMode", { newValue: modalModesDict.read });
+      commit("setDataIdInFocus", { newValue: dataId });
+      commit("setIsDisplayed", { newValue: true });
+      commit("setImageFile", { newValue: null });
     },
     abortReadData: async ({ commit, getters }) => {
-      commit('setIsDisplayed', { newValue: false });
+      commit("setIsDisplayed", { newValue: false });
       if (getters.getDataType === dataTypesDict.survey) {
-        commit('setSurveyModalCompletionIndex', { newValue: 1 }, { root: true });
-        commit('QUESTION_UI/setIQuestions', { payload: 0 }, { root: true });
+        commit(
+          "setSurveyModalCompletionIndex",
+          { newValue: 1 },
+          { root: true }
+        );
+        commit("QUESTION_UI/setIQuestions", { payload: 0 }, { root: true });
       }
       await Vue.nextTick();
-      commit('setDataIdInFocus', { newValue: null });
+      commit("setDataIdInFocus", { newValue: null });
     },
     createData: ({ commit }, { dataType }) => {
-      commit('setMode', { newValue: modalModesDict.create });
-      commit('setDataIdInFocus', { newValue: null });
-      commit('setDataType', { newValue: dataType });
+      commit("setMode", { newValue: modalModesDict.create });
+      commit("setDataIdInFocus", { newValue: null });
+      commit("setDataType", { newValue: dataType });
       commit(`reset${dataType}Draft`);
-      commit('setIsDisplayed', { newValue: true });
+      commit("setIsDisplayed", { newValue: true });
     },
     abortCreateData: async ({ commit, getters }) => {
       const dataType = getters.getDataType;
-      commit('setIsDisplayed', { newValue: false });
+      commit("setIsDisplayed", { newValue: false });
       await Vue.nextTick();
       commit(`reset${dataType}Draft`);
-      commit('setMode', { newValue: modalModesDict.read });
-      commit('setImageFile', { newValue: null });
-      if (dataType === dataTypesDict.entity) commit('setCreatingEntityInLevelId', { id: null }, { root: true });
+      commit("setMode", { newValue: modalModesDict.read });
+      commit("setImageFile", { newValue: null });
+      if (dataType === dataTypesDict.entity)
+        commit("setCreatingEntityInLevelId", { id: null }, { root: true });
     },
     editData: ({ commit, getters, rootGetters }) => {
       const dataId = getters.getDataIdInFocus;
       const dataType = getters.getDataType;
-      commit('setMode', { newValue: modalModesDict.edit });
-      commit('setDataIdInFocus', { newValue: dataId });
-      commit('setDataType', { newValue: dataType });
-      const data = rootGetters[`${dataType}_Data/${dataType}ById`]({ id: dataId });
-      commit('setDraft', data);
+      commit("setMode", { newValue: modalModesDict.edit });
+      commit("setDataIdInFocus", { newValue: dataId });
+      commit("setDataType", { newValue: dataType });
+      const data = rootGetters[`${dataType}_Data/${dataType}ById`]({
+        id: dataId,
+      });
+      commit("setDraft", data);
     },
     abortEditData: async ({ commit, getters }) => {
       const dataType = getters.getDataType;
       commit(`reset${dataType}Draft`);
       await Vue.nextTick();
-      commit('setMode', { newValue: modalModesDict.read });
-      commit('setImageFile', { newValue: null });
+      commit("setMode", { newValue: modalModesDict.read });
+      commit("setImageFile", { newValue: null });
     },
 
     saveData: async ({ dispatch, getters }) => {
@@ -115,7 +129,9 @@ const dataModal = {
       const draft = getters.getDataDraft;
       let success = false;
       if (getters.getMode === modalModesDict.create) {
-        success = await dispatch(`${dataType}_Data/APIpost`, draft, { root: true });
+        success = await dispatch(`${dataType}_Data/APIpost`, draft, {
+          root: true,
+        });
       } else if (getters.getMode === modalModesDict.edit) {
         success = await dispatch(
           `${dataType}_Data/APIput`,
@@ -123,22 +139,22 @@ const dataModal = {
             newData: draft,
             originalId: getters.getDataIdInFocus,
           },
-          { root: true },
+          { root: true }
         );
       }
       dispatch(
         `${vuexModulesDict.feedback}/showFeedbackForDuration`,
         {
-          type: success ? 'success' : 'error',
+          type: success ? "success" : "error",
           text: i18n.t(
-            `general.operationFeedback.data.${success ? 'success' : 'error'}.${
-              getters.getMode === modalModesDict.create ? 'create' : 'update'
-            }`,
+            `general.operationFeedback.data.${success ? "success" : "error"}.${
+              getters.getMode === modalModesDict.create ? "create" : "update"
+            }`
           ),
         },
         {
           root: true,
-        },
+        }
       );
       // TODO: Too costly. Find a leaner way of updating the data.
       dispatch(
@@ -146,7 +162,7 @@ const dataModal = {
         {},
         {
           root: true,
-        },
+        }
       );
     },
     deleteData: async ({ dispatch, getters }) => {
@@ -154,18 +170,23 @@ const dataModal = {
       if (getters.getMode === modalModesDict.read) return;
       const success = await dispatch(
         `${dataType}_Data/APIdelete`,
-        { id: getters.getDataIdInFocus, _version: getters.getDataDraft._version },
-        { root: true },
+        { id: getters.getDataIdInFocus },
+        { root: true }
       );
+      console.log({ success });
       dispatch(
         `${vuexModulesDict.feedback}/showFeedbackForDuration`,
         {
-          type: success ? 'success' : 'error',
-          text: i18n.t(`general.operationFeedback.data.${success ? 'success' : 'error'}.archive`),
+          type: success ? "success" : "error",
+          text: i18n.t(
+            `general.operationFeedback.data.${
+              success ? "success" : "error"
+            }.archive`
+          ),
         },
         {
           root: true,
-        },
+        }
       );
 
       // TODO: Too costly. Find a leaner way of updating the data.
@@ -174,7 +195,7 @@ const dataModal = {
         {},
         {
           root: true,
-        },
+        }
       );
     },
     archiveData: async ({ dispatch, getters }) => {
@@ -186,17 +207,21 @@ const dataModal = {
           newData: { ...getters.getDataDraft, archived: true },
           originalId: getters.getDataIdInFocus,
         },
-        { root: true },
+        { root: true }
       );
       dispatch(
         `${vuexModulesDict.feedback}/showFeedbackForDuration`,
         {
-          type: success ? 'success' : 'error',
-          text: i18n.t(`general.operationFeedback.data.${success ? 'success' : 'error'}.delete`),
+          type: success ? "success" : "error",
+          text: i18n.t(
+            `general.operationFeedback.data.${
+              success ? "success" : "error"
+            }.delete`
+          ),
         },
         {
           root: true,
-        },
+        }
       );
 
       // TODO: Too costly. Find a leaner way of updating the data.
@@ -205,7 +230,7 @@ const dataModal = {
         {},
         {
           root: true,
-        },
+        }
       );
     },
   },

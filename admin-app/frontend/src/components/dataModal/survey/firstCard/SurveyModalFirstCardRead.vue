@@ -10,7 +10,11 @@
       </h2>
       <v-spacer></v-spacer>
       <v-btn x-large text class="text-none" @click="incrementCompletionIndex">
-        {{ $vuetify.breakpoint.name === 'xs' ? '' : $t('surveys.modal.firstCard.questions') }}
+        {{
+          $vuetify.breakpoint.name === "xs"
+            ? ""
+            : $t("surveys.modal.firstCard.questions")
+        }}
         <v-icon large> mdi-chevron-right </v-icon>
       </v-btn>
     </v-card-title>
@@ -20,7 +24,7 @@
         <v-row>
           <v-col cols="12" sm="6" class="pb-0 px-0 px-md-3">
             <v-card-title class="pt-0 pt-sm-2">
-              {{ $t('surveys.modal.firstCard.form.name') }}
+              {{ $t("surveys.modal.firstCard.form.name") }}
             </v-card-title>
             <h2 v-if="surveyInFocus">
               {{
@@ -31,7 +35,7 @@
             </h2>
 
             <v-card-title class="pt-4">
-              {{ $t('surveys.modal.firstCard.form.description') }}
+              {{ $t("surveys.modal.firstCard.form.description") }}
             </v-card-title>
             <div
               v-if="surveyInFocus"
@@ -49,7 +53,7 @@
           </v-col>
           <v-col cols="12" sm="6" class="pt-0 px-0 px-md-3">
             <v-card-title class="pt-0 pt-sm-2">
-              {{ $t('surveys.type.title') }}:
+              {{ $t("surveys.type.title") }}:
               <div v-if="surveyInFocus">
                 <v-tooltip top>
                   <template v-slot:activator="{ on, attrs }">
@@ -57,32 +61,35 @@
                       <v-icon>
                         {{
                           surveyInFocus.surveyType === initialSurveyType
-                            ? 'mdi-lightbulb-question-outline'
-                            : 'mdi-crosshairs-question'
+                            ? "mdi-lightbulb-question-outline"
+                            : "mdi-crosshairs-question"
                         }}
                       </v-icon>
                     </v-avatar>
                   </template>
-                  <span>{{ $t(`surveys.type.types.${surveyInFocus.surveyType}`) }}</span>
+                  <span>{{
+                    $t(`surveys.type.types.${surveyInFocus.surveyType}`)
+                  }}</span>
                 </v-tooltip>
               </div>
             </v-card-title>
 
             <v-card-title class="pr-0 d-flex" v-if="surveyInFocus">
               <span class="mr-2">
-                {{ $t('surveys.modal.intervention') }}
+                {{ $t("surveys.modal.intervention") }}
               </span>
-              <v-chip v-if="surveyInFocus.intervention">
+              <v-chip v-if="interventionOfSurveyInFocus">
                 {{
                   calculateUILocaleString({
-                    languageTexts: surveyInFocus.intervention.name.languageTexts,
+                    languageTexts:
+                      interventionOfSurveyInFocus.name.languageTexts,
                   })
                 }}
               </v-chip>
             </v-card-title>
 
             <v-card-title class="pt-0 pt-sm-2">
-              {{ $t('surveys.modal.image') }}
+              {{ $t("surveys.modal.image") }}
             </v-card-title>
 
             <ImgFromS3
@@ -103,22 +110,22 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn x-large color="secondary" text @click="abortReadData">
-        {{ $t('general.close') }}
+        {{ $t("general.close") }}
       </v-btn>
       <v-btn x-large color="primary" text @click="editData">
-        {{ $t('general.edit') }}
+        {{ $t("general.edit") }}
       </v-btn>
     </v-card-actions>
   </v-form>
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex';
-import ImgFromS3 from '../../../commons/ImgFromS3.vue';
-import { SurveyType } from '../../../../models';
+import { mapGetters, mapActions, mapMutations } from "vuex";
+import ImgFromS3 from "../../../commons/ImgFromS3.vue";
+import { SurveyType } from "../../../../models";
 
 export default {
-  name: 'SurveyModalFirstCardRead',
+  name: "SurveyModalFirstCardRead",
   components: { ImgFromS3 },
   data() {
     return {
@@ -132,19 +139,24 @@ export default {
   },
   computed: {
     ...mapGetters({
-      dataIdInFocus: 'dataModal/getDataIdInFocus',
-      SURVEYById: 'SURVEY_Data/SURVEYById',
-      calculateUILocaleString: 'calculateUILocaleString',
-      INTERVENTIONById: 'INTERVENTION_Data/INTERVENTIONById',
-      interventions: 'INTERVENTION_Data/getInterventions',
-      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
+      dataIdInFocus: "dataModal/getDataIdInFocus",
+      SURVEYById: "SURVEY_Data/SURVEYById",
+      calculateUILocaleString: "calculateUILocaleString",
+      INTERVENTIONById: "INTERVENTION_Data/INTERVENTIONById",
+      interventions: "INTERVENTION_Data/getInterventions",
+      deriveFilePath: "callDeriveFilePathWithOrganizationId",
     }),
     surveyInFocus() {
       return this.SURVEYById({ id: this.dataIdInFocus });
     },
+    interventionOfSurveyInFocus() {
+      return this.INTERVENTIONById({
+        id: this.surveyInFocus.interventionSurveysId,
+      });
+    },
     deriveImgPath() {
-      return this.deriveFilePath('interventionSurveyPicPath', {
-        interventionID: this.surveyInFocus.intervention.id,
+      return this.deriveFilePath("interventionSurveyPicPath", {
+        interventionID: this.surveyInFocus.interventionSurveysId,
         surveyID: this.dataIdInFocus,
       });
     },
@@ -154,11 +166,11 @@ export default {
   },
   methods: {
     ...mapActions({
-      abortReadData: 'dataModal/abortReadData',
-      editData: 'dataModal/editData',
+      abortReadData: "dataModal/abortReadData",
+      editData: "dataModal/editData",
     }),
     ...mapMutations({
-      incrementCompletionIndex: 'incrementSurveyModalCompletionIndex',
+      incrementCompletionIndex: "incrementSurveyModalCompletionIndex",
     }),
   },
 };

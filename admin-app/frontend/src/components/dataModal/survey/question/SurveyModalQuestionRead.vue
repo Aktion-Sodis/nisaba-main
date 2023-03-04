@@ -20,9 +20,9 @@
           >
             <v-icon large class="ml-0 ml-sm-2"> mdi-chevron-left </v-icon>
             {{
-              $vuetify.breakpoint.name === 'xs'
-                ? ''
-                : $t('surveys.modal.questionCard.backToDetails')
+              $vuetify.breakpoint.name === "xs"
+                ? ""
+                : $t("surveys.modal.questionCard.backToDetails")
             }}
           </v-btn>
         </div>
@@ -33,7 +33,7 @@
           <v-row>
             <v-col cols="12" sm="6" class="py-0 px-0 px-sm-3">
               <h2 class="mb-2">
-                {{ $t('surveys.modal.questionCard.form.question.title') }}
+                {{ $t("surveys.modal.questionCard.form.question.title") }}
               </h2>
               <h3>
                 {{
@@ -44,7 +44,7 @@
               </h3>
 
               <h3 class="mt-4">
-                {{ $t('surveys.modal.questionCard.form.question.imageTitle') }}
+                {{ $t("surveys.modal.questionCard.form.question.imageTitle") }}
               </h3>
               <div v-if="surveyInFocus">
                 <ImgFromS3 :assumedSrc="deriveImgPath" dataType="survey">
@@ -58,7 +58,7 @@
             <v-col cols="12" sm="6" class="pt-4 px-0 px-sm-3 pt-sm-0">
               <h2 class="mb-2">
                 <span>
-                  {{ $t('surveys.modal.questionCard.form.answer.title') }}
+                  {{ $t("surveys.modal.questionCard.form.answer.title") }}
                 </span>
                 <span v-if="surveyInFocus">
                   ({{
@@ -75,12 +75,17 @@
                   <v-list dense disabled>
                     <v-list-item-group color="primary">
                       <v-list-item
-                        v-for="option in surveyInFocus.questions[iQuestions].questionOptions"
+                        v-for="option in surveyInFocus.questions[iQuestions]
+                          .questionOptions"
                         :key="option.id"
                       >
                         <v-list-item-icon>
                           <v-icon
-                            v-text="questionTypesIconDict[surveyInFocus.questions[iQuestions].type]"
+                            v-text="
+                              questionTypesIconDict[
+                                surveyInFocus.questions[iQuestions].type
+                              ]
+                            "
                           ></v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
@@ -103,21 +108,35 @@
       </v-card-text>
       <v-card-actions>
         <v-btn color="warning" text @click="abortReadData">
-          {{ $t('general.close') }}
+          {{ $t("general.close") }}
         </v-btn>
         <v-spacer></v-spacer>
         <div class="d-flex" v-if="$vuetify.breakpoint.name !== 'xs'">
-          <v-btn x-large text class="text-none" @click="priorQuestion" :disabled="cantAdvanceBack">
+          <v-btn
+            x-large
+            text
+            class="text-none"
+            @click="priorQuestion"
+            :disabled="cantAdvanceBack"
+          >
             <v-icon large> mdi-skip-previous </v-icon>
             {{
-              $vuetify.breakpoint.name === 'xs'
-                ? ''
-                : $t('surveys.modal.questionCard.priorQuestion')
+              $vuetify.breakpoint.name === "xs"
+                ? ""
+                : $t("surveys.modal.questionCard.priorQuestion")
             }}
           </v-btn>
-          <v-btn x-large text class="text-none" @click="nextQuestion" :disabled="cantAdvance">
+          <v-btn
+            x-large
+            text
+            class="text-none"
+            @click="nextQuestion"
+            :disabled="cantAdvance"
+          >
             {{
-              $vuetify.breakpoint.name === 'xs' ? '' : $t('surveys.modal.questionCard.nextQuestion')
+              $vuetify.breakpoint.name === "xs"
+                ? ""
+                : $t("surveys.modal.questionCard.nextQuestion")
             }}
             <v-icon large> mdi-skip-next </v-icon>
           </v-btn>
@@ -129,13 +148,13 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex';
-import { questionTypesIconDict } from '../../../../lib/constants';
+import { mapGetters, mapActions, mapMutations } from "vuex";
+import { questionTypesIconDict } from "../../../../lib/constants";
 
-import ImgFromS3 from '../../../commons/ImgFromS3.vue';
+import ImgFromS3 from "../../../commons/ImgFromS3.vue";
 
 export default {
-  name: 'SurveyModalQuestionRead',
+  name: "SurveyModalQuestionRead",
   components: {
     ImgFromS3,
   },
@@ -146,15 +165,15 @@ export default {
   },
   computed: {
     ...mapGetters({
-      dataIdInFocus: 'dataModal/getDataIdInFocus',
-      SURVEYById: 'SURVEY_Data/SURVEYById',
-      surveyModalMode: 'dataModal/getMode',
-      iQuestions: 'QUESTION_UI/getIQuestions',
-      questionTextInFocus: 'QUESTION_UI/questionTextInFocus',
+      dataIdInFocus: "dataModal/getDataIdInFocus",
+      SURVEYById: "SURVEY_Data/SURVEYById",
+      surveyModalMode: "dataModal/getMode",
+      iQuestions: "QUESTION_UI/getIQuestions",
+      questionTextInFocus: "QUESTION_UI/questionTextInFocus",
 
-      calculateUILocaleString: 'calculateUILocaleString',
-      fallbackLocaleIndex: 'fallbackLocaleIndex',
-      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
+      calculateUILocaleString: "calculateUILocaleString",
+      fallbackLocaleIndex: "fallbackLocaleIndex",
+      deriveFilePath: "callDeriveFilePathWithOrganizationId",
     }),
     nQuestions() {
       return this.surveyInFocus.questions.length;
@@ -169,8 +188,8 @@ export default {
       return this.iQuestions === this.nQuestions - 1;
     },
     deriveImgPath() {
-      return this.deriveFilePath('questionPicPath', {
-        interventionID: this.surveyInFocus.intervention.id,
+      return this.deriveFilePath("questionPicPath", {
+        interventionID: this.surveyInFocus.interventionSurveysId,
         surveyID: this.dataIdInFocus,
         questionID: this.surveyInFocus.questions[this.iQuestions].id,
       });
@@ -181,20 +200,20 @@ export default {
   },
   methods: {
     ...mapActions({
-      nextQuestionHandler: 'QUESTION_UI/nextQuestionHandler',
-      priorQuestionHandler: 'QUESTION_UI/priorQuestionHandler',
-      discardQuestionHandler: 'QUESTION_UI/discardQuestionHandler',
-      saveQuestionHandler: 'QUESTION_UI/saveQuestionHandler',
+      nextQuestionHandler: "QUESTION_UI/nextQuestionHandler",
+      priorQuestionHandler: "QUESTION_UI/priorQuestionHandler",
+      discardQuestionHandler: "QUESTION_UI/discardQuestionHandler",
+      saveQuestionHandler: "QUESTION_UI/saveQuestionHandler",
 
-      showToBeImplementedFeedback: 'FEEDBACK_UI/showToBeImplementedFeedback',
-      abortReadData: 'dataModal/abortReadData',
+      showToBeImplementedFeedback: "FEEDBACK_UI/showToBeImplementedFeedback",
+      abortReadData: "dataModal/abortReadData",
     }),
     ...mapMutations({
-      incrementCompletionIndex: 'incrementSurveyModalCompletionIndex',
-      decrementCompletionIndex: 'decrementSurveyModalCompletionIndex',
-      setIQuestions: 'QUESTION_UI/setIQuestions',
-      incrementIQuestions: 'QUESTION_UI/incrementIQuestions',
-      decrementIQuestions: 'QUESTION_UI/decrementIQuestions',
+      incrementCompletionIndex: "incrementSurveyModalCompletionIndex",
+      decrementCompletionIndex: "decrementSurveyModalCompletionIndex",
+      setIQuestions: "QUESTION_UI/setIQuestions",
+      incrementIQuestions: "QUESTION_UI/incrementIQuestions",
+      decrementIQuestions: "QUESTION_UI/decrementIQuestions",
     }),
     nextQuestion() {
       this.incrementIQuestions();

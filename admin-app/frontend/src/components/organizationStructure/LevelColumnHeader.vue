@@ -2,7 +2,13 @@
   <v-sheet class="headerSkeleton">
     <div style="width: 100%" class="d-flex flex-column align-center">
       <v-skeleton-loader v-if="getLoading" type="button"></v-skeleton-loader>
-      <v-btn v-else plain rounded class="text-none black--text" @click="clickOnLevelHandler">
+      <v-btn
+        v-else
+        plain
+        rounded
+        class="text-none black--text"
+        @click="clickOnLevelHandler"
+      >
         <span class="text-h5">{{ name }}</span>
       </v-btn>
       <div style="width: 100%">
@@ -18,35 +24,50 @@
               <v-skeleton-loader type="avatar"></v-skeleton-loader>
             </div>
           </div>
-          <v-tooltip
-            v-else
-            top
-            v-for="(intervention, index) in interventionsOfLevel"
-            :key="intervention.id"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-avatar v-if="index < 3" v-bind="attrs" v-on="on">
-                <v-icon>mdi-hammer-wrench</v-icon>
-              </v-avatar>
-              <v-avatar v-if="index === 4" v-bind="attrs" v-on="on">
-                <v-icon>mdi-dots-horizontal</v-icon>
-              </v-avatar>
-            </template>
-            <span v-if="index < 3">
-              {{ calculateUILocaleString({ languageTexts: intervention.name.languageTexts }) }}
-            </span>
-            <span v-if="index === 4">
-              {{
-                $t('organizationStructure.thereAreMoreInterventions', {
-                  count: interventionsOfLevel.length - 4,
-                })
-              }}
-            </span>
-          </v-tooltip>
+          <div v-else>
+            <v-tooltip
+              top
+              v-for="(intervention, index) in interventionsOfLevel"
+              :key="intervention.id"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-avatar v-if="index < 3" v-bind="attrs" v-on="on">
+                  <v-icon>mdi-hammer-wrench</v-icon>
+                </v-avatar>
+                <v-avatar v-if="index === 4" v-bind="attrs" v-on="on">
+                  <v-icon>mdi-dots-horizontal</v-icon>
+                </v-avatar>
+              </template>
+              <span v-if="index < 3">
+                {{
+                  calculateUILocaleString({
+                    languageTexts: intervention.name.languageTexts,
+                  })
+                }}
+              </span>
+              <span v-if="index === 4">
+                {{
+                  $t("organizationStructure.thereAreMoreInterventions", {
+                    count: interventionsOfLevel.length - 4,
+                  })
+                }}
+              </span>
+            </v-tooltip>
+          </div>
         </div>
-        <div v-else style="height: 48px; overflow: hidden" class="d-flex justify-center">
-          <v-skeleton-loader v-if="getLoading" class="mt-3" type="text"></v-skeleton-loader>
-          <p v-else class="caption">{{ $t('organizationStructure.hasNoInterventions') }}</p>
+        <div
+          v-else
+          style="height: 48px; overflow: hidden"
+          class="d-flex justify-center"
+        >
+          <v-skeleton-loader
+            v-if="getLoading"
+            class="mt-3"
+            type="text"
+          ></v-skeleton-loader>
+          <p v-else class="caption">
+            {{ $t("organizationStructure.hasNoInterventions") }}
+          </p>
         </div>
       </div>
     </div>
@@ -55,11 +76,11 @@
 
 <script>
 // import { validate as uuidValidate } from 'uuid';
-import { mapActions, mapGetters } from 'vuex';
-import { dataTypesDict, vuexModulesDict } from '../../lib/constants';
+import { mapActions, mapGetters } from "vuex";
+import { dataTypesDict, vuexModulesDict } from "../../lib/constants";
 
 export default {
-  name: 'LevelColumnHeader',
+  name: "LevelColumnHeader",
   props: {
     name: {
       type: String,
@@ -75,11 +96,13 @@ export default {
     ...mapGetters({
       getLoading: `${vuexModulesDict.level}/getLoading`,
       INTERVENTIONById: `${vuexModulesDict.intervention}/INTERVENTIONById`,
-      interventionsOfLevelById: `${vuexModulesDict.level}/interventionsOfLevelById`,
-      calculateUILocaleString: 'calculateUILocaleString',
+      interventionIdsOfLevelById: `${vuexModulesDict.level}/interventionIdsOfLevelById`,
+      calculateUILocaleString: "calculateUILocaleString",
     }),
     interventionsOfLevel() {
-      return this.interventionsOfLevelById({ levelId: this.id });
+      return this.interventionIdsOfLevelById({ levelId: this.id }).map(
+        (interventionId) => this.INTERVENTIONById({ id: interventionId })
+      );
     },
   },
   methods: {

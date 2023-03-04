@@ -119,7 +119,8 @@ const APIdelete = async ({ commit, dispatch }, { id, _version }) => {
   try {
     const toDelete = await DataStore.query(Entity, id);
     await DataStore.delete(toDelete);
-  } catch {
+  } catch (e) {
+    console.log({ e });
     success = false;
   }
 
