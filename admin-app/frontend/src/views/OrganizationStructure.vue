@@ -60,7 +60,6 @@ import {
   routeNamesDict,
   vuexModulesDict,
 } from "../lib/constants";
-import { DataStore } from "aws-amplify";
 
 export default {
   name: routeNamesDict.OrganizationStructure,

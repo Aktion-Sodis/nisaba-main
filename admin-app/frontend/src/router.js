@@ -1,17 +1,21 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import { Auth as AmplifyAuth } from 'aws-amplify';
-import store from './store';
-import i18n from './i18n';
+import Vue from "vue";
+import VueRouter from "vue-router";
+import { Auth as AmplifyAuth } from "@aws-amplify/auth";
+import store from "./store";
+import i18n from "./i18n";
 
 // import Home from './views/Home.vue';
-import OrganizationStructure from './views/OrganizationStructure.vue';
+import OrganizationStructure from "./views/OrganizationStructure.vue";
 // import BaseData from './views/BaseData.vue';
-import Surveys from './views/Surveys.vue';
-import Interventions from './views/Interventions.vue';
-import UserManagement from './views/UserManagement.vue';
-import Auth from './views/Auth.vue';
-import { routeNamesDict, syncStatusDict, vuexModulesDict } from './lib/constants';
+import Surveys from "./views/Surveys.vue";
+import Interventions from "./views/Interventions.vue";
+import UserManagement from "./views/UserManagement.vue";
+import Auth from "./views/Auth.vue";
+import {
+  routeNamesDict,
+  syncStatusDict,
+  vuexModulesDict,
+} from "./lib/constants";
 
 Vue.use(VueRouter);
 
@@ -28,81 +32,81 @@ export const routes = [
   //   },
   // },
   {
-    path: '/login',
+    path: "/login",
     name: routeNamesDict.Login,
     component: Auth,
     meta: {
       requiresAuth: false,
       shouldBeSynced: false,
-      title: i18n.t('general.routes.Login'),
+      title: i18n.t("general.routes.Login"),
       onSideBar: false,
     },
   },
   {
-    path: '/',
+    path: "/",
     redirect: { name: routeNamesDict.OrganizationStructure },
     meta: {
       requiresAuth: true,
       shouldBeSynced: false,
-      title: 'redirecting...',
+      title: "redirecting...",
       onSideBar: false, // TODO: Will change in the future.
     },
   },
   {
-    path: '/complete-user-info',
+    path: "/complete-user-info",
     name: routeNamesDict.CompleteUserInfo,
     component: Auth,
     meta: {
       requiresAuth: false,
       shouldBeSynced: false,
-      title: i18n.t('general.routes.CompleteUserInfo'),
+      title: i18n.t("general.routes.CompleteUserInfo"),
       onSideBar: false,
     },
   },
   {
-    path: '/change-password',
+    path: "/change-password",
     name: routeNamesDict.ChangePassword,
     component: Auth,
     meta: {
       requiresAuth: false,
       shouldBeSynced: false,
-      title: i18n.t('general.routes.ChangePassword'),
+      title: i18n.t("general.routes.ChangePassword"),
       onSideBar: false,
     },
   },
   {
-    path: '/forgot-password',
+    path: "/forgot-password",
     name: routeNamesDict.ForgotPassword,
     component: Auth,
     meta: {
       requiresAuth: false,
       shouldBeSynced: false,
-      title: i18n.t('general.routes.ForgotPassword'),
+      title: i18n.t("general.routes.ForgotPassword"),
       onSideBar: false,
     },
   },
   {
-    path: '/organization-structure',
+    path: "/organization-structure",
     name: routeNamesDict.OrganizationStructure,
     component: OrganizationStructure,
     meta: {
       requiresAuth: true,
       shouldBeSynced: true,
-      title: i18n.t('general.routes.OrganizationStructure'),
+      title: i18n.t("general.routes.OrganizationStructure"),
       onSideBar: true,
-      icon: 'mdi-clipboard-text-outline',
+      icon: "mdi-clipboard-text-outline",
     },
   },
   {
-    path: '/surveys',
+    path: "/surveys",
     name: routeNamesDict.Surveys,
     component: Surveys,
     meta: {
       requiresAuth: true,
       shouldBeSynced: true,
-      title: i18n.t('general.routes.Surveys'),
+      title: i18n.t("general.routes.Surveys"),
       onSideBar: true,
-      icon: 'mdi-crosshairs-question',
+      icon: "mdi-crosshairs-question",
     },
   },
   // {
@@ -117,27 +121,27 @@ export const routes = [
   //   },
   // },
   {
-    path: '/interventions',
+    path: "/interventions",
     name: routeNamesDict.Interventions,
     component: Interventions,
     meta: {
       requiresAuth: true,
       shouldBeSynced: true,
-      title: i18n.t('general.routes.Interventions'),
+      title: i18n.t("general.routes.Interventions"),
       onSideBar: true,
-      icon: 'mdi-wrench-outline',
+      icon: "mdi-wrench-outline",
     },
   },
   {
-    path: '/user-management',
+    path: "/user-management",
     name: routeNamesDict.UserManagement,
     component: UserManagement,
     meta: {
       requiresAuth: true,
       shouldBeSynced: true,
-      title: i18n.t('general.routes.UserManagement'),
+      title: i18n.t("general.routes.UserManagement"),
       onSideBar: true,
-      icon: 'mdi-account-multiple',
+      icon: "mdi-account-multiple",
     },
   },
   // {
@@ -157,7 +161,7 @@ export const routes = [
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes,
 });
@@ -173,8 +177,9 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (
-    cognitoUserSession
-    && (to.name === routeNamesDict.Login || to.name === routeNamesDict.CompleteUserInfo)
+    cognitoUserSession &&
+    (to.name === routeNamesDict.Login ||
+      to.name === routeNamesDict.CompleteUserInfo)
   ) {
     next({ name: from?.name ?? routeNamesDict.OrganizationStructure });
   }
@@ -202,13 +207,13 @@ router.beforeEach(async (to, from, next) => {
         store.dispatch(
           `${vuexModulesDict.sync}/refreshHandler`,
           { routeName: to.name },
-          { root: true },
+          { root: true }
         );
       } else {
         store.commit(
           `${vuexModulesDict.sync}/setStatus`,
           { newStatus: syncStatusDict.synched },
-          { root: true },
+          { root: true }
         );
       }
       next();
@@ -218,20 +223,20 @@ router.beforeEach(async (to, from, next) => {
       store.dispatch(
         `${vuexModulesDict.sync}/refreshHandler`,
         { routeName: to.name },
-        { root: true },
+        { root: true }
       );
     } else {
       store.commit(
         `${vuexModulesDict.sync}/setStatus`,
         { newStatus: syncStatusDict.synched },
-        { root: true },
+        { root: true }
       );
     }
     next();
   }
 });
 
-const DEFAULT_TITLE = 'Admin-App';
+const DEFAULT_TITLE = "Admin-App";
 router.afterEach((to) => {
   // Use next tick to handle router history correctly
   // see: https://github.com/vuejs/vue-router/issues/914#issuecomment-384477609

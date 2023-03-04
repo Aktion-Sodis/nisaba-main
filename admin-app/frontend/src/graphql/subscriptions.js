@@ -1,9 +1,63 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateOrganization = /* GraphQL */ `
+  subscription OnCreateOrganization(
+    $filter: ModelSubscriptionOrganizationFilterInput
+  ) {
+    onCreateOrganization(filter: $filter) {
+      nameCamelCase
+      nameKebabCase
+      nameVerbose
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateOrganization = /* GraphQL */ `
+  subscription OnUpdateOrganization(
+    $filter: ModelSubscriptionOrganizationFilterInput
+  ) {
+    onUpdateOrganization(filter: $filter) {
+      nameCamelCase
+      nameKebabCase
+      nameVerbose
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteOrganization = /* GraphQL */ `
+  subscription OnDeleteOrganization(
+    $filter: ModelSubscriptionOrganizationFilterInput
+  ) {
+    onDeleteOrganization(filter: $filter) {
+      nameCamelCase
+      nameKebabCase
+      nameVerbose
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
 export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser {
-    onCreateUser {
+  subscription OnCreateUser(
+    $filter: ModelSubscriptionUserFilterInput
+    $organization_id: String
+  ) {
+    onCreateUser(filter: $filter, organization_id: $organization_id) {
       firstName
       lastName
       bio
@@ -18,12 +72,16 @@ export const onCreateUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser {
-    onUpdateUser {
+  subscription OnUpdateUser(
+    $filter: ModelSubscriptionUserFilterInput
+    $organization_id: String
+  ) {
+    onUpdateUser(filter: $filter, organization_id: $organization_id) {
       firstName
       lastName
       bio
@@ -38,12 +96,16 @@ export const onUpdateUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser {
-    onDeleteUser {
+  subscription OnDeleteUser(
+    $filter: ModelSubscriptionUserFilterInput
+    $organization_id: String
+  ) {
+    onDeleteUser(filter: $filter, organization_id: $organization_id) {
       firstName
       lastName
       bio
@@ -58,12 +120,16 @@ export const onDeleteUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onCreateConfig = /* GraphQL */ `
-  subscription OnCreateConfig {
-    onCreateConfig {
+  subscription OnCreateConfig(
+    $filter: ModelSubscriptionConfigFilterInput
+    $organization_id: String
+  ) {
+    onCreateConfig(filter: $filter, organization_id: $organization_id) {
       name
       colorTheme {
         highlight
@@ -80,12 +146,16 @@ export const onCreateConfig = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onUpdateConfig = /* GraphQL */ `
-  subscription OnUpdateConfig {
-    onUpdateConfig {
+  subscription OnUpdateConfig(
+    $filter: ModelSubscriptionConfigFilterInput
+    $organization_id: String
+  ) {
+    onUpdateConfig(filter: $filter, organization_id: $organization_id) {
       name
       colorTheme {
         highlight
@@ -102,12 +172,16 @@ export const onUpdateConfig = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onDeleteConfig = /* GraphQL */ `
-  subscription OnDeleteConfig {
-    onDeleteConfig {
+  subscription OnDeleteConfig(
+    $filter: ModelSubscriptionConfigFilterInput
+    $organization_id: String
+  ) {
+    onDeleteConfig(filter: $filter, organization_id: $organization_id) {
       name
       colorTheme {
         highlight
@@ -124,12 +198,16 @@ export const onDeleteConfig = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onCreateLevel = /* GraphQL */ `
-  subscription OnCreateLevel {
-    onCreateLevel {
+  subscription OnCreateLevel(
+    $filter: ModelSubscriptionLevelFilterInput
+    $organization_id: String
+  ) {
+    onCreateLevel(filter: $filter, organization_id: $organization_id) {
       name {
         languageKeys
         languageTexts
@@ -143,13 +221,14 @@ export const onCreateLevel = /* GraphQL */ `
       allowedInterventions {
         items {
           id
-          levelID
-          interventionID
+          levelId
+          interventionId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -169,12 +248,16 @@ export const onCreateLevel = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onUpdateLevel = /* GraphQL */ `
-  subscription OnUpdateLevel {
-    onUpdateLevel {
+  subscription OnUpdateLevel(
+    $filter: ModelSubscriptionLevelFilterInput
+    $organization_id: String
+  ) {
+    onUpdateLevel(filter: $filter, organization_id: $organization_id) {
       name {
         languageKeys
         languageTexts
@@ -188,13 +271,14 @@ export const onUpdateLevel = /* GraphQL */ `
       allowedInterventions {
         items {
           id
-          levelID
-          interventionID
+          levelId
+          interventionId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -214,12 +298,16 @@ export const onUpdateLevel = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onDeleteLevel = /* GraphQL */ `
-  subscription OnDeleteLevel {
-    onDeleteLevel {
+  subscription OnDeleteLevel(
+    $filter: ModelSubscriptionLevelFilterInput
+    $organization_id: String
+  ) {
+    onDeleteLevel(filter: $filter, organization_id: $organization_id) {
       name {
         languageKeys
         languageTexts
@@ -233,13 +321,14 @@ export const onDeleteLevel = /* GraphQL */ `
       allowedInterventions {
         items {
           id
-          levelID
-          interventionID
+          levelId
+          interventionId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -259,12 +348,16 @@ export const onDeleteLevel = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onCreateIntervention = /* GraphQL */ `
-  subscription OnCreateIntervention {
-    onCreateIntervention {
+  subscription OnCreateIntervention(
+    $filter: ModelSubscriptionInterventionFilterInput
+    $organization_id: String
+  ) {
+    onCreateIntervention(filter: $filter, organization_id: $organization_id) {
       name {
         languageKeys
         languageTexts
@@ -277,13 +370,14 @@ export const onCreateIntervention = /* GraphQL */ `
       contents {
         items {
           id
-          interventionID
-          contentID
+          interventionId
+          contentId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -300,6 +394,7 @@ export const onCreateIntervention = /* GraphQL */ `
           _deleted
           _lastChangedAt
           interventionSurveysId
+          organization_id
         }
         nextToken
         startedAt
@@ -307,13 +402,14 @@ export const onCreateIntervention = /* GraphQL */ `
       tags {
         items {
           id
-          interventionID
-          interventionTagID
+          interventionId
+          interventionTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -322,13 +418,14 @@ export const onCreateIntervention = /* GraphQL */ `
       levels {
         items {
           id
-          levelID
-          interventionID
+          levelId
+          interventionId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -339,12 +436,16 @@ export const onCreateIntervention = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onUpdateIntervention = /* GraphQL */ `
-  subscription OnUpdateIntervention {
-    onUpdateIntervention {
+  subscription OnUpdateIntervention(
+    $filter: ModelSubscriptionInterventionFilterInput
+    $organization_id: String
+  ) {
+    onUpdateIntervention(filter: $filter, organization_id: $organization_id) {
       name {
         languageKeys
         languageTexts
@@ -357,13 +458,14 @@ export const onUpdateIntervention = /* GraphQL */ `
       contents {
         items {
           id
-          interventionID
-          contentID
+          interventionId
+          contentId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -380,6 +482,7 @@ export const onUpdateIntervention = /* GraphQL */ `
           _deleted
           _lastChangedAt
           interventionSurveysId
+          organization_id
         }
         nextToken
         startedAt
@@ -387,13 +490,14 @@ export const onUpdateIntervention = /* GraphQL */ `
       tags {
         items {
           id
-          interventionID
-          interventionTagID
+          interventionId
+          interventionTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -402,13 +506,14 @@ export const onUpdateIntervention = /* GraphQL */ `
       levels {
         items {
           id
-          levelID
-          interventionID
+          levelId
+          interventionId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -419,12 +524,16 @@ export const onUpdateIntervention = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onDeleteIntervention = /* GraphQL */ `
-  subscription OnDeleteIntervention {
-    onDeleteIntervention {
+  subscription OnDeleteIntervention(
+    $filter: ModelSubscriptionInterventionFilterInput
+    $organization_id: String
+  ) {
+    onDeleteIntervention(filter: $filter, organization_id: $organization_id) {
       name {
         languageKeys
         languageTexts
@@ -437,13 +546,14 @@ export const onDeleteIntervention = /* GraphQL */ `
       contents {
         items {
           id
-          interventionID
-          contentID
+          interventionId
+          contentId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -460,6 +570,7 @@ export const onDeleteIntervention = /* GraphQL */ `
           _deleted
           _lastChangedAt
           interventionSurveysId
+          organization_id
         }
         nextToken
         startedAt
@@ -467,13 +578,14 @@ export const onDeleteIntervention = /* GraphQL */ `
       tags {
         items {
           id
-          interventionID
-          interventionTagID
+          interventionId
+          interventionTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -482,13 +594,14 @@ export const onDeleteIntervention = /* GraphQL */ `
       levels {
         items {
           id
-          levelID
-          interventionID
+          levelId
+          interventionId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -499,12 +612,16 @@ export const onDeleteIntervention = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onCreateContent = /* GraphQL */ `
-  subscription OnCreateContent {
-    onCreateContent {
+  subscription OnCreateContent(
+    $filter: ModelSubscriptionContentFilterInput
+    $organization_id: String
+  ) {
+    onCreateContent(filter: $filter, organization_id: $organization_id) {
       name {
         languageKeys
         languageTexts
@@ -516,13 +633,14 @@ export const onCreateContent = /* GraphQL */ `
       interventions {
         items {
           id
-          interventionID
-          contentID
+          interventionId
+          contentId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -530,13 +648,14 @@ export const onCreateContent = /* GraphQL */ `
       tags {
         items {
           id
-          contentID
-          contentTagID
+          contentId
+          contentTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -548,12 +667,16 @@ export const onCreateContent = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onUpdateContent = /* GraphQL */ `
-  subscription OnUpdateContent {
-    onUpdateContent {
+  subscription OnUpdateContent(
+    $filter: ModelSubscriptionContentFilterInput
+    $organization_id: String
+  ) {
+    onUpdateContent(filter: $filter, organization_id: $organization_id) {
       name {
         languageKeys
         languageTexts
@@ -565,13 +688,14 @@ export const onUpdateContent = /* GraphQL */ `
       interventions {
         items {
           id
-          interventionID
-          contentID
+          interventionId
+          contentId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -579,13 +703,14 @@ export const onUpdateContent = /* GraphQL */ `
       tags {
         items {
           id
-          contentID
-          contentTagID
+          contentId
+          contentTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -597,12 +722,16 @@ export const onUpdateContent = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onDeleteContent = /* GraphQL */ `
-  subscription OnDeleteContent {
-    onDeleteContent {
+  subscription OnDeleteContent(
+    $filter: ModelSubscriptionContentFilterInput
+    $organization_id: String
+  ) {
+    onDeleteContent(filter: $filter, organization_id: $organization_id) {
       name {
         languageKeys
         languageTexts
@@ -614,13 +743,14 @@ export const onDeleteContent = /* GraphQL */ `
       interventions {
         items {
           id
-          interventionID
-          contentID
+          interventionId
+          contentId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -628,13 +758,14 @@ export const onDeleteContent = /* GraphQL */ `
       tags {
         items {
           id
-          contentID
-          contentTagID
+          contentId
+          contentTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -646,12 +777,16 @@ export const onDeleteContent = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onCreateSurvey = /* GraphQL */ `
-  subscription OnCreateSurvey {
-    onCreateSurvey {
+  subscription OnCreateSurvey(
+    $filter: ModelSubscriptionSurveyFilterInput
+    $organization_id: String
+  ) {
+    onCreateSurvey(filter: $filter, organization_id: $organization_id) {
       name {
         languageKeys
         languageTexts
@@ -693,6 +828,7 @@ export const onCreateSurvey = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       questions {
         id
@@ -710,13 +846,14 @@ export const onCreateSurvey = /* GraphQL */ `
       tags {
         items {
           id
-          surveyID
-          surveyTagID
+          surveyId
+          surveyTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -731,12 +868,16 @@ export const onCreateSurvey = /* GraphQL */ `
       _deleted
       _lastChangedAt
       interventionSurveysId
+      organization_id
     }
   }
 `;
 export const onUpdateSurvey = /* GraphQL */ `
-  subscription OnUpdateSurvey {
-    onUpdateSurvey {
+  subscription OnUpdateSurvey(
+    $filter: ModelSubscriptionSurveyFilterInput
+    $organization_id: String
+  ) {
+    onUpdateSurvey(filter: $filter, organization_id: $organization_id) {
       name {
         languageKeys
         languageTexts
@@ -778,6 +919,7 @@ export const onUpdateSurvey = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       questions {
         id
@@ -795,13 +937,14 @@ export const onUpdateSurvey = /* GraphQL */ `
       tags {
         items {
           id
-          surveyID
-          surveyTagID
+          surveyId
+          surveyTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -816,12 +959,16 @@ export const onUpdateSurvey = /* GraphQL */ `
       _deleted
       _lastChangedAt
       interventionSurveysId
+      organization_id
     }
   }
 `;
 export const onDeleteSurvey = /* GraphQL */ `
-  subscription OnDeleteSurvey {
-    onDeleteSurvey {
+  subscription OnDeleteSurvey(
+    $filter: ModelSubscriptionSurveyFilterInput
+    $organization_id: String
+  ) {
+    onDeleteSurvey(filter: $filter, organization_id: $organization_id) {
       name {
         languageKeys
         languageTexts
@@ -863,6 +1010,7 @@ export const onDeleteSurvey = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       questions {
         id
@@ -880,13 +1028,14 @@ export const onDeleteSurvey = /* GraphQL */ `
       tags {
         items {
           id
-          surveyID
-          surveyTagID
+          surveyId
+          surveyTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -901,12 +1050,16 @@ export const onDeleteSurvey = /* GraphQL */ `
       _deleted
       _lastChangedAt
       interventionSurveysId
+      organization_id
     }
   }
 `;
 export const onCreateEntity = /* GraphQL */ `
-  subscription OnCreateEntity {
-    onCreateEntity {
+  subscription OnCreateEntity(
+    $filter: ModelSubscriptionEntityFilterInput
+    $organization_id: String
+  ) {
+    onCreateEntity(filter: $filter, organization_id: $organization_id) {
       name {
         languageKeys
         languageTexts
@@ -942,6 +1095,7 @@ export const onCreateEntity = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       location {
         latitude
@@ -970,6 +1124,7 @@ export const onCreateEntity = /* GraphQL */ `
           entityAppliedInterventionsId
           appliedInterventionWhoDidItId
           appliedInterventionInterventionId
+          organization_id
         }
         nextToken
         startedAt
@@ -982,12 +1137,16 @@ export const onCreateEntity = /* GraphQL */ `
       _deleted
       _lastChangedAt
       entityLevelId
+      organization_id
     }
   }
 `;
 export const onUpdateEntity = /* GraphQL */ `
-  subscription OnUpdateEntity {
-    onUpdateEntity {
+  subscription OnUpdateEntity(
+    $filter: ModelSubscriptionEntityFilterInput
+    $organization_id: String
+  ) {
+    onUpdateEntity(filter: $filter, organization_id: $organization_id) {
       name {
         languageKeys
         languageTexts
@@ -1023,6 +1182,7 @@ export const onUpdateEntity = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       location {
         latitude
@@ -1051,6 +1211,7 @@ export const onUpdateEntity = /* GraphQL */ `
           entityAppliedInterventionsId
           appliedInterventionWhoDidItId
           appliedInterventionInterventionId
+          organization_id
         }
         nextToken
         startedAt
@@ -1063,12 +1224,16 @@ export const onUpdateEntity = /* GraphQL */ `
       _deleted
       _lastChangedAt
       entityLevelId
+      organization_id
     }
   }
 `;
 export const onDeleteEntity = /* GraphQL */ `
-  subscription OnDeleteEntity {
-    onDeleteEntity {
+  subscription OnDeleteEntity(
+    $filter: ModelSubscriptionEntityFilterInput
+    $organization_id: String
+  ) {
+    onDeleteEntity(filter: $filter, organization_id: $organization_id) {
       name {
         languageKeys
         languageTexts
@@ -1104,6 +1269,7 @@ export const onDeleteEntity = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       location {
         latitude
@@ -1132,6 +1298,7 @@ export const onDeleteEntity = /* GraphQL */ `
           entityAppliedInterventionsId
           appliedInterventionWhoDidItId
           appliedInterventionInterventionId
+          organization_id
         }
         nextToken
         startedAt
@@ -1144,12 +1311,19 @@ export const onDeleteEntity = /* GraphQL */ `
       _deleted
       _lastChangedAt
       entityLevelId
+      organization_id
     }
   }
 `;
 export const onCreateAppliedIntervention = /* GraphQL */ `
-  subscription OnCreateAppliedIntervention {
-    onCreateAppliedIntervention {
+  subscription OnCreateAppliedIntervention(
+    $filter: ModelSubscriptionAppliedInterventionFilterInput
+    $organization_id: String
+  ) {
+    onCreateAppliedIntervention(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       whoDidIt {
         firstName
         lastName
@@ -1165,6 +1339,7 @@ export const onCreateAppliedIntervention = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       intervention {
         name {
@@ -1199,6 +1374,7 @@ export const onCreateAppliedIntervention = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       location {
         latitude
@@ -1219,6 +1395,7 @@ export const onCreateAppliedIntervention = /* GraphQL */ `
           appliedInterventionExecutedSurveysId
           executedSurveySurveyId
           executedSurveyWhoExecutedItId
+          organization_id
         }
         nextToken
         startedAt
@@ -1233,12 +1410,19 @@ export const onCreateAppliedIntervention = /* GraphQL */ `
       entityAppliedInterventionsId
       appliedInterventionWhoDidItId
       appliedInterventionInterventionId
+      organization_id
     }
   }
 `;
 export const onUpdateAppliedIntervention = /* GraphQL */ `
-  subscription OnUpdateAppliedIntervention {
-    onUpdateAppliedIntervention {
+  subscription OnUpdateAppliedIntervention(
+    $filter: ModelSubscriptionAppliedInterventionFilterInput
+    $organization_id: String
+  ) {
+    onUpdateAppliedIntervention(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       whoDidIt {
         firstName
         lastName
@@ -1254,6 +1438,7 @@ export const onUpdateAppliedIntervention = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       intervention {
         name {
@@ -1288,6 +1473,7 @@ export const onUpdateAppliedIntervention = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       location {
         latitude
@@ -1308,6 +1494,7 @@ export const onUpdateAppliedIntervention = /* GraphQL */ `
           appliedInterventionExecutedSurveysId
           executedSurveySurveyId
           executedSurveyWhoExecutedItId
+          organization_id
         }
         nextToken
         startedAt
@@ -1322,12 +1509,19 @@ export const onUpdateAppliedIntervention = /* GraphQL */ `
       entityAppliedInterventionsId
       appliedInterventionWhoDidItId
       appliedInterventionInterventionId
+      organization_id
     }
   }
 `;
 export const onDeleteAppliedIntervention = /* GraphQL */ `
-  subscription OnDeleteAppliedIntervention {
-    onDeleteAppliedIntervention {
+  subscription OnDeleteAppliedIntervention(
+    $filter: ModelSubscriptionAppliedInterventionFilterInput
+    $organization_id: String
+  ) {
+    onDeleteAppliedIntervention(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       whoDidIt {
         firstName
         lastName
@@ -1343,6 +1537,7 @@ export const onDeleteAppliedIntervention = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       intervention {
         name {
@@ -1377,6 +1572,7 @@ export const onDeleteAppliedIntervention = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       location {
         latitude
@@ -1397,6 +1593,7 @@ export const onDeleteAppliedIntervention = /* GraphQL */ `
           appliedInterventionExecutedSurveysId
           executedSurveySurveyId
           executedSurveyWhoExecutedItId
+          organization_id
         }
         nextToken
         startedAt
@@ -1411,12 +1608,16 @@ export const onDeleteAppliedIntervention = /* GraphQL */ `
       entityAppliedInterventionsId
       appliedInterventionWhoDidItId
       appliedInterventionInterventionId
+      organization_id
     }
   }
 `;
 export const onCreateExecutedSurvey = /* GraphQL */ `
-  subscription OnCreateExecutedSurvey {
-    onCreateExecutedSurvey {
+  subscription OnCreateExecutedSurvey(
+    $filter: ModelSubscriptionExecutedSurveyFilterInput
+    $organization_id: String
+  ) {
+    onCreateExecutedSurvey(filter: $filter, organization_id: $organization_id) {
       appliedIntervention {
         whoDidIt {
           firstName
@@ -1429,6 +1630,7 @@ export const onCreateExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         intervention {
           interventionType
@@ -1439,6 +1641,7 @@ export const onCreateExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -1459,6 +1662,7 @@ export const onCreateExecutedSurvey = /* GraphQL */ `
         entityAppliedInterventionsId
         appliedInterventionWhoDidItId
         appliedInterventionInterventionId
+        organization_id
       }
       survey {
         name {
@@ -1478,6 +1682,7 @@ export const onCreateExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         questions {
           id
@@ -1498,6 +1703,7 @@ export const onCreateExecutedSurvey = /* GraphQL */ `
         _deleted
         _lastChangedAt
         interventionSurveysId
+        organization_id
       }
       surveyID
       whoExecutedIt {
@@ -1515,6 +1721,7 @@ export const onCreateExecutedSurvey = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       date
       location {
@@ -1552,12 +1759,16 @@ export const onCreateExecutedSurvey = /* GraphQL */ `
       appliedInterventionExecutedSurveysId
       executedSurveySurveyId
       executedSurveyWhoExecutedItId
+      organization_id
     }
   }
 `;
 export const onUpdateExecutedSurvey = /* GraphQL */ `
-  subscription OnUpdateExecutedSurvey {
-    onUpdateExecutedSurvey {
+  subscription OnUpdateExecutedSurvey(
+    $filter: ModelSubscriptionExecutedSurveyFilterInput
+    $organization_id: String
+  ) {
+    onUpdateExecutedSurvey(filter: $filter, organization_id: $organization_id) {
       appliedIntervention {
         whoDidIt {
           firstName
@@ -1570,6 +1781,7 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         intervention {
           interventionType
@@ -1580,6 +1792,7 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -1600,6 +1813,7 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `
         entityAppliedInterventionsId
         appliedInterventionWhoDidItId
         appliedInterventionInterventionId
+        organization_id
       }
       survey {
         name {
@@ -1619,6 +1833,7 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         questions {
           id
@@ -1639,6 +1854,7 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `
         _deleted
         _lastChangedAt
         interventionSurveysId
+        organization_id
       }
       surveyID
       whoExecutedIt {
@@ -1656,6 +1872,7 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       date
       location {
@@ -1693,12 +1910,16 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `
       appliedInterventionExecutedSurveysId
       executedSurveySurveyId
       executedSurveyWhoExecutedItId
+      organization_id
     }
   }
 `;
 export const onDeleteExecutedSurvey = /* GraphQL */ `
-  subscription OnDeleteExecutedSurvey {
-    onDeleteExecutedSurvey {
+  subscription OnDeleteExecutedSurvey(
+    $filter: ModelSubscriptionExecutedSurveyFilterInput
+    $organization_id: String
+  ) {
+    onDeleteExecutedSurvey(filter: $filter, organization_id: $organization_id) {
       appliedIntervention {
         whoDidIt {
           firstName
@@ -1711,6 +1932,7 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         intervention {
           interventionType
@@ -1721,6 +1943,7 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -1741,6 +1964,7 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `
         entityAppliedInterventionsId
         appliedInterventionWhoDidItId
         appliedInterventionInterventionId
+        organization_id
       }
       survey {
         name {
@@ -1760,6 +1984,7 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         questions {
           id
@@ -1780,6 +2005,7 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `
         _deleted
         _lastChangedAt
         interventionSurveysId
+        organization_id
       }
       surveyID
       whoExecutedIt {
@@ -1797,6 +2023,7 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       date
       location {
@@ -1834,12 +2061,16 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `
       appliedInterventionExecutedSurveysId
       executedSurveySurveyId
       executedSurveyWhoExecutedItId
+      organization_id
     }
   }
 `;
 export const onCreateTask = /* GraphQL */ `
-  subscription OnCreateTask {
-    onCreateTask {
+  subscription OnCreateTask(
+    $filter: ModelSubscriptionTaskFilterInput
+    $organization_id: String
+  ) {
+    onCreateTask(filter: $filter, organization_id: $organization_id) {
       title
       text
       dueDate
@@ -1863,6 +2094,7 @@ export const onCreateTask = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       userID
       entity {
@@ -1885,6 +2117,7 @@ export const onCreateTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -1908,6 +2141,7 @@ export const onCreateTask = /* GraphQL */ `
         _deleted
         _lastChangedAt
         entityLevelId
+        organization_id
       }
       appliedIntervention {
         whoDidIt {
@@ -1921,6 +2155,7 @@ export const onCreateTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         intervention {
           interventionType
@@ -1931,6 +2166,7 @@ export const onCreateTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -1951,6 +2187,7 @@ export const onCreateTask = /* GraphQL */ `
         entityAppliedInterventionsId
         appliedInterventionWhoDidItId
         appliedInterventionInterventionId
+        organization_id
       }
       executedSurvey {
         appliedIntervention {
@@ -1965,6 +2202,7 @@ export const onCreateTask = /* GraphQL */ `
           entityAppliedInterventionsId
           appliedInterventionWhoDidItId
           appliedInterventionInterventionId
+          organization_id
         }
         survey {
           surveyType
@@ -1977,6 +2215,7 @@ export const onCreateTask = /* GraphQL */ `
           _deleted
           _lastChangedAt
           interventionSurveysId
+          organization_id
         }
         surveyID
         whoExecutedIt {
@@ -1990,6 +2229,7 @@ export const onCreateTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         date
         location {
@@ -2016,6 +2256,7 @@ export const onCreateTask = /* GraphQL */ `
         appliedInterventionExecutedSurveysId
         executedSurveySurveyId
         executedSurveyWhoExecutedItId
+        organization_id
       }
       schemeVersion
       picIDs
@@ -2030,12 +2271,16 @@ export const onCreateTask = /* GraphQL */ `
       taskEntityId
       taskAppliedInterventionId
       taskExecutedSurveyId
+      organization_id
     }
   }
 `;
 export const onUpdateTask = /* GraphQL */ `
-  subscription OnUpdateTask {
-    onUpdateTask {
+  subscription OnUpdateTask(
+    $filter: ModelSubscriptionTaskFilterInput
+    $organization_id: String
+  ) {
+    onUpdateTask(filter: $filter, organization_id: $organization_id) {
       title
       text
       dueDate
@@ -2059,6 +2304,7 @@ export const onUpdateTask = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       userID
       entity {
@@ -2081,6 +2327,7 @@ export const onUpdateTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -2104,6 +2351,7 @@ export const onUpdateTask = /* GraphQL */ `
         _deleted
         _lastChangedAt
         entityLevelId
+        organization_id
       }
       appliedIntervention {
         whoDidIt {
@@ -2117,6 +2365,7 @@ export const onUpdateTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         intervention {
           interventionType
@@ -2127,6 +2376,7 @@ export const onUpdateTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -2147,6 +2397,7 @@ export const onUpdateTask = /* GraphQL */ `
         entityAppliedInterventionsId
         appliedInterventionWhoDidItId
         appliedInterventionInterventionId
+        organization_id
       }
       executedSurvey {
         appliedIntervention {
@@ -2161,6 +2412,7 @@ export const onUpdateTask = /* GraphQL */ `
           entityAppliedInterventionsId
           appliedInterventionWhoDidItId
           appliedInterventionInterventionId
+          organization_id
         }
         survey {
           surveyType
@@ -2173,6 +2425,7 @@ export const onUpdateTask = /* GraphQL */ `
           _deleted
           _lastChangedAt
           interventionSurveysId
+          organization_id
         }
         surveyID
         whoExecutedIt {
@@ -2186,6 +2439,7 @@ export const onUpdateTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         date
         location {
@@ -2212,6 +2466,7 @@ export const onUpdateTask = /* GraphQL */ `
         appliedInterventionExecutedSurveysId
         executedSurveySurveyId
         executedSurveyWhoExecutedItId
+        organization_id
       }
       schemeVersion
       picIDs
@@ -2226,12 +2481,16 @@ export const onUpdateTask = /* GraphQL */ `
       taskEntityId
       taskAppliedInterventionId
       taskExecutedSurveyId
+      organization_id
     }
   }
 `;
 export const onDeleteTask = /* GraphQL */ `
-  subscription OnDeleteTask {
-    onDeleteTask {
+  subscription OnDeleteTask(
+    $filter: ModelSubscriptionTaskFilterInput
+    $organization_id: String
+  ) {
+    onDeleteTask(filter: $filter, organization_id: $organization_id) {
       title
       text
       dueDate
@@ -2255,6 +2514,7 @@ export const onDeleteTask = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       userID
       entity {
@@ -2277,6 +2537,7 @@ export const onDeleteTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -2300,6 +2561,7 @@ export const onDeleteTask = /* GraphQL */ `
         _deleted
         _lastChangedAt
         entityLevelId
+        organization_id
       }
       appliedIntervention {
         whoDidIt {
@@ -2313,6 +2575,7 @@ export const onDeleteTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         intervention {
           interventionType
@@ -2323,6 +2586,7 @@ export const onDeleteTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -2343,6 +2607,7 @@ export const onDeleteTask = /* GraphQL */ `
         entityAppliedInterventionsId
         appliedInterventionWhoDidItId
         appliedInterventionInterventionId
+        organization_id
       }
       executedSurvey {
         appliedIntervention {
@@ -2357,6 +2622,7 @@ export const onDeleteTask = /* GraphQL */ `
           entityAppliedInterventionsId
           appliedInterventionWhoDidItId
           appliedInterventionInterventionId
+          organization_id
         }
         survey {
           surveyType
@@ -2369,6 +2635,7 @@ export const onDeleteTask = /* GraphQL */ `
           _deleted
           _lastChangedAt
           interventionSurveysId
+          organization_id
         }
         surveyID
         whoExecutedIt {
@@ -2382,6 +2649,7 @@ export const onDeleteTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         date
         location {
@@ -2408,6 +2676,7 @@ export const onDeleteTask = /* GraphQL */ `
         appliedInterventionExecutedSurveysId
         executedSurveySurveyId
         executedSurveyWhoExecutedItId
+        organization_id
       }
       schemeVersion
       picIDs
@@ -2422,12 +2691,16 @@ export const onDeleteTask = /* GraphQL */ `
       taskEntityId
       taskAppliedInterventionId
       taskExecutedSurveyId
+      organization_id
     }
   }
 `;
 export const onCreateContentTag = /* GraphQL */ `
-  subscription OnCreateContentTag {
-    onCreateContentTag {
+  subscription OnCreateContentTag(
+    $filter: ModelSubscriptionContentTagFilterInput
+    $organization_id: String
+  ) {
+    onCreateContentTag(filter: $filter, organization_id: $organization_id) {
       text {
         languageKeys
         languageTexts
@@ -2436,13 +2709,14 @@ export const onCreateContentTag = /* GraphQL */ `
       contents {
         items {
           id
-          contentID
-          contentTagID
+          contentId
+          contentTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2453,12 +2727,16 @@ export const onCreateContentTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onUpdateContentTag = /* GraphQL */ `
-  subscription OnUpdateContentTag {
-    onUpdateContentTag {
+  subscription OnUpdateContentTag(
+    $filter: ModelSubscriptionContentTagFilterInput
+    $organization_id: String
+  ) {
+    onUpdateContentTag(filter: $filter, organization_id: $organization_id) {
       text {
         languageKeys
         languageTexts
@@ -2467,13 +2745,14 @@ export const onUpdateContentTag = /* GraphQL */ `
       contents {
         items {
           id
-          contentID
-          contentTagID
+          contentId
+          contentTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2484,12 +2763,16 @@ export const onUpdateContentTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onDeleteContentTag = /* GraphQL */ `
-  subscription OnDeleteContentTag {
-    onDeleteContentTag {
+  subscription OnDeleteContentTag(
+    $filter: ModelSubscriptionContentTagFilterInput
+    $organization_id: String
+  ) {
+    onDeleteContentTag(filter: $filter, organization_id: $organization_id) {
       text {
         languageKeys
         languageTexts
@@ -2498,13 +2781,14 @@ export const onDeleteContentTag = /* GraphQL */ `
       contents {
         items {
           id
-          contentID
-          contentTagID
+          contentId
+          contentTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2515,12 +2799,19 @@ export const onDeleteContentTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onCreateInterventionTag = /* GraphQL */ `
-  subscription OnCreateInterventionTag {
-    onCreateInterventionTag {
+  subscription OnCreateInterventionTag(
+    $filter: ModelSubscriptionInterventionTagFilterInput
+    $organization_id: String
+  ) {
+    onCreateInterventionTag(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       text {
         languageKeys
         languageTexts
@@ -2529,13 +2820,14 @@ export const onCreateInterventionTag = /* GraphQL */ `
       interventions {
         items {
           id
-          interventionID
-          interventionTagID
+          interventionId
+          interventionTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2546,12 +2838,19 @@ export const onCreateInterventionTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onUpdateInterventionTag = /* GraphQL */ `
-  subscription OnUpdateInterventionTag {
-    onUpdateInterventionTag {
+  subscription OnUpdateInterventionTag(
+    $filter: ModelSubscriptionInterventionTagFilterInput
+    $organization_id: String
+  ) {
+    onUpdateInterventionTag(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       text {
         languageKeys
         languageTexts
@@ -2560,13 +2859,14 @@ export const onUpdateInterventionTag = /* GraphQL */ `
       interventions {
         items {
           id
-          interventionID
-          interventionTagID
+          interventionId
+          interventionTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2577,12 +2877,19 @@ export const onUpdateInterventionTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onDeleteInterventionTag = /* GraphQL */ `
-  subscription OnDeleteInterventionTag {
-    onDeleteInterventionTag {
+  subscription OnDeleteInterventionTag(
+    $filter: ModelSubscriptionInterventionTagFilterInput
+    $organization_id: String
+  ) {
+    onDeleteInterventionTag(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       text {
         languageKeys
         languageTexts
@@ -2591,13 +2898,14 @@ export const onDeleteInterventionTag = /* GraphQL */ `
       interventions {
         items {
           id
-          interventionID
-          interventionTagID
+          interventionId
+          interventionTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2608,12 +2916,16 @@ export const onDeleteInterventionTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onCreateSurveyTag = /* GraphQL */ `
-  subscription OnCreateSurveyTag {
-    onCreateSurveyTag {
+  subscription OnCreateSurveyTag(
+    $filter: ModelSubscriptionSurveyTagFilterInput
+    $organization_id: String
+  ) {
+    onCreateSurveyTag(filter: $filter, organization_id: $organization_id) {
       text {
         languageKeys
         languageTexts
@@ -2622,13 +2934,14 @@ export const onCreateSurveyTag = /* GraphQL */ `
       surveys {
         items {
           id
-          surveyID
-          surveyTagID
+          surveyId
+          surveyTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2639,12 +2952,16 @@ export const onCreateSurveyTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onUpdateSurveyTag = /* GraphQL */ `
-  subscription OnUpdateSurveyTag {
-    onUpdateSurveyTag {
+  subscription OnUpdateSurveyTag(
+    $filter: ModelSubscriptionSurveyTagFilterInput
+    $organization_id: String
+  ) {
+    onUpdateSurveyTag(filter: $filter, organization_id: $organization_id) {
       text {
         languageKeys
         languageTexts
@@ -2653,13 +2970,14 @@ export const onUpdateSurveyTag = /* GraphQL */ `
       surveys {
         items {
           id
-          surveyID
-          surveyTagID
+          surveyId
+          surveyTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2670,12 +2988,16 @@ export const onUpdateSurveyTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onDeleteSurveyTag = /* GraphQL */ `
-  subscription OnDeleteSurveyTag {
-    onDeleteSurveyTag {
+  subscription OnDeleteSurveyTag(
+    $filter: ModelSubscriptionSurveyTagFilterInput
+    $organization_id: String
+  ) {
+    onDeleteSurveyTag(filter: $filter, organization_id: $organization_id) {
       text {
         languageKeys
         languageTexts
@@ -2684,13 +3006,14 @@ export const onDeleteSurveyTag = /* GraphQL */ `
       surveys {
         items {
           id
-          surveyID
-          surveyTagID
+          surveyId
+          surveyTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2701,12 +3024,16 @@ export const onDeleteSurveyTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onCreateSessionData = /* GraphQL */ `
-  subscription OnCreateSessionData {
-    onCreateSessionData {
+  subscription OnCreateSessionData(
+    $filter: ModelSubscriptionSessionDataFilterInput
+    $organization_id: String
+  ) {
+    onCreateSessionData(filter: $filter, organization_id: $organization_id) {
       date
       userID
       app
@@ -2720,12 +3047,16 @@ export const onCreateSessionData = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onUpdateSessionData = /* GraphQL */ `
-  subscription OnUpdateSessionData {
-    onUpdateSessionData {
+  subscription OnUpdateSessionData(
+    $filter: ModelSubscriptionSessionDataFilterInput
+    $organization_id: String
+  ) {
+    onUpdateSessionData(filter: $filter, organization_id: $organization_id) {
       date
       userID
       app
@@ -2739,12 +3070,16 @@ export const onUpdateSessionData = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onDeleteSessionData = /* GraphQL */ `
-  subscription OnDeleteSessionData {
-    onDeleteSessionData {
+  subscription OnDeleteSessionData(
+    $filter: ModelSubscriptionSessionDataFilterInput
+    $organization_id: String
+  ) {
+    onDeleteSessionData(filter: $filter, organization_id: $organization_id) {
       date
       userID
       app
@@ -2758,15 +3093,22 @@ export const onDeleteSessionData = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onCreateLevelInterventionRelation = /* GraphQL */ `
-  subscription OnCreateLevelInterventionRelation {
-    onCreateLevelInterventionRelation {
+  subscription OnCreateLevelInterventionRelation(
+    $filter: ModelSubscriptionLevelInterventionRelationFilterInput
+    $organization_id: String
+  ) {
+    onCreateLevelInterventionRelation(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       id
-      levelID
-      interventionID
+      levelId
+      interventionId
       level {
         name {
           languageKeys
@@ -2793,6 +3135,7 @@ export const onCreateLevelInterventionRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       intervention {
         name {
@@ -2827,21 +3170,29 @@ export const onCreateLevelInterventionRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onUpdateLevelInterventionRelation = /* GraphQL */ `
-  subscription OnUpdateLevelInterventionRelation {
-    onUpdateLevelInterventionRelation {
+  subscription OnUpdateLevelInterventionRelation(
+    $filter: ModelSubscriptionLevelInterventionRelationFilterInput
+    $organization_id: String
+  ) {
+    onUpdateLevelInterventionRelation(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       id
-      levelID
-      interventionID
+      levelId
+      interventionId
       level {
         name {
           languageKeys
@@ -2868,6 +3219,7 @@ export const onUpdateLevelInterventionRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       intervention {
         name {
@@ -2902,21 +3254,29 @@ export const onUpdateLevelInterventionRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onDeleteLevelInterventionRelation = /* GraphQL */ `
-  subscription OnDeleteLevelInterventionRelation {
-    onDeleteLevelInterventionRelation {
+  subscription OnDeleteLevelInterventionRelation(
+    $filter: ModelSubscriptionLevelInterventionRelationFilterInput
+    $organization_id: String
+  ) {
+    onDeleteLevelInterventionRelation(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       id
-      levelID
-      interventionID
+      levelId
+      interventionId
       level {
         name {
           languageKeys
@@ -2943,6 +3303,7 @@ export const onDeleteLevelInterventionRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       intervention {
         name {
@@ -2977,21 +3338,29 @@ export const onDeleteLevelInterventionRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onCreateInterventionContentRelation = /* GraphQL */ `
-  subscription OnCreateInterventionContentRelation {
-    onCreateInterventionContentRelation {
+  subscription OnCreateInterventionContentRelation(
+    $filter: ModelSubscriptionInterventionContentRelationFilterInput
+    $organization_id: String
+  ) {
+    onCreateInterventionContentRelation(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       id
-      interventionID
-      contentID
+      interventionId
+      contentId
       intervention {
         name {
           languageKeys
@@ -3025,6 +3394,7 @@ export const onCreateInterventionContentRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       content {
         name {
@@ -3050,21 +3420,29 @@ export const onCreateInterventionContentRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onUpdateInterventionContentRelation = /* GraphQL */ `
-  subscription OnUpdateInterventionContentRelation {
-    onUpdateInterventionContentRelation {
+  subscription OnUpdateInterventionContentRelation(
+    $filter: ModelSubscriptionInterventionContentRelationFilterInput
+    $organization_id: String
+  ) {
+    onUpdateInterventionContentRelation(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       id
-      interventionID
-      contentID
+      interventionId
+      contentId
       intervention {
         name {
           languageKeys
@@ -3098,6 +3476,7 @@ export const onUpdateInterventionContentRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       content {
         name {
@@ -3123,21 +3502,29 @@ export const onUpdateInterventionContentRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onDeleteInterventionContentRelation = /* GraphQL */ `
-  subscription OnDeleteInterventionContentRelation {
-    onDeleteInterventionContentRelation {
+  subscription OnDeleteInterventionContentRelation(
+    $filter: ModelSubscriptionInterventionContentRelationFilterInput
+    $organization_id: String
+  ) {
+    onDeleteInterventionContentRelation(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       id
-      interventionID
-      contentID
+      interventionId
+      contentId
       intervention {
         name {
           languageKeys
@@ -3171,6 +3558,7 @@ export const onDeleteInterventionContentRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       content {
         name {
@@ -3196,21 +3584,29 @@ export const onDeleteInterventionContentRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onCreateInterventionInterventionTagRelation = /* GraphQL */ `
-  subscription OnCreateInterventionInterventionTagRelation {
-    onCreateInterventionInterventionTagRelation {
+  subscription OnCreateInterventionInterventionTagRelation(
+    $filter: ModelSubscriptionInterventionInterventionTagRelationFilterInput
+    $organization_id: String
+  ) {
+    onCreateInterventionInterventionTagRelation(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       id
-      interventionID
-      interventionTagID
+      interventionId
+      interventionTagId
       intervention {
         name {
           languageKeys
@@ -3244,6 +3640,7 @@ export const onCreateInterventionInterventionTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       interventionTag {
         text {
@@ -3261,21 +3658,29 @@ export const onCreateInterventionInterventionTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onUpdateInterventionInterventionTagRelation = /* GraphQL */ `
-  subscription OnUpdateInterventionInterventionTagRelation {
-    onUpdateInterventionInterventionTagRelation {
+  subscription OnUpdateInterventionInterventionTagRelation(
+    $filter: ModelSubscriptionInterventionInterventionTagRelationFilterInput
+    $organization_id: String
+  ) {
+    onUpdateInterventionInterventionTagRelation(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       id
-      interventionID
-      interventionTagID
+      interventionId
+      interventionTagId
       intervention {
         name {
           languageKeys
@@ -3309,6 +3714,7 @@ export const onUpdateInterventionInterventionTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       interventionTag {
         text {
@@ -3326,21 +3732,29 @@ export const onUpdateInterventionInterventionTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onDeleteInterventionInterventionTagRelation = /* GraphQL */ `
-  subscription OnDeleteInterventionInterventionTagRelation {
-    onDeleteInterventionInterventionTagRelation {
+  subscription OnDeleteInterventionInterventionTagRelation(
+    $filter: ModelSubscriptionInterventionInterventionTagRelationFilterInput
+    $organization_id: String
+  ) {
+    onDeleteInterventionInterventionTagRelation(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       id
-      interventionID
-      interventionTagID
+      interventionId
+      interventionTagId
       intervention {
         name {
           languageKeys
@@ -3374,6 +3788,7 @@ export const onDeleteInterventionInterventionTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       interventionTag {
         text {
@@ -3391,21 +3806,29 @@ export const onDeleteInterventionInterventionTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onCreateContentContentTagRelation = /* GraphQL */ `
-  subscription OnCreateContentContentTagRelation {
-    onCreateContentContentTagRelation {
+  subscription OnCreateContentContentTagRelation(
+    $filter: ModelSubscriptionContentContentTagRelationFilterInput
+    $organization_id: String
+  ) {
+    onCreateContentContentTagRelation(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       id
-      contentID
-      contentTagID
+      contentId
+      contentTagId
       content {
         name {
           languageKeys
@@ -3430,6 +3853,7 @@ export const onCreateContentContentTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       contentTag {
         text {
@@ -3447,21 +3871,29 @@ export const onCreateContentContentTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onUpdateContentContentTagRelation = /* GraphQL */ `
-  subscription OnUpdateContentContentTagRelation {
-    onUpdateContentContentTagRelation {
+  subscription OnUpdateContentContentTagRelation(
+    $filter: ModelSubscriptionContentContentTagRelationFilterInput
+    $organization_id: String
+  ) {
+    onUpdateContentContentTagRelation(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       id
-      contentID
-      contentTagID
+      contentId
+      contentTagId
       content {
         name {
           languageKeys
@@ -3486,6 +3918,7 @@ export const onUpdateContentContentTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       contentTag {
         text {
@@ -3503,21 +3936,29 @@ export const onUpdateContentContentTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onDeleteContentContentTagRelation = /* GraphQL */ `
-  subscription OnDeleteContentContentTagRelation {
-    onDeleteContentContentTagRelation {
+  subscription OnDeleteContentContentTagRelation(
+    $filter: ModelSubscriptionContentContentTagRelationFilterInput
+    $organization_id: String
+  ) {
+    onDeleteContentContentTagRelation(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       id
-      contentID
-      contentTagID
+      contentId
+      contentTagId
       content {
         name {
           languageKeys
@@ -3542,6 +3983,7 @@ export const onDeleteContentContentTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       contentTag {
         text {
@@ -3559,21 +4001,29 @@ export const onDeleteContentContentTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onCreateSurveySurveyTagRelation = /* GraphQL */ `
-  subscription OnCreateSurveySurveyTagRelation {
-    onCreateSurveySurveyTagRelation {
+  subscription OnCreateSurveySurveyTagRelation(
+    $filter: ModelSubscriptionSurveySurveyTagRelationFilterInput
+    $organization_id: String
+  ) {
+    onCreateSurveySurveyTagRelation(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       id
-      surveyID
-      surveyTagID
+      surveyId
+      surveyTagId
       survey {
         name {
           languageKeys
@@ -3592,6 +4042,7 @@ export const onCreateSurveySurveyTagRelation = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         questions {
           id
@@ -3612,6 +4063,7 @@ export const onCreateSurveySurveyTagRelation = /* GraphQL */ `
         _deleted
         _lastChangedAt
         interventionSurveysId
+        organization_id
       }
       surveyTag {
         text {
@@ -3629,21 +4081,29 @@ export const onCreateSurveySurveyTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onUpdateSurveySurveyTagRelation = /* GraphQL */ `
-  subscription OnUpdateSurveySurveyTagRelation {
-    onUpdateSurveySurveyTagRelation {
+  subscription OnUpdateSurveySurveyTagRelation(
+    $filter: ModelSubscriptionSurveySurveyTagRelationFilterInput
+    $organization_id: String
+  ) {
+    onUpdateSurveySurveyTagRelation(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       id
-      surveyID
-      surveyTagID
+      surveyId
+      surveyTagId
       survey {
         name {
           languageKeys
@@ -3662,6 +4122,7 @@ export const onUpdateSurveySurveyTagRelation = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         questions {
           id
@@ -3682,6 +4143,7 @@ export const onUpdateSurveySurveyTagRelation = /* GraphQL */ `
         _deleted
         _lastChangedAt
         interventionSurveysId
+        organization_id
       }
       surveyTag {
         text {
@@ -3699,21 +4161,29 @@ export const onUpdateSurveySurveyTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
 export const onDeleteSurveySurveyTagRelation = /* GraphQL */ `
-  subscription OnDeleteSurveySurveyTagRelation {
-    onDeleteSurveySurveyTagRelation {
+  subscription OnDeleteSurveySurveyTagRelation(
+    $filter: ModelSubscriptionSurveySurveyTagRelationFilterInput
+    $organization_id: String
+  ) {
+    onDeleteSurveySurveyTagRelation(
+      filter: $filter
+      organization_id: $organization_id
+    ) {
       id
-      surveyID
-      surveyTagID
+      surveyId
+      surveyTagId
       survey {
         name {
           languageKeys
@@ -3732,6 +4202,7 @@ export const onDeleteSurveySurveyTagRelation = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         questions {
           id
@@ -3752,6 +4223,7 @@ export const onDeleteSurveySurveyTagRelation = /* GraphQL */ `
         _deleted
         _lastChangedAt
         interventionSurveysId
+        organization_id
       }
       surveyTag {
         text {
@@ -3769,12 +4241,14 @@ export const onDeleteSurveySurveyTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;

@@ -1,4 +1,5 @@
-import { Auth, API } from "aws-amplify";
+import { API } from "@aws-amplify/api";
+import { Auth } from "@aws-amplify/auth";
 
 import i18n from "../../i18n";
 import { vuexModulesDict } from "../../lib/constants";

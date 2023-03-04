@@ -1,6 +1,11 @@
 <template>
   <div style="position: relative">
-    <slot name="v-img" :src="fetchedSrc" :lazy-src="requireImg(dataType)" v-if="fetchedSrc"></slot>
+    <slot
+      name="v-img"
+      :src="fetchedSrc"
+      :lazy-src="requireImg(dataType)"
+      v-if="fetchedSrc"
+    ></slot>
     <slot name="v-img" v-else :src="requireImg(dataType)"> </slot>
     <v-progress-circular
       class="loading-circle"
@@ -12,18 +17,19 @@
 </template>
 
 <script>
-import { Storage } from 'aws-amplify';
+import { Storage } from "@aws-amplify/storage";
 
 export default {
-  name: 'ImgFromS3',
+  name: "ImgFromS3",
   props: {
     assumedSrc: {
       required: true,
-      validator: (value) => typeof value === 'string' || value === null || value instanceof File,
+      validator: (value) =>
+        typeof value === "string" || value === null || value instanceof File,
     },
     dataType: {
       type: String,
-      default: 'default',
+      default: "default",
     },
   },
   data: () => ({
@@ -47,11 +53,11 @@ export default {
       }
       try {
         await Storage.get(this.assumedSrc, {
-          contentType: 'image/png',
+          contentType: "image/png",
           download: true,
         });
         this.fetchedSrc = await Storage.get(this.assumedSrc, {
-          contentType: 'image/png',
+          contentType: "image/png",
         });
       } catch {
         this.fetchedSrc = null;
@@ -65,7 +71,7 @@ export default {
         res = require(`../../static/defaultImages/${dataType}Card.png`);
       } catch (error) {
         // eslint-disable-next-line
-        res = require('../../static/defaultImages/defaultCard.png');
+        res = require("../../static/defaultImages/defaultCard.png");
       }
       return res;
     },

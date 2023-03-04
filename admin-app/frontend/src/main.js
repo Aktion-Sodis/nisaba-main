@@ -1,13 +1,13 @@
 import Vue from "vue";
-import { Amplify } from "aws-amplify";
-import awsconfig from "./aws-exports";
+import awsExports from "./aws-exports";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import i18n from "./i18n";
+import { Amplify } from "aws-amplify";
 
-awsconfig.graphql_headers = async () => {
+awsExports.graphql_headers = async () => {
   try {
     const token = (await Amplify.Auth.currentSession()).idToken.jwtToken;
     return { Authorization: token };
@@ -17,7 +17,7 @@ awsconfig.graphql_headers = async () => {
   }
 };
 
-Amplify.configure(awsconfig);
+Amplify.configure(awsExports);
 
 Vue.config.productionTip = false;
 

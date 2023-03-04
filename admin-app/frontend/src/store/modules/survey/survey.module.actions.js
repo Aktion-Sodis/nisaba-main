@@ -1,4 +1,3 @@
-import { DataStore, Storage } from "aws-amplify";
 import { v4 as uuidv4 } from "uuid";
 import { I18nString, Question, QuestionOption, Survey } from "../../../models";
 import { emptyQuestion, emptyQuestionOption } from "../../../lib/classes";
@@ -7,6 +6,8 @@ import {
   modalModesDict,
   vuexModulesDict,
 } from "../../../lib/constants";
+import { DataStore } from "@aws-amplify/datastore";
+import { Storage } from "@aws-amplify/storage";
 
 /** @type {import("vuex").ActionTree<import("./survey.module").SurveyState>} */
 const actions = {

@@ -1,4 +1,5 @@
-import { Auth, DataStore } from "aws-amplify";
+import { Auth } from "@aws-amplify/auth";
+import { DataStore } from "@aws-amplify/datastore";
 
 import i18n from "../../i18n";
 import {
