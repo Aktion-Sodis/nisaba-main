@@ -1,7 +1,7 @@
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
-import 'package:mobile_app/backend/database/DBObject.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDBModelRegistration.dart';
 import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDBModelRegistration.dart';
 
@@ -31,10 +31,10 @@ class SyncedDBModelRegistration extends DBModelRegistration<Object?, Object?> {
       {required this.haveToSyncDownstream,
       required this.localDBModelRegistration,
       required this.remoteDBModelRegistration})
-      : super(_predicatesTranlation, (object) {
+      : super(_predicatesTranlation, (object, getRegisteredModel) {
           // Unimplemented, as this is not used in the synced db
           throw UnimplementedError();
-        }, (object) {
+        }, (object, getRegisteredModel) {
           // Unimplemented, as this is not used in the synced db
           throw UnimplementedError();
         });

@@ -4,21 +4,26 @@ import 'package:mobile_app/backend/callableModels/Location.dart';
 import 'package:mobile_app/backend/callableModels/User.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-class AppliedIntervention {
+import '../database/DBModel.dart';
+import 'Entity.dart';
+
+class AppliedIntervention extends DBModel {
   String? id;
-  late User whoDidIt;
-  late Intervention intervention;
+  late User whoDidIt; // Unpopulated allowed
+  late Intervention intervention; // Unpopulated allowed
+  late Entity entity; // Unpopulated allowed
   Location? location;
   int? schemeVersion;
   DateTime? createdAt;
   DateTime? updatedAt;
-  late List<ExecutedSurvey> executedSurveys;
+  late List<ExecutedSurvey> executedSurveys; // Unpopulated allowed
   late bool isOkay;
 
   AppliedIntervention(
       {this.id,
       required this.whoDidIt,
       required this.intervention,
+      required this.entity,
       this.location,
       this.schemeVersion,
       this.createdAt,
@@ -55,6 +60,34 @@ class AppliedIntervention {
         appliedInterventionInterventionId: intervention.id!,
         appliedInterventionWhoDidItId: whoDidIt.id!,
         isOkay: isOkay));
+  }
+
+  AppliedIntervention.unpopulated(this.id) {
+    isPopulated = false;
+  }
+  @override
+  DBModel getUnpopulated() {
+    return AppliedIntervention.unpopulated(id);
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (other is AppliedIntervention) {
+      return id == other.id &&
+          whoDidIt.id == other.whoDidIt.id &&
+          intervention.id == other.intervention.id &&
+          entity.id == other.entity.id &&
+          location == other.location &&
+          schemeVersion == other.schemeVersion &&
+          createdAt == other.createdAt &&
+          updatedAt == other.updatedAt &&
+          isOkay == other.isOkay;
+    } else {
+      return false;
+    }
   }
 
   //todo: integrate working boolean

@@ -1,17 +1,20 @@
 import 'package:mobile_app/backend/callableModels/CustomData.dart';
 import 'package:mobile_app/backend/callableModels/Intervention.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
+import 'package:mobile_app/backend/callableModels/Relation.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-class Level {
+class Level extends DBModel {
   String? id;
   late I18nString name_ml;
   late I18nString description_ml;
   String? parentLevelID;
   late bool interventionsAreAllowed;
-  List<amp.LevelInterventionRelation>? allowedInterventions;
-  late List<CustomData> customData;
+  List<Relation<Level, Intervention>>?
+      allowedInterventions; // Unpopulated allowed
+  late List<CustomData> customData; // Unpopulated allowed
   int? schemeVersion;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -42,7 +45,14 @@ class Level {
     description_ml = I18nString.fromAmplifyModel(level.description);
     parentLevelID = level.parentLevelID;
     interventionsAreAllowed = level.interventionsAreAllowed;
-    allowedInterventions = level.allowedInterventions;
+    if (allowedInterventions != null) {
+      allowedInterventions = level.allowedInterventions!
+          .map((e) => Relation(
+              id: e.id,
+              first: this,
+              second: Intervention.fromAmplifyModel(e.intervention)))
+          .toList();
+    }
     customData = List.generate(level.customData.length,
         (index) => CustomData.fromAmplifyModel(level.customData[index]));
     schemeVersion = level.schemeVersion;
@@ -57,9 +67,40 @@ class Level {
         description: description_ml.toAmplifyModel(),
         parentLevelID: parentLevelID,
         interventionsAreAllowed: interventionsAreAllowed,
-        allowedInterventions: allowedInterventions,
+        allowedInterventions: allowedInterventions
+            ?.map((e) => amp.LevelInterventionRelation(
+                id: e.id,
+                level: e.first.toAmplifyModel(),
+                intervention: e.second.toAmplifyModel()))
+            .toList(),
         customData: List.generate(
             customData.length, (index) => customData[index].toAmplifyModel()),
         schemeVersion: schemeVersion);
+  }
+
+  Level.unpopulated(this.id) {
+    isPopulated = false;
+  }
+  @override
+  DBModel getUnpopulated() {
+    return Level.unpopulated(id);
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (other is Level) {
+      return name_ml == other.name_ml &&
+          description_ml == other.description_ml &&
+          parentLevelID == other.parentLevelID &&
+          interventionsAreAllowed == other.interventionsAreAllowed &&
+          schemeVersion == other.schemeVersion &&
+          id == other.id &&
+          createdAt == other.createdAt &&
+          updatedAt == other.updatedAt;
+    }
+    return false;
   }
 }

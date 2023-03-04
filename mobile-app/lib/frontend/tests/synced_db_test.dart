@@ -21,7 +21,7 @@ import 'package:sembast/sembast.dart';
 
 import '../../backend/database/Query.dart';
 
-class TO implements DBModel {
+class TO extends DBModel {
   String? name;
   int age;
 
@@ -48,6 +48,12 @@ class TO implements DBModel {
   void fromMap(Map<String, dynamic> map) {
     // TODO: implement fromMap
   }
+
+  @override
+  DBModel getUnpopulated() {
+    // TODO: implement getUnpopulated
+    throw UnimplementedError();
+  }
 }
 
 class SyncedDBTest extends StatelessWidget {
@@ -63,7 +69,7 @@ class SyncedDBTest extends StatelessWidget {
     RemoteDBModelRegistration remoteDBModelRegistration =
         RemoteDBModelRegistration(
             modelType: amp.TestObject.classType,
-            fromDBModel: (DBModel object) {
+            fromDBModel: (DBModel object, getRegisteredModel) {
               TO to = object as TO;
               return amp.TestObject(
                 id: to.id,
@@ -71,7 +77,7 @@ class SyncedDBTest extends StatelessWidget {
                 age: to.age,
               );
             },
-            toDBModel: (model) {
+            toDBModel: (model, getRegisteredModel) {
               amp.TestObject testObject = model as amp.TestObject;
               return TO(testObject.name, testObject.age, testObject.id);
             },
@@ -82,11 +88,11 @@ class SyncedDBTest extends StatelessWidget {
 
     LocalDBModelRegistration localDBModelRegistration =
         LocalDBModelRegistration(
-      fromDBModel: (DBModel object) {
+      fromDBModel: (DBModel object, getRegisteredModel) {
         TO to = object as TO;
         return {"name": to.name, "age": to.age, "id": to.id};
       },
-      toDBModel: (model) {
+      toDBModel: (model, getRegisteredModel) {
         return TO(model["name"] as String?, model["age"] as int,
             model["id"] as String);
       },
@@ -98,12 +104,12 @@ class SyncedDBTest extends StatelessWidget {
             haveToSyncDownstream: true,
             localDBModelRegistration: localDBModelRegistration,
             remoteDBModelRegistration: RemoteDBModelRegistration(
-              fromDBModel: (object) {
+              fromDBModel: (object, getRegisteredModel) {
                 return TestObject(age: 1, name: "fdsf");
               },
               modelType: TestObject.classType,
               modelAttributes: [TestObject.NAME, TestObject.AGE],
-              toDBModel: (Model amplifyModel) {
+              toDBModel: (Object amplifyModel, getRegisteredModel) {
                 return TO("fdsf", 1);
               },
             )));

@@ -6,13 +6,21 @@ import '../../QPredicate.dart';
 import '../../Query.dart';
 
 class RemoteDBModelRegistration
-    extends DBModelRegistration<Model, QueryPredicate> {
-  final ModelType modelType;
+    extends DBModelRegistration<Object, QueryPredicate> {
+  final ModelType? modelType;
 
   RemoteDBModelRegistration(
       {required List<QueryField> modelAttributes,
-      required Model Function(DBModel object) fromDBModel,
-      required DBModel Function(Model amplifyModel) toDBModel,
+      required Object Function(
+              DBModel object,
+              DBModelRegistration<Object, QueryPredicate> Function(Type)
+                  getRegisteredModes)
+          fromDBModel,
+      required DBModel Function(
+              Object amplifyModel,
+              DBModelRegistration<Object, QueryPredicate> Function(Type)
+                  getRegisteredModes)
+          toDBModel,
       required this.modelType})
       : super(generatePredicatesTranslations(modelAttributes), fromDBModel,
             toDBModel);

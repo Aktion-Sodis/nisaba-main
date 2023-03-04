@@ -53,13 +53,13 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
   void _registerQueueObject() {
     localDB.registerModel(
         DBQueueObject,
-        LocalDBModelRegistration(fromDBModel: (model) {
+        LocalDBModelRegistration(fromDBModel: (model, getRegisteredModel) {
           DBQueueObject queueObject = model as DBQueueObject;
 
           DBModel object = queueObject.object;
           Map<String, Object?> objectMap = localDB
               .getRegisteredModel(object.runtimeType)
-              .fromDBModel(object);
+              .fromDBModel(object)!;
 
           return {
             'modelType': queueObject.modelType,
@@ -67,12 +67,12 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
             'object': objectMap,
             'action': queueObject.action.toString().split('.').last
           };
-        }, toDBModel: (map) {
+        }, toDBModel: (map, getRegisteredModel) {
           String modelTypeAsString = map['modelType'] as String;
           Type modelType = _getRegisteredTypeByString(modelTypeAsString);
           DBModel dbObject = localDB
               .getRegisteredModel(modelType)
-              .toDBModel(map['object'] as Map<String, dynamic>);
+              .toDBModel(map['object'] as Map<String, dynamic>)!;
 
           return DBQueueObject(
               map['modelType'] as String,

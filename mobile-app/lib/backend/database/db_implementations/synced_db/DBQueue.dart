@@ -18,7 +18,7 @@ class DBQueue {
     var store = intMapStoreFactory.store(queueStoreName);
     var entry = DBQueueObject(object.runtimeType.toString(), object, action);
     await store.add(localDB.db,
-        localDB.getRegisteredModel(DBQueueObject).fromDBModel(entry));
+        localDB.getRegisteredModel(DBQueueObject).fromDBModel(entry)!);
   }
 
   Future<DBQueueObject?> get() async {

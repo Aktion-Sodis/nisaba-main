@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/Permission.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-class User {
+class User extends DBModel {
   String? id;
   late String firstName;
   late String lastName;
@@ -68,5 +70,31 @@ class User {
       'createdAt': createdAt,
       'updatedAt': updatedAt,
     };
+  }
+
+  User.unpopulated(this.id) {
+    isPopulated = false;
+  }
+  @override
+  DBModel getUnpopulated() {
+    return User.unpopulated(id);
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (other is User) {
+      return firstName == other.firstName &&
+          lastName == other.lastName &&
+          bio == other.bio &&
+          schemeVersion == other.schemeVersion &&
+          id == other.id &&
+          createdAt == other.createdAt &&
+          updatedAt == other.updatedAt &&
+          listEquals(permissions, other.permissions);
+    }
+    return false;
   }
 }

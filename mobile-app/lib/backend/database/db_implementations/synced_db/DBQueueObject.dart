@@ -1,6 +1,6 @@
 import 'package:mobile_app/backend/database/DBModel.dart';
 
-class DBQueueObject implements DBModel {
+class DBQueueObject extends DBModel {
   @override
   String? id;
 
@@ -37,6 +37,12 @@ class DBQueueObject implements DBModel {
 
   @override
   bool deleted = false;
+
+  @override
+  DBModel getUnpopulated() {
+    // Implementation unnecessary
+    throw UnimplementedError();
+  }
 }
 
 enum DBAction { CREATE, UPDATE, DELETE }

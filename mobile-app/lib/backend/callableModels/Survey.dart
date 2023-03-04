@@ -1,17 +1,20 @@
+import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/Intervention.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/callableModels/Question.dart';
+import 'package:mobile_app/backend/callableModels/Relation.dart';
 import 'package:mobile_app/backend/callableModels/SurveyTag.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-class Survey {
+class Survey extends DBModel {
   String? id;
   late I18nString name_ml;
   late I18nString description_ml;
-  Intervention? intervention;
+  Intervention? intervention; // Unpopulated allowed
   late List<Question> questions;
-  late List<amp.SurveySurveyTagRelation> tagConnections;
+  late List<Relation<Survey, SurveyTag>> tagConnections; // Unpopulated allowed
   late bool archived;
   int? schemeVersion;
   DateTime? createdAt;
@@ -26,20 +29,18 @@ class Survey {
 
   set description(String description) => description_ml.text = description;
 
-  List<SurveyTag> get tags => List.generate(tagConnections.length,
-      (index) => SurveyTag.fromAmplifyModel(tagConnections[index].surveyTag));
+  List<SurveyTag> get tags => tagConnections.map((e) => e.second).toList();
 
   void addSurveyTag(SurveyTag surveyTag) {
-    tagConnections.add(amp.SurveySurveyTagRelation(
-        survey: toAmplifyModel(), surveyTag: surveyTag.toAmplifyModel()));
+    tagConnections
+        .add(Relation<Survey, SurveyTag>(first: this, second: surveyTag));
   }
 
   void updateSurveyTag(SurveyTag surveyTag) {
     int index = tagConnections
-        .indexWhere((element) => element.surveyTag.id == surveyTag.id);
+        .indexWhere((element) => element.second.id == surveyTag.id);
     if (index >= 0) {
-      tagConnections[index] =
-          tagConnections[index].copyWith(surveyTag: surveyTag.toAmplifyModel());
+      tagConnections[index].second = surveyTag;
     } else {
       addSurveyTag(surveyTag);
     }
@@ -73,7 +74,12 @@ class Survey {
         : null;
     questions = List.generate(survey.questions.length,
         (index) => Question.fromAmplifyModel(survey.questions[index]));
-    tagConnections = survey.tags;
+    tagConnections = survey.tags
+        .map((e) => Relation<Survey, SurveyTag>(
+            id: e.id,
+            first: this,
+            second: SurveyTag.fromAmplifyModel(e.surveyTag)))
+        .toList();
     schemeVersion = survey.schemeVersion;
     createdAt = survey.createdAt?.getDateTimeInUtc();
     updatedAt = survey.updatedAt?.getDateTimeInUtc();
@@ -91,11 +97,49 @@ class Survey {
         surveyType: surveyTypeToAmplifySurveyType(surveyType),
         questions: List.generate(
             questions.length, (index) => questions[index].toAmplifyModel()),
-        tags: tagConnections,
+        tags: tagConnections
+            .map((e) => amp.SurveySurveyTagRelation(
+                id: e.id,
+                surveyTag: e.second.toAmplifyModel(),
+                survey: e.first.toAmplifyModel()))
+            .toList(),
         schemeVersion: schemeVersion,
         archived: archived
         //todo: missing survey type
         );
+  }
+
+  Survey.unpopulated(this.id) {
+    isPopulated = false;
+  }
+  @override
+  DBModel getUnpopulated() {
+    return Survey.unpopulated(id);
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (other is Survey) {
+      return id == other.id &&
+          name_ml == other.name_ml &&
+          description_ml == other.description_ml &&
+          ((intervention == null && other.intervention == null) ||
+              (intervention != null &&
+                  other.intervention != null &&
+                  intervention!.id == other.intervention!.id)) &&
+          listEquals(questions, other.questions) &&
+          schemeVersion == other.schemeVersion &&
+          createdAt == other.createdAt &&
+          updatedAt == other.updatedAt &&
+          unpopulatedListsEqual(tagConnections, other.tagConnections) &&
+          surveyType == other.surveyType &&
+          archived == other.archived;
+    } else {
+      return false;
+    }
   }
 }
 

@@ -1,21 +1,23 @@
+import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/AppliedCustomData.dart';
 import 'package:mobile_app/backend/callableModels/AppliedIntervention.dart';
 import 'package:mobile_app/backend/callableModels/ExecutedSurvey.dart';
 import 'package:mobile_app/backend/callableModels/Level.dart';
 import 'package:mobile_app/backend/callableModels/Location.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-class Entity {
+class Entity extends DBModel {
   String? id;
   late I18nString name_ml;
   late I18nString description_ml;
   String? parentEntityID;
-  late Level level;
+  late Level level; // Unpopulated allowed
   Location? location;
   late List<AppliedCustomData> customData;
-  late List<AppliedIntervention> appliedInterventions;
+  late List<AppliedIntervention> appliedInterventions; // Unpopulated allowed
   int? schemeVersion;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -57,7 +59,7 @@ class Entity {
     appliedInterventions = List.generate(
         entity.appliedInterventions.length,
         (index) => AppliedIntervention.fromAmplifyModel(
-            entity.appliedInterventions[index]));
+            entity.appliedInterventions[index])); // unpopulated allowed
     schemeVersion = entity.schemeVersion;
     createdAt = entity.createdAt?.getDateTimeInUtc();
     updatedAt = entity.updatedAt?.getDateTimeInUtc();
@@ -86,5 +88,33 @@ class Entity {
     }
     toSort.sort((a, b) => b.date.difference(a.date).inHours);
     return toSort;
+  }
+
+  Entity.unpopulated(this.id) {
+    isPopulated = false;
+  }
+  @override
+  DBModel getUnpopulated() {
+    return Entity.unpopulated(id);
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Entity &&
+        other.id == id &&
+        other.name_ml == name_ml &&
+        other.description_ml == description_ml &&
+        other.parentEntityID == parentEntityID &&
+        other.level.id == level.id && // Unpopulated allowed
+        other.location == location &&
+        listEquals(other.customData, customData) &&
+        other.schemeVersion == schemeVersion &&
+        other.createdAt == createdAt &&
+        other.updatedAt == updatedAt;
   }
 }

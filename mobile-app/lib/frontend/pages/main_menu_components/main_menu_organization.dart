@@ -30,6 +30,7 @@ import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_commonw
 import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_tasks.dart';
 import 'package:mobile_app/frontend/strings.dart' as strings;
 import 'package:mobile_app/frontend/common_widgets.dart';
+import 'package:mobile_app/models/LevelInterventionRelation.dart';
 import 'package:mobile_app/utils/photo_capturing.dart';
 import 'package:mobile_app/frontend/pages/survey.dart' as surveyarea;
 
@@ -1324,8 +1325,12 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
     super.initState();
     if (widget.appliedIntervention == null) {
       InterventionRepository.instance
-          .getInterventionsByLevelConnections(
-              widget.entity.level.allowedInterventions!)
+          .getInterventionsByLevelConnections(widget
+              .entity.level.allowedInterventions!
+              .map((e) => LevelInterventionRelation(
+                  level: e.first.toAmplifyModel(),
+                  intervention: e.second.toAmplifyModel()))
+              .toList())
           .then((value) => setState(() {
                 interventions = value;
                 loaded = true;
@@ -1343,6 +1348,7 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
       AppliedIntervention toCreate = AppliedIntervention(
           id: UUID.getUUID(),
           whoDidIt: widget.user,
+          entity: Entity.unpopulated(null),
           intervention: interventions![index],
           executedSurveys: [],
           isOkay: true);

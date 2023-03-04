@@ -1,6 +1,7 @@
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-class Marking {
+class Marking extends DBModel {
   late double x;
   late double y;
   late double rx;
@@ -23,5 +24,26 @@ class Marking {
     rx = marking.rx;
     ry = marking.ry;
     text = marking.text;
+  }
+
+  @override
+  DBModel getUnpopulated() {
+    throw UnimplementedError();
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (other is Marking) {
+      return x == other.x &&
+          y == other.y &&
+          rx == other.rx &&
+          ry == other.ry &&
+          text == other.text;
+    } else {
+      return false;
+    }
   }
 }

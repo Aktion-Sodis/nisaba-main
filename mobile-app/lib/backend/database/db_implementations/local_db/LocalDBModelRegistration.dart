@@ -36,7 +36,15 @@ class LocalDBModelRegistration
   };
 
   LocalDBModelRegistration(
-      {required Map<String, Object?> Function(DBModel) fromDBModel,
-      required DBModel Function(Map<String, Object?>) toDBModel})
+      {required Map<String, Object?> Function(
+              DBModel model,
+              DBModelRegistration<Map<String, Object?>, Finder> Function(Type)
+                  getRegisteredModes)
+          fromDBModel,
+      required DBModel Function(
+              Map<String, Object?> model,
+              DBModelRegistration<Map<String, Object?>, Finder> Function(Type)
+                  getRegisteredModes)
+          toDBModel})
       : super(_predefinedPredicatesTranslations, fromDBModel, toDBModel);
 }

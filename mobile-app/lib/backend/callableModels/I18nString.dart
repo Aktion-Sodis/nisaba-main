@@ -1,7 +1,10 @@
+import 'package:flutter/foundation.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:mobile_app/frontend/strings.dart' as str;
+import 'package:path/path.dart';
 
-class I18nString {
+class I18nString extends DBModel {
   late List<String> languageKeys;
   late List<String> languageTexts;
 
@@ -59,5 +62,24 @@ class I18nString {
     }
     return amp.I18nString(
         languageKeys: sortedkeys, languageTexts: sortedLanguageTextes);
+  }
+
+  @override
+  DBModel getUnpopulated() {
+    // Unnecessary
+    throw UnimplementedError();
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (other is I18nString) {
+      return listEquals(languageKeys, other.languageKeys) &&
+          listEquals(languageTexts, other.languageTexts);
+    } else {
+      return false;
+    }
   }
 }

@@ -57,7 +57,8 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
   Future<void> delete(DBModel object) async {
     Type modelType = object.runtimeType;
     try {
-      Model amplifyObject = getRegisteredModel(modelType).fromDBModel(object);
+      Model amplifyObject =
+          getRegisteredModel(modelType).fromDBModel(object) as Model;
       final request = ModelMutations.delete(amplifyObject);
       final response = await Amplify.API.mutate(request: request).response;
 
@@ -74,7 +75,7 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
   @override
   Future<List<G>> get<G extends DBModel>(Type type, [Query? query]) async {
     try {
-      ModelType modelType = getRegisteredModel(type).modelType;
+      ModelType modelType = getRegisteredModel(type).modelType!;
 
       //TODO: Implement limit and offset
       final whereQuery =
@@ -103,7 +104,7 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
   @override
   Future<G?> getById<G extends DBModel>(Type type, String id) async {
     try {
-      ModelType modelType = getRegisteredModel(type).modelType;
+      ModelType modelType = getRegisteredModel(type).modelType!;
       final request = ModelQueries.get(modelType, id);
       final response = await Amplify.API.query(request: request).response;
       final data = response.data;
@@ -125,7 +126,8 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
   Future<void> update(DBModel object) async {
     Type modelType = object.runtimeType;
     try {
-      Model amplifyObject = getRegisteredModel(modelType).fromDBModel(object);
+      Model amplifyObject =
+          getRegisteredModel(modelType).fromDBModel(object) as Model;
       final request = ModelMutations.update(amplifyObject);
       final response = await Amplify.API.mutate(request: request).response;
     } on ApiException catch (e) {
@@ -137,7 +139,7 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
     }
   }
 
-  DBModel _modelToDBModel(Type type, Model model) {
+  DBModel? _modelToDBModel(Type type, Model model) {
     return getRegisteredModel(type).toDBModel(model);
   }
 }

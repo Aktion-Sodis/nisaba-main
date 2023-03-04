@@ -1,17 +1,19 @@
 import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/AppliedIntervention.dart';
 import 'package:mobile_app/backend/callableModels/Location.dart';
 import 'package:mobile_app/backend/callableModels/QuestionAnswer.dart';
 import 'package:mobile_app/backend/callableModels/Survey.dart';
 import 'package:mobile_app/backend/callableModels/User.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-class ExecutedSurvey {
+class ExecutedSurvey extends DBModel {
   String? id;
-  late AppliedIntervention appliedIntervention;
-  late Survey survey;
-  late User whoExecutedIt;
+  late AppliedIntervention appliedIntervention; // Unpopulated allowed
+  late Survey survey; // Unpopulated allowed
+  late User whoExecutedIt; // Unpopulated allowed
   late DateTime date;
   Location? location;
   late List<QuestionAnswer> answers;
@@ -64,5 +66,35 @@ class ExecutedSurvey {
       executedSurveySurveyId: survey.id!,
       executedSurveyWhoExecutedItId: whoExecutedIt.id!,
     );
+  }
+
+  ExecutedSurvey.unpopulated(this.id) {
+    isPopulated = false;
+  }
+  @override
+  DBModel getUnpopulated() {
+    return ExecutedSurvey.unpopulated(id);
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (other is ExecutedSurvey) {
+      return appliedIntervention.id ==
+              other.appliedIntervention.id && // Unpopulated allowed
+          survey.id == other.survey.id && // Unpopulated allowed
+          whoExecutedIt.id == other.whoExecutedIt.id && // Unpopulated allowed
+          date == other.date &&
+          location == other.location &&
+          listEquals(answers, other.answers) &&
+          schemeVersion == other.schemeVersion &&
+          id == other.id &&
+          createdAt == other.createdAt &&
+          updatedAt == other.updatedAt;
+    } else {
+      return false;
+    }
   }
 }

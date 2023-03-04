@@ -1,12 +1,13 @@
 import 'package:mobile_app/backend/callableModels/ColorTheme.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-class Config {
+class Config extends DBModel {
   String? id;
   late String name;
   ColorTheme? colorTheme;
-
   int? schemeVersion;
+
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -36,5 +37,28 @@ class Config {
         colorTheme: colorTheme?.toAmplifyModel(),
         id: id,
         schemeVersion: schemeVersion));
+  }
+
+  Config.unpopulated(this.id);
+  @override
+  DBModel getUnpopulated() {
+    return Config.unpopulated(id);
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (other is Config) {
+      return name == other.name &&
+          colorTheme == other.colorTheme &&
+          schemeVersion == other.schemeVersion &&
+          id == other.id &&
+          createdAt == other.createdAt &&
+          updatedAt == other.updatedAt;
+    } else {
+      return false;
+    }
   }
 }

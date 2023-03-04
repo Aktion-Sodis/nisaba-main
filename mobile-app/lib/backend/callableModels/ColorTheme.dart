@@ -1,6 +1,7 @@
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-class ColorTheme {
+class ColorTheme extends DBModel {
   String? highlight;
   String? secondaryHighlight;
   String? backgroundOneLight;
@@ -33,5 +34,28 @@ class ColorTheme {
         backgroundTwoLight: backgroundTwoLight,
         backgroundOneDark: backgroundOneDark,
         backgroundTwoDark: backgroundTwoDark);
+  }
+
+  @override
+  DBModel getUnpopulated() {
+    // Do not need to implement this method
+    throw UnimplementedError();
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (other is ColorTheme) {
+      return highlight == other.highlight &&
+          secondaryHighlight == other.secondaryHighlight &&
+          backgroundOneLight == other.backgroundOneLight &&
+          backgroundTwoLight == other.backgroundTwoLight &&
+          backgroundOneDark == other.backgroundOneDark &&
+          backgroundTwoDark == other.backgroundTwoDark;
+    } else {
+      return false;
+    }
   }
 }

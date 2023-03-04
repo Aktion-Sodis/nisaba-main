@@ -22,6 +22,7 @@ import 'package:mobile_app/backend/repositories/UserRepository.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/backend/storage/storage_repository.dart';
 import 'package:mobile_app/models/InterventionContentRelation.dart';
+import 'package:mobile_app/models/LevelInterventionRelation.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:mobile_app/utils/connectivity.dart';
 
@@ -221,7 +222,12 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     for (Level level in allLevels) {
       if (level.interventionsAreAllowed) {
         List<Intervention> toAdd = await InterventionRepository.instance
-            .getInterventionsByLevelConnections(level.allowedInterventions!);
+            .getInterventionsByLevelConnections(level.allowedInterventions!
+                .map((e) => LevelInterventionRelation(
+                    level: e.first.toAmplifyModel(),
+                    intervention: e.second.toAmplifyModel(),
+                    id: e.id))
+                .toList());
         for (Intervention intervention in toAdd) {
           if (!allInterventions
               .any((element) => element.id == intervention.id)) {

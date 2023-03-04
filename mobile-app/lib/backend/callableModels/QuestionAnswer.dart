@@ -1,11 +1,13 @@
 import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/Marking.dart';
 import 'package:mobile_app/backend/callableModels/Question.dart';
 import 'package:mobile_app/backend/callableModels/QuestionOption.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-class QuestionAnswer {
+class QuestionAnswer extends DBModel {
   String? id;
   late String questionID;
   late DateTime date;
@@ -70,5 +72,33 @@ class QuestionAnswer {
             ? List.generate(
                 markings!.length, (index) => markings![index].toAmplifyModel())
             : null);
+  }
+
+  QuestionAnswer.unpopulated(this.id) {
+    isPopulated = false;
+  }
+  @override
+  DBModel getUnpopulated() {
+    return QuestionAnswer.unpopulated(id);
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (other is QuestionAnswer) {
+      return id == other.id &&
+          questionID == other.questionID &&
+          date == other.date &&
+          type == other.type &&
+          text == other.text &&
+          intValue == other.intValue &&
+          doubleValue == other.doubleValue &&
+          rating == other.rating &&
+          listEquals(questionOptions, other.questionOptions) &&
+          listEquals(markings, other.markings);
+    }
+    return false;
   }
 }

@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-class QuestionOption {
+class QuestionOption extends DBModel {
   String? id;
   late I18nString text_ml;
   List<String>? followUpQuestionIDs;
@@ -23,5 +25,30 @@ class QuestionOption {
     id = questionOption.id;
     text_ml = I18nString.fromAmplifyModel(questionOption.text);
     followUpQuestionIDs = questionOption.followUpQuestionIDs;
+  }
+
+  QuestionOption.unpopulated(this.id) {
+    isPopulated = false;
+  }
+  @override
+  DBModel getUnpopulated() {
+    return QuestionOption.unpopulated(id);
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (other is QuestionOption) {
+      return text_ml == other.text_ml &&
+          ((followUpQuestionIDs == null && other.followUpQuestionIDs == null) ||
+              (followUpQuestionIDs != null &&
+                  other.followUpQuestionIDs != null &&
+                  listEquals(
+                      followUpQuestionIDs, other.followUpQuestionIDs))) &&
+          id == other.id;
+    }
+    return false;
   }
 }

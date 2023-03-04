@@ -14,11 +14,26 @@ import 'Query.dart';
 abstract class DBModelRegistration<G, Q> {
   final Map<QPredicate, Q? Function(Query)> _predicatesTranslations;
 
-  final G Function(DBModel) fromDBModel;
-  final DBModel Function(G) toDBModel;
+  final G Function(DBModel object,
+          DBModelRegistration<G, Q> Function(Type type) getRegisteredModel)
+      _fromDBModel;
+  final DBModel Function(
+      G object, DBModelRegistration<G, Q> Function(Type type)) _toDBModel;
+
+  late final DBModelRegistration<G, Q> Function(Type type) getRegisteredModel;
 
   DBModelRegistration(
-      this._predicatesTranslations, this.fromDBModel, this.toDBModel);
+      this._predicatesTranslations, this._fromDBModel, this._toDBModel);
+
+  G? fromDBModel(DBModel? object) {
+    if (object == null) return null;
+    return _fromDBModel(object, getRegisteredModel);
+  }
+
+  DBModel? toDBModel(G? object) {
+    if (object == null) return null;
+    return _toDBModel(object, getRegisteredModel);
+  }
 
   Q? queryPredicateTranslation(Query query) {
     return _predicatesTranslations[query.predicate]!(query);

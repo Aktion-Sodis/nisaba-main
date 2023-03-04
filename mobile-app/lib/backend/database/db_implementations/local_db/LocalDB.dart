@@ -28,7 +28,7 @@ class LocalDB extends DB<LocalDBModelRegistration> {
     var objectAsMap = getRegisteredModel(modelType).fromDBModel(object);
 
     var store = stringMapStoreFactory.store(object.runtimeType.toString());
-    await store.record(object.id!).put(db, objectAsMap);
+    await store.record(object.id!).put(db, objectAsMap!);
     return Future.value();
   }
 
@@ -57,7 +57,7 @@ class LocalDB extends DB<LocalDBModelRegistration> {
 
     List<DBModel> objectList = [];
     for (var snapshot in snapshotList) {
-      DBModel object = getRegisteredModel(modelType).toDBModel(snapshot.value);
+      DBModel object = getRegisteredModel(modelType).toDBModel(snapshot.value)!;
       object.id = snapshot.key;
       objectList.add(object);
     }
@@ -71,7 +71,7 @@ class LocalDB extends DB<LocalDBModelRegistration> {
     if (snapshot == null) {
       return Future.value(null);
     }
-    DBModel object = getRegisteredModel(modelType).toDBModel(snapshot);
+    DBModel object = getRegisteredModel(modelType).toDBModel(snapshot)!;
     object.id = id;
     return Future.value(object as G);
   }
@@ -87,7 +87,7 @@ class LocalDB extends DB<LocalDBModelRegistration> {
     var objectAsMap = getRegisteredModel(modelType).fromDBModel(object);
 
     var store = stringMapStoreFactory.store(object.runtimeType.toString());
-    await store.record(object.id!).put(db, objectAsMap);
+    await store.record(object.id!).put(db, objectAsMap!);
 
     return Future.value();
   }

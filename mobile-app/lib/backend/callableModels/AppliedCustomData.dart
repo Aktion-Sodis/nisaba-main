@@ -1,7 +1,8 @@
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-class AppliedCustomData {
+class AppliedCustomData extends DBModel {
   late String customDataID;
   late CustomDataType type;
   late I18nString name_ml;
@@ -34,6 +35,31 @@ class AppliedCustomData {
         intValue: intValue,
         stringValue: stringValue));
   }
+
+  @override
+  String? id;
+
+  @override
+  bool isPopulated = true;
+
+  AppliedCustomData.unpopulated(this.id) {
+    isPopulated = false;
+  }
+  @override
+  DBModel getUnpopulated() {
+    return AppliedCustomData.unpopulated(id);
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AppliedCustomData &&
+          runtimeType == other.runtimeType &&
+          customDataID == other.customDataID &&
+          type == other.type &&
+          name_ml == other.name_ml &&
+          intValue == other.intValue &&
+          stringValue == other.stringValue;
 }
 
 enum CustomDataType { INT, STRING }
