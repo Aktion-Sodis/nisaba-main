@@ -21,9 +21,9 @@
           >
             <v-icon large class="ml-0 ml-sm-2"> mdi-chevron-left </v-icon>
             {{
-              $vuetify.breakpoint.name === 'xs'
-                ? ''
-                : $t('surveys.modal.questionCard.backToDetails')
+              $vuetify.breakpoint.name === "xs"
+                ? ""
+                : $t("surveys.modal.questionCard.backToDetails")
             }}
           </v-btn>
           <v-btn
@@ -35,9 +35,9 @@
             :disabled="!canFinalize"
           >
             {{
-              $vuetify.breakpoint.name === 'xs'
-                ? ''
-                : $t('surveys.modal.questionCard.finalizeSurvey')
+              $vuetify.breakpoint.name === "xs"
+                ? ""
+                : $t("surveys.modal.questionCard.finalizeSurvey")
             }}
             <v-icon large class="ml-2"> mdi-chevron-right </v-icon>
           </v-btn>
@@ -49,7 +49,7 @@
           <v-row>
             <v-col cols="12" sm="6" class="py-0 px-0 px-sm-3">
               <h2 class="mb-2">
-                {{ $t('surveys.modal.questionCard.form.question.title') }}
+                {{ $t("surveys.modal.questionCard.form.question.title") }}
               </h2>
               <LocaleTextBox
                 labelPrefixI18nSelector="surveys.modal.questionCard.form.question.textLabel"
@@ -71,13 +71,21 @@
               </LocaleTextBox>
 
               <h3 class="mt-4">
-                {{ $t('surveys.modal.questionCard.form.question.imageTitle') }}
+                {{ $t("surveys.modal.questionCard.form.question.imageTitle") }}
               </h3>
               <div class="d-flex justify-center">
-                <v-btn color="primary" rounded x-large @click="selectQuestionImg" class="mt-4">
+                <v-btn
+                  color="primary"
+                  rounded
+                  x-large
+                  @click="selectQuestionImg"
+                  class="mt-4"
+                >
                   <v-icon class="mr-2"> mdi-image </v-icon>
                   <span class="overflow-hidden">
-                    {{ edit ? $t('general.editImage') : $t('general.addImage') }}
+                    {{
+                      edit ? $t("general.editImage") : $t("general.addImage")
+                    }}
                   </span>
                 </v-btn>
                 <FileInput
@@ -89,13 +97,21 @@
               </div>
 
               <h3 class="mt-8">
-                {{ $t('surveys.modal.questionCard.form.question.audioTitle') }}
+                {{ $t("surveys.modal.questionCard.form.question.audioTitle") }}
               </h3>
               <div class="d-flex justify-center">
-                <v-btn color="primary" rounded x-large @click="clickOnAddAudio" class="mt-4">
+                <v-btn
+                  color="primary"
+                  rounded
+                  x-large
+                  @click="clickOnAddAudio"
+                  class="mt-4"
+                >
                   <v-icon class="mr-2"> mdi-waveform </v-icon>
                   <span class="overflow-hidden">
-                    {{ $t('surveys.modal.questionCard.form.question.addAudio') }}
+                    {{
+                      $t("surveys.modal.questionCard.form.question.addAudio")
+                    }}
                   </span>
                 </v-btn>
                 <input
@@ -110,7 +126,7 @@
             <v-col cols="12" sm="6" class="pt-4 px-0 px-sm-3 pt-sm-0">
               <h2 class="mb-2">
                 <span>
-                  {{ $t('surveys.modal.questionCard.form.answer.title') }}
+                  {{ $t("surveys.modal.questionCard.form.answer.title") }}
                 </span>
               </h2>
               <v-select
@@ -127,13 +143,17 @@
                 <div>
                   <div v-for="(option, index) in options" :key="index">
                     <h3>
-                      {{ $t('surveys.modal.questionCard.form.answer.answer') }}
+                      {{ $t("surveys.modal.questionCard.form.answer.answer") }}
                       {{ index + 1 }}
                     </h3>
                     <div class="d-flex justify-space-between">
                       <v-text-field
-                        v-model="options[index].text.languageTexts[fallbackLocaleIndex]"
-                        :label="$t('surveys.modal.questionCard.form.answer.textLabel')"
+                        v-model="
+                          options[index].text.languageTexts[fallbackLocaleIndex]
+                        "
+                        :label="
+                          $t('surveys.modal.questionCard.form.answer.textLabel')
+                        "
                         outlined
                         dense
                         :hide-details="true"
@@ -150,7 +170,11 @@
                         >
                           <v-icon class="mr-2"> mdi-image </v-icon>
                           <span class="overflow-hidden">
-                            {{ $t('surveys.modal.questionCard.form.answer.addImage') }}
+                            {{
+                              $t(
+                                "surveys.modal.questionCard.form.answer.addImage"
+                              )
+                            }}
                           </span>
                         </v-btn>
                         <input
@@ -174,10 +198,18 @@
                   </div>
 
                   <div class="d-flex justify-center" v-if="maxNOptionsAchieved">
-                    <v-btn color="primary" rounded x-large class="mt-2" @click="clickOnAddOption">
+                    <v-btn
+                      color="primary"
+                      rounded
+                      x-large
+                      class="mt-2"
+                      @click="clickOnAddOption"
+                    >
                       <v-icon class="mr-2"> mdi-plus </v-icon>
                       <span class="overflow-hidden">
-                        {{ $t('surveys.modal.questionCard.form.answer.addAnswer') }}
+                        {{
+                          $t("surveys.modal.questionCard.form.answer.addAnswer")
+                        }}
                       </span>
                     </v-btn>
                     <input
@@ -194,11 +226,17 @@
         </v-container>
       </v-card-text>
       <v-card-actions>
-        <v-btn x-large text color="warning" class="text-none" @click="discardQuestionHandler">
+        <v-btn
+          x-large
+          text
+          color="warning"
+          class="text-none"
+          @click="discardQuestionHandler"
+        >
           {{
-            $vuetify.breakpoint.name === 'xs'
-              ? ''
-              : $t('surveys.modal.questionCard.discardQuestion')
+            $vuetify.breakpoint.name === "xs"
+              ? ""
+              : $t("surveys.modal.questionCard.discardQuestion")
           }}
           <v-icon large> mdi-delete </v-icon>
         </v-btn>
@@ -214,9 +252,9 @@
           >
             <v-icon large> mdi-skip-previous </v-icon>
             {{
-              $vuetify.breakpoint.name === 'xs'
-                ? ''
-                : $t('surveys.modal.questionCard.priorQuestion')
+              $vuetify.breakpoint.name === "xs"
+                ? ""
+                : $t("surveys.modal.questionCard.priorQuestion")
             }}
           </v-btn>
           <v-btn
@@ -228,15 +266,27 @@
             v-if="!isAtLastQuestion"
           >
             {{
-              $vuetify.breakpoint.name === 'xs' ? '' : $t('surveys.modal.questionCard.nextQuestion')
+              $vuetify.breakpoint.name === "xs"
+                ? ""
+                : $t("surveys.modal.questionCard.nextQuestion")
             }}
             <v-icon large> mdi-skip-next </v-icon>
           </v-btn>
         </div>
 
         <v-spacer></v-spacer>
-        <v-btn x-large text class="text-none" @click="saveQuestion" :disabled="!canSave">
-          {{ $vuetify.breakpoint.name === 'xs' ? '' : $t('surveys.modal.questionCard.saveDraft') }}
+        <v-btn
+          x-large
+          text
+          class="text-none"
+          @click="saveQuestion"
+          :disabled="!canSave"
+        >
+          {{
+            $vuetify.breakpoint.name === "xs"
+              ? ""
+              : $t("surveys.modal.questionCard.saveDraft")
+          }}
           <v-icon large class="ml-2"> mdi-content-save-outline </v-icon>
         </v-btn>
       </v-card-actions>
@@ -245,32 +295,38 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex';
-import { v4 as uuidv4 } from 'uuid';
-import { Question, QuestionType } from '../../../../models';
+import { mapGetters, mapActions, mapMutations } from "vuex";
+import { v4 as uuidv4 } from "uuid";
+import { Question, QuestionType } from "../../../../models";
 import {
   emptyMutableI18nString,
   emptyMutableQuestionOption,
   mutableI18nString,
   mutableQuestionOption,
-} from '../../../../lib/classes';
-import { modalModesDict, questionTypesIconDict, vuexModulesDict } from '../../../../lib/constants';
-// eslint-disable-next-line import/named
-import { compareI18nStrings } from '../../../../lib/utils';
+} from "../../../../lib/classes";
+import {
+  modalModesDict,
+  questionTypesIconDict,
+  vuexModulesDict,
+} from "../../../../lib/constants";
+import { compareI18nStrings } from "../../../../lib/utils";
 
-import LocaleTextBox from '../../../commons/form/LocaleTextBox.vue';
-import FileInput from '../../../commons/form/FileInput.vue';
+import LocaleTextBox from "../../../commons/form/LocaleTextBox.vue";
+import FileInput from "../../../commons/form/FileInput.vue";
 
-const maxNOptions = Math.min(Number(process.env.VUE_APP_MAX_N_QUESTION_OPTIONS), 0);
+const maxNOptions = Math.min(
+  Number(process.env.VUE_APP_MAX_N_QUESTION_OPTIONS),
+  0
+);
 
 export default {
-  name: 'SurveyModalQuestion',
+  name: "SurveyModalQuestion",
   components: {
     LocaleTextBox,
     FileInput,
   },
   watch: {
-    questionCurrentDraft: 'updateComponentData',
+    questionCurrentDraft: "updateComponentData",
   },
   data() {
     return {
@@ -292,10 +348,10 @@ export default {
     }
   },
   created() {
-    window.addEventListener('beforeunload', this.beforeWindowUnload);
+    window.addEventListener("beforeunload", this.beforeWindowUnload);
   },
   beforeDestroy() {
-    window.removeEventListener('beforeunload', this.beforeWindowUnload);
+    window.removeEventListener("beforeunload", this.beforeWindowUnload);
   },
   computed: {
     ...mapGetters({
@@ -311,9 +367,9 @@ export default {
       surveyDraft: `${vuexModulesDict.dataModal}/getDataDraft`,
       questionTextInFocus: `${vuexModulesDict.question}/questionTextInFocus`,
 
-      calculateUILocaleString: 'calculateUILocaleString',
-      fallbackLocaleIndex: 'fallbackLocaleIndex',
-      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
+      calculateUILocaleString: "calculateUILocaleString",
+      fallbackLocaleIndex: "fallbackLocaleIndex",
+      deriveFilePath: "callDeriveFilePathWithOrganizationId",
     }),
     surveyInFocus() {
       return this.SURVEYById({ id: this.dataIdInFocus });
@@ -321,19 +377,24 @@ export default {
     questionTypesItemValue() {
       return Object.keys(QuestionType)
         .map((key) => ({
-          text: this.$t(`surveys.modal.questionCard.form.answer.questionTypes.${key}`),
+          text: this.$t(
+            `surveys.modal.questionCard.form.answer.questionTypes.${key}`
+          ),
           value: key,
         }))
         .filter((t) => t.value !== QuestionType.PICTUREWITHTAGS);
     },
     areThereChanges() {
-      if (!compareI18nStrings(this.text, this.questionCurrentDraft.text)) return true;
+      if (!compareI18nStrings(this.text, this.questionCurrentDraft.text))
+        return true;
       if (this.type !== this.questionCurrentDraft.type) return true;
       if (this.areAnswersNeeded) {
-        if (this.options.length !== this.optionsCurrentDraft.length) return true;
+        if (this.options.length !== this.optionsCurrentDraft.length)
+          return true;
         if (
           this.options.filter(
-            (a, i) => !compareI18nStrings(a.text, this.optionsCurrentDraft[i].text)
+            (a, i) =>
+              !compareI18nStrings(a.text, this.optionsCurrentDraft[i].text)
           ).length > 0
         )
           return true;
@@ -353,8 +414,11 @@ export default {
       return (
         (!this.areAnswersNeeded ||
           (this.options.length > 0 &&
-            !this.options.find((a) => a.text[this.fallbackLocaleIndex] === ''))) &&
-        (!(this.questionCurrentDraft.isEmptyQuestion ?? true) || this.areThereChanges)
+            !this.options.find(
+              (a) => a.text[this.fallbackLocaleIndex] === ""
+            ))) &&
+        (!(this.questionCurrentDraft.isEmptyQuestion ?? true) ||
+          this.areThereChanges)
       );
     },
     canFinalize() {
@@ -364,13 +428,15 @@ export default {
       return !this.areThereChanges;
     },
     areAnswersNeeded() {
-      return [QuestionType.SINGLECHOICE, QuestionType.MULTIPLECHOICE].includes(this.type);
+      return [QuestionType.SINGLECHOICE, QuestionType.MULTIPLECHOICE].includes(
+        this.type
+      );
     },
     maxNOptionsAchieved() {
       return this.options.length >= maxNOptions;
     },
     deriveImgPath() {
-      return this.deriveFilePath('questionPicPath', {
+      return this.deriveFilePath("questionPicPath", {
         interventionID: this.surveyInFocus.intervention.id,
         surveyID: this.dataIdInFocus,
         questionID: this.surveyInFocus.questions[this.iQuestions].id,
@@ -388,13 +454,13 @@ export default {
       abortReadSurveyHandler: `${vuexModulesDict.dataModal}/abortReadData`,
     }),
     ...mapMutations({
-      incrementCompletionIndex: 'incrementSurveyModalCompletionIndex',
-      decrementCompletionIndex: 'decrementSurveyModalCompletionIndex',
+      incrementCompletionIndex: "incrementSurveyModalCompletionIndex",
+      decrementCompletionIndex: "decrementSurveyModalCompletionIndex",
       setIQuestions: `${vuexModulesDict.question}/setIQuestions`,
     }),
     confirmLeave() {
       // eslint-disable-next-line
-      return window.confirm(this.$t('general.form.unsavedChanges'));
+      return window.confirm(this.$t("general.form.unsavedChanges"));
     },
     confirmStayInDirtyForm() {
       return this.areThereChanges && !this.confirmLeave();
@@ -404,7 +470,7 @@ export default {
         // Cancel the event
         e.preventDefault();
         // Chrome requires returnValue to be set
-        e.returnValue = '';
+        e.returnValue = "";
       }
     },
     finalizeSurveyHandler() {
@@ -444,7 +510,10 @@ export default {
         }),
         // TODO: See whether reactivity breaks when direct reference is used
         // instead of generating a new array instance as follows
-        newOptions: [QuestionType.SINGLECHOICE, QuestionType.MULTIPLECHOICE].includes(this.type)
+        newOptions: [
+          QuestionType.SINGLECHOICE,
+          QuestionType.MULTIPLECHOICE,
+        ].includes(this.type)
           ? this.options
           : [],
       });
@@ -452,11 +521,11 @@ export default {
       this.text = emptyMutableI18nString();
     },
     selectQuestionImg() {
-      const imgInput = this.$refs['question-img-upload'];
+      const imgInput = this.$refs["question-img-upload"];
       imgInput.$el.click();
     },
     clickOnAddAudio() {
-      const audioInput = this.$refs['question-audio-upload'];
+      const audioInput = this.$refs["question-audio-upload"];
       if (Array.isArray(audioInput)) audioInput[0].click();
       else audioInput.click();
       this.showToBeImplementedFeedback();
@@ -466,7 +535,7 @@ export default {
       this.options.push(emptyMutableQuestionOption());
     },
     clickOnAddImgToOption() {
-      const imgInput = this.$refs['option-img-upload'];
+      const imgInput = this.$refs["option-img-upload"];
       if (Array.isArray(imgInput)) imgInput[0].click();
       else imgInput.click();
       this.showToBeImplementedFeedback();
@@ -484,7 +553,10 @@ export default {
           isFollowUpQuestion: false,
           questionOptions: [],
         }),
-        newOptions: [QuestionType.SINGLECHOICE, QuestionType.MULTIPLECHOICE].includes(this.type)
+        newOptions: [
+          QuestionType.SINGLECHOICE,
+          QuestionType.MULTIPLECHOICE,
+        ].includes(this.type)
           ? this.options
           : [],
       });
@@ -498,7 +570,10 @@ export default {
           isFollowUpQuestion: false,
           questionOptions: [],
         }),
-        newOptions: [QuestionType.SINGLECHOICE, QuestionType.MULTIPLECHOICE].includes(this.type)
+        newOptions: [
+          QuestionType.SINGLECHOICE,
+          QuestionType.MULTIPLECHOICE,
+        ].includes(this.type)
           ? this.options
           : [],
       });

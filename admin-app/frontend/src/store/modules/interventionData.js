@@ -12,13 +12,10 @@ const moduleState = {
 /** @type {import("vuex").GetterTree<typeof moduleState>} */
 const moduleGetters = {
   /* READ */
-  getInterventions: ({ interventions }) =>
-    interventions.filter((i) => !i._deleted).sort((a, b) => a.id - b.id),
+  getInterventions: ({ interventions }) => interventions.filter((i) => !i._deleted).sort((a, b) => a.id - b.id),
   getLoading: ({ loading }) => loading,
   INTERVENTIONById:
-    (_, { getInterventions }) =>
-    ({ id }) =>
-      getInterventions.find((i) => i.id === id) ?? null,
+    (_, { getInterventions }) => ({ id }) => getInterventions.find((i) => i.id === id) ?? null,
 };
 
 /** @type {import("vuex").MutationTree<typeof moduleState>} */
@@ -30,13 +27,13 @@ const moduleMutations = {
     state.interventions.splice(
       state.interventions.findIndex((i) => i.id === intervention.id),
       1,
-      intervention
+      intervention,
     );
   },
   deleteIntervention: (state, { id }) => {
     state.interventions.splice(
       Array.from(state.interventions).findIndex((i) => i.id === id),
-      1
+      1,
     );
   },
   setLoading: (state, { newValue }) => {
@@ -79,7 +76,7 @@ const moduleActions = {
             rootGetters.callDeriveFilePathWithOrganizationId('interventionPicPath', {
               interventionID: postResponse.id,
             }),
-            rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]
+            rootGetters[`${vuexModulesDict.dataModal}/getImageFile`],
           );
         } catch {
           success = false;
@@ -95,7 +92,7 @@ const moduleActions = {
         },
         {
           root: true,
-        }
+        },
       );
     } catch {
       success = false;
@@ -103,7 +100,9 @@ const moduleActions = {
     commit('setLoading', { newValue: false });
     return success;
   },
-  APIput: async ({ commit, dispatch, getters, rootGetters }, { newData, originalId }) => {
+  APIput: async ({
+    commit, dispatch, getters, rootGetters,
+  }, { newData, originalId }) => {
     commit('setLoading', { newValue: true });
     let success = true;
 
@@ -115,7 +114,7 @@ const moduleActions = {
           updated.name = newData.name;
           updated.description = newData.description;
           updated.interventionType = newData.interventionType;
-        })
+        }),
       );
 
       if (rootGetters[`${vuexModulesDict.dataModal}/getImageFile`] instanceof File) {
@@ -124,7 +123,7 @@ const moduleActions = {
             rootGetters.callDeriveFilePathWithOrganizationId('interventionPicPath', {
               interventionID: putResponse.id,
             }),
-            rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]
+            rootGetters[`${vuexModulesDict.dataModal}/getImageFile`],
           );
         } catch {
           success = false;
@@ -139,7 +138,7 @@ const moduleActions = {
         },
         {
           root: true,
-        }
+        },
       );
       commit('replaceIntervention', putResponse);
     } catch {
@@ -162,7 +161,7 @@ const moduleActions = {
       Storage.remove(
         rootGetters.callDeriveFilePathWithOrganizationId('interventionPicPath', {
           interventionID: id,
-        })
+        }),
       );
       commit('deleteIntervention', {
         id,
@@ -171,14 +170,14 @@ const moduleActions = {
       commit(
         `${vuexModulesDict.dataModal}/setMode`,
         { newValue: modalModesDict.read },
-        { root: true }
+        { root: true },
       );
       dispatch(
         `${vuexModulesDict.dataModal}/abortReadData`,
         {},
         {
           root: true,
-        }
+        },
       );
     }
 

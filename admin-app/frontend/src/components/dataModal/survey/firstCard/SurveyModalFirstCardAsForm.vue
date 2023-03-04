@@ -237,9 +237,9 @@ export default {
     deriveImgPath() {
       return this.edit
         ? this.deriveFilePath('interventionSurveyPicPath', {
-            interventionID: this.surveyInFocus.intervention.id,
-            surveyID: this.dataIdInFocus,
-          })
+          interventionID: this.surveyInFocus.intervention.id,
+          surveyID: this.dataIdInFocus,
+        })
         : null;
     },
     assumedSrc() {
@@ -273,7 +273,7 @@ export default {
           surveyType: this.type,
           intervention: this.INTERVENTIONById({ id: this.interventionId }),
           interventionSurveysId: this.interventionId,
-        })
+        }),
       );
     },
     selectImg() {
@@ -285,12 +285,10 @@ export default {
       this.incrementCompletionIndex();
     },
     prefillComponentDataFromDataDraft() {
-      this.name =
-        mutableI18nString({ languageTexts: this.dataDraft?.name.languageTexts }) ??
-        emptyMutableI18nString();
-      this.description =
-        mutableI18nString({ languageTexts: this.dataDraft?.description.languageTexts }) ??
-        emptyMutableI18nString();
+      this.name = mutableI18nString({ languageTexts: this.dataDraft?.name.languageTexts })
+        ?? emptyMutableI18nString();
+      this.description = mutableI18nString({ languageTexts: this.dataDraft?.description.languageTexts })
+        ?? emptyMutableI18nString();
       // this.surveyTags = this.tagIdsBySurveyId({ surveyId: this.dataIdInFocus }) ?? [];
       this.interventionId = this.dataDraft?.intervention?.id ?? null;
 

@@ -1,4 +1,6 @@
-import { Auth, API, graphqlOperation, DataStore } from 'aws-amplify';
+import {
+  Auth, API, graphqlOperation, DataStore,
+} from 'aws-amplify';
 import { getUser } from '../../graphql/queries';
 import { createUser } from '../../graphql/mutations';
 
