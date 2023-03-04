@@ -1,7 +1,7 @@
-import { Auth, API } from 'aws-amplify';
+import { Auth, API } from "aws-amplify";
 
-import i18n from '../../i18n';
-import { vuexModulesDict } from '../../lib/constants';
+import i18n from "../../i18n";
+import { vuexModulesDict } from "../../lib/constants";
 
 /** @type {{isAuthenticated: boolean}} */
 const moduleState = {
@@ -23,7 +23,7 @@ const moduleMutations = {
 /** @type {import("vuex").ActionTree<typeof moduleState>} */
 const moduleActions = {
   createUser: async ({ dispatch }, userDraft) => {
-    const { email } = userDraft;
+    const { email, group } = userDraft;
 
     // console log the id token
     const { idToken } = await Auth.currentSession();
@@ -31,7 +31,7 @@ const moduleActions = {
 
     try {
       // Call the API `nisabaUserManagementApi` to create a user and pass the email as a parameter
-      await API.post('nisabaUserManagementApi', '/users', {
+      await API.post("nisabaUserManagementApi", "/users", {
         headers: { Authorization: `Bearer ${jwtToken}` },
         body: { email },
       });
@@ -40,40 +40,40 @@ const moduleActions = {
       dispatch(
         `${vuexModulesDict.feedback}/showFeedbackForDuration`,
         {
-          type: 'success',
-          text: i18n.t('userManagement.successfulSentInvitation'),
+          type: "success",
+          text: i18n.t("userManagement.successfulSentInvitation"),
         },
         {
           root: true,
-        },
+        }
       );
     } catch (e) {
       const { data } = e.response;
       const { error } = data;
 
-      if (error === 'UsernameExistsException') {
+      if (error === "UsernameExistsException") {
         // Show an error message
         dispatch(
           `${vuexModulesDict.feedback}/showFeedbackForDuration`,
           {
-            type: 'error',
-            text: i18n.t('userManagement.emailAlreadyInUse'),
+            type: "error",
+            text: i18n.t("userManagement.emailAlreadyInUse"),
           },
           {
             root: true,
-          },
+          }
         );
       } else {
         // Show a general error message
         dispatch(
           `${vuexModulesDict.feedback}/showFeedbackForDuration`,
           {
-            type: 'error',
-            text: i18n.t('general.operationFeedback.data.error.create'),
+            type: "error",
+            text: i18n.t("general.operationFeedback.data.error.create"),
           },
           {
             root: true,
-          },
+          }
         );
       }
     }
