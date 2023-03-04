@@ -4,10 +4,12 @@ import 'package:mobile_app/backend/callableModels/Entity.dart';
 import 'package:mobile_app/backend/callableModels/ExecutedSurvey.dart';
 import 'package:mobile_app/backend/callableModels/Location.dart';
 import 'package:mobile_app/backend/callableModels/User.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-class Task {
+/// DO NOT NEED TO IMPLEMENT
+class Task extends DBModel {
   String? id;
   late String title;
   String? text;
@@ -87,5 +89,36 @@ class Task {
         taskEntityId: entity?.id!,
         audioIDs: audioList,
         picIDs: picList);
+  }
+
+  Task.unpopulated(this.id) {
+    isPopulated = false;
+  }
+  @override
+  DBModel getUnpopulated() {
+    return Task.unpopulated(id);
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Task &&
+        other.id == id &&
+        other.title == title &&
+        other.text == text &&
+        other.dueDate == dueDate &&
+        other.finishedDate == finishedDate &&
+        other.location == location &&
+        other.user == user &&
+        other.entity == entity &&
+        other.appliedIntervention == appliedIntervention &&
+        other.executedSurvey == executedSurvey &&
+        other.schemeVersion == schemeVersion &&
+        other.createdAt == createdAt &&
+        other.updatedAt == updatedAt;
   }
 }

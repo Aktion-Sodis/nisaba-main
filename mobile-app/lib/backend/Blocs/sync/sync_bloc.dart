@@ -198,7 +198,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       return Entity.fromAmplifyModel(e);
     }).toList();
     List<Level> allLevels = await LevelRepository.instance.getAllLevels();
-    List<Task> allTasksToSync = await taskBloc.taskRepository.getAllTasks();
+    //List<Task> allTasksToSync = await taskBloc.taskRepository.getAllTasks();
     List<InterventionContentRelation> allContentRelations =
         await ContentRepository.instance
             .getAllRelationsWithPopulatedContentsAndInterventions();
@@ -234,7 +234,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     if (filesSyncEnabled) {
       syncLevels(allLevels);
       syncInterventions(allInterventions);
-      syncTasks(allTasksToSync);
+      //syncTasks(allTasksToSync);
       syncContents(allContents);
       syncEntities(allEntities);
       if (userBloc.state.user != null) {
