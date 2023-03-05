@@ -182,7 +182,7 @@ class AuthRepository {
       if (user == null) {
         throw UserNotFoundInDatabaseException();
         //todo: wie soll das offline funktionieren -> dann gibt online db immer null zurück?
-
+        //dann pushen zu create user?
       }
       LocalDataRepository.instance.user = user;
 
