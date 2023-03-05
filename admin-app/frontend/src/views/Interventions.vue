@@ -3,6 +3,9 @@
     <h1 class="ml-8">
       {{ $t("interventions.title") }}
     </h1>
+    <sub class="ml-8">
+      {{ $t("interventions.subTitle") }}
+    </sub>
     <v-container class="mt-8">
       <v-row>
         <v-col cols="12" sm="6" md="4" xl="3">
