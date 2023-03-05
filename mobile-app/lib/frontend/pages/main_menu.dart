@@ -11,6 +11,10 @@ import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_wiki.da
 import 'package:mobile_app/frontend/strings.dart' as strings;
 import 'package:mobile_app/frontend/test_list.dart';
 
+//This is for unlocking the menu
+//Currently it should be hidden for relesae
+const bool show_all_menu_pages = false;
+
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
 
@@ -23,8 +27,8 @@ class MainMenu extends StatefulWidget {
 class MainMenuState extends State<MainMenu> {
   @override
   initState() {
-    pageController = PageController(initialPage: 0);
-    currentIndex = 0;
+    pageController = PageController(initialPage: show_all_menu_pages ? 0 : 1);
+    currentIndex = show_all_menu_pages ? 0 : 1;
     super.initState();
   }
 
@@ -44,13 +48,15 @@ class MainMenuState extends State<MainMenu> {
         controller: pageController,
         pageSnapping: false,
         physics: NeverScrollableScrollPhysics(),
-        children: [
-          MainMenuHome(onNavigationTap),
-          MainMenuOrganization(),
-          MainMenuTasks(),
-          MainMenuWiki(),
-          TestList()
-        ],
+        children: show_all_menu_pages
+            ? [
+                MainMenuHome(onNavigationTap),
+                MainMenuOrganization(),
+                MainMenuTasks(),
+                MainMenuWiki(),
+                TestList()
+              ]
+            : [MainMenuOrganization()],
       );
 
   BottomNavigationBar bottomNavigationBar() {
@@ -84,7 +90,8 @@ class MainMenuState extends State<MainMenu> {
           RepositoryProvider(create: (context) => UserRepository.instance)
         ],
         child: Scaffold(
-            bottomNavigationBar: bottomNavigationBar(),
+            bottomNavigationBar:
+                show_all_menu_pages ? bottomNavigationBar() : null,
             body: SafeArea(child: mainPageView())));
   }
 }

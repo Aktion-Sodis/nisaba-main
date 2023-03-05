@@ -181,6 +181,8 @@ class AuthRepository {
       User? user = await UserRepository.instance.fetchUserByID(userID);
       if (user == null) {
         throw UserNotFoundInDatabaseException();
+        //todo: wie soll das offline funktionieren -> dann gibt online db immer null zurück?
+
       }
       LocalDataRepository.instance.user = user;
 
