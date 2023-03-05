@@ -45,20 +45,16 @@ export default {
         this.loading = false;
         return;
       }
-
       if (this.assumedSrc instanceof File) {
         this.fetchedSrc = URL.createObjectURL(this.assumedSrc);
         this.loading = false;
         return;
       }
       try {
-        await Storage.get(this.assumedSrc, {
-          contentType: "image/png",
-          download: true,
-        });
-        this.fetchedSrc = await Storage.get(this.assumedSrc, {
+        const res = await Storage.get(this.assumedSrc, {
           contentType: "image/png",
         });
+        this.fetchedSrc = res;
       } catch {
         this.fetchedSrc = null;
       }
