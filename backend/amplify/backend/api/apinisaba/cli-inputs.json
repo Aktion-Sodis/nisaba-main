@@ -17,7 +17,11 @@
     ],
     "conflictResolution": {
       "defaultResolutionStrategy": {
-        "type": "OPTIMISTIC_CONCURRENCY"
+        "type": "LAMBDA",
+        "resolver": {
+          "type": "EXISTING",
+          "name": "syncConflictHandler44899081-${env}"
+        }
       }
     }
   }
