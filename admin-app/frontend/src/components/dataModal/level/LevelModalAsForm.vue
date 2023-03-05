@@ -377,7 +377,10 @@ export default {
       );
     },
     isDeleteDisabled() {
-      return this.hasEntities({ id: this.dataIdInFocus });
+      return (
+        this.hasEntities({ id: this.dataIdInFocus }) ||
+        this.dataIdInFocus !== this.lowestLevelId
+      );
     },
     localizeInterventions() {
       return this.interventions.map((intervention) => ({

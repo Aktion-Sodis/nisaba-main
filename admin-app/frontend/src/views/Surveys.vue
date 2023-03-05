@@ -78,12 +78,7 @@
             :surveyDescription="survey.description"
             :surveyTagIds="survey.tags"
             :surveyContent="survey.content"
-            :interventionName="
-              survey.intervention ? survey.intervention.name : null
-            "
-            :interventionId="
-              survey.intervention ? survey.intervention.id : null
-            "
+            :interventionId="survey.interventionSurveysId"
           />
         </v-col>
         <v-col

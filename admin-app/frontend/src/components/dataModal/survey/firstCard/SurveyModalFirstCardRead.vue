@@ -55,22 +55,16 @@
             <v-card-title class="pt-0 pt-sm-2">
               {{ $t("surveys.type.title") }}:
               <div v-if="surveyInFocus">
-                <v-tooltip top>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-avatar v-bind="attrs" v-on="on">
-                      <v-icon>
-                        {{
-                          surveyInFocus.surveyType === initialSurveyType
-                            ? "mdi-lightbulb-question-outline"
-                            : "mdi-crosshairs-question"
-                        }}
-                      </v-icon>
-                    </v-avatar>
-                  </template>
-                  <span>{{
-                    $t(`surveys.type.types.${surveyInFocus.surveyType}`)
-                  }}</span>
-                </v-tooltip>
+                <v-chip class="ml-2">
+                  <v-icon>
+                    {{
+                      surveyInFocus.surveyType === initialSurveyType
+                        ? "mdi-lightbulb-question-outline"
+                        : "mdi-crosshairs-question"
+                    }}
+                  </v-icon>
+                  {{ $t(`surveys.type.types.${surveyInFocus.surveyType}`) }}
+                </v-chip>
               </div>
             </v-card-title>
 

@@ -75,6 +75,8 @@ const actions = {
       //   );
       // }
 
+      console.log(rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]);
+
       if (rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]) {
         await Storage.put(
           rootGetters.callDeriveFilePathWithOrganizationId(
@@ -145,9 +147,13 @@ const actions = {
     { commit, dispatch, getters, rootGetters },
     { newData, originalId }
   ) => {
+    console.log({ newData });
     let success = true;
     commit("setLoading", { newValue: true });
-    const original = getters.SURVEYById({ id: originalId });
+    // const original = getters.SURVEYById({ id: originalId });
+    const original = await DataStore.query(Survey, originalId);
+
+    console.log({ original });
 
     try {
       const res = await DataStore.save(
@@ -156,9 +162,21 @@ const actions = {
           updated.description = newData.description;
           // updated.questions = newData.questions;
           updated.surveyType = newData.surveyType;
-          updated.intervention = newData.intervention;
+          updated.interventionSurveysId = newData.interventionSurveysId;
           updated.archived = newData.archived;
         })
+      );
+
+      console.log({ res });
+
+      console.log(
+        rootGetters.callDeriveFilePathWithOrganizationId(
+          "interventionSurveyPicPath",
+          {
+            interventionID: res.interventionSurveysId,
+            surveyId: res.id,
+          }
+        )
       );
 
       if (rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]) {
@@ -166,11 +184,14 @@ const actions = {
           rootGetters.callDeriveFilePathWithOrganizationId(
             "interventionSurveyPicPath",
             {
-              interventionID: res.intervention.id,
+              interventionID: res.interventionSurveysId,
               surveyId: res.id,
             }
           ),
-          rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]
+          rootGetters[`${vuexModulesDict.dataModal}/getImageFile`],
+          {
+            contentType: "image/png",
+          }
         );
       }
 
@@ -184,7 +205,8 @@ const actions = {
           root: true,
         }
       );
-    } catch {
+    } catch (e) {
+      console.log(e);
       success = false;
     }
     commit("setLoading", { newValue: false });
@@ -214,7 +236,7 @@ const actions = {
         rootGetters.callDeriveFilePathWithOrganizationId(
           "interventionSurveyPicPath",
           {
-            interventionID: survey.intervention.id,
+            interventionID: survey.interventionSurveysId,
             surveyId: survey.id,
           }
         )

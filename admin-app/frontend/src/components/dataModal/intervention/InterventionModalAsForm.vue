@@ -2,7 +2,7 @@
   <v-form lazy-validation>
     <v-card-title>
       <h2 v-if="edit">
-        {{ $t('interventions.modal.modalTitle.edit') }}
+        {{ $t("interventions.modal.modalTitle.edit") }}
         <i>
           {{
             calculateUILocaleString({
@@ -12,14 +12,14 @@
         </i>
       </h2>
       <h2 v-else>
-        {{ $t('interventions.modal.modalTitle.create') }}
+        {{ $t("interventions.modal.modalTitle.create") }}
       </h2>
     </v-card-title>
     <v-card-subtitle v-if="edit">
-      {{ $t('interventions.modal.modalDescription.edit') }}
+      {{ $t("interventions.modal.modalDescription.edit") }}
     </v-card-subtitle>
     <v-card-subtitle v-else>
-      {{ $t('interventions.modal.modalDescription.create') }}
+      {{ $t("interventions.modal.modalDescription.create") }}
     </v-card-subtitle>
 
     <v-card-text>
@@ -27,7 +27,7 @@
         <v-row>
           <v-col cols="12" sm="6" class="pb-0 px-0 px-sm-3">
             <v-card-title class="pt-0 pt-sm-2">
-              {{ $t('interventions.modal.name') }}
+              {{ $t("interventions.modal.name") }}
             </v-card-title>
             <LocaleTextBox
               labelPrefixI18nSelector="interventions.modal.name"
@@ -49,7 +49,7 @@
             </LocaleTextBox>
 
             <v-card-title class="pt-4">
-              {{ $t('interventions.modal.description') }}
+              {{ $t("interventions.modal.description") }}
             </v-card-title>
             <LocaleTextBox
               labelPrefixI18nSelector="interventions.modal.description"
@@ -73,7 +73,7 @@
 
           <v-col cols="12" sm="6" class="pt-6 pt-sm-3 px-0 px-sm-3">
             <v-card-title class="pt-0 pt-sm-2">
-              {{ $t('interventions.type.title') }}:
+              {{ $t("interventions.type.title") }}:
               <v-btn-toggle v-model="typeIndex" mandatory class="ml-2">
                 <v-tooltip top>
                   <template v-slot:activator="{ on, attrs }">
@@ -81,7 +81,7 @@
                       <v-icon>mdi-hammer-wrench</v-icon>
                     </v-btn>
                   </template>
-                  <span>{{ $t('interventions.type.types.TECHNOLOGY') }}</span>
+                  <span>{{ $t("interventions.type.types.TECHNOLOGY") }}</span>
                 </v-tooltip>
                 <v-tooltip top>
                   <template v-slot:activator="{ on, attrs }">
@@ -89,24 +89,40 @@
                       <v-icon>mdi-school</v-icon>
                     </v-btn>
                   </template>
-                  <span>{{ $t('interventions.type.types.EDUCATION') }}</span>
+                  <span>{{ $t("interventions.type.types.EDUCATION") }}</span>
                 </v-tooltip>
               </v-btn-toggle>
             </v-card-title>
 
             <v-card-title class="pt-0 pt-sm-2">
-              {{ $t('interventions.modal.image') }}
+              {{ $t("interventions.modal.image") }}
             </v-card-title>
 
-            <ImgFromS3 :assumedSrc="assumedSrc" :key="rerenderImgFromS3" dataType="intervention">
+            <ImgFromS3
+              :assumedSrc="assumedSrc"
+              :key="rerenderImgFromS3"
+              dataType="intervention"
+            >
               <template v-slot:v-img="slotProps">
                 <v-img max-height="200px" :src="slotProps.src">
-                  <v-btn class="iv-edit-icon" color="primary" @click="selectImg">
+                  <v-btn
+                    class="iv-edit-icon"
+                    color="primary"
+                    @click="selectImg"
+                  >
                     <v-icon color="darken-2"> mdi-plus </v-icon>
-                    <span> {{ edit ? $t('general.editImage') : $t('general.addImage') }} </span>
+                    <span>
+                      {{
+                        edit ? $t("general.editImage") : $t("general.addImage")
+                      }}
+                    </span>
                   </v-btn>
 
-                  <FileInput ref="img-upload" style="display: none" :acceptedType="'image/png'" />
+                  <FileInput
+                    ref="img-upload"
+                    style="display: none"
+                    :acceptedType="'image/png'"
+                  />
                 </v-img>
               </template>
             </ImgFromS3>
@@ -115,13 +131,20 @@
       </v-container>
     </v-card-text>
     <v-card-actions>
-      <v-btn x-large v-if="edit" @click="deleteData" color="warning" text>
-        {{ $t('general.delete') }}
+      <v-btn
+        x-large
+        v-if="edit"
+        @click="deleteData"
+        color="warning"
+        text
+        :disabled="true"
+      >
+        {{ $t("general.delete") }}
         <v-icon large> mdi-delete </v-icon>
       </v-btn>
       <v-spacer></v-spacer>
       <v-btn x-large color="secondary" text @click="closeHandler">
-        {{ $t('general.cancel') }}
+        {{ $t("general.cancel") }}
       </v-btn>
       <v-btn
         x-large
@@ -131,24 +154,27 @@
         @click.prevent="submitHandler"
         :disabled="isSubmitDisabled"
       >
-        {{ $t('general.save') }}
+        {{ $t("general.save") }}
       </v-btn>
     </v-card-actions>
   </v-form>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex';
-import { emptyMutableI18nString, mutableI18nString } from '../../../lib/classes';
-import { modalModesDict } from '../../../lib/constants';
-import { Intervention, InterventionType } from '../../../models';
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import {
+  emptyMutableI18nString,
+  mutableI18nString,
+} from "../../../lib/classes";
+import { modalModesDict } from "../../../lib/constants";
+import { Intervention, InterventionType } from "../../../models";
 
-import LocaleTextBox from '../../commons/form/LocaleTextBox.vue';
-import FileInput from '../../commons/form/FileInput.vue';
-import ImgFromS3 from '../../commons/ImgFromS3.vue';
+import LocaleTextBox from "../../commons/form/LocaleTextBox.vue";
+import FileInput from "../../commons/form/FileInput.vue";
+import ImgFromS3 from "../../commons/ImgFromS3.vue";
 
 export default {
-  name: 'InterventionModalAsForm',
+  name: "InterventionModalAsForm",
   components: { LocaleTextBox, FileInput, ImgFromS3 },
   data() {
     return {
@@ -175,14 +201,14 @@ export default {
   },
   computed: {
     ...mapGetters({
-      dataModalMode: 'dataModal/getMode',
-      dataIdInFocus: 'dataModal/getDataIdInFocus',
-      dataDraft: 'dataModal/getDataDraft',
-      imageFile: 'dataModal/getImageFile',
-      INTERVENTIONById: 'INTERVENTION_Data/INTERVENTIONById',
-      calculateLocalizedString: 'calculateLocalizedString',
-      calculateUILocaleString: 'calculateUILocaleString',
-      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
+      dataModalMode: "dataModal/getMode",
+      dataIdInFocus: "dataModal/getDataIdInFocus",
+      dataDraft: "dataModal/getDataDraft",
+      imageFile: "dataModal/getImageFile",
+      INTERVENTIONById: "INTERVENTION_Data/INTERVENTIONById",
+      calculateLocalizedString: "calculateLocalizedString",
+      calculateUILocaleString: "calculateUILocaleString",
+      deriveFilePath: "callDeriveFilePathWithOrganizationId",
     }),
     interventionInFocus() {
       return this.INTERVENTIONById({ id: this.dataIdInFocus });
@@ -193,7 +219,9 @@ export default {
     },
     deriveImgPath() {
       return this.edit
-        ? this.deriveFilePath('interventionPicPath', { interventionID: this.dataIdInFocus })
+        ? this.deriveFilePath("interventionPicPath", {
+            interventionID: this.dataIdInFocus,
+          })
         : null;
     },
     assumedSrc() {
@@ -204,21 +232,22 @@ export default {
     },
     isSubmitDisabled() {
       return (
-        this.calculateLocalizedString({ languageTexts: this.name.languageTexts })
-        === this.$t('general.noTextProvided')
+        this.calculateLocalizedString({
+          languageTexts: this.name.languageTexts,
+        }) === this.$t("general.noTextProvided")
       );
     },
   },
   methods: {
     ...mapActions({
-      saveData: 'dataModal/saveData',
-      deleteData: 'dataModal/deleteData',
-      abortCreateData: 'dataModal/abortCreateData',
-      abortEditData: 'dataModal/abortEditData',
-      editData: 'dataModal/editData',
+      saveData: "dataModal/saveData",
+      deleteData: "dataModal/deleteData",
+      abortCreateData: "dataModal/abortCreateData",
+      abortEditData: "dataModal/abortEditData",
+      editData: "dataModal/editData",
     }),
     ...mapMutations({
-      setDraft: 'dataModal/setDraft',
+      setDraft: "dataModal/setDraft",
     }),
     closeHandler() {
       if (this.edit) this.abortEditData();
@@ -234,13 +263,13 @@ export default {
           surveys: [], // TODO
           levels: [],
           contents: this.contents, // TODO
-        }),
+        })
       );
       await this.$nextTick();
       this.saveData();
     },
     selectImg() {
-      const imgInput = this.$refs['img-upload'];
+      const imgInput = this.$refs["img-upload"];
       imgInput.$el.click();
     },
     prefillComponentDataFromDataDraft() {

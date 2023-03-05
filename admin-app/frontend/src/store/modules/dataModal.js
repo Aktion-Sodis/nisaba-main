@@ -198,13 +198,13 @@ const dataModal = {
         }
       );
     },
-    archiveData: async ({ dispatch, getters }) => {
+    archiveData: async ({ dispatch, getters }, archived) => {
       const dataType = getters.getDataType;
       if (getters.getMode !== modalModesDict.edit) return;
       const success = await dispatch(
         `${dataType}_Data/APIput`,
         {
-          newData: { ...getters.getDataDraft, archived: true },
+          newData: { ...getters.getDataDraft, archived },
           originalId: getters.getDataIdInFocus,
         },
         { root: true }
