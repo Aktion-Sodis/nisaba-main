@@ -6,18 +6,21 @@ import store from "./store";
 import vuetify from "./plugins/vuetify";
 import i18n from "./i18n";
 import { Amplify } from "aws-amplify";
+import { Auth } from "@aws-amplify/auth";
 
-awsExports.graphql_headers = async () => {
-  try {
-    const token = (await Amplify.Auth.currentSession()).idToken.jwtToken;
-    return { Authorization: token };
-  } catch (e) {
-    console.log(e);
-    return {};
-  }
-};
-
-Amplify.configure(awsExports);
+Amplify.configure({
+  ...awsExports,
+  API: {
+    graphql_headers: async () => {
+      try {
+        const token = (await Auth.currentSession()).getIdToken().getJwtToken();
+        return { Authorization: token };
+      } catch {
+        return {};
+      }
+    },
+  },
+});
 
 Vue.config.productionTip = false;
 
