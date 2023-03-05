@@ -1,7 +1,7 @@
 <template>
   <div style="overflow-x: scroll; width: 100%; height: calc(100vh - 48px)">
     <h1 class="ml-8">{{ $t("organizationStructure.title") }}</h1>
-    <sub class="ml-8">{{ $t("organizationStructure.subTitle") }}</sub>
+    <sub class="ml-8">{{ $t("organizationStructure.subtitle") }}</sub>
     <div class="mt-8 d-flex" style="height: calc(100% - 200px)">
       <div
         v-for="(level, index) in levels"

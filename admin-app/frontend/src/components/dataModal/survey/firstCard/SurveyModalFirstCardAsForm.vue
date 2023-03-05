@@ -145,7 +145,7 @@
               >
                 <template v-slot:v-img="slotProps">
                   <v-img max-height="200px" :src="slotProps.src">
-                    <v-btn
+                    <!-- <v-btn
                       class="iv-edit-icon"
                       color="primary"
                       @click="selectImg"
@@ -164,7 +164,7 @@
                       ref="img-upload"
                       style="display: none"
                       :acceptedType="'image/png'"
-                    />
+                    /> -->
                   </v-img>
                 </template>
               </ImgFromS3>
@@ -218,11 +218,15 @@ import {
   mutableI18nString,
 } from "../../../../lib/classes";
 import LocaleTextBox from "../../../commons/form/LocaleTextBox.vue";
-import FileInput from "../../../commons/form/FileInput.vue";
+// import FileInput from "../../../commons/form/FileInput.vue";
 
 export default {
   name: "SurveyModalFirstCardAsForm",
-  components: { LocaleTextBox, ImgFromS3, FileInput },
+  components: {
+    LocaleTextBox,
+    ImgFromS3,
+    // FileInput
+  },
   data() {
     return {
       name: emptyMutableI18nString(),

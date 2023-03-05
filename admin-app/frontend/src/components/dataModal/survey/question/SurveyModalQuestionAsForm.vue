@@ -74,7 +74,7 @@
                 {{ $t("surveys.modal.questionCard.form.question.imageTitle") }}
               </h3>
               <div class="d-flex justify-center">
-                <v-btn
+                <!-- <v-btn
                   color="primary"
                   rounded
                   x-large
@@ -93,7 +93,12 @@
                   style="display: none"
                   :acceptedType="'image/png'"
                   :isForQuestions="true"
-                />
+                /> -->
+                <p>
+                  {{
+                    $t("surveys.modal.questionCard.form.question.cantAddImage")
+                  }}
+                </p>
               </div>
 
               <h3 class="mt-8">
@@ -312,7 +317,7 @@ import {
 import { compareI18nStrings } from "../../../../lib/utils";
 
 import LocaleTextBox from "../../../commons/form/LocaleTextBox.vue";
-import FileInput from "../../../commons/form/FileInput.vue";
+// import FileInput from "../../../commons/form/FileInput.vue";
 
 const maxNOptions = Math.min(
   Number(process.env.VUE_APP_MAX_N_QUESTION_OPTIONS),
@@ -323,7 +328,7 @@ export default {
   name: "SurveyModalQuestion",
   components: {
     LocaleTextBox,
-    FileInput,
+    // FileInput,
   },
   watch: {
     questionCurrentDraft: "updateComponentData",
@@ -382,7 +387,11 @@ export default {
           ),
           value: key,
         }))
-        .filter((t) => t.value !== QuestionType.PICTUREWITHTAGS);
+        .filter(
+          (t) =>
+            t.value !== QuestionType.PICTUREWITHTAGS &&
+            t.value !== QuestionType.PICTURE
+        );
     },
     areThereChanges() {
       if (!compareI18nStrings(this.text, this.questionCurrentDraft.text))

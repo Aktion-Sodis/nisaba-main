@@ -4,7 +4,7 @@
       {{ $t("interventions.title") }}
     </h1>
     <sub class="ml-8">
-      {{ $t("interventions.subTitle") }}
+      {{ $t("interventions.subtitle") }}
     </sub>
     <v-container class="mt-8">
       <v-row>
