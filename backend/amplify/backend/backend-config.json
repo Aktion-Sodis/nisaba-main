@@ -113,14 +113,14 @@
     "userPoolGroups": {
       "dependsOn": [
         {
-          "category": "auth",
-          "resourceName": "authnisaba",
           "attributes": [
             "UserPoolId",
             "AppClientIDWeb",
             "AppClientID",
             "IdentityPoolId"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "authnisaba"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -173,10 +173,10 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "syncConflictHandler44899081": {
-      "service": "Lambda",
+    "syncConflictHandler68b52ede": {
+      "build": true,
       "providerPlugin": "awscloudformation",
-      "build": true
+      "service": "Lambda"
     }
   },
   "hosting": {
@@ -186,125 +186,43 @@
       "type": "manual"
     }
   },
-  "parameters": {
-    "AMPLIFY_function_AdminQueries8dc38185_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "AdminQueries8dc38185"
-        }
-      ]
-    },
-    "AMPLIFY_function_AdminQueries8dc38185_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "AdminQueries8dc38185"
-        }
-      ]
-    },
-    "AMPLIFY_function_authnisabaPreTokenGeneration_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "authnisabaPreTokenGeneration"
-        }
-      ]
-    },
-    "AMPLIFY_function_authnisabaPreTokenGeneration_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "authnisabaPreTokenGeneration"
-        }
-      ]
-    },
-    "AMPLIFY_function_nisabaAdminSdkLayer_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "nisabaAdminSdkLayer"
-        }
-      ]
-    },
-    "AMPLIFY_function_nisabaAdminSdkLayer_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "nisabaAdminSdkLayer"
-        }
-      ]
-    },
-    "AMPLIFY_function_nisabaUserManagement_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "nisabaUserManagement"
-        }
-      ]
-    },
-    "AMPLIFY_function_nisabaUserManagement_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "nisabaUserManagement"
-        }
-      ]
-    },
-    "AMPLIFY_hosting_amplifyhosting_appId": {
-      "usedBy": [
-        {
-          "category": "hosting",
-          "resourceName": "amplifyhosting"
-        }
-      ]
-    },
-    "AMPLIFY_hosting_amplifyhosting_type": {
-      "usedBy": [
-        {
-          "category": "hosting",
-          "resourceName": "amplifyhosting"
-        }
-      ]
-    }
-  },
   "storage": {
     "s3nisaba": {
       "dependsOn": [
         {
-          "category": "auth",
-          "resourceName": "authnisaba",
           "attributes": [
             "UserPoolId"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "authnisaba"
         },
         {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
           "attributes": [
             "superadminGroupRole"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
         },
         {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
           "attributes": [
             "adminGroupRole"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
         },
         {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
           "attributes": [
             "mobileGroupRole"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
         },
         {
-          "category": "auth",
-          "resourceName": "userPoolGroups",
           "attributes": [
             "analyticsGroupRole"
-          ]
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
         }
       ],
       "providerPlugin": "awscloudformation",

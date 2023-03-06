@@ -20,7 +20,7 @@
         "type": "LAMBDA",
         "resolver": {
           "type": "EXISTING",
-          "name": "syncConflictHandler44899081-${env}"
+          "name": "syncConflictHandler68b52ede-${env}"
         }
       }
     }

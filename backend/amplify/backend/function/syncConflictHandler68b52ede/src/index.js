@@ -12,19 +12,18 @@ exports.handler = async (event, context, callback) => {
 
   is_update = desired_operation.includes('update');
 
-  if (true) {
+  /*if (true) {
     action = 'RESOLVE';
     item = event.newItem;
   }
 
   else {
     action = 'REJECT';
-  }
+  }*/
 
-  /*
   switch (event.resolver.field) {
     case 'updatePost':
-      if (event.existingItem.postId === '1') {
+      if (true || event.existingItem.postId === '1') {
         action = 'RESOLVE';
         item = event.newItem;
       } else {
@@ -32,14 +31,14 @@ exports.handler = async (event, context, callback) => {
       }
       break;
     case 'deletePost':
-      if (event.existingItem.postId === '1') {
+      if (true || event.existingItem.postId === '1') {
         action = 'REMOVE';
       } else {
         action = 'REJECT';
       }
       break;
     case 'addPost':
-      if (event.existingItem.postId === '1') {
+      if (true || event.existingItem.postId === '1') {
         action = 'RESOLVE';
         item = event.newItem;
       } else {
@@ -48,7 +47,7 @@ exports.handler = async (event, context, callback) => {
       break;
     default:
       throw new Error('Unknown Resolver');
-  }*/
+  }
   return {
     action,
     item,
