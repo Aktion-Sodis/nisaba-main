@@ -3,8 +3,18 @@ import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/callableModels/QuestionOption.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
+import 'package:json_annotation/json_annotation.dart';
 
+part 'Question.g.dart';
+
+@JsonSerializable()
 class Question extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory Question.fromJson(Map<String, dynamic> json) =>
+      _$QuestionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QuestionToJson(this);
+
   String? id;
   late I18nString text_ml;
   late QuestionType type;

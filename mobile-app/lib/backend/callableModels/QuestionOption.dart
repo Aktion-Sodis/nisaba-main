@@ -2,8 +2,18 @@ import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
+import 'package:json_annotation/json_annotation.dart';
 
+part 'QuestionOption.g.dart';
+
+@JsonSerializable()
 class QuestionOption extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory QuestionOption.fromJson(Map<String, dynamic> json) =>
+      _$QuestionOptionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QuestionOptionToJson(this);
+
   String? id;
   late I18nString text_ml;
   List<String>? followUpQuestionIDs;

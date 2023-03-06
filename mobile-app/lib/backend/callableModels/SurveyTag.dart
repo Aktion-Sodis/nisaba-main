@@ -3,14 +3,24 @@ import 'package:mobile_app/backend/callableModels/Relation.dart';
 import 'package:mobile_app/backend/callableModels/Survey.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
+import 'package:json_annotation/json_annotation.dart';
 
+part 'SurveyTag.g.dart';
+
+@JsonSerializable()
 class SurveyTag extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory SurveyTag.fromJson(Map<String, dynamic> json) =>
+      _$SurveyTagFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SurveyTagToJson(this);
+
   String? id;
   late I18nString text_ml;
   int? schemeVersion;
   DateTime? createdAt;
   DateTime? updatedAt;
-  late List<Relation<Survey, SurveyTag>> surveys; // unpopulated allowed
+  late List<SurveySurveyTagRelation> surveys; // unpopulated allowed
 
   String get text => text_ml.text;
 
@@ -31,7 +41,7 @@ class SurveyTag extends DBModel {
     createdAt = tag.createdAt?.getDateTimeInUtc();
     updatedAt = tag.updatedAt?.getDateTimeInUtc();
     surveys = tag.surveys
-        .map((e) => Relation(
+        .map((e) => SurveySurveyTagRelation(
             id: e.id,
             first: Survey.fromAmplifyModel(e.survey),
             second: SurveyTag.fromAmplifyModel(e.surveyTag)))

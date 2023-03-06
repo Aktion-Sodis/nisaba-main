@@ -7,7 +7,18 @@ import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import '../database/DBModel.dart';
 import 'Entity.dart';
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'AppliedIntervention.g.dart';
+
+@JsonSerializable()
 class AppliedIntervention extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory AppliedIntervention.fromJson(Map<String, dynamic> json) =>
+      _$AppliedInterventionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AppliedInterventionToJson(this);
+
   String? id;
   late User whoDidIt; // Unpopulated allowed
   late Intervention intervention; // Unpopulated allowed
@@ -82,8 +93,6 @@ class AppliedIntervention extends DBModel {
           entity.id == other.entity.id &&
           location == other.location &&
           schemeVersion == other.schemeVersion &&
-          createdAt == other.createdAt &&
-          updatedAt == other.updatedAt &&
           isOkay == other.isOkay;
     } else {
       return false;

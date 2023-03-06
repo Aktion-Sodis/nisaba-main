@@ -117,8 +117,6 @@ class Task extends DBModel {
         other.entity == entity &&
         other.appliedIntervention == appliedIntervention &&
         other.executedSurvey == executedSurvey &&
-        other.schemeVersion == schemeVersion &&
-        other.createdAt == createdAt &&
-        other.updatedAt == updatedAt;
+        other.schemeVersion == schemeVersion;
   }
 }

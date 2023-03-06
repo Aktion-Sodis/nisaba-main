@@ -9,7 +9,18 @@ import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'ExecutedSurvey.g.dart';
+
+@JsonSerializable()
 class ExecutedSurvey extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory ExecutedSurvey.fromJson(Map<String, dynamic> json) =>
+      _$ExecutedSurveyFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ExecutedSurveyToJson(this);
+
   String? id;
   late AppliedIntervention appliedIntervention; // Unpopulated allowed
   late Survey survey; // Unpopulated allowed
@@ -90,9 +101,7 @@ class ExecutedSurvey extends DBModel {
           location == other.location &&
           listEquals(answers, other.answers) &&
           schemeVersion == other.schemeVersion &&
-          id == other.id &&
-          createdAt == other.createdAt &&
-          updatedAt == other.updatedAt;
+          id == other.id;
     } else {
       return false;
     }

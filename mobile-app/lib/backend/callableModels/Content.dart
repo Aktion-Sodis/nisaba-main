@@ -4,18 +4,27 @@ import 'package:mobile_app/backend/callableModels/ContentTag.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/callableModels/Relation.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
-import 'package:mobile_app/models/ContentContentTagRelation.dart';
-import 'package:mobile_app/models/InterventionContentRelation.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'Content.g.dart';
+
+@JsonSerializable()
 class Content extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory Content.fromJson(Map<String, dynamic> json) =>
+      _$ContentFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ContentToJson(this);
+
   String? id;
   late I18nString name_ml;
   late I18nString description_ml;
-  late List<Relation<Intervention, Content>>
+  late List<InterventionContentRelation>
       interventions; //many to many -> maybe change
-  late List<Relation<Content, ContentTag>> tagConnections;
+  late List<ContentContentTagRelation> tagConnections;
   int? schemeVersion;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -31,7 +40,8 @@ class Content extends DBModel {
   List<ContentTag> get tags => tagConnections.map((e) => e.second).toList();
 
   void addContentTag(ContentTag contentTag) {
-    tagConnections.add(Relation(first: this, second: contentTag));
+    tagConnections
+        .add(ContentContentTagRelation(first: this, second: contentTag));
   }
 
   void updateContentTag(ContentTag contentTag) {
@@ -59,13 +69,13 @@ class Content extends DBModel {
     name_ml = I18nString.fromAmplifyModel(content.name);
     description_ml = I18nString.fromAmplifyModel(content.description);
     interventions = content.interventions
-        .map((e) => Relation(
+        .map((e) => InterventionContentRelation(
             id: e.id,
             first: Intervention.fromAmplifyModel(e.intervention),
             second: Content.fromAmplifyModel(e.content)))
         .toList();
     tagConnections = content.tags
-        .map((e) => Relation(
+        .map((e) => ContentContentTagRelation(
             id: e.id,
             first: Content.fromAmplifyModel(e.content),
             second: ContentTag.fromAmplifyModel(e.contentTag)))
@@ -81,13 +91,13 @@ class Content extends DBModel {
         name: name_ml.toAmplifyModel(),
         description: description_ml.toAmplifyModel(),
         interventions: interventions
-            .map((e) => InterventionContentRelation(
+            .map((e) => amp.InterventionContentRelation(
                 id: e.id,
                 intervention: e.first.toAmplifyModel(),
                 content: e.second.toAmplifyModel()))
             .toList(),
         tags: tagConnections
-            .map((e) => ContentContentTagRelation(
+            .map((e) => amp.ContentContentTagRelation(
                 id: e.id,
                 content: e.first.toAmplifyModel(),
                 contentTag: e.second.toAmplifyModel()))
@@ -113,8 +123,6 @@ class Content extends DBModel {
           description_ml == other.description_ml &&
           id == other.id &&
           schemeVersion == other.schemeVersion &&
-          createdAt == other.createdAt &&
-          updatedAt == other.updatedAt &&
           listEquals(interventions.map((e) => e.getUnpopulated()).toList(),
               other.interventions.map((e) => e.getUnpopulated()).toList()) &&
           listEquals(tagConnections.map((e) => e.getUnpopulated()).toList(),

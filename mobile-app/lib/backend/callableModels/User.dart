@@ -2,8 +2,17 @@ import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/Permission.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
+import 'package:json_annotation/json_annotation.dart';
 
+part 'User.g.dart';
+
+@JsonSerializable()
 class User extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserToJson(this);
+
   String? id;
   late String firstName;
   late String lastName;
@@ -91,8 +100,6 @@ class User extends DBModel {
           bio == other.bio &&
           schemeVersion == other.schemeVersion &&
           id == other.id &&
-          createdAt == other.createdAt &&
-          updatedAt == other.updatedAt &&
           listEquals(permissions, other.permissions);
     }
     return false;

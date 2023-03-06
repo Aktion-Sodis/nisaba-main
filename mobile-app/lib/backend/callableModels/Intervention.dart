@@ -9,18 +9,28 @@ import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import 'Level.dart';
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'Intervention.g.dart';
+
+@JsonSerializable()
 class Intervention extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory Intervention.fromJson(Map<String, dynamic> json) =>
+      _$InterventionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$InterventionToJson(this);
+
   String? id;
   late I18nString name_ml;
   late I18nString description_ml;
   late InterventionType interventionType;
-  late List<Relation<Intervention, Content>>
+  late List<InterventionContentRelation>
       interventionContentRelations; // Unpopulated allowed
   late List<Survey> surveys; // Unpopulated allowed
-  late List<Relation<Intervention, InterventionTag>>
+  late List<InterventionInterventionTagRelation>
       tagConnections; // Unpopulated allowed
-  late List<Relation<Level, Intervention>>
-      levelConnections; // Unpopulated allowed
+  late List<LevelInterventionRelation> levelConnections; // Unpopulated allowed
   int? schemeVersion;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -37,7 +47,7 @@ class Intervention extends DBModel {
       tagConnections.map((e) => e.second).toList();
 
   void addInterventionTag(InterventionTag interventionTag) {
-    tagConnections.add(Relation<Intervention, InterventionTag>(
+    tagConnections.add(InterventionInterventionTagRelation(
         id: interventionTag.id, first: this, second: interventionTag));
   }
 
@@ -71,7 +81,7 @@ class Intervention extends DBModel {
     interventionType = interventionTypeFromAmplifyInterventionType(
         intervention.interventionType);
     interventionContentRelations = intervention.contents.map((e) {
-      return Relation<Intervention, Content>(
+      return InterventionContentRelation(
           id: e.id,
           first: Intervention.fromAmplifyModel(e.intervention),
           second: Content.fromAmplifyModel(e.content));
@@ -79,7 +89,7 @@ class Intervention extends DBModel {
     surveys = List.generate(intervention.surveys.length,
         (index) => Survey.fromAmplifyModel(intervention.surveys[index]));
     tagConnections = intervention.tags
-        .map((e) => Relation<Intervention, InterventionTag>(
+        .map((e) => InterventionInterventionTagRelation(
             id: e.id,
             first: this,
             second: InterventionTag.fromAmplifyModel(e.interventionTag)))
@@ -88,7 +98,7 @@ class Intervention extends DBModel {
     createdAt = intervention.createdAt?.getDateTimeInUtc();
     updatedAt = intervention.updatedAt?.getDateTimeInUtc();
     levelConnections = intervention.levels.map((e) {
-      return Relation<Level, Intervention>(
+      return LevelInterventionRelation(
           id: e.id,
           first: Level.fromAmplifyModel(e.level),
           second: Intervention.fromAmplifyModel(e.intervention));
@@ -146,8 +156,6 @@ class Intervention extends DBModel {
           description_ml == other.description_ml &&
           interventionType == other.interventionType &&
           schemeVersion == other.schemeVersion &&
-          createdAt == other.createdAt &&
-          updatedAt == other.updatedAt &&
           unpopulatedListsEqual(interventionContentRelations,
               other.interventionContentRelations) &&
           unpopulatedListsEqual(surveys, other.surveys) &&

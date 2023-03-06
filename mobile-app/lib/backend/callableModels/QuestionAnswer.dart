@@ -6,8 +6,18 @@ import 'package:mobile_app/backend/callableModels/QuestionOption.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
+import 'package:json_annotation/json_annotation.dart';
 
+part 'QuestionAnswer.g.dart';
+
+@JsonSerializable()
 class QuestionAnswer extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory QuestionAnswer.fromJson(Map<String, dynamic> json) =>
+      _$QuestionAnswerFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QuestionAnswerToJson(this);
+
   String? id;
   late String questionID;
   late DateTime date;
@@ -17,7 +27,7 @@ class QuestionAnswer extends DBModel {
   double? doubleValue;
   int? rating;
   List<QuestionOption>? questionOptions;
-  List<Marking>? markings;
+  late List<Marking> markings;
 
   QuestionAnswer(
       {this.id,
@@ -26,10 +36,16 @@ class QuestionAnswer extends DBModel {
       required this.type,
       this.text,
       this.questionOptions,
-      this.markings,
+      List<Marking>? markings,
       this.intValue,
       this.doubleValue,
-      this.rating});
+      this.rating}) {
+    if (markings == null) {
+      this.markings = [];
+    } else {
+      this.markings = markings;
+    }
+  }
 
   QuestionAnswer.fromAmplifyModel(amp.QuestionAnswer questionAnswer) {
     id = questionAnswer.id;
@@ -46,12 +62,8 @@ class QuestionAnswer extends DBModel {
             (index) => QuestionOption.fromAmplifyModel(
                 questionAnswer.questionOptions![index]))
         : null;
-    markings = questionAnswer.markings != null
-        ? List.generate(
-            questionAnswer.markings!.length,
-            (index) =>
-                Marking.fromAmplifyModel(questionAnswer.markings![index]))
-        : null;
+    markings = List.generate(questionAnswer.markings!.length,
+        (index) => Marking.fromAmplifyModel(questionAnswer.markings![index]));
   }
 
   amp.QuestionAnswer toAmplifyModel() {

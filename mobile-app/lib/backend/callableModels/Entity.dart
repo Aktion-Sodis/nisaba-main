@@ -9,7 +9,17 @@ import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'Entity.g.dart';
+
+@JsonSerializable()
 class Entity extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory Entity.fromJson(Map<String, dynamic> json) => _$EntityFromJson(json);
+
+  Map<String, dynamic> toJson() => _$EntityToJson(this);
+
   String? id;
   late I18nString name_ml;
   late I18nString description_ml;
@@ -113,8 +123,6 @@ class Entity extends DBModel {
         other.level.id == level.id && // Unpopulated allowed
         other.location == location &&
         listEquals(other.customData, customData) &&
-        other.schemeVersion == schemeVersion &&
-        other.createdAt == createdAt &&
-        other.updatedAt == updatedAt;
+        other.schemeVersion == schemeVersion;
   }
 }

@@ -1,8 +1,18 @@
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
+import 'package:json_annotation/json_annotation.dart';
 
+part 'AppliedCustomData.g.dart';
+
+@JsonSerializable()
 class AppliedCustomData extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory AppliedCustomData.fromJson(Map<String, dynamic> json) =>
+      _$AppliedCustomDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AppliedCustomDataToJson(this);
+
   late String customDataID;
   late CustomDataType type;
   late I18nString name_ml;

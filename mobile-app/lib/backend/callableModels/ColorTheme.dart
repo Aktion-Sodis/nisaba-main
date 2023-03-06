@@ -1,7 +1,18 @@
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'ColorTheme.g.dart';
+
+@JsonSerializable()
 class ColorTheme extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory ColorTheme.fromJson(Map<String, dynamic> json) =>
+      _$ColorThemeFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ColorThemeToJson(this);
+
   String? highlight;
   String? secondaryHighlight;
   String? backgroundOneLight;

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/backend/callableModels/InterventionTag.dart';
+import 'package:mobile_app/backend/callableModels/Organization.dart';
 import 'package:mobile_app/backend/callableModels/Relation.dart';
 import 'package:mobile_app/backend/callableModels/SurveyTag.dart';
 import 'package:mobile_app/backend/callableModels/TestObject.dart';
@@ -105,7 +107,7 @@ final Map<Type, DBModel Function(String id)> _instances = {
         executedSurveys: [],
       ),
   ColorTheme: (id) => ColorTheme(
-        backgroundOneDark: "backgroundOneDark",
+        backgroundOneDark: "backgroundOneDark" + id,
         backgroundOneLight: "backgroundOneLight",
         backgroundTwoDark: "backgroundTwoDark",
         backgroundTwoLight: "backgroundTwoLight",
@@ -130,15 +132,15 @@ final Map<Type, DBModel Function(String id)> _instances = {
         id: id,
         schemeVersion: 1,
         interventions: [
-          Relation(
+          InterventionContentRelation(
               first: Intervention.unpopulated("intervention1"),
               second: Content.unpopulated("content1")),
-          Relation(
+          InterventionContentRelation(
               first: Intervention.unpopulated("intervention2"),
               second: Content.unpopulated("content2")),
         ],
         tagConnections: [
-          Relation(
+          ContentContentTagRelation(
               first: Content.unpopulated("content1"),
               second: ContentTag.unpopulated("contenttag1")),
         ],
@@ -149,17 +151,21 @@ final Map<Type, DBModel Function(String id)> _instances = {
         description_ml:
             I18nString(languageKeys: ["en"], languageTexts: ["language text2"]),
       ),
+  ContentContentTagRelation: (id) => ContentContentTagRelation(
+      id: id,
+      first: Content.unpopulated("survey1"),
+      second: ContentTag.unpopulated("surveyTag1")),
   ContentTag: (id) => ContentTag(
         id: id,
         schemeVersion: 1,
         text_ml:
             I18nString(languageKeys: ["en"], languageTexts: ["language text"]),
         contents: [
-          Relation(
+          ContentContentTagRelation(
               id: "relation id1",
               first: Content.unpopulated("content1"),
               second: ContentTag.unpopulated("contenttag1")),
-          Relation(
+          ContentContentTagRelation(
               id: "relation id2",
               first: Content.unpopulated("content2"),
               second: ContentTag.unpopulated("contenttag1")),
@@ -237,10 +243,10 @@ final Map<Type, DBModel Function(String id)> _instances = {
         createdAt: DateTime(1999, 21, 12),
         updatedAt: DateTime(1999, 22, 12),
         interventionContentRelations: [
-          Relation(
+          InterventionContentRelation(
               first: Intervention.unpopulated("intervention1"),
               second: Content.unpopulated("content1")),
-          Relation(
+          InterventionContentRelation(
               first: Intervention.unpopulated("intervention2"),
               second: Content.unpopulated("content2")),
         ],
@@ -249,12 +255,21 @@ final Map<Type, DBModel Function(String id)> _instances = {
         surveys: [],
         tagConnections: [],
       ),
+  InterventionContentRelation: (id) => InterventionContentRelation(
+      id: id,
+      first: Intervention.unpopulated("survey1"),
+      second: Content.unpopulated("surveyTag1")),
+  InterventionInterventionTagRelation: (id) =>
+      InterventionInterventionTagRelation(
+          id: id,
+          first: Intervention.unpopulated("survey1"),
+          second: InterventionTag.unpopulated("surveyTag1")),
   Level: (id) => Level(
         id: id,
         parentLevelID: "parentLevelID",
         interventionsAreAllowed: true,
         allowedInterventions: [
-          Relation(
+          LevelInterventionRelation(
               id: "relation id1",
               first: Level.unpopulated("level1"),
               second: Intervention.unpopulated("intervention1")),
@@ -287,8 +302,13 @@ final Map<Type, DBModel Function(String id)> _instances = {
       ),
   Permission: (id) => Permission(
         permissionType: PermissionType.ADMIN,
-        allowedEntities: ["entity1", "entity2"],
+        allowedEntities: ["entity1", "entity2" + id],
       ),
+  Organization: (id) => Organization(
+      id: id,
+      nameCamelCase: "nameCamelCase",
+      nameKebabCase: "nameKebabCase",
+      nameVerbose: "nameVerbose"),
   Question: (id) => Question(
         id: id,
         questionOptions: [
@@ -359,6 +379,10 @@ final Map<Type, DBModel Function(String id)> _instances = {
         archived: true,
         intervention: Intervention.unpopulated("intervention id"),
       ),
+  SurveySurveyTagRelation: (id) => SurveySurveyTagRelation(
+      id: id,
+      first: Survey.unpopulated("survey1"),
+      second: SurveyTag.unpopulated("surveyTag1")),
   SurveyTag: (id) => SurveyTag(
           id: id,
           schemeVersion: 1,
@@ -367,7 +391,7 @@ final Map<Type, DBModel Function(String id)> _instances = {
           text_ml: I18nString(
               languageKeys: ["en"], languageTexts: ["language text"]),
           surveys: [
-            Relation(
+            SurveySurveyTagRelation(
                 id: "relation id1",
                 first: Survey.unpopulated("survey1"),
                 second: SurveyTag.unpopulated("surveyTag1")),

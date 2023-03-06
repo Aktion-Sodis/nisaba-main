@@ -7,14 +7,24 @@ import 'package:mobile_app/backend/callableModels/SurveyTag.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
+import 'package:json_annotation/json_annotation.dart';
 
+part 'Survey.g.dart';
+
+@JsonSerializable()
 class Survey extends DBModel {
+  // JsonSerializable factory and toJson methods
+
+  factory Survey.fromJson(Map<String, dynamic> json) => _$SurveyFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SurveyToJson(this);
+
   String? id;
   late I18nString name_ml;
   late I18nString description_ml;
   Intervention? intervention; // Unpopulated allowed
   late List<Question> questions;
-  late List<Relation<Survey, SurveyTag>> tagConnections; // Unpopulated allowed
+  late List<SurveySurveyTagRelation> tagConnections; // Unpopulated allowed
   late bool archived;
   int? schemeVersion;
   DateTime? createdAt;
@@ -32,8 +42,7 @@ class Survey extends DBModel {
   List<SurveyTag> get tags => tagConnections.map((e) => e.second).toList();
 
   void addSurveyTag(SurveyTag surveyTag) {
-    tagConnections
-        .add(Relation<Survey, SurveyTag>(first: this, second: surveyTag));
+    tagConnections.add(SurveySurveyTagRelation(first: this, second: surveyTag));
   }
 
   void updateSurveyTag(SurveyTag surveyTag) {
@@ -75,7 +84,7 @@ class Survey extends DBModel {
     questions = List.generate(survey.questions.length,
         (index) => Question.fromAmplifyModel(survey.questions[index]));
     tagConnections = survey.tags
-        .map((e) => Relation<Survey, SurveyTag>(
+        .map((e) => SurveySurveyTagRelation(
             id: e.id,
             first: this,
             second: SurveyTag.fromAmplifyModel(e.surveyTag)))
@@ -132,8 +141,6 @@ class Survey extends DBModel {
                   intervention!.id == other.intervention!.id)) &&
           listEquals(questions, other.questions) &&
           schemeVersion == other.schemeVersion &&
-          createdAt == other.createdAt &&
-          updatedAt == other.updatedAt &&
           unpopulatedListsEqual(tagConnections, other.tagConnections) &&
           surveyType == other.surveyType &&
           archived == other.archived;

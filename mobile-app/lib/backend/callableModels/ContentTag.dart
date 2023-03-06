@@ -5,13 +5,24 @@ import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'Content.dart';
 import 'Relation.dart';
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'ContentTag.g.dart';
+
+@JsonSerializable()
 class ContentTag extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory ContentTag.fromJson(Map<String, dynamic> json) =>
+      _$ContentTagFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ContentTagToJson(this);
+
   String? id;
   late I18nString text_ml;
   int? schemeVersion;
   DateTime? createdAt;
   DateTime? updatedAt;
-  late List<Relation<Content, ContentTag>> contents;
+  late List<ContentContentTagRelation> contents;
 
   String get text => text_ml.text;
 
@@ -32,7 +43,7 @@ class ContentTag extends DBModel {
     createdAt = tag.createdAt?.getDateTimeInUtc();
     updatedAt = tag.updatedAt?.getDateTimeInUtc();
     contents = tag.contents
-        .map((e) => Relation(
+        .map((e) => ContentContentTagRelation(
             id: e.id,
             first: Content.fromAmplifyModel(e.content),
             second: ContentTag.fromAmplifyModel(e.contentTag)))
@@ -69,8 +80,6 @@ class ContentTag extends DBModel {
       return text_ml == other.text_ml &&
           schemeVersion == other.schemeVersion &&
           id == other.id &&
-          createdAt == other.createdAt &&
-          updatedAt == other.updatedAt &&
           unpopulatedListsEqual(contents, other.contents);
     } else {
       return false;

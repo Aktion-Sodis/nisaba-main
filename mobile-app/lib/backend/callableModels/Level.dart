@@ -6,14 +6,23 @@ import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'Level.g.dart';
+
+@JsonSerializable()
 class Level extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory Level.fromJson(Map<String, dynamic> json) => _$LevelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LevelToJson(this);
+
   String? id;
   late I18nString name_ml;
   late I18nString description_ml;
   String? parentLevelID;
   late bool interventionsAreAllowed;
-  List<Relation<Level, Intervention>>?
-      allowedInterventions; // Unpopulated allowed
+  List<LevelInterventionRelation>? allowedInterventions; // Unpopulated allowed
   late List<CustomData> customData; // Unpopulated allowed
   int? schemeVersion;
   DateTime? createdAt;
@@ -47,7 +56,7 @@ class Level extends DBModel {
     interventionsAreAllowed = level.interventionsAreAllowed;
     if (allowedInterventions != null) {
       allowedInterventions = level.allowedInterventions!
-          .map((e) => Relation(
+          .map((e) => LevelInterventionRelation(
               id: e.id,
               first: this,
               second: Intervention.fromAmplifyModel(e.intervention)))
@@ -97,9 +106,7 @@ class Level extends DBModel {
           parentLevelID == other.parentLevelID &&
           interventionsAreAllowed == other.interventionsAreAllowed &&
           schemeVersion == other.schemeVersion &&
-          id == other.id &&
-          createdAt == other.createdAt &&
-          updatedAt == other.updatedAt;
+          id == other.id;
     }
     return false;
   }

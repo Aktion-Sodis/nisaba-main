@@ -2,8 +2,18 @@ import 'package:geolocator/geolocator.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import '../database/DBModel.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'Location.g.dart';
+
+@JsonSerializable()
 class Location extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory Location.fromJson(Map<String, dynamic> json) =>
+      _$LocationFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LocationToJson(this);
+
   double? latitude;
   double? longitude;
 

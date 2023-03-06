@@ -2,7 +2,17 @@ import 'package:mobile_app/backend/callableModels/ColorTheme.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'Config.g.dart';
+
+@JsonSerializable()
 class Config extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ConfigToJson(this);
+
   String? id;
   late String name;
   ColorTheme? colorTheme;
@@ -54,9 +64,7 @@ class Config extends DBModel {
       return name == other.name &&
           colorTheme == other.colorTheme &&
           schemeVersion == other.schemeVersion &&
-          id == other.id &&
-          createdAt == other.createdAt &&
-          updatedAt == other.updatedAt;
+          id == other.id;
     } else {
       return false;
     }

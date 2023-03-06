@@ -1,7 +1,17 @@
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
+import 'package:json_annotation/json_annotation.dart';
 
+part 'Marking.g.dart';
+
+@JsonSerializable()
 class Marking extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory Marking.fromJson(Map<String, dynamic> json) =>
+      _$MarkingFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MarkingToJson(this);
+
   late double x;
   late double y;
   late double rx;

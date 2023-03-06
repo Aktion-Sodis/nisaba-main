@@ -5,13 +5,24 @@ import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'Intervention.dart';
 import 'Relation.dart';
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'InterventionTag.g.dart';
+
+@JsonSerializable()
 class InterventionTag extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory InterventionTag.fromJson(Map<String, dynamic> json) =>
+      _$InterventionTagFromJson(json);
+
+  Map<String, dynamic> toJson() => _$InterventionTagToJson(this);
+
   String? id;
   late I18nString text_ml;
   int? schemeVersion;
   DateTime? createdAt;
   DateTime? updatedAt;
-  late List<Relation<Intervention, InterventionTag>> interventions;
+  late List<InterventionInterventionTagRelation> interventions;
 
   String get text => text_ml.text;
 
@@ -32,7 +43,7 @@ class InterventionTag extends DBModel {
     createdAt = tag.createdAt?.getDateTimeInUtc();
     updatedAt = tag.updatedAt?.getDateTimeInUtc();
     interventions = tag.interventions
-        .map((e) => Relation<Intervention, InterventionTag>(
+        .map((e) => InterventionInterventionTagRelation(
             id: e.id,
             first: Intervention.fromAmplifyModel(e.intervention),
             second: this))
@@ -67,9 +78,7 @@ class InterventionTag extends DBModel {
     if (other is InterventionTag) {
       return text_ml == other.text_ml &&
           schemeVersion == other.schemeVersion &&
-          id == other.id &&
-          createdAt == other.createdAt &&
-          updatedAt == other.updatedAt;
+          id == other.id;
     }
     return false;
   }

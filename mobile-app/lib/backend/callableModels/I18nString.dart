@@ -4,7 +4,18 @@ import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:mobile_app/frontend/strings.dart' as str;
 import 'package:path/path.dart';
 
+import 'package:json_annotation/json_annotation.dart';
+
+part 'I18nString.g.dart';
+
+@JsonSerializable()
 class I18nString extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory I18nString.fromJson(Map<String, dynamic> json) =>
+      _$I18nStringFromJson(json);
+
+  Map<String, dynamic> toJson() => _$I18nStringToJson(this);
+
   late List<String> languageKeys;
   late List<String> languageTexts;
 

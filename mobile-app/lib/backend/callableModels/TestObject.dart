@@ -1,6 +1,10 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 
+part 'TestObject.g.dart';
+
+@JsonSerializable()
 class TestObject extends DBModel {
   @override
   String? id;
@@ -26,4 +30,9 @@ class TestObject extends DBModel {
       return false;
     }
   }
+
+  factory TestObject.fromJson(Map<String, dynamic> json) =>
+      _$TestObjectFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TestObjectToJson(this);
 }
