@@ -818,6 +818,36 @@ export declare const SessionData: (new (init: ModelInit<SessionData>) => Session
   copyOf(source: SessionData, mutator: (draft: MutableModel<SessionData>) => MutableModel<SessionData> | void): SessionData;
 }
 
+type EagerTestObject = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<TestObject, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name?: string | null;
+  readonly age: number;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyTestObject = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<TestObject, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name?: string | null;
+  readonly age: number;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type TestObject = LazyLoading extends LazyLoadingDisabled ? EagerTestObject : LazyTestObject
+
+export declare const TestObject: (new (init: ModelInit<TestObject>) => TestObject) & {
+  copyOf(source: TestObject, mutator: (draft: MutableModel<TestObject>) => MutableModel<TestObject> | void): TestObject;
+}
+
 type EagerLevelInterventionRelation = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<LevelInterventionRelation, 'id'>;

@@ -172,6 +172,16 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "syncConflictHandler68b52ede": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "syncConflictHandler5b19c779": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true
     }
   },
   "hosting": {
@@ -179,88 +189,6 @@
       "providerPlugin": "awscloudformation",
       "service": "amplifyhosting",
       "type": "manual"
-    }
-  },
-  "parameters": {
-    "AMPLIFY_function_AdminQueries8dc38185_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "AdminQueries8dc38185"
-        }
-      ]
-    },
-    "AMPLIFY_function_AdminQueries8dc38185_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "AdminQueries8dc38185"
-        }
-      ]
-    },
-    "AMPLIFY_function_authnisabaPreTokenGeneration_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "authnisabaPreTokenGeneration"
-        }
-      ]
-    },
-    "AMPLIFY_function_authnisabaPreTokenGeneration_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "authnisabaPreTokenGeneration"
-        }
-      ]
-    },
-    "AMPLIFY_function_nisabaAdminSdkLayer_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "nisabaAdminSdkLayer"
-        }
-      ]
-    },
-    "AMPLIFY_function_nisabaAdminSdkLayer_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "nisabaAdminSdkLayer"
-        }
-      ]
-    },
-    "AMPLIFY_function_nisabaUserManagement_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "nisabaUserManagement"
-        }
-      ]
-    },
-    "AMPLIFY_function_nisabaUserManagement_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "nisabaUserManagement"
-        }
-      ]
-    },
-    "AMPLIFY_hosting_amplifyhosting_appId": {
-      "usedBy": [
-        {
-          "category": "hosting",
-          "resourceName": "amplifyhosting"
-        }
-      ]
-    },
-    "AMPLIFY_hosting_amplifyhosting_type": {
-      "usedBy": [
-        {
-          "category": "hosting",
-          "resourceName": "amplifyhosting"
-        }
-      ]
     }
   },
   "storage": {

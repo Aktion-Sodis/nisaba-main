@@ -3,8 +3,11 @@
     "ElasticsearchWarning": true,
     "ResolverConfig": {
         "project": {
-            "ConflictHandler": "OPTIMISTIC_CONCURRENCY",
-            "ConflictDetection": "VERSION"
+            "ConflictHandler": "LAMBDA",
+            "ConflictDetection": "VERSION",
+            "LambdaConflictHandler": {
+                "name": "syncConflictHandler5b19c779-${env}"
+            }
         }
     }
 }
