@@ -17,7 +17,12 @@
     ],
     "conflictResolution": {
       "defaultResolutionStrategy": {
-        "type": "OPTIMISTIC_CONCURRENCY"
+        "type": "LAMBDA",
+        "resolver": {
+          "type": "EXISTING",
+          "name": "syncConflictHandler5b19c779",
+          "arn": "arn:aws:lambda:eu-central-1:404541487485:function:syncConflictHandler5b19c779"
+        }
       }
     }
   }
