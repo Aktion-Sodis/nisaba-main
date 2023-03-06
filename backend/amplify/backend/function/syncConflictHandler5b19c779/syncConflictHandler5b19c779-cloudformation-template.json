@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"10.6.2\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"10.3.1\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "env": {
       "Type": "String"
@@ -34,12 +34,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "syncConflictHandler68b52ede",
+            "syncConflictHandler5b19c779",
             {
               "Fn::Join": [
                 "",
                 [
-                  "syncConflictHandler68b52ede",
+                  "syncConflictHandler5b19c779",
                   "-",
                   {
                     "Ref": "env"
@@ -83,12 +83,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "syncConflictHandler68b52edeLambdaRole",
+            "syncConflictHandler5b19c779LambdaRole",
             {
               "Fn::Join": [
                 "",
                 [
-                  "syncConflictHandler68b52edeLambdaRole",
+                  "syncConflictHandler5b19c779LambdaRole",
                   "-",
                   {
                     "Ref": "env"
@@ -182,14 +182,6 @@
     "LambdaExecutionRole": {
       "Value": {
         "Ref": "LambdaExecutionRole"
-      }
-    },
-    "LambdaExecutionRoleArn": {
-      "Value": {
-        "Fn::GetAtt": [
-          "LambdaExecutionRole",
-          "Arn"
-        ]
       }
     }
   }

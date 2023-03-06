@@ -2415,6 +2415,73 @@ export const syncSessionData = /* GraphQL */ `
     }
   }
 `;
+export const getTestObject = /* GraphQL */ `
+  query GetTestObject($id: ID!) {
+    getTestObject(id: $id) {
+      name
+      age
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      organization_id
+    }
+  }
+`;
+export const listTestObjects = /* GraphQL */ `
+  query ListTestObjects(
+    $filter: ModelTestObjectFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTestObjects(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        name
+        age
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        organization_id
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncTestObjects = /* GraphQL */ `
+  query SyncTestObjects(
+    $filter: ModelTestObjectFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncTestObjects(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        name
+        age
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        organization_id
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getLevelInterventionRelation = /* GraphQL */ `
   query GetLevelInterventionRelation($id: ID!) {
     getLevelInterventionRelation(id: $id) {

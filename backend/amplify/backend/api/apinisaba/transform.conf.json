@@ -6,7 +6,7 @@
             "ConflictHandler": "LAMBDA",
             "ConflictDetection": "VERSION",
             "LambdaConflictHandler": {
-                "name": "syncConflictHandler68b52ede-${env}"
+                "name": "syncConflictHandler5b19c779-${env}"
             }
         }
     }

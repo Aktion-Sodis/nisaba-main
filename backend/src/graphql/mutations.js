@@ -3082,6 +3082,60 @@ export const deleteSessionData = /* GraphQL */ `
     }
   }
 `;
+export const createTestObject = /* GraphQL */ `
+  mutation CreateTestObject(
+    $input: CreateTestObjectInput!
+    $condition: ModelTestObjectConditionInput
+  ) {
+    createTestObject(input: $input, condition: $condition) {
+      name
+      age
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      organization_id
+    }
+  }
+`;
+export const updateTestObject = /* GraphQL */ `
+  mutation UpdateTestObject(
+    $input: UpdateTestObjectInput!
+    $condition: ModelTestObjectConditionInput
+  ) {
+    updateTestObject(input: $input, condition: $condition) {
+      name
+      age
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      organization_id
+    }
+  }
+`;
+export const deleteTestObject = /* GraphQL */ `
+  mutation DeleteTestObject(
+    $input: DeleteTestObjectInput!
+    $condition: ModelTestObjectConditionInput
+  ) {
+    deleteTestObject(input: $input, condition: $condition) {
+      name
+      age
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      organization_id
+    }
+  }
+`;
 export const createLevelInterventionRelation = /* GraphQL */ `
   mutation CreateLevelInterventionRelation(
     $input: CreateLevelInterventionRelationInput!

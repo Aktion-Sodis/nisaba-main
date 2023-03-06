@@ -20,7 +20,8 @@
         "type": "LAMBDA",
         "resolver": {
           "type": "EXISTING",
-          "name": "syncConflictHandler68b52ede-${env}"
+          "name": "syncConflictHandler5b19c779",
+          "arn": "arn:aws:lambda:eu-central-1:404541487485:function:syncConflictHandler5b19c779"
         }
       }
     }
