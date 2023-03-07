@@ -74,6 +74,9 @@ class AuthRepository {
   }
 
   bool _sessionDataIsConsistent() {
+    print('SessionData');
+    print(LocalDataRepository.instance.toString());
+
     if (LocalDataRepository.instance.organizationID == null) {
       return false;
     }
@@ -87,10 +90,6 @@ class AuthRepository {
     }
 
     if (LocalDataRepository.instance.organizationNameCamelCase == null) {
-      return false;
-    }
-
-    if (LocalDataRepository.instance.user == null) {
       return false;
     }
 
@@ -116,6 +115,8 @@ class AuthRepository {
       if (!_sessionDataIsConsistent()) {
         throw SessionDataInconsistentException();
       }
+
+      //todo: hier weiterleiten auf account erstellen seite
 
       return session.isSignedIn ? (await _getUserIdFromAttributes()) : null;
     } on SessionDataInconsistentException catch (e) {
@@ -179,9 +180,11 @@ class AuthRepository {
 
       // TODO: loading a user
       User? user = await UserRepository.instance.fetchUserByID(userID);
-      if (user == null) {
+      /*if (user == null) {
         throw UserNotFoundInDatabaseException();
-      }
+        //todo: wie soll das offline funktionieren -> dann gibt online db immer null zurück?
+        //dann pushen zu create user?
+      }*/
       LocalDataRepository.instance.user = user;
 
       return userID;

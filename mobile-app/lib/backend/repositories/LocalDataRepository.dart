@@ -41,7 +41,13 @@ class LocalDataRepository {
   set organizationNameKebabCase(String? value) =>
       _table.put("organizationNameKebabCase", value);
 
-  User? get user => User.fromMap(_table.get("user"));
+  User? get user {
+    try {
+      return User.fromMap(_table.get("user"));
+    } catch (e) {
+      return null;
+    }
+  }
 
   set user(User? value) => _table.put("user", value?.toMap());
 }

@@ -31,6 +31,7 @@ class UserStateBuilder extends StatelessWidget {
         pages: [
           if (state.user == null)
             //todo: user initialization page
+            //todo: hier ggf. schauen
             MaterialPage(
                 child: UserDataView(userBloc: context.read<UserBloc>())),
           if (state.user != null) _buildUserExistsState(context, state)
