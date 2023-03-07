@@ -9,9 +9,9 @@
           <v-row>
             <v-col cols="12" md="8">
               <v-text-field
-                v-model="email"
-                :rules="[rules.required, rules.isEmail]"
-                :label="$t('Login.email')"
+                v-model="phoneNumber"
+                :rules="[rules.required, rules.isPhoneNumber]"
+                :label="$t('Login.phoneNumber')"
                 :disabled="loading"
                 required
                 outlined
@@ -44,6 +44,11 @@
                 </span>
               </v-btn>
             </v-col>
+            <v-col cols="12" v-if="finalPassword">
+              <v-alert type="success" border="left" class="mt-4">
+                {{ $t("userManagement.password", { finalPassword }) }}
+              </v-alert>
+            </v-col>
           </v-row>
         </v-container>
       </v-form>
@@ -66,7 +71,8 @@ export default {
   data() {
     return {
       loading: false,
-      email: null,
+      phoneNumber: null,
+      finalPassword: null,
       group: "admin",
       groups: [
         {
@@ -84,7 +90,7 @@ export default {
       ],
       rules: {
         required: formValidators.required,
-        isEmail: formValidators.isEmail,
+        isPhoneNumber: formValidators.isPhoneNumber,
       },
     };
   },
@@ -104,10 +110,11 @@ export default {
         return;
       }
       this.loading = true;
-      await this.createUser({
-        email: this.email,
+      const finalPassword = await this.createUser({
+        phoneNumber: this.phoneNumber,
         group: this.group,
       });
+      this.finalPassword = finalPassword;
       this.loading = false;
     },
   },

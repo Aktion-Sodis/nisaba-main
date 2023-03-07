@@ -24,17 +24,17 @@ const moduleMutations = {
 /** @type {import("vuex").ActionTree<typeof moduleState>} */
 const moduleActions = {
   createUser: async ({ dispatch }, userDraft) => {
-    const { email, group } = userDraft;
+    const { phoneNumber, group } = userDraft;
 
     // console log the id token
     const { idToken } = await Auth.currentSession();
     const { jwtToken } = idToken;
 
     try {
-      // Call the API `nisabaUserManagementApi` to create a user and pass the email as a parameter
-      await API.post("nisabaUserManagementApi", "/users", {
+      // Call the API `nisabaUserManagementApi` to create a user and pass the phoneNumber as a parameter
+      const { finalPassword } = await API.post("nisabaUserManagementApi", "/users", {
         headers: { Authorization: `Bearer ${jwtToken}` },
-        body: { email },
+        body: { phoneNumber, group },
       });
 
       // Show a success message
@@ -43,11 +43,13 @@ const moduleActions = {
         {
           type: "success",
           text: i18n.t("userManagement.successfulSentInvitation"),
+          duration: -1,
         },
         {
           root: true,
         }
       );
+      return finalPassword;
     } catch (e) {
       const { data } = e.response;
       const { error } = data;
@@ -77,6 +79,7 @@ const moduleActions = {
           }
         );
       }
+      return null;
     }
   },
 };
