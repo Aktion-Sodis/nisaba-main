@@ -15,22 +15,6 @@
         <h2 v-else>
           {{ $t("surveys.modal.firstCard.title.create") }}
         </h2>
-        <v-spacer></v-spacer>
-        <v-btn
-          v-if="!edit"
-          x-large
-          text
-          class="text-none"
-          @click="nextStepHandler"
-          :disabled="!canAdvance"
-        >
-          {{
-            $vuetify.breakpoint.name === "xs"
-              ? ""
-              : $t(`surveys.modal.firstCard.next-step`)
-          }}
-          <v-icon large> mdi-chevron-right </v-icon>
-        </v-btn>
       </v-card-title>
 
       <v-card-text>
@@ -85,22 +69,18 @@
               <v-card-title class="pt-0 pt-sm-2">
                 {{ $t("surveys.type.title") }}:
                 <v-btn-toggle v-model="typeIndex" mandatory class="ml-2">
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn v-bind="attrs" v-on="on">
-                        <v-icon>mdi-lightbulb-question-outline</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>{{ $t("surveys.type.types.INITIAL") }}</span>
-                  </v-tooltip>
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn v-bind="attrs" v-on="on">
-                        <v-icon>mdi-crosshairs-question</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>{{ $t("surveys.type.types.DEFAULT") }}</span>
-                  </v-tooltip>
+                  <v-btn>
+                    <v-icon>mdi-lightbulb-question-outline</v-icon>
+                    <span class="ml-1">
+                      {{ $t("surveys.type.types.INITIAL") }}
+                    </span>
+                  </v-btn>
+                  <v-btn>
+                    <v-icon>mdi-crosshairs-question</v-icon>
+                    <span class="ml-1">
+                      {{ $t("surveys.type.types.DEFAULT") }}
+                    </span>
+                  </v-btn>
                 </v-btn-toggle>
               </v-card-title>
 
@@ -174,6 +154,10 @@
       </v-card-text>
 
       <v-card-actions>
+        <v-btn x-large color="secondary" text @click="closeHandler">
+          {{ $t("general.cancel") }}
+        </v-btn>
+        <v-spacer></v-spacer>
         <v-btn
           x-large
           v-if="edit"
@@ -189,8 +173,20 @@
           <v-icon large> mdi-archive </v-icon>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn x-large color="secondary" text @click="closeHandler">
-          {{ $t("general.cancel") }}
+        <v-btn
+          v-if="!edit"
+          x-large
+          text
+          class="text-none"
+          @click="nextStepHandler"
+          :disabled="!canAdvance"
+        >
+          {{
+            $vuetify.breakpoint.name === "xs"
+              ? ""
+              : $t(`surveys.modal.firstCard.next-step`)
+          }}
+          <v-icon large> mdi-chevron-right </v-icon>
         </v-btn>
         <v-btn
           x-large

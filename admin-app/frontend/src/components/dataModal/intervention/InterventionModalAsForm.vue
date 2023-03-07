@@ -75,22 +75,18 @@
             <v-card-title class="pt-0 pt-sm-2">
               {{ $t("interventions.type.title") }}:
               <v-btn-toggle v-model="typeIndex" mandatory class="ml-2">
-                <v-tooltip top>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on">
-                      <v-icon>mdi-hammer-wrench</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>{{ $t("interventions.type.types.TECHNOLOGY") }}</span>
-                </v-tooltip>
-                <v-tooltip top>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on">
-                      <v-icon>mdi-school</v-icon>
-                    </v-btn>
-                  </template>
-                  <span>{{ $t("interventions.type.types.EDUCATION") }}</span>
-                </v-tooltip>
+                <v-btn>
+                  <v-icon>mdi-hammer-wrench</v-icon>
+                  <span class="ml-1">
+                    {{ $t("interventions.type.types.TECHNOLOGY") }}
+                  </span>
+                </v-btn>
+                <v-btn>
+                  <v-icon>mdi-school</v-icon>
+                  <span class="ml-1">
+                    {{ $t("interventions.type.types.EDUCATION") }}
+                  </span>
+                </v-btn>
               </v-btn-toggle>
             </v-card-title>
 

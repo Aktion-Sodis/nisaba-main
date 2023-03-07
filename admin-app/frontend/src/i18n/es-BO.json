@@ -21,11 +21,12 @@
       "minCharNotMet": "Al menos {minChar} carácteres.",
       "required": "Necesario.",
       "unsavedChanges": "Hay cambios sin guardar. ¿Estás seguro de que quieres salir?",
-      "addInNewLocale": "En otra lengua",
+      "addInNewLocale": "En otra lengua:",
       "invalidForm": "El formulario no es válido. Preste atención a las advertencias de las entradas.",
       "invalidNumber": "Este es un número inválido.",
       "cannotDeleteEntityWithChildren": "No se puede eliminar esta entidad porque tiene hijos.",
-      "email": "Correo electrónico"
+      "email": "Correo electrónico",
+      "phoneNumber": "Número de teléfono"
     },
     "noTextProvided": "No text was provided.",
     "noNumberProvided": "No number was provided.",
@@ -105,6 +106,7 @@
     "title": "¡Bienvenido de nuevo!",
     "subtitle": "Por favor, inicie sesión con sus credenciales o regístrese.",
     "email": "Email",
+    "phoneNumber": "Número de teléfono",
     "password": "Contraseña",
     "rememberMe": "Recuérdalo",
     "forgotPassword": "Contraseña olvidada",
@@ -245,8 +247,10 @@
   "userManagement": {
     "title": "Gestión de usuarios",
     "sendInvitation": "Enviar invitación",
-    "successfulSentInvitation": "Se ha enviado una invitación con éxito al correo electrónico",
-    "emailAlreadyInUse": "Este correo electrónico ya está en uso"
+    "successfulSentInvitation": "El usuario se ha creado correctamente",
+    "emailAlreadyInUse": "Este correo electrónico ya está en uso",
+    "groupLabel": "Producto",
+    "password": "Usuario creado. Asegúrese de que llegue esta contraseña al usuario: {finalPassword}"
   },
   "surveys": {
     "title": "Encuestas",

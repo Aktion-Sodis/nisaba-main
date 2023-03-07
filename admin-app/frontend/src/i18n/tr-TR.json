@@ -21,11 +21,12 @@
       "minCharNotMet": "En az {minChar} uzunluğunda olmalı.",
       "required": "Zorunlu alan.",
       "unsavedChanges": "Kaydedilmemiş değişiklikler var. Çıkmak istediğinizden emin misiniz?",
-      "addInNewLocale": "Başka bir dilde",
+      "addInNewLocale": "Başka bir dilde:",
       "invalidForm": "Geçersiz form. Lütfen girdilerin uyarılarına dikkat ediniz.",
       "invalidNumber": "Geçersiz sayı.",
       "cannotDeleteEntityWithChildren": "Bu öğeyi silemezsiniz. Lütfen önce alt öğeleri siliniz.",
-      "email": "Geçersiz e-posta adresi."
+      "email": "Geçersiz e-posta adresi.",
+      "phoneNumber": "Geçersiz telefon numarası."
     },
     "noTextProvided": "Buraya bir metin girilmemiş.",
     "noNumberProvided": "Buraya bir sayı girilmemiş.",
@@ -106,6 +107,7 @@
     "subtitle": "Lütfen giriş yap.",
     "email": "Email",
     "password": "Şifre",
+    "phoneNumber": "Telefon numarası",
     "rememberMe": "Oturumu hatırla",
     "forgotPassword": "Şifremi unuttum",
     "signIn": "Giriş yap",
@@ -245,8 +247,10 @@
   "userManagement": {
     "title": "Kullanıcı Yönetimi",
     "sendInvitation": "Davetiye Gönder",
-    "successfulSentInvitation": "E-posta adresine bir davetiyenin başarıyla gönderildi",
-    "emailAlreadyInUse": "Bu e-posta zaten kullanımda"
+    "successfulSentInvitation": "Kullanıcı başarıyla oluşturuldu.",
+    "emailAlreadyInUse": "Bu e-posta zaten kullanımda",
+    "groupLabel": "Kapsam",
+    "password": "Kullanıcı oluşturuldu. Kullanıcıya bu şifreyi ulaştırın: {finalPassword}"
   },
   "surveys": {
     "title": "Anketler",
