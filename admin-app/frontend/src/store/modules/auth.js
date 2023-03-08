@@ -1,12 +1,8 @@
 import { Auth } from "@aws-amplify/auth";
-import { DataStore } from "@aws-amplify/datastore";
+import { DataStore, Predicates, SortDirection } from "@aws-amplify/datastore";
 
 import i18n from "../../i18n";
-import {
-  authChallengeNamesDict,
-  signInStatusDict,
-  vuexModulesDict,
-} from "../../lib/constants";
+import { authChallengeNamesDict, signInStatusDict, vuexModulesDict } from "../../lib/constants";
 import { User } from "../../models";
 
 const authModule = {
@@ -17,7 +13,7 @@ const authModule = {
 
     // "Credentials"
     userId: null,
-    email: null,
+    username: null,
     organizationId: null,
     firstName: null,
     lastName: null,
@@ -26,23 +22,20 @@ const authModule = {
     priorRouteActivity: Date.now(),
     lastRouteActivity: Date.now(),
 
-    tempPassword: null,
+    // tempPassword: null,
   }),
   getters: {
     getIsAuthenticated: ({ isAuthenticated }) => isAuthenticated,
     getIdToken: ({ idToken }) => idToken,
     getUserId: ({ userId }) => userId,
-    getEmail: ({ email }) => email,
+    getEmail: ({ username }) => username,
     getOrganizationId: ({ organizationId }) => organizationId,
     getFirstName: ({ firstName }) => firstName,
     getLastName: ({ lastName }) => lastName,
 
-    credentials: (
-      _,
-      { getUserId, getEmail, getOrganizationId, getFirstName, getLastName }
-    ) => ({
+    credentials: (_, { getUserId, getEmail, getOrganizationId, getFirstName, getLastName }) => ({
       userId: getUserId,
-      email: getEmail,
+      username: getEmail,
       organizationId: getOrganizationId,
       firstName: getFirstName,
       lastName: getLastName,
@@ -53,23 +46,18 @@ const authModule = {
     getPriorRouteActivity: ({ priorRouteActivity }) => priorRouteActivity,
 
     // <==> is it longer than an hour?
-    lastRouteActivityDiffTooLarge: (
-      _,
-      { getLastRouteActivity, getPriorRouteActivity }
-    ) => getLastRouteActivity - getPriorRouteActivity > 1000 * 60 * 60,
+    lastRouteActivityDiffTooLarge: (_, { getLastRouteActivity, getPriorRouteActivity }) =>
+      getLastRouteActivity - getPriorRouteActivity > 1000 * 60 * 60,
 
-    getTempPassword: ({ tempPassword }) => tempPassword,
+    // getTempPassword: ({ tempPassword }) => tempPassword,
   },
   mutations: {
     setIsAuthenticated(state, { newValue }) {
       state.isAuthenticated = newValue;
     },
-    setCredentials(
-      state,
-      { userId, email, organizationId, firstName, lastName }
-    ) {
+    setCredentials(state, { userId, username, organizationId, firstName, lastName }) {
       state.userId = userId;
-      state.email = email;
+      state.username = username;
       state.organizationId = organizationId;
       state.firstName = firstName;
       state.lastName = lastName;
@@ -88,37 +76,59 @@ const authModule = {
       state.priorRouteActivity = null;
       state.lastRouteActivity = null;
     },
-    setTempPassword(state, { newValue }) {
-      state.tempPassword = newValue;
-    },
+    // setTempPassword(state, { newValue }) {
+    //   state.tempPassword = newValue;
+    // },
   },
   actions: {
-    async signIn({ commit, dispatch }, { email, password, rememberMe }) {
+    async signIn({ commit, dispatch }, { username, password, rememberMe }) {
       try {
-        const x = await Auth.signIn(email, password);
+        const x = await Auth.signIn(
+          username,
+          password,
+          rememberMe
+            ? {
+                // 1 year
+                expires: String(365 * 24 * 60 * 60),
+              }
+            : undefined
+        );
 
-        const { username: userId, challengeName } = x;
+        // query user by firstName and lastName, sort by createdAt
+        const usersInDb = await DataStore.query(
+          User,
+          (u) =>
+            u.and((u) => [
+              u.firstName.eq(x.attributes?.given_name),
+              u.lastName.eq(x.attributes?.family_name),
+            ]),
+          {
+            sort: (u) => u.createdAt(SortDirection.DESCENDING),
+          }
+        );
 
-        commit("setCredentials", {
-          userId,
-          email,
-        });
+        console.log({ usersInDb });
 
-        // if password is not finalized
-        if (challengeName === authChallengeNamesDict.newPasswordRequired) {
-          commit("setTempPassword", { newValue: password });
+        if (usersInDb.length === 0) {
+          // commit("setTempPassword", { newValue: password });
           return signInStatusDict.completeUserInfo;
         }
 
+        // if password is not finalized
+        // if (challengeName === authChallengeNamesDict.newPasswordRequired) {
+        //   commit("setTempPassword", { newValue: password });
+        //   return signInStatusDict.completeUserInfo;
+        // }
+
         const { attributes } = x;
 
-        const userEmail = attributes.email;
+        const userEmail = attributes?.email;
         const organizationId = attributes["custom:organization_id"];
-        const firstName = attributes.given_name;
-        const lastName = attributes.family_name;
+        const firstName = attributes?.given_name;
+        const lastName = attributes?.family_name;
 
         commit("setCredentials", {
-          userId,
+          userId: usersInDb[0].id,
           email: userEmail,
           organizationId,
           firstName,
@@ -137,6 +147,8 @@ const authModule = {
         commit("setRememberSession", { newValue: rememberMe });
         return signInStatusDict.success;
       } catch (error) {
+        console.log({ error });
+        await Auth.signOut();
         dispatch(
           `${vuexModulesDict.feedback}/showFeedbackForDuration`,
           {
@@ -158,33 +170,33 @@ const authModule = {
       }
     },
 
-    async completeUserInformation(
-      { commit, getters, dispatch },
-      { firstName, lastName, newPassword }
-    ) {
-      if (!getters.getUserId) {
-        dispatch(
-          `${vuexModulesDict.feedback}/showFeedbackForDuration`,
-          {
-            type: "error",
-            text: "You cannot just update a user profile without following the sign in flow.",
-          },
-          { root: true }
-        );
-        return signInStatusDict.failed;
-      }
+    async completeUserInformation({ commit, getters, dispatch }, { firstName, lastName }) {
+      // if (!getters.getUserId) {
+      //   dispatch(
+      //     `${vuexModulesDict.feedback}/showFeedbackForDuration`,
+      //     {
+      //       type: "error",
+      //       text: "You cannot just update a user profile without following the sign in flow.",
+      //     },
+      //     { root: true }
+      //   );
+      //   return signInStatusDict.failed;
+      // }
 
       try {
-        await Auth.completeNewPassword(
-          await Auth.signIn(getters.getEmail, getters.getTempPassword),
-          newPassword
-        );
+        // await Auth.completeNewPassword(
+        //   await Auth.signIn(getters.getEmail, getters.getTempPassword)
+        //   // newPassword
+        // );
         const userDb = new User({
           firstName,
           lastName,
           permissions: [],
         });
         await DataStore.save(userDb);
+        commit("setCredentials", {
+          userId: userDb.id,
+        });
       } catch (error) {
         commit("setIdToken", { newToken: null });
         commit("setIsAuthenticated", { newValue: false });
@@ -209,9 +221,10 @@ const authModule = {
           newToken: user.signInUserSession.idToken.jwtToken,
         });
         commit("setIsAuthenticated", { newValue: true });
-        commit("setTempPassword", { newValue: null });
+        // commit("setTempPassword", { newValue: null });
         return signInStatusDict.success;
-      } catch {
+      } catch (e) {
+        console.log({ e });
         commit("setIdToken", { newToken: null });
         commit("setIsAuthenticated", { newValue: false });
         return signInStatusDict.failed;
@@ -222,7 +235,8 @@ const authModule = {
       try {
         await Auth.forgotPassword(email);
         return signInStatusDict.success;
-      } catch {
+      } catch (e) {
+        console.log(e);
         return signInStatusDict.failed;
       }
     },

@@ -29,10 +29,17 @@
         :append-icon="showPassword2 ? 'mdi-eye' : 'mdi-eye-off'"
         :type="showPassword2 ? 'text' : 'password'"
       ></v-text-field>
-      <v-btn :disabled="loading" type="submit" block large color="primary" class="text-none">
+      <v-btn
+        :disabled="loading"
+        type="submit"
+        block
+        large
+        color="primary"
+        class="text-none"
+      >
         <v-progress-circular indeterminate v-if="loading"></v-progress-circular>
         <span v-else>
-          {{ $t('ForgotPassword.confirm') }}
+          {{ $t("ForgotPassword.confirm") }}
         </span>
       </v-btn>
     </div>
@@ -40,7 +47,7 @@
       <v-text-field
         v-model="email"
         :rules="[rules.required]"
-        :label="$t('Login.email')"
+        :label="$t('Login.usernamePlaceholder')"
         :disabled="loading"
         required
         outlined
@@ -56,7 +63,7 @@
       >
         <v-progress-circular indeterminate v-if="loading"></v-progress-circular>
         <span v-else>
-          {{ $t('ForgotPassword.sendCode') }}
+          {{ $t("ForgotPassword.sendCode") }}
         </span>
       </v-btn>
     </div>
@@ -64,18 +71,22 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex';
-import { formValidators } from '../../lib/utils';
-import { routeNamesDict, signInStatusDict, vuexModulesDict } from '../../lib/constants';
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import { formValidators } from "../../lib/utils";
+import {
+  routeNamesDict,
+  signInStatusDict,
+  vuexModulesDict,
+} from "../../lib/constants";
 
 export default {
-  name: 'ForgotPasswordForm',
+  name: "ForgotPasswordForm",
   data() {
     return {
-      email: '',
-      emailedCode: '',
-      newPassword1: '',
-      newPassword2: '',
+      email: "",
+      emailedCode: "",
+      newPassword1: "",
+      newPassword2: "",
       showPassword1: false,
       showPassword2: false,
       loading: false,
@@ -92,7 +103,7 @@ export default {
     }),
   },
   mounted() {
-    this.email = this.storedEmail || '';
+    this.email = this.storedEmail || "";
   },
   methods: {
     ...mapActions({
@@ -105,14 +116,19 @@ export default {
     }),
     async sendEmailCode() {
       this.loading = true;
-      const forgotPasswordStatus = await this.forgotPassword({ email: this.email });
+      const forgotPasswordStatus = await this.forgotPassword({
+        email: this.email,
+      });
       if (forgotPasswordStatus === signInStatusDict.success) {
         this.isCodeSent = true;
         this.setCredentials({ email: this.email });
         this.loading = false;
         this.$refs.form.reset();
       } else if (forgotPasswordStatus === signInStatusDict.failed) {
-        this.showFeedbackForDuration({ type: 'error', message: 'Sth went wrong' });
+        this.showFeedbackForDuration({
+          type: "error",
+          message: "Sth went wrong",
+        });
       }
       this.loading = false;
     },
@@ -129,8 +145,8 @@ export default {
       });
       if (forgotPasswordSubmitStatus === signInStatusDict.success) {
         this.showFeedbackForDuration({
-          type: 'success',
-          text: 'Successfully updated your password.',
+          type: "success",
+          text: "Successfully updated your password.",
         });
         this.$router.push({ name: routeNamesDict.Login });
         return;

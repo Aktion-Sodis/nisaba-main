@@ -7,6 +7,7 @@
   },
   "general": {
     "edit": "Edit",
+    "continue": "Continue",
     "searchBox": "Search anything",
     "close": "Close",
     "cancel": "Cancel",
@@ -105,7 +106,7 @@
   "Login": {
     "title": "Welcome back!",
     "subtitle": "Please sign in with your credentials.",
-    "email": "Email",
+    "usernamePlaceholder": "Email or phone number",
     "phoneNumber": "Phone number",
     "password": "Password",
     "rememberMe": "Remember me",

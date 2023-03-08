@@ -7,6 +7,7 @@
   },
   "general": {
     "edit": "Düzenle",
+    "continue": "Devam et",
     "searchBox": "Her yerde ara",
     "close": "Kapat",
     "cancel": "İptal",
@@ -105,9 +106,9 @@
   "Login": {
     "title": "Hoş geldin!",
     "subtitle": "Lütfen giriş yap.",
-    "email": "Email",
-    "password": "Şifre",
+    "usernamePlaceholder": "Email ya da telefon numarası",
     "phoneNumber": "Telefon numarası",
+    "password": "Şifre",
     "rememberMe": "Oturumu hatırla",
     "forgotPassword": "Şifremi unuttum",
     "signIn": "Giriş yap",

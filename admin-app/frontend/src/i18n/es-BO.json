@@ -7,6 +7,7 @@
   },
   "general": {
     "edit": "Editar",
+    "continue": "Continuar",
     "searchBox": "Búsqueda",
     "close": "Cerrar",
     "cancel": "Cancelar",
@@ -105,7 +106,7 @@
   "Login": {
     "title": "¡Bienvenido de nuevo!",
     "subtitle": "Por favor, inicie sesión con sus credenciales o regístrese.",
-    "email": "Email",
+    "usernamePlaceholder": "Email o número de teléfono",
     "phoneNumber": "Número de teléfono",
     "password": "Contraseña",
     "rememberMe": "Recuérdalo",

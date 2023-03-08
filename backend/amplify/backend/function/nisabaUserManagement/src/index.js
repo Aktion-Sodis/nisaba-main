@@ -10,7 +10,7 @@ const USER_POOL_ID = process.env.AUTH_AUTHNISABA_USERPOOLID;
 /**
  * @param {import('@types/aws-lambda').APIGatewayProxyEvent} event
  * @returns {Promise<import('@types/aws-lambda').APIGatewayProxyResult>}
- * */
+ */
 const createUser = async (event) => {
   // Get the phoneNumber from the request body
   const { phoneNumber, group } = JSON.parse(event.body);
@@ -55,6 +55,10 @@ const createUser = async (event) => {
       {
         Name: "phone_number",
         Value: phoneNumber,
+      },
+      {
+        Name: "phone_number_verified",
+        Value: "true",
       },
       {
         Name: "custom:organization_id",
