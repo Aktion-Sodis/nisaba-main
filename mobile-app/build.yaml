@@ -1,3 +1,16 @@
+builders:
+  mobile_app:db_model_factory:
+    # library URI containing the builder - maps to `lib/member_count_library_generator.dart`
+    import: "package:mobile_app/db_model_generator.dart"
+    # Name of the function in the above library to call.
+    builder_factories: ["dbModelLibraryBuilder"]
+    # The mapping from the source extension to the generated file extension
+    build_extensions: {".dart": [".db_model.dart"]}
+    # Will automatically run on any package that depends on it
+    auto_apply: dependents
+    # Generate the output directly into the package, not to a hidden cache dir
+    build_to: source
+
 targets:
   $default:
     builders:
@@ -20,3 +33,11 @@ targets:
           generic_argument_factories: false
           ignore_unannotated: false
           include_if_null: true # this setting is highly important, as GraphQL has to know all the possible fields
+      
+      mobile_app|db_model_factory:
+        generate_for:
+          - lib/*.dart
+
+
+
+      
