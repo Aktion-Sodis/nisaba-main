@@ -1,9 +1,13 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
+import 'package:mobile_app/db_model_generator.dart';
 
 part 'TestObject.g.dart';
 
+part 'TestObject.db_model.dart';
+
+@DBModelAnnotation()
 @JsonSerializable()
 class TestObject extends DBModel {
   @override
@@ -11,6 +15,8 @@ class TestObject extends DBModel {
 
   String? name;
   int age;
+
+  List<String>? abd;
 
   TestObject(this.name, this.age, [this.id]);
 

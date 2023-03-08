@@ -4,13 +4,16 @@ import 'package:mobile_app/backend/callableModels/Location.dart';
 import 'package:mobile_app/backend/callableModels/User.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
+import '../../db_model_generator.dart';
 import '../database/DBModel.dart';
 import 'Entity.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 
 part 'AppliedIntervention.g.dart';
+part 'AppliedIntervention.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class AppliedIntervention extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -22,7 +25,10 @@ class AppliedIntervention extends DBModel {
   String? id;
   late User whoDidIt; // Unpopulated allowed
   late Intervention intervention; // Unpopulated allowed
-  late Entity entity; // Unpopulated allowed
+
+  @JsonKey(includeToJson: false)
+  late Entity entity; // Unpopulated allowe
+
   Location? location;
   int? schemeVersion;
   DateTime? createdAt;

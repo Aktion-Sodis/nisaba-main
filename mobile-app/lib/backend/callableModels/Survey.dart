@@ -5,12 +5,15 @@ import 'package:mobile_app/backend/callableModels/Question.dart';
 import 'package:mobile_app/backend/callableModels/Relation.dart';
 import 'package:mobile_app/backend/callableModels/SurveyTag.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
+import 'package:mobile_app/db_model_generator.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Survey.g.dart';
+part 'Survey.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class Survey extends DBModel {
   // JsonSerializable factory and toJson methods

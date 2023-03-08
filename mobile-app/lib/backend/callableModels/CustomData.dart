@@ -1,12 +1,15 @@
 import 'package:mobile_app/backend/callableModels/AppliedCustomData.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
+import 'package:mobile_app/db_model_generator.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import 'package:json_annotation/json_annotation.dart';
 
 part 'CustomData.g.dart';
+part 'CustomData.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class CustomData extends DBModel {
   // JsonSerializable factory and toJson methods

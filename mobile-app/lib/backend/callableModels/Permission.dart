@@ -3,8 +3,12 @@ import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:json_annotation/json_annotation.dart';
 
-part 'Permission.g.dart';
+import '../../db_model_generator.dart';
 
+part 'Permission.g.dart';
+part 'Permission.db_model.dart';
+
+@DBModelAnnotation()
 @JsonSerializable()
 class Permission extends DBModel {
   // JsonSerializable factory and toJson methods

@@ -2,8 +2,12 @@ import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:json_annotation/json_annotation.dart';
 
-part 'Marking.g.dart';
+import '../../db_model_generator.dart';
 
+part 'Marking.g.dart';
+part 'Marking.db_model.dart';
+
+@DBModelAnnotation()
 @JsonSerializable()
 class Marking extends DBModel {
   // JsonSerializable factory and toJson methods

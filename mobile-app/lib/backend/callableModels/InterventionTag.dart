@@ -1,5 +1,6 @@
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
+import 'package:mobile_app/db_model_generator.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import 'Intervention.dart';
@@ -8,7 +9,9 @@ import 'Relation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'InterventionTag.g.dart';
+part 'InterventionTag.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class InterventionTag extends DBModel {
   // JsonSerializable factory and toJson methods

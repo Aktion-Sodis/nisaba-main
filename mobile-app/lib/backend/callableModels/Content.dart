@@ -9,8 +9,12 @@ import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'Content.g.dart';
+import '../../db_model_generator.dart';
 
+part 'Content.g.dart';
+part 'Content.db_model.dart';
+
+@DBModelAnnotation()
 @JsonSerializable()
 class Content extends DBModel {
   // JsonSerializable factory and toJson methods

@@ -1,11 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/Permission.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
+import 'package:mobile_app/db_model_generator.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'User.g.dart';
+part 'User.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class User extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -17,7 +20,10 @@ class User extends DBModel {
   late String firstName;
   late String lastName;
   String? bio;
+
+  @DBModelIgnore()
   late List<Permission> permissions;
+
   int? schemeVersion;
   DateTime? createdAt;
   DateTime? updatedAt;

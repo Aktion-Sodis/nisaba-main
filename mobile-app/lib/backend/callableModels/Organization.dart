@@ -1,8 +1,11 @@
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:mobile_app/db_model_generator.dart';
 
 part 'Organization.g.dart';
+part 'Organization.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class Organization extends DBModel {
   // JsonSerializable factory and toJson methods

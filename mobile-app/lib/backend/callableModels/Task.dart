@@ -119,4 +119,10 @@ class Task extends DBModel {
         other.executedSurvey == executedSurvey &&
         other.schemeVersion == schemeVersion;
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    throw UnimplementedError();
+  }
 }

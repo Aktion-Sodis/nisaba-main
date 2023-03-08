@@ -1,11 +1,14 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:mobile_app/db_model_generator.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import '../database/DBModel.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Location.g.dart';
+part 'Location.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class Location extends DBModel {
   // JsonSerializable factory and toJson methods

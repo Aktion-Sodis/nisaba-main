@@ -8,8 +8,12 @@ import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'Level.g.dart';
+import '../../db_model_generator.dart';
 
+part 'Level.g.dart';
+part 'Level.db_model.dart';
+
+@DBModelAnnotation()
 @JsonSerializable()
 class Level extends DBModel {
   // JsonSerializable factory and toJson methods

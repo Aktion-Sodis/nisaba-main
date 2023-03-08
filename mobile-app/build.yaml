@@ -36,7 +36,7 @@ targets:
       
       mobile_app|db_model_factory:
         generate_for:
-          - lib/*.dart
+          - lib/backend/callableModels/*.dart
 
 
 
