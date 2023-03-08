@@ -23,6 +23,7 @@
             <v-col cols="12" sm="6" class="pb-0 px-0 px-md-3">
               <v-card-title class="pt-0 pt-sm-2">
                 {{ $t("surveys.modal.firstCard.form.name") }}
+                <span color="darkred">*</span>
               </v-card-title>
               <LocaleTextBox
                 labelPrefixI18nSelector="surveys.modal.firstCard.form.name"
@@ -84,10 +85,13 @@
                 </v-btn-toggle>
               </v-card-title>
 
-              <v-card-title class="pr-0 d-flex">
-                <span class="mr-2">
-                  {{ $t("surveys.modal.intervention") }}
-                </span>
+              <div class="d-flex">
+                <v-card-title class="pr-0 flex-grow-1">
+                  <span class="mr-2" style="white-space: nowrap">
+                    {{ $t("surveys.modal.intervention") }}
+                    <span color="darkred">*</span>
+                  </span>
+                </v-card-title>
                 <v-select
                   v-model="interventionId"
                   :items="interventions"
@@ -112,7 +116,7 @@
                     }}
                   </template>
                 </v-select>
-              </v-card-title>
+              </div>
 
               <v-card-title class="pt-0 pt-sm-2">
                 {{ $t("surveys.modal.image") }}
@@ -318,20 +322,58 @@ export default {
       imgInput.$el.click();
     },
     nextStepHandler() {
+      const surveyDraftFromLocalStorage = JSON.parse(
+        localStorage.getItem("surveyDraft")
+      );
+      localStorage.setItem(
+        "surveyDraft",
+        JSON.stringify({
+          ...surveyDraftFromLocalStorage,
+          dataDraft: {
+            name: this.name,
+            description: this.description,
+            interventionId: this.interventionId,
+            typeIndex: this.typeIndex,
+          },
+        })
+      );
+
       this.setDraftFromComponentData();
       this.incrementCompletionIndex();
     },
     prefillComponentDataFromDataDraft() {
+      // this.name =
+      //   mutableI18nString({
+      //     languageTexts: this.dataDraft?.name.languageTexts,
+      //   }) ?? emptyMutableI18nString();
+      // this.description =
+      //   mutableI18nString({
+      //     languageTexts: this.dataDraft?.description.languageTexts,
+      //   }) ?? emptyMutableI18nString();
+      // // this.surveyTags = this.tagIdsBySurveyId({ surveyId: this.dataIdInFocus }) ?? [];
+      // this.interventionId = this.dataDraft?.intervention?.id ?? null;
+
+      const surveyDraftFromLocalStorage = JSON.parse(
+        localStorage.getItem("surveyDraft")
+      );
+
       this.name =
         mutableI18nString({
-          languageTexts: this.dataDraft?.name.languageTexts,
+          languageTexts:
+            surveyDraftFromLocalStorage?.dataDraft?.name?.languageTexts,
         }) ?? emptyMutableI18nString();
+
       this.description =
         mutableI18nString({
-          languageTexts: this.dataDraft?.description.languageTexts,
+          languageTexts:
+            surveyDraftFromLocalStorage?.dataDraft?.description?.languageTexts,
         }) ?? emptyMutableI18nString();
-      // this.surveyTags = this.tagIdsBySurveyId({ surveyId: this.dataIdInFocus }) ?? [];
-      this.interventionId = this.dataDraft?.intervention?.id ?? null;
+
+      this.interventionId =
+        surveyDraftFromLocalStorage?.dataDraft?.interventionId ?? null;
+
+      this.typeIndex =
+        surveyDraftFromLocalStorage?.dataDraft?.typeIndex ?? this.typeIndex;
 
       this.rerenderDescriptionLocaleTextBox += 1;
       this.rerenderNameLocaleTextBox -= 1;

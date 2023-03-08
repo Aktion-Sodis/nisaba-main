@@ -50,6 +50,7 @@
             <v-col cols="12" sm="6" class="py-0 px-0 px-sm-3">
               <h2 class="mb-2">
                 {{ $t("surveys.modal.questionCard.form.question.title") }}
+                <span color="darkred">*</span>
               </h2>
               <LocaleTextBox
                 labelPrefixI18nSelector="surveys.modal.questionCard.form.question.textLabel"
@@ -355,6 +356,9 @@ export default {
   created() {
     window.addEventListener("beforeunload", this.beforeWindowUnload);
   },
+  mounted() {
+    this.loadSurveyDraftFromLocalStorage();
+  },
   beforeDestroy() {
     window.removeEventListener("beforeunload", this.beforeWindowUnload);
   },
@@ -458,6 +462,7 @@ export default {
       priorQuestionHandler: `${vuexModulesDict.question}/priorQuestionHandler`,
       discardQuestionHandler: `${vuexModulesDict.question}/discardQuestionHandler`,
       saveQuestionHandler: `${vuexModulesDict.question}/saveQuestionHandler`,
+      loadSurveyDraftFromLocalStorage: `${vuexModulesDict.question}/loadSurveyDraftFromLocalStorage`,
 
       showToBeImplementedFeedback: `${vuexModulesDict.feedback}/showToBeImplementedFeedback`,
       abortReadSurveyHandler: `${vuexModulesDict.dataModal}/abortReadData`,

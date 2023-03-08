@@ -1,5 +1,11 @@
-import { emptyQuestionOption, emptyQuestion, emptyI18nString } from '../../lib/classes';
-import { vuexModulesDict } from '../../lib/constants';
+import {
+  emptyQuestionOption,
+  emptyQuestion,
+  emptyI18nString,
+  mutableI18nString,
+  mutableQuestionOption,
+} from "../../lib/classes";
+import { vuexModulesDict } from "../../lib/constants";
 
 const QUESTION_UI = {
   namespaced: true,
@@ -16,22 +22,25 @@ const QUESTION_UI = {
     getOptionDrafts: ({ optionDrafts }) => optionDrafts || [[emptyQuestionOption()]],
     getQuestionImages: ({ questionImages }) => questionImages,
 
-    questionWithOptionDrafts: (_, { getQuestionDrafts, getOptionDrafts }) => getQuestionDrafts.map((q, i) => ({
-      ...q,
-      optionDrafts: getOptionDrafts[i],
-    })),
+    questionWithOptionDrafts: (_, { getQuestionDrafts, getOptionDrafts }) =>
+      getQuestionDrafts.map((q, i) => ({
+        ...q,
+        optionDrafts: getOptionDrafts[i],
+      })),
     nQuestions: (_, { getQuestionDrafts }) => getQuestionDrafts.length ?? 1,
     isAtFirstQuestion: (_, { getIQuestions }) => getIQuestions === 0,
     isAtLastQuestion: (_, { getIQuestions, nQuestions }) => getIQuestions === nQuestions - 1,
-    questionCurrentDraft: (_, { getQuestionDrafts, getIQuestions }) => getQuestionDrafts[getIQuestions],
+    questionCurrentDraft: (_, { getQuestionDrafts, getIQuestions }) =>
+      getQuestionDrafts[getIQuestions],
     optionsCurrentDraft: (_, { getOptionDrafts, getIQuestions }) => getOptionDrafts[getIQuestions],
     currentQuestionWithOptions: (_, { getOptionDrafts, getQuestionDrafts, getIQuestions }) => ({
       ...getQuestionDrafts[getIQuestions],
       optionDrafts: getOptionDrafts[getIQuestions],
     }),
-    questionTextInFocus: (state, { getIQuestions }, rootState, rootGetters) => rootGetters[`${vuexModulesDict.survey}/SURVEYById`]({
-      id: rootGetters[`${vuexModulesDict.dataModal}/getDataIdInFocus`],
-    })?.questions[getIQuestions].text ?? emptyI18nString(),
+    questionTextInFocus: (state, { getIQuestions }, rootState, rootGetters) =>
+      rootGetters[`${vuexModulesDict.survey}/SURVEYById`]({
+        id: rootGetters[`${vuexModulesDict.dataModal}/getDataIdInFocus`],
+      })?.questions[getIQuestions].text ?? emptyI18nString(),
   },
   mutations: {
     /* INDEX OPERATIONS */
@@ -92,82 +101,123 @@ const QUESTION_UI = {
   },
   actions: {
     nextQuestionHandler: ({ commit, getters }, { newQuestion, newOptions }) => {
-      commit('replaceQuestionAtIndex', {
+      commit("replaceQuestionAtIndex", {
         newQuestion,
         index: getters.getIQuestions,
       });
-      commit('replaceOptionAtIndex', {
+      commit("replaceOptionAtIndex", {
         newOptions,
         index: getters.getIQuestions,
       });
       if (getters.isAtLastQuestion) {
-        commit('addQuestionAtIndex', {
+        commit("addQuestionAtIndex", {
           newQuestion: emptyQuestion(),
           index: getters.getIQuestions + 1,
         });
-        commit('addOptionAtIndex', {
+        commit("addOptionAtIndex", {
           newOptions: [emptyQuestionOption()],
           index: getters.getIQuestions + 1,
         });
       }
-      commit('incrementIQuestions');
+      commit("incrementIQuestions");
     },
     priorQuestionHandler: ({ commit, getters }, { newQuestion, newOptions }) => {
       if (getters.isAtFirstQuestion) return;
-      commit('replaceQuestionAtIndex', {
+      commit("replaceQuestionAtIndex", {
         newQuestion,
         index: getters.getIQuestions,
       });
-      commit('replaceOptionAtIndex', {
+      commit("replaceOptionAtIndex", {
         newOptions,
         index: getters.getIQuestions,
       });
-      commit('decrementIQuestions');
+      commit("decrementIQuestions");
     },
     discardQuestionHandler: ({ commit, getters }) => {
       if (getters.isAtLastQuestion) {
-        commit('replaceQuestionAtIndex', {
+        commit("replaceQuestionAtIndex", {
           newQuestion: emptyQuestion(),
           index: getters.getIQuestions,
         });
-        commit('replaceOptionAtIndex', {
+        commit("replaceOptionAtIndex", {
           newOptions: [emptyQuestionOption()],
           index: getters.getIQuestions,
         });
         return;
       }
-      commit('deleteQuestionAtIndex', { index: getters.getIQuestions });
-      commit('deleteOptionAtIndex', { index: getters.getIQuestions });
+      commit("deleteQuestionAtIndex", { index: getters.getIQuestions });
+      commit("deleteOptionAtIndex", { index: getters.getIQuestions });
     },
-    saveQuestionHandler: ({ commit, getters }, { newQuestion, newOptions }) => {
-      commit('replaceQuestionAtIndex', {
+    saveQuestionHandler: (
+      { commit, getters, rootState, rootGetters },
+      { newQuestion, newOptions }
+    ) => {
+      commit("replaceQuestionAtIndex", {
         newQuestion,
         index: getters.getIQuestions,
       });
-      commit('replaceOptionAtIndex', {
+      commit("replaceOptionAtIndex", {
         newOptions,
         index: getters.getIQuestions,
       });
       if (getters.isAtLastQuestion) {
-        commit('addQuestionAtIndex', {
+        commit("addQuestionAtIndex", {
           newQuestion: emptyQuestion(),
           index: getters.getIQuestions + 1,
         });
-        commit('addOptionAtIndex', {
+        commit("addOptionAtIndex", {
           newOptions: [emptyQuestionOption()],
           index: getters.getIQuestions + 1,
         });
-        commit('incrementIQuestions');
+        commit("incrementIQuestions");
+      }
+      // dump survey draft to localstorage as surveyDraft
+      const surveyDraft = {
+        questions: getters.getQuestionDrafts,
+        options: getters.getOptionDrafts,
+      };
+      const pre = JSON.parse(localStorage.getItem("surveyDraft"));
+      localStorage.setItem("surveyDraft", JSON.stringify({ ...pre, ...surveyDraft }));
+    },
+    loadSurveyDraftFromLocalStorage: ({ commit }) => {
+      const surveyDraft = JSON.parse(localStorage.getItem("surveyDraft"));
+      if (surveyDraft) {
+        const questions = [];
+        for (const question of surveyDraft.questions) {
+          question.text = mutableI18nString({
+            languageTexts: question.text.languageTexts,
+          });
+          questions.push(question);
+        }
+        const ops = [];
+        for (const options of surveyDraft.options) {
+          if (options.length === 0) {
+            ops.push([]);
+            continue;
+          }
+          for (let option of options) {
+            option = mutableQuestionOption({
+              ...option,
+              text: mutableI18nString({
+                languageTexts: option.text.languageTexts,
+              }),
+            });
+            ops.push(option);
+          }
+        }
+        console.log({ questions, ops });
+        commit("setQuestions", { payload: questions });
+        commit("setOptions", { payload: ops });
       }
     },
     addImageToQuestion: ({ commit, getters }, { newQuestionImage }) => {
       const currentIndex = getters.getIQuestions;
       if (getters.getQuestionImages[currentIndex] === undefined) {
         while (getters.getQuestionImages.length <= currentIndex) {
-          commit('pushNullToQuestionImages');
+          commit("pushNullToQuestionImages");
         }
       }
-      commit('replaceQuestionImageAtIndex', { newQuestionImage, index: currentIndex });
+      commit("replaceQuestionImageAtIndex", { newQuestionImage, index: currentIndex });
     },
   },
 };

@@ -50,7 +50,9 @@
         <v-col cols="12" sm="6" md="4" xl="3">
           <DataCreationButtonCard
             :dataType="dataTypesDict.survey"
-            subtitleI18nSelector="surveys.newSurvey"
+            :subtitleI18nSelector="
+              showContinue ? 'general.continue' : 'surveys.newSurvey'
+            "
           >
             <template v-slot:creation-button="slotProps">
               <v-btn
@@ -128,6 +130,7 @@ export default {
       loading: `${vuexModulesDict.survey}/getLoading`,
       isSurveyModalDisplayed: `${vuexModulesDict.dataModal}/getIsDisplayed`,
       filters: `${vuexModulesDict.survey}/getFilters`,
+      showContinue: `${vuexModulesDict.survey}/getShowContinue`,
     }),
     currentLocale() {
       return this.$i18n.locale;
