@@ -54,6 +54,18 @@ class TO extends DBModel {
     // TODO: implement getUnpopulated
     throw UnimplementedError();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    throw UnimplementedError();
+  }
+
+  @override
+  Map<String, dynamic> queryFields() {
+    // TODO: implement queryFields
+    throw UnimplementedError();
+  }
 }
 
 class SyncedDBTest extends StatelessWidget {
@@ -68,6 +80,10 @@ class SyncedDBTest extends StatelessWidget {
 
     RemoteDBModelRegistration remoteDBModelRegistration =
         RemoteDBModelRegistration(
+            getUnpopulated: (String id) {
+              // Implementation unnecessary
+              throw UnimplementedError();
+            },
             modelType: amp.TestObject.classType,
             fromDBModel: (DBModel object, getRegisteredModel) {
               TO to = object as TO;
@@ -82,12 +98,19 @@ class SyncedDBTest extends StatelessWidget {
               return TO(testObject.name, testObject.age, testObject.id);
             },
             modelAttributes: [
-          amp.TestObject.NAME,
-          amp.TestObject.AGE,
-        ]);
+              amp.TestObject.NAME,
+              amp.TestObject.AGE,
+            ],
+            getID: (Object) {
+              throw UnimplementedError();
+            });
 
     LocalDBModelRegistration localDBModelRegistration =
         LocalDBModelRegistration(
+      getUnpopulated: (String id) {
+        // Implementation unnecessary
+        throw UnimplementedError();
+      },
       fromDBModel: (DBModel object, getRegisteredModel) {
         TO to = object as TO;
         return {"name": to.name, "age": to.age, "id": to.id};
@@ -104,6 +127,11 @@ class SyncedDBTest extends StatelessWidget {
             haveToSyncDownstream: true,
             localDBModelRegistration: localDBModelRegistration,
             remoteDBModelRegistration: RemoteDBModelRegistration(
+              getID: (p0) => throw UnimplementedError(),
+              getUnpopulated: (String id) {
+                // Implementation unnecessary
+                throw UnimplementedError();
+              },
               fromDBModel: (object, getRegisteredModel) {
                 return TestObject(age: 1, name: "fdsf");
               },

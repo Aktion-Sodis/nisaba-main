@@ -47,6 +47,18 @@ class TO extends DBModel {
     // TODO: implement getUnpopulated
     throw UnimplementedError();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    throw UnimplementedError();
+  }
+
+  @override
+  Map<String, dynamic> queryFields() {
+    // TODO: implement queryFields
+    throw UnimplementedError();
+  }
 }
 
 class LocalDBTest extends StatelessWidget {
@@ -69,6 +81,10 @@ class LocalDBTest extends StatelessWidget {
             return TO(model["name"] as String?, model["age"] as int,
                 model["id"] as String);
           },
+          getUnpopulated: (String id) {
+            // Implementation unnecessary
+            throw UnimplementedError();
+          },
         ));
     print("DBTest: DB initialized");
     return Future.value();
@@ -80,6 +96,10 @@ class LocalDBTest extends StatelessWidget {
     (db as RemoteDB).registerModel(
         TO,
         RemoteDBModelRegistration(
+          getUnpopulated: (String id) {
+            // Implementation unnecessary
+            throw UnimplementedError();
+          },
           modelType: amp.TestObject.classType,
           fromDBModel: (DBModel object, getRegisteredModel) {
             TO to = object as TO;
@@ -97,6 +117,9 @@ class LocalDBTest extends StatelessWidget {
             amp.TestObject.NAME,
             amp.TestObject.AGE,
           ],
+          getID: (Object o) {
+            throw UnimplementedError();
+          },
         ));
     print("DBTest: DB initialized");
   }

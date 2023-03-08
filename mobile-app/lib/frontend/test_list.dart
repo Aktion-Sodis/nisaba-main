@@ -8,6 +8,7 @@ import 'package:mobile_app/frontend/tests/amplify_cognito_test.dart';
 import 'package:mobile_app/frontend/tests/amplify_datastore_sync_test.dart';
 import 'package:mobile_app/frontend/tests/audio_test.dart';
 import 'package:mobile_app/frontend/tests/gps_test.dart';
+import 'package:mobile_app/frontend/tests/graphql_db_implementation_test.dart';
 import 'package:mobile_app/frontend/tests/image_compression_test.dart';
 import 'package:mobile_app/frontend/tests/db_test.dart';
 import 'package:mobile_app/frontend/tests/integrated_synced_db_test.dart';
@@ -26,6 +27,7 @@ class TestList extends StatelessWidget {
     "DB Test": () => LocalDBTest(),
     "SyncedDB Test": () => SyncedDBTest(),
     "Integrated SyncedDB Test": () => IntegratedSyncedDBTest(),
+    "GraphQL": () => GraphQLQueryTest(),
   };
 
   Widget _itemBuilder(BuildContext context, int index) {
