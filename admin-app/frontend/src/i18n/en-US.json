@@ -318,7 +318,8 @@
         "saveDraft": "Save draft"
       },
       "finalizeCard": {
-        "publishSurvey": "Publish survey"
+        "publishSurvey": "Publish survey",
+        "backToQuestions": "Back to questions"
       },
       "stepper": {
         "details": "Survey details",

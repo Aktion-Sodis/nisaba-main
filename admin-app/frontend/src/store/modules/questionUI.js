@@ -195,17 +195,17 @@ const QUESTION_UI = {
             ops.push([]);
             continue;
           }
+          const toBePushed = [];
           for (let option of options) {
             option = mutableQuestionOption({
-              ...option,
               text: mutableI18nString({
                 languageTexts: option.text.languageTexts,
               }),
             });
-            ops.push(option);
+            toBePushed.push(option);
           }
+          ops.push(toBePushed);
         }
-        console.log({ questions, ops });
         commit("setQuestions", { payload: questions });
         commit("setOptions", { payload: ops });
       }

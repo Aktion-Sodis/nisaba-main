@@ -318,7 +318,8 @@
         "saveDraft": "Guardar borrador"
       },
       "finalizeCard": {
-        "publishSurvey": "Publicar encuesta"
+        "publishSurvey": "Publicar encuesta",
+        "backToQuestions": "Volver a preguntas"
       },
       "stepper": {
         "details": "Detalles de encuesta",

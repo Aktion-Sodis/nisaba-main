@@ -318,7 +318,8 @@
         "saveDraft": "Taslağı kaydet"
       },
       "finalizeCard": {
-        "publishSurvey": "Anketi yayınla"
+        "publishSurvey": "Anketi yayınla",
+        "backToQuestions": "Sorulara geri dön"
       },
       "stepper": {
         "details": "Anket detayları",
