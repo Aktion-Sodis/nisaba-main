@@ -10,13 +10,13 @@ part 'TestObject.db_model.dart';
 @DBModelAnnotation()
 @JsonSerializable()
 class TestObject extends DBModel {
+  static Map<String, dynamic> queryFields() => _$TestObject;
+
   @override
   String? id;
 
   String? name;
   int age;
-
-  List<String>? abd;
 
   TestObject(this.name, this.age, [this.id]);
 

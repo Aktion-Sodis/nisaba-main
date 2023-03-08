@@ -36,7 +36,8 @@ class LocalDBModelRegistration
   };
 
   LocalDBModelRegistration(
-      {required Map<String, Object?> Function(
+      {required DBModel Function(String id)? getUnpopulated,
+      required Map<String, Object?> Function(
               DBModel model,
               DBModelRegistration<Map<String, Object?>, Finder> Function(Type)
                   getRegisteredModes)
@@ -46,5 +47,11 @@ class LocalDBModelRegistration
               DBModelRegistration<Map<String, Object?>, Finder> Function(Type)
                   getRegisteredModes)
           toDBModel})
-      : super(_predefinedPredicatesTranslations, fromDBModel, toDBModel);
+      : super(getUnpopulated, _predefinedPredicatesTranslations, fromDBModel,
+            toDBModel);
+
+  @override
+  String getID(Map<String, Object?> object) {
+    return object['id'] as String;
+  }
 }

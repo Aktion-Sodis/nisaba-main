@@ -8,9 +8,12 @@ import '../../Query.dart';
 class RemoteDBModelRegistration
     extends DBModelRegistration<Object, QueryPredicate> {
   final ModelType? modelType;
+  late final String Function(Object)? _getID;
 
   RemoteDBModelRegistration(
       {required List<QueryField> modelAttributes,
+      required DBModel Function(String id)? getUnpopulated,
+      required String Function(Object)? getID,
       required Object Function(
               DBModel object,
               DBModelRegistration<Object, QueryPredicate> Function(Type)
@@ -22,8 +25,10 @@ class RemoteDBModelRegistration
                   getRegisteredModes)
           toDBModel,
       required this.modelType})
-      : super(generatePredicatesTranslations(modelAttributes), fromDBModel,
-            toDBModel);
+      : super(getUnpopulated, generatePredicatesTranslations(modelAttributes),
+            fromDBModel, toDBModel) {
+    _getID = getID;
+  }
 
   static Map<QPredicate, QueryPredicate<Model>? Function(Query p1)>
       generatePredicatesTranslations(List<QueryField> attributesInput) {
@@ -97,5 +102,12 @@ class RemoteDBModelRegistration
     };*/
 
     return predicatesTranslations;
+  }
+
+  @override
+  String getID(Object object) {
+    if (_getID == null) throw Exception("getID() is not provided!");
+
+    return _getID!(object);
   }
 }

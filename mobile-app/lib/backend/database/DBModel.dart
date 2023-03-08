@@ -15,8 +15,6 @@ abstract class DBModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool isPopulated = true;
 
-  Map<String, dynamic> queryFields();
-
   // This has to return a new instance of the class with only the id set
   DBModel getUnpopulated();
 

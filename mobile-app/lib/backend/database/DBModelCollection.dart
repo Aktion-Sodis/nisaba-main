@@ -14,7 +14,7 @@ class DBModelCollection<R extends DBModelRegistration> {
 
   R getRegisteredModel(Type type) {
     if (_registeredModels[type] == null) {
-      throw Exception("Model not registered");
+      throw Exception("Model $type not registered");
     }
     return _registeredModels[type]!;
   }

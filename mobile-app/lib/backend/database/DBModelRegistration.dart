@@ -20,10 +20,12 @@ abstract class DBModelRegistration<G, Q> {
   final DBModel Function(
       G object, DBModelRegistration<G, Q> Function(Type type)) _toDBModel;
 
+  final DBModel Function(String id)? _getUnpopulated;
+
   late final DBModelRegistration<G, Q> Function(Type type) getRegisteredModel;
 
-  DBModelRegistration(
-      this._predicatesTranslations, this._fromDBModel, this._toDBModel);
+  DBModelRegistration(this._getUnpopulated, this._predicatesTranslations,
+      this._fromDBModel, this._toDBModel);
 
   G? fromDBModel(DBModel? object) {
     if (object == null) return null;
@@ -42,4 +44,36 @@ abstract class DBModelRegistration<G, Q> {
   bool predicateIsSupported(QPredicate predicate) {
     return _predicatesTranslations.containsKey(predicate);
   }
+
+  List<G> fromDBModelList(List<DBModel> objects) {
+    return objects.map((e) => fromDBModel(e)!).toList();
+  }
+
+  List<DBModel> toDBModelList<T>(List<G> objects) {
+    return objects.map((e) => toDBModel(e)!).toList();
+  }
+
+  /// Returns a new instance of the model with only the given id.
+  ///
+  /// This method is used to save only the refeneces of the models in the DB
+  /// in order to avoid overloading the DB with data that are not needed.
+  /*T getUnpopulatedByID<T extends DBModel>(String id) {
+    if (_getUnpopulated == null)
+      throw Exception("getUnpopulated() is not given");
+
+    var object = _getUnpopulated!(id);
+    object.isPopulated = false;
+
+    return object as T;
+  }
+
+  T getUnpopulated<T extends DBModel>(G object) {
+    if (_getUnpopulated == null)
+      throw Exception("getUnpopulated() is not given");
+
+    String id = getID(object);
+    return getUnpopulatedByID<T>(id);
+  }
+
+  String getID(G object);*/
 }

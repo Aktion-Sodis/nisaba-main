@@ -31,11 +31,17 @@ class SyncedDBModelRegistration extends DBModelRegistration<Object?, Object?> {
       {required this.haveToSyncDownstream,
       required this.localDBModelRegistration,
       required this.remoteDBModelRegistration})
-      : super(_predicatesTranlation, (object, getRegisteredModel) {
+      : super(null, _predicatesTranlation, (object, getRegisteredModel) {
           // Unimplemented, as this is not used in the synced db
           throw UnimplementedError();
         }, (object, getRegisteredModel) {
           // Unimplemented, as this is not used in the synced db
           throw UnimplementedError();
         });
+
+  @override
+  String getID(Object? object) {
+    // Unnecessary, as this is not used in the synced db
+    throw UnimplementedError();
+  }
 }

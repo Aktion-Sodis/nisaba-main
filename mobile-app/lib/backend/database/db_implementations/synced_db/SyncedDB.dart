@@ -79,6 +79,9 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
               dbObject,
               DBQueueObject.dbActionFromString(map['action'] as String),
               map['id'] as String?);
+        }, getUnpopulated: (String id) {
+          // Implementation unnecessary
+          throw UnimplementedError();
         }));
   }
 
