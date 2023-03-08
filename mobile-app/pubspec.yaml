@@ -58,6 +58,7 @@ dependencies:
   graphql_flutter: ^5.1.2
   json_annotation: ^4.8.0
   gql: ^0.14.0
+  graphql: ^5.1.3
 
 
 
