@@ -33,11 +33,14 @@ abstract class DB<R extends DBModelRegistration> {
 
   void registerModel(Type type, R registration) {
     _modelCollection.registerModel(type, registration);
-    registration.getRegisteredModel = getRegisteredModel;
   }
 
   R getRegisteredModel(Type type) {
     return _modelCollection.getRegisteredModel(type);
+  }
+
+  R getRegisteredModelByName(String name) {
+    return _modelCollection.getRegisteredModelByName(name);
   }
 
   List<Type> getRegisteredModelTypes() {

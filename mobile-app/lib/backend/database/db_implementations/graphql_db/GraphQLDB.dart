@@ -224,7 +224,7 @@ class GraphQLDB extends DB<GraphQLDBModelRegistration> {
     GraphQLDBModelRegistration modelRegistration =
         getRegisteredModel(modelType);
     List<G> result =
-        items.map((e) => modelRegistration.modelFactory(e)).toList().cast<G>();
+        items.map((e) => modelRegistration.toDBModel(e)).toList().cast<G>();
 
     return Future.value(result);
   }
@@ -252,7 +252,7 @@ class GraphQLDB extends DB<GraphQLDBModelRegistration> {
     GraphQLDBModelRegistration modelRegistration =
         getRegisteredModel(modelType);
 
-    G? result = modelRegistration.modelFactory(item) as G?;
+    G? result = modelRegistration.toDBModel(item) as G?;
 
     return Future.value(result);
   }

@@ -42,7 +42,8 @@ class DBModelConverter implements JsonConverter<DBModel, Map<String, Object?>> {
 
   // TODO: Implement this method
   @override
-  DBModel fromJson(Map<String, Object?> json) => throw UnimplementedError();
+  DBModel fromJson(Map<String, Object?> json) =>
+      throw UnsupportedError("DBModelConverter supports only `toJson` method");
 
   @override
   Map<String, Object?> toJson(DBModel object) => object.toJson();

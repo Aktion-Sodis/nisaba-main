@@ -4,6 +4,15 @@ import 'DBModel.dart';
 import 'QPredicate.dart';
 import 'Query.dart';
 
+typedef FromDBModelConverter<G> = G Function(DBModel object);
+
+typedef ToDBModelConverter<G> = DBModel Function(G object);
+
+typedef GetUnpopulated = DBModel Function(String id);
+
+typedef GetRegisteredModel<G, Q> = DBModelRegistration<G, Q> Function(
+    Type type);
+
 /// Represents a model type and implements both all the query predicates traslation
 /// and the translation from and to the DBModel
 ///
@@ -12,29 +21,28 @@ import 'Query.dart';
 /// `G` is the type of the model in the used DB
 /// `Q` is the type of the query predicate in the used DB
 abstract class DBModelRegistration<G, Q> {
-  final Map<QPredicate, Q? Function(Query)> _predicatesTranslations;
+  late final Map<QPredicate, Q? Function(Query)> _predicatesTranslations;
 
-  final G Function(DBModel object,
-          DBModelRegistration<G, Q> Function(Type type) getRegisteredModel)
-      _fromDBModel;
-  final DBModel Function(
-      G object, DBModelRegistration<G, Q> Function(Type type)) _toDBModel;
+  late final FromDBModelConverter<G> _fromDBModel;
+  late final ToDBModelConverter<G> _toDBModel;
 
-  final DBModel Function(String id)? _getUnpopulated;
-
-  late final DBModelRegistration<G, Q> Function(Type type) getRegisteredModel;
-
-  DBModelRegistration(this._getUnpopulated, this._predicatesTranslations,
-      this._fromDBModel, this._toDBModel);
+  DBModelRegistration(
+      {required Map<QPredicate, Q? Function(Query)> predicatesTranslations,
+      required FromDBModelConverter<G> fromDBModel,
+      required ToDBModelConverter<G> toDBModel}) {
+    _predicatesTranslations = predicatesTranslations;
+    _fromDBModel = fromDBModel;
+    _toDBModel = toDBModel;
+  }
 
   G? fromDBModel(DBModel? object) {
     if (object == null) return null;
-    return _fromDBModel(object, getRegisteredModel);
+    return _fromDBModel(object);
   }
 
   DBModel? toDBModel(G? object) {
     if (object == null) return null;
-    return _toDBModel(object, getRegisteredModel);
+    return _toDBModel(object);
   }
 
   Q? queryPredicateTranslation(Query query) {

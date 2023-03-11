@@ -8,6 +8,8 @@ class DBQueueObject extends DBModel {
   String? id;
 
   DBAction action;
+
+  // TODO: Use Type instead of String
   String modelType;
 
   @DBModelConverter.instance

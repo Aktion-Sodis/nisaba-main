@@ -28,13 +28,13 @@ class GraphQLQueryTest extends StatelessWidget {
     db.registerModel(
         TestObject,
         GraphQLDBModelRegistration(
-            TestObject.fromJson,
-            TestObject.queryFields(),
-            "createTestObject",
-            "updateTestObject",
-            "deleteTestObject",
-            "getTestObject",
-            "listTestObjects"));
+            toDBModel: TestObject.fromJson,
+            queryFields: TestObject.queryFields(),
+            createMutation: "createTestObject",
+            updateMutation: "updateTestObject",
+            deleteMutation: "deleteTestObject",
+            getQuery: "getTestObject",
+            listQuery: "listTestObjects"));
 
     print("DBTest: DB initialized");
     return Future.value();

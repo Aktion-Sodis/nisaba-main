@@ -1,5 +1,7 @@
+import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
+import 'package:mobile_app/backend/database/db_implementations/graphql_db/GraphQLDB.dart';
 import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDBModelRegistration.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/DBQueueObject.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDBModelRegistration.dart';
@@ -39,7 +41,7 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
     registeredModelTypes.add(type);
   }
 
-  static final SyncedDB instance = SyncedDB(LocalDB(), RemoteDB());
+  static final SyncedDB instance = SyncedDB(LocalDB(), GraphQLDB());
 
   Type _getRegisteredTypeByString(String typeString) {
     for (Type type in registeredModelTypes) {
@@ -51,38 +53,20 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
   }
 
   void _registerQueueObject() {
-    localDB.registerModel(
-        DBQueueObject,
-        LocalDBModelRegistration(fromDBModel: (model, getRegisteredModel) {
-          DBQueueObject queueObject = model as DBQueueObject;
+    localDB.registerModel(DBQueueObject,
+        LocalDBModelRegistration(toDBModel: _jsonToDBQueueObject));
+  }
 
-          DBModel object = queueObject.object;
-          Map<String, Object?> objectMap = localDB
-              .getRegisteredModel(object.runtimeType)
-              .fromDBModel(object)!;
+  DBQueueObject _jsonToDBQueueObject(Map<String, Object?> json) {
+    String modelName = json["modelType"] as String;
+    DBModelRegistration modelRegistration = getRegisteredModelByName(modelName);
+    DBModel object = modelRegistration.toDBModel(json["object"])!;
+    DBAction action =
+        DBQueueObject.dbActionFromString(json['action'] as String);
+    String id = json["id"] as String;
 
-          return {
-            'modelType': queueObject.modelType,
-            'id': queueObject.id,
-            'object': objectMap,
-            'action': queueObject.action.toString().split('.').last
-          };
-        }, toDBModel: (map, getRegisteredModel) {
-          String modelTypeAsString = map['modelType'] as String;
-          Type modelType = _getRegisteredTypeByString(modelTypeAsString);
-          DBModel dbObject = localDB
-              .getRegisteredModel(modelType)
-              .toDBModel(map['object'] as Map<String, dynamic>)!;
-
-          return DBQueueObject(
-              map['modelType'] as String,
-              dbObject,
-              DBQueueObject.dbActionFromString(map['action'] as String),
-              map['id'] as String?);
-        }, getUnpopulated: (String id) {
-          // Implementation unnecessary
-          throw UnimplementedError();
-        }));
+    DBQueueObject queueObject = DBQueueObject(modelName, object, action, id);
+    return queueObject;
   }
 
   @override

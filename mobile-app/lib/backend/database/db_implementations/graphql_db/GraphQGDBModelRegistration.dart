@@ -3,9 +3,12 @@ import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 
-class GraphQLDBModelRegistration
-    extends DBModelRegistration<Map<String, Object?>, Object> {
-  static final Map<QPredicate, Object? Function(Query p1)>
+typedef _TranslatedModelType = Map<String, Object?>;
+typedef _TranslatedPredicateType = Object;
+
+class GraphQLDBModelRegistration extends DBModelRegistration<
+    _TranslatedModelType, _TranslatedPredicateType> {
+  static final Map<QPredicate, _TranslatedPredicateType? Function(Query p1)>
       _predicatesTranslations = {
     QPredicate.EQ: (p1) => {
           p1.key: {"eq": p1.attr1}
@@ -37,21 +40,9 @@ class GraphQLDBModelRegistration
         }
   };
 
-  static Map<String, Object?> _fromDBModel(
-      DBModel object,
-      DBModelRegistration<Map<String, Object?>, Object> Function(Type type)
-          getRegisteredModel) {
+  static _TranslatedModelType _fromDBModel(DBModel object) {
     return object.toJson();
   }
-
-  static DBModel _toDBModel(
-      Map<String, Object?> object,
-      DBModelRegistration<Map<String, Object?>, Object> Function(Type type)
-          p1) {
-    throw UnimplementedError();
-  }
-
-  final DBModel Function(Map<String, dynamic> map) modelFactory;
 
   final Map<String, dynamic> queryFields;
 
@@ -63,14 +54,17 @@ class GraphQLDBModelRegistration
 
   GraphQLDBModelRegistration(
       //DBModel Function(String id)? getUnpopulated,
-      this.modelFactory,
-      this.queryFields,
-      this.createMutation,
-      this.updateMutation,
-      this.deleteMutation,
-      this.getQuery,
-      this.listQuery)
-      : super(null, _predicatesTranslations, _fromDBModel, _toDBModel);
+      {required ToDBModelConverter<_TranslatedModelType> toDBModel,
+      required this.queryFields,
+      required this.createMutation,
+      required this.updateMutation,
+      required this.deleteMutation,
+      required this.getQuery,
+      required this.listQuery})
+      : super(
+            predicatesTranslations: _predicatesTranslations,
+            fromDBModel: _fromDBModel,
+            toDBModel: toDBModel);
 
   @override
   String getID(Map<String, Object?> object) {
