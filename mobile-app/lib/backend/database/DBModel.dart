@@ -10,7 +10,8 @@ import 'package:json_annotation/json_annotation.dart';
 ///
 
 abstract class DBModel {
-  String? id;
+  // TODO: change Sting? to String
+  String? id = UUID.getUUID();
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool isPopulated = true;
@@ -18,8 +19,8 @@ abstract class DBModel {
   // This has to return a new instance of the class with only the id set
   DBModel getUnpopulated();
 
-  DBModel([this.id]) {
-    id ??= UUID.getUUID();
+  DBModel([String? id]) {
+    this.id = id ?? this.id;
   }
 
   bool operator ==(Object other) {

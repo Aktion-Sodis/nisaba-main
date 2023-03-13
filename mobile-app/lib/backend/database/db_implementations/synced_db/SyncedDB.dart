@@ -59,7 +59,8 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
 
   DBQueueObject _jsonToDBQueueObject(Map<String, Object?> json) {
     String modelName = json["modelType"] as String;
-    DBModelRegistration modelRegistration = getRegisteredModelByName(modelName);
+    DBModelRegistration modelRegistration =
+        localDB.getRegisteredModelByName(modelName);
     DBModel object = modelRegistration.toDBModel(json["object"])!;
     DBAction action =
         DBQueueObject.dbActionFromString(json['action'] as String);

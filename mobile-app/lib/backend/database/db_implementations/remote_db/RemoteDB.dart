@@ -61,8 +61,6 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
           getRegisteredModel(modelType).fromDBModel(object) as Model;
       final request = ModelMutations.delete(amplifyObject);
       final response = await Amplify.API.mutate(request: request).response;
-
-      object.id = null;
     } on ApiException catch (e) {
       bool connected = await isThereInternetConnection();
       if (!connected) {

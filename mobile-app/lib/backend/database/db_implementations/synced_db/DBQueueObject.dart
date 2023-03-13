@@ -5,8 +5,6 @@ part 'DBQueueObject.g.dart';
 
 @JsonSerializable()
 class DBQueueObject extends DBModel {
-  String? id;
-
   DBAction action;
 
   // TODO: Use Type instead of String
@@ -17,10 +15,8 @@ class DBQueueObject extends DBModel {
 
   /// modelType: The type of the model that is being queued which can be get
   /// using [object.runtimeType.toString()] for an object [DBModel object].
-  DBQueueObject(this.modelType, this.object, this.action, [this.id]) {
-    if (object.id == null) {
-      throw Exception('DBModel.id is null');
-    }
+  DBQueueObject(this.modelType, this.object, this.action, [String? id]) {
+    this.id = id ?? this.id;
   }
 
   static dbActionFromString(String action) {
