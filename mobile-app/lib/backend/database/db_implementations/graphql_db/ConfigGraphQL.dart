@@ -59,6 +59,20 @@ class ConfigGraphQL {
       cache: GraphQLCache(
         partialDataPolicy: PartialDataCachePolicy.accept,
       ),
+      defaultPolicies: DefaultPolicies(
+        watchQuery: Policies(
+          fetch: FetchPolicy.noCache,
+          error: ErrorPolicy.all,
+        ),
+        query: Policies(
+          fetch: FetchPolicy.noCache,
+          error: ErrorPolicy.all,
+        ),
+        mutate: Policies(
+          fetch: FetchPolicy.noCache,
+          error: ErrorPolicy.all,
+        ),
+      ),
       link: _link,
     );
   }
