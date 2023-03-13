@@ -12,6 +12,7 @@ import 'package:mobile_app/frontend/tests/graphql_db_implementation_test.dart';
 import 'package:mobile_app/frontend/tests/image_compression_test.dart';
 import 'package:mobile_app/frontend/tests/db_test.dart';
 import 'package:mobile_app/frontend/tests/integrated_synced_db_test.dart';
+import 'package:mobile_app/frontend/tests/synced_db_restricted_test.dart';
 import 'package:mobile_app/frontend/tests/synced_db_test.dart';
 
 class TestList extends StatelessWidget {
@@ -28,6 +29,7 @@ class TestList extends StatelessWidget {
     "SyncedDB Test": () => SyncedDBTest(),
     "Integrated SyncedDB Test": () => IntegratedSyncedDBTest(),
     "GraphQL": () => GraphQLQueryTest(),
+    "SyncedDB Restricted Test": () => SyncedDBRestrictedTest(),
   };
 
   Widget _itemBuilder(BuildContext context, int index) {
