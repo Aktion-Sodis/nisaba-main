@@ -1,7 +1,7 @@
 builders:
-  mobile_app:db_model_factory:
+  db_model_generator:db_model_factory:
     # library URI containing the builder - maps to `lib/member_count_library_generator.dart`
-    import: "package:mobile_app/db_model_generator.dart"
+    import: "package:db_model_generator/db_model_generator.dart"
     # Name of the function in the above library to call.
     builder_factories: ["dbModelLibraryBuilder"]
     # The mapping from the source extension to the generated file extension
@@ -34,7 +34,7 @@ targets:
           ignore_unannotated: false
           include_if_null: true # this setting is highly important, as GraphQL has to know all the possible fields
       
-      mobile_app|db_model_factory:
+      db_model_generator|db_model_factory:
         generate_for:
           - lib/backend/callableModels/*.dart
 

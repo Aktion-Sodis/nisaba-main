@@ -1,8 +1,8 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
-import 'package:mobile_app/db_model_generator.dart';
 
 part 'TestObject.g.dart';
 

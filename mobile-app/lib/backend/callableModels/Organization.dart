@@ -1,6 +1,6 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:mobile_app/db_model_generator.dart';
 
 part 'Organization.g.dart';
 part 'Organization.db_model.dart';

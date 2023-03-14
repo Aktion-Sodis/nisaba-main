@@ -1,5 +1,5 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:mobile_app/db_model_generator.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import '../database/DBModel.dart';

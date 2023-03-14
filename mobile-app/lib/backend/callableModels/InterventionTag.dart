@@ -1,6 +1,6 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
-import 'package:mobile_app/db_model_generator.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import 'Intervention.dart';

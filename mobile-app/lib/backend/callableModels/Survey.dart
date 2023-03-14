@@ -1,3 +1,4 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/Intervention.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
@@ -5,7 +6,6 @@ import 'package:mobile_app/backend/callableModels/Question.dart';
 import 'package:mobile_app/backend/callableModels/Relation.dart';
 import 'package:mobile_app/backend/callableModels/SurveyTag.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
-import 'package:mobile_app/db_model_generator.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:json_annotation/json_annotation.dart';

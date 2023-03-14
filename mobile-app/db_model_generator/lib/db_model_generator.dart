@@ -1,23 +1,18 @@
 import 'dart:convert';
-
-import 'package:build/src/builder/build_step.dart';
-import 'package:analyzer/dart/element/element.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:build/build.dart';
-import 'package:source_gen/source_gen.dart';
-import 'package:analyzer/dart/constant/value.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 
-/// Annotation to mark a class as a DBModel, and to generate the
-/// corresponding DBModel.queryFields() method.
-class DBModelAnnotation {
-  final bool subtype;
-  const DBModelAnnotation([this.subtype = false]);
-}
+import 'db_model_annotations.dart';
 
-/// Annotation to mark a field as ignored by the DBModelGenerator.
-class DBModelIgnore {
-  const DBModelIgnore();
+PartBuilder dbModelLibraryBuilder(BuilderOptions options) {
+  return PartBuilder([DBModelGenerator()], ".db_model.dart");
+
+  /*return LibraryBuilder(
+    DBModelGenerator(),
+    generatedExtension: ".db_model.dart",
+  );*/
 }
 
 class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
@@ -213,12 +208,3 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
 }
 
 enum _ClassType { TYPE, SUBTYPE, NONE }
-
-PartBuilder dbModelLibraryBuilder(BuilderOptions options) {
-  return PartBuilder([DBModelGenerator()], ".db_model.dart");
-
-  /*return LibraryBuilder(
-    DBModelGenerator(),
-    generatedExtension: ".db_model.dart",
-  );*/
-}

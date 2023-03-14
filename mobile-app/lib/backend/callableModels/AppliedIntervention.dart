@@ -1,10 +1,10 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/callableModels/ExecutedSurvey.dart';
 import 'package:mobile_app/backend/callableModels/Intervention.dart';
 import 'package:mobile_app/backend/callableModels/Location.dart';
 import 'package:mobile_app/backend/callableModels/User.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-import '../../db_model_generator.dart';
 import '../database/DBModel.dart';
 import 'Entity.dart';
 

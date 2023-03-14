@@ -1,3 +1,4 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/callableModels/Content.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/callableModels/Relation.dart';
@@ -7,7 +8,6 @@ import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-import '../../db_model_generator.dart';
 import 'Level.dart';
 
 import 'package:json_annotation/json_annotation.dart';

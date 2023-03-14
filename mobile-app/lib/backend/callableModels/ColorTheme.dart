@@ -1,9 +1,8 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import 'package:json_annotation/json_annotation.dart';
-
-import '../../db_model_generator.dart';
 
 part 'ColorTheme.g.dart';
 part 'ColorTheme.db_model.dart';
