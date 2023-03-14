@@ -30,7 +30,7 @@ class TaskRepository {
   }
 
   Future<amp.Task> _populate(amp.Task task) async {
-    amp.Task toReturn = task;
+    /*amp.Task toReturn = task;
     toReturn = toReturn.copyWith(
         user: user.toAmplifyModel(),
         entity: toReturn.taskEntityId != null
@@ -46,7 +46,8 @@ class TaskRepository {
             ? await ExecutedSurveyRepository.instance
                 .ampExecutedSurveyByID(toReturn.taskExecutedSurveyId!)
             : null);
-    return toReturn;
+    return toReturn;*/
+    throw UnimplementedError();
   }
 
   Future<List<amp.Task>> _populateList(List<amp.Task> tasks) {

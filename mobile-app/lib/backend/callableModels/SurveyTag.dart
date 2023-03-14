@@ -59,8 +59,8 @@ class SurveyTag extends DBModel {
         surveys: surveys
             .map((e) => amp.SurveySurveyTagRelation(
                 id: e.id,
-                survey: e.first.toAmplifyModel(),
-                surveyTag: e.second.toAmplifyModel()))
+                survey: e.first!.toAmplifyModel(),
+                surveyTag: e.second!.toAmplifyModel()))
             .toList());
   }
 

@@ -7,19 +7,18 @@ import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'UserRepository.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-import 'implementations/amplify_datastore/AppliedInterventionRepositoryAmplifyDataStore.dart'
-    as implementation;
+import 'implementations/custom_syncronization/AppliedInterventionRepositoryCustom.dart';
 
 abstract class AppliedInterventionRepository {
   static final AppliedInterventionRepository instance =
-      implementation.AppliedInterventionRepositoryAmplifyDataStore.instance;
+      AppliedInterventionRepositoryCustom.instance;
 
-  Future<List<amp.AppliedIntervention>> getAllAmpAppliedInterventions();
+  Future<List<AppliedIntervention>> getAllAmpAppliedInterventions();
 
-  Future<List<amp.AppliedIntervention>> getAmpAppliedInterventionsByEntityID(
+  Future<List<AppliedIntervention>> getAmpAppliedInterventionsByEntityID(
       String entityID);
 
-  Future<amp.AppliedIntervention> getAmpAppliedInterventionByID(String id);
+  Future<AppliedIntervention> getAmpAppliedInterventionByID(String id);
 
   Future<String> createAppliedIntervention(
       AppliedIntervention appliedIntervention, Entity entity);
@@ -27,15 +26,14 @@ abstract class AppliedInterventionRepository {
   Future<void> updateAppliedIntervention(
       AppliedIntervention appliedIntervention, Entity entity);
 
-  Future<amp.AppliedIntervention> appliedInterventionByExecutedSurvey(
-      amp.ExecutedSurvey executedSurvey);
+  Future<AppliedIntervention> appliedInterventionByExecutedSurvey(
+      ExecutedSurvey executedSurvey);
 
-  Future<amp.AppliedIntervention> _populate(
-      amp.AppliedIntervention appliedIntervention,
-      {List<amp.ExecutedSurvey>? executedSurveys});
+  Future<AppliedIntervention> _populate(AppliedIntervention appliedIntervention,
+      {List<ExecutedSurvey>? executedSurveys});
 
-  Future<List<amp.AppliedIntervention>> _populateList(
-      List<amp.AppliedIntervention> appliedInterventions);
+  Future<List<AppliedIntervention>> _populateList(
+      List<AppliedIntervention> appliedInterventions);
 
   //todo: implement pic logic
 

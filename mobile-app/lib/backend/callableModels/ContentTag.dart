@@ -60,8 +60,8 @@ class ContentTag extends DBModel {
         contents: contents
             .map((e) => amp.ContentContentTagRelation(
                 id: e.id,
-                content: e.first.toAmplifyModel(),
-                contentTag: e.second.toAmplifyModel()))
+                content: e.first!.toAmplifyModel(),
+                contentTag: e.second!.toAmplifyModel()))
             .toList());
   }
 

@@ -4,37 +4,36 @@ import 'package:mobile_app/backend/repositories/SurveyRepository.dart';
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
-import 'package:mobile_app/backend/repositories/implementations/amplify_datastore/InterventionRepositoryAmplifyDataStore.dart'
-    as implementation;
+
+import '../callableModels/Relation.dart';
+import '../callableModels/Survey.dart';
 
 abstract class InterventionRepository {
   static final InterventionRepository instance =
-      implementation.InterventionRepositoryAmplifyDataStore.instance;
+      InterventionRepository.instance;
 
-  Future<List<amp.Intervention>> getAllAmpIntervention();
+  Future<List<Intervention>> getAllAmpIntervention();
 
-  Future<amp.Intervention> getAmpInterventionByID(String interventionID);
+  Future<Intervention> getAmpInterventionByID(String interventionID);
 
   Future<List<Intervention>> getInterventionsByLevelConnections(
-      List<amp.LevelInterventionRelation> relations);
+      List<LevelInterventionRelation> relations);
 
-  Future<amp.Intervention?> getAmplifyInterventionBySurvey(amp.Survey survey);
+  Future<Intervention?> getAmplifyInterventionBySurvey(Survey survey);
 
-  Future<List<amp.Intervention>> populateList(
-      List<amp.Intervention> interventions);
+  Future<List<Intervention>> populateList(List<Intervention> interventions);
 
-  Future<amp.Intervention> populate(amp.Intervention intervention);
+  Future<Intervention> populate(Intervention intervention);
 
-  Future<List<amp.InterventionContentRelation>>
-      interventionContentRelationsByInterventionID(
-          amp.Intervention intervention);
+  Future<List<InterventionContentRelation>>
+      interventionContentRelationsByInterventionID(Intervention intervention);
 
-  Future<List<amp.InterventionInterventionTagRelation>>
+  Future<List<InterventionInterventionTagRelation>>
       interventionInterventionTagRelationsByInterventionID(
-          amp.Intervention intervention);
+          Intervention intervention);
 
-  Future<List<amp.LevelInterventionRelation>>
-      levelInterventionRelationsByInterventionID(amp.Intervention intervention);
+  Future<List<LevelInterventionRelation>>
+      levelInterventionRelationsByInterventionID(Intervention intervention);
 
   SyncedFile getInterventionPic(Intervention intervention);
 

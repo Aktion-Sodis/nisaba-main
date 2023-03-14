@@ -39,7 +39,7 @@ class Content extends DBModel {
 
   set description(String description) => description_ml.text = description;
 
-  List<ContentTag> get tags => tagConnections.map((e) => e.second).toList();
+  List<ContentTag> get tags => tagConnections.map((e) => e.second!).toList();
 
   void addContentTag(ContentTag contentTag) {
     tagConnections
@@ -48,7 +48,7 @@ class Content extends DBModel {
 
   void updateContentTag(ContentTag contentTag) {
     int index = tagConnections
-        .indexWhere((element) => element.second.id == contentTag.id);
+        .indexWhere((element) => element.second!.id == contentTag.id);
     if (index >= 0) {
       tagConnections[index].second = contentTag;
     } else {
@@ -96,14 +96,14 @@ class Content extends DBModel {
         interventions: interventions
             .map((e) => amp.InterventionContentRelation(
                 id: e.id,
-                intervention: e.first.toAmplifyModel(),
-                content: e.second.toAmplifyModel()))
+                intervention: e.first!.toAmplifyModel(),
+                content: e.second!.toAmplifyModel()))
             .toList(),
         tags: tagConnections
             .map((e) => amp.ContentContentTagRelation(
                 id: e.id,
-                content: e.first.toAmplifyModel(),
-                contentTag: e.second.toAmplifyModel()))
+                content: e.first!.toAmplifyModel(),
+                contentTag: e.second!.toAmplifyModel()))
             .toList(),
         schemeVersion: schemeVersion));
   }

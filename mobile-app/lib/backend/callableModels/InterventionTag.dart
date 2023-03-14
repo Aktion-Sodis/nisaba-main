@@ -60,8 +60,8 @@ class InterventionTag extends DBModel {
         schemeVersion: schemeVersion,
         interventions: interventions
             .map((e) => amp.InterventionInterventionTagRelation(
-                intervention: e.first.toAmplifyModel(),
-                interventionTag: e.second.toAmplifyModel()))
+                intervention: e.first!.toAmplifyModel(),
+                interventionTag: e.second!.toAmplifyModel()))
             .toList());
   }
 

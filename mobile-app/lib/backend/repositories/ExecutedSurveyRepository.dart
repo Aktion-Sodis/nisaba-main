@@ -6,21 +6,19 @@ import 'package:mobile_app/backend/repositories/UserRepository.dart';
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
-import 'package:mobile_app/backend/repositories/implementations/amplify_datastore/ExecutedSurveyRepositoryAmplifyDataStore.dart'
-    as implementation;
 
 abstract class ExecutedSurveyRepository {
   static final ExecutedSurveyRepository instance =
-      implementation.ExecutedSurveyRepositoryAmplifyDataStore.instance;
+      ExecutedSurveyRepository.instance;
 
-  Future<List<amp.ExecutedSurvey>> getAllAmpExecutedSurveys();
+  Future<List<ExecutedSurvey>> getAllAmpExecutedSurveys();
 
   Future<ExecutedSurvey> executedSurveyByID(String executedSurveyID);
 
-  Future<amp.ExecutedSurvey> ampExecutedSurveyByID(String executedSurveyID);
+  Future<ExecutedSurvey> ampExecutedSurveyByID(String executedSurveyID);
 
-  Future<List<amp.ExecutedSurvey>> executedSurveysByAppliedIntervention(
-      amp.AppliedIntervention appliedIntervention);
+  Future<List<ExecutedSurvey>> executedSurveysByAppliedIntervention(
+      AppliedIntervention appliedIntervention);
 
   Future<ExecutedSurvey> saveExecutedSurvey(ExecutedSurvey executedSurvey);
 

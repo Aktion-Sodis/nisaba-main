@@ -41,15 +41,18 @@ class Survey extends DBModel {
 
   set description(String description) => description_ml.text = description;
 
-  List<SurveyTag> get tags => tagConnections.map((e) => e.second).toList();
+  List<SurveyTag> get tags => tagConnections
+      .where((element) => element.second != null)
+      .map((e) => e.second!)
+      .toList();
 
   void addSurveyTag(SurveyTag surveyTag) {
     tagConnections.add(SurveySurveyTagRelation(first: this, second: surveyTag));
   }
 
   void updateSurveyTag(SurveyTag surveyTag) {
-    int index = tagConnections
-        .indexWhere((element) => element.second.id == surveyTag.id);
+    int index = tagConnections.indexWhere((element) =>
+        element.second != null && element.second!.id == surveyTag.id);
     if (index >= 0) {
       tagConnections[index].second = surveyTag;
     } else {
@@ -112,8 +115,8 @@ class Survey extends DBModel {
         tags: tagConnections
             .map((e) => amp.SurveySurveyTagRelation(
                 id: e.id,
-                surveyTag: e.second.toAmplifyModel(),
-                survey: e.first.toAmplifyModel()))
+                surveyTag: e.second!.toAmplifyModel(),
+                survey: e.first!.toAmplifyModel()))
             .toList(),
         schemeVersion: schemeVersion,
         archived: archived

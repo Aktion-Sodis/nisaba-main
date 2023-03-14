@@ -1,31 +1,31 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:mobile_app/backend/callableModels/Content.dart';
 import 'package:mobile_app/backend/repositories/InterventionRepository.dart';
-import 'package:mobile_app/backend/repositories/implementations/amplify_datastore/ContentRepositoryAmplifyDataStore.dart'
-    as implementation;
+import 'package:mobile_app/backend/repositories/implementations/custom_syncronization/ContentRepositoryCustom.dart';
+
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-abstract class ContentRepository {
-  static final ContentRepository instance =
-      implementation.ContentRepositoryAmplifyDataStore.instance;
+import '../callableModels/Relation.dart';
 
-  Future<List<amp.InterventionContentRelation>>
+abstract class ContentRepository {
+  static final ContentRepository instance = ContentRepositoryCustom.instance;
+
+  Future<List<InterventionContentRelation>>
       getAllRelationsWithPopulatedContentsAndInterventions();
 
-  Future<List<amp.InterventionContentRelation>>
-      _populateContentsInConnectionList(
-          List<amp.InterventionContentRelation> toPopulate);
+  Future<List<InterventionContentRelation>> _populateContentsInConnectionList(
+      List<InterventionContentRelation> toPopulate);
 
-  Future<amp.InterventionContentRelation>
+  Future<InterventionContentRelation>
       _populateInterventionContentRelationContent(
-          amp.InterventionContentRelation relation);
+          InterventionContentRelation relation);
 
-  Future<amp.Content> _populate(amp.Content content);
+  Future<Content> _populate(Content content);
 
-  Future<List<amp.ContentContentTagRelation>>
-      contentContentTagRelationsByContentID(String ID);
+  Future<List<ContentContentTagRelation>> contentContentTagRelationsByContentID(
+      String ID);
 
   SyncedFile getContentPDFFile(Content content);
 

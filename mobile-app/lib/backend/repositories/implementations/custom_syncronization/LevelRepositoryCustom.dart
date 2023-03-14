@@ -20,7 +20,7 @@ class LevelRepositoryCustom extends LevelRepository {
 
   @override
   Future<List<Level>> getAllAmpLevels() async {
-    db.get(Level);
+    return db.get(Level);
   }
 
   @override

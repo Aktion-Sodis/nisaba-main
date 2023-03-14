@@ -82,8 +82,8 @@ class Level extends DBModel {
         allowedInterventions: allowedInterventions
             ?.map((e) => amp.LevelInterventionRelation(
                 id: e.id,
-                level: e.first.toAmplifyModel(),
-                intervention: e.second.toAmplifyModel()))
+                level: e.first!.toAmplifyModel(),
+                intervention: e.second!.toAmplifyModel()))
             .toList(),
         customData: List.generate(
             customData.length, (index) => customData[index].toAmplifyModel()),

@@ -2,17 +2,15 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:mobile_app/backend/callableModels/Entity.dart';
 import 'package:mobile_app/backend/repositories/AppliedInterventionRepository.dart';
 import 'package:mobile_app/backend/repositories/LevelRepository.dart';
+import 'package:mobile_app/backend/repositories/implementations/custom_syncronization/EntityRepositoryCustom.dart';
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
-import 'package:mobile_app/backend/repositories/implementations/amplify_datastore/EntityRepositoryAmplifyDataStore.dart'
-    as implementation;
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 abstract class EntityRepository {
-  static final EntityRepository instance =
-      implementation.EntityRepositoryAmplifyDataStore.instance;
+  static final EntityRepository instance = EntityRepositoryCustom.instance;
 
-  Future<List<amp.Entity>> getAllAmpEntities();
+  Future<List<Entity>> getAllAmpEntities();
 
   Future<List<Entity>> getAllEntities({int? page});
 
@@ -22,7 +20,7 @@ abstract class EntityRepository {
       String? parentEntityID,
       String? searchByName});
 
-  Future<amp.Entity> ampEntityByID(String id);
+  Future<Entity> ampEntityByID(String id);
 
   Future<String> createEntity(Entity entity);
 

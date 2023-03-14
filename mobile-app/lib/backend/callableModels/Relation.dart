@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'Relation.g.dart';
 
-class Relation<T extends DBModel, P extends DBModel> extends DBModel {
+abstract class Relation<T extends DBModel, P extends DBModel> extends DBModel {
   T? first;
   P? second;
 
@@ -26,19 +26,25 @@ class Relation<T extends DBModel, P extends DBModel> extends DBModel {
     second = second;
   }
 
-  Relation(
-      {required this.firstID,
-      required this.secondID,
-      String? id,
-      T? first,
-      P? second})
-      : super(id);
+  Relation.byID({
+    String? id,
+    required this.firstID,
+    required this.secondID,
+  }) : super(id);
+
+  Relation({
+    String? id,
+    required T this.first,
+    required P this.second,
+  })  : firstID = first.id,
+        secondID = second.id,
+        super(id);
 
   Relation.unpopulated(String? id) : super(id);
 
   @override
   DBModel getUnpopulated() {
-    return Relation.unpopulated(id);
+    throw UnimplementedError();
   }
 
   // Operator == is used to compare two objects. It compares
@@ -69,17 +75,8 @@ class SurveySurveyTagRelation extends Relation<Survey, SurveyTag> {
   Map<String, dynamic> toJson() => _$SurveySurveyTagRelationToJson(this);
 
   SurveySurveyTagRelation(
-      {String? id,
-      required firstID,
-      required secondID,
-      Survey? first,
-      SurveyTag? second})
-      : super(
-            id: id,
-            first: first,
-            second: second,
-            firstID: firstID,
-            secondID: secondID);
+      {String? id, required Survey first, required SurveyTag second})
+      : super(id: id, first: first, second: second);
 
   SurveySurveyTagRelation.unpopulated(String? id) : super.unpopulated(id);
 }
@@ -98,17 +95,12 @@ class LevelInterventionRelation extends Relation<Level, Intervention> {
   Map<String, dynamic> toJson() => _$LevelInterventionRelationToJson(this);
 
   LevelInterventionRelation(
-      {String? id,
-      required firstID,
-      required secondID,
-      Level? first,
-      Intervention? second})
+      {String? id, required Level first, required Intervention second})
       : super(
-            id: id,
-            first: first,
-            second: second,
-            firstID: firstID,
-            secondID: secondID);
+          id: id,
+          first: first,
+          second: second,
+        );
 
   LevelInterventionRelation.unpopulated(String? id) : super.unpopulated(id);
 }
@@ -132,16 +124,9 @@ class InterventionInterventionTagRelation
 
   InterventionInterventionTagRelation(
       {String? id,
-      required firstID,
-      required secondID,
-      Intervention? first,
-      InterventionTag? second})
-      : super(
-            id: id,
-            first: first,
-            second: second,
-            firstID: firstID,
-            secondID: secondID);
+      required Intervention first,
+      required InterventionTag second})
+      : super(id: id, first: first, second: second);
 
   InterventionInterventionTagRelation.unpopulated(String? id)
       : super.unpopulated(id);
@@ -161,17 +146,12 @@ class InterventionContentRelation extends Relation<Intervention, Content> {
   Map<String, dynamic> toJson() => _$InterventionContentRelationToJson(this);
 
   InterventionContentRelation(
-      {String? id,
-      required firstID,
-      required secondID,
-      Intervention? first,
-      Content? second})
+      {String? id, required Intervention first, required Content second})
       : super(
-            id: id,
-            first: first,
-            second: second,
-            firstID: firstID,
-            secondID: secondID);
+          id: id,
+          first: first,
+          second: second,
+        );
 
   InterventionContentRelation.unpopulated(String? id) : super.unpopulated(id);
 }
@@ -190,17 +170,8 @@ class ContentContentTagRelation extends Relation<Content, ContentTag> {
   Map<String, dynamic> toJson() => _$ContentContentTagRelationToJson(this);
 
   ContentContentTagRelation(
-      {String? id,
-      required firstID,
-      required secondID,
-      Content? first,
-      ContentTag? second})
-      : super(
-            id: id,
-            first: first,
-            second: second,
-            firstID: firstID,
-            secondID: secondID);
+      {String? id, required Content first, required ContentTag second})
+      : super(id: id, first: first, second: second);
 
   ContentContentTagRelation.unpopulated(String? id) : super.unpopulated(id);
 }

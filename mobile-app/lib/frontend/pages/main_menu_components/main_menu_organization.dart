@@ -30,9 +30,10 @@ import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_commonw
 import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_tasks.dart';
 import 'package:mobile_app/frontend/strings.dart' as strings;
 import 'package:mobile_app/frontend/common_widgets.dart';
-import 'package:mobile_app/models/LevelInterventionRelation.dart';
 import 'package:mobile_app/utils/photo_capturing.dart';
 import 'package:mobile_app/frontend/pages/survey.dart' as surveyarea;
+
+import '../../../backend/callableModels/Relation.dart';
 
 class MainMenuOrganization extends StatelessWidget {
   Widget appBarWidget(BuildContext context,
@@ -1325,12 +1326,8 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
     super.initState();
     if (widget.appliedIntervention == null) {
       InterventionRepository.instance
-          .getInterventionsByLevelConnections(widget
-              .entity.level.allowedInterventions!
-              .map((e) => LevelInterventionRelation(
-                  level: e.first.toAmplifyModel(),
-                  intervention: e.second.toAmplifyModel()))
-              .toList())
+          .getInterventionsByLevelConnections(
+              widget.entity.level.allowedInterventions!)
           .then((value) => setState(() {
                 interventions = value;
                 loaded = true;

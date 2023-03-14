@@ -1,13 +1,15 @@
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
+import '../../callableModels/Relation.dart';
+
 abstract class ContentState {}
 
 class LoadingContentState extends ContentState {}
 
 class LoadedContentState extends ContentState {
   //first two have same length and sort
-  final List<amp.InterventionContentRelation> allRelations;
+  final List<InterventionContentRelation> allRelations;
   final List<Content> allContents;
 
   final List<Content> contentsToDisplay;
@@ -27,7 +29,7 @@ class LoadedContentState extends ContentState {
       required this.allInterventions});
 
   LoadedContentState copyWith(
-      {List<amp.InterventionContentRelation>? allRelations,
+      {List<InterventionContentRelation>? allRelations,
       List<Content>? allContents,
       List<Content>? contentsToDisplay,
       List<Intervention>? selectedInterventions,

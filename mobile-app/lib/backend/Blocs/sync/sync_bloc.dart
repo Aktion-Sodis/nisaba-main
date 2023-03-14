@@ -67,7 +67,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }
 
   void fulfillSync(bool filesSyncEnabled) async {
-    InternetConnectionType internetConnectionType =
+    /*InternetConnectionType internetConnectionType =
         await StorageRepository.currentInternetConnectionType();
     if (LocalDataRepository.instance.wifiOnly &&
         internetConnectionType != InternetConnectionType.WIFI) {
@@ -246,7 +246,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       if (userBloc.state.user != null) {
         syncUser(userBloc.state.user!);
       }
-    }
+    }*/
   }
 
   Future<void> populateSortedLists<P, Q, R extends Comparable>(

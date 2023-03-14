@@ -46,7 +46,7 @@ class Intervention extends DBModel {
   set description(String description) => description_ml.text = description;
 
   List<InterventionTag> get tags =>
-      tagConnections.map((e) => e.second).toList();
+      tagConnections.map((e) => e.second!).toList();
 
   void addInterventionTag(InterventionTag interventionTag) {
     tagConnections.add(InterventionInterventionTagRelation(
@@ -120,23 +120,23 @@ class Intervention extends DBModel {
             .map(
               (e) => amp.InterventionContentRelation(
                   id: e.id,
-                  intervention: e.first.toAmplifyModel(),
-                  content: e.second.toAmplifyModel()),
+                  intervention: e.first!.toAmplifyModel(),
+                  content: e.second!.toAmplifyModel()),
             )
             .toList(),
         tags: tagConnections.map((e) {
           return amp.InterventionInterventionTagRelation(
               id: e.id,
-              intervention: e.first.toAmplifyModel(),
-              interventionTag: e.second.toAmplifyModel());
+              intervention: e.first!.toAmplifyModel(),
+              interventionTag: e.second!.toAmplifyModel());
         }).toList(),
         surveys: List.generate(
             surveys.length, (index) => surveys[index].toAmplifyModel()),
         levels: levelConnections.map((e) {
           return amp.LevelInterventionRelation(
               id: e.id,
-              level: e.first.toAmplifyModel(),
-              intervention: e.second.toAmplifyModel());
+              level: e.first!.toAmplifyModel(),
+              intervention: e.second!.toAmplifyModel());
         }).toList(),
         schemeVersion: schemeVersion));
   }

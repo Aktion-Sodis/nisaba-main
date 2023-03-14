@@ -51,7 +51,7 @@ class EntityRepositoryCustom extends definition.EntityRepository {
     }
 
     List<Entity> popluatedEntities =
-        await _populateMultipleConnections(allAmpEntities);
+        await _populateMultipleConnections(toReturn);
 
     return popluatedEntities;
   }

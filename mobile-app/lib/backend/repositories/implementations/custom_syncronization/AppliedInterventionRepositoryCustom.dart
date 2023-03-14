@@ -60,7 +60,7 @@ class AppliedInterventionRepositoryCustom
 
     /*print("inOriginal: " + entity.id!);
     appliedIntervention.id = appliedIntervention.id ?? UUID.getUUID();
-    amp.AppliedIntervention ampModel = appliedIntervention.toAmplifyModel();
+    AppliedIntervention ampModel = appliedIntervention.toAmplifyModel();
     print("inAmpModel1: " + (ampModel.entityAppliedInterventionsId ?? "null"));
     ampModel = ampModel.copyWith(entityAppliedInterventionsId: entity.id);
     print("inAmpModel2: " + (ampModel.entityAppliedInterventionsId ?? "null"));
