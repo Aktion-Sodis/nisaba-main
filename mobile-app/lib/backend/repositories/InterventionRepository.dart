@@ -37,4 +37,6 @@ abstract class InterventionRepository {
       levelInterventionRelationsByInterventionID(amp.Intervention intervention);
 
   SyncedFile getInterventionPic(Intervention intervention);
+
+  Future<Intervention> populatedInterventionFromContent(String id);
 }
