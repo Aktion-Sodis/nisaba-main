@@ -11,7 +11,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 abstract class DBModel {
   // TODO: change Sting? to String
-  String? id = UUID.getUUID();
+  String id = UUID.getUUID();
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool isPopulated = true;
@@ -19,7 +19,7 @@ abstract class DBModel {
   // This has to return a new instance of the class with only the id set
   DBModel getUnpopulated();
 
-  DBModel([String? id]) {
+  DBModel(String? id) {
     this.id = id ?? this.id;
   }
 

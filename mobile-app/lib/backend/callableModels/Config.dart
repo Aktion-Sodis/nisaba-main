@@ -16,7 +16,6 @@ class Config extends DBModel {
 
   Map<String, dynamic> toJson() => _$ConfigToJson(this);
 
-  String? id;
   late String name;
   ColorTheme? colorTheme;
   int? schemeVersion;
@@ -25,14 +24,15 @@ class Config extends DBModel {
   DateTime? updatedAt;
 
   Config(
-      {this.id,
+      {String? id,
       required this.name,
       this.colorTheme,
       this.schemeVersion,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt})
+      : super(id);
 
-  Config.fromAmplifyModel(amp.Config config) {
+  Config.fromAmplifyModel(amp.Config config) : super(config.id) {
     id = config.id;
     name = config.name;
     colorTheme = config.colorTheme == null
@@ -52,7 +52,7 @@ class Config extends DBModel {
         schemeVersion: schemeVersion));
   }
 
-  Config.unpopulated(this.id);
+  Config.unpopulated(String? id) : super(id);
   @override
   DBModel getUnpopulated() {
     return Config.unpopulated(id);

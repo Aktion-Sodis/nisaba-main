@@ -14,18 +14,18 @@ class Organization extends DBModel {
 
   Map<String, dynamic> toJson() => _$OrganizationToJson(this);
 
-  String? id;
   late String nameCamelCase;
   late String nameKebabCase;
   late String nameVerbose;
 
   Organization(
-      {required this.id,
+      {required String? id,
       required this.nameCamelCase,
       required this.nameKebabCase,
-      required this.nameVerbose});
+      required this.nameVerbose})
+      : super(id);
 
-  Organization.unpopulated(this.id);
+  Organization.unpopulated(String id) : super(id);
 
   @override
   DBModel getUnpopulated() {

@@ -22,7 +22,6 @@ class Survey extends DBModel {
 
   Map<String, dynamic> toJson() => _$SurveyToJson(this);
 
-  String? id;
   late I18nString name_ml;
   late I18nString description_ml;
   Intervention? intervention; // Unpopulated allowed
@@ -63,7 +62,7 @@ class Survey extends DBModel {
   }
 
   Survey(
-      {this.id,
+      {String? id,
       required this.name_ml,
       required this.description_ml,
       this.intervention,
@@ -73,9 +72,10 @@ class Survey extends DBModel {
       this.createdAt,
       this.updatedAt,
       required this.surveyType,
-      this.archived = false});
+      this.archived = false})
+      : super(id);
 
-  Survey.fromAmplifyModel(amp.Survey survey) {
+  Survey.fromAmplifyModel(amp.Survey survey) : super(survey.id) {
     print(survey.intervention.toString());
 
     id = survey.id;
@@ -121,7 +121,7 @@ class Survey extends DBModel {
         );
   }
 
-  Survey.unpopulated(this.id) {
+  Survey.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

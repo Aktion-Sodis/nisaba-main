@@ -19,7 +19,6 @@ class ContentTag extends DBModel {
 
   Map<String, dynamic> toJson() => _$ContentTagToJson(this);
 
-  String? id;
   late I18nString text_ml;
   int? schemeVersion;
   DateTime? createdAt;
@@ -31,14 +30,15 @@ class ContentTag extends DBModel {
   set text(String text) => text_ml.text = text;
 
   ContentTag(
-      {this.id,
+      {String? id,
       required this.text_ml,
       this.schemeVersion,
       required this.contents,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt})
+      : super(id);
 
-  ContentTag.fromAmplifyModel(amp.ContentTag tag) {
+  ContentTag.fromAmplifyModel(amp.ContentTag tag) : super(tag.id) {
     id = tag.id;
     text_ml = I18nString.fromAmplifyModel(tag.text);
     schemeVersion = tag.schemeVersion;
@@ -65,7 +65,7 @@ class ContentTag extends DBModel {
             .toList());
   }
 
-  ContentTag.unpopulated(this.id) {
+  ContentTag.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

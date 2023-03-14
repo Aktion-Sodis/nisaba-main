@@ -21,8 +21,6 @@ class AppliedIntervention extends DBModel {
       _$AppliedInterventionFromJson(json);
 
   Map<String, dynamic> toJson() => _$AppliedInterventionToJson(this);
-
-  String? id;
   late User whoDidIt; // Unpopulated allowed
   late Intervention intervention; // Unpopulated allowed
 
@@ -37,7 +35,7 @@ class AppliedIntervention extends DBModel {
   late bool isOkay;
 
   AppliedIntervention(
-      {this.id,
+      {String? id,
       required this.whoDidIt,
       required this.intervention,
       required this.entity,
@@ -46,10 +44,12 @@ class AppliedIntervention extends DBModel {
       this.createdAt,
       this.updatedAt,
       required this.executedSurveys,
-      required this.isOkay});
+      required this.isOkay})
+      : super(id);
 
   AppliedIntervention.fromAmplifyModel(
-      amp.AppliedIntervention appliedIntervention) {
+      amp.AppliedIntervention appliedIntervention)
+      : super(appliedIntervention.id) {
     id = appliedIntervention.id;
     whoDidIt = User.fromAmplifyModel(appliedIntervention.whoDidIt);
     intervention =
@@ -79,7 +79,7 @@ class AppliedIntervention extends DBModel {
         isOkay: isOkay));
   }
 
-  AppliedIntervention.unpopulated(this.id) {
+  AppliedIntervention.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

@@ -24,7 +24,6 @@ class Intervention extends DBModel {
 
   Map<String, dynamic> toJson() => _$InterventionToJson(this);
 
-  String? id;
   late I18nString name_ml;
   late I18nString description_ml;
   late InterventionType interventionType;
@@ -65,7 +64,7 @@ class Intervention extends DBModel {
   }
 
   Intervention(
-      {this.id,
+      {String? id,
       required this.name_ml,
       required this.description_ml,
       required this.interventionType,
@@ -75,9 +74,11 @@ class Intervention extends DBModel {
       required this.levelConnections,
       this.schemeVersion,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt})
+      : super(id);
 
-  Intervention.fromAmplifyModel(amp.Intervention intervention) {
+  Intervention.fromAmplifyModel(amp.Intervention intervention)
+      : super(intervention.id) {
     id = intervention.id;
     name_ml = I18nString.fromAmplifyModel(intervention.name);
     description_ml = I18nString.fromAmplifyModel(intervention.description);
@@ -140,7 +141,7 @@ class Intervention extends DBModel {
         schemeVersion: schemeVersion));
   }
 
-  Intervention.unpopulated(this.id) {
+  Intervention.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

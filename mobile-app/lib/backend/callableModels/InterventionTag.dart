@@ -20,7 +20,6 @@ class InterventionTag extends DBModel {
 
   Map<String, dynamic> toJson() => _$InterventionTagToJson(this);
 
-  String? id;
   late I18nString text_ml;
   int? schemeVersion;
   DateTime? createdAt;
@@ -32,14 +31,15 @@ class InterventionTag extends DBModel {
   set text(String text) => text_ml.text = text;
 
   InterventionTag(
-      {this.id,
+      {String? id,
       required this.text_ml,
       this.schemeVersion,
       required this.interventions,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt})
+      : super(id);
 
-  InterventionTag.fromAmplifyModel(amp.InterventionTag tag) {
+  InterventionTag.fromAmplifyModel(amp.InterventionTag tag) : super(tag.id) {
     id = tag.id;
     text_ml = I18nString.fromAmplifyModel(tag.text);
     schemeVersion = tag.schemeVersion;
@@ -65,7 +65,7 @@ class InterventionTag extends DBModel {
             .toList());
   }
 
-  InterventionTag.unpopulated(this.id) {
+  InterventionTag.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

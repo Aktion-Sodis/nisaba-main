@@ -24,7 +24,6 @@ class ExecutedSurvey extends DBModel {
 
   Map<String, dynamic> toJson() => _$ExecutedSurveyToJson(this);
 
-  String? id;
   late AppliedIntervention appliedIntervention; // Unpopulated allowed
   late Survey survey; // Unpopulated allowed
   late User whoExecutedIt; // Unpopulated allowed
@@ -36,7 +35,7 @@ class ExecutedSurvey extends DBModel {
   DateTime? updatedAt;
 
   ExecutedSurvey(
-      {this.id,
+      {String? id,
       required this.appliedIntervention,
       required this.survey,
       required this.whoExecutedIt,
@@ -45,9 +44,11 @@ class ExecutedSurvey extends DBModel {
       required this.answers,
       this.schemeVersion,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt})
+      : super(id);
 
-  ExecutedSurvey.fromAmplifyModel(amp.ExecutedSurvey executedSurvey) {
+  ExecutedSurvey.fromAmplifyModel(amp.ExecutedSurvey executedSurvey)
+      : super(executedSurvey.id) {
     id = executedSurvey.id;
     appliedIntervention = AppliedIntervention.fromAmplifyModel(
         executedSurvey.appliedIntervention);
@@ -82,7 +83,7 @@ class ExecutedSurvey extends DBModel {
     );
   }
 
-  ExecutedSurvey.unpopulated(this.id) {
+  ExecutedSurvey.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

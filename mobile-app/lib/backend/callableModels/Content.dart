@@ -22,7 +22,6 @@ class Content extends DBModel {
 
   Map<String, dynamic> toJson() => _$ContentToJson(this);
 
-  String? id;
   late I18nString name_ml;
   late I18nString description_ml;
   late List<InterventionContentRelation>
@@ -58,16 +57,17 @@ class Content extends DBModel {
   }
 
   Content(
-      {required this.id,
+      {required String? id,
       required this.name_ml,
       required this.description_ml,
       required this.interventions,
       required this.tagConnections,
       this.schemeVersion,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt})
+      : super(id);
 
-  Content.fromAmplifyModel(amp.Content content) {
+  Content.fromAmplifyModel(amp.Content content) : super(content.id) {
     id = content.id;
     name_ml = I18nString.fromAmplifyModel(content.name);
     description_ml = I18nString.fromAmplifyModel(content.description);
@@ -108,7 +108,7 @@ class Content extends DBModel {
         schemeVersion: schemeVersion));
   }
 
-  Content.unpopulated(this.id) {
+  Content.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

@@ -17,8 +17,6 @@ class SurveyTag extends DBModel {
       _$SurveyTagFromJson(json);
 
   Map<String, dynamic> toJson() => _$SurveyTagToJson(this);
-
-  String? id;
   late I18nString text_ml;
   int? schemeVersion;
   DateTime? createdAt;
@@ -31,14 +29,15 @@ class SurveyTag extends DBModel {
   set text(String text) => text_ml.text = text;
 
   SurveyTag(
-      {this.id,
+      {String? id,
       required this.text_ml,
       this.schemeVersion,
       required this.surveys,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt})
+      : super(id);
 
-  SurveyTag.fromAmplifyModel(amp.SurveyTag tag) {
+  SurveyTag.fromAmplifyModel(amp.SurveyTag tag) : super(tag.id) {
     id = tag.id;
     text_ml = I18nString.fromAmplifyModel(tag.text);
     schemeVersion = tag.schemeVersion;
@@ -65,7 +64,7 @@ class SurveyTag extends DBModel {
             .toList());
   }
 
-  SurveyTag.unpopulated(this.id) {
+  SurveyTag.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

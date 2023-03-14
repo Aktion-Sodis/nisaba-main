@@ -18,7 +18,6 @@ class CustomData extends DBModel {
 
   Map<String, dynamic> toJson() => _$CustomDataToJson(this);
 
-  String? id;
   late I18nString name_ml;
   late CustomDataType type;
 
@@ -26,9 +25,11 @@ class CustomData extends DBModel {
 
   set name(String name) => name_ml.text = name;
 
-  CustomData({required this.id, required this.name_ml, required this.type});
+  CustomData({required String? id, required this.name_ml, required this.type})
+      : super(id);
 
-  CustomData.fromAmplifyModel(amp.CustomData customData) {
+  CustomData.fromAmplifyModel(amp.CustomData customData)
+      : super(customData.id) {
     id = customData.id;
     name_ml = I18nString.fromAmplifyModel(customData.name);
     type = customDataTypeByAmplifyType(customData.type);
@@ -41,7 +42,7 @@ class CustomData extends DBModel {
         id: id));
   }
 
-  CustomData.unpopulated(this.id) {
+  CustomData.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

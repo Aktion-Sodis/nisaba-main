@@ -16,7 +16,6 @@ class User extends DBModel {
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
-  String? id;
   late String firstName;
   late String lastName;
   String? bio;
@@ -29,16 +28,17 @@ class User extends DBModel {
   DateTime? updatedAt;
 
   User(
-      {required this.id,
+      {required String? id,
       required this.firstName,
       required this.lastName,
       this.bio,
       required this.permissions,
       this.schemeVersion,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt})
+      : super(id);
 
-  User.fromAmplifyModel(amp.User user) {
+  User.fromAmplifyModel(amp.User user) : super(user.id) {
     id = user.id;
     firstName = user.firstName;
     lastName = user.lastName;
@@ -62,7 +62,7 @@ class User extends DBModel {
     ));
   }
 
-  User.fromMap(Map<dynamic, dynamic> map) {
+  User.fromMap(Map<dynamic, dynamic> map) : super(null) {
     id = map['id'];
     firstName = map['firstName'];
     lastName = map['lastName'];
@@ -87,7 +87,7 @@ class User extends DBModel {
     };
   }
 
-  User.unpopulated(this.id) {
+  User.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

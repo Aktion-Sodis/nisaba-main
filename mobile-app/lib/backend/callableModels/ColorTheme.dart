@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'ColorTheme.g.dart';
 part 'ColorTheme.db_model.dart';
 
-@DBModelAnnotation()
+@DBModelAnnotation(true)
 @JsonSerializable()
 class ColorTheme extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -29,9 +29,10 @@ class ColorTheme extends DBModel {
       this.backgroundOneLight,
       this.backgroundTwoLight,
       this.backgroundOneDark,
-      this.backgroundTwoDark});
+      this.backgroundTwoDark})
+      : super(null);
 
-  ColorTheme.fromAmplifyModel(amp.ColorTheme colorTheme) {
+  ColorTheme.fromAmplifyModel(amp.ColorTheme colorTheme) : super(null) {
     highlight = colorTheme.highlight;
     secondaryHighlight = colorTheme.secondaryHighlight;
     backgroundOneLight = colorTheme.backgroundOneLight;

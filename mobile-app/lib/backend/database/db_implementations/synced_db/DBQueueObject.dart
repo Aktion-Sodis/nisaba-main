@@ -15,7 +15,8 @@ class DBQueueObject extends DBModel {
 
   /// modelType: The type of the model that is being queued which can be get
   /// using [object.runtimeType.toString()] for an object [DBModel object].
-  DBQueueObject(this.modelType, this.object, this.action, [String? id]) {
+  DBQueueObject(this.modelType, this.object, this.action, [String? id])
+      : super(id) {
     this.id = id ?? this.id;
   }
 

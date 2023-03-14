@@ -20,7 +20,6 @@ class Level extends DBModel {
 
   Map<String, dynamic> toJson() => _$LevelToJson(this);
 
-  String? id;
   late I18nString name_ml;
   late I18nString description_ml;
   String? parentLevelID;
@@ -40,7 +39,7 @@ class Level extends DBModel {
   set description(String description) => description_ml.text = description;
 
   Level(
-      {this.id,
+      {String? id,
       required this.name_ml,
       required this.description_ml,
       this.parentLevelID,
@@ -49,9 +48,10 @@ class Level extends DBModel {
       required this.customData,
       this.schemeVersion,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt})
+      : super(id);
 
-  Level.fromAmplifyModel(amp.Level level) {
+  Level.fromAmplifyModel(amp.Level level) : super(level.id) {
     id = level.id;
     name_ml = I18nString.fromAmplifyModel(level.name);
     description_ml = I18nString.fromAmplifyModel(level.description);
@@ -90,7 +90,7 @@ class Level extends DBModel {
         schemeVersion: schemeVersion);
   }
 
-  Level.unpopulated(this.id) {
+  Level.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

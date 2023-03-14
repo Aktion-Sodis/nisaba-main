@@ -23,7 +23,6 @@ class Entity extends DBModel {
 
   Map<String, dynamic> toJson() => _$EntityToJson(this);
 
-  String? id;
   late I18nString name_ml;
   late I18nString description_ml;
   String? parentEntityID;
@@ -44,7 +43,7 @@ class Entity extends DBModel {
   set name(String name) => name_ml.text = name;
 
   Entity(
-      {this.id,
+      {String? id,
       required this.name_ml,
       required this.description_ml,
       this.parentEntityID,
@@ -54,9 +53,10 @@ class Entity extends DBModel {
       required this.appliedInterventions,
       this.schemeVersion,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt})
+      : super(id);
 
-  Entity.fromAmplifyModel(amp.Entity entity) {
+  Entity.fromAmplifyModel(amp.Entity entity) : super(entity.id) {
     id = entity.id;
     name_ml = I18nString.fromAmplifyModel(entity.name);
     description_ml = I18nString.fromAmplifyModel(entity.description);
@@ -103,7 +103,7 @@ class Entity extends DBModel {
     return toSort;
   }
 
-  Entity.unpopulated(this.id) {
+  Entity.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

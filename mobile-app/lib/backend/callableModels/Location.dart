@@ -20,14 +20,14 @@ class Location extends DBModel {
   double? latitude;
   double? longitude;
 
-  Location({this.latitude, this.longitude});
+  Location({this.latitude, this.longitude}) : super(null);
 
-  Location.fromAmplifyModel(amp.Location location) {
+  Location.fromAmplifyModel(amp.Location location) : super(null) {
     latitude = location.latitude;
     longitude = location.longitude;
   }
 
-  Location.fromPosition(Position position) {
+  Location.fromPosition(Position position) : super(null) {
     latitude = position.latitude;
     longitude = position.longitude;
   }
@@ -35,9 +35,6 @@ class Location extends DBModel {
   amp.Location toAmplifyModel() {
     return (amp.Location(latitude: latitude, longitude: longitude));
   }
-
-  @override
-  String? id;
 
   @override
   bool isPopulated = true;

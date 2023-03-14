@@ -16,11 +16,11 @@ class TestObject extends DBModel {
   String? name;
   int age;
 
-  TestObject(this.name, this.age, [String? id]) {
+  TestObject(this.name, this.age, [String? id]) : super(id) {
     this.id = id ?? this.id;
   }
 
-  TestObject.unpopulated(String id, [this.age = 0]) {
+  TestObject.unpopulated(String id, [this.age = 0]) : super(id) {
     this.id = id;
     isPopulated = false;
   }

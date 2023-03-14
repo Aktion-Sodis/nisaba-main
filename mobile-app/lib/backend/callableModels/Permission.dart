@@ -7,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'Permission.g.dart';
 part 'Permission.db_model.dart';
 
-@DBModelAnnotation()
+@DBModelAnnotation(true)
 @JsonSerializable()
 class Permission extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -19,9 +19,10 @@ class Permission extends DBModel {
   late PermissionType permissionType;
   late List<String> allowedEntities;
 
-  Permission({required this.permissionType, required this.allowedEntities});
+  Permission({required this.permissionType, required this.allowedEntities})
+      : super(null);
 
-  Permission.fromAmplifyModel(amp.Permission permission) {
+  Permission.fromAmplifyModel(amp.Permission permission) : super(null) {
     permissionType =
         permissionTypeFromAmplifyPermissionType(permission.permissionType);
     allowedEntities = permission.allowedEntities;
