@@ -1,4 +1,5 @@
 import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/AppliedIntervention.dart';
 import 'package:mobile_app/backend/callableModels/Location.dart';
@@ -12,7 +13,9 @@ import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'ExecutedSurvey.g.dart';
+part 'ExecutedSurvey.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class ExecutedSurvey extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -21,7 +24,6 @@ class ExecutedSurvey extends DBModel {
 
   Map<String, dynamic> toJson() => _$ExecutedSurveyToJson(this);
 
-  String? id;
   late AppliedIntervention appliedIntervention; // Unpopulated allowed
   late Survey survey; // Unpopulated allowed
   late User whoExecutedIt; // Unpopulated allowed
@@ -33,7 +35,7 @@ class ExecutedSurvey extends DBModel {
   DateTime? updatedAt;
 
   ExecutedSurvey(
-      {this.id,
+      {String? id,
       required this.appliedIntervention,
       required this.survey,
       required this.whoExecutedIt,
@@ -42,9 +44,11 @@ class ExecutedSurvey extends DBModel {
       required this.answers,
       this.schemeVersion,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt})
+      : super(id);
 
-  ExecutedSurvey.fromAmplifyModel(amp.ExecutedSurvey executedSurvey) {
+  ExecutedSurvey.fromAmplifyModel(amp.ExecutedSurvey executedSurvey)
+      : super(executedSurvey.id) {
     id = executedSurvey.id;
     appliedIntervention = AppliedIntervention.fromAmplifyModel(
         executedSurvey.appliedIntervention);
@@ -79,7 +83,7 @@ class ExecutedSurvey extends DBModel {
     );
   }
 
-  ExecutedSurvey.unpopulated(this.id) {
+  ExecutedSurvey.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

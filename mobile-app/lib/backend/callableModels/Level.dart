@@ -1,3 +1,4 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/callableModels/CustomData.dart';
 import 'package:mobile_app/backend/callableModels/Intervention.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
@@ -9,7 +10,9 @@ import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Level.g.dart';
+part 'Level.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class Level extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -17,7 +20,6 @@ class Level extends DBModel {
 
   Map<String, dynamic> toJson() => _$LevelToJson(this);
 
-  String? id;
   late I18nString name_ml;
   late I18nString description_ml;
   String? parentLevelID;
@@ -37,7 +39,7 @@ class Level extends DBModel {
   set description(String description) => description_ml.text = description;
 
   Level(
-      {this.id,
+      {String? id,
       required this.name_ml,
       required this.description_ml,
       this.parentLevelID,
@@ -46,9 +48,10 @@ class Level extends DBModel {
       required this.customData,
       this.schemeVersion,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt})
+      : super(id);
 
-  Level.fromAmplifyModel(amp.Level level) {
+  Level.fromAmplifyModel(amp.Level level) : super(level.id) {
     id = level.id;
     name_ml = I18nString.fromAmplifyModel(level.name);
     description_ml = I18nString.fromAmplifyModel(level.description);
@@ -87,7 +90,7 @@ class Level extends DBModel {
         schemeVersion: schemeVersion);
   }
 
-  Level.unpopulated(this.id) {
+  Level.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

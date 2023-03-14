@@ -24,6 +24,7 @@ import 'package:mobile_app/utils/amplify.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import '../Blocs/session/auth_credentials.dart';
 import '../callableModels/User.dart';
+import '../database/db_implementations/graphql_db/ConfigGraphQL.dart';
 
 class AuthRepository {
   Future<String> _getAttribute(String key) async {
@@ -174,6 +175,7 @@ class AuthRepository {
 
     if (result.isSignedIn) {
       await SyncedDB.instance.clear();
+      ConfigGraphQL().initClient();
       final userID = await _getUserIdFromAttributes();
       await _rememberUserAttributesLocally();
       await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
@@ -279,6 +281,7 @@ class AuthRepository {
 
     CognitoOIDCAuthProvider.forgetAuthToken();
     _clearSessionData();
+    ConfigGraphQL().closeClient();
     return true;
   }
 }

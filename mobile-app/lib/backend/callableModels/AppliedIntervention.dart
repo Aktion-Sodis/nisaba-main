@@ -1,3 +1,4 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/callableModels/ExecutedSurvey.dart';
 import 'package:mobile_app/backend/callableModels/Intervention.dart';
 import 'package:mobile_app/backend/callableModels/Location.dart';
@@ -10,7 +11,9 @@ import 'Entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'AppliedIntervention.g.dart';
+part 'AppliedIntervention.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class AppliedIntervention extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -18,11 +21,12 @@ class AppliedIntervention extends DBModel {
       _$AppliedInterventionFromJson(json);
 
   Map<String, dynamic> toJson() => _$AppliedInterventionToJson(this);
-
-  String? id;
   late User whoDidIt; // Unpopulated allowed
   late Intervention intervention; // Unpopulated allowed
-  late Entity entity; // Unpopulated allowed
+
+  @JsonKey(includeToJson: false)
+  late Entity entity; // Unpopulated allowe
+
   Location? location;
   int? schemeVersion;
   DateTime? createdAt;
@@ -31,7 +35,7 @@ class AppliedIntervention extends DBModel {
   late bool isOkay;
 
   AppliedIntervention(
-      {this.id,
+      {String? id,
       required this.whoDidIt,
       required this.intervention,
       required this.entity,
@@ -40,10 +44,12 @@ class AppliedIntervention extends DBModel {
       this.createdAt,
       this.updatedAt,
       required this.executedSurveys,
-      required this.isOkay});
+      required this.isOkay})
+      : super(id);
 
   AppliedIntervention.fromAmplifyModel(
-      amp.AppliedIntervention appliedIntervention) {
+      amp.AppliedIntervention appliedIntervention)
+      : super(appliedIntervention.id) {
     id = appliedIntervention.id;
     whoDidIt = User.fromAmplifyModel(appliedIntervention.whoDidIt);
     intervention =
@@ -73,7 +79,7 @@ class AppliedIntervention extends DBModel {
         isOkay: isOkay));
   }
 
-  AppliedIntervention.unpopulated(this.id) {
+  AppliedIntervention.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

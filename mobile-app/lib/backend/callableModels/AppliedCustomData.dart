@@ -1,10 +1,13 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'AppliedCustomData.g.dart';
+part 'AppliedCustomData.db_model.dart';
 
+@DBModelAnnotation(true)
 @JsonSerializable()
 class AppliedCustomData extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -27,9 +30,11 @@ class AppliedCustomData extends DBModel {
       required this.type,
       required this.name_ml,
       this.intValue,
-      this.stringValue});
+      this.stringValue})
+      : super(null);
 
-  AppliedCustomData.fromAmplifyModel(amp.AppliedCustomData appliedCustomData) {
+  AppliedCustomData.fromAmplifyModel(amp.AppliedCustomData appliedCustomData)
+      : super(null) {
     customDataID = appliedCustomData.customDataID;
     type = customDataTypeByAmplifyType(appliedCustomData.type);
     name_ml = I18nString.fromAmplifyModel(appliedCustomData.name);
@@ -47,12 +52,9 @@ class AppliedCustomData extends DBModel {
   }
 
   @override
-  String? id;
-
-  @override
   bool isPopulated = true;
 
-  AppliedCustomData.unpopulated(this.id) {
+  AppliedCustomData.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

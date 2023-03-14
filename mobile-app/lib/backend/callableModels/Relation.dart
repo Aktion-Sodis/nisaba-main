@@ -57,6 +57,11 @@ class Relation<T extends DBModel, P extends DBModel> extends DBModel {
 // All relations
 @JsonSerializable()
 class SurveySurveyTagRelation extends Relation<Survey, SurveyTag> {
+  @override
+  DBModel getUnpopulated() {
+    return SurveySurveyTagRelation.unpopulated(id);
+  }
+
   // JsonSerializable factory and toJson methods
   factory SurveySurveyTagRelation.fromJson(Map<String, dynamic> json) =>
       _$SurveySurveyTagRelationFromJson(json);
@@ -81,6 +86,11 @@ class SurveySurveyTagRelation extends Relation<Survey, SurveyTag> {
 
 @JsonSerializable()
 class LevelInterventionRelation extends Relation<Level, Intervention> {
+  @override
+  DBModel getUnpopulated() {
+    return LevelInterventionRelation.unpopulated(id);
+  }
+
   // JsonSerializable factory and toJson methods
   factory LevelInterventionRelation.fromJson(Map<String, dynamic> json) =>
       _$LevelInterventionRelationFromJson(json);
@@ -106,6 +116,11 @@ class LevelInterventionRelation extends Relation<Level, Intervention> {
 @JsonSerializable()
 class InterventionInterventionTagRelation
     extends Relation<Intervention, InterventionTag> {
+  @override
+  DBModel getUnpopulated() {
+    return InterventionInterventionTagRelation.unpopulated(id);
+  }
+
   // JsonSerializable factory and toJson methods
 
   factory InterventionInterventionTagRelation.fromJson(
@@ -134,6 +149,11 @@ class InterventionInterventionTagRelation
 
 @JsonSerializable()
 class InterventionContentRelation extends Relation<Intervention, Content> {
+  @override
+  DBModel getUnpopulated() {
+    return InterventionContentRelation.unpopulated(id);
+  }
+
   // JsonSerializable factory and toJson methods
   factory InterventionContentRelation.fromJson(Map<String, dynamic> json) =>
       _$InterventionContentRelationFromJson(json);
@@ -158,6 +178,11 @@ class InterventionContentRelation extends Relation<Intervention, Content> {
 
 @JsonSerializable()
 class ContentContentTagRelation extends Relation<Content, ContentTag> {
+  @override
+  DBModel getUnpopulated() {
+    return ContentContentTagRelation.unpopulated(id);
+  }
+
   // JsonSerializable factory and toJson methods
   factory ContentContentTagRelation.fromJson(Map<String, dynamic> json) =>
       _$ContentContentTagRelationFromJson(json);

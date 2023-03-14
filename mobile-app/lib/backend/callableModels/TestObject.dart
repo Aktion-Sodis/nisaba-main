@@ -1,25 +1,32 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 
 part 'TestObject.g.dart';
 
+part 'TestObject.db_model.dart';
+
+@DBModelAnnotation()
 @JsonSerializable()
 class TestObject extends DBModel {
-  @override
-  String? id;
+  static Map<String, dynamic> queryFields() => _$TestObject;
 
   String? name;
   int age;
 
-  TestObject(this.name, this.age, [this.id]);
+  TestObject(this.name, this.age, [String? id]) : super(id) {
+    this.id = id ?? this.id;
+  }
 
-  TestObject.unpopulated(this.id, [this.age = 0]) {
+  TestObject.unpopulated(String id, [this.age = 0]) : super(id) {
+    this.id = id;
     isPopulated = false;
   }
   @override
   DBModel getUnpopulated() {
-    return TestObject.unpopulated(id);
+    return TestObject.unpopulated(id!);
   }
 
   @override

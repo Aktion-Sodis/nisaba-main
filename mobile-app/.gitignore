@@ -1,3 +1,4 @@
+*.db_model.dart
 *.g.dart
 
 # Miscellaneous

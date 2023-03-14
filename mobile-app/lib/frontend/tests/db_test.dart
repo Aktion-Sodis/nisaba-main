@@ -12,42 +12,8 @@ import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDB.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 
+import '../../backend/callableModels/TestObject.dart';
 import '../../backend/database/Query.dart';
-
-class TO extends DBModel {
-  String? name;
-  int age;
-
-  TO([this.name, this.age = 0, this.id]);
-
-  @override
-  bool isPopulated = false;
-
-  @override
-  int version = 0;
-
-  @override
-  Map<String, dynamic> toMap() {
-    return {
-      "name": name,
-      "age": age,
-    };
-  }
-
-  @override
-  String? id;
-
-  @override
-  void fromMap(Map<String, dynamic> map) {
-    // TODO: implement fromMap
-  }
-
-  @override
-  DBModel getUnpopulated() {
-    // TODO: implement getUnpopulated
-    throw UnimplementedError();
-  }
-}
 
 class LocalDBTest extends StatelessWidget {
   LocalDBTest({Key? key}) : super(key: key);
@@ -59,36 +25,19 @@ class LocalDBTest extends StatelessWidget {
     db = LocalDB();
     await (db as LocalDB).initLocalDB();
     (db as LocalDB).registerModel(
-        TO,
-        LocalDBModelRegistration(
-          fromDBModel: (DBModel object, getRegisteredModel) {
-            TO to = object as TO;
-            return {"name": to.name, "age": to.age, "id": to.id};
-          },
-          toDBModel: (model, getRegisteredModel) {
-            return TO(model["name"] as String?, model["age"] as int,
-                model["id"] as String);
-          },
-        ));
+        TestObject, LocalDBModelRegistration(toDBModel: TestObject.fromJson));
     print("DBTest: DB initialized");
     return Future.value();
   }
 
   Future<void> _initRemoteDB() async {
-    print("DBTest: Initializing RemoteDB");
+    /*print("DBTest: Initializing RemoteDB");
     db = RemoteDB();
     (db as RemoteDB).registerModel(
-        TO,
+        TestObject,
         RemoteDBModelRegistration(
           modelType: amp.TestObject.classType,
-          fromDBModel: (DBModel object, getRegisteredModel) {
-            TO to = object as TO;
-            return amp.TestObject(
-              id: to.id,
-              name: to.name,
-              age: to.age,
-            );
-          },
+          fromDBModel: TestObject.fromJson,
           toDBModel: (model, getRegisteredModel) {
             amp.TestObject testObject = model as amp.TestObject;
             return TO(testObject.name, testObject.age, testObject.id);
@@ -97,14 +46,17 @@ class LocalDBTest extends StatelessWidget {
             amp.TestObject.NAME,
             amp.TestObject.AGE,
           ],
+          getID: (Object o) {
+            throw UnimplementedError();
+          },
         ));
-    print("DBTest: DB initialized");
+    print("DBTest: DB initialized");*/
   }
 
   Future<void> _dbTest() async {
-    TO testObject1 = TO("Test1", 1);
-    TO testObject2 = TO("Test2", 2);
-    TO testObject3 = TO("Test3", 3);
+    TestObject testObject1 = TestObject("Test1", 1);
+    TestObject testObject2 = TestObject("Test2", 2);
+    TestObject testObject3 = TestObject("Test3", 3);
 
     // Test Create
     await db.create(testObject1);
@@ -114,7 +66,7 @@ class LocalDBTest extends StatelessWidget {
     print("Test Create: OK");
 
     // Test GetByID
-    TO? receivedObject1 = await db.getById(TO, testObject1.id!);
+    TestObject? receivedObject1 = await db.getById(TestObject, testObject1.id!);
     if (receivedObject1 == null) {
       throw "testObject1 has not been received. Probably, testObject1 has not been created";
     }
@@ -124,8 +76,8 @@ class LocalDBTest extends StatelessWidget {
 
     print("Test GetByID: OK");
 
-    List<TO> receivedObjects =
-        await db.get<TO>(TO, Query(QPredicate.EQ, "name", "Test2"));
+    List<TestObject> receivedObjects = await db.get<TestObject>(
+        TestObject, Query(QPredicate.EQ, "name", "Test2"));
     if (receivedObjects.isNotEmpty) {
       throw "testObject2 has been received. Probably, the query is not working";
     }
@@ -143,7 +95,7 @@ class LocalDBTest extends StatelessWidget {
     // Test Update
     testObject1.name = "Test1Updated";
     await db.update(testObject1);
-    receivedObject1 = await db.getById<TO>(TO, testObject1.id!);
+    receivedObject1 = await db.getById<TestObject>(TestObject, testObject1.id!);
     if (receivedObject1 == null) {
       throw "testObject1 has not been received. Probably, testObject1 has not been updated";
     }
@@ -155,36 +107,40 @@ class LocalDBTest extends StatelessWidget {
     // Test Predicates
 
     //Query 1
-    receivedObjects =
-        await db.get<TO>(TO, Query(QPredicate.NE, "name", "Test2"));
+    receivedObjects = await db.get<TestObject>(
+        TestObject, Query(QPredicate.NE, "name", "Test2"));
     List<int> ages = _getAges(receivedObjects);
     if (!listElementsEqual(ages, [1, 3])) {
       throw "Query 1 failed";
     }
 
     //Query 2
-    receivedObjects = await db.get<TO>(TO, Query(QPredicate.GT, "age", 1));
+    receivedObjects =
+        await db.get<TestObject>(TestObject, Query(QPredicate.GT, "age", 1));
     ages = _getAges(receivedObjects);
     if (!listElementsEqual(ages, [2, 3])) {
       throw "Query 2 failed";
     }
 
     //Query 3
-    receivedObjects = await db.get<TO>(TO, Query(QPredicate.GE, "age", 2));
+    receivedObjects =
+        await db.get<TestObject>(TestObject, Query(QPredicate.GE, "age", 2));
     ages = _getAges(receivedObjects);
     if (!listElementsEqual(ages, [2, 3])) {
       throw "Query 3 failed";
     }
 
     //Query 4
-    receivedObjects = await db.get<TO>(TO, Query(QPredicate.LT, "age", 3));
+    receivedObjects =
+        await db.get<TestObject>(TestObject, Query(QPredicate.LT, "age", 3));
     ages = _getAges(receivedObjects);
     if (!listElementsEqual(ages, [1, 2])) {
       throw "Query 4 failed";
     }
 
     //Query 5
-    receivedObjects = await db.get<TO>(TO, Query(QPredicate.LE, "age", 2));
+    receivedObjects =
+        await db.get<TestObject>(TestObject, Query(QPredicate.LE, "age", 2));
     ages = _getAges(receivedObjects);
     if (!listElementsEqual(ages, [1, 2])) {
       throw "Query 5 failed";
@@ -208,7 +164,7 @@ class LocalDBTest extends StatelessWidget {
     // Test Delete
     String testObject1Id = testObject1.id!;
     await db.delete(testObject1);
-    receivedObject1 = await db.getById<TO>(TO, testObject1Id);
+    receivedObject1 = await db.getById<TestObject>(TestObject, testObject1Id);
     if (receivedObject1 != null) {
       throw "testObject1 has not been deleted";
     }
@@ -217,16 +173,16 @@ class LocalDBTest extends StatelessWidget {
   }
 
   Future<void> _clearDB() async {
-    List<TO> objectList = await db.get<TO>(TO);
-    for (TO object in objectList) {
+    List<TestObject> objectList = await db.get<TestObject>(TestObject);
+    for (TestObject object in objectList) {
       await db.delete(object);
     }
     print(objectList.length.toString() + " objects deleted");
   }
 
-  List<int> _getAges(List<TO> objects) {
+  List<int> _getAges(List<TestObject> objects) {
     List<int> ages = [];
-    for (TO object in objects) {
+    for (TestObject object in objects) {
       ages.add(object.age);
     }
     return ages;

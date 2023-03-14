@@ -1,3 +1,4 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/callableModels/QuestionOption.dart';
@@ -6,7 +7,9 @@ import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Question.g.dart';
+part 'Question.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class Question extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -15,8 +18,7 @@ class Question extends DBModel {
 
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
 
-  String? id;
-  late I18nString text_ml;
+  late I18nString text_ml; // TODO: Rename to text
   late QuestionType type;
   List<QuestionOption>? questionOptions;
   late bool isFollowUpQuestion;
@@ -26,11 +28,12 @@ class Question extends DBModel {
   set text(String text) => text_ml.text = text;
 
   Question(
-      {this.id,
+      {String? id,
       required this.text_ml,
       required this.type,
       this.questionOptions,
-      required this.isFollowUpQuestion});
+      required this.isFollowUpQuestion})
+      : super(id);
 
   amp.Question toAmplifyModel() {
     return amp.Question(
@@ -44,7 +47,7 @@ class Question extends DBModel {
         isFollowUpQuestion: isFollowUpQuestion);
   }
 
-  Question.fromAmplifyModel(amp.Question question) {
+  Question.fromAmplifyModel(amp.Question question) : super(question.id) {
     id = question.id;
     text_ml = I18nString.fromAmplifyModel(question.text);
     type = questionTypeFromAmplifyQuestionType(question.type);
@@ -57,7 +60,7 @@ class Question extends DBModel {
     isFollowUpQuestion = question.isFollowUpQuestion;
   }
 
-  Question.unpopulated(this.id) {
+  Question.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

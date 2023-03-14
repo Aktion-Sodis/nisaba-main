@@ -1,3 +1,4 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/Permission.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
@@ -5,7 +6,9 @@ import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'User.g.dart';
+part 'User.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class User extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -13,26 +16,29 @@ class User extends DBModel {
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
-  String? id;
   late String firstName;
   late String lastName;
   String? bio;
+
+  @DBModelIgnore()
   late List<Permission> permissions;
+
   int? schemeVersion;
   DateTime? createdAt;
   DateTime? updatedAt;
 
   User(
-      {required this.id,
+      {required String? id,
       required this.firstName,
       required this.lastName,
       this.bio,
       required this.permissions,
       this.schemeVersion,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt})
+      : super(id);
 
-  User.fromAmplifyModel(amp.User user) {
+  User.fromAmplifyModel(amp.User user) : super(user.id) {
     id = user.id;
     firstName = user.firstName;
     lastName = user.lastName;
@@ -56,7 +62,7 @@ class User extends DBModel {
     ));
   }
 
-  User.fromMap(Map<dynamic, dynamic> map) {
+  User.fromMap(Map<dynamic, dynamic> map) : super(null) {
     id = map['id'];
     firstName = map['firstName'];
     lastName = map['lastName'];
@@ -81,7 +87,7 @@ class User extends DBModel {
     };
   }
 
-  User.unpopulated(this.id) {
+  User.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

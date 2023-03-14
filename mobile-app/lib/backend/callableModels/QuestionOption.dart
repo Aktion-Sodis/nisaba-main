@@ -14,7 +14,6 @@ class QuestionOption extends DBModel {
 
   Map<String, dynamic> toJson() => _$QuestionOptionToJson(this);
 
-  String? id;
   late I18nString text_ml;
   List<String>? followUpQuestionIDs;
 
@@ -22,7 +21,8 @@ class QuestionOption extends DBModel {
 
   set text(String text) => text_ml.text = text;
 
-  QuestionOption({this.id, required this.text_ml, this.followUpQuestionIDs});
+  QuestionOption({String? id, required this.text_ml, this.followUpQuestionIDs})
+      : super(id);
 
   amp.QuestionOption toAmplifyModel() {
     return amp.QuestionOption(
@@ -31,13 +31,14 @@ class QuestionOption extends DBModel {
         id: id);
   }
 
-  QuestionOption.fromAmplifyModel(amp.QuestionOption questionOption) {
+  QuestionOption.fromAmplifyModel(amp.QuestionOption questionOption)
+      : super(questionOption.id) {
     id = questionOption.id;
     text_ml = I18nString.fromAmplifyModel(questionOption.text);
     followUpQuestionIDs = questionOption.followUpQuestionIDs;
   }
 
-  QuestionOption.unpopulated(this.id) {
+  QuestionOption.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

@@ -345,11 +345,6 @@ final Map<Type, DBModel Function(String id)> _instances = {
             I18nString(languageKeys: ["en"], languageTexts: ["language text1"]),
         followUpQuestionIDs: ["followUpQuestionID"],
       ),
-  Relation: (id) => Relation(
-        id: id,
-        first: Entity.unpopulated("entity1"),
-        second: Entity.unpopulated("entity2"),
-      ),
   Survey: (id) => Survey(
         id: id,
         schemeVersion: 1,

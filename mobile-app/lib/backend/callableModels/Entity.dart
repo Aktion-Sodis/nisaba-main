@@ -1,3 +1,4 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/AppliedCustomData.dart';
 import 'package:mobile_app/backend/callableModels/AppliedIntervention.dart';
@@ -12,7 +13,9 @@ import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Entity.g.dart';
+part 'Entity.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class Entity extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -20,7 +23,6 @@ class Entity extends DBModel {
 
   Map<String, dynamic> toJson() => _$EntityToJson(this);
 
-  String? id;
   late I18nString name_ml;
   late I18nString description_ml;
   String? parentEntityID;
@@ -41,7 +43,7 @@ class Entity extends DBModel {
   set name(String name) => name_ml.text = name;
 
   Entity(
-      {this.id,
+      {String? id,
       required this.name_ml,
       required this.description_ml,
       this.parentEntityID,
@@ -51,9 +53,10 @@ class Entity extends DBModel {
       required this.appliedInterventions,
       this.schemeVersion,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt})
+      : super(id);
 
-  Entity.fromAmplifyModel(amp.Entity entity) {
+  Entity.fromAmplifyModel(amp.Entity entity) : super(entity.id) {
     id = entity.id;
     name_ml = I18nString.fromAmplifyModel(entity.name);
     description_ml = I18nString.fromAmplifyModel(entity.description);
@@ -100,7 +103,7 @@ class Entity extends DBModel {
     return toSort;
   }
 
-  Entity.unpopulated(this.id) {
+  Entity.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

@@ -41,7 +41,6 @@ class LocalDB extends DB<LocalDBModelRegistration> {
 
     var store = stringMapStoreFactory.store(modelType.toString());
     await store.record(object.id!).delete(db);
-    object.id = null;
     return Future.value();
   }
 

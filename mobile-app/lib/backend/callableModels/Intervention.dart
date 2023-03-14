@@ -1,3 +1,4 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/callableModels/Content.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/callableModels/Relation.dart';
@@ -12,7 +13,9 @@ import 'Level.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Intervention.g.dart';
+part 'Intervention.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class Intervention extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -21,7 +24,6 @@ class Intervention extends DBModel {
 
   Map<String, dynamic> toJson() => _$InterventionToJson(this);
 
-  String? id;
   late I18nString name_ml;
   late I18nString description_ml;
   late InterventionType interventionType;
@@ -62,7 +64,7 @@ class Intervention extends DBModel {
   }
 
   Intervention(
-      {this.id,
+      {String? id,
       required this.name_ml,
       required this.description_ml,
       required this.interventionType,
@@ -72,9 +74,11 @@ class Intervention extends DBModel {
       required this.levelConnections,
       this.schemeVersion,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt})
+      : super(id);
 
-  Intervention.fromAmplifyModel(amp.Intervention intervention) {
+  Intervention.fromAmplifyModel(amp.Intervention intervention)
+      : super(intervention.id) {
     id = intervention.id;
     name_ml = I18nString.fromAmplifyModel(intervention.name);
     description_ml = I18nString.fromAmplifyModel(intervention.description);
@@ -137,7 +141,7 @@ class Intervention extends DBModel {
         schemeVersion: schemeVersion));
   }
 
-  Intervention.unpopulated(this.id) {
+  Intervention.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

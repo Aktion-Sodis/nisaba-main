@@ -67,12 +67,22 @@ class Synchronizer {
     await _downstreamSyncLock.synchronized(() async {
       downstreamSyncStatus = SyncStatus.SYNCING;
       try {
+        // Download all entries from remoteDB
+        List<DBModel> entries = [];
         for (Type modelType in modelsToSyncDownstream) {
-          List<DBModel> entries = await remoteDB.get(modelType);
-          for (DBModel entry in entries) {
-            await localDB.update(entry);
-          }
+          List<DBModel> modelEntries = await remoteDB.get(modelType);
+          entries.addAll(modelEntries);
         }
+
+        // Delete all entries from localDB
+        await localDB.clear();
+
+        // Insert all entries into localDB
+        for (DBModel entry in entries) {
+          await localDB.update(entry);
+        }
+
+        // TODO: consistency check
       } catch (e) {
         downstreamSyncStatus = SyncStatus.UP_TO_DATE;
       }

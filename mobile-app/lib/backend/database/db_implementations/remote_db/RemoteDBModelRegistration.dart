@@ -5,25 +5,23 @@ import '../../DBModel.dart';
 import '../../QPredicate.dart';
 import '../../Query.dart';
 
-class RemoteDBModelRegistration
-    extends DBModelRegistration<Object, QueryPredicate> {
+typedef _TranslatedModelType = Object;
+typedef _TranslatedPredicateType = QueryPredicate;
+
+class RemoteDBModelRegistration extends DBModelRegistration<
+    _TranslatedModelType, _TranslatedPredicateType> {
   final ModelType? modelType;
 
   RemoteDBModelRegistration(
       {required List<QueryField> modelAttributes,
-      required Object Function(
-              DBModel object,
-              DBModelRegistration<Object, QueryPredicate> Function(Type)
-                  getRegisteredModes)
-          fromDBModel,
-      required DBModel Function(
-              Object amplifyModel,
-              DBModelRegistration<Object, QueryPredicate> Function(Type)
-                  getRegisteredModes)
-          toDBModel,
+      required FromDBModelConverter<_TranslatedModelType> fromDBModel,
+      required ToDBModelConverter<_TranslatedModelType> toDBModel,
       required this.modelType})
-      : super(generatePredicatesTranslations(modelAttributes), fromDBModel,
-            toDBModel);
+      : super(
+            predicatesTranslations:
+                generatePredicatesTranslations(modelAttributes),
+            fromDBModel: fromDBModel,
+            toDBModel: toDBModel);
 
   static Map<QPredicate, QueryPredicate<Model>? Function(Query p1)>
       generatePredicatesTranslations(List<QueryField> attributesInput) {

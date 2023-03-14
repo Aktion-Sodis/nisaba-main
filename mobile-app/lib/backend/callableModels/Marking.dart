@@ -1,9 +1,12 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Marking.g.dart';
+part 'Marking.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class Marking extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -23,12 +26,13 @@ class Marking extends DBModel {
       required this.y,
       required this.rx,
       required this.ry,
-      required this.text});
+      required this.text})
+      : super(null);
 
   amp.Marking toAmplifyModel() =>
       amp.Marking(x: x, y: y, rx: rx, ry: ry, text: text);
 
-  Marking.fromAmplifyModel(amp.Marking marking) {
+  Marking.fromAmplifyModel(amp.Marking marking) : super(null) {
     x = marking.x;
     y = marking.y;
     rx = marking.rx;

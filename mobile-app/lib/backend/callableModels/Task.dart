@@ -10,7 +10,6 @@ import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 /// DO NOT NEED TO IMPLEMENT
 class Task extends DBModel {
-  String? id;
   late String title;
   String? text;
   DateTime? dueDate;
@@ -28,7 +27,7 @@ class Task extends DBModel {
   late List<int> picList;
 
   Task(
-      {this.id,
+      {String? id,
       required this.title,
       this.text,
       this.dueDate,
@@ -42,9 +41,10 @@ class Task extends DBModel {
       this.createdAt,
       this.updatedAt,
       required this.audioList,
-      required this.picList});
+      required this.picList})
+      : super(id);
 
-  Task.fromAmplifyModel(amp.Task task) {
+  Task.fromAmplifyModel(amp.Task task) : super(task.id) {
     id = task.id;
     title = task.title;
     text = task.text;
@@ -91,7 +91,7 @@ class Task extends DBModel {
         picIDs: picList);
   }
 
-  Task.unpopulated(this.id) {
+  Task.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override
@@ -118,5 +118,11 @@ class Task extends DBModel {
         other.appliedIntervention == appliedIntervention &&
         other.executedSurvey == executedSurvey &&
         other.schemeVersion == schemeVersion;
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    throw UnimplementedError();
   }
 }

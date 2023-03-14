@@ -1,3 +1,4 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
@@ -5,7 +6,9 @@ import '../database/DBModel.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Location.g.dart';
+part 'Location.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class Location extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -17,14 +20,14 @@ class Location extends DBModel {
   double? latitude;
   double? longitude;
 
-  Location({this.latitude, this.longitude});
+  Location({this.latitude, this.longitude}) : super(null);
 
-  Location.fromAmplifyModel(amp.Location location) {
+  Location.fromAmplifyModel(amp.Location location) : super(null) {
     latitude = location.latitude;
     longitude = location.longitude;
   }
 
-  Location.fromPosition(Position position) {
+  Location.fromPosition(Position position) : super(null) {
     latitude = position.latitude;
     longitude = position.longitude;
   }
@@ -32,9 +35,6 @@ class Location extends DBModel {
   amp.Location toAmplifyModel() {
     return (amp.Location(latitude: latitude, longitude: longitude));
   }
-
-  @override
-  String? id;
 
   @override
   bool isPopulated = true;

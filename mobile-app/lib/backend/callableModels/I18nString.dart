@@ -1,3 +1,4 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
@@ -7,7 +8,9 @@ import 'package:path/path.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'I18nString.g.dart';
+part 'I18nString.db_model.dart';
 
+@DBModelAnnotation(true)
 @JsonSerializable()
 class I18nString extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -19,6 +22,7 @@ class I18nString extends DBModel {
   late List<String> languageKeys;
   late List<String> languageTexts;
 
+  @DBModelIgnore()
   String get text {
     if (languageKeys.contains(str.currentLanguage)) {
       int index = languageKeys.indexOf(str.currentLanguage);
@@ -36,6 +40,7 @@ class I18nString extends DBModel {
     }
   }
 
+  @DBModelIgnore()
   set text(String text) {
     if (languageKeys.contains(str.currentLanguage)) {
       int index = languageKeys.indexOf(str.currentLanguage);
@@ -50,14 +55,15 @@ class I18nString extends DBModel {
     }
   }
 
-  I18nString({required this.languageKeys, required this.languageTexts});
+  I18nString({required this.languageKeys, required this.languageTexts})
+      : super(null);
 
-  I18nString.fromString({String? string}) {
+  I18nString.fromString({String? string}) : super(null) {
     languageKeys = [str.currentLanguage];
     languageTexts = [string ?? ""];
   }
 
-  I18nString.fromAmplifyModel(amp.I18nString I18nString) {
+  I18nString.fromAmplifyModel(amp.I18nString I18nString) : super(null) {
     languageKeys = I18nString.languageKeys;
     languageTexts = I18nString.languageTexts;
   }

@@ -1,13 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:sembast/sembast.dart';
 
-class LocalDBModelRegistration
-    extends DBModelRegistration<Map<String, Object?>, Finder> {
+typedef _TranslatedModelType = Map<String, Object?>;
+typedef _TranslatedPredicateType = Finder;
+
+class LocalDBModelRegistration extends DBModelRegistration<_TranslatedModelType,
+    _TranslatedPredicateType> {
   @override
-  static final Map<QPredicate, Finder Function(Query)>
+  static final Map<QPredicate, _TranslatedPredicateType Function(Query)>
       _predefinedPredicatesTranslations = {
     QPredicate.EQ: (Query query) => Finder(
           filter: Filter.equals(query.key, query.attr1),
@@ -35,16 +39,16 @@ class LocalDBModelRegistration
         ),
   };
 
-  LocalDBModelRegistration(
-      {required Map<String, Object?> Function(
-              DBModel model,
-              DBModelRegistration<Map<String, Object?>, Finder> Function(Type)
-                  getRegisteredModes)
-          fromDBModel,
-      required DBModel Function(
-              Map<String, Object?> model,
-              DBModelRegistration<Map<String, Object?>, Finder> Function(Type)
-                  getRegisteredModes)
-          toDBModel})
-      : super(_predefinedPredicatesTranslations, fromDBModel, toDBModel);
+  LocalDBModelRegistration({
+    required ToDBModelConverter<_TranslatedModelType> toDBModel,
+  }) : super(
+            fromDBModel: _fromDBModel,
+            toDBModel: toDBModel,
+            predicatesTranslations: _predefinedPredicatesTranslations);
+
+  static _TranslatedModelType _fromDBModel(
+    DBModel model,
+  ) {
+    return model.toJson();
+  }
 }

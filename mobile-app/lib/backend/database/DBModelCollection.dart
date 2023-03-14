@@ -14,9 +14,18 @@ class DBModelCollection<R extends DBModelRegistration> {
 
   R getRegisteredModel(Type type) {
     if (_registeredModels[type] == null) {
-      throw Exception("Model not registered");
+      throw Exception("Model $type not registered");
     }
     return _registeredModels[type]!;
+  }
+
+  R getRegisteredModelByName(String name) {
+    var registrationList = _registeredModels.entries
+        .where((element) => element.key.toString() == name);
+
+    if (registrationList.isEmpty) throw Exception("Model $name not registered");
+
+    return registrationList.first.value;
   }
 
   void registerModel(Type type, R registration) {

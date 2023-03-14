@@ -18,7 +18,6 @@ class QuestionAnswer extends DBModel {
 
   Map<String, dynamic> toJson() => _$QuestionAnswerToJson(this);
 
-  String? id;
   late String questionID;
   late DateTime date;
   late QuestionType type;
@@ -30,7 +29,7 @@ class QuestionAnswer extends DBModel {
   late List<Marking> markings;
 
   QuestionAnswer(
-      {this.id,
+      {String? id,
       required this.questionID,
       required this.date,
       required this.type,
@@ -39,7 +38,8 @@ class QuestionAnswer extends DBModel {
       List<Marking>? markings,
       this.intValue,
       this.doubleValue,
-      this.rating}) {
+      this.rating})
+      : super(id) {
     if (markings == null) {
       this.markings = [];
     } else {
@@ -47,7 +47,8 @@ class QuestionAnswer extends DBModel {
     }
   }
 
-  QuestionAnswer.fromAmplifyModel(amp.QuestionAnswer questionAnswer) {
+  QuestionAnswer.fromAmplifyModel(amp.QuestionAnswer questionAnswer)
+      : super(questionAnswer.id) {
     id = questionAnswer.id;
     questionID = questionAnswer.questionID;
     date = questionAnswer.date.getDateTimeInUtc();
@@ -86,7 +87,7 @@ class QuestionAnswer extends DBModel {
             : null);
   }
 
-  QuestionAnswer.unpopulated(this.id) {
+  QuestionAnswer.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }
   @override

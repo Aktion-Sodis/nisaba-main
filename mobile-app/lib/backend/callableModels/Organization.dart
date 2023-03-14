@@ -1,8 +1,11 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Organization.g.dart';
+part 'Organization.db_model.dart';
 
+@DBModelAnnotation()
 @JsonSerializable()
 class Organization extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -11,18 +14,18 @@ class Organization extends DBModel {
 
   Map<String, dynamic> toJson() => _$OrganizationToJson(this);
 
-  String? id;
   late String nameCamelCase;
   late String nameKebabCase;
   late String nameVerbose;
 
   Organization(
-      {required this.id,
+      {required String? id,
       required this.nameCamelCase,
       required this.nameKebabCase,
-      required this.nameVerbose});
+      required this.nameVerbose})
+      : super(id);
 
-  Organization.unpopulated(this.id);
+  Organization.unpopulated(String id) : super(id);
 
   @override
   DBModel getUnpopulated() {

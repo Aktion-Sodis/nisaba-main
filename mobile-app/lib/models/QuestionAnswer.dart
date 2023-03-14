@@ -24,7 +24,6 @@ import 'package:amplify_core/amplify_core.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
-
 /** This is an auto generated class representing the QuestionAnswer type in your schema. */
 @immutable
 class QuestionAnswer {
@@ -42,233 +41,301 @@ class QuestionAnswer {
   String get questionID {
     try {
       return _questionID!;
-    } catch(e) {
+    } catch (e) {
       throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
+          AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
     }
   }
-  
+
   TemporalDateTime get date {
     try {
       return _date!;
-    } catch(e) {
+    } catch (e) {
       throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
+          AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
     }
   }
-  
+
   QuestionType get type {
     try {
       return _type!;
-    } catch(e) {
+    } catch (e) {
       throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
+          AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
     }
   }
-  
+
   String? get text {
     return _text;
   }
-  
+
   int? get intValue {
     return _intValue;
   }
-  
+
   double? get doubleValue {
     return _doubleValue;
   }
-  
+
   int? get rating {
     return _rating;
   }
-  
+
   List<QuestionOption>? get questionOptions {
     return _questionOptions;
   }
-  
+
   List<Marking>? get markings {
     return _markings;
   }
-  
-  const QuestionAnswer._internal({required this.id, required questionID, required date, required type, text, intValue, doubleValue, rating, questionOptions, markings}): _questionID = questionID, _date = date, _type = type, _text = text, _intValue = intValue, _doubleValue = doubleValue, _rating = rating, _questionOptions = questionOptions, _markings = markings;
-  
-  factory QuestionAnswer({String? id, required String questionID, required TemporalDateTime date, required QuestionType type, String? text, int? intValue, double? doubleValue, int? rating, List<QuestionOption>? questionOptions, List<Marking>? markings}) {
+
+  const QuestionAnswer._internal(
+      {required this.id,
+      required questionID,
+      required date,
+      required type,
+      text,
+      intValue,
+      doubleValue,
+      rating,
+      questionOptions,
+      markings})
+      : _questionID = questionID,
+        _date = date,
+        _type = type,
+        _text = text,
+        _intValue = intValue,
+        _doubleValue = doubleValue,
+        _rating = rating,
+        _questionOptions = questionOptions,
+        _markings = markings;
+
+  factory QuestionAnswer(
+      {String? id,
+      required String questionID,
+      required TemporalDateTime date,
+      required QuestionType type,
+      String? text,
+      int? intValue,
+      double? doubleValue,
+      int? rating,
+      List<QuestionOption>? questionOptions,
+      List<Marking>? markings}) {
     return QuestionAnswer._internal(
-      id: id == null ? UUID.getUUID() : id,
-      questionID: questionID,
-      date: date,
-      type: type,
-      text: text,
-      intValue: intValue,
-      doubleValue: doubleValue,
-      rating: rating,
-      questionOptions: questionOptions != null ? List<QuestionOption>.unmodifiable(questionOptions) : questionOptions,
-      markings: markings != null ? List<Marking>.unmodifiable(markings) : markings);
+        id: id == null ? UUID.getUUID() : id,
+        questionID: questionID,
+        date: date,
+        type: type,
+        text: text,
+        intValue: intValue,
+        doubleValue: doubleValue,
+        rating: rating,
+        questionOptions: questionOptions != null
+            ? List<QuestionOption>.unmodifiable(questionOptions)
+            : questionOptions,
+        markings:
+            markings != null ? List<Marking>.unmodifiable(markings) : markings);
   }
-  
+
   bool equals(Object other) {
     return this == other;
   }
-  
+
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is QuestionAnswer &&
-      id == other.id &&
-      _questionID == other._questionID &&
-      _date == other._date &&
-      _type == other._type &&
-      _text == other._text &&
-      _intValue == other._intValue &&
-      _doubleValue == other._doubleValue &&
-      _rating == other._rating &&
-      DeepCollectionEquality().equals(_questionOptions, other._questionOptions) &&
-      DeepCollectionEquality().equals(_markings, other._markings);
+        id == other.id &&
+        _questionID == other._questionID &&
+        _date == other._date &&
+        _type == other._type &&
+        _text == other._text &&
+        _intValue == other._intValue &&
+        _doubleValue == other._doubleValue &&
+        _rating == other._rating &&
+        DeepCollectionEquality()
+            .equals(_questionOptions, other._questionOptions) &&
+        DeepCollectionEquality().equals(_markings, other._markings);
   }
-  
+
   @override
   int get hashCode => toString().hashCode;
-  
+
   @override
   String toString() {
     var buffer = new StringBuffer();
-    
+
     buffer.write("QuestionAnswer {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("questionID=" + "$_questionID" + ", ");
     buffer.write("date=" + (_date != null ? _date!.format() : "null") + ", ");
-    buffer.write("type=" + (_type != null ? enumToString(_type)! : "null") + ", ");
+    buffer.write(
+        "type=" + (_type != null ? enumToString(_type)! : "null") + ", ");
     buffer.write("text=" + "$_text" + ", ");
-    buffer.write("intValue=" + (_intValue != null ? _intValue!.toString() : "null") + ", ");
-    buffer.write("doubleValue=" + (_doubleValue != null ? _doubleValue!.toString() : "null") + ", ");
-    buffer.write("rating=" + (_rating != null ? _rating!.toString() : "null") + ", ");
-    buffer.write("questionOptions=" + (_questionOptions != null ? _questionOptions!.toString() : "null") + ", ");
-    buffer.write("markings=" + (_markings != null ? _markings!.toString() : "null"));
+    buffer.write("intValue=" +
+        (_intValue != null ? _intValue!.toString() : "null") +
+        ", ");
+    buffer.write("doubleValue=" +
+        (_doubleValue != null ? _doubleValue!.toString() : "null") +
+        ", ");
+    buffer.write(
+        "rating=" + (_rating != null ? _rating!.toString() : "null") + ", ");
+    buffer.write("questionOptions=" +
+        (_questionOptions != null ? _questionOptions!.toString() : "null") +
+        ", ");
+    buffer.write(
+        "markings=" + (_markings != null ? _markings!.toString() : "null"));
     buffer.write("}");
-    
+
     return buffer.toString();
   }
-  
-  QuestionAnswer copyWith({String? id, String? questionID, TemporalDateTime? date, QuestionType? type, String? text, int? intValue, double? doubleValue, int? rating, List<QuestionOption>? questionOptions, List<Marking>? markings}) {
-    return QuestionAnswer._internal(
-      id: id ?? this.id,
-      questionID: questionID ?? this.questionID,
-      date: date ?? this.date,
-      type: type ?? this.type,
-      text: text ?? this.text,
-      intValue: intValue ?? this.intValue,
-      doubleValue: doubleValue ?? this.doubleValue,
-      rating: rating ?? this.rating,
-      questionOptions: questionOptions ?? this.questionOptions,
-      markings: markings ?? this.markings);
-  }
-  
-  QuestionAnswer.fromJson(Map<String, dynamic> json)  
-    : id = json['id'],
-      _questionID = json['questionID'],
-      _date = json['date'] != null ? TemporalDateTime.fromString(json['date']) : null,
-      _type = enumFromString<QuestionType>(json['type'], QuestionType.values),
-      _text = json['text'],
-      _intValue = (json['intValue'] as num?)?.toInt(),
-      _doubleValue = (json['doubleValue'] as num?)?.toDouble(),
-      _rating = (json['rating'] as num?)?.toInt(),
-      _questionOptions = json['questionOptions'] is List
-        ? (json['questionOptions'] as List)
-          .where((e) => e != null)
-          .map((e) => QuestionOption.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
-          .toList()
-        : null,
-      _markings = json['markings'] is List
-        ? (json['markings'] as List)
-          .where((e) => e != null)
-          .map((e) => Marking.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
-          .toList()
-        : null;
-  
-  Map<String, dynamic> toJson() => {
-    'id': id, 'questionID': _questionID, 'date': _date?.format(), 'type': enumToString(_type), 'text': _text, 'intValue': _intValue, 'doubleValue': _doubleValue, 'rating': _rating, 'questionOptions': _questionOptions?.map((QuestionOption? e) => e?.toJson()).toList(), 'markings': _markings?.map((Marking? e) => e?.toJson()).toList()
-  };
-  
-  Map<String, Object?> toMap() => {
-    'id': id, 'questionID': _questionID, 'date': _date, 'type': _type, 'text': _text, 'intValue': _intValue, 'doubleValue': _doubleValue, 'rating': _rating, 'questionOptions': _questionOptions, 'markings': _markings
-  };
 
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  QuestionAnswer copyWith(
+      {String? id,
+      String? questionID,
+      TemporalDateTime? date,
+      QuestionType? type,
+      String? text,
+      int? intValue,
+      double? doubleValue,
+      int? rating,
+      List<QuestionOption>? questionOptions,
+      List<Marking>? markings}) {
+    return QuestionAnswer._internal(
+        id: id ?? this.id,
+        questionID: questionID ?? this.questionID,
+        date: date ?? this.date,
+        type: type ?? this.type,
+        text: text ?? this.text,
+        intValue: intValue ?? this.intValue,
+        doubleValue: doubleValue ?? this.doubleValue,
+        rating: rating ?? this.rating,
+        questionOptions: questionOptions ?? this.questionOptions,
+        markings: markings ?? this.markings);
+  }
+
+  QuestionAnswer.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        _questionID = json['questionID'],
+        _date = json['date'] != null
+            ? TemporalDateTime.fromString(json['date'])
+            : null,
+        _type = enumFromString<QuestionType>(json['type'], QuestionType.values),
+        _text = json['text'],
+        _intValue = (json['intValue'] as num?)?.toInt(),
+        _doubleValue = (json['doubleValue'] as num?)?.toDouble(),
+        _rating = (json['rating'] as num?)?.toInt(),
+        _questionOptions = json['questionOptions'] is List
+            ? (json['questionOptions'] as List)
+                .where((e) => e != null)
+                .map((e) => QuestionOption.fromJson(
+                    new Map<String, dynamic>.from(e['serializedData'])))
+                .toList()
+            : null,
+        _markings = json['markings'] is List
+            ? (json['markings'] as List)
+                .where((e) => e != null)
+                .map((e) => Marking.fromJson(
+                    new Map<String, dynamic>.from(e['serializedData'])))
+                .toList()
+            : null;
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'questionID': _questionID,
+        'date': _date?.format(),
+        'type': enumToString(_type),
+        'text': _text,
+        'intValue': _intValue,
+        'doubleValue': _doubleValue,
+        'rating': _rating,
+        'questionOptions':
+            _questionOptions?.map((QuestionOption? e) => e?.toJson()).toList(),
+        'markings': _markings?.map((Marking? e) => e?.toJson()).toList()
+      };
+
+  Map<String, Object?> toMap() => {
+        'id': id,
+        'questionID': _questionID,
+        'date': _date,
+        'type': _type,
+        'text': _text,
+        'intValue': _intValue,
+        'doubleValue': _doubleValue,
+        'rating': _rating,
+        'questionOptions': _questionOptions,
+        'markings': _markings
+      };
+
+  static var schema =
+      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "QuestionAnswer";
     modelSchemaDefinition.pluralName = "QuestionAnswers";
-    
+
     modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'id',
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
+        fieldName: 'id',
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'questionID',
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
+        fieldName: 'questionID',
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'date',
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
-    ));
-    
+        fieldName: 'date',
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'type',
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)
-    ));
-    
+        fieldName: 'type',
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'text',
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
+        fieldName: 'text',
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'intValue',
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
-    ));
-    
+        fieldName: 'intValue',
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'doubleValue',
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.double)
-    ));
-    
+        fieldName: 'doubleValue',
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.double)));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
-      fieldName: 'rating',
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
-    ));
-    
+        fieldName: 'rating',
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
-      fieldName: 'questionOptions',
-      isRequired: false,
-      isArray: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embeddedCollection, ofCustomTypeName: 'QuestionOption')
-    ));
-    
+        fieldName: 'questionOptions',
+        isRequired: false,
+        isArray: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.embeddedCollection,
+            ofCustomTypeName: 'QuestionOption')));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
-      fieldName: 'markings',
-      isRequired: false,
-      isArray: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embeddedCollection, ofCustomTypeName: 'Marking')
-    ));
+        fieldName: 'markings',
+        isRequired: false,
+        isArray: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.embeddedCollection,
+            ofCustomTypeName: 'Marking')));
   });
 }
