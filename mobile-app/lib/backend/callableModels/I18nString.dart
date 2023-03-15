@@ -22,6 +22,12 @@ class I18nString extends DBModel {
   late List<String> languageKeys;
   late List<String> languageTexts;
 
+  @override
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String id = "";
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @DBModelIgnore()
   String get text {
     if (languageKeys.contains(str.currentLanguage)) {
@@ -40,6 +46,7 @@ class I18nString extends DBModel {
     }
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @DBModelIgnore()
   set text(String text) {
     if (languageKeys.contains(str.currentLanguage)) {

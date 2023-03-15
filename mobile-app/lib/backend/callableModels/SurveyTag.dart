@@ -37,33 +37,6 @@ class SurveyTag extends DBModel {
       this.updatedAt})
       : super(id);
 
-  SurveyTag.fromAmplifyModel(amp.SurveyTag tag) : super(tag.id) {
-    id = tag.id;
-    text_ml = I18nString.fromAmplifyModel(tag.text);
-    schemeVersion = tag.schemeVersion;
-    createdAt = tag.createdAt?.getDateTimeInUtc();
-    updatedAt = tag.updatedAt?.getDateTimeInUtc();
-    surveys = tag.surveys
-        .map((e) => SurveySurveyTagRelation(
-            id: e.id,
-            first: Survey.fromAmplifyModel(e.survey),
-            second: SurveyTag.fromAmplifyModel(e.surveyTag)))
-        .toList();
-  }
-
-  amp.SurveyTag toAmplifyModel() {
-    return amp.SurveyTag(
-        text: text_ml.toAmplifyModel(),
-        id: id,
-        schemeVersion: schemeVersion,
-        surveys: surveys
-            .map((e) => amp.SurveySurveyTagRelation(
-                id: e.id,
-                survey: e.first!.toAmplifyModel(),
-                surveyTag: e.second!.toAmplifyModel()))
-            .toList());
-  }
-
   SurveyTag.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }

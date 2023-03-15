@@ -12,21 +12,7 @@ class TaskRepository {
   User user;
 
   Future<List<Task>> getAllTasks() async {
-    //todo: bei Task userID als query parameter hinzufügen
-    print("getting all tasks for user: ${user.firstName}");
-    var queryResult = await Amplify.DataStore.query(amp.Task.classType,
-        where: amp.Task.USERID.eq(user.id!)
-        //where: amp.Task.USER.eq(user.id)
-        );
-    queryResult.forEach((element) {
-      if (element.title == "") {
-        Amplify.DataStore.delete(element);
-      }
-    });
-    queryResult.removeWhere((element) => element.title == "");
-    var populatedResults = await _populateList(queryResult);
-    return List.generate(populatedResults.length,
-        (index) => Task.fromAmplifyModel(populatedResults[index]));
+    throw UnimplementedError();
   }
 
   Future<amp.Task> _populate(amp.Task task) async {
@@ -57,14 +43,12 @@ class TaskRepository {
   }
 
   Future<Task> createTask(Task task) async {
-    task.id = task.id ?? UUID.getUUID();
-    Amplify.DataStore.save(task.toAmplifyModel());
+    throw UnimplementedError();
     return task;
   }
 
   Future<Task> updateTask(Task task) async {
-    Amplify.DataStore.save(task.toAmplifyModel());
-    return task;
+    throw UnimplementedError();
   }
 
   static SyncedFile getTaskPic(Task task, int index) {

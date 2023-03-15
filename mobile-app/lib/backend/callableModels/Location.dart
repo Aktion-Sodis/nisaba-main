@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'Location.g.dart';
 part 'Location.db_model.dart';
 
-@DBModelAnnotation()
+@DBModelAnnotation(true)
 @JsonSerializable()
 class Location extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -35,9 +35,6 @@ class Location extends DBModel {
   amp.Location toAmplifyModel() {
     return (amp.Location(latitude: latitude, longitude: longitude));
   }
-
-  @override
-  bool isPopulated = true;
 
   @override
   DBModel getUnpopulated() {

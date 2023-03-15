@@ -24,9 +24,15 @@ class Content extends DBModel {
 
   late I18nString name_ml;
   late I18nString description_ml;
-  late List<InterventionContentRelation>
-      interventions; //many to many -> maybe change
-  late List<ContentContentTagRelation> tagConnections;
+
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<InterventionContentRelation> interventions =
+      []; //many to many -> maybe change
+
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<ContentContentTagRelation> tagConnections = [];
   int? schemeVersion;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -39,7 +45,7 @@ class Content extends DBModel {
 
   set description(String description) => description_ml.text = description;
 
-  List<ContentTag> get tags => tagConnections.map((e) => e.second!).toList();
+  /*List<ContentTag> get tags => tagConnections.map((e) => e.second!).toList();
 
   void addContentTag(ContentTag contentTag) {
     tagConnections
@@ -54,20 +60,18 @@ class Content extends DBModel {
     } else {
       addContentTag(contentTag);
     }
-  }
+  }*/
 
   Content(
       {required String? id,
       required this.name_ml,
       required this.description_ml,
-      required this.interventions,
-      required this.tagConnections,
       this.schemeVersion,
       this.createdAt,
       this.updatedAt})
       : super(id);
 
-  Content.fromAmplifyModel(amp.Content content) : super(content.id) {
+  /*Content.fromAmplifyModel(amp.Content content) : super(content.id) {
     id = content.id;
     name_ml = I18nString.fromAmplifyModel(content.name);
     description_ml = I18nString.fromAmplifyModel(content.description);
@@ -86,9 +90,9 @@ class Content extends DBModel {
     schemeVersion = content.schemeVersion;
     createdAt = content.createdAt?.getDateTimeInUtc();
     updatedAt = content.updatedAt?.getDateTimeInUtc();
-  }
+  }*/
 
-  amp.Content toAmplifyModel() {
+  /*amp.Content toAmplifyModel() {
     return (amp.Content(
         id: id,
         name: name_ml.toAmplifyModel(),
@@ -106,7 +110,7 @@ class Content extends DBModel {
                 contentTag: e.second!.toAmplifyModel()))
             .toList(),
         schemeVersion: schemeVersion));
-  }
+  }*/
 
   Content.unpopulated(String? id) : super(id) {
     isPopulated = false;

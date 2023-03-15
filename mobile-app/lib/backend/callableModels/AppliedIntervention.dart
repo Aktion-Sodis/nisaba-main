@@ -20,64 +20,47 @@ class AppliedIntervention extends DBModel {
   factory AppliedIntervention.fromJson(Map<String, dynamic> json) =>
       _$AppliedInterventionFromJson(json);
 
+  static Map<String, dynamic> queryFields() => _$AppliedIntervention;
+
   Map<String, dynamic> toJson() => _$AppliedInterventionToJson(this);
+
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
   late User whoDidIt; // Unpopulated allowed
+
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
   late Intervention intervention; // Unpopulated allowed
 
-  @JsonKey(includeToJson: false)
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
   late Entity entity; // Unpopulated allowe
+
+  late String appliedInterventionInterventionId;
+  late String entityAppliedInterventionsId;
+  late String appliedInterventionWhoDidItId;
 
   Location? location;
   int? schemeVersion;
   DateTime? createdAt;
   DateTime? updatedAt;
-  late List<ExecutedSurvey> executedSurveys; // Unpopulated allowed
+
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<ExecutedSurvey> executedSurveys = []; // Unpopulated allowed
   late bool isOkay;
 
   AppliedIntervention(
       {String? id,
-      required this.whoDidIt,
-      required this.intervention,
-      required this.entity,
       this.location,
       this.schemeVersion,
       this.createdAt,
       this.updatedAt,
-      required this.executedSurveys,
+      required this.appliedInterventionInterventionId,
+      required this.entityAppliedInterventionsId,
+      required this.appliedInterventionWhoDidItId,
       required this.isOkay})
       : super(id);
-
-  AppliedIntervention.fromAmplifyModel(
-      amp.AppliedIntervention appliedIntervention)
-      : super(appliedIntervention.id) {
-    id = appliedIntervention.id;
-    whoDidIt = User.fromAmplifyModel(appliedIntervention.whoDidIt);
-    intervention =
-        Intervention.fromAmplifyModel(appliedIntervention.intervention);
-    location = appliedIntervention.location == null
-        ? null
-        : Location.fromAmplifyModel(appliedIntervention.location!);
-    schemeVersion = appliedIntervention.schemeVersion;
-    executedSurveys = List.generate(
-        appliedIntervention.executedSurveys.length,
-        (index) => ExecutedSurvey.fromAmplifyModel(
-            appliedIntervention.executedSurveys[index]));
-    isOkay = appliedIntervention.isOkay;
-  }
-
-  amp.AppliedIntervention toAmplifyModel() {
-    return (amp.AppliedIntervention(
-        id: id,
-        whoDidIt: whoDidIt.toAmplifyModel(),
-        intervention: intervention.toAmplifyModel(),
-        location: location?.toAmplifyModel(),
-        schemeVersion: schemeVersion,
-        executedSurveys: List.generate(executedSurveys.length,
-            (index) => executedSurveys[index].toAmplifyModel()),
-        appliedInterventionInterventionId: intervention.id!,
-        appliedInterventionWhoDidItId: whoDidIt.id!,
-        isOkay: isOkay));
-  }
 
   AppliedIntervention.unpopulated(String? id) : super(id) {
     isPopulated = false;

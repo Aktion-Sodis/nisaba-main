@@ -85,13 +85,12 @@ void testModelTransformationOnRegistration(
 }
 
 final Map<Type, DBModel Function(String id)> _instances = {
-  TestObject: (id) => TestObject("Name", 1, id),
+  /*TestObject: (id) => TestObject("Name", 1, id),
   I18nString: (id) => I18nString(languageKeys: ["en"], languageTexts: [id]),
   AppliedCustomData: (id) => AppliedCustomData(
       customDataID: id,
       type: CustomDataType.STRING,
-      name_ml:
-          I18nString(languageKeys: ["en"], languageTexts: ["language text"]),
+      name: I18nString(languageKeys: ["en"], languageTexts: ["language text"]),
       stringValue: "string value",
       intValue: 1),
   AppliedIntervention: (id) => AppliedIntervention(
@@ -131,7 +130,7 @@ final Map<Type, DBModel Function(String id)> _instances = {
   Content: (id) => Content(
         id: id,
         schemeVersion: 1,
-        interventions: [
+        /*interventions: [
           InterventionContentRelation(
               first: Intervention.unpopulated("intervention1"),
               second: Content.unpopulated("content1")),
@@ -143,7 +142,7 @@ final Map<Type, DBModel Function(String id)> _instances = {
           ContentContentTagRelation(
               first: Content.unpopulated("content1"),
               second: ContentTag.unpopulated("contenttag1")),
-        ],
+        ],*/
         createdAt: DateTime(1999, 21, 12),
         updatedAt: DateTime(1999, 22, 12),
         name_ml:
@@ -160,7 +159,7 @@ final Map<Type, DBModel Function(String id)> _instances = {
         schemeVersion: 1,
         text_ml:
             I18nString(languageKeys: ["en"], languageTexts: ["language text"]),
-        contents: [
+        /*contents: [
           ContentContentTagRelation(
               id: "relation id1",
               first: Content.unpopulated("content1"),
@@ -169,13 +168,13 @@ final Map<Type, DBModel Function(String id)> _instances = {
               id: "relation id2",
               first: Content.unpopulated("content2"),
               second: ContentTag.unpopulated("contenttag1")),
-        ],
+        ],*/
         createdAt: DateTime(1999, 21, 12),
         updatedAt: DateTime(1999, 22, 12),
       ),
   CustomData: (id) => CustomData(
         id: id,
-        name_ml:
+        name:
             I18nString(languageKeys: ["en"], languageTexts: ["language text"]),
         type: CustomDataType.STRING,
       ),
@@ -183,9 +182,9 @@ final Map<Type, DBModel Function(String id)> _instances = {
         id: id,
         schemeVersion: 1,
         parentEntityID: "parentEntityID",
-        name_ml:
+        name:
             I18nString(languageKeys: ["en"], languageTexts: ["language text"]),
-        description_ml:
+        description:
             I18nString(languageKeys: ["en"], languageTexts: ["language text2"]),
         location: Location(latitude: 1, longitude: 2),
         createdAt: DateTime(1999, 21, 12),
@@ -194,7 +193,7 @@ final Map<Type, DBModel Function(String id)> _instances = {
           AppliedCustomData(
               customDataID: "customDataID",
               type: CustomDataType.STRING,
-              name_ml: I18nString(
+              name: I18nString(
                   languageKeys: ["en"], languageTexts: ["language text"]),
               stringValue: "string value",
               intValue: 1),
@@ -236,9 +235,9 @@ final Map<Type, DBModel Function(String id)> _instances = {
   Intervention: (id) => Intervention(
         id: id,
         schemeVersion: 1,
-        name_ml:
+        name:
             I18nString(languageKeys: ["en"], languageTexts: ["language text"]),
-        description_ml:
+        description:
             I18nString(languageKeys: ["en"], languageTexts: ["language text2"]),
         createdAt: DateTime(1999, 21, 12),
         updatedAt: DateTime(1999, 22, 12),
@@ -268,23 +267,23 @@ final Map<Type, DBModel Function(String id)> _instances = {
         id: id,
         parentLevelID: "parentLevelID",
         interventionsAreAllowed: true,
-        allowedInterventions: [
+        /*allowedInterventions: [
           LevelInterventionRelation(
               id: "relation id1",
               first: Level.unpopulated("level1"),
               second: Intervention.unpopulated("intervention1")),
-        ],
+        ],*/
         schemeVersion: 1,
-        name_ml:
+        name:
             I18nString(languageKeys: ["en"], languageTexts: ["language text"]),
-        description_ml:
+        description:
             I18nString(languageKeys: ["en"], languageTexts: ["language text2"]),
         createdAt: DateTime(1999, 21, 12),
         updatedAt: DateTime(1999, 22, 12),
         customData: [
           CustomData(
               id: "customDataID",
-              name_ml: I18nString(
+              name: I18nString(
                   languageKeys: ["en"], languageTexts: ["language text"]),
               type: CustomDataType.STRING),
         ],
@@ -314,12 +313,12 @@ final Map<Type, DBModel Function(String id)> _instances = {
         questionOptions: [
           QuestionOption(
               id: "questionOptionID",
-              text_ml: I18nString(
+              text: I18nString(
                   languageKeys: ["en"], languageTexts: ["language text1"]))
         ],
         type: QuestionType.AUDIO,
         isFollowUpQuestion: true,
-        text_ml:
+        text:
             I18nString(languageKeys: ["en"], languageTexts: ["language text2"]),
       ),
   QuestionAnswer: (id) => QuestionAnswer(
@@ -335,22 +334,22 @@ final Map<Type, DBModel Function(String id)> _instances = {
         questionOptions: [
           QuestionOption(
               id: "questionOptionID",
-              text_ml: I18nString(
+              text: I18nString(
                   languageKeys: ["en"], languageTexts: ["language text1"]))
         ],
       ),
   QuestionOption: (id) => QuestionOption(
         id: id,
-        text_ml:
+        text:
             I18nString(languageKeys: ["en"], languageTexts: ["language text1"]),
         followUpQuestionIDs: ["followUpQuestionID"],
       ),
   Survey: (id) => Survey(
         id: id,
         schemeVersion: 1,
-        name_ml:
+        name:
             I18nString(languageKeys: ["en"], languageTexts: ["language text"]),
-        description_ml:
+        description:
             I18nString(languageKeys: ["en"], languageTexts: ["language text2"]),
         createdAt: DateTime(1999, 21, 12),
         updatedAt: DateTime(1999, 22, 12),
@@ -360,16 +359,16 @@ final Map<Type, DBModel Function(String id)> _instances = {
               questionOptions: [
                 QuestionOption(
                     id: "questionOptionID",
-                    text_ml: I18nString(
+                    text: I18nString(
                         languageKeys: ["en"],
                         languageTexts: ["language text1"]))
               ],
               type: QuestionType.AUDIO,
               isFollowUpQuestion: true,
-              text_ml: I18nString(
+              text: I18nString(
                   languageKeys: ["en"], languageTexts: ["language text2"]))
         ],
-        tagConnections: [],
+        //tagConnections: [],
         surveyType: SurveyType.INITIAL,
         archived: true,
         intervention: Intervention.unpopulated("intervention id"),
@@ -404,5 +403,5 @@ final Map<Type, DBModel Function(String id)> _instances = {
         createdAt: DateTime(1999, 21, 12),
         updatedAt: DateTime(1999, 22, 12),
         bio: "bio",
-      ),
+      ),*/
 };

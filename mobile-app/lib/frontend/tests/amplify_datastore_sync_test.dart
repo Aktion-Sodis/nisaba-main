@@ -24,10 +24,10 @@ class AmplifyDatastoreSyncTest extends StatelessWidget {
     Entity entity1 = Entity(
       appliedInterventions: [],
       customData: [],
-      description_ml: I18nString(
+      description: I18nString(
           languageKeys: ["en-US"], languageTexts: ["Description $randomInt"]),
       level: rootLevel,
-      name_ml: I18nString(
+      name: I18nString(
           languageKeys: ["en-US"], languageTexts: ["Entity $randomInt"]),
     );
     String id1 = await EntityRepository.instance.createEntity(entity1);

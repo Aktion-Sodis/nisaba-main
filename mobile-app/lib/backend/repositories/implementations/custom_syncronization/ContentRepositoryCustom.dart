@@ -47,9 +47,9 @@ class ContentRepositoryCustom extends definition.ContentRepository {
       _populateInterventionContentRelationContent(
           InterventionContentRelation relation) async {
     InterventionContentRelation toReturn = relation;
-    toReturn.second = await populatedContentByID(toReturn.secondID);
+    toReturn.second = await populatedContentByID(toReturn.contentId);
     toReturn.first = await InterventionRepository.instance
-        .populatedInterventionFromContent(relation.firstID);
+        .populatedInterventionFromContent(relation.interventionId);
     return toReturn;
   }
 

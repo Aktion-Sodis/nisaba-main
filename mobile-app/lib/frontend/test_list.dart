@@ -14,6 +14,7 @@ import 'package:mobile_app/frontend/tests/db_test.dart';
 import 'package:mobile_app/frontend/tests/integrated_synced_db_test.dart';
 import 'package:mobile_app/frontend/tests/synced_db_restricted_test.dart';
 import 'package:mobile_app/frontend/tests/synced_db_test.dart';
+import 'package:mobile_app/frontend/tests/test_registered_models_queries.dart';
 
 class TestList extends StatelessWidget {
   TestList({Key? key}) : super(key: key);
@@ -30,6 +31,7 @@ class TestList extends StatelessWidget {
     "Integrated SyncedDB Test": () => IntegratedSyncedDBTest(),
     "GraphQL": () => GraphQLQueryTest(),
     "SyncedDB Restricted Test": () => SyncedDBRestrictedTest(),
+    "Test registered models queries": () => TestRegisteredModelsQueries(),
   };
 
   Widget _itemBuilder(BuildContext context, int index) {

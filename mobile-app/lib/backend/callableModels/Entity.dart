@@ -23,75 +23,57 @@ class Entity extends DBModel {
 
   Map<String, dynamic> toJson() => _$EntityToJson(this);
 
-  late I18nString name_ml;
-  late I18nString description_ml;
+  static Map<String, dynamic> queryFields() => _$Entity;
+
+  late I18nString name;
+  late I18nString description;
   String? parentEntityID;
   late Level level; // Unpopulated allowed
+
   Location? location;
   late List<AppliedCustomData> customData;
-  late List<AppliedIntervention> appliedInterventions; // Unpopulated allowed
+
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<AppliedIntervention> appliedInterventions = []; // Unpopulated allowed
+
   int? schemeVersion;
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  String get description => description_ml.text;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String get displayDescription => description.text;
 
-  set description(String description) => description_ml.text = description;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  set displayDescription(String description) =>
+      this.description.text = description;
 
-  String get name => name_ml.text;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String get displayName => name.text;
 
-  set name(String name) => name_ml.text = name;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  set displayName(String name) => this.name.text = name;
 
   Entity(
       {String? id,
-      required this.name_ml,
-      required this.description_ml,
+      required this.name,
+      required this.description,
       this.parentEntityID,
       required this.level,
       this.location,
       required this.customData,
-      required this.appliedInterventions,
+      List<AppliedIntervention>? appliedInterventions,
       this.schemeVersion,
       this.createdAt,
       this.updatedAt})
-      : super(id);
-
-  Entity.fromAmplifyModel(amp.Entity entity) : super(entity.id) {
-    id = entity.id;
-    name_ml = I18nString.fromAmplifyModel(entity.name);
-    description_ml = I18nString.fromAmplifyModel(entity.description);
-    parentEntityID = entity.parentEntityID;
-    level = Level.fromAmplifyModel(entity.level);
-    location = entity.location == null
-        ? null
-        : Location.fromAmplifyModel(entity.location!);
-    customData = List.generate(
-        entity.customData.length,
-        (index) =>
-            AppliedCustomData.fromAmplifyModel(entity.customData[index]));
-    appliedInterventions = List.generate(
-        entity.appliedInterventions.length,
-        (index) => AppliedIntervention.fromAmplifyModel(
-            entity.appliedInterventions[index])); // unpopulated allowed
-    schemeVersion = entity.schemeVersion;
-    createdAt = entity.createdAt?.getDateTimeInUtc();
-    updatedAt = entity.updatedAt?.getDateTimeInUtc();
-  }
-
-  amp.Entity toAmplifyModel() {
-    return (amp.Entity(
-        id: id,
-        name: name_ml.toAmplifyModel(),
-        description: description_ml.toAmplifyModel(),
-        parentEntityID: parentEntityID,
-        level: level.toAmplifyModel(),
-        location: location?.toAmplifyModel(),
-        customData: List.generate(
-            customData.length, (index) => customData[index].toAmplifyModel()),
-        appliedInterventions: List.generate(appliedInterventions.length,
-            (index) => appliedInterventions[index].toAmplifyModel()),
-        schemeVersion: schemeVersion,
-        entityLevelId: level.id!));
+      : super(id) {
+    if (appliedInterventions != null) {
+      this.appliedInterventions = appliedInterventions;
+    }
   }
 
   List<ExecutedSurvey> executedSurveysDescending() {
@@ -120,8 +102,8 @@ class Entity extends DBModel {
 
     return other is Entity &&
         other.id == id &&
-        other.name_ml == name_ml &&
-        other.description_ml == description_ml &&
+        other.name == name &&
+        other.description == description &&
         other.parentEntityID == parentEntityID &&
         other.level.id == level.id && // Unpopulated allowed
         other.location == location &&

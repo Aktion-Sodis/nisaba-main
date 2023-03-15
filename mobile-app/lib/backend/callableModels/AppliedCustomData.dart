@@ -18,17 +18,17 @@ class AppliedCustomData extends DBModel {
 
   late String customDataID;
   late CustomDataType type;
-  late I18nString name_ml;
+  late I18nString name;
   int? intValue;
   String? stringValue;
-  String get name => name_ml.text;
+  String get displayName => name.text;
 
-  set name(String name) => name_ml.text = name;
+  set displayName(String name) => this.name.text = name;
 
   AppliedCustomData(
       {required this.customDataID,
       required this.type,
-      required this.name_ml,
+      required this.name,
       this.intValue,
       this.stringValue})
       : super(null);
@@ -37,7 +37,7 @@ class AppliedCustomData extends DBModel {
       : super(null) {
     customDataID = appliedCustomData.customDataID;
     type = customDataTypeByAmplifyType(appliedCustomData.type);
-    name_ml = I18nString.fromAmplifyModel(appliedCustomData.name);
+    name = I18nString.fromAmplifyModel(appliedCustomData.name);
     intValue = appliedCustomData.intValue;
     stringValue = appliedCustomData.stringValue;
   }
@@ -46,13 +46,10 @@ class AppliedCustomData extends DBModel {
     return (amp.AppliedCustomData(
         customDataID: customDataID,
         type: ampDataTypeByCustomDataType(type),
-        name: name_ml.toAmplifyModel(),
+        name: name.toAmplifyModel(),
         intValue: intValue,
         stringValue: stringValue));
   }
-
-  @override
-  bool isPopulated = true;
 
   AppliedCustomData.unpopulated(String? id) : super(id) {
     isPopulated = false;
@@ -69,7 +66,7 @@ class AppliedCustomData extends DBModel {
           runtimeType == other.runtimeType &&
           customDataID == other.customDataID &&
           type == other.type &&
-          name_ml == other.name_ml &&
+          name == other.name &&
           intValue == other.intValue &&
           stringValue == other.stringValue;
 }

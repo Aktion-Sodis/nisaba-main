@@ -39,32 +39,6 @@ class InterventionTag extends DBModel {
       this.updatedAt})
       : super(id);
 
-  InterventionTag.fromAmplifyModel(amp.InterventionTag tag) : super(tag.id) {
-    id = tag.id;
-    text_ml = I18nString.fromAmplifyModel(tag.text);
-    schemeVersion = tag.schemeVersion;
-    createdAt = tag.createdAt?.getDateTimeInUtc();
-    updatedAt = tag.updatedAt?.getDateTimeInUtc();
-    interventions = tag.interventions
-        .map((e) => InterventionInterventionTagRelation(
-            id: e.id,
-            first: Intervention.fromAmplifyModel(e.intervention),
-            second: this))
-        .toList();
-  }
-
-  amp.InterventionTag toAmplifyModel() {
-    return amp.InterventionTag(
-        text: text_ml.toAmplifyModel(),
-        id: id,
-        schemeVersion: schemeVersion,
-        interventions: interventions
-            .map((e) => amp.InterventionInterventionTagRelation(
-                intervention: e.first!.toAmplifyModel(),
-                interventionTag: e.second!.toAmplifyModel()))
-            .toList());
-  }
-
   InterventionTag.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }

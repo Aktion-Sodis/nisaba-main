@@ -118,7 +118,7 @@ Widget surveyRow(BuildContext context, Survey survey,
                 child: Row(
               children: [
                 Expanded(
-                    child: Text(survey.name,
+                    child: Text(survey.displayName,
                         style: Theme.of(context).textTheme.bodyText1)),
                 if (pressable)
                   CommonWidgets.defaultIconButton(
@@ -155,7 +155,7 @@ Widget entityRow(BuildContext context, Entity entity) {
               pressable: false),
           SizedBox(width: defaultPadding(context) / 2),
           Container(
-              child: Text(entity.name,
+              child: Text(entity.displayName,
                   style: Theme.of(context).textTheme.bodyText1))
         ],
       ));
@@ -184,7 +184,7 @@ Widget interventionRow(BuildContext context, Intervention intervention,
                 child: Row(
               children: [
                 Expanded(
-                    child: Text(intervention.name,
+                    child: Text(intervention.displayName,
                         style: Theme.of(context).textTheme.bodyText1)),
                 if (pressable)
                   CommonWidgets.defaultIconButton(
@@ -309,7 +309,8 @@ Widget executedSurveyRow(
                                         CrossAxisAlignment.start,
                                     children: [
                                   Container(
-                                      child: Text(executedSurvey.survey.name,
+                                      child: Text(
+                                          executedSurvey.survey.displayName,
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle2)),

@@ -9,7 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'Question.g.dart';
 part 'Question.db_model.dart';
 
-@DBModelAnnotation()
+@DBModelAnnotation(true)
 @JsonSerializable()
 class Question extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -18,18 +18,18 @@ class Question extends DBModel {
 
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
 
-  late I18nString text_ml; // TODO: Rename to text
+  late I18nString text; // TODO: Rename to text
   late QuestionType type;
   List<QuestionOption>? questionOptions;
   late bool isFollowUpQuestion;
 
-  String get text => text_ml.text;
+  String get displayText => text.text;
 
-  set text(String text) => text_ml.text = text;
+  set displayText(String text) => this.text.text = text;
 
   Question(
       {String? id,
-      required this.text_ml,
+      required this.text,
       required this.type,
       this.questionOptions,
       required this.isFollowUpQuestion})
@@ -38,7 +38,7 @@ class Question extends DBModel {
   amp.Question toAmplifyModel() {
     return amp.Question(
         id: id,
-        text: text_ml.toAmplifyModel(),
+        text: text.toAmplifyModel(),
         type: questionTypeToAmplifyQuestionType(type),
         questionOptions: questionOptions != null
             ? List.generate(questionOptions!.length,
@@ -49,7 +49,7 @@ class Question extends DBModel {
 
   Question.fromAmplifyModel(amp.Question question) : super(question.id) {
     id = question.id;
-    text_ml = I18nString.fromAmplifyModel(question.text);
+    text = I18nString.fromAmplifyModel(question.text);
     type = questionTypeFromAmplifyQuestionType(question.type);
     questionOptions = question.questionOptions != null
         ? List.generate(
@@ -74,7 +74,7 @@ class Question extends DBModel {
   @override
   bool operator ==(Object other) {
     if (other is Question) {
-      return text_ml == other.text_ml &&
+      return text == other.text &&
           type == other.type &&
           id == other.id &&
           isFollowUpQuestion == other.isFollowUpQuestion &&

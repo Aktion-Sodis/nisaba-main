@@ -44,14 +44,15 @@ class InterventionRepositoryCustom extends definition.InterventionRepository {
       return [];
     }
 
-    List<Intervention> toWait;
-    if (relations.first.secondPopulated) {
+    throw UnimplementedError();
+    List<Intervention> toWait = [];
+    /*if (relations.first.secondPopulated) {
       toWait =
           List.generate(relations.length, (index) => relations[index].second!);
     } else {
       toWait = await Future.wait(List.generate(relations.length,
           (index) => getAmpInterventionByID(relations[index].secondID)));
-    }
+    }*/
 
     toWait = await populateList(toWait);
     return toWait;

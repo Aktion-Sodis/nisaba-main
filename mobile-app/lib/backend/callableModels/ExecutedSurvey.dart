@@ -24,8 +24,11 @@ class ExecutedSurvey extends DBModel {
 
   Map<String, dynamic> toJson() => _$ExecutedSurveyToJson(this);
 
+  @DBModelIgnore()
   late AppliedIntervention appliedIntervention; // Unpopulated allowed
+
   late Survey survey; // Unpopulated allowed
+
   late User whoExecutedIt; // Unpopulated allowed
   late DateTime date;
   Location? location;
@@ -46,42 +49,6 @@ class ExecutedSurvey extends DBModel {
       this.createdAt,
       this.updatedAt})
       : super(id);
-
-  ExecutedSurvey.fromAmplifyModel(amp.ExecutedSurvey executedSurvey)
-      : super(executedSurvey.id) {
-    id = executedSurvey.id;
-    appliedIntervention = AppliedIntervention.fromAmplifyModel(
-        executedSurvey.appliedIntervention);
-    survey = Survey.fromAmplifyModel(executedSurvey.survey);
-    whoExecutedIt = User.fromAmplifyModel(executedSurvey.whoExecutedIt);
-    date = executedSurvey.date.getDateTimeInUtc();
-    location = executedSurvey.location == null
-        ? null
-        : Location.fromAmplifyModel(executedSurvey.location!);
-    answers = List.generate(
-        executedSurvey.answers.length,
-        (index) =>
-            QuestionAnswer.fromAmplifyModel(executedSurvey.answers[index]));
-    schemeVersion = executedSurvey.schemeVersion;
-    createdAt = executedSurvey.createdAt?.getDateTimeInUtc();
-    updatedAt = executedSurvey.updatedAt?.getDateTimeInUtc();
-  }
-
-  amp.ExecutedSurvey toAmplifyModel() {
-    return amp.ExecutedSurvey(
-      id: id,
-      appliedIntervention: appliedIntervention.toAmplifyModel(),
-      survey: survey.toAmplifyModel(),
-      whoExecutedIt: whoExecutedIt.toAmplifyModel(),
-      date: TemporalDateTime(date),
-      location: location?.toAmplifyModel(),
-      answers: List.generate(
-          answers.length, (index) => answers[index].toAmplifyModel()),
-      schemeVersion: schemeVersion,
-      executedSurveySurveyId: survey.id!,
-      executedSurveyWhoExecutedItId: whoExecutedIt.id!,
-    );
-  }
 
   ExecutedSurvey.unpopulated(String? id) : super(id) {
     isPopulated = false;

@@ -74,7 +74,7 @@ class LevelRepositoryCustom extends LevelRepository {
     List<Intervention> toWait = await Future.wait(List.generate(
         relations.length,
         (index) => InterventionRepository.instance
-            .getAmpInterventionByID(relations[index].secondID)));
+            .getAmpInterventionByID(relations[index].interventionId)));
     return toWait;
   }
 

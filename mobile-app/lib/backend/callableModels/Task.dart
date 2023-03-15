@@ -44,53 +44,6 @@ class Task extends DBModel {
       required this.picList})
       : super(id);
 
-  Task.fromAmplifyModel(amp.Task task) : super(task.id) {
-    id = task.id;
-    title = task.title;
-    text = task.text;
-    dueDate = task.dueDate?.getDateTimeInUtc();
-    finishedDate = task.finishedDate?.getDateTimeInUtc();
-    audioList = task.audioIDs;
-    picList = task.picIDs;
-    location = task.location != null
-        ? Location.fromAmplifyModel(task.location!)
-        : null;
-    user = User.fromAmplifyModel(task.user);
-    entity = task.entity != null ? Entity.fromAmplifyModel(task.entity!) : null;
-    appliedIntervention = task.appliedIntervention != null
-        ? AppliedIntervention.fromAmplifyModel(task.appliedIntervention!)
-        : null;
-    executedSurvey = task.executedSurvey != null
-        ? ExecutedSurvey.fromAmplifyModel(task.executedSurvey!)
-        : null;
-    schemeVersion = task.schemeVersion;
-    createdAt = task.createdAt?.getDateTimeInUtc();
-    updatedAt = task.updatedAt?.getDateTimeInUtc();
-  }
-
-  amp.Task toAmplifyModel() {
-    return amp.Task(
-        id: id,
-        title: title,
-        text: text,
-        dueDate: dueDate != null ? TemporalDateTime(dueDate!) : null,
-        finishedDate:
-            finishedDate != null ? TemporalDateTime(finishedDate!) : null,
-        location: location?.toAmplifyModel(),
-        user: user.toAmplifyModel(),
-        userID: user.id!,
-        entity: entity?.toAmplifyModel(),
-        appliedIntervention: appliedIntervention?.toAmplifyModel(),
-        executedSurvey: executedSurvey?.toAmplifyModel(),
-        schemeVersion: 0,
-        taskUserId: user.id!,
-        taskAppliedInterventionId: appliedIntervention?.id!,
-        taskExecutedSurveyId: executedSurvey?.id!,
-        taskEntityId: entity?.id!,
-        audioIDs: audioList,
-        picIDs: picList);
-  }
-
   Task.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }

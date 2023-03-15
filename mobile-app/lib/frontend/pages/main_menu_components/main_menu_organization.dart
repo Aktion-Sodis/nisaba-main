@@ -322,7 +322,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
           controller: customDataControllers[index],
           decoration: InputDecoration(
               prefixIcon: const Icon(MdiIcons.pen),
-              labelText: widget.level.customData[index].name),
+              labelText: widget.level.customData[index].displayName),
           textInputAction: TextInputAction.next,
           keyboardType:
               widget.level.customData[index].type == CustomDataType.INT
@@ -344,8 +344,8 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
     if (widget.entity != null) {
       create = false;
       entity = widget.entity;
-      nameEditingController.text = entity!.name;
-      descriptionEditingController.text = entity!.description;
+      nameEditingController.text = entity!.displayName;
+      descriptionEditingController.text = entity!.displayDescription;
       entity!.customData.forEach((cd) {
         int index = widget.level.customData
             .indexWhere((element) => element.id == cd.customDataID);
@@ -370,7 +370,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
         return AppliedCustomData(
           customDataID: customData.id!,
           type: customData.type,
-          name_ml: customData.name_ml,
+          name: customData.name,
           intValue: customData.type == CustomDataType.INT
               ? int.tryParse(customDataControllers[index].text.trim()) ?? 0
               : null,
@@ -381,7 +381,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
       });
       print("saving entity: customData");
       appliedCustomDatas.forEach((element) {
-        print(element.name +
+        print(element.displayName +
             " " +
             element.intValue.toString() +
             " " +
@@ -390,8 +390,8 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
       if (create) {
         Entity toSave = Entity(
             id: preliminaryEntityId,
-            name_ml: I18nString.fromString(string: nameEditingController.text),
-            description_ml: I18nString.fromString(
+            name: I18nString.fromString(string: nameEditingController.text),
+            description: I18nString.fromString(
                 string: descriptionEditingController.text),
             level: widget.level,
             customData: appliedCustomDatas,
@@ -399,13 +399,13 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
             parentEntityID: widget.parentEntityID);
         Navigator.of(context).pop(toSave);
       } else {
-        I18nString nameToSet = widget.entity!.name_ml;
+        I18nString nameToSet = widget.entity!.name;
         nameToSet.text = nameEditingController.text;
-        I18nString description = widget.entity!.description_ml;
+        I18nString description = widget.entity!.description;
         description.text = descriptionEditingController.text;
         Entity toSave = widget.entity!;
-        toSave.name_ml = nameToSet;
-        toSave.description_ml = description;
+        toSave.name = nameToSet;
+        toSave.description = description;
         toSave.customData = appliedCustomDatas;
 
         Navigator.of(context).pop(toSave);
@@ -600,7 +600,7 @@ class ListWidget extends StatelessWidget {
   Widget listItem(BuildContext buildContext, int index,
       EntitiesLoadedOrganizationViewState state) {
     String parentEntityName = state.levelContentList.last.parentEntity != null
-        ? state.levelContentList.last.parentEntity!.name
+        ? state.levelContentList.last.parentEntity!.displayName
         : "";
     List<Entity> entities = state.currentLevelContent.daughterEntities;
 
@@ -633,7 +633,7 @@ class ListWidget extends StatelessWidget {
                       bottom: parentEntityName == ""
                           ? defaultPadding(buildContext)
                           : 0),
-                  child: Text(entities[index].name,
+                  child: Text(entities[index].displayName,
                       style: Theme.of(buildContext).textTheme.headline2),
                 ),
                 if (parentEntityName != "")
@@ -821,13 +821,13 @@ class OverviewWidget extends StatelessWidget {
                   true,
                 )
               ])),
-          if (entity.description.isNotEmpty)
+          if (entity.displayDescription.isNotEmpty)
             Container(
                 margin: EdgeInsets.only(
                     left: defaultPadding(context),
                     right: defaultPadding(context),
                     bottom: defaultPadding(context) / 2),
-                child: Text(entity.description,
+                child: Text(entity.displayDescription,
                     style: Theme.of(context).textTheme.bodyText1)),
           if (entity.customData.isNotEmpty)
             Container(
@@ -846,7 +846,8 @@ class OverviewWidget extends StatelessWidget {
                             child: RichText(
                                 text: TextSpan(children: [
                               TextSpan(
-                                  text: entity.customData[index].name + ": ",
+                                  text: entity.customData[index].displayName +
+                                      ": ",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText1!
@@ -1344,10 +1345,9 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
         pressable: true, onPressed: () {
       AppliedIntervention toCreate = AppliedIntervention(
           id: UUID.getUUID(),
-          whoDidIt: widget.user,
-          entity: Entity.unpopulated(null),
-          intervention: interventions![index],
-          executedSurveys: [],
+          appliedInterventionWhoDidItId: widget.user.id,
+          entityAppliedInterventionsId: Entity.unpopulated(null).id,
+          appliedInterventionInterventionId: interventions![index].id,
           isOkay: true);
       setState(() {
         appliedIntervention = toCreate;

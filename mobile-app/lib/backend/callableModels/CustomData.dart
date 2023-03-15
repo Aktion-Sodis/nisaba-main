@@ -9,7 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'CustomData.g.dart';
 part 'CustomData.db_model.dart';
 
-@DBModelAnnotation()
+@DBModelAnnotation(true)
 @JsonSerializable()
 class CustomData extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -18,26 +18,26 @@ class CustomData extends DBModel {
 
   Map<String, dynamic> toJson() => _$CustomDataToJson(this);
 
-  late I18nString name_ml;
+  late I18nString name;
   late CustomDataType type;
 
-  String get name => name_ml.text;
+  String get displayName => name.text;
 
-  set name(String name) => name_ml.text = name;
+  set displayName(String name) => this.name.text = name;
 
-  CustomData({required String? id, required this.name_ml, required this.type})
+  CustomData({required String? id, required this.name, required this.type})
       : super(id);
 
   CustomData.fromAmplifyModel(amp.CustomData customData)
       : super(customData.id) {
     id = customData.id;
-    name_ml = I18nString.fromAmplifyModel(customData.name);
+    name = I18nString.fromAmplifyModel(customData.name);
     type = customDataTypeByAmplifyType(customData.type);
   }
 
   amp.CustomData toAmplifyModel() {
     return (amp.CustomData(
-        name: name_ml.toAmplifyModel(),
+        name: name.toAmplifyModel(),
         type: ampDataTypeByCustomDataType(type),
         id: id));
   }
@@ -56,7 +56,7 @@ class CustomData extends DBModel {
   @override
   bool operator ==(Object other) {
     if (other is CustomData) {
-      return name_ml == other.name_ml && type == other.type && id == other.id;
+      return name == other.name && type == other.type && id == other.id;
     }
     return false;
   }

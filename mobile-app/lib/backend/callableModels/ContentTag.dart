@@ -38,33 +38,6 @@ class ContentTag extends DBModel {
       this.updatedAt})
       : super(id);
 
-  ContentTag.fromAmplifyModel(amp.ContentTag tag) : super(tag.id) {
-    id = tag.id;
-    text_ml = I18nString.fromAmplifyModel(tag.text);
-    schemeVersion = tag.schemeVersion;
-    createdAt = tag.createdAt?.getDateTimeInUtc();
-    updatedAt = tag.updatedAt?.getDateTimeInUtc();
-    contents = tag.contents
-        .map((e) => ContentContentTagRelation(
-            id: e.id,
-            first: Content.fromAmplifyModel(e.content),
-            second: ContentTag.fromAmplifyModel(e.contentTag)))
-        .toList();
-  }
-
-  amp.ContentTag toAmplifyModel() {
-    return amp.ContentTag(
-        text: text_ml.toAmplifyModel(),
-        id: id,
-        schemeVersion: schemeVersion,
-        contents: contents
-            .map((e) => amp.ContentContentTagRelation(
-                id: e.id,
-                content: e.first!.toAmplifyModel(),
-                contentTag: e.second!.toAmplifyModel()))
-            .toList());
-  }
-
   ContentTag.unpopulated(String? id) : super(id) {
     isPopulated = false;
   }

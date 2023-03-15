@@ -53,6 +53,7 @@ void _register({
   required String updateMutation,
   required String getQuery,
   required String listQuery,
+  required Map<String, dynamic> queryFields,
 }) {
   _db.registerModel(
       type,
@@ -66,7 +67,7 @@ void _register({
               deleteMutation: deleteMutation,
               getQuery: getQuery,
               listQuery: listQuery,
-              queryFields: TestObject.queryFields(),
+              queryFields: queryFields,
               toDBModel: toDBModel)));
 }
 
@@ -80,5 +81,78 @@ void registerModels() {
       deleteMutation: "deleteTestObject",
       updateMutation: "updateTestObject",
       getQuery: "getTestObject",
-      listQuery: "listTestObjects");
+      listQuery: "listTestObjects",
+      queryFields: TestObject.queryFields());
+
+  // Level
+  _register(
+      type: Level,
+      haveToSyncDownstream: true,
+      toDBModel: Level.fromJson,
+      createMutation: "createLevel",
+      deleteMutation: "deleteLevel",
+      updateMutation: "updateLevel",
+      getQuery: "getLevel",
+      listQuery: "listLevels",
+      queryFields: Level.queryFields());
+
+  // Entity
+  _register(
+      type: Entity,
+      haveToSyncDownstream: true,
+      toDBModel: Entity.fromJson,
+      createMutation: "createEntity",
+      deleteMutation: "deleteEntity",
+      updateMutation: "updateEntity",
+      getQuery: "getEntity",
+      listQuery: "listEntities",
+      queryFields: Entity.queryFields());
+
+  // Intervention
+  _register(
+      type: Intervention,
+      haveToSyncDownstream: true,
+      toDBModel: Intervention.fromJson,
+      createMutation: "createIntervention",
+      deleteMutation: "deleteIntervention",
+      updateMutation: "updateIntervention",
+      getQuery: "getIntervention",
+      listQuery: "listInterventions",
+      queryFields: Intervention.queryFields());
+
+  // Survey
+  _register(
+      type: Survey,
+      haveToSyncDownstream: true,
+      toDBModel: Survey.fromJson,
+      createMutation: "createSurvey",
+      deleteMutation: "deleteSurvey",
+      updateMutation: "updateSurvey",
+      getQuery: "getSurvey",
+      listQuery: "listSurveys",
+      queryFields: Survey.queryFields());
+
+  // AppliedIntervention
+  _register(
+      type: AppliedIntervention,
+      haveToSyncDownstream: true,
+      toDBModel: AppliedIntervention.fromJson,
+      createMutation: "createAppliedIntervention",
+      deleteMutation: "deleteAppliedIntervention",
+      updateMutation: "updateAppliedIntervention",
+      getQuery: "getAppliedIntervention",
+      listQuery: "listAppliedInterventions",
+      queryFields: AppliedIntervention.queryFields());
+
+  // LevelInterventionRelation
+  _register(
+      type: LevelInterventionRelation,
+      haveToSyncDownstream: true,
+      toDBModel: LevelInterventionRelation.fromJson,
+      createMutation: "createLevelInterventionRelation",
+      deleteMutation: "deleteLevelInterventionRelation",
+      updateMutation: "updateLevelInterventionRelation",
+      getQuery: "getLevelInterventionRelation",
+      listQuery: "listLevelInterventionRelations",
+      queryFields: LevelInterventionRelation.queryFields());
 }

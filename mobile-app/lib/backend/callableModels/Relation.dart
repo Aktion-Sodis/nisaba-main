@@ -1,3 +1,4 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:mobile_app/backend/callableModels/InterventionTag.dart';
 import 'package:mobile_app/backend/callableModels/SurveyTag.dart';
@@ -7,9 +8,11 @@ import 'Survey.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Relation.g.dart';
+part 'Relation.db_model.dart';
 
 abstract class Relation<T extends DBModel, P extends DBModel> extends DBModel {
   T? first;
+
   P? second;
 
   late final String firstID;
@@ -59,7 +62,7 @@ abstract class Relation<T extends DBModel, P extends DBModel> extends DBModel {
     }
   }
 }
-
+/*
 // All relations
 @JsonSerializable()
 class SurveySurveyTagRelation extends Relation<Survey, SurveyTag> {
@@ -80,13 +83,17 @@ class SurveySurveyTagRelation extends Relation<Survey, SurveyTag> {
 
   SurveySurveyTagRelation.unpopulated(String? id) : super.unpopulated(id);
 }
-
+*/
+/*
+@DBModelAnnotation()
 @JsonSerializable()
 class LevelInterventionRelation extends Relation<Level, Intervention> {
   @override
   DBModel getUnpopulated() {
     return LevelInterventionRelation.unpopulated(id);
   }
+
+  //static Map<String, dynamic> queryFields() => _$LevelIn
 
   // JsonSerializable factory and toJson methods
   factory LevelInterventionRelation.fromJson(Map<String, dynamic> json) =>
@@ -103,8 +110,8 @@ class LevelInterventionRelation extends Relation<Level, Intervention> {
         );
 
   LevelInterventionRelation.unpopulated(String? id) : super.unpopulated(id);
-}
-
+}*/
+/*
 @JsonSerializable()
 class InterventionInterventionTagRelation
     extends Relation<Intervention, InterventionTag> {
@@ -174,4 +181,216 @@ class ContentContentTagRelation extends Relation<Content, ContentTag> {
       : super(id: id, first: first, second: second);
 
   ContentContentTagRelation.unpopulated(String? id) : super.unpopulated(id);
+}*/
+
+/// Simple models
+///
+///
+
+// LevelInterventionRelation
+@DBModelAnnotation()
+@JsonSerializable()
+class LevelInterventionRelation extends DBModel {
+  String levelId;
+  String interventionId;
+
+  // TODO: remove
+  // Old interface
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Level? first;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Intervention? second;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? firstID;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? secondID;
+
+  LevelInterventionRelation(
+      {required String id, required this.levelId, required this.interventionId})
+      : super(id);
+
+  @override
+  DBModel getUnpopulated() {
+    // TODO: implement getUnpopulated
+    throw UnimplementedError();
+  }
+
+  static Map<String, dynamic> queryFields() => _$LevelInterventionRelation;
+
+  factory LevelInterventionRelation.fromJson(Map<String, dynamic> json) =>
+      _$LevelInterventionRelationFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() => _$LevelInterventionRelationToJson(this);
+}
+
+@DBModelAnnotation()
+@JsonSerializable()
+class SurveySurveyTagRelation extends DBModel {
+  String surveyId;
+  String surveyTagId;
+
+  // TODO: remove
+  // Old interface
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Survey? first;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  SurveyTag? second;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? firstID;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? secondID;
+
+  SurveySurveyTagRelation(
+      {required String id, required this.surveyId, required this.surveyTagId})
+      : super(id);
+
+  factory SurveySurveyTagRelation.fromJson(Map<String, dynamic> json) =>
+      _$SurveySurveyTagRelationFromJson(json);
+
+  @override
+  DBModel getUnpopulated() {
+    // TODO: implement getUnpopulated
+    throw UnimplementedError();
+  }
+
+  static Map<String, dynamic> queryFields() => _$LevelInterventionRelation;
+
+  @override
+  Map<String, dynamic> toJson() => _$SurveySurveyTagRelationToJson(this);
+}
+
+@DBModelAnnotation()
+@JsonSerializable()
+class ContentContentTagRelation extends DBModel {
+  String contentId;
+  String contentTagId;
+
+  // TODO: remove
+  // Old interface
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Content? first;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  ContentTag? second;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? firstID;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? secondID;
+
+  factory ContentContentTagRelation.fromJson(Map<String, dynamic> json) =>
+      _$ContentContentTagRelationFromJson(json);
+
+  ContentContentTagRelation(
+      {required String id, required this.contentId, required this.contentTagId})
+      : super(id);
+
+  @override
+  DBModel getUnpopulated() {
+    // TODO: implement getUnpopulated
+    throw UnimplementedError();
+  }
+
+  static Map<String, dynamic> queryFields() => _$LevelInterventionRelation;
+
+  @override
+  Map<String, dynamic> toJson() => _$ContentContentTagRelationToJson(this);
+}
+
+@DBModelAnnotation()
+@JsonSerializable()
+class InterventionContentRelation extends DBModel {
+  String interventionId;
+  String contentId;
+
+  // TODO: remove
+  // Old interface
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Intervention? first;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Content? second;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? firstID;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? secondID;
+
+  factory InterventionContentRelation.fromJson(Map<String, dynamic> json) =>
+      _$InterventionContentRelationFromJson(json);
+
+  InterventionContentRelation(
+      {required String id,
+      required this.contentId,
+      required this.interventionId})
+      : super(id);
+
+  @override
+  DBModel getUnpopulated() {
+    // TODO: implement getUnpopulated
+    throw UnimplementedError();
+  }
+
+  static Map<String, dynamic> queryFields() => _$InterventionContentRelation;
+
+  @override
+  Map<String, dynamic> toJson() => _$InterventionContentRelationToJson(this);
+}
+
+@DBModelAnnotation()
+@JsonSerializable()
+class InterventionInterventionTagRelation extends DBModel {
+  String interventionId;
+  String interventionTagId;
+
+  // TODO: remove
+  // Old interface
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? firstID;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? secondID;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Intervention? first;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  InterventionTag? second;
+
+  factory InterventionInterventionTagRelation.fromJson(
+          Map<String, dynamic> json) =>
+      _$InterventionInterventionTagRelationFromJson(json);
+
+  InterventionInterventionTagRelation(
+      {required String id,
+      required this.interventionTagId,
+      required this.interventionId})
+      : super(id);
+
+  @override
+  DBModel getUnpopulated() {
+    // TODO: implement getUnpopulated
+    throw UnimplementedError();
+  }
+
+  static Map<String, dynamic> queryFields() =>
+      _$InterventionInterventionTagRelation;
+
+  @override
+  Map<String, dynamic> toJson() =>
+      _$InterventionInterventionTagRelationToJson(this);
 }

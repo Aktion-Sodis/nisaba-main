@@ -91,14 +91,14 @@ class GraphQLDB extends DB<GraphQLDBModelRegistration> {
   }
 
   ast.SelectionSetNode _generateSelectionSet(
-      Map<String, dynamic> selectionSet) {
+      Map<dynamic, dynamic> selectionSet) {
     List<ast.SelectionNode> selections = [];
     selections =
         selectionSet.entries.map((entry) => _generateFieldNode(entry)).toList();
     return ast.SelectionSetNode(selections: selections);
   }
 
-  ast.FieldNode _generateFieldNode(MapEntry<String, dynamic> entry) {
+  ast.FieldNode _generateFieldNode(MapEntry<dynamic, dynamic> entry) {
     if (entry.value == null) {
       return ast.FieldNode(
         name: ast.NameNode(value: entry.key),

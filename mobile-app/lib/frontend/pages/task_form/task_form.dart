@@ -311,7 +311,7 @@ class TaskForm<T extends TaskFormCubit> extends StatelessWidget {
                             searchDelay: const Duration(seconds: 0),
                             onFind: _cubit!.searchForEntities,
                             mode: Mode.MENU,
-                            itemAsString: (entity) => entity!.name,
+                            itemAsString: (entity) => entity!.displayName,
                             isFilteredOnline: true,
                             showSearchBox: true,
                             compareFn: (e1, e2) {

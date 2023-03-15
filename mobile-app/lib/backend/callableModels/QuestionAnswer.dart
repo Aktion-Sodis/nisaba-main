@@ -1,4 +1,5 @@
 import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/Marking.dart';
 import 'package:mobile_app/backend/callableModels/Question.dart';
@@ -10,6 +11,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'QuestionAnswer.g.dart';
 
+@DBModelAnnotation(true)
 @JsonSerializable()
 class QuestionAnswer extends DBModel {
   // JsonSerializable factory and toJson methods
