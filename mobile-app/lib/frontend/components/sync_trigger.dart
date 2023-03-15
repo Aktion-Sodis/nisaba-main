@@ -31,7 +31,7 @@ class _SyncTriggerState extends State<SyncTrigger> with WidgetsBindingObserver {
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.resumed:
-        SyncedDB.instance.synchronizer.syncDownstream();
+        //SyncedDB.instance.synchronizer.syncDownstream();
         SyncedDB.instance.synchronizer.syncUpstream();
         break;
       case AppLifecycleState.inactive:
@@ -44,7 +44,7 @@ class _SyncTriggerState extends State<SyncTrigger> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     // Sync on start
-    SyncedDB.instance.synchronizer.syncDownstream();
+    //SyncedDB.instance.synchronizer.syncDownstream();
     SyncedDB.instance.synchronizer.syncUpstream();
 
     return widget.child;
