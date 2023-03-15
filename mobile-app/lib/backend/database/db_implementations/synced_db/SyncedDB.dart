@@ -108,11 +108,21 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
 
   @override
   Future<G?> getById<G extends DBModel>(Type type, String id) {
+    var registeredModel = getRegisteredModel(type);
+    if (!registeredModel.haveToSyncDownstream) {
+      throw "The model $type is not registered to be accessed by query";
+    }
+
     return localDB.getById(type, id);
   }
 
   @override
   Future<List<G>> get<G extends DBModel>(Type type, [Query? query]) {
+    var registeredModel = getRegisteredModel(type);
+    if (!registeredModel.haveToSyncDownstream) {
+      throw "The model $type is not registered to be accessed by query";
+    }
+
     return localDB.get(type, query);
   }
 }
