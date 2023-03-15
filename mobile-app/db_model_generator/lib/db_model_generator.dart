@@ -37,7 +37,8 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
     var annotation = _getDBModelAnnotation(classElement);
 
     if (annotation == null) {
-      throw Exception("Annotation must be applied to a class");
+      throw Exception(
+          "Method _getSubtypeFlag should be applied to a class with annotation DBModelAnnotation. Class: ${classElement.name}");
     }
 
     bool subtype =
@@ -50,7 +51,8 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
     if (classElement.metadata.isEmpty) {
       return null;
     }
-    ElementAnnotation? annotation = classElement.metadata.firstWhere((element) {
+    List<ElementAnnotation> annotationList =
+        classElement.metadata.where((element) {
       Element? elementElement = element.element;
 
       if (elementElement != null && elementElement is ConstructorElement) {
@@ -59,9 +61,13 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
         }
       }
       return false;
-    });
+    }).toList();
 
-    return annotation;
+    if (annotationList.isEmpty) {
+      return null;
+    }
+
+    return annotationList.first;
   }
 
   ElementAnnotation? _getAnnotation(
@@ -94,16 +100,13 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
   /// It is SUBTYPE, if the type has annotation DBModelAnnotation and subtype is true.
   _ClassType _getClassType(ClassElement classElement) {
     // Check if the class has annotation DBModelAnnotation
-    print("getClassType");
+
     var annotation = _getDBModelAnnotation(classElement);
-    print("getClassType: 1");
+
     if (annotation == null) {
-      print("getClassType: 2");
       return _ClassType.NONE;
     } else {
-      print("getClassType: 3");
       bool subtype = _getSubtypeFlag(classElement);
-      print("getClassType: 4");
 
       if (subtype) {
         return _ClassType.SUBTYPE;
@@ -114,7 +117,6 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
   }
 
   bool _isSimpleType(DartType type) {
-    print("isSimpleType");
     // Get the class name of the field as a string
     String? className = type.element?.name;
     if (className == "DateTime") {
@@ -132,12 +134,10 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
   }
 
   String _getName(FieldElement element) {
-    print("getName");
     return element.name;
   }
 
   Map<String, dynamic> _translateClassElement(ClassElement classElement) {
-    print("translateClassElement");
     var fields = classElement.fields;
     Map<String, dynamic> map = {};
     fields
@@ -147,11 +147,15 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
       map[element!.key] = element.value;
     });
 
+    var classType = _getClassType(classElement);
+    if (classType == _ClassType.TYPE) {
+      map["id"] = null;
+    }
+
     return map;
   }
 
   Map<String, dynamic>? _translateList(DartType type) {
-    print("translateList");
     var genericTypes = getGenericTypes(type);
     if (genericTypes.length != 1) {
       throw Exception("List must have one generic type");
@@ -163,7 +167,11 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
     }
 
     var genericClassElement = genericType.element as ClassElement;
-    return {"items": _translateClassElement(genericClassElement)};
+    if (_getSubtypeFlag(genericClassElement)) {
+      return _translateClassElement(genericClassElement);
+    } else {
+      return {"items": _translateClassElement(genericClassElement)};
+    }
   }
 
   MapEntry<String, dynamic>? _translateFieldElement(FieldElement value) {
@@ -184,13 +192,12 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
         value.isStatic) {
       return null;
     } else if (_isSimpleType(value.type)) {
-      print("1++++++++++");
       return MapEntry(_getName(value), null);
-    } else if (_getClassType(classElement) == _ClassType.TYPE) {
-      print("2++++++++++");
-      return MapEntry(_getName(value), null);
-    } else if (_getClassType(classElement) == _ClassType.SUBTYPE) {
-      print("3++++++++++");
+      //} else if (_getClassType(classElement) == _ClassType.TYPE) {
+      //  return MapEntry(_getName(value), null);
+      //} else if (_getClassType(classElement) == _ClassType.SUBTYPE) {
+    } else if (_getClassType(classElement) == _ClassType.TYPE ||
+        _getClassType(classElement) == _ClassType.SUBTYPE) {
       return MapEntry(_getName(value), _translateClassElement(classElement));
     } else if (value.type.isDartCoreList) {
       return MapEntry(_getName(value), _translateList(value.type));
@@ -202,7 +209,6 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
   }
 
   Iterable<DartType> getGenericTypes(DartType type) {
-    print("getGenericTypes");
     return type is ParameterizedType ? type.typeArguments : const [];
   }
 }
