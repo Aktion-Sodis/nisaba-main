@@ -9,9 +9,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:mobile_app/backend/Blocs/in_app/in_app_bloc.dart';
+import 'package:mobile_app/backend/Blocs/in_app/in_app_events.dart';
 import 'package:mobile_app/backend/Blocs/organization_view/organization_view_bloc.dart';
 import 'package:mobile_app/backend/Blocs/organization_view/organization_view_events.dart';
 import 'package:mobile_app/backend/Blocs/organization_view/organization_view_state.dart';
+import 'package:mobile_app/backend/Blocs/sync/sync_bloc.dart';
+import 'package:mobile_app/backend/Blocs/sync/sync_state.dart';
 import 'package:mobile_app/backend/Blocs/task/task_bloc.dart';
 import 'package:mobile_app/backend/Blocs/task/task_state.dart';
 import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
@@ -26,6 +29,7 @@ import 'package:mobile_app/frontend/components/buttons.dart';
 import 'package:mobile_app/frontend/components/imageWidget.dart';
 import 'package:mobile_app/frontend/components/loadingsign.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
+import 'package:mobile_app/frontend/pages/main_menu.dart';
 import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_commonwidgets.dart';
 import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_tasks.dart';
 import 'package:mobile_app/frontend/strings.dart' as strings;
@@ -83,6 +87,41 @@ class MainMenuOrganization extends StatelessWidget {
                                 style: Theme.of(context).textTheme.headline2,
                                 overflow: TextOverflow.ellipsis,
                               ))),
+                      if (!show_all_menu_pages)
+                        Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: defaultPadding(context)),
+                            child: BlocBuilder<SyncBloc, SyncState>(
+                                builder: (context, state) {
+                              if (state is FullySyncedState) {
+                                return Icon(MdiIcons.cloudCheckOutline,
+                                    color: Colors.green,
+                                    size: width(context) * .08);
+                              } else if (state is CannotSyncState) {
+                                return Icon(MdiIcons.cloudOffOutline,
+                                    color: Colors.red,
+                                    size: width(context) * .08);
+                              } else {
+                                return Icon(MdiIcons.cloudSyncOutline,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                    size: width(context) * .08);
+                              }
+                            })),
+                      //if no menu shown, add user management for highest element and if no other main menu pages shown
+                      if ((organizationViewState.organizationViewType ==
+                                  OrganizationViewType.LIST &&
+                              !show_all_menu_pages) &&
+                          organizationViewState.currentLevelContent
+                                  .daughterEntities.first.level.parentLevelID ==
+                              null)
+                        CustomIconButton(() {
+                          context.read<InAppBloc>().add(GoToUserPageEvent());
+                        },
+                            MdiIcons.human,
+                            Size(width(context) * .1, width(context) * .1),
+                            true),
                       if (organizationViewState.organizationViewType ==
                               OrganizationViewType.LIST &&
                           organizationViewState.addEntityPossible)
