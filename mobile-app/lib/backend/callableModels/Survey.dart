@@ -26,6 +26,9 @@ class Survey extends DBModel {
 
   late I18nString name;
   late I18nString description;
+
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
   Intervention? intervention; // Unpopulated allowed
   late List<Question> questions;
 
@@ -38,12 +41,20 @@ class Survey extends DBModel {
   DateTime? updatedAt;
   late SurveyType surveyType;
 
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
   String get displayName => name.text;
 
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
   set displayName(String name) => this.name.text = name;
 
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
   String get displayDescription => description.text;
 
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
   set displayDescription(String description) =>
       this.description.text = description;
 

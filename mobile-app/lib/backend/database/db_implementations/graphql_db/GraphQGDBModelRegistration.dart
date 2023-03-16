@@ -55,6 +55,8 @@ class GraphQLDBModelRegistration extends DBModelRegistration<
   GraphQLDBModelRegistration(
       //DBModel Function(String id)? getUnpopulated,
       {required ToDBModelConverter<_TranslatedModelType> toDBModel,
+      _TranslatedModelType Function(_TranslatedModelType)?
+          toDBModelPreprocessor,
       required this.queryFields,
       required this.createMutation,
       required this.updateMutation,
@@ -64,7 +66,13 @@ class GraphQLDBModelRegistration extends DBModelRegistration<
       : super(
             predicatesTranslations: _predicatesTranslations,
             fromDBModel: _fromDBModel,
-            toDBModel: toDBModel);
+            toDBModel: (input) {
+              if (toDBModelPreprocessor != null) {
+                return toDBModel(toDBModelPreprocessor(input));
+              } else {
+                return toDBModel(input);
+              }
+            });
 
   @override
   String getID(Map<String, Object?> object) {

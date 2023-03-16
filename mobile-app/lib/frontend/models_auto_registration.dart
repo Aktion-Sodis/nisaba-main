@@ -54,6 +54,7 @@ void _register({
   required String getQuery,
   required String listQuery,
   required Map<String, dynamic> queryFields,
+  Map<String, Object?> Function(Map<String, Object?>)? toDBModelPreprocessor,
 }) {
   _db.registerModel(
       type,
@@ -68,7 +69,8 @@ void _register({
               getQuery: getQuery,
               listQuery: listQuery,
               queryFields: queryFields,
-              toDBModel: toDBModel)));
+              toDBModel: toDBModel,
+              toDBModelPreprocessor: toDBModelPreprocessor)));
 }
 
 void registerModels() {
@@ -118,10 +120,14 @@ void registerModels() {
       updateMutation: "updateIntervention",
       getQuery: "getIntervention",
       listQuery: "listInterventions",
-      queryFields: Intervention.queryFields());
+      queryFields: Intervention.queryFields(),
+      toDBModelPreprocessor: (p0) {
+        p0["surveys"] = (p0["surveys"] as Map)["items"];
+        return p0;
+      });
 
   // Survey
-  _register(
+  /*_register(
       type: Survey,
       haveToSyncDownstream: true,
       toDBModel: Survey.fromJson,
@@ -130,7 +136,7 @@ void registerModels() {
       updateMutation: "updateSurvey",
       getQuery: "getSurvey",
       listQuery: "listSurveys",
-      queryFields: Survey.queryFields());
+      queryFields: Survey.queryFields());*/
 
   // AppliedIntervention
   _register(

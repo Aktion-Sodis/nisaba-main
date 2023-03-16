@@ -35,8 +35,6 @@ class Intervention extends DBModel {
   late List<InterventionContentRelation>
       interventionContentRelations; // Unpopulated allowed
 
-  @DBModelIgnore()
-  @JsonKey(includeFromJson: false, includeToJson: false)
   late List<Survey> surveys; // Unpopulated allowed
 
   @DBModelIgnore()
