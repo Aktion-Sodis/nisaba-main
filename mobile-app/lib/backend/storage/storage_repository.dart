@@ -3,6 +3,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
+import 'package:mobile_app/utils/connectivity.dart';
 
 import 'dataStorePaths.dart';
 
@@ -96,5 +97,3 @@ class StorageRepository {
     }
   }
 }
-
-enum InternetConnectionType { WIFI, MOBILE, OFFLINE }

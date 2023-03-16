@@ -102,8 +102,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
               children: [
                 surveyTitleWidget(
                     context: context,
-                    surveyTitle: widget.survey.name,
-                    entityName: widget.survey.intervention?.name ?? '',
+                    surveyTitle: widget.survey.displayName,
+                    entityName: widget.survey.intervention?.displayName ?? '',
                     imageFile: syncedSurveyImageFile,
                     goBack: _leaveSurveyRegular,
                     proceed: () {
@@ -181,19 +181,20 @@ class SurveyWidgetState extends State<SurveyWidget> {
     _pageController.addListener(() {
       setState(() {});
     });
-    syncedSurveyImageFile = SurveyRepository.getSurveyPic(widget.survey);
+    syncedSurveyImageFile =
+        SurveyRepository.instance.getSurveyPic(widget.survey);
     picAndAudioAnswerFiles = {};
     widget.survey.questions.forEach((element) {
       if (element.type == QuestionType.PICTURE) {
-        picAndAudioAnswerFiles[element.id!] =
-            ExecutedSurveyRepository.getQuestionAnswerPic(
+        picAndAudioAnswerFiles[element.id!] = ExecutedSurveyRepository.instance
+            .getQuestionAnswerPic(
                 (context.read<InAppBloc>().state as SurveyInAppState)
                     .appliedIntervention,
                 preliminaryExecutedSurveyId,
                 element);
       } else if (element.type == QuestionType.AUDIO) {
-        picAndAudioAnswerFiles[element.id!] =
-            ExecutedSurveyRepository.getQuestionAnswerAudio(
+        picAndAudioAnswerFiles[element.id!] = ExecutedSurveyRepository.instance
+            .getQuestionAnswerAudio(
                 (context.read<InAppBloc>().state as SurveyInAppState)
                     .appliedIntervention,
                 preliminaryExecutedSurveyId,
@@ -223,7 +224,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
         ),
         addTaskWidget(
             context: context,
-            surveyTitle: widget.survey.name,
+            surveyTitle: widget.survey.displayName,
             addTask: addTask),
         SizedBox(
           height: defaultPadding(context),
@@ -334,7 +335,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -389,7 +391,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
                           width: defaultPadding(context),
                         ),
                         Flexible(
-                            child: Text(question.questionOptions![index].text,
+                            child: Text(
+                                question.questionOptions![index].displayText,
                                 style: Theme.of(context).textTheme.bodyText1)),
                       ],
                     ),
@@ -408,7 +411,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -450,7 +454,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                         ),
                         Flexible(
                             child: Text(
-                          question.questionOptions![index].text,
+                          question.questionOptions![index].displayText,
                           style: Theme.of(context).textTheme.bodyText1,
                         )),
                       ],
@@ -487,7 +491,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -497,7 +502,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: Text(question.text),
+                child: Text(question.displayText),
               ),
               getReadOutWidget(question: question),
             ],
@@ -541,7 +546,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -551,7 +557,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: Text(question.text,
+                child: Text(question.displayText,
                     style: Theme.of(context).textTheme.bodyText1),
               ),
               getReadOutWidget(question: question),
@@ -595,7 +601,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -629,7 +636,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -667,7 +675,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -716,7 +725,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -1038,7 +1048,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
     if (questionAnswer != null) {
       switch (question.type) {
         case QuestionType.SINGLECHOICE:
-          answerWidget = Text(questionAnswer.questionOptions!.first.text,
+          answerWidget = Text(questionAnswer.questionOptions!.first.displayText,
               style: Theme.of(context).textTheme.bodyText1);
           break;
         case QuestionType.MULTIPLECHOICE:
@@ -1123,7 +1133,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        question.text,
+                        question.displayText,
                         style: Theme.of(context).textTheme.headline2,
                       ),
                       if (questionAnswer != null &&
@@ -1176,7 +1186,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  question.text,
+                  question.displayText,
                   style: Theme.of(context).textTheme.headline2,
                 ),
                 SizedBox(

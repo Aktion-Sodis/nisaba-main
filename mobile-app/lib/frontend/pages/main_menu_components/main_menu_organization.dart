@@ -37,6 +37,8 @@ import 'package:mobile_app/frontend/common_widgets.dart';
 import 'package:mobile_app/utils/photo_capturing.dart';
 import 'package:mobile_app/frontend/pages/survey.dart' as surveyarea;
 
+import '../../../backend/callableModels/Relation.dart';
+
 class MainMenuOrganization extends StatelessWidget {
   Widget appBarWidget(BuildContext context,
       EntitiesLoadedOrganizationViewState organizationViewState) {
@@ -359,7 +361,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
           controller: customDataControllers[index],
           decoration: InputDecoration(
               prefixIcon: const Icon(MdiIcons.pen),
-              labelText: widget.level.customData[index].name),
+              labelText: widget.level.customData[index].displayName),
           textInputAction: TextInputAction.next,
           keyboardType:
               widget.level.customData[index].type == CustomDataType.INT
@@ -381,8 +383,8 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
     if (widget.entity != null) {
       create = false;
       entity = widget.entity;
-      nameEditingController.text = entity!.name;
-      descriptionEditingController.text = entity!.description;
+      nameEditingController.text = entity!.displayName;
+      descriptionEditingController.text = entity!.displayDescription;
       entity!.customData.forEach((cd) {
         int index = widget.level.customData
             .indexWhere((element) => element.id == cd.customDataID);
@@ -393,7 +395,8 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
     } else {
       preliminaryEntityId = UUID.getUUID();
     }
-    syncedFile = EntityRepository.getEntityPicByID(preliminaryEntityId!);
+    syncedFile =
+        EntityRepository.instance.getEntityPicByID(preliminaryEntityId!);
     super.initState();
   }
 
@@ -406,7 +409,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
         return AppliedCustomData(
           customDataID: customData.id!,
           type: customData.type,
-          name_ml: customData.name_ml,
+          name: customData.name,
           intValue: customData.type == CustomDataType.INT
               ? int.tryParse(customDataControllers[index].text.trim()) ?? 0
               : null,
@@ -417,7 +420,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
       });
       print("saving entity: customData");
       appliedCustomDatas.forEach((element) {
-        print(element.name +
+        print(element.displayName +
             " " +
             element.intValue.toString() +
             " " +
@@ -426,8 +429,8 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
       if (create) {
         Entity toSave = Entity(
             id: preliminaryEntityId,
-            name_ml: I18nString.fromString(string: nameEditingController.text),
-            description_ml: I18nString.fromString(
+            name: I18nString.fromString(string: nameEditingController.text),
+            description: I18nString.fromString(
                 string: descriptionEditingController.text),
             level: widget.level,
             customData: appliedCustomDatas,
@@ -435,13 +438,13 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
             parentEntityID: widget.parentEntityID);
         Navigator.of(context).pop(toSave);
       } else {
-        I18nString nameToSet = widget.entity!.name_ml;
+        I18nString nameToSet = widget.entity!.name;
         nameToSet.text = nameEditingController.text;
-        I18nString description = widget.entity!.description_ml;
+        I18nString description = widget.entity!.description;
         description.text = descriptionEditingController.text;
         Entity toSave = widget.entity!;
-        toSave.name_ml = nameToSet;
-        toSave.description_ml = description;
+        toSave.name = nameToSet;
+        toSave.description = description;
         toSave.customData = appliedCustomDatas;
 
         Navigator.of(context).pop(toSave);
@@ -636,11 +639,12 @@ class ListWidget extends StatelessWidget {
   Widget listItem(BuildContext buildContext, int index,
       EntitiesLoadedOrganizationViewState state) {
     String parentEntityName = state.levelContentList.last.parentEntity != null
-        ? state.levelContentList.last.parentEntity!.name
+        ? state.levelContentList.last.parentEntity!.displayName
         : "";
     List<Entity> entities = state.currentLevelContent.daughterEntities;
 
-    SyncedFile imageFile = EntityRepository.getEntityPic(entities[index]);
+    SyncedFile imageFile =
+        EntityRepository.instance.getEntityPic(entities[index]);
     return Card(
         margin: EdgeInsets.symmetric(
             horizontal: defaultPadding(buildContext),
@@ -668,7 +672,7 @@ class ListWidget extends StatelessWidget {
                       bottom: parentEntityName == ""
                           ? defaultPadding(buildContext)
                           : 0),
-                  child: Text(entities[index].name,
+                  child: Text(entities[index].displayName,
                       style: Theme.of(buildContext).textTheme.headline2),
                 ),
                 if (parentEntityName != "")
@@ -830,7 +834,7 @@ class OverviewWidget extends StatelessWidget {
 
   Widget generalCardContent(BuildContext context) {
     print("general card content rebuild");
-    SyncedFile syncedFile = EntityRepository.getEntityPic(entity);
+    SyncedFile syncedFile = EntityRepository.instance.getEntityPic(entity);
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -856,13 +860,13 @@ class OverviewWidget extends StatelessWidget {
                   true,
                 )
               ])),
-          if (entity.description.isNotEmpty)
+          if (entity.displayDescription.isNotEmpty)
             Container(
                 margin: EdgeInsets.only(
                     left: defaultPadding(context),
                     right: defaultPadding(context),
                     bottom: defaultPadding(context) / 2),
-                child: Text(entity.description,
+                child: Text(entity.displayDescription,
                     style: Theme.of(context).textTheme.bodyText1)),
           if (entity.customData.isNotEmpty)
             Container(
@@ -881,7 +885,8 @@ class OverviewWidget extends StatelessWidget {
                             child: RichText(
                                 text: TextSpan(children: [
                               TextSpan(
-                                  text: entity.customData[index].name + ": ",
+                                  text: entity.customData[index].displayName +
+                                      ": ",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText1!
@@ -968,8 +973,8 @@ class OverviewWidget extends StatelessWidget {
               children: List.generate(
                   firstThreeSurveys.length,
                   (index) => surveyRow(context, firstThreeSurveys[index],
-                      image: SurveyRepository.getSurveyPic(
-                          firstThreeSurveys[index]),
+                      image: SurveyRepository.instance
+                          .getSurveyPic(firstThreeSurveys[index]),
                       separator: index != firstThreeSurveys.length - 1)),
             ),
           Container(
@@ -1071,7 +1076,7 @@ class AppliedInterventionOverviewPage extends StatelessWidget {
         .appliedInterventions;
     Intervention intervention = interventions[index].intervention;
     return interventionRow(buildContext, intervention,
-        image: InterventionRepository.getInterventionPic(intervention),
+        image: InterventionRepository.instance.getInterventionPic(intervention),
         separator: interventions.length - 1 != index,
         pressable: true, onPressed: () async {
       buildContext
@@ -1164,8 +1169,8 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
     entity = (context.read<OrganizationViewBloc>().state
             as EntitiesLoadedOrganizationViewState)
         .currentDetailEntity!;
-    imageFileSynced = AppliedInterventionRepository.appliedInterventionPic(
-        appliedIntervention);
+    imageFileSynced = AppliedInterventionRepository.instance
+        .appliedInterventionPic(appliedIntervention);
     imageFileSynced.file().then((value) {
       try {
         setState(() {});
@@ -1258,7 +1263,7 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
                               : surveyRow(
                                   context,
                                   nonArchivedSurveys[index - 1],
-                                  image: SurveyRepository.getSurveyPic(
+                                  image: SurveyRepository.instance.getSurveyPic(
                                       nonArchivedSurveys[index - 1]),
                                   pressable: true,
                                   onPressed: () {
@@ -1326,15 +1331,15 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
 
   set appliedIntervention(AppliedIntervention? appliedIntervention) {
     _appliedIntervention = appliedIntervention;
-    syncedFile = AppliedInterventionRepository.appliedInterventionPic(
-        appliedIntervention!);
+    syncedFile = AppliedInterventionRepository.instance
+        .appliedInterventionPic(appliedIntervention!);
   }
 
   updatePic() async {
     XFile r = await CameraFunctionality.takePicture(context: context);
     if (appliedIntervention != null) {
-      syncedFile ??= AppliedInterventionRepository.appliedInterventionPic(
-          appliedIntervention!);
+      syncedFile ??= AppliedInterventionRepository.instance
+          .appliedInterventionPic(appliedIntervention!);
       await syncedFile!.updateAsPic(r);
       setState(() {});
     }
@@ -1355,12 +1360,13 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
     if (widget.appliedIntervention != null) {
       create = false;
       appliedIntervention = widget.appliedIntervention;
-      syncedFile = AppliedInterventionRepository.appliedInterventionPic(
-          appliedIntervention!);
+      syncedFile = AppliedInterventionRepository.instance
+          .appliedInterventionPic(appliedIntervention!);
     }
     super.initState();
     if (widget.appliedIntervention == null) {
-      InterventionRepository.getInterventionsByLevelConnections(
+      InterventionRepository.instance
+          .getInterventionsByLevelConnections(
               widget.entity.level.allowedInterventions!)
           .then((value) => setState(() {
                 interventions = value;
@@ -1373,13 +1379,14 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
     //todo: implement localization
     return interventionRow(context, interventions![index],
         separator: (index != interventions!.length - 1),
-        image: InterventionRepository.getInterventionPic(interventions![index]),
+        image: InterventionRepository.instance
+            .getInterventionPic(interventions![index]),
         pressable: true, onPressed: () {
       AppliedIntervention toCreate = AppliedIntervention(
           id: UUID.getUUID(),
-          whoDidIt: widget.user,
-          intervention: interventions![index],
-          executedSurveys: [],
+          appliedInterventionWhoDidItId: widget.user.id,
+          entityAppliedInterventionsId: Entity.unpopulated(null).id,
+          appliedInterventionInterventionId: interventions![index].id,
           isOkay: true);
       setState(() {
         appliedIntervention = toCreate;
@@ -1560,8 +1567,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
 
   Widget listItem(BuildContext buildContext, int i) {
     return surveyRow(context, currentlyDisplayedSurveys[i]["survey"],
-        image: SurveyRepository.getSurveyPic(
-            currentlyDisplayedSurveys[i]["survey"]),
+        image: SurveyRepository.instance
+            .getSurveyPic(currentlyDisplayedSurveys[i]["survey"]),
         pressable: true, onPressed: () {
       buildContext.read<OrganizationViewBloc>().add(StartSurvey(
           currentlyDisplayedSurveys[i]["survey"],
@@ -1634,17 +1641,13 @@ class ExecutedSurveyWidget extends StatelessWidget {
         mappedAnswers[question] = answer;
       }
       if (question.type == QuestionType.AUDIO) {
-        syncedFileMap[question.id!] =
-            ExecutedSurveyRepository.getQuestionAnswerAudio(
-                executedSurvey.appliedIntervention,
-                executedSurvey.id!,
-                question);
+        syncedFileMap[question.id!] = ExecutedSurveyRepository.instance
+            .getQuestionAnswerAudio(executedSurvey.appliedIntervention,
+                executedSurvey.id!, question);
       } else if (question.type == QuestionType.PICTURE) {
-        syncedFileMap[question.id!] =
-            ExecutedSurveyRepository.getQuestionAnswerPic(
-                executedSurvey.appliedIntervention,
-                executedSurvey.id!,
-                question);
+        syncedFileMap[question.id!] = ExecutedSurveyRepository.instance
+            .getQuestionAnswerPic(executedSurvey.appliedIntervention,
+                executedSurvey.id!, question);
       }
     }
   }

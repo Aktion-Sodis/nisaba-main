@@ -22,7 +22,9 @@ import 'package:mobile_app/backend/repositories/UserRepository.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/backend/storage/storage_repository.dart';
 import 'package:mobile_app/models/InterventionContentRelation.dart';
+import 'package:mobile_app/models/LevelInterventionRelation.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
+import 'package:mobile_app/utils/connectivity.dart';
 
 class SyncBloc extends Bloc<SyncEvent, SyncState> {
   TaskBloc taskBloc;
@@ -65,7 +67,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }
 
   void fulfillSync(bool filesSyncEnabled) async {
-    InternetConnectionType internetConnectionType =
+    /*InternetConnectionType internetConnectionType =
         await StorageRepository.currentInternetConnectionType();
     if (LocalDataRepository.instance.wifiOnly &&
         internetConnectionType != InternetConnectionType.WIFI) {
@@ -74,9 +76,10 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     }
     add(StartSyncEvent());
 
-    List<amp.Level> allAmpLevels = await LevelRepository.getAllAmpLevels();
+    List<amp.Level> allAmpLevels =
+        await LevelRepository.instance.getAllAmpLevels();
     List<amp.Entity> allAmpEntities =
-        (await EntityRepository.getAllAmpEntities())
+        (await EntityRepository.instance.getAllAmpEntities())
             .map((e) => e.copyWith(
                 appliedInterventions: [],
                 level: allAmpLevels
@@ -84,28 +87,31 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
                     .first))
             .toList();
     List<amp.Intervention> allAmpInterventions = (await InterventionRepository
+            .instance
             .getAllAmpIntervention())
         .map((e) => e.copyWith(tags: [], contents: [], levels: [], surveys: []))
         .toList();
     List<amp.AppliedIntervention> allAmpAppliedInterventions =
-        (await AppliedInterventionRepository.getAllAmpAppliedInterventions())
+        (await AppliedInterventionRepository.instance
+                .getAllAmpAppliedInterventions())
             .where((element) =>
                 element.entityAppliedInterventionsId != null &&
                 allAmpInterventions.any((intervention) =>
                     intervention.id ==
                     element.appliedInterventionInterventionId))
             .toList();
-    List<amp.Survey> allAmpSurveys = (await SurveyRepository.getAllAmpSurveys())
-        .where(
-          (element) => element.intervention != null,
-        )
-        .toList()
-        .map((e) => e.copyWith(
-              tags: [],
-            ))
-        .toList();
+    List<amp.Survey> allAmpSurveys =
+        (await SurveyRepository.instance.getAllAmpSurveys())
+            .where(
+              (element) => element.intervention != null,
+            )
+            .toList()
+            .map((e) => e.copyWith(
+                  tags: [],
+                ))
+            .toList();
     List<amp.ExecutedSurvey> allAmpExecutedSurveys =
-        await ExecutedSurveyRepository.getAllAmpExecutedSurveys();
+        await ExecutedSurveyRepository.instance.getAllAmpExecutedSurveys();
 
     // TODO: check population of surveys with SurveySurveyTagRelations
 
@@ -140,7 +146,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
         allAmpAppliedInterventions,
         (p1) => p1.appliedInterventionInterventionId, (i1, i2) async {
       amp.Intervention intervention = allAmpInterventions[i1];
-      amp.User user = await UserRepository.getAmpUserByID(
+      amp.User user = await UserRepository.instance.getAmpUserByID(
           allAmpAppliedInterventions[i2].appliedInterventionWhoDidItId);
       allAmpAppliedInterventions[i2] = allAmpAppliedInterventions[i2].copyWith(
           intervention: intervention, whoDidIt: user, executedSurveys: []);
@@ -156,7 +162,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
         (p0) => p0.id,
         allAmpExecutedSurveys,
         (p1) => p1.appliedIntervention.id, (i1, i2) async {
-      var user = await UserRepository.getAmpUserByID(
+      var user = await UserRepository.instance.getAmpUserByID(
           allAmpExecutedSurveys[i2].executedSurveyWhoExecutedItId);
 
       amp.Survey survey = allAmpSurveys
@@ -192,10 +198,10 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     List<Entity> allEntities = allAmpEntities.map((e) {
       return Entity.fromAmplifyModel(e);
     }).toList();
-    List<Level> allLevels = await LevelRepository.getAllLevels();
-    List<Task> allTasksToSync = await taskBloc.taskRepository.getAllTasks();
+    List<Level> allLevels = await LevelRepository.instance.getAllLevels();
+    //List<Task> allTasksToSync = await taskBloc.taskRepository.getAllTasks();
     List<InterventionContentRelation> allContentRelations =
-        await ContentRepository
+        await ContentRepository.instance
             .getAllRelationsWithPopulatedContentsAndInterventions();
 
     List<Content> allContents = [];
@@ -215,9 +221,13 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     }
     for (Level level in allLevels) {
       if (level.interventionsAreAllowed) {
-        List<Intervention> toAdd =
-            await InterventionRepository.getInterventionsByLevelConnections(
-                level.allowedInterventions!);
+        List<Intervention> toAdd = await InterventionRepository.instance
+            .getInterventionsByLevelConnections(level.allowedInterventions!
+                .map((e) => LevelInterventionRelation(
+                    level: e.first.toAmplifyModel(),
+                    intervention: e.second.toAmplifyModel(),
+                    id: e.id))
+                .toList());
         for (Intervention intervention in toAdd) {
           if (!allInterventions
               .any((element) => element.id == intervention.id)) {
@@ -230,13 +240,13 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     if (filesSyncEnabled) {
       syncLevels(allLevels);
       syncInterventions(allInterventions);
-      syncTasks(allTasksToSync);
+      //syncTasks(allTasksToSync);
       syncContents(allContents);
       syncEntities(allEntities);
       if (userBloc.state.user != null) {
         syncUser(userBloc.state.user!);
       }
-    }
+    }*/
   }
 
   Future<void> populateSortedLists<P, Q, R extends Comparable>(
@@ -265,24 +275,28 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
 
   void syncLevels(List<Level> levels) async {
     for (Level level in levels) {
-      LevelRepository.getLevelPicFile(level).sync(this);
+      LevelRepository.instance.getLevelPicFile(level).sync(this);
       for (CustomData customData in level.customData) {
-        LevelRepository.getCustomDataPicFile(level, customData).sync(this);
+        LevelRepository.instance
+            .getCustomDataPicFile(level, customData)
+            .sync(this);
       }
     }
   }
 
   void syncInterventions(List<Intervention> interventions) async {
     for (Intervention intervention in interventions) {
-      InterventionRepository.getInterventionPic(intervention).sync(this);
+      InterventionRepository.instance
+          .getInterventionPic(intervention)
+          .sync(this);
       for (Survey survey in intervention.surveys) {
-        SurveyRepository.getSurveyPic(survey).sync(this);
+        SurveyRepository.instance.getSurveyPic(survey).sync(this);
         for (Question question in survey.questions) {
-          SurveyRepository.getQuestionPic(survey, question).sync(this);
+          SurveyRepository.instance.getQuestionPic(survey, question).sync(this);
           if (question.questionOptions != null) {
             for (QuestionOption questionOption in question.questionOptions!) {
-              SurveyRepository.getQuestionOptionPic(
-                      survey, question, questionOption)
+              SurveyRepository.instance
+                  .getQuestionOptionPic(survey, question, questionOption)
                   .sync(this);
             }
           }
@@ -304,24 +318,25 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
 
   void syncContents(List<Content> contents) async {
     for (Content content in contents) {
-      ContentRepository.getContentPDFFile(content).sync(this);
-      ContentRepository.getContentPic(content).sync(this);
+      ContentRepository.instance.getContentPDFFile(content).sync(this);
+      ContentRepository.instance.getContentPic(content).sync(this);
     }
   }
 
   void syncEntities(List<Entity> allEntities) async {
     for (Entity entity in allEntities) {
-      EntityRepository.getEntityPic(entity).sync(this);
+      EntityRepository.instance.getEntityPic(entity).sync(this);
       for (AppliedIntervention appliedIntervention
           in entity.appliedInterventions) {
-        AppliedInterventionRepository.appliedInterventionPic(
-                appliedIntervention)
+        AppliedInterventionRepository.instance
+            .appliedInterventionPic(appliedIntervention)
             .sync(this);
         for (ExecutedSurvey executedSurvey
             in appliedIntervention.executedSurveys) {
           for (QuestionAnswer questionAnswer in executedSurvey.answers) {
             if (questionAnswer.type == QuestionType.AUDIO) {
-              ExecutedSurveyRepository.getQuestionAnswerAudio(
+              ExecutedSurveyRepository.instance
+                  .getQuestionAnswerAudio(
                       appliedIntervention,
                       executedSurvey.id!,
                       executedSurvey.survey.questions.firstWhere(
@@ -329,7 +344,8 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
                   .sync(this);
             } else if (questionAnswer.type == QuestionType.PICTURE ||
                 questionAnswer.type == QuestionType.PICTUREWITHTAGS) {
-              ExecutedSurveyRepository.getQuestionAnswerPic(
+              ExecutedSurveyRepository.instance
+                  .getQuestionAnswerPic(
                       appliedIntervention,
                       executedSurvey.id!,
                       executedSurvey.survey.questions.firstWhere(
@@ -343,6 +359,6 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }
 
   void syncUser(User user) async {
-    UserRepository.getUserPicFile(user).sync(this);
+    UserRepository.instance.getUserPicFile(user).sync(this);
   }
 }

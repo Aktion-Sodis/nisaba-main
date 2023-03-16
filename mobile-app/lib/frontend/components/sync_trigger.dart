@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_app/backend/Blocs/sync/sync_bloc.dart';
+import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
 
 class SyncTrigger extends StatefulWidget {
   const SyncTrigger({Key? key, required this.child}) : super(key: key);
@@ -32,7 +31,8 @@ class _SyncTriggerState extends State<SyncTrigger> with WidgetsBindingObserver {
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.resumed:
-        BlocProvider.of<SyncBloc>(context).fulfillSync(false);
+        //SyncedDB.instance.synchronizer.syncDownstream();
+        SyncedDB.instance.synchronizer.syncUpstream();
         break;
       case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
@@ -43,6 +43,10 @@ class _SyncTriggerState extends State<SyncTrigger> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    // Sync on start
+    //SyncedDB.instance.synchronizer.syncDownstream();
+    SyncedDB.instance.synchronizer.syncUpstream();
+
     return widget.child;
   }
 }

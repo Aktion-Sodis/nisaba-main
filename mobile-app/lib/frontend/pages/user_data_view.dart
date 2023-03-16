@@ -64,7 +64,7 @@ class UserDataViewState extends State<UserDataView> {
           widget.userBloc.state.user!.firstName;
       textEditingControllerLastName.text = widget.userBloc.state.user!.lastName;
       userPicSynced =
-          UserRepository.getUserPicFile(widget.userBloc.state.user!);
+          UserRepository.instance.getUserPicFile(widget.userBloc.state.user!);
       userPicSynced!.file().then((value) {
         try {
           setState(() {
@@ -75,8 +75,8 @@ class UserDataViewState extends State<UserDataView> {
         }
       });
     } else {
-      userPicSynced =
-          UserRepository.getUserPicFileByUserID(widget.userBloc.userID);
+      userPicSynced = UserRepository.instance
+          .getUserPicFileByUserID(widget.userBloc.userID);
       userPicSynced!.file().then((value) {
         try {
           setState(() {

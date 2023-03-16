@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "apinisaba",
+    "serviceName": "AppSync",
+    "defaultAuthType": {
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authauthnisaba"
+    },
+    "additionalAuthTypes": [
+      {
+        "mode": "API_KEY",
+        "expirationTime": 120,
+        "apiKeyExpirationDate": "2023-04-24T21:56:53.757Z",
+        "keyDescription": "Nisaba API Key"
+      }
+    ],
+    "conflictResolution": {}
+  }
+}

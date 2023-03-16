@@ -15,6 +15,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
+import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
 import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/backend/repositories/UserRepository.dart';
 import 'package:mobile_app/backend/repositories/exceptions/AuthRepositoryExceptions.dart';
@@ -23,6 +24,7 @@ import 'package:mobile_app/utils/amplify.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import '../Blocs/session/auth_credentials.dart';
 import '../callableModels/User.dart';
+import '../database/db_implementations/graphql_db/ConfigGraphQL.dart';
 
 class AuthRepository {
   Future<String> _getAttribute(String key) async {
@@ -102,6 +104,8 @@ class AuthRepository {
     LocalDataRepository.instance.organizationNameKebabCase = null;
     LocalDataRepository.instance.organizationNameCamelCase = null;
     LocalDataRepository.instance.user = null;
+
+    SyncedDB.instance.clear();
   }
 
   Future<String?> attemptAutoLogin() async {
@@ -171,7 +175,8 @@ class AuthRepository {
     }
 
     if (result.isSignedIn) {
-      await Amplify.DataStore.clear();
+      await SyncedDB.instance.clear();
+      ConfigGraphQL().initClient();
       final userID = await _getUserIdFromAttributes();
       await _rememberUserAttributesLocally();
       await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
@@ -279,6 +284,7 @@ class AuthRepository {
 
     CognitoOIDCAuthProvider.forgetAuthToken();
     _clearSessionData();
+    ConfigGraphQL().closeClient();
     return true;
   }
 }

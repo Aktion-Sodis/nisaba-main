@@ -118,7 +118,7 @@ Widget surveyRow(BuildContext context, Survey survey,
                 child: Row(
               children: [
                 Expanded(
-                    child: Text(survey.name,
+                    child: Text(survey.displayName,
                         style: Theme.of(context).textTheme.bodyText1)),
                 if (pressable)
                   CommonWidgets.defaultIconButton(
@@ -149,12 +149,13 @@ Widget entityRow(BuildContext context, Entity entity) {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CustomPicButton(
-              syncedFile: LevelRepository.getLevelPicFile(entity.level),
+              syncedFile:
+                  LevelRepository.instance.getLevelPicFile(entity.level),
               size: Size(width(context) * .1, width(context) * .1),
               pressable: false),
           SizedBox(width: defaultPadding(context) / 2),
           Container(
-              child: Text(entity.name,
+              child: Text(entity.displayName,
                   style: Theme.of(context).textTheme.bodyText1))
         ],
       ));
@@ -183,7 +184,7 @@ Widget interventionRow(BuildContext context, Intervention intervention,
                 child: Row(
               children: [
                 Expanded(
-                    child: Text(intervention.name,
+                    child: Text(intervention.displayName,
                         style: Theme.of(context).textTheme.bodyText1)),
                 if (pressable)
                   CommonWidgets.defaultIconButton(
@@ -290,8 +291,8 @@ Widget executedSurveyRow(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CustomPicButton(
-                    syncedFile:
-                        SurveyRepository.getSurveyPic(executedSurvey.survey),
+                    syncedFile: SurveyRepository.instance
+                        .getSurveyPic(executedSurvey.survey),
                     onPressed: () {},
                     size: Size(width(context) * .1, width(context) * .1),
                     pressable: false),
@@ -308,7 +309,8 @@ Widget executedSurveyRow(
                                         CrossAxisAlignment.start,
                                     children: [
                                   Container(
-                                      child: Text(executedSurvey.survey.name,
+                                      child: Text(
+                                          executedSurvey.survey.displayName,
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle2)),
@@ -352,7 +354,7 @@ Widget contentRow(BuildContext context, Content content, VoidCallback onPressed,
               children: [
                 CustomPicButton(
                     syncedFile: SyncedFile(
-                        ContentRepository.getContentPic(content).path),
+                        ContentRepository.instance.getContentPic(content).path),
                     onPressed: () {},
                     size: Size(width(context) * .1, width(context) * .1),
                     pressable: false),
@@ -434,8 +436,8 @@ class InterventionFilterWidgetState extends State<InterventionFilterWidget> {
   }
 
   Widget mapWidget(int index) {
-    SyncedFile syncedFile =
-        InterventionRepository.getInterventionPic(allInterventions[index]);
+    SyncedFile syncedFile = InterventionRepository.instance
+        .getInterventionPic(allInterventions[index]);
 
     return CustomPicButton(
         onPressed: () {

@@ -1,12 +1,25 @@
 import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:db_model_generator/db_model_annotations.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/Marking.dart';
 import 'package:mobile_app/backend/callableModels/Question.dart';
 import 'package:mobile_app/backend/callableModels/QuestionOption.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
+import 'package:json_annotation/json_annotation.dart';
 
-class QuestionAnswer {
-  String? id;
+part 'QuestionAnswer.g.dart';
+
+@DBModelAnnotation(true)
+@JsonSerializable()
+class QuestionAnswer extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory QuestionAnswer.fromJson(Map<String, dynamic> json) =>
+      _$QuestionAnswerFromJson(json);
+
+  Map<String, dynamic> toJson() => _$QuestionAnswerToJson(this);
+
   late String questionID;
   late DateTime date;
   late QuestionType type;
@@ -15,21 +28,29 @@ class QuestionAnswer {
   double? doubleValue;
   int? rating;
   List<QuestionOption>? questionOptions;
-  List<Marking>? markings;
+  late List<Marking> markings;
 
   QuestionAnswer(
-      {this.id,
+      {String? id,
       required this.questionID,
       required this.date,
       required this.type,
       this.text,
       this.questionOptions,
-      this.markings,
+      List<Marking>? markings,
       this.intValue,
       this.doubleValue,
-      this.rating});
+      this.rating})
+      : super(id) {
+    if (markings == null) {
+      this.markings = [];
+    } else {
+      this.markings = markings;
+    }
+  }
 
-  QuestionAnswer.fromAmplifyModel(amp.QuestionAnswer questionAnswer) {
+  QuestionAnswer.fromAmplifyModel(amp.QuestionAnswer questionAnswer)
+      : super(questionAnswer.id) {
     id = questionAnswer.id;
     questionID = questionAnswer.questionID;
     date = questionAnswer.date.getDateTimeInUtc();
@@ -44,12 +65,8 @@ class QuestionAnswer {
             (index) => QuestionOption.fromAmplifyModel(
                 questionAnswer.questionOptions![index]))
         : null;
-    markings = questionAnswer.markings != null
-        ? List.generate(
-            questionAnswer.markings!.length,
-            (index) =>
-                Marking.fromAmplifyModel(questionAnswer.markings![index]))
-        : null;
+    markings = List.generate(questionAnswer.markings!.length,
+        (index) => Marking.fromAmplifyModel(questionAnswer.markings![index]));
   }
 
   amp.QuestionAnswer toAmplifyModel() {
@@ -70,5 +87,33 @@ class QuestionAnswer {
             ? List.generate(
                 markings!.length, (index) => markings![index].toAmplifyModel())
             : null);
+  }
+
+  QuestionAnswer.unpopulated(String? id) : super(id) {
+    isPopulated = false;
+  }
+  @override
+  DBModel getUnpopulated() {
+    return QuestionAnswer.unpopulated(id);
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (other is QuestionAnswer) {
+      return id == other.id &&
+          questionID == other.questionID &&
+          date == other.date &&
+          type == other.type &&
+          text == other.text &&
+          intValue == other.intValue &&
+          doubleValue == other.doubleValue &&
+          rating == other.rating &&
+          listEquals(questionOptions, other.questionOptions) &&
+          listEquals(markings, other.markings);
+    }
+    return false;
   }
 }

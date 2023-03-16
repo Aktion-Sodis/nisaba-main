@@ -34,7 +34,7 @@ class InAppBloc extends Bloc<InAppEvent, InAppState> {
       } catch (e) {
         // Probably: LocationServiceDisabledException or TimeoutException
       }
-      await ExecutedSurveyRepository.saveExecutedSurvey(toSave);
+      await ExecutedSurveyRepository.instance.saveExecutedSurvey(toSave);
 
       print("executed survey saved");
       event.organizationViewBloc.add(AddExecutedSurvey(

@@ -62,13 +62,13 @@ class UserStateBuilder extends StatelessWidget {
         child: MultiRepositoryProvider(
             providers: [
           RepositoryProvider<ContentRepository>(
-              create: (context) => ContentRepository()),
+              create: (context) => ContentRepository.instance),
           RepositoryProvider<EntityRepository>(
-              create: (context) => EntityRepository()),
+              create: (context) => EntityRepository.instance),
           RepositoryProvider<SurveyRepository>(
-              create: (context) => SurveyRepository()),
+              create: (context) => SurveyRepository.instance),
           RepositoryProvider<AppliedInterventionRepository>(
-              create: (context) => AppliedInterventionRepository())
+              create: (context) => AppliedInterventionRepository.instance)
         ],
             child: Builder(
                 builder: (context) => MultiBlocProvider(

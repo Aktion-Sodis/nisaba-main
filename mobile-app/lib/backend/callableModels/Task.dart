@@ -4,11 +4,12 @@ import 'package:mobile_app/backend/callableModels/Entity.dart';
 import 'package:mobile_app/backend/callableModels/ExecutedSurvey.dart';
 import 'package:mobile_app/backend/callableModels/Location.dart';
 import 'package:mobile_app/backend/callableModels/User.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-class Task {
-  String? id;
+/// DO NOT NEED TO IMPLEMENT
+class Task extends DBModel {
   late String title;
   String? text;
   DateTime? dueDate;
@@ -26,7 +27,7 @@ class Task {
   late List<int> picList;
 
   Task(
-      {this.id,
+      {String? id,
       required this.title,
       this.text,
       this.dueDate,
@@ -40,52 +41,41 @@ class Task {
       this.createdAt,
       this.updatedAt,
       required this.audioList,
-      required this.picList});
+      required this.picList})
+      : super(id);
 
-  Task.fromAmplifyModel(amp.Task task) {
-    id = task.id;
-    title = task.title;
-    text = task.text;
-    dueDate = task.dueDate?.getDateTimeInUtc();
-    finishedDate = task.finishedDate?.getDateTimeInUtc();
-    audioList = task.audioIDs;
-    picList = task.picIDs;
-    location = task.location != null
-        ? Location.fromAmplifyModel(task.location!)
-        : null;
-    user = User.fromAmplifyModel(task.user);
-    entity = task.entity != null ? Entity.fromAmplifyModel(task.entity!) : null;
-    appliedIntervention = task.appliedIntervention != null
-        ? AppliedIntervention.fromAmplifyModel(task.appliedIntervention!)
-        : null;
-    executedSurvey = task.executedSurvey != null
-        ? ExecutedSurvey.fromAmplifyModel(task.executedSurvey!)
-        : null;
-    schemeVersion = task.schemeVersion;
-    createdAt = task.createdAt?.getDateTimeInUtc();
-    updatedAt = task.updatedAt?.getDateTimeInUtc();
+  Task.unpopulated(String? id) : super(id) {
+    isPopulated = false;
+  }
+  @override
+  DBModel getUnpopulated() {
+    return Task.unpopulated(id);
   }
 
-  amp.Task toAmplifyModel() {
-    return amp.Task(
-        id: id,
-        title: title,
-        text: text,
-        dueDate: dueDate != null ? TemporalDateTime(dueDate!) : null,
-        finishedDate:
-            finishedDate != null ? TemporalDateTime(finishedDate!) : null,
-        location: location?.toAmplifyModel(),
-        user: user.toAmplifyModel(),
-        userID: user.id!,
-        entity: entity?.toAmplifyModel(),
-        appliedIntervention: appliedIntervention?.toAmplifyModel(),
-        executedSurvey: executedSurvey?.toAmplifyModel(),
-        schemeVersion: 0,
-        taskUserId: user.id!,
-        taskAppliedInterventionId: appliedIntervention?.id!,
-        taskExecutedSurveyId: executedSurvey?.id!,
-        taskEntityId: entity?.id!,
-        audioIDs: audioList,
-        picIDs: picList);
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Task &&
+        other.id == id &&
+        other.title == title &&
+        other.text == text &&
+        other.dueDate == dueDate &&
+        other.finishedDate == finishedDate &&
+        other.location == location &&
+        other.user == user &&
+        other.entity == entity &&
+        other.appliedIntervention == appliedIntervention &&
+        other.executedSurvey == executedSurvey &&
+        other.schemeVersion == schemeVersion;
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    // TODO: implement toJson
+    throw UnimplementedError();
   }
 }

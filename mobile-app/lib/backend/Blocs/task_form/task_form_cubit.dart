@@ -74,7 +74,7 @@ class TaskFormCubit extends Cubit<TaskFormState> {
 
   Future<List<Entity>> searchForEntities(String? query) async {
     // TODO: makt it possible to search among all entities
-    return EntityRepository.getEntities(searchByName: query, page: 0);
+    return EntityRepository.instance.getEntities(searchByName: query, page: 0);
   }
 
   static TaskFormCubit initialize<T extends TaskFormCubit>(
