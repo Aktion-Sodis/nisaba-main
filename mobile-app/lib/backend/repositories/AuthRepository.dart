@@ -183,6 +183,9 @@ class AuthRepository {
       await _rememberUserOrganization(
           LocalDataRepository.instance.organizationID);
 
+      // Init sync
+      await SyncedDB.instance.synchronizer.syncDownstream();
+
       // TODO: loading a user
       User? user = await UserRepository.instance.fetchUserByID(userID);
       /*if (user == null) {
