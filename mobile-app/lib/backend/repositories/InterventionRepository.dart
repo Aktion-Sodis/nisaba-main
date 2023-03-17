@@ -1,6 +1,7 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:mobile_app/backend/callableModels/Intervention.dart';
 import 'package:mobile_app/backend/repositories/SurveyRepository.dart';
+import 'package:mobile_app/backend/repositories/implementations/custom_syncronization/InterventionRepositoryCustom.dart';
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
@@ -10,7 +11,7 @@ import '../callableModels/Survey.dart';
 
 abstract class InterventionRepository {
   static final InterventionRepository instance =
-      InterventionRepository.instance;
+      InterventionRepositoryCustom.instance;
 
   Future<List<Intervention>> getAllAmpIntervention();
 
