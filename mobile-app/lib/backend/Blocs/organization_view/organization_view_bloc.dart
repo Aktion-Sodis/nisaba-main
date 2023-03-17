@@ -21,17 +21,27 @@ class OrganizationViewBloc
       this.entityRepository, this.appliedInterventionRepository, this.inAppBloc)
       : super(LoadingOrganizationViewState()) {
     on<OrganizationViewEvent>(_mapEventToState);
-    LevelRepository.instance.getAllLevels().then((allLevels) {
+    LevelRepository.instance.getAllLevels().then((allLevels) async {
       String startingAppBarString = allLevels.first.displayName;
+      var levelContent = LevelContent(allLevels.first, null);
+      await _loadEntities(levelContent, null);
+
       // ignore: invalid_use_of_visible_for_testing_member
       emit(EntitiesLoadedOrganizationViewState(
           allLevels: allLevels,
           organizationViewType: OrganizationViewType.LIST,
-          levelContentList: [LevelContent(allLevels.first, null)],
+          levelContentList: [levelContent],
           appBarString: startingAppBarString,
           addEntityPossible: true));
-      add(LoadDaughterEntities(null, 0));
     });
+  }
+
+  Future<void> _loadEntities(
+      LevelContent content, String? parentEntityID) async {
+    List<Entity> loadedEntities = await EntityRepository.instance.getEntities(
+        byParentEntityID: true, parentEntityID: parentEntityID, page: 0);
+
+    content.daughterEntities.addAll(loadedEntities);
   }
 
   void _mapEventToState(
@@ -105,34 +115,13 @@ class OrganizationViewBloc
         Level nextLevel = loadedState.allLevels.firstWhere(
           (element) => element.parentLevelID == event.parent.level.id,
         );
+        var levelContent = LevelContent(nextLevel, event.parent);
+        _loadEntities(levelContent, event.parent.id);
         emit(loadedState.copyWith(
             organizationViewType: OrganizationViewType.LIST,
-            levelContentList: loadedState.levelContentList
-              ..add(LevelContent(nextLevel, event.parent)),
+            levelContentList: loadedState.levelContentList..add(levelContent),
             appBarString: nextLevel.displayName));
-        add(LoadDaughterEntities(event.parent, 0));
-      } else if (event is LoadDaughterEntities &&
-          loadedState.currentLevelContent.hasMoreToLoad) {
-        List<Entity> loadedEntities = await EntityRepository.instance
-            .getEntities(
-                byParentEntityID: true,
-                parentEntityID: event.parent == null ? null : event.parent!.id,
-                page: event.page);
-
-        loadedState.levelContentList
-            .where(
-          (element) => element.parentEntity == event.parent,
-        )
-            .forEach(((element) {
-          if (loadedEntities.isEmpty) {
-            element.hasMoreToLoad = false;
-          } else {
-            element.daughterEntities.addAll(loadedEntities);
-          }
-          element.page++;
-        }));
-
-        emit(loadedState.copyWith());
+        // add(LoadDaughterEntities(event.parent, 0));
       } else if (event is NavigateToEntityOverview) {
         emit(loadedState.copyWith(
             organizationViewType: OrganizationViewType.OVERVIEW,

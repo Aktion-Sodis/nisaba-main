@@ -41,14 +41,9 @@ class EntityRepositoryCustom extends definition.EntityRepository {
       bool byParentEntityID = false,
       String? parentEntityID,
       String? searchByName}) async {
-    //todo: enhance
-    List<Entity> toReturn;
-    if (parentEntityID != null) {
-      toReturn = await db.get(
-          Entity, Query(QPredicate.EQ, 'parentEntityID', parentEntityID));
-    } else {
-      toReturn = [];
-    }
+    //todo: enhance by pagination
+    List<Entity> toReturn = await db.get(
+        Entity, Query(QPredicate.EQ, 'parentEntityID', parentEntityID));
 
     List<Entity> popluatedEntities =
         await _populateMultipleConnections(toReturn);

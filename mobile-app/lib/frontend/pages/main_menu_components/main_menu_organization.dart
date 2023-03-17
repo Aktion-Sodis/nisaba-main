@@ -39,6 +39,7 @@ import 'package:mobile_app/frontend/pages/survey.dart' as surveyarea;
 
 import '../../../backend/callableModels/Relation.dart';
 
+// TODO: refactor this file as the code is not readable
 class MainMenuOrganization extends StatelessWidget {
   Widget appBarWidget(BuildContext context,
       EntitiesLoadedOrganizationViewState organizationViewState) {
@@ -110,11 +111,12 @@ class MainMenuOrganization extends StatelessWidget {
                               }
                             })),
                       //if no menu shown, add user management for highest element and if no other main menu pages shown
-                      if ((organizationViewState.organizationViewType ==
+                      if (true &&
+                          (organizationViewState.organizationViewType ==
                                   OrganizationViewType.LIST &&
                               !show_all_menu_pages) &&
-                          organizationViewState.currentLevelContent
-                                  .daughterEntities.first.level.parentLevelID ==
+                          organizationViewState
+                                  .currentLevelContent.level.parentLevelID ==
                               null)
                         CustomIconButton(() {
                           context.read<InAppBloc>().add(GoToUserPageEvent());
@@ -304,7 +306,8 @@ class MainMenuOrganization extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             appBarWidget(context, state as EntitiesLoadedOrganizationViewState),
-            levelIndicatorWidget(context, state),
+            levelIndicatorWidget(
+                context, state as EntitiesLoadedOrganizationViewState),
             Expanded(child: mainWidget(context, state))
           ],
         );
@@ -776,42 +779,13 @@ class ListWidget extends StatelessWidget {
           return Container(
               child: Scrollbar(
             controller: _scrollController,
-            child: LazyLoadScrollView(
-                onEndOfPage: () => context.read<OrganizationViewBloc>().add(
-                    LoadDaughterEntities(
-                        entitiesLoadedOrganizationViewState
-                            .levelContentList.last.parentEntity,
-                        entitiesLoadedOrganizationViewState
-                            .levelContentList.last.page)),
-                child: ListView.builder(
-                    controller: _scrollController,
-                    itemBuilder: (context, index) {
-                      if (entitiesLoadedOrganizationViewState
-                              .levelContentList.last.hasMoreToLoad &&
-                          index == entities.length) {
-                        return Container(
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            height: 80,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                SizedBox(
-                                  width: 40,
-                                  height: 40,
-                                  child: CircularProgressIndicator(),
-                                ),
-                              ],
-                            ));
-                      } else {
-                        return listItem(context, index,
-                            entitiesLoadedOrganizationViewState);
-                      }
-                    },
-                    itemCount: entities.length +
-                        (entitiesLoadedOrganizationViewState
-                                .levelContentList.last.hasMoreToLoad
-                            ? 1
-                            : 0))),
+            child: ListView.builder(
+                controller: _scrollController,
+                itemBuilder: (context, index) {
+                  return listItem(
+                      context, index, entitiesLoadedOrganizationViewState);
+                },
+                itemCount: entities.length),
           ));
         });
   }
