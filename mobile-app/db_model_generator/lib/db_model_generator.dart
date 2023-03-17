@@ -1,10 +1,9 @@
 import 'dart:convert';
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:build/build.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-
-import 'db_model_annotations.dart';
 
 PartBuilder dbModelLibraryBuilder(BuilderOptions options) {
   return PartBuilder([DBModelGenerator()], ".db_model.dart");
