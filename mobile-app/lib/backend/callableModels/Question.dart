@@ -23,6 +23,7 @@ class Question extends DBModel {
   List<QuestionOption>? questionOptions;
   late bool isFollowUpQuestion;
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   String get displayText => text.text;
 
   set displayText(String text) => this.text.text = text;
