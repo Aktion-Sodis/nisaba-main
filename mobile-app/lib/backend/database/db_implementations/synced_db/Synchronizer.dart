@@ -85,6 +85,7 @@ class Synchronizer {
         // TODO: consistency check
       } catch (e) {
         downstreamSyncStatus = SyncStatus.UP_TO_DATE;
+        rethrow;
       }
     });
   }
