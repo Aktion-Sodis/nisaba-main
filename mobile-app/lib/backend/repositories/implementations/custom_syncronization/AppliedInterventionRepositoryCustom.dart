@@ -56,22 +56,9 @@ class AppliedInterventionRepositoryCustom
   @override
   Future<String> createAppliedIntervention(
       AppliedIntervention appliedIntervention, Entity entity) async {
-    //todo@arthur-becker wie hiermit umgehen
+    await db.create(appliedIntervention);
 
-    /*print("inOriginal: " + entity.id!);
-    appliedIntervention.id = appliedIntervention.id ?? UUID.getUUID();
-    AppliedIntervention ampModel = appliedIntervention.toAmplifyModel();
-    print("inAmpModel1: " + (ampModel.entityAppliedInterventionsId ?? "null"));
-    ampModel = ampModel.copyWith(entityAppliedInterventionsId: entity.id);
-    print("inAmpModel2: " + (ampModel.entityAppliedInterventionsId ?? "null"));
-    Amplify.DataStore.save(ampModel);
-    return appliedIntervention.id!;*/
-    appliedIntervention.id = appliedIntervention.id ?? UUID.getUUID();
-    appliedIntervention.entity = entity;
-
-    db.create(appliedIntervention);
-
-    return appliedIntervention.id!;
+    return appliedIntervention.id;
   }
 
   @override

@@ -1359,9 +1359,12 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
       AppliedIntervention toCreate = AppliedIntervention(
           id: UUID.getUUID(),
           appliedInterventionWhoDidItId: widget.user.id,
-          entityAppliedInterventionsId: Entity.unpopulated(null).id,
+          entityAppliedInterventionsId: widget.entity.id,
           appliedInterventionInterventionId: interventions![index].id,
-          isOkay: true);
+          isOkay: true)
+        ..intervention = interventions![index]
+        ..whoDidIt = widget.user
+        ..entity = widget.entity;
       setState(() {
         appliedIntervention = toCreate;
       });
