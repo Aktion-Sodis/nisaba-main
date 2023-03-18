@@ -45,10 +45,6 @@ class ExecutedSurveyRepositoryCustom
   @override
   Future<List<ExecutedSurvey>> executedSurveysByAppliedIntervention(
       AppliedIntervention appliedIntervention) async {
-    print("executed survey by applied intervention");
-    print("applied intervention: ");
-    print(appliedIntervention.whoDidIt.toString());
-
     List<ExecutedSurvey> toReturn = await db.get(
         ExecutedSurvey,
         Query(QPredicate.EQ, 'appliedInterventionExecutedSurveysId',
@@ -59,16 +55,22 @@ class ExecutedSurveyRepositoryCustom
 
   Future<ExecutedSurvey> _populate(ExecutedSurvey executedSurvey,
       {AppliedIntervention? appliedIntervention}) async {
-    print("Populating executed Survey");
-    print("applied Intervention (passed)");
-    print(appliedIntervention.toString());
-    print(appliedIntervention?.whoDidIt.toString());
     ExecutedSurvey toReturn = executedSurvey;
     toReturn.appliedIntervention = appliedIntervention ??
         await AppliedInterventionRepository.instance
-                .appliedInterventionByExecutedSurvey(executedSurvey)
-            as AppliedIntervention;
+            .appliedInterventionByExecutedSurvey(executedSurvey);
     //survey and who executed it probably missing due to missing ids
+
+    var interventionSurveys =
+        executedSurvey.appliedIntervention.intervention.surveys.where(
+            (element) => element.id == executedSurvey.executedSurveySurveyId);
+
+    if (interventionSurveys.length == 0) {
+      throw Exception(
+          'No survey found for executed survey with id ${executedSurvey.id} in intervention with id ${executedSurvey.appliedIntervention.intervention.id}');
+    }
+
+    toReturn.survey = interventionSurveys.first;
 
     return toReturn;
   }

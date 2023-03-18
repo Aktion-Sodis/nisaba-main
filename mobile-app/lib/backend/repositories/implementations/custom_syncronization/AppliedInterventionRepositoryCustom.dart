@@ -89,6 +89,10 @@ class AppliedInterventionRepositoryCustom
         .getAmpInterventionByID(
             appliedIntervention.appliedInterventionInterventionId);
 
+    appliedIntervention.executedSurveys = await ExecutedSurveyRepository
+        .instance
+        .executedSurveysByAppliedIntervention(appliedIntervention);
+
     return appliedIntervention;
   }
 
