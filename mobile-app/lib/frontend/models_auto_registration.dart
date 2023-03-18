@@ -161,4 +161,16 @@ void registerModels() {
       getQuery: "getLevelInterventionRelation",
       listQuery: "listLevelInterventionRelations",
       queryFields: LevelInterventionRelation.queryFields());
+
+  // ExecutedSurvey
+  _register(
+      type: ExecutedSurvey,
+      haveToSyncDownstream: true,
+      toDBModel: ExecutedSurvey.fromJson,
+      createMutation: "createExecutedSurvey",
+      deleteMutation: "deleteExecutedSurvey",
+      updateMutation: "updateExecutedSurvey",
+      getQuery: "getExecutedSurvey",
+      listQuery: "listExecutedSurveys",
+      queryFields: ExecutedSurvey.queryFields());
 }

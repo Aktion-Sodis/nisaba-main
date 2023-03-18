@@ -1259,11 +1259,15 @@ class SurveyWidgetState extends State<SurveyWidget> {
     var userState = context.read<UserBloc>().state;
     ExecutedSurvey executedSurvey = ExecutedSurvey(
         id: preliminaryId,
-        appliedIntervention: surveyState.appliedIntervention,
-        survey: survey,
-        whoExecutedIt: userState.user!,
+        appliedInterventionExecutedSurveysId:
+            surveyState.appliedIntervention.id,
+        executedSurveySurveyId: survey.id,
+        executedSurveyWhoExecutedItId: userState.user!.id,
         date: DateTime.now(),
-        answers: surveyAnswersAsList);
+        answers: surveyAnswersAsList)
+      ..appliedIntervention = surveyState.appliedIntervention
+      ..survey = survey
+      ..whoExecutedIt = userState.user!;
     context.read<InAppBloc>().add(FinishAndSaveExecutedSurvey(
         executedSurvey,
         surveyState.appliedIntervention,

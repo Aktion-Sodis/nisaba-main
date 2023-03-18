@@ -29,12 +29,16 @@ class GraphQLDB extends DB<GraphQLDBModelRegistration> {
       return ast.ListValueNode(
           values: entry.map((e) => _toValueNode(e)).toList());
     } else if (entry is Map) {
-      return ast.ObjectValueNode(
-          fields: entry.entries
-              .map((e) => ast.ObjectFieldNode(
-                  name: ast.NameNode(value: e.key),
-                  value: _toValueNode(e.value)))
-              .toList());
+      if (entry.containsKey("__isEnum") && entry["__isEnum"] == true) {
+        return ast.EnumValueNode(name: ast.NameNode(value: entry["value"]));
+      } else {
+        return ast.ObjectValueNode(
+            fields: entry.entries
+                .map((e) => ast.ObjectFieldNode(
+                    name: ast.NameNode(value: e.key),
+                    value: _toValueNode(e.value)))
+                .toList());
+      }
     } else {
       throw Exception("Unknown type");
     }

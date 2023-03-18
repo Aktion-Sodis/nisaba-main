@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'Marking.g.dart';
 part 'Marking.db_model.dart';
 
-@DBModelAnnotation()
+@DBModelAnnotation(true)
 @JsonSerializable()
 class Marking extends DBModel {
   // JsonSerializable factory and toJson methods

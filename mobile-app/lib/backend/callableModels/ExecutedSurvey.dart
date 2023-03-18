@@ -7,6 +7,7 @@ import 'package:mobile_app/backend/callableModels/QuestionAnswer.dart';
 import 'package:mobile_app/backend/callableModels/Survey.dart';
 import 'package:mobile_app/backend/callableModels/User.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
+import 'package:mobile_app/backend/database/db_implementations/graphql_db/GraphQLJsonConverter.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
@@ -24,38 +25,48 @@ class ExecutedSurvey extends DBModel {
 
   Map<String, dynamic> toJson() => _$ExecutedSurveyToJson(this);
 
+  static Map<String, dynamic> queryFields() => _$ExecutedSurvey;
+
   @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
   late AppliedIntervention appliedIntervention; // Unpopulated allowed
 
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
   late Survey survey; // Unpopulated allowed
 
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
   late User whoExecutedIt; // Unpopulated allowed
+
+  String appliedInterventionExecutedSurveysId;
+  String executedSurveySurveyId;
+  String executedSurveyWhoExecutedItId;
+
+  // Has to be UTC
+  @JsonKey(
+      toJson: GraphQLJsonConverter.dateToJson,
+      fromJson: GraphQLJsonConverter.dateFromJson)
   late DateTime date;
+
   Location? location;
   late List<QuestionAnswer> answers;
-  int? schemeVersion;
-  DateTime? createdAt;
-  DateTime? updatedAt;
 
-  ExecutedSurvey(
-      {String? id,
-      required this.appliedIntervention,
-      required this.survey,
-      required this.whoExecutedIt,
-      required this.date,
-      this.location,
-      required this.answers,
-      this.schemeVersion,
-      this.createdAt,
-      this.updatedAt})
-      : super(id);
-
-  ExecutedSurvey.unpopulated(String? id) : super(id) {
-    isPopulated = false;
+  ExecutedSurvey({
+    String? id,
+    required this.appliedInterventionExecutedSurveysId,
+    required this.executedSurveySurveyId,
+    required this.executedSurveyWhoExecutedItId,
+    required DateTime date,
+    this.location,
+    required this.answers,
+  }) : super(id) {
+    this.date = date;
   }
+
   @override
   DBModel getUnpopulated() {
-    return ExecutedSurvey.unpopulated(id);
+    throw UnimplementedError();
   }
 
   // Operator == is used to compare two objects. It compares
@@ -71,7 +82,6 @@ class ExecutedSurvey extends DBModel {
           date == other.date &&
           location == other.location &&
           listEquals(answers, other.answers) &&
-          schemeVersion == other.schemeVersion &&
           id == other.id;
     } else {
       return false;

@@ -5,11 +5,13 @@ import 'package:mobile_app/backend/callableModels/Marking.dart';
 import 'package:mobile_app/backend/callableModels/Question.dart';
 import 'package:mobile_app/backend/callableModels/QuestionOption.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
+import 'package:mobile_app/backend/database/db_implementations/graphql_db/GraphQLJsonConverter.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'QuestionAnswer.g.dart';
+part 'QuestionAnswer.db_model.dart';
 
 @DBModelAnnotation(true)
 @JsonSerializable()
@@ -21,8 +23,19 @@ class QuestionAnswer extends DBModel {
   Map<String, dynamic> toJson() => _$QuestionAnswerToJson(this);
 
   late String questionID;
+
+  // Has to be UTC
+  @JsonKey(
+    toJson: GraphQLJsonConverter.dateToJson,
+    fromJson: GraphQLJsonConverter.dateFromJson,
+  )
   late DateTime date;
+
+  @JsonKey(
+      toJson: GraphQLJsonConverter.enumToJson,
+      readValue: GraphQLJsonConverter.readEnumValue)
   late QuestionType type;
+
   String? text;
   int? intValue;
   double? doubleValue;
