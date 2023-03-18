@@ -16,7 +16,7 @@ class GraphQLJsonConverter {
   }
 
   static Object? readEnumValue(Map<dynamic, dynamic> map, String input) {
-    if (map[input]["__isEnum"] == true) {
+    if (map[input] is Map && map[input]["__isEnum"] == true) {
       return map[input]["value"];
     } else {
       return map[input];
