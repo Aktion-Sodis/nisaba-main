@@ -41,9 +41,6 @@ class AppliedIntervention extends DBModel {
   late String appliedInterventionWhoDidItId;
 
   Location? location;
-  int? schemeVersion;
-  DateTime? createdAt;
-  DateTime? updatedAt;
 
   @DBModelIgnore()
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -53,9 +50,6 @@ class AppliedIntervention extends DBModel {
   AppliedIntervention(
       {String? id,
       this.location,
-      this.schemeVersion,
-      this.createdAt,
-      this.updatedAt,
       required this.appliedInterventionInterventionId,
       required this.entityAppliedInterventionsId,
       required this.appliedInterventionWhoDidItId,
@@ -81,7 +75,6 @@ class AppliedIntervention extends DBModel {
           intervention.id == other.intervention.id &&
           entity.id == other.entity.id &&
           location == other.location &&
-          schemeVersion == other.schemeVersion &&
           isOkay == other.isOkay;
     } else {
       return false;

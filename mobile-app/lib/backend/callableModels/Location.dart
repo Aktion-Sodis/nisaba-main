@@ -17,6 +17,11 @@ class Location extends DBModel {
 
   Map<String, dynamic> toJson() => _$LocationToJson(this);
 
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  String id = '';
+
   double? latitude;
   double? longitude;
 
