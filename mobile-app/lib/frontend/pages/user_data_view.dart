@@ -191,7 +191,7 @@ class UserDataViewState extends State<UserDataView> {
                 builder: (buildContext, state) {
               return Column(
                 children: [
-                  Expanded(
+                  /*Expanded(
                       child: Center(
                           child: Container(
                               width: width(context) * .5,
@@ -227,7 +227,7 @@ class UserDataViewState extends State<UserDataView> {
                                             width(context) * .04)),
                                   )
                                 ],
-                              )))),
+                              )))),*/
                   if (!widget.inApp)
                     Container(
                         margin: EdgeInsets.only(
@@ -251,6 +251,7 @@ class UserDataViewState extends State<UserDataView> {
                         children: [
                           Container(
                               child: TextFormField(
+                            readOnly: widget.inApp,
                             controller: textEdigtingControllerFirstName,
                             decoration: InputDecoration(
                                 prefixIcon: const Icon(FontAwesomeIcons.user),
@@ -266,6 +267,7 @@ class UserDataViewState extends State<UserDataView> {
                                   EdgeInsets.only(top: defaultPadding(context)),
                               child: TextFormField(
                                 controller: textEditingControllerLastName,
+                                readOnly: widget.inApp,
                                 decoration: InputDecoration(
                                     prefixIcon:
                                         const Icon(FontAwesomeIcons.user),
@@ -339,7 +341,7 @@ class UserDataViewState extends State<UserDataView> {
                                                 .wifiOnly = wifiOnly;
 
                                             if (widget.inApp) {
-                                              User user = context
+                                              /*User user = context
                                                   .read<UserBloc>()
                                                   .state
                                                   .user!;
@@ -351,9 +353,10 @@ class UserDataViewState extends State<UserDataView> {
                                                   textEditingControllerLastName
                                                       .text
                                                       .trim();
+                                                
                                               context
                                                   .read<UserBloc>()
-                                                  .add(UpdateUserEvent(user));
+                                                  .add(UpdateUserEvent(user));*/
                                               context
                                                   .read<InAppBloc>()
                                                   .add(MainViewEvent());
