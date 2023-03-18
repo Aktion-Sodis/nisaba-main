@@ -9,6 +9,7 @@ import 'package:mobile_app/backend/Blocs/sync/sync_state.dart';
 import 'package:mobile_app/backend/Blocs/task/task_bloc.dart';
 import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
+import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncStatus.dart';
 import 'package:mobile_app/backend/repositories/AppliedInterventionRepository.dart';
 import 'package:mobile_app/backend/repositories/ContentRepository.dart';
 import 'package:mobile_app/backend/repositories/EntityRepository.dart';
@@ -26,9 +27,12 @@ import 'package:mobile_app/models/LevelInterventionRelation.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:mobile_app/utils/connectivity.dart';
 
+import '../../database/db_implementations/synced_db/SyncedDB.dart';
+
 class SyncBloc extends Bloc<SyncEvent, SyncState> {
   TaskBloc taskBloc;
   UserBloc userBloc;
+  SyncedDB db = SyncedDB.instance;
 
   SyncBloc({
     required this.taskBloc,
@@ -36,6 +40,18 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }) : super(PrepareSyncState()) {
     on<SyncEvent>(_mapEventToState);
     fulfillSync(true);
+
+    db.synchronizer.subscribeUpstreamSyncStatusStream(_updateProgress);
+  }
+
+  void _updateProgress(SyncStatus syncStatus) {
+    if (syncStatus == SyncStatus.SYNCING || syncStatus == SyncStatus.WAITING) {
+      add(StartSyncEvent());
+    } else if (syncStatus == SyncStatus.UP_TO_DATE) {
+      add(FinishedSyncEvent());
+    } else if (syncStatus == SyncStatus.STOPPED) {
+      add(CancelSyncEvent());
+    }
   }
 
   void _mapEventToState(SyncEvent event, Emitter<SyncState> emit) async {
