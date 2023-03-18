@@ -15,6 +15,7 @@ abstract class InterventionRepository {
 
   Future<List<Intervention>> getAllAmpIntervention();
 
+  // TODO: rename everythin with "amp", as it refers to amplify, which is not used anymore
   Future<Intervention> getAmpInterventionByID(String interventionID);
 
   Future<List<Intervention>> getInterventionsByLevelConnections(
