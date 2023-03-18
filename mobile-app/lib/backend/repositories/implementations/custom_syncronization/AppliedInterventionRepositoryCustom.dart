@@ -82,16 +82,12 @@ class AppliedInterventionRepositoryCustom
     return _populate(results.first, executedSurveys: []);
   }
 
-  @override
   Future<AppliedIntervention> _populate(AppliedIntervention appliedIntervention,
       {List<ExecutedSurvey>? executedSurveys}) async {
-    //prüfen ob funktioniert, da keine Population von intervention und user
-
-    List<ExecutedSurvey> executedSurveys = await ExecutedSurveyRepository
-        .instance
-        .executedSurveysByAppliedIntervention(appliedIntervention);
-
-    appliedIntervention.executedSurveys = executedSurveys;
+    // Population of User and Entity not implemented
+    appliedIntervention.intervention = await InterventionRepository.instance
+        .getAmpInterventionByID(
+            appliedIntervention.appliedInterventionInterventionId);
 
     return appliedIntervention;
   }

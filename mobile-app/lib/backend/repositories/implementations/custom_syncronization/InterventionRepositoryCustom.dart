@@ -44,18 +44,17 @@ class InterventionRepositoryCustom extends definition.InterventionRepository {
       return [];
     }
 
-    throw UnimplementedError();
-    List<Intervention> toWait = [];
-    /*if (relations.first.secondPopulated) {
-      toWait =
-          List.generate(relations.length, (index) => relations[index].second!);
-    } else {
-      toWait = await Future.wait(List.generate(relations.length,
-          (index) => getAmpInterventionByID(relations[index].secondID)));
-    }*/
+    List<Future<Intervention?>> toWait = relations
+        .map((e) => db.getById<Intervention>(Intervention, e.interventionId))
+        .toList();
 
-    toWait = await populateList(toWait);
-    return toWait;
+    List<Intervention> interventions = (await Future.wait(toWait))
+        .where((element) => element != null)
+        .map((e) => e!)
+        .toList();
+
+    interventions = await populateList(interventions);
+    return interventions;
   }
 
   @override
@@ -78,15 +77,14 @@ class InterventionRepositoryCustom extends definition.InterventionRepository {
   @override
   Future<Intervention> populate(Intervention intervention) async {
     Intervention toReturn = intervention;
-    toReturn.tagConnections =
-        await interventionInterventionTagRelationsByInterventionID(
-            intervention);
-    toReturn.interventionContentRelations =
-        await interventionContentRelationsByInterventionID(intervention);
+
     toReturn.levelConnections =
         await levelInterventionRelationsByInterventionID(intervention);
-    toReturn.surveys = await SurveyRepository.instance
-        .getAmpSurveysByIntervention(intervention);
+
+    for (Survey survey in toReturn.surveys) {
+      survey.intervention = toReturn;
+    }
+
     return toReturn;
   }
 

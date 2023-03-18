@@ -41,6 +41,10 @@ class OrganizationViewBloc
     List<Entity> loadedEntities = await EntityRepository.instance.getEntities(
         byParentEntityID: true, parentEntityID: parentEntityID, page: 0);
 
+    loadedEntities.forEach((element) {
+      element.level = content.level;
+    });
+
     content.daughterEntities.addAll(loadedEntities);
   }
 
