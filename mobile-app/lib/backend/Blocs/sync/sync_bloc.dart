@@ -37,7 +37,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   SyncBloc({
     required this.taskBloc,
     required this.userBloc,
-  }) : super(PrepareSyncState()) {
+  }) : super(FullySyncedState()) {
     on<SyncEvent>(_mapEventToState);
     fulfillSync(true);
 
