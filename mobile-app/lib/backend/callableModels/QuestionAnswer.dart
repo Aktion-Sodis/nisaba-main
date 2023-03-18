@@ -1,4 +1,3 @@
-import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/Marking.dart';
@@ -80,26 +79,6 @@ class QuestionAnswer extends DBModel {
         : null;
     markings = List.generate(questionAnswer.markings!.length,
         (index) => Marking.fromAmplifyModel(questionAnswer.markings![index]));
-  }
-
-  amp.QuestionAnswer toAmplifyModel() {
-    return amp.QuestionAnswer(
-        id: id,
-        questionID: questionID,
-        date: TemporalDateTime(date),
-        type: questionTypeToAmplifyQuestionType(type),
-        text: text,
-        intValue: intValue,
-        doubleValue: doubleValue,
-        rating: rating,
-        questionOptions: questionOptions != null
-            ? List.generate(questionOptions!.length,
-                (index) => questionOptions![index].toAmplifyModel())
-            : null,
-        markings: markings != null
-            ? List.generate(
-                markings!.length, (index) => markings![index].toAmplifyModel())
-            : null);
   }
 
   QuestionAnswer.unpopulated(String? id) : super(id) {

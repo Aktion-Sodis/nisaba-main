@@ -1,4 +1,3 @@
-import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/AppliedIntervention.dart';

@@ -3,9 +3,7 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_app_bar.dart';
 import 'package:mobile_app/frontend/strings.dart';
-import 'package:mobile_app/frontend/tests/amplify_api_test.dart';
 import 'package:mobile_app/frontend/tests/amplify_cognito_test.dart';
-import 'package:mobile_app/frontend/tests/amplify_datastore_sync_test.dart';
 import 'package:mobile_app/frontend/tests/audio_test.dart';
 import 'package:mobile_app/frontend/tests/gps_test.dart';
 import 'package:mobile_app/frontend/tests/graphql_db_implementation_test.dart';
@@ -20,12 +18,10 @@ class TestList extends StatelessWidget {
   TestList({Key? key}) : super(key: key);
 
   final Map<String, Widget Function()> _allTests = {
-    "Amplify Datastore Sync": () => AmplifyDatastoreSyncTest(),
     "flutter_sound": () => AudioTest(),
     "geolocator": () => GpsTest(),
     "isolate_image_compress": () => ImageCompressionTest(),
     "Amplify Cognito": () => AmplifyCognitoTest(),
-    "Amplify API": () => AmplifyApiTest(),
     "DB Test": () => LocalDBTest(),
     "SyncedDB Test": () => SyncedDBTest(),
     "Integrated SyncedDB Test": () => IntegratedSyncedDBTest(),

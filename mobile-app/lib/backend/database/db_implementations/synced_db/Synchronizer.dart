@@ -93,7 +93,7 @@ class Synchronizer {
   SyncStatus _downstreamSyncStatus = SyncStatus.UP_TO_DATE;
 
   final StreamController<SyncStatus> _downstreamSyncStatusStreamController =
-      StreamController();
+      StreamController.broadcast();
 
   SyncStatus get downstreamSyncStatus => _downstreamSyncStatus;
 
@@ -116,7 +116,7 @@ class Synchronizer {
   }
 
   final StreamController<SyncStatus> _upstreamSyncStatusStreamController =
-      StreamController();
+      StreamController.broadcast();
 
   void subscribeUpstreamSyncStatusStream(
       Function(SyncStatus syncStatus) onSyncStatus) {

@@ -1,4 +1,3 @@
-import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:mobile_app/backend/callableModels/AppliedIntervention.dart';
 import 'package:mobile_app/backend/callableModels/Entity.dart';
 import 'package:mobile_app/backend/callableModels/ExecutedSurvey.dart';

@@ -1,4 +1,3 @@
-import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/database/DBModelCollection.dart';
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
