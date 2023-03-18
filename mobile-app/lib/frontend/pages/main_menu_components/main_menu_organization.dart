@@ -123,7 +123,7 @@ class MainMenuOrganization extends StatelessWidget {
                             MdiIcons.human,
                             Size(width(context) * .1, width(context) * .1),
                             true),
-                      if (organizationViewState.organizationViewType ==
+                      /*if (organizationViewState.organizationViewType ==
                               OrganizationViewType.LIST &&
                           organizationViewState.addEntityPossible)
                         Container(
@@ -155,7 +155,7 @@ class MainMenuOrganization extends StatelessWidget {
                                 iconData: MdiIcons.plus,
                                 buttonSizes: ButtonSizes.small,
                                 fillColor:
-                                    Theme.of(context).colorScheme.secondary)),
+                                    Theme.of(context).colorScheme.secondary)),*/
                       if (organizationViewState.organizationViewType ==
                               OrganizationViewType.SURVEYS ||
                           organizationViewState.organizationViewType ==
@@ -659,13 +659,13 @@ class ListWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                ImageWidget(
+                /*ImageWidget(
                   imageFile: imageFile,
                   key: imageFile.key,
                   width: width(buildContext) - defaultPadding(buildContext) * 2,
                   height: height(buildContext) * .2,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-                ),
+                ),*/
                 Container(
                   padding: EdgeInsets.only(
                       left: defaultPadding(buildContext),
@@ -723,7 +723,9 @@ class ListWidget extends StatelessWidget {
             ),
             Positioned(
                 right: defaultPadding(buildContext),
-                top: height(buildContext) * .2 - width(buildContext) * .06,
+                top: /*height(buildContext) * .2 - width(buildContext) * .06*/ defaultPadding(
+                        buildContext) /
+                    2,
                 child: ElevatedButton(
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
@@ -1028,13 +1030,36 @@ class OverviewWidget extends StatelessWidget {
     print("overview widget key: $key");
     return Scrollbar(
         key: key,
-        child: ListView.builder(
+        child:
+            // Hide generalCard and taskCard, as generalCard is not needed and taskCard is not needed
+            /* ListView.builder(
             key: key,
             itemBuilder: childWidget,
             itemCount: entity.level.interventionsAreAllowed
                 ? (entity.level.allowedInterventions!.isNotEmpty ? 4 : 2)
                 : 2,
-            addAutomaticKeepAlives: false));
+            addAutomaticKeepAlives: false)*/
+            SingleChildScrollView(
+          child: Wrap(children: [
+            Column(
+              children: entity.level.interventionsAreAllowed &&
+                      entity.level.allowedInterventions!.isNotEmpty
+                  ? [
+                      Card(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: defaultPadding(context),
+                              vertical: defaultPadding(context) / 2),
+                          child: surveyCardContent(context)),
+                      Card(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: defaultPadding(context),
+                              vertical: defaultPadding(context) / 2),
+                          child: appliedInterventionCardContent(context))
+                    ]
+                  : [],
+            )
+          ]),
+        ));
   }
 }
 
