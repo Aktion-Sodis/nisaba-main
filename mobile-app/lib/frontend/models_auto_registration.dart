@@ -173,4 +173,16 @@ void registerModels() {
       getQuery: "getExecutedSurvey",
       listQuery: "listExecutedSurveys",
       queryFields: ExecutedSurvey.queryFields());
+
+  // User
+  _register(
+      type: User,
+      haveToSyncDownstream: false,
+      toDBModel: User.fromJson,
+      createMutation: "createUser",
+      deleteMutation: "deleteUser",
+      updateMutation: "updateUser",
+      getQuery: "getUser",
+      listQuery: "listUsers",
+      queryFields: User.queryFields());
 }

@@ -361,17 +361,18 @@ class UserDataViewState extends State<UserDataView> {
                                                   .read<InAppBloc>()
                                                   .add(MainViewEvent());
                                             } else {
-                                              context.read<UserBloc>().add(
-                                                  CreateUserEvent(User(
-                                                      firstName:
-                                                          textEdigtingControllerFirstName
-                                                              .text,
-                                                      lastName:
-                                                          textEditingControllerLastName
-                                                              .text,
-                                                      id: widget
-                                                          .userBloc.userID,
-                                                      permissions: [])));
+                                              context
+                                                  .read<UserBloc>()
+                                                  .add(CreateUserEvent(User(
+                                                    firstName:
+                                                        textEdigtingControllerFirstName
+                                                            .text,
+                                                    lastName:
+                                                        textEditingControllerLastName
+                                                            .text,
+                                                    id: widget.userBloc
+                                                        .userID, /*permissions: []*/
+                                                  )));
                                             }
                                           }
                                         },

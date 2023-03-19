@@ -3,6 +3,7 @@ import 'package:mobile_app/backend/repositories/AuthRepository.dart';
 import 'package:mobile_app/backend/Blocs/user/user_events.dart';
 import 'package:mobile_app/backend/Blocs/user/user_state.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
+import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/backend/repositories/UserRepository.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
@@ -25,7 +26,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       User toCreate = event.user;
       toCreate.id = userID;
       emit(state.copyWith(user: toCreate));
-      userRepository.createUser(event.user);
+      await userRepository.createUser(event.user);
+      LocalDataRepository.instance.user = event.user;
     } else if (event is UpdateUserEvent) {
       ///updaet user and save to db
       emit(state.copyWith(user: event.user));

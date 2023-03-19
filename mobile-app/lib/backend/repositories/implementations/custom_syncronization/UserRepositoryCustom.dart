@@ -45,7 +45,7 @@ class UserRepositoryCustom extends UserRepository {
   Future createUser(User user) async {
     ///creates a user
     ///ID always has to be set as it should equal the authentication ID
-    db.create(user);
+    await (db as SyncedDB).remoteDB.create(user);
     LocalDataRepository.instance.user = user;
   }
 

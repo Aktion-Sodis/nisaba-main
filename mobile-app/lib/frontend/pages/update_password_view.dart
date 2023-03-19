@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile_app/backend/Blocs/session/auth_credentials.dart';
 import 'package:mobile_app/backend/Blocs/session/session_cubit.dart';
+import 'package:mobile_app/backend/repositories/AuthRepository.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 
 import 'package:mobile_app/frontend/strings.dart' as strings;
@@ -56,7 +58,7 @@ class UpdatePasswordViewState extends State<UpdatePasswordView> {
         containsLowerCase;
   }
 
-  void changePassword() async {
+  void changePassword(AuthRepository authRepository) async {
     if (!loading) {
       setState(() {
         loading = true;
@@ -68,6 +70,7 @@ class UpdatePasswordViewState extends State<UpdatePasswordView> {
                 widget.authCredentials, textEditingControllerOne.text.trim());
 
         if (newCredentials != null) {
+          await authRepository.initSession();
           widget.sessionCubit.showSession(newCredentials);
         } else {
           setState(() {
@@ -160,8 +163,9 @@ class UpdatePasswordViewState extends State<UpdatePasswordView> {
                                       child: TextFormField(
                                         controller: textEditingControllerTwo,
                                         textInputAction: TextInputAction.go,
-                                        onFieldSubmitted: (_) =>
-                                            changePassword(),
+                                        onFieldSubmitted: (_) => changePassword(
+                                            RepositoryProvider.of<
+                                                AuthRepository>(context)),
                                         autocorrect: false,
                                         enableSuggestions: false,
                                         obscureText: true,
@@ -212,7 +216,10 @@ class UpdatePasswordViewState extends State<UpdatePasswordView> {
                                                             .green), //todo: change
                                               ),
                                               onPressed: () {
-                                                changePassword();
+                                                changePassword(
+                                                    RepositoryProvider.of<
+                                                            AuthRepository>(
+                                                        context));
                                               },
                                               child:
                                                   Text(strings.save_password),

@@ -99,6 +99,7 @@ class AuthRepository {
   }
 
   void _clearSessionData() {
+    _sessionInitialized = false;
     LocalDataRepository.instance.organizationID = null;
     LocalDataRepository.instance.organizationNameVerbose = null;
     LocalDataRepository.instance.organizationNameKebabCase = null;
@@ -175,7 +176,7 @@ class AuthRepository {
     }
 
     if (result.isSignedIn) {
-      await SyncedDB.instance.clear();
+      /*await SyncedDB.instance.clear();
       ConfigGraphQL().initClient();
       final userID = await _getUserIdFromAttributes();
       await _rememberUserAttributesLocally();
@@ -193,12 +194,41 @@ class AuthRepository {
         //todo: wie soll das offline funktionieren -> dann gibt online db immer null zurück?
         //dann pushen zu create user?
       }*/
-      LocalDataRepository.instance.user = user;
+      LocalDataRepository.instance.user = user;*/
 
+      await initSession();
+
+      String userID = await _getUserIdFromAttributes();
+      // TODO: loading a user
+      User? user = await UserRepository.instance.fetchUserByID(userID);
+      /*if (user == null) {
+        throw UserNotFoundInDatabaseException();
+        //todo: wie soll das offline funktionieren -> dann gibt online db immer null zurück?
+        //dann pushen zu create user?
+      }*/
+      LocalDataRepository.instance.user = user;
       return userID;
     } else {
       return null;
     }
+  }
+
+  bool _sessionInitialized = false;
+  Future<void> initSession() async {
+    if (_sessionInitialized) return;
+
+    await SyncedDB.instance.clear();
+    ConfigGraphQL().initClient();
+    final userID = await _getUserIdFromAttributes();
+    await _rememberUserAttributesLocally();
+    await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
+    await _rememberUserOrganization(
+        LocalDataRepository.instance.organizationID);
+
+    // Init sync
+    await SyncedDB.instance.synchronizer.syncDownstream();
+
+    _sessionInitialized = true;
   }
 
   Future<AuthCredentials?> updatePasswordInitially(

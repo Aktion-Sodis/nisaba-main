@@ -16,27 +16,23 @@ class User extends DBModel {
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
+  static Map<String, dynamic> queryFields() => _$User;
+
   late String firstName;
   late String lastName;
   String? bio;
 
   @DBModelIgnore()
-  late List<Permission> permissions;
+  @JsonKey(includeFromJson: false, includeToJson: true)
+  List<Permission> permissions = [];
 
-  int? schemeVersion;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-
-  User(
-      {required String? id,
-      required this.firstName,
-      required this.lastName,
-      this.bio,
-      required this.permissions,
-      this.schemeVersion,
-      this.createdAt,
-      this.updatedAt})
-      : super(id);
+  User({
+    required String? id,
+    required this.firstName,
+    required this.lastName,
+    this.bio,
+    //this.permissions,
+  }) : super(id);
 
   User.fromAmplifyModel(amp.User user) : super(user.id) {
     id = user.id;
@@ -45,9 +41,6 @@ class User extends DBModel {
     bio = user.bio;
     permissions = List.generate(user.permissions.length,
         (index) => Permission.fromAmplifyModel(user.permissions[index]));
-    schemeVersion = user.schemeVersion;
-    createdAt = user.createdAt?.getDateTimeInUtc();
-    updatedAt = user.updatedAt?.getDateTimeInUtc();
   }
 
   amp.User toAmplifyModel() {
@@ -57,7 +50,6 @@ class User extends DBModel {
       permissions: List.generate(
           permissions.length, (index) => permissions[index].toAmplifyModel()),
       bio: bio,
-      schemeVersion: schemeVersion,
       id: id,
     ));
   }
@@ -69,9 +61,6 @@ class User extends DBModel {
     bio = map['bio'];
     /*permissions = List.generate(map['permissions'].length,
         (index) => Permission.fromMap(map['permissions'][index]));*/
-    schemeVersion = map['schemeVersion'];
-    createdAt = map['createdAt'];
-    updatedAt = map['updatedAt'];
   }
 
   Map<String, dynamic> toMap() {
@@ -81,9 +70,6 @@ class User extends DBModel {
       'lastName': lastName,
       'bio': bio,
       // 'permissions': permissions.map((e) => e.toMap()).toList(),
-      'schemeVersion': schemeVersion,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
     };
   }
 
@@ -104,7 +90,6 @@ class User extends DBModel {
       return firstName == other.firstName &&
           lastName == other.lastName &&
           bio == other.bio &&
-          schemeVersion == other.schemeVersion &&
           id == other.id &&
           listEquals(permissions, other.permissions);
     }
