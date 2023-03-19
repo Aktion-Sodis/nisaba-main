@@ -1,5 +1,23 @@
 <template>
-  <v-card style="height: 100%" class="pa-2" outlined tile @click="clickHandler">
+  <v-card
+    style="height: 100%; position: relative"
+    class="pa-2"
+    outlined
+    tile
+    @click="clickHandler"
+  >
+    <v-chip class="ml-2" style="position: absolute; top: 16px; z-index: 1">
+      <v-icon class="mr-2">
+        {{
+          interventionType === technology ? "mdi-hammer-wrench" : "mdi-school"
+        }}
+      </v-icon>
+      {{
+        calculateUILocaleString({
+          languageTexts: interventionName.languageTexts,
+        })
+      }}
+    </v-chip>
     <ImgFromS3 :assumedSrc="deriveImgPath" dataType="survey">
       <template v-slot:v-img="slotProps">
         <v-img height="200px" :src="slotProps.src"> </v-img>
@@ -11,31 +29,26 @@
       <v-chip v-for="tagId in surveyTagIds" :key="tagId" class="ml-2"
         >{{ tagById({ id: tagId }).text }}
       </v-chip>
-      <v-tooltip bottom v-if="interventionName">
-        <template v-slot:activator="{ on, attrs }">
-          <v-avatar v-bind="attrs" v-on="on">
-            <v-icon>mdi-wrench-outline</v-icon>
-          </v-avatar>
-        </template>
-        <span>
-          {{ calculateUILocaleString({ languageTexts: interventionName.languageTexts }) }}
-        </span>
-      </v-tooltip>
     </v-card-title>
     <v-card-subtitle class="mt-0">
-      {{ calculateUILocaleString({ languageTexts: surveyDescription.languageTexts }) }}
+      {{
+        calculateUILocaleString({
+          languageTexts: surveyDescription.languageTexts,
+        })
+      }}
     </v-card-subtitle>
   </v-card>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import { dataTypesDict, vuexModulesDict } from '../../lib/constants';
-import ImgFromS3 from '../commons/ImgFromS3.vue';
+import { mapGetters, mapActions } from "vuex";
+import { dataTypesDict, vuexModulesDict } from "../../lib/constants";
+import { InterventionType } from "../../models";
+import ImgFromS3 from "../commons/ImgFromS3.vue";
 
 export default {
   components: { ImgFromS3 },
-  name: 'Survey',
+  name: "Survey",
   props: {
     id: {
       type: String,
@@ -55,9 +68,6 @@ export default {
     surveyContent: {
       type: Array,
     },
-    interventionName: {
-      required: true,
-    },
     interventionId: {
       required: true,
     },
@@ -65,14 +75,25 @@ export default {
   computed: {
     ...mapGetters({
       tagById: `${vuexModulesDict.survey}/tagById`,
-      calculateUILocaleString: 'calculateUILocaleString',
-      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
+      calculateUILocaleString: "calculateUILocaleString",
+      deriveFilePath: "callDeriveFilePathWithOrganizationId",
+      INTERVENTIONById: `${vuexModulesDict.intervention}/INTERVENTIONById`,
     }),
     deriveImgPath() {
-      return this.deriveFilePath('interventionSurveyPicPath', {
+      return this.deriveFilePath("interventionSurveyPicPath", {
         interventionID: this.interventionId,
         surveyId: this.id,
       });
+    },
+    interventionName() {
+      return this.INTERVENTIONById({ id: this.interventionId })?.name;
+    },
+    interventionType() {
+      return this.INTERVENTIONById({ id: this.interventionId })
+        ?.interventionType;
+    },
+    technology() {
+      return InterventionType.TECHNOLOGY;
     },
   },
   methods: {

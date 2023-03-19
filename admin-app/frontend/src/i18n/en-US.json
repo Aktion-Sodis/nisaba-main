@@ -13,6 +13,7 @@
     "save": "Save",
     "delete": "Delete",
     "archive": "Archive",
+    "restore": "Restore",
     "addImage": "Add image",
     "editImage": "Edit image",
     "form": {
@@ -157,6 +158,7 @@
   },
   "organizationStructure": {
     "title": "Organization Structure",
+    "subtitle": "⚠️ Deleting entities is not allowed in this version.",
     "addNewEntity": "Add new entity",
     "addNewLevel": "Add new level",
     "hasNoInterventions": "There are no interventions for this level.",
@@ -211,6 +213,7 @@
   },
   "interventions": {
     "title": "Interventions",
+    "subtitle": "⚠️ Deleting interventions is not allowed in this version.",
     "newIntervention": "New intervention",
     "type": {
       "title": "Intervention Type",
@@ -242,7 +245,7 @@
   "userManagement": {
     "title": "User Management",
     "sendInvitation": "Send Invitation",
-    "successfulSentInvitation" : "An invitation has been successfully sent to the email",
+    "successfulSentInvitation": "An invitation has been successfully sent to the email",
     "emailAlreadyInUse": "This email is already in use"
   },
   "surveys": {
@@ -278,6 +281,7 @@
             "textLabel": "Question text",
             "imageTitle": "Question image",
             "addImage": "Add image",
+            "cantAddImage": "⚠️ You cannot add an image in this version of the Admin-App.",
             "audioTitle": "Question audio",
             "addAudio": "Add audio"
           },

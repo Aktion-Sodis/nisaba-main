@@ -13,6 +13,7 @@
     "save": "Kaydet",
     "delete": "Sil",
     "archive": "Arşivle",
+    "restore": "Geri yükle",
     "addImage": "Resim ekle",
     "editImage": "Resmi düzenle",
     "form": {
@@ -157,6 +158,7 @@
   },
   "organizationStructure": {
     "title": "Organizasyonel Yapı",
+    "subtitle": "⚠️ Bu versiyonda oluşumları silmek mümkün değildir.",
     "addNewEntity": "Yeni oluşum ekle",
     "addNewLevel": "Yeni seviye ekle",
     "hasNoInterventions": "Bu seviyede henüz hiç müdahale yok.",
@@ -211,6 +213,7 @@
   },
   "interventions": {
     "title": "Müdahaleler",
+    "subtitle": "⚠️ Bu versiyonda müdahaleleri silmek mümkün değildir.",
     "newIntervention": "Yeni müdahale",
     "type": {
       "title": "Müdahale türü",
@@ -242,7 +245,7 @@
   "userManagement": {
     "title": "Kullanıcı Yönetimi",
     "sendInvitation": "Davetiye Gönder",
-    "successfulSentInvitation" : "E-posta adresine bir davetiyenin başarıyla gönderildi",
+    "successfulSentInvitation": "E-posta adresine bir davetiyenin başarıyla gönderildi",
     "emailAlreadyInUse": "Bu e-posta zaten kullanımda"
   },
   "surveys": {
@@ -278,6 +281,7 @@
             "textLabel": "Soru metni",
             "imageTitle": "Soru resmi",
             "addImage": "Resim ekle",
+            "cantAddImage": "⚠️ Admin-App'in bu sürümünde sorulara resim eklemek desteklenmiyor.",
             "audioTitle": "Soru sesi",
             "addAudio": "Ses ekle"
           },

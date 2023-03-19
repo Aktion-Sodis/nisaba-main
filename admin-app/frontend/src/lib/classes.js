@@ -21,35 +21,39 @@ const emptyMutableI18nString = () => ({
 
 const emptyI18nString = () => new I18nString(emptyMutableI18nString());
 
-const emptyIntervention = () => new Intervention({
-  name: emptyMutableI18nString(),
-  description: emptyMutableI18nString(),
-  tags: [],
-  type: InterventionType.TECHNOLOGY,
-  questionIds: [],
-  contents: [],
-});
+const emptyIntervention = () =>
+  new Intervention({
+    name: emptyMutableI18nString(),
+    description: emptyMutableI18nString(),
+    tags: [],
+    type: InterventionType.TECHNOLOGY,
+    questionIds: [],
+    contents: [],
+  });
 
-const emptySurvey = () => new Survey({
-  name: emptyMutableI18nString(),
-  description: emptyMutableI18nString(),
-  questions: [],
-  surveyType: SurveyType.DEFAULT,
-});
+const emptySurvey = () =>
+  new Survey({
+    name: emptyMutableI18nString(),
+    description: emptyMutableI18nString(),
+    questions: [],
+    surveyType: SurveyType.DEFAULT,
+  });
 
-const emptyQuestion = () => new Question({
-  id: uuidv4(),
-  text: emptyMutableI18nString(),
-  type: QuestionType.TEXT,
-  questionOptions: [],
-  isFollowUpQuestion: false,
-});
+const emptyQuestion = () =>
+  new Question({
+    id: uuidv4(),
+    text: emptyMutableI18nString(),
+    type: QuestionType.TEXT,
+    questionOptions: [],
+    isFollowUpQuestion: false,
+  });
 
-const emptyQuestionOption = () => new QuestionOption({
-  id: uuidv4(),
-  text: emptyMutableI18nString(),
-  followUpQuestionID: null,
-});
+const emptyQuestionOption = () =>
+  new QuestionOption({
+    id: uuidv4(),
+    text: emptyMutableI18nString(),
+    followUpQuestionIDs: null,
+  });
 
 const emptyLevel = () => {
   const level = new Level({
@@ -61,14 +65,15 @@ const emptyLevel = () => {
   return level;
 };
 
-const emptyEntity = () => new Entity({
-  name: emptyI18nString(),
-  description: emptyI18nString(),
-  parentEntityID: null,
-  customData: [],
-  appliedInterventions: [],
-  entityLevelId: '',
-});
+const emptyEntity = () =>
+  new Entity({
+    name: emptyI18nString(),
+    description: emptyI18nString(),
+    parentEntityID: null,
+    customData: [],
+    appliedInterventions: [],
+    entityLevelId: '',
+  });
 
 const mutableI18nString = ({ languageTexts }) => ({
   languageKeys: i18n.availableLocales,

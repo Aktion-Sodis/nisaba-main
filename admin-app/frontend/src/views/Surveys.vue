@@ -1,13 +1,17 @@
 <template>
   <div>
     <h1 class="ml-8">
-      {{ $t('surveys.title') }}
+      {{ $t("surveys.title") }}
     </h1>
     <div>
       <div class="d-flex flex-column align-center justify-center py-4">
-        <div class="subtitle-1">{{ $t('general.filters.title') }}</div>
+        <div class="subtitle-1">{{ $t("general.filters.title") }}</div>
         <v-sheet elevation="1" outlined rounded class="pa-2">
-          <v-tooltip bottom v-for="filterKey in Object.keys(filters)" :key="filterKey">
+          <v-tooltip
+            bottom
+            v-for="filterKey in Object.keys(filters)"
+            :key="filterKey"
+          >
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 elevation="2"
@@ -16,13 +20,25 @@
                 x-large
                 v-bind="attrs"
                 v-on="on"
-                @click="setFilter({ filter: filterKey, newValue: !filters[filterKey] })"
+                @click="
+                  setFilter({
+                    filter: filterKey,
+                    newValue: !filters[filterKey],
+                  })
+                "
               >
-                <v-icon> {{ filterUIDict[filterKey].get(filters[filterKey]).icon }} </v-icon>
+                <v-icon>
+                  {{ filterUIDict[filterKey].get(filters[filterKey]).icon }}
+                </v-icon>
               </v-btn>
             </template>
             <span>
-              {{ $t(filterUIDict[filterKey].get(filters[filterKey]).tooltipI18nSelector) }}
+              {{
+                $t(
+                  filterUIDict[filterKey].get(filters[filterKey])
+                    .tooltipI18nSelector
+                )
+              }}
             </span>
           </v-tooltip>
         </v-sheet>
@@ -37,24 +53,42 @@
             subtitleI18nSelector="surveys.newSurvey"
           >
             <template v-slot:creation-button="slotProps">
-              <v-btn fab x-large color="primary" @click="slotProps.clickHandler">
+              <v-btn
+                fab
+                x-large
+                color="primary"
+                @click="slotProps.clickHandler"
+              >
                 <v-icon dark> mdi-crosshairs-question </v-icon>
               </v-btn>
             </template>
           </DataCreationButtonCard>
         </v-col>
-        <v-col v-for="survey in surveys" :key="survey.id" cols="12" sm="6" md="4" xl="3">
+        <v-col
+          v-for="survey in surveys"
+          :key="survey.id"
+          cols="12"
+          sm="6"
+          md="4"
+          xl="3"
+        >
           <Survey
             :id="survey.id"
             :surveyName="survey.name"
             :surveyDescription="survey.description"
             :surveyTagIds="survey.tags"
             :surveyContent="survey.content"
-            :interventionName="survey.intervention ? survey.intervention.name : null"
-            :interventionId="survey.intervention ? survey.intervention.id : null"
+            :interventionId="survey.interventionSurveysId"
           />
         </v-col>
-        <v-col v-for="index in ['s1', 's2', 's3']" :key="index" cols="12" sm="6" md="4" xl="3">
+        <v-col
+          v-for="index in ['s1', 's2', 's3']"
+          :key="index"
+          cols="12"
+          sm="6"
+          md="4"
+          xl="3"
+        >
           <InterventionSkeleton v-if="loading" />
         </v-col>
       </v-row>
@@ -63,15 +97,18 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
-import { waitForMilliseconds } from '../lib/utils';
+import { mapGetters, mapMutations } from "vuex";
+import { waitForMilliseconds } from "../lib/utils";
 import {
-  dataTypesDict, filterUIDict, routeNamesDict, vuexModulesDict,
-} from '../lib/constants';
+  dataTypesDict,
+  filterUIDict,
+  routeNamesDict,
+  vuexModulesDict,
+} from "../lib/constants";
 
-import InterventionSkeleton from '../components/interventions/InterventionSkeleton.vue';
-import DataCreationButtonCard from '../components/commons/DataCreationButtonCard.vue';
-import Survey from '../components/surveys/Survey.vue';
+import InterventionSkeleton from "../components/interventions/InterventionSkeleton.vue";
+import DataCreationButtonCard from "../components/commons/DataCreationButtonCard.vue";
+import Survey from "../components/surveys/Survey.vue";
 
 export default {
   name: routeNamesDict.Surveys,
@@ -103,11 +140,8 @@ export default {
     },
   },
   watch: {
-    isInterventionModalDisplayed: 'destroyInterventionModalAfterDelay',
-    isSurveyModalDisplayed: 'destroySurveyModalAfterDelay',
-  },
-  mounted() {
-    console.log(this.filters);
+    isInterventionModalDisplayed: "destroyInterventionModalAfterDelay",
+    isSurveyModalDisplayed: "destroySurveyModalAfterDelay",
   },
   methods: {
     ...mapMutations({

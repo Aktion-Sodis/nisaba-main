@@ -22,5 +22,6 @@ jobs:
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         run: |
           npm --prefix lib/cicd/node/deploy ci
-          npm --prefix lib/cicd/node/deploy run label-check -- staging "$APOLAT2000PERSONALACCESSTOKEN" "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" "$AWS_DEFAULT_REGION"
+          npm install -g @aws-amplify/cli
+          res=$(npm --prefix lib/cicd/node/deploy run label-check -- staging "$APOLAT2000PERSONALACCESSTOKEN" "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" "$AWS_DEFAULT_REGION" | tail -1) && bash ./lib/cicd/node/deploy/deploy.sh $res
           

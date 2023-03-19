@@ -1,23 +1,26 @@
-import Vue from 'vue';
-import Amplify from 'aws-amplify';
-import awsconfig from './aws-exports';
-import App from './App.vue';
-import router from './router';
-import store from './store';
-import vuetify from './plugins/vuetify';
-import i18n from './i18n';
+import Vue from "vue";
+import awsExports from "./aws-exports";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import vuetify from "./plugins/vuetify";
+import i18n from "./i18n";
+import { Amplify } from "aws-amplify";
+import { Auth } from "@aws-amplify/auth";
 
-awsconfig.graphql_headers = async () => {
-  try {
-    const token = (await Amplify.Auth.currentSession()).idToken.jwtToken;
-    return { Authorization: token };
-  } catch (e) {
-    console.log(e);
-    return {};
-  }
-};
-
-Amplify.configure(awsconfig);
+Amplify.configure({
+  ...awsExports,
+  API: {
+    graphql_headers: async () => {
+      try {
+        const token = (await Auth.currentSession()).getIdToken().getJwtToken();
+        return { Authorization: token };
+      } catch {
+        return {};
+      }
+    },
+  },
+});
 
 Vue.config.productionTip = false;
 
@@ -27,4 +30,4 @@ new Vue({
   vuetify,
   i18n,
   render: (h) => h(App),
-}).$mount('#app');
+}).$mount("#app");

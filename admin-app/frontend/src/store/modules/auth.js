@@ -1,9 +1,13 @@
-import { Auth, API, graphqlOperation } from 'aws-amplify';
-import { getUser } from '../../graphql/queries';
-import { createUser } from '../../graphql/mutations';
+import { Auth } from "@aws-amplify/auth";
+import { DataStore } from "@aws-amplify/datastore";
 
-import i18n from '../../i18n';
-import { authChallengeNamesDict, signInStatusDict, vuexModulesDict } from '../../lib/constants';
+import i18n from "../../i18n";
+import {
+  authChallengeNamesDict,
+  signInStatusDict,
+  vuexModulesDict,
+} from "../../lib/constants";
+import { User } from "../../models";
 
 const authModule = {
   namespaced: true,
@@ -33,7 +37,10 @@ const authModule = {
     getFirstName: ({ firstName }) => firstName,
     getLastName: ({ lastName }) => lastName,
 
-    credentials: (_, { getUserId, getEmail, getOrganizationId, getFirstName, getLastName }) => ({
+    credentials: (
+      _,
+      { getUserId, getEmail, getOrganizationId, getFirstName, getLastName }
+    ) => ({
       userId: getUserId,
       email: getEmail,
       organizationId: getOrganizationId,
@@ -46,8 +53,10 @@ const authModule = {
     getPriorRouteActivity: ({ priorRouteActivity }) => priorRouteActivity,
 
     // <==> is it longer than an hour?
-    lastRouteActivityDiffTooLarge: (_, { getLastRouteActivity, getPriorRouteActivity }) =>
-      getLastRouteActivity - getPriorRouteActivity > 1000 * 60 * 60,
+    lastRouteActivityDiffTooLarge: (
+      _,
+      { getLastRouteActivity, getPriorRouteActivity }
+    ) => getLastRouteActivity - getPriorRouteActivity > 1000 * 60 * 60,
 
     getTempPassword: ({ tempPassword }) => tempPassword,
   },
@@ -55,7 +64,10 @@ const authModule = {
     setIsAuthenticated(state, { newValue }) {
       state.isAuthenticated = newValue;
     },
-    setCredentials(state, { userId, email, organizationId, firstName, lastName }) {
+    setCredentials(
+      state,
+      { userId, email, organizationId, firstName, lastName }
+    ) {
       state.userId = userId;
       state.email = email;
       state.organizationId = organizationId;
@@ -87,25 +99,25 @@ const authModule = {
 
         const { username: userId, challengeName } = x;
 
-        commit('setCredentials', {
+        commit("setCredentials", {
           userId,
           email,
         });
 
         // if password is not finalized
         if (challengeName === authChallengeNamesDict.newPasswordRequired) {
-          commit('setTempPassword', { newValue: password });
+          commit("setTempPassword", { newValue: password });
           return signInStatusDict.completeUserInfo;
         }
 
         const { attributes } = x;
 
         const userEmail = attributes.email;
-        const organizationId = attributes['custom:organization_id'];
+        const organizationId = attributes["custom:organization_id"];
         const firstName = attributes.given_name;
         const lastName = attributes.family_name;
 
-        commit('setCredentials', {
+        commit("setCredentials", {
           userId,
           email: userEmail,
           organizationId,
@@ -113,26 +125,29 @@ const authModule = {
           lastName,
         });
 
-        dispatch(`${vuexModulesDict.organization}/APIGet`, organizationId, { root: true });
+        dispatch(`${vuexModulesDict.organization}/APIGet`, organizationId, {
+          root: true,
+        });
 
         // if password is finalized
-        commit('setIdToken', { newToken: x.signInUserSession.idToken.jwtToken });
-        commit('setIsAuthenticated', { newValue: true });
-        commit('setRememberSession', { newValue: rememberMe });
+        commit("setIdToken", {
+          newToken: x.signInUserSession.idToken.jwtToken,
+        });
+        commit("setIsAuthenticated", { newValue: true });
+        commit("setRememberSession", { newValue: rememberMe });
         return signInStatusDict.success;
       } catch (error) {
-        console.log(error);
         dispatch(
           `${vuexModulesDict.feedback}/showFeedbackForDuration`,
           {
-            type: 'error',
+            type: "error",
             text: i18n.t(`general.errorCodes.${error.code}`),
           },
           { root: true }
         );
-        commit('setIdToken', { newToken: null });
-        commit('setIsAuthenticated', { newValue: false });
-        commit('setCredentials', {
+        commit("setIdToken", { newToken: null });
+        commit("setIsAuthenticated", { newValue: false });
+        commit("setCredentials", {
           userId: null,
           email: null,
           organizationId: null,
@@ -151,8 +166,8 @@ const authModule = {
         dispatch(
           `${vuexModulesDict.feedback}/showFeedbackForDuration`,
           {
-            type: 'error',
-            text: 'You cannot just update a user profile without following the sign in flow.',
+            type: "error",
+            text: "You cannot just update a user profile without following the sign in flow.",
           },
           { root: true }
         );
@@ -164,9 +179,16 @@ const authModule = {
           await Auth.signIn(getters.getEmail, getters.getTempPassword),
           newPassword
         );
-      } catch {
-        commit('setIdToken', { newToken: null });
-        commit('setIsAuthenticated', { newValue: false });
+        const userDb = new User({
+          firstName,
+          lastName,
+          permissions: [],
+        });
+        await DataStore.save(userDb);
+      } catch (error) {
+        commit("setIdToken", { newToken: null });
+        commit("setIsAuthenticated", { newValue: false });
+        await Auth.signOut();
         return signInStatusDict.failed;
       }
 
@@ -176,20 +198,22 @@ const authModule = {
           given_name: firstName,
           family_name: lastName,
         });
-        commit('setCredentials', {
+        commit("setCredentials", {
           userId: getters.getUserId,
           email: getters.getEmail,
-          organizationId: user.attributes['custom:organization_id'],
+          organizationId: user.attributes["custom:organization_id"],
           firstName,
           lastName,
         });
-        commit('setIdToken', { newToken: user.signInUserSession.idToken.jwtToken });
-        commit('setIsAuthenticated', { newValue: true });
-        commit('setTempPassword', { newValue: null });
+        commit("setIdToken", {
+          newToken: user.signInUserSession.idToken.jwtToken,
+        });
+        commit("setIsAuthenticated", { newValue: true });
+        commit("setTempPassword", { newValue: null });
         return signInStatusDict.success;
       } catch {
-        commit('setIdToken', { newToken: null });
-        commit('setIsAuthenticated', { newValue: false });
+        commit("setIdToken", { newToken: null });
+        commit("setIsAuthenticated", { newValue: false });
         return signInStatusDict.failed;
       }
     },
@@ -228,21 +252,21 @@ const authModule = {
         dispatch(
           `${vuexModulesDict.feedback}/showFeedbackForDuration`,
           {
-            type: 'error',
+            type: "error",
             text: error.errors[0].message,
           },
           { root: true }
         );
       }
-      commit('setCredentials', {
+      commit("setCredentials", {
         userId: null,
         email: null,
         firstName: null,
         lastName: null,
       });
-      commit('deleteRouteActivity');
-      commit('setIdToken', { newToken: null });
-      commit('setIsAuthenticated', { newValue: false });
+      commit("deleteRouteActivity");
+      commit("setIdToken", { newToken: null });
+      commit("setIsAuthenticated", { newValue: false });
     },
   },
 };

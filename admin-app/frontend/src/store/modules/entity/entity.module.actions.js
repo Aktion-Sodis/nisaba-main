@@ -1,11 +1,15 @@
-import { DataStore } from '@aws-amplify/datastore';
-import { Storage } from 'aws-amplify';
-import { dataTypesDict, modalModesDict, vuexModulesDict } from '../../../lib/constants';
-import { AppliedCustomData, Entity, I18nString } from '../../../models';
+import { DataStore } from "@aws-amplify/datastore";
+import { Storage } from "@aws-amplify/storage";
+import {
+  dataTypesDict,
+  modalModesDict,
+  vuexModulesDict,
+} from "../../../lib/constants";
+import { AppliedCustomData, Entity, I18nString } from "../../../models";
 
 const APIpost = async ({ commit, dispatch, rootGetters }, entityDraft) => {
   let success = true;
-  commit('setLoading', { newValue: true });
+  commit("setLoading", { newValue: true });
 
   const entity = new Entity({
     ...entityDraft,
@@ -17,20 +21,20 @@ const APIpost = async ({ commit, dispatch, rootGetters }, entityDraft) => {
   try {
     const postResponse = await DataStore.save(entity);
 
-    if (rootGetters['dataModal/getImageFile'] instanceof File) {
+    if (rootGetters["dataModal/getImageFile"] instanceof File) {
       try {
         await Storage.put(
-          rootGetters.callDeriveFilePathWithOrganizationId('entityPicPath', {
+          rootGetters.callDeriveFilePathWithOrganizationId("entityPicPath", {
             entityID: postResponse.id,
           }),
-          rootGetters['dataModal/getImageFile']
+          rootGetters["dataModal/getImageFile"]
         );
       } catch {
         success = false;
       }
     }
 
-    commit('addEntity', postResponse);
+    commit("addEntity", postResponse);
     dispatch(
       `${vuexModulesDict.dataModal}/readData`,
       {
@@ -46,45 +50,50 @@ const APIpost = async ({ commit, dispatch, rootGetters }, entityDraft) => {
     console.log(error);
   }
 
-  commit('setLoading', { newValue: false });
+  commit("setLoading", { newValue: false });
   return success;
 };
 // We had to rewrite this by using graphql instead of DataStore,
 // because DataStore was throwing an unrepairable error.
 // Another point where we see that we are regretful for
 // choosing Amplify.
-const APIput = async ({ commit, dispatch, getters, rootGetters }, { newData, originalId }) => {
-  commit('setLoading', { newValue: true });
+const APIput = async (
+  { commit, dispatch, getters, rootGetters },
+  { newData, originalId }
+) => {
+  commit("setLoading", { newValue: true });
   let success = true;
 
   try {
     const original = getters.ENTITYById({ id: originalId });
-    if (!original) throw new Error('Original entity not found');
+    if (!original) throw new Error("Original entity not found");
     const putResponse = await DataStore.save(
       Entity.copyOf(original, (updated) => {
         updated.name = newData.name;
         updated.description = newData.description;
         updated.parentEntityID = newData.parentEntityID;
-        updated.customData = newData.customData.map((cd) => new AppliedCustomData(cd));
+        updated.customData = newData.customData.map(
+          (cd) => new AppliedCustomData(cd)
+        );
       })
     );
 
     const newEntity = putResponse;
 
-    if (rootGetters['dataModal/getImageFile'] instanceof File) {
+    if (rootGetters["dataModal/getImageFile"] instanceof File) {
       try {
         await Storage.put(
-          rootGetters.callDeriveFilePathWithOrganizationId('entityPicPath', {
+          rootGetters.callDeriveFilePathWithOrganizationId("entityPicPath", {
             entityID: newEntity.id,
           }),
-          rootGetters['dataModal/getImageFile']
+          rootGetters["dataModal/getImageFile"]
         );
       } catch {
         success = false;
       }
     }
 
-    commit('replaceEntity', newEntity);
+    commit("replaceEntity", newEntity);
 
     dispatch(
       `${vuexModulesDict.dataModal}/readData`,
@@ -100,25 +109,34 @@ const APIput = async ({ commit, dispatch, getters, rootGetters }, { newData, ori
     success = false;
   }
 
-  commit('setLoading', { newValue: false });
+  commit("setLoading", { newValue: false });
   return success;
 };
 const APIdelete = async ({ commit, dispatch }, { id, _version }) => {
   let success = true;
-  commit('setLoading', { newValue: true });
+  commit("setLoading", { newValue: true });
 
   try {
     const toDelete = await DataStore.query(Entity, id);
     await DataStore.delete(toDelete);
-  } catch {
+  } catch (e) {
+    console.log({ e });
     success = false;
   }
 
-  commit('deleteEntity', {
+  commit("deleteEntity", {
     id,
   });
-  commit(`${vuexModulesDict.dataModal}/setDataIdInFocus`, { newValue: null }, { root: true });
-  commit(`${vuexModulesDict.dataModal}/setMode`, { newValue: modalModesDict.read }, { root: true });
+  commit(
+    `${vuexModulesDict.dataModal}/setDataIdInFocus`,
+    { newValue: null },
+    { root: true }
+  );
+  commit(
+    `${vuexModulesDict.dataModal}/setMode`,
+    { newValue: modalModesDict.read },
+    { root: true }
+  );
   dispatch(
     `${vuexModulesDict.dataModal}/abortReadData`,
     {},
@@ -127,7 +145,7 @@ const APIdelete = async ({ commit, dispatch }, { id, _version }) => {
     }
   );
 
-  commit('setLoading', { newValue: false });
+  commit("setLoading", { newValue: false });
   return success;
 };
 // eslint-disable-next-line no-empty-pattern
@@ -142,7 +160,7 @@ const APIgetAll = async ({}, { apiLevels }) => {
     for (const apiLevel of apiLevels) {
       // eslint-disable-next-line no-await-in-loop
       const entitiesOApiLevel = await DataStore.query(Entity, (c) =>
-        c.entityLevelId('eq', apiLevel.id)
+        c.entityLevelId.eq(apiLevel.id)
       );
       res = res.concat(entitiesOApiLevel ?? []);
     }
@@ -152,19 +170,25 @@ const APIgetAll = async ({}, { apiLevels }) => {
     return [];
   }
 };
-const setChosenEntityIdsFromApiLevels = ({ getters, dispatch }, { apiLevelIds }) => {
+const setChosenEntityIdsFromApiLevels = (
+  { getters, dispatch },
+  { apiLevelIds }
+) => {
   // eslint-disable-next-line
   for (const levelId of apiLevelIds) {
     const firstEntity = getters.allEntitiesByLevelId({ levelId })[0] ?? null;
     if (firstEntity) {
-      dispatch('addChosenEntityId', { entityId: firstEntity.id, levelId });
+      dispatch("addChosenEntityId", { entityId: firstEntity.id, levelId });
     }
   }
 };
-const addChosenEntityId = ({ state, getters, commit }, { entityId, levelId }) => {
+const addChosenEntityId = (
+  { state, getters, commit },
+  { entityId, levelId }
+) => {
   const alreadyChosenEntity = getters.chosenEntityByLevelId({ levelId });
   if (alreadyChosenEntity) {
-    commit('removeChosenEntityId', { entityId: alreadyChosenEntity.id });
+    commit("removeChosenEntityId", { entityId: alreadyChosenEntity.id });
   }
   const asSet = new Set(state.chosenEntityIds);
   asSet.add(entityId);

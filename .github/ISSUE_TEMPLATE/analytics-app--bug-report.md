@@ -1,9 +1,9 @@
 ---
 name: 'Analytics-App: Bug report'
 about: Create a report to help us improve
-title: "[Analytics-App] [BUG]"
+title: "[Analytics-App] [BUG] Your title"
 labels: analytics-app, bug
-assignees: ''
+assignees: '@benjaminsimeon'
 
 ---
 

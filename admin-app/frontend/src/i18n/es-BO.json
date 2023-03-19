@@ -13,6 +13,7 @@
     "save": "Guardar",
     "delete": "Eliminar",
     "archive": "Archivar",
+    "restore": "Restaurar",
     "addImage": "Añadir imagen",
     "editImage": "Editar imagen",
     "form": {
@@ -157,6 +158,7 @@
   },
   "organizationStructure": {
     "title": "Estructura organizativa",
+    "subtitle": "⚠️ No se permite eliminar entidades en esta versión de Admin-App.",
     "addNewEntity": "Añadir entidad",
     "addNewLevel": "Añadir un nuevo nivel",
     "hasNoInterventions": "No existen intervenciones para este nivel.",
@@ -211,6 +213,7 @@
   },
   "interventions": {
     "title": "Intervenciones",
+    "subtitle": "⚠️ No se permite eliminar intervenciones en esta versión de Admin-App.",
     "newIntervention": "Nueva intervención",
     "type": {
       "title": "Tipo de Intervención",
@@ -242,7 +245,7 @@
   "userManagement": {
     "title": "Gestión de usuarios",
     "sendInvitation": "Enviar invitación",
-    "successfulSentInvitation" : "Se ha enviado una invitación con éxito al correo electrónico",
+    "successfulSentInvitation": "Se ha enviado una invitación con éxito al correo electrónico",
     "emailAlreadyInUse": "Este correo electrónico ya está en uso"
   },
   "surveys": {
@@ -278,6 +281,7 @@
             "textLabel": "Texto pregunta",
             "imageTitle": "Imágen de la pregunta",
             "addImage": "Añadir imàgen",
+            "cantAddImage": "⚠️ No puedes agregar una imagen en esta versión de Admin-App.",
             "audioTitle": "Audio sobre la pregunta",
             "addAudio": "Añadir audio"
           },
