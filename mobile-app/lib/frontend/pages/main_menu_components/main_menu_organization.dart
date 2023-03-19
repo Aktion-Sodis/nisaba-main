@@ -1187,7 +1187,8 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
         child: SingleChildScrollView(
             child: Column(
       children: [
-        Card(
+        // HIDDEN AS IT IS NOT STABLE
+        /*Card(
           margin: EdgeInsets.all(defaultPadding(context)),
           child: Container(
               height: height(context) * .3,
@@ -1211,8 +1212,10 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
                           true))
                 ],
               )),
-        ),
-        if (appliedIntervention.intervention.interventionType ==
+        ),*/
+
+        // HIDDEN AS IT IS NOT STABLE
+        /*if (appliedIntervention.intervention.interventionType ==
             InterventionType.TECHNOLOGY)
           Card(
               margin: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
@@ -1241,7 +1244,7 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
                                 style: Theme.of(context).textTheme.bodyText1))
                       ],
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min))),
+                      mainAxisSize: MainAxisSize.min))),*/
         if (nonArchivedSurveys.isNotEmpty)
           Card(
               margin: EdgeInsets.all(defaultPadding(context)),
