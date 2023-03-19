@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
@@ -16,6 +17,10 @@ class Question extends DBModel {
   factory Question.fromJson(Map<String, dynamic> json) =>
       _$QuestionFromJson(json);
 
+  @override
+  String id = UUID.getUUID();
+
+  @override
   Map<String, dynamic> toJson() => _$QuestionToJson(this);
 
   late I18nString text; // TODO: Rename to text
