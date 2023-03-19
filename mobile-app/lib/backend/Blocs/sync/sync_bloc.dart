@@ -32,16 +32,28 @@ import '../../database/db_implementations/synced_db/SyncedDB.dart';
 class SyncBloc extends Bloc<SyncEvent, SyncState> {
   TaskBloc taskBloc;
   UserBloc userBloc;
-  SyncedDB db = SyncedDB.instance;
+  static SyncedDB db = SyncedDB.instance;
 
   SyncBloc({
     required this.taskBloc,
     required this.userBloc,
-  }) : super(FullySyncedState()) {
+  }) : super(_getStateBySyncStatus(db.synchronizer.upstreamSyncStatus)) {
     on<SyncEvent>(_mapEventToState);
     fulfillSync(true);
 
     db.synchronizer.subscribeUpstreamSyncStatusStream(_updateProgress);
+  }
+
+  static SyncState _getStateBySyncStatus(SyncStatus status) {
+    if (status == SyncStatus.SYNCING || status == SyncStatus.WAITING) {
+      return InSyncState(totalFiles: 0, loadedFiles: 0, progress: 0);
+    } else if (status == SyncStatus.UP_TO_DATE) {
+      return FullySyncedState();
+    } else if (status == SyncStatus.STOPPED) {
+      return CannotSyncState();
+    } else {
+      return CannotSyncState();
+    }
   }
 
   void _updateProgress(SyncStatus syncStatus) {
