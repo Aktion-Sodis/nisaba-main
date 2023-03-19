@@ -89,7 +89,7 @@ class ExecutedSurveyRepositoryCustom
       ExecutedSurvey executedSurvey) async {
     executedSurvey.id = executedSurvey.id ?? UUID.getUUID();
 
-    db.create(executedSurvey);
+    await db.create(executedSurvey);
 
     return executedSurvey;
   }
