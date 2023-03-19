@@ -1054,7 +1054,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
           String answers = '';
           for (QuestionOption questionOption
               in questionAnswer.questionOptions!) {
-            answers += '${questionOption.text}, ';
+            answers += '${questionOption.displayText}, ';
           }
           if (answers.length > 2) {
             answers = answers.substring(0, answers.length - 2);
@@ -1334,7 +1334,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
               padding:
                   EdgeInsets.symmetric(horizontal: defaultPadding(context)),
               child: Text(
-                '${survey.name} $summary',
+                '${survey.displayName} $summary',
                 style: Theme.of(context).textTheme.headline2,
               ),
             ),
