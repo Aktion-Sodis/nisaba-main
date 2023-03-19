@@ -18,7 +18,7 @@ class GraphQLDB extends DB<GraphQLDBModelRegistration> {
     }
 
     if (entry is String) {
-      return ast.StringValueNode(value: entry, isBlock: false);
+      return ast.StringValueNode(value: entry, isBlock: true);
     } else if (entry is int) {
       return ast.IntValueNode(value: entry.toString());
     } else if (entry is double) {
