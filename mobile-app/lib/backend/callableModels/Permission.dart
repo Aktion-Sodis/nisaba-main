@@ -1,12 +1,28 @@
+import 'package:db_model_generator/db_model_annotations.dart';
+import 'package:flutter/foundation.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
+import 'package:json_annotation/json_annotation.dart';
 
-class Permission {
+part 'Permission.g.dart';
+part 'Permission.db_model.dart';
+
+@DBModelAnnotation(true)
+@JsonSerializable()
+class Permission extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory Permission.fromJson(Map<String, dynamic> json) =>
+      _$PermissionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PermissionToJson(this);
+
   late PermissionType permissionType;
   late List<String> allowedEntities;
 
-  Permission({required this.permissionType, required this.allowedEntities});
+  Permission({required this.permissionType, required this.allowedEntities})
+      : super(null);
 
-  Permission.fromAmplifyModel(amp.Permission permission) {
+  Permission.fromAmplifyModel(amp.Permission permission) : super(null) {
     permissionType =
         permissionTypeFromAmplifyPermissionType(permission.permissionType);
     allowedEntities = permission.allowedEntities;
@@ -17,6 +33,24 @@ class Permission {
         allowedEntities: allowedEntities,
         permissionType:
             amplifyPermissionTypeFromPermissionType(permissionType)));
+  }
+
+  @override
+  DBModel getUnpopulated() {
+    throw UnimplementedError();
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (other is Permission) {
+      return permissionType == other.permissionType &&
+          listEquals(allowedEntities, other.allowedEntities);
+    } else {
+      return false;
+    }
   }
 }
 

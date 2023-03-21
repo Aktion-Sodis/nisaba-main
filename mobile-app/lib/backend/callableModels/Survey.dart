@@ -1,101 +1,114 @@
+import 'package:db_model_generator/db_model_annotations.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/Intervention.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/callableModels/Question.dart';
+import 'package:mobile_app/backend/callableModels/Relation.dart';
 import 'package:mobile_app/backend/callableModels/SurveyTag.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
+import 'package:json_annotation/json_annotation.dart';
 
-class Survey {
-  String? id;
-  late I18nString name_ml;
-  late I18nString description_ml;
-  Intervention? intervention;
+part 'Survey.g.dart';
+part 'Survey.db_model.dart';
+
+@DBModelAnnotation()
+@JsonSerializable()
+class Survey extends DBModel {
+  // JsonSerializable factory and toJson methods
+
+  factory Survey.fromJson(Map<String, dynamic> json) => _$SurveyFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SurveyToJson(this);
+
+  static Map<String, dynamic> queryFields() => _$Survey;
+
+  late I18nString name;
+  late I18nString description;
+
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Intervention? intervention; // Unpopulated allowed
   late List<Question> questions;
-  late List<amp.SurveySurveyTagRelation> tagConnections;
+
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  late List<SurveySurveyTagRelation> tagConnections = []; // Unpopulated allowed
   late bool archived;
   int? schemeVersion;
   DateTime? createdAt;
   DateTime? updatedAt;
   late SurveyType surveyType;
 
-  String get name => name_ml.text;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String get displayName => name.text;
 
-  set name(String name) => name_ml.text = name;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  set displayName(String name) => this.name.text = name;
 
-  String get description => description_ml.text;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String get displayDescription => description.text;
 
-  set description(String description) => description_ml.text = description;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  set displayDescription(String description) =>
+      this.description.text = description;
 
-  List<SurveyTag> get tags => List.generate(tagConnections.length,
-      (index) => SurveyTag.fromAmplifyModel(tagConnections[index].surveyTag));
-
-  void addSurveyTag(SurveyTag surveyTag) {
-    tagConnections.add(amp.SurveySurveyTagRelation(
-        survey: toAmplifyModel(), surveyTag: surveyTag.toAmplifyModel()));
-  }
-
-  void updateSurveyTag(SurveyTag surveyTag) {
-    int index = tagConnections
-        .indexWhere((element) => element.surveyTag.id == surveyTag.id);
-    if (index >= 0) {
-      tagConnections[index] =
-          tagConnections[index].copyWith(surveyTag: surveyTag.toAmplifyModel());
-    } else {
-      addSurveyTag(surveyTag);
-    }
-  }
+  List<SurveyTag> get tags => tagConnections
+      .where((element) => element.second != null)
+      .map((e) => e.second!)
+      .toList();
 
   Question questionByID(String id) {
     return questions.firstWhere((element) => element.id == id);
   }
 
   Survey(
-      {this.id,
-      required this.name_ml,
-      required this.description_ml,
+      {String? id,
+      required this.name,
+      required this.description,
       this.intervention,
       required this.questions,
-      required this.tagConnections,
       this.schemeVersion,
       this.createdAt,
       this.updatedAt,
       required this.surveyType,
-      this.archived = false});
+      this.archived = false})
+      : super(id);
 
-  Survey.fromAmplifyModel(amp.Survey survey) {
-    print(survey.intervention.toString());
-
-    id = survey.id;
-    name_ml = I18nString.fromAmplifyModel(survey.name);
-    description_ml = I18nString.fromAmplifyModel(survey.description);
-    intervention = survey.intervention != null
-        ? Intervention.fromAmplifyModel(survey.intervention!)
-        : null;
-    questions = List.generate(survey.questions.length,
-        (index) => Question.fromAmplifyModel(survey.questions[index]));
-    tagConnections = survey.tags;
-    schemeVersion = survey.schemeVersion;
-    createdAt = survey.createdAt?.getDateTimeInUtc();
-    updatedAt = survey.updatedAt?.getDateTimeInUtc();
-    surveyType = surveyTypeFromAmplifySurveyType(
-        survey.surveyType); //todo: change with theme change
-    archived = survey.archived ?? false;
+  Survey.unpopulated(String? id) : super(id) {
+    isPopulated = false;
+  }
+  @override
+  DBModel getUnpopulated() {
+    return Survey.unpopulated(id);
   }
 
-  amp.Survey toAmplifyModel() {
-    return amp.Survey(
-        id: id,
-        name: name_ml.toAmplifyModel(),
-        description: description_ml.toAmplifyModel(),
-        intervention: intervention?.toAmplifyModel(),
-        surveyType: surveyTypeToAmplifySurveyType(surveyType),
-        questions: List.generate(
-            questions.length, (index) => questions[index].toAmplifyModel()),
-        tags: tagConnections,
-        schemeVersion: schemeVersion,
-        archived: archived
-        //todo: missing survey type
-        );
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (other is Survey) {
+      return id == other.id &&
+          name == other.name &&
+          description == other.description &&
+          ((intervention == null && other.intervention == null) ||
+              (intervention != null &&
+                  other.intervention != null &&
+                  intervention!.id == other.intervention!.id)) &&
+          listEquals(questions, other.questions) &&
+          schemeVersion == other.schemeVersion &&
+          unpopulatedListsEqual(tagConnections, other.tagConnections) &&
+          surveyType == other.surveyType &&
+          archived == other.archived;
+    } else {
+      return false;
+    }
   }
 }
 

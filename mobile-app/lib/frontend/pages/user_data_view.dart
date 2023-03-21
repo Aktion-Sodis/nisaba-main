@@ -13,7 +13,7 @@ import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
 import 'package:mobile_app/backend/Blocs/user/user_events.dart';
 import 'package:mobile_app/backend/Blocs/user/user_state.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
-import 'package:mobile_app/backend/repositories/SettingsRepository.dart';
+import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/backend/repositories/UserRepository.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/frontend/common_widgets.dart';
@@ -21,7 +21,7 @@ import 'package:mobile_app/frontend/common_widgets.dart';
 import 'package:mobile_app/frontend/components/buttons.dart';
 
 import 'package:mobile_app/frontend/strings.dart' as strings;
-import 'package:mobile_app/services/photo_capturing.dart';
+import 'package:mobile_app/utils/photo_capturing.dart';
 
 import '../dependentsizes.dart';
 
@@ -58,13 +58,13 @@ class UserDataViewState extends State<UserDataView> {
     textEdigtingControllerFirstName = TextEditingController();
     textEditingControllerLastName = TextEditingController();
     currentLocale = strings.currentLanguage;
-    wifiOnly = SettingsRepository.instance.wifiOnly;
+    wifiOnly = LocalDataRepository.instance.wifiOnly;
     if (widget.userBloc.state.user != null) {
       textEdigtingControllerFirstName.text =
           widget.userBloc.state.user!.firstName;
       textEditingControllerLastName.text = widget.userBloc.state.user!.lastName;
       userPicSynced =
-          UserRepository.getUserPicFile(widget.userBloc.state.user!);
+          UserRepository.instance.getUserPicFile(widget.userBloc.state.user!);
       userPicSynced!.file().then((value) {
         try {
           setState(() {
@@ -75,8 +75,8 @@ class UserDataViewState extends State<UserDataView> {
         }
       });
     } else {
-      userPicSynced =
-          UserRepository.getUserPicFileByUserID(widget.userBloc.userID);
+      userPicSynced = UserRepository.instance
+          .getUserPicFileByUserID(widget.userBloc.userID);
       userPicSynced!.file().then((value) {
         try {
           setState(() {
@@ -191,7 +191,7 @@ class UserDataViewState extends State<UserDataView> {
                 builder: (buildContext, state) {
               return Column(
                 children: [
-                  Expanded(
+                  /*Expanded(
                       child: Center(
                           child: Container(
                               width: width(context) * .5,
@@ -227,7 +227,7 @@ class UserDataViewState extends State<UserDataView> {
                                             width(context) * .04)),
                                   )
                                 ],
-                              )))),
+                              )))),*/
                   if (!widget.inApp)
                     Container(
                         margin: EdgeInsets.only(
@@ -251,6 +251,7 @@ class UserDataViewState extends State<UserDataView> {
                         children: [
                           Container(
                               child: TextFormField(
+                            readOnly: widget.inApp,
                             controller: textEdigtingControllerFirstName,
                             decoration: InputDecoration(
                                 prefixIcon: const Icon(FontAwesomeIcons.user),
@@ -266,6 +267,7 @@ class UserDataViewState extends State<UserDataView> {
                                   EdgeInsets.only(top: defaultPadding(context)),
                               child: TextFormField(
                                 controller: textEditingControllerLastName,
+                                readOnly: widget.inApp,
                                 decoration: InputDecoration(
                                     prefixIcon:
                                         const Icon(FontAwesomeIcons.user),
@@ -330,14 +332,16 @@ class UserDataViewState extends State<UserDataView> {
                                           if (_formKey.currentState!
                                               .validate()) {
                                             RepositoryProvider.of<
-                                                    SettingsRepository>(context)
+                                                        LocalDataRepository>(
+                                                    context)
                                                 .locale = currentLocale;
                                             RepositoryProvider.of<
-                                                    SettingsRepository>(context)
+                                                        LocalDataRepository>(
+                                                    context)
                                                 .wifiOnly = wifiOnly;
 
                                             if (widget.inApp) {
-                                              User user = context
+                                              /*User user = context
                                                   .read<UserBloc>()
                                                   .state
                                                   .user!;
@@ -349,24 +353,26 @@ class UserDataViewState extends State<UserDataView> {
                                                   textEditingControllerLastName
                                                       .text
                                                       .trim();
+                                                
                                               context
                                                   .read<UserBloc>()
-                                                  .add(UpdateUserEvent(user));
+                                                  .add(UpdateUserEvent(user));*/
                                               context
                                                   .read<InAppBloc>()
                                                   .add(MainViewEvent());
                                             } else {
-                                              context.read<UserBloc>().add(
-                                                  CreateUserEvent(User(
-                                                      firstName:
-                                                          textEdigtingControllerFirstName
-                                                              .text,
-                                                      lastName:
-                                                          textEditingControllerLastName
-                                                              .text,
-                                                      id: widget
-                                                          .userBloc.userID,
-                                                      permissions: [])));
+                                              context
+                                                  .read<UserBloc>()
+                                                  .add(CreateUserEvent(User(
+                                                    firstName:
+                                                        textEdigtingControllerFirstName
+                                                            .text,
+                                                    lastName:
+                                                        textEditingControllerLastName
+                                                            .text,
+                                                    id: widget.userBloc
+                                                        .userID, /*permissions: []*/
+                                                  )));
                                             }
                                           }
                                         },

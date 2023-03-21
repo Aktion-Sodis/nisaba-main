@@ -1,107 +1,43 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:mobile_app/backend/callableModels/Intervention.dart';
 import 'package:mobile_app/backend/repositories/SurveyRepository.dart';
+import 'package:mobile_app/backend/repositories/implementations/custom_syncronization/InterventionRepositoryCustom.dart';
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-class InterventionRepository {
-  static Future<List<amp.Intervention>> getAllAmpIntervention() async {
-    var interventions = Amplify.DataStore.query(
-      amp.Intervention.classType,
-    );
-    return interventions;
-  }
+import '../callableModels/Relation.dart';
+import '../callableModels/Survey.dart';
 
-  static Future<amp.Intervention> getAmpInterventionByID(
-      String interventionID) async {
-    try {
-      var interventions = await Amplify.DataStore.query(
-          amp.Intervention.classType,
-          where: amp.Intervention.ID.eq(interventionID));
-      amp.Intervention toReturn = interventions.first;
-      print("returned intervention by id");
-      return populate(toReturn);
-    } catch (e) {
-      print("error in getting intervention by id");
-      print(e.toString());
-      var interventions = await Amplify.DataStore.query(
-          amp.Intervention.classType,
-          where: amp.Intervention.ID.eq(interventionID));
-      amp.Intervention toReturn = interventions.first;
-      print("returned intervention by id");
-      return populate(toReturn);
-    }
-  }
+abstract class InterventionRepository {
+  static final InterventionRepository instance =
+      InterventionRepositoryCustom.instance;
 
-  static Future<List<Intervention>> getInterventionsByLevelConnections(
-      List<amp.LevelInterventionRelation> relations) async {
-    print("interventions to populate from connections: ${relations.length}");
-    List<amp.Intervention> toWait = List.generate(
-        relations.length, (index) => relations[index].intervention);
-    var populated = await populateList(toWait);
-    return List.generate(populated.length,
-        (index) => Intervention.fromAmplifyModel(populated[index]));
-  }
+  Future<List<Intervention>> getAllAmpIntervention();
 
-  static Future<amp.Intervention?> getAmplifyInterventionBySurvey(
-      amp.Survey survey) async {
-    /*var interventions = await Amplify.DataStore.query(
-        amp.Intervention.classType,
-        where: amp.Intervention;*/
-    return null;
-    //return populate(interventions.first);
-    //todo: query könnte falsch sein
-  }
+  // TODO: rename everythin with "amp", as it refers to amplify, which is not used anymore
+  Future<Intervention> getAmpInterventionByID(String interventionID);
 
-  static Future<List<amp.Intervention>> populateList(
-      List<amp.Intervention> interventions) {
-    List<Future<amp.Intervention>> toWait = List.generate(
-        interventions.length, (index) => populate(interventions[index]));
-    return Future.wait(toWait);
-  }
+  Future<List<Intervention>> getInterventionsByLevelConnections(
+      List<LevelInterventionRelation> relations);
 
-  static Future<amp.Intervention> populate(
-      amp.Intervention intervention) async {
-    amp.Intervention toReturn = intervention;
-    toReturn = toReturn.copyWith(
-        contents:
-            await interventionContentRelationsByInterventionID(intervention),
-        tags: await interventionInterventionTagRelationsByInterventionID(
-            intervention),
-        levels: await levelInterventionRelationsByInterventionID(intervention),
-        surveys:
-            await SurveyRepository.getAmpSurveysByIntervention(intervention));
-    return toReturn;
-  }
+  Future<Intervention?> getAmplifyInterventionBySurvey(Survey survey);
 
-  static Future<List<amp.InterventionContentRelation>>
-      interventionContentRelationsByInterventionID(
-          amp.Intervention intervention) async {
-    return Amplify.DataStore.query(amp.InterventionContentRelation.classType,
-        where:
-            amp.InterventionContentRelation.INTERVENTION.eq(intervention.id));
-  }
+  Future<List<Intervention>> populateList(List<Intervention> interventions);
 
-  static Future<List<amp.InterventionInterventionTagRelation>>
+  Future<Intervention> populate(Intervention intervention);
+
+  Future<List<InterventionContentRelation>>
+      interventionContentRelationsByInterventionID(Intervention intervention);
+
+  Future<List<InterventionInterventionTagRelation>>
       interventionInterventionTagRelationsByInterventionID(
-          amp.Intervention intervention) async {
-    return Amplify.DataStore.query(
-        amp.InterventionInterventionTagRelation.classType,
-        where: amp.InterventionInterventionTagRelation.INTERVENTION
-            .eq(intervention.id));
-  }
+          Intervention intervention);
 
-  static Future<List<amp.LevelInterventionRelation>>
-      levelInterventionRelationsByInterventionID(
-          amp.Intervention intervention) async {
-    return Amplify.DataStore.query(amp.LevelInterventionRelation.classType,
-        where: amp.LevelInterventionRelation.INTERVENTION.eq(intervention.id));
-  }
+  Future<List<LevelInterventionRelation>>
+      levelInterventionRelationsByInterventionID(Intervention intervention);
 
-  static SyncedFile getInterventionPic(Intervention intervention) {
-    String path =
-        dataStorePath(DataStorePaths.interventionPicPath, [intervention.id!]);
-    return SyncedFile(path);
-  }
+  SyncedFile getInterventionPic(Intervention intervention);
+
+  Future<Intervention> populatedInterventionFromContent(String id);
 }

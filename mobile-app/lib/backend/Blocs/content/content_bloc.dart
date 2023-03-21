@@ -3,26 +3,27 @@ import 'package:mobile_app/backend/Blocs/content/content_events.dart';
 import 'package:mobile_app/backend/Blocs/content/content_state.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:mobile_app/backend/repositories/ContentRepository.dart';
-import 'package:mobile_app/models/InterventionContentRelation.dart';
+
+import '../../callableModels/Relation.dart';
 
 class ContentBloc extends Bloc<ContentEvent, ContentState> {
   ContentRepository contentRepository;
 
   ContentBloc(this.contentRepository) : super(LoadingContentState()) {
     on<ContentEvent>(_mapEventToState);
-    ContentRepository.getAllRelationsWithPopulatedContentsAndInterventions()
+    ContentRepository.instance
+        .getAllRelationsWithPopulatedContentsAndInterventions()
         .then((value) {
       List<InterventionContentRelation> all = value;
-      List<Content> allContents = List.generate(
-          all.length, (index) => Content.fromAmplifyModel(all[index].content));
+      List<Content> allContents =
+          List.generate(all.length, (index) => all[index].second!);
       List<Intervention> toDisplayInterventions = [];
       List<Content> toDisplayContents = List.from(allContents);
       List<Intervention> allInterventions = [];
       for (InterventionContentRelation relation in all) {
         if (!allInterventions
-            .any((element) => element.id == relation.intervention.id)) {
-          allInterventions
-              .add(Intervention.fromAmplifyModel(relation.intervention));
+            .any((element) => element.id == relation.first!.id)) {
+          allInterventions.add(relation.first!);
         }
       }
       emit(LoadedContentState(
@@ -75,7 +76,7 @@ class ContentBloc extends Bloc<ContentEvent, ContentState> {
       List<Content> toReturn = [];
       for (int i = 0; i < loadedContentState.allRelations.length; i++) {
         if (toDisplayInterventions.any((element) =>
-            element.id == loadedContentState.allRelations[i].intervention.id)) {
+            element.id == loadedContentState.allRelations[i].first!.id)) {
           toReturn.add(loadedContentState.allContents[i]);
         }
       }
