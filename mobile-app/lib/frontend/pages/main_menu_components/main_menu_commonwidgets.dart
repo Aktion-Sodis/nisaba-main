@@ -165,7 +165,8 @@ Widget interventionRow(BuildContext context, Intervention intervention,
     {VoidCallback? onPressed,
     required SyncedFile image,
     bool pressable = false,
-    bool separator = false}) {
+    bool separator = false,
+    IconData iconData = MdiIcons.arrowRight}) {
   return Column(mainAxisSize: MainAxisSize.min, children: [
     Container(
         padding: EdgeInsets.symmetric(
@@ -190,7 +191,7 @@ Widget interventionRow(BuildContext context, Intervention intervention,
                   CommonWidgets.defaultIconButton(
                       onPressed: onPressed,
                       context: context,
-                      iconData: MdiIcons.arrowRight,
+                      iconData: iconData,
                       buttonSizes: ButtonSizes.small,
                       fillColor: Theme.of(context).colorScheme.secondary)
               ],
