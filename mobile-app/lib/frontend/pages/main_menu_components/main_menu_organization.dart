@@ -1379,6 +1379,7 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
   Widget interventionItem(BuildContext buildContext, int index) {
     //todo: implement localization
     return interventionRow(context, interventions![index],
+        iconData: MdiIcons.plus,
         separator: (index != interventions!.length - 1),
         image: InterventionRepository.instance
             .getInterventionPic(interventions![index]),
@@ -1392,9 +1393,12 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
         ..intervention = interventions![index]
         ..whoDidIt = widget.user
         ..entity = widget.entity;
-      setState(() {
+
+      // SKIP THE NEXT STEP
+      Navigator.of(context).pop(toCreate);
+      /*setState(() {
         appliedIntervention = toCreate;
-      });
+      });*/
     });
   }
 
@@ -1464,6 +1468,7 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
                           : Container(
                               child: Column(
                               children: [
+                                // HIDDEN AS IT IS NOT STABLE YET
                                 Card(
                                   margin:
                                       EdgeInsets.all(defaultPadding(context)),
