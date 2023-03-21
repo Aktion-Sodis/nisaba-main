@@ -29,16 +29,20 @@ const SYNC_UI = {
   actions: {
     refreshHandler: async ({ commit, dispatch, getters }) => {
       commit("setStatus", { newStatus: syncStatusDict.synchronizing });
-      await DataStore.start();
-      if (!getters.getIsDataStoreReady) {
-        Hub.listen("datastore", async ({ payload: { event } }) => {
-          if (event === "ready") {
-            await dispatch("syncRoutine");
-            commit("setIsDataStoreReady", { newValue: true });
-          }
-        });
-      } else {
-        await dispatch("syncRoutine");
+      try {
+        if (!getters.getIsDataStoreReady) {
+          await DataStore.start();
+          Hub.listen("datastore", async ({ payload: { event } }) => {
+            if (event === "ready") {
+              await dispatch("syncRoutine");
+              commit("setIsDataStoreReady", { newValue: true });
+            }
+          });
+        } else {
+          await dispatch("syncRoutine");
+        }
+      } catch {
+        commit("setStatus", { newStatus: syncStatusDict.synched });
       }
     },
     async syncRoutine({ commit, dispatch }) {
