@@ -24,6 +24,9 @@ class _WifiOnlySettingCheckerState extends State<WifiOnlySettingChecker> {
 
   @override
   Widget build(BuildContext context) {
+    // Temporarily disabled till this value is really affecting behaviour
+    return child;
+
     if (LocalDataRepository.instance.wifiOnlyRawValue == null) {
       return getRequestWifiOnlySettingPage(context);
     } else {
