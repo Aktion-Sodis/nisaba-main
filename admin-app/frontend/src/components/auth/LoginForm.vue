@@ -1,9 +1,9 @@
 <template>
   <v-form ref="form" @submit.prevent="submit" lazy-validation>
     <v-text-field
-      v-model="email"
+      v-model="username"
       :rules="[rules.required]"
-      :label="$t('Login.email')"
+      :label="$t('Login.usernamePlaceholder')"
       :disabled="loading"
       required
       outlined
@@ -26,13 +26,20 @@
         :disabled="loading"
       ></v-checkbox>
       <div class="mt-1" @click="forgotPasswordHandler" style="cursor: pointer">
-        <p class="py-0">{{ $t('Login.forgotPassword') }}</p>
+        <p class="py-0">{{ $t("Login.forgotPassword") }}</p>
       </div>
     </div>
-    <v-btn :disabled="loading" type="submit" block large color="primary" class="text-none">
+    <v-btn
+      :disabled="loading"
+      type="submit"
+      block
+      large
+      color="primary"
+      class="text-none"
+    >
       <v-progress-circular indeterminate v-if="loading"></v-progress-circular>
       <span v-else>
-        {{ $t('Login.signIn') }}
+        {{ $t("Login.signIn") }}
       </span>
     </v-btn>
     <v-btn
@@ -46,13 +53,13 @@
       @click.prevent="showToBeImplementedFeedback"
     >
       <GoogleIcon />
-      {{ $t('Login.withGoogle') }}
+      {{ $t("Login.withGoogle") }}
     </v-btn>
     <div class="d-flex justify-end mt-4">
       <p>
-        {{ $t('Login.dontHaveAnAccount') }}
+        {{ $t("Login.dontHaveAnAccount") }}
         <span>
-          {{ $t('Login.askYourAdmin') }}
+          {{ $t("Login.askYourAdmin") }}
         </span>
       </p>
     </div>
@@ -60,17 +67,21 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex';
-import { formValidators } from '../../lib/utils';
-import { routeNamesDict, signInStatusDict, vuexModulesDict } from '../../lib/constants';
-import GoogleIcon from './GoogleIcon.vue';
+import { mapActions, mapMutations } from "vuex";
+import { formValidators } from "../../lib/utils";
+import {
+  routeNamesDict,
+  signInStatusDict,
+  vuexModulesDict,
+} from "../../lib/constants";
+import GoogleIcon from "./GoogleIcon.vue";
 
 export default {
   components: { GoogleIcon },
-  name: 'LoginForm',
+  name: "LoginForm",
   data() {
     return {
-      email: null,
+      username: null,
       password: null,
       showPassword: false,
       rules: {
@@ -95,8 +106,8 @@ export default {
 
       this.loading = true;
       const signInStatus = await this.signIn({
-        email: this.email,
-        password: this.password,
+        username: this.username,
+        password: this.password.trim(),
         rememberMe: this.rememberMe,
       });
       if (signInStatus === signInStatusDict.success) {
@@ -113,7 +124,7 @@ export default {
       }
     },
     forgotPasswordHandler() {
-      this.setCredentials({ email: this.email || '' });
+      this.setCredentials({ username: this.username || "" });
       this.$router.push({ name: routeNamesDict.ForgotPassword });
     },
   },

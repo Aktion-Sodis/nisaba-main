@@ -1,12 +1,12 @@
 import { Auth } from "@aws-amplify/auth";
 import { DataStore } from "@aws-amplify/datastore";
+import { Hub } from "@aws-amplify/core";
+import { API } from "@aws-amplify/api";
+import { createUser } from "../../graphql/mutations";
 
 import i18n from "../../i18n";
-import {
-  authChallengeNamesDict,
-  signInStatusDict,
-  vuexModulesDict,
-} from "../../lib/constants";
+import { signInStatusDict, vuexModulesDict } from "../../lib/constants";
+import { waitForMilliseconds } from "../../lib/utils";
 import { User } from "../../models";
 
 const authModule = {
@@ -17,7 +17,7 @@ const authModule = {
 
     // "Credentials"
     userId: null,
-    email: null,
+    username: null,
     organizationId: null,
     firstName: null,
     lastName: null,
@@ -26,13 +26,13 @@ const authModule = {
     priorRouteActivity: Date.now(),
     lastRouteActivity: Date.now(),
 
-    tempPassword: null,
+    // tempPassword: null,
   }),
   getters: {
     getIsAuthenticated: ({ isAuthenticated }) => isAuthenticated,
     getIdToken: ({ idToken }) => idToken,
     getUserId: ({ userId }) => userId,
-    getEmail: ({ email }) => email,
+    getEmail: ({ username }) => username,
     getOrganizationId: ({ organizationId }) => organizationId,
     getFirstName: ({ firstName }) => firstName,
     getLastName: ({ lastName }) => lastName,
@@ -42,7 +42,7 @@ const authModule = {
       { getUserId, getEmail, getOrganizationId, getFirstName, getLastName }
     ) => ({
       userId: getUserId,
-      email: getEmail,
+      username: getEmail,
       organizationId: getOrganizationId,
       firstName: getFirstName,
       lastName: getLastName,
@@ -58,7 +58,7 @@ const authModule = {
       { getLastRouteActivity, getPriorRouteActivity }
     ) => getLastRouteActivity - getPriorRouteActivity > 1000 * 60 * 60,
 
-    getTempPassword: ({ tempPassword }) => tempPassword,
+    // getTempPassword: ({ tempPassword }) => tempPassword,
   },
   mutations: {
     setIsAuthenticated(state, { newValue }) {
@@ -66,10 +66,10 @@ const authModule = {
     },
     setCredentials(
       state,
-      { userId, email, organizationId, firstName, lastName }
+      { userId, username, organizationId, firstName, lastName }
     ) {
       state.userId = userId;
-      state.email = email;
+      state.username = username;
       state.organizationId = organizationId;
       state.firstName = firstName;
       state.lastName = lastName;
@@ -88,37 +88,77 @@ const authModule = {
       state.priorRouteActivity = null;
       state.lastRouteActivity = null;
     },
-    setTempPassword(state, { newValue }) {
-      state.tempPassword = newValue;
-    },
+    // setTempPassword(state, { newValue }) {
+    //   state.tempPassword = newValue;
+    // },
   },
   actions: {
-    async signIn({ commit, dispatch }, { email, password, rememberMe }) {
+    async signIn(
+      { commit, dispatch, rootGetters },
+      { username, password, rememberMe }
+    ) {
       try {
-        const x = await Auth.signIn(email, password);
+        const x = await Auth.signIn(
+          username,
+          password,
+          rememberMe
+            ? {
+                // 1 year
+                expires: String(365 * 24 * 60 * 60),
+              }
+            : undefined
+        );
 
-        const { username: userId, challengeName } = x;
+        if (x.challengeName === "NEW_PASSWORD_REQUIRED") {
+          await Auth.completeNewPassword(x, password);
+        }
 
-        commit("setCredentials", {
-          userId,
-          email,
-        });
+        let cognitoUser;
+        let trials = 0;
+        while (!cognitoUser && trials < 10) {
+          try {
+            cognitoUser = await Auth.currentAuthenticatedUser();
+          } catch {
+            //
+          } finally {
+            await waitForMilliseconds(500);
+            trials++;
+          }
+        }
 
-        // if password is not finalized
-        if (challengeName === authChallengeNamesDict.newPasswordRequired) {
-          commit("setTempPassword", { newValue: password });
-          return signInStatusDict.completeUserInfo;
+        await DataStore.start();
+        while (!rootGetters[`${vuexModulesDict.sync}/getIsDataStoreReady`]) {
+          Hub.listen("datastore", async ({ payload: { event } }) => {
+            if (event === "ready") {
+              commit(
+                `${vuexModulesDict.sync}/setIsDataStoreReady`,
+                { newValue: true },
+                { root: true }
+              );
+            }
+          });
+          await waitForMilliseconds(500);
         }
 
         const { attributes } = x;
 
-        const userEmail = attributes.email;
+        // query user by firstName and lastName, sort by createdAt
+        const userInDb = await DataStore.query(User, attributes?.sub);
+
+        if (!userInDb) {
+          commit("setCredentials", {
+            userId: attributes?.sub,
+          });
+          return signInStatusDict.completeUserInfo;
+        }
+
+        const userEmail = attributes?.email;
         const organizationId = attributes["custom:organization_id"];
-        const firstName = attributes.given_name;
-        const lastName = attributes.family_name;
+        const firstName = attributes?.given_name;
+        const lastName = attributes?.family_name;
 
         commit("setCredentials", {
-          userId,
+          userId: userInDb.id,
           email: userEmail,
           organizationId,
           firstName,
@@ -137,6 +177,7 @@ const authModule = {
         commit("setRememberSession", { newValue: rememberMe });
         return signInStatusDict.success;
       } catch (error) {
+        await Auth.signOut();
         dispatch(
           `${vuexModulesDict.feedback}/showFeedbackForDuration`,
           {
@@ -160,31 +201,20 @@ const authModule = {
 
     async completeUserInformation(
       { commit, getters, dispatch },
-      { firstName, lastName, newPassword }
+      { firstName, lastName }
     ) {
-      if (!getters.getUserId) {
-        dispatch(
-          `${vuexModulesDict.feedback}/showFeedbackForDuration`,
-          {
-            type: "error",
-            text: "You cannot just update a user profile without following the sign in flow.",
-          },
-          { root: true }
-        );
-        return signInStatusDict.failed;
-      }
-
       try {
-        await Auth.completeNewPassword(
-          await Auth.signIn(getters.getEmail, getters.getTempPassword),
-          newPassword
-        );
-        const userDb = new User({
-          firstName,
-          lastName,
-          permissions: [],
+        await API.graphql({
+          query: createUser,
+          variables: {
+            input: {
+              id: getters.getUserId,
+              firstName,
+              lastName,
+              permissions: [],
+            },
+          },
         });
-        await DataStore.save(userDb);
       } catch (error) {
         commit("setIdToken", { newToken: null });
         commit("setIsAuthenticated", { newValue: false });
@@ -209,9 +239,9 @@ const authModule = {
           newToken: user.signInUserSession.idToken.jwtToken,
         });
         commit("setIsAuthenticated", { newValue: true });
-        commit("setTempPassword", { newValue: null });
+        // commit("setTempPassword", { newValue: null });
         return signInStatusDict.success;
-      } catch {
+      } catch (e) {
         commit("setIdToken", { newToken: null });
         commit("setIsAuthenticated", { newValue: false });
         return signInStatusDict.failed;
@@ -222,7 +252,7 @@ const authModule = {
       try {
         await Auth.forgotPassword(email);
         return signInStatusDict.success;
-      } catch {
+      } catch (e) {
         return signInStatusDict.failed;
       }
     },

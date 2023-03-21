@@ -20,6 +20,7 @@ const getters = {
       .sort((a, b) => a.id - b.id),
   getLoading: ({ loading }) => loading,
   getFilters: ({ filters }) => filters,
+  getShowContinue: ({ showContinue }) => showContinue,
 
   SURVEYById:
     (_, { getSurveys }) =>

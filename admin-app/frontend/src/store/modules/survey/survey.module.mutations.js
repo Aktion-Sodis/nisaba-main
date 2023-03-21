@@ -31,6 +31,9 @@ const mutations = {
   setFilter: (state, { filter, newValue }) => {
     state.filters[filter] = newValue;
   },
+  setShowContinue: (state, { newValue }) => {
+    state.showContinue = newValue;
+  },
 };
 
 export default mutations;

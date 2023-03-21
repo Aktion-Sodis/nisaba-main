@@ -15,22 +15,6 @@
         <h2 v-else>
           {{ $t("surveys.modal.firstCard.title.create") }}
         </h2>
-        <v-spacer></v-spacer>
-        <v-btn
-          v-if="!edit"
-          x-large
-          text
-          class="text-none"
-          @click="nextStepHandler"
-          :disabled="!canAdvance"
-        >
-          {{
-            $vuetify.breakpoint.name === "xs"
-              ? ""
-              : $t(`surveys.modal.firstCard.next-step`)
-          }}
-          <v-icon large> mdi-chevron-right </v-icon>
-        </v-btn>
       </v-card-title>
 
       <v-card-text>
@@ -39,6 +23,7 @@
             <v-col cols="12" sm="6" class="pb-0 px-0 px-md-3">
               <v-card-title class="pt-0 pt-sm-2">
                 {{ $t("surveys.modal.firstCard.form.name") }}
+                <span color="darkred">*</span>
               </v-card-title>
               <LocaleTextBox
                 labelPrefixI18nSelector="surveys.modal.firstCard.form.name"
@@ -85,29 +70,28 @@
               <v-card-title class="pt-0 pt-sm-2">
                 {{ $t("surveys.type.title") }}:
                 <v-btn-toggle v-model="typeIndex" mandatory class="ml-2">
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn v-bind="attrs" v-on="on">
-                        <v-icon>mdi-lightbulb-question-outline</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>{{ $t("surveys.type.types.INITIAL") }}</span>
-                  </v-tooltip>
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn v-bind="attrs" v-on="on">
-                        <v-icon>mdi-crosshairs-question</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>{{ $t("surveys.type.types.DEFAULT") }}</span>
-                  </v-tooltip>
+                  <v-btn>
+                    <v-icon>mdi-lightbulb-question-outline</v-icon>
+                    <span class="ml-1">
+                      {{ $t("surveys.type.types.INITIAL") }}
+                    </span>
+                  </v-btn>
+                  <v-btn>
+                    <v-icon>mdi-crosshairs-question</v-icon>
+                    <span class="ml-1">
+                      {{ $t("surveys.type.types.DEFAULT") }}
+                    </span>
+                  </v-btn>
                 </v-btn-toggle>
               </v-card-title>
 
-              <v-card-title class="pr-0 d-flex">
-                <span class="mr-2">
-                  {{ $t("surveys.modal.intervention") }}
-                </span>
+              <div class="d-flex">
+                <v-card-title class="pr-0 flex-grow-1">
+                  <span class="mr-2" style="white-space: nowrap">
+                    {{ $t("surveys.modal.intervention") }}
+                    <span color="darkred">*</span>
+                  </span>
+                </v-card-title>
                 <v-select
                   v-model="interventionId"
                   :items="interventions"
@@ -132,7 +116,7 @@
                     }}
                   </template>
                 </v-select>
-              </v-card-title>
+              </div>
 
               <v-card-title class="pt-0 pt-sm-2">
                 {{ $t("surveys.modal.image") }}
@@ -174,6 +158,10 @@
       </v-card-text>
 
       <v-card-actions>
+        <v-btn x-large color="secondary" text @click="closeHandler">
+          {{ $t("general.cancel") }}
+        </v-btn>
+        <v-spacer></v-spacer>
         <v-btn
           x-large
           v-if="edit"
@@ -189,8 +177,20 @@
           <v-icon large> mdi-archive </v-icon>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn x-large color="secondary" text @click="closeHandler">
-          {{ $t("general.cancel") }}
+        <v-btn
+          v-if="!edit"
+          x-large
+          text
+          class="text-none"
+          @click="nextStepHandler"
+          :disabled="!canAdvance"
+        >
+          {{
+            $vuetify.breakpoint.name === "xs"
+              ? ""
+              : $t(`surveys.modal.firstCard.next-step`)
+          }}
+          <v-icon large> mdi-chevron-right </v-icon>
         </v-btn>
         <v-btn
           x-large
@@ -322,20 +322,58 @@ export default {
       imgInput.$el.click();
     },
     nextStepHandler() {
+      const surveyDraftFromLocalStorage = JSON.parse(
+        localStorage.getItem("surveyDraft")
+      );
+      localStorage.setItem(
+        "surveyDraft",
+        JSON.stringify({
+          ...surveyDraftFromLocalStorage,
+          dataDraft: {
+            name: this.name,
+            description: this.description,
+            interventionId: this.interventionId,
+            typeIndex: this.typeIndex,
+          },
+        })
+      );
+
       this.setDraftFromComponentData();
       this.incrementCompletionIndex();
     },
     prefillComponentDataFromDataDraft() {
+      // this.name =
+      //   mutableI18nString({
+      //     languageTexts: this.dataDraft?.name.languageTexts,
+      //   }) ?? emptyMutableI18nString();
+      // this.description =
+      //   mutableI18nString({
+      //     languageTexts: this.dataDraft?.description.languageTexts,
+      //   }) ?? emptyMutableI18nString();
+      // // this.surveyTags = this.tagIdsBySurveyId({ surveyId: this.dataIdInFocus }) ?? [];
+      // this.interventionId = this.dataDraft?.intervention?.id ?? null;
+
+      const surveyDraftFromLocalStorage = JSON.parse(
+        localStorage.getItem("surveyDraft")
+      );
+
       this.name =
         mutableI18nString({
-          languageTexts: this.dataDraft?.name.languageTexts,
+          languageTexts:
+            surveyDraftFromLocalStorage?.dataDraft?.name?.languageTexts,
         }) ?? emptyMutableI18nString();
+
       this.description =
         mutableI18nString({
-          languageTexts: this.dataDraft?.description.languageTexts,
+          languageTexts:
+            surveyDraftFromLocalStorage?.dataDraft?.description?.languageTexts,
         }) ?? emptyMutableI18nString();
-      // this.surveyTags = this.tagIdsBySurveyId({ surveyId: this.dataIdInFocus }) ?? [];
-      this.interventionId = this.dataDraft?.intervention?.id ?? null;
+
+      this.interventionId =
+        surveyDraftFromLocalStorage?.dataDraft?.interventionId ?? null;
+
+      this.typeIndex =
+        surveyDraftFromLocalStorage?.dataDraft?.typeIndex ?? this.typeIndex;
 
       this.rerenderDescriptionLocaleTextBox += 1;
       this.rerenderNameLocaleTextBox -= 1;

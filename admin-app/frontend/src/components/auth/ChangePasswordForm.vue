@@ -22,26 +22,37 @@
       :hint="$t('ChangePassword.newPassword.hint')"
       @click:append="showNewPassword = !showNewPassword"
     ></v-text-field>
-    <v-btn :disabled="loading" type="submit" block large color="primary" class="text-none">
+    <v-btn
+      :disabled="loading"
+      type="submit"
+      block
+      large
+      color="primary"
+      class="text-none"
+    >
       <v-progress-circular indeterminate v-if="loading"></v-progress-circular>
       <span v-else>
-        {{ $t('CompleteUserInfo.start') }}
+        {{ $t("CompleteUserInfo.start") }}
       </span>
     </v-btn>
   </v-form>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { formValidators } from '../../lib/utils';
-import { routeNamesDict, typesDictionary, vuexModulesDict } from '../../lib/constants';
+import { mapActions } from "vuex";
+import { formValidators } from "../../lib/utils";
+import {
+  routeNamesDict,
+  typesDictionary,
+  vuexModulesDict,
+} from "../../lib/constants";
 
 export default {
-  name: 'ChangePasswordForm',
+  name: "ChangePasswordForm",
   data() {
     return {
-      oldPassword: '',
-      newPassword: '',
+      oldPassword: "",
+      newPassword: "",
       showOldPassword: false,
       showNewPassword: false,
       loading: false,
@@ -65,7 +76,7 @@ export default {
       if (!valid) {
         this.showFeedbackForDuration({
           type: typesDictionary.error,
-          text: this.$t('general.form.invalidForm'),
+          text: this.$t("general.form.invalidForm"),
         });
         return;
       }
@@ -75,13 +86,13 @@ export default {
         oldPassword: this.oldPassword,
         newPassword: this.newPassword,
       });
-      if (changePasswordStatus === 'success') {
+      if (changePasswordStatus === "success") {
         this.$router.push({ name: routeNamesDict.OrganizationStructure });
         return;
       }
-      if (changePasswordStatus === 'failed') {
+      if (changePasswordStatus === "failed") {
         this.showFeedbackForDuration({
-          text: this.$t('general.errorCodes.InternalErrorException'),
+          text: this.$t("general.errorCodes.InternalErrorException"),
         });
         this.loading = false;
       }

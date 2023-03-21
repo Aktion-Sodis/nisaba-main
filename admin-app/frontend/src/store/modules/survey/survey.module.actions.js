@@ -8,11 +8,7 @@ import {
   SurveyTag,
 } from "../../../models";
 import { emptyQuestion, emptyQuestionOption } from "../../../lib/classes";
-import {
-  dataTypesDict,
-  modalModesDict,
-  vuexModulesDict,
-} from "../../../lib/constants";
+import { dataTypesDict, modalModesDict, vuexModulesDict } from "../../../lib/constants";
 import { DataStore } from "@aws-amplify/datastore";
 import { Storage } from "@aws-amplify/storage";
 
@@ -25,19 +21,15 @@ const actions = {
     const questionsWithUnnecessaryLastOne =
       rootGetters[`${vuexModulesDict.question}/getQuestionDrafts`];
     const questions = questionsWithUnnecessaryLastOne.slice(0, -1);
-    const rawOptions =
-      rootGetters[`${vuexModulesDict.question}/getOptionDrafts`];
+    const rawOptions = rootGetters[`${vuexModulesDict.question}/getOptionDrafts`];
     const options = [];
 
     // eslint-disable-next-line no-restricted-syntax
     for (const rawOption of rawOptions) {
-      options.push(
-        rawOption.filter((o) => !o.text.languageTexts.every((t) => t === ""))
-      );
+      options.push(rawOption.filter((o) => !o.text.languageTexts.every((t) => t === "")));
     }
 
-    const surveyDraft =
-      rootGetters[`${vuexModulesDict.dataModal}/getDataDraft`];
+    const surveyDraft = rootGetters[`${vuexModulesDict.dataModal}/getDataDraft`];
 
     const survey = new Survey({
       name: new I18nString(surveyDraft.name),
@@ -75,17 +67,12 @@ const actions = {
       //   );
       // }
 
-      console.log(rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]);
-
       if (rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]) {
         await Storage.put(
-          rootGetters.callDeriveFilePathWithOrganizationId(
-            "interventionSurveyPicPath",
-            {
-              interventionID: survey.interventionSurveysId,
-              surveyId: postResponse.id,
-            }
-          ),
+          rootGetters.callDeriveFilePathWithOrganizationId("interventionSurveyPicPath", {
+            interventionID: survey.interventionSurveysId,
+            surveyId: postResponse.id,
+          }),
           rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]
         );
       }
@@ -94,19 +81,20 @@ const actions = {
         async (questionImg, index) => {
           if (questionImg) {
             await Storage.put(
-              rootGetters.callDeriveFilePathWithOrganizationId(
-                "questionPicPath",
-                {
-                  interventionID: survey.interventionSurveysId,
-                  surveyId: postResponse.id,
-                  questionId: survey.questions[index].id,
-                }
-              ),
+              rootGetters.callDeriveFilePathWithOrganizationId("questionPicPath", {
+                interventionID: survey.interventionSurveysId,
+                surveyId: postResponse.id,
+                questionId: survey.questions[index].id,
+              }),
               questionImg
             );
           }
         }
       );
+
+      // delete surveyDraft in localStorage
+      localStorage.removeItem("surveyDraft");
+      commit("setShowContinue", { newValue: false });
 
       commit("addSurvey", postResponse);
       dispatch(
@@ -143,17 +131,11 @@ const actions = {
     commit(`${vuexModulesDict.question}/setQuestionImages`, [], { root: true });
     return success;
   },
-  APIput: async (
-    { commit, dispatch, getters, rootGetters },
-    { newData, originalId }
-  ) => {
-    console.log({ newData });
+  APIput: async ({ commit, dispatch, getters, rootGetters }, { newData, originalId }) => {
     let success = true;
     commit("setLoading", { newValue: true });
     // const original = getters.SURVEYById({ id: originalId });
     const original = await DataStore.query(Survey, originalId);
-
-    console.log({ original });
 
     try {
       const res = await DataStore.save(
@@ -167,27 +149,12 @@ const actions = {
         })
       );
 
-      console.log({ res });
-
-      console.log(
-        rootGetters.callDeriveFilePathWithOrganizationId(
-          "interventionSurveyPicPath",
-          {
-            interventionID: res.interventionSurveysId,
-            surveyId: res.id,
-          }
-        )
-      );
-
       if (rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]) {
         await Storage.put(
-          rootGetters.callDeriveFilePathWithOrganizationId(
-            "interventionSurveyPicPath",
-            {
-              interventionID: res.interventionSurveysId,
-              surveyId: res.id,
-            }
-          ),
+          rootGetters.callDeriveFilePathWithOrganizationId("interventionSurveyPicPath", {
+            interventionID: res.interventionSurveysId,
+            surveyId: res.id,
+          }),
           rootGetters[`${vuexModulesDict.dataModal}/getImageFile`],
           {
             contentType: "image/png",
@@ -212,10 +179,7 @@ const actions = {
     commit("setLoading", { newValue: false });
     return success;
   },
-  APIdelete: async (
-    { commit, dispatch, getters, rootGetters },
-    { id, _version }
-  ) => {
+  APIdelete: async ({ commit, dispatch, getters, rootGetters }, { id, _version }) => {
     let success = true;
     commit("setLoading", { newValue: true });
 
@@ -233,20 +197,13 @@ const actions = {
       });
 
       Storage.remove(
-        rootGetters.callDeriveFilePathWithOrganizationId(
-          "interventionSurveyPicPath",
-          {
-            interventionID: survey.interventionSurveysId,
-            surveyId: survey.id,
-          }
-        )
+        rootGetters.callDeriveFilePathWithOrganizationId("interventionSurveyPicPath", {
+          interventionID: survey.interventionSurveysId,
+          surveyId: survey.id,
+        })
       );
 
-      commit(
-        `${vuexModulesDict.dataModal}/setDataIdInFocus`,
-        { newValue: null },
-        { root: true }
-      );
+      commit(`${vuexModulesDict.dataModal}/setDataIdInFocus`, { newValue: null }, { root: true });
       commit(
         `${vuexModulesDict.dataModal}/setMode`,
         { newValue: modalModesDict.read },

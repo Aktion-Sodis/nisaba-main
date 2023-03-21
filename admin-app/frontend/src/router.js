@@ -11,11 +11,7 @@ import Surveys from "./views/Surveys.vue";
 import Interventions from "./views/Interventions.vue";
 import UserManagement from "./views/UserManagement.vue";
 import Auth from "./views/Auth.vue";
-import {
-  routeNamesDict,
-  syncStatusDict,
-  vuexModulesDict,
-} from "./lib/constants";
+import { routeNamesDict, syncStatusDict, vuexModulesDict } from "./lib/constants";
 
 Vue.use(VueRouter);
 
@@ -179,7 +175,7 @@ router.beforeEach(async (to, from, next) => {
   if (
     cognitoUserSession &&
     (to.name === routeNamesDict.Login ||
-      to.name === routeNamesDict.CompleteUserInfo)
+      (from.name !== routeNamesDict.Login && to.name === routeNamesDict.CompleteUserInfo))
   ) {
     next({ name: from?.name ?? routeNamesDict.OrganizationStructure });
   }

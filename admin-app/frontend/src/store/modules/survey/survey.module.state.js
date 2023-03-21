@@ -8,6 +8,7 @@ const state = {
     _deleted: true,
     archived: true,
   },
+  showContinue: !!localStorage.getItem("surveyDraft"),
 };
 
 export default state;

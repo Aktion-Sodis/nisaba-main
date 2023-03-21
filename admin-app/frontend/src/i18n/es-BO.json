@@ -7,6 +7,7 @@
   },
   "general": {
     "edit": "Editar",
+    "continue": "Continuar",
     "searchBox": "Búsqueda",
     "close": "Cerrar",
     "cancel": "Cancelar",
@@ -21,11 +22,12 @@
       "minCharNotMet": "Al menos {minChar} carácteres.",
       "required": "Necesario.",
       "unsavedChanges": "Hay cambios sin guardar. ¿Estás seguro de que quieres salir?",
-      "addInNewLocale": "En otra lengua",
+      "addInNewLocale": "En otra lengua:",
       "invalidForm": "El formulario no es válido. Preste atención a las advertencias de las entradas.",
       "invalidNumber": "Este es un número inválido.",
       "cannotDeleteEntityWithChildren": "No se puede eliminar esta entidad porque tiene hijos.",
-      "email": "Correo electrónico"
+      "email": "Correo electrónico",
+      "phoneNumber": "Número de teléfono"
     },
     "noTextProvided": "No text was provided.",
     "noNumberProvided": "No number was provided.",
@@ -104,7 +106,8 @@
   "Login": {
     "title": "¡Bienvenido de nuevo!",
     "subtitle": "Por favor, inicie sesión con sus credenciales o regístrese.",
-    "email": "Email",
+    "usernamePlaceholder": "Email o número de teléfono",
+    "phoneNumber": "Número de teléfono",
     "password": "Contraseña",
     "rememberMe": "Recuérdalo",
     "forgotPassword": "Contraseña olvidada",
@@ -245,8 +248,10 @@
   "userManagement": {
     "title": "Gestión de usuarios",
     "sendInvitation": "Enviar invitación",
-    "successfulSentInvitation": "Se ha enviado una invitación con éxito al correo electrónico",
-    "emailAlreadyInUse": "Este correo electrónico ya está en uso"
+    "successfulSentInvitation": "El usuario se ha creado correctamente",
+    "emailAlreadyInUse": "Este correo electrónico ya está en uso",
+    "groupLabel": "Producto",
+    "password": "Usuario creado. Asegúrese de que llegue esta contraseña al usuario: {finalPassword}"
   },
   "surveys": {
     "title": "Encuestas",
@@ -313,7 +318,8 @@
         "saveDraft": "Guardar borrador"
       },
       "finalizeCard": {
-        "publishSurvey": "Publicar encuesta"
+        "publishSurvey": "Publicar encuesta",
+        "backToQuestions": "Volver a preguntas"
       },
       "stepper": {
         "details": "Detalles de encuesta",
