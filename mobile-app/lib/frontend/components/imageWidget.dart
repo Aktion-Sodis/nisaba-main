@@ -94,7 +94,7 @@ class _ImageFromSyncedFileState extends State<ImageFromSyncedFile> {
   @override
   void initState() {
     print("reinitializing image widget");
-    widget.syncedFile?.file().then((value) async {
+    /*widget.syncedFile?.file().then((value) async {
       imageFile = value;
       fileImage = FileImage(imageFile!);
       await fileImage!.evict();
@@ -107,7 +107,7 @@ class _ImageFromSyncedFileState extends State<ImageFromSyncedFile> {
         fileImage = fileImage;
         loading = false;
       }
-    });
+    });*/
   }
 
   @override
