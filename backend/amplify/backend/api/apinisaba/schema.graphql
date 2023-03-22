@@ -11,9 +11,9 @@ type I18nString {
 } 
 
 type Organization @model @auth(rules: [{allow: private, }]) {
-    nameCamelCase: String!
-    nameKebabCase: String!
-    nameVerbose: String!
+  nameCamelCase: String!
+  nameKebabCase: String!
+  nameVerbose: String!
 
 }
 

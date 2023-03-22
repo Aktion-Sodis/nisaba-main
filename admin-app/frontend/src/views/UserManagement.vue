@@ -9,9 +9,9 @@
           <v-row>
             <v-col cols="12" md="8">
               <v-text-field
-                v-model="phoneNumber"
-                :rules="[rules.required, rules.isPhoneNumber]"
-                :label="$t('Login.phoneNumber')"
+                v-model="username"
+                :rules="[rules.required]"
+                :label="$t('Login.usernamePlaceholder')"
                 :disabled="loading"
                 required
                 outlined
@@ -71,7 +71,7 @@ export default {
   data() {
     return {
       loading: false,
-      phoneNumber: null,
+      username: null,
       finalPassword: null,
       group: "admin",
       groups: [
@@ -111,7 +111,7 @@ export default {
       }
       this.loading = true;
       const finalPassword = await this.createUser({
-        phoneNumber: this.phoneNumber,
+        username: this.username,
         group: this.group,
       });
       this.finalPassword = finalPassword;

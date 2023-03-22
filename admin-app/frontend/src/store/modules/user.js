@@ -24,17 +24,17 @@ const moduleMutations = {
 /** @type {import("vuex").ActionTree<typeof moduleState>} */
 const moduleActions = {
   createUser: async ({ dispatch }, userDraft) => {
-    const { phoneNumber, group } = userDraft;
+    const { username, group } = userDraft;
 
     // console log the id token
     const { idToken } = await Auth.currentSession();
     const { jwtToken } = idToken;
 
     try {
-      // Call the API `nisabaUserManagementApi` to create a user and pass the phoneNumber as a parameter
+      // Call the API `nisabaUserManagementApi` to create a user and pass the username as a parameter
       const { finalPassword } = await API.post("nisabaUserManagementApi", "/users", {
         headers: { Authorization: `Bearer ${jwtToken}` },
-        body: { phoneNumber, group },
+        body: { username, group },
       });
 
       // Show a success message
