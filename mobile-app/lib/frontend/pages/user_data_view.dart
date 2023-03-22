@@ -282,7 +282,8 @@ class UserDataViewState extends State<UserDataView> {
                               margin:
                                   EdgeInsets.only(top: defaultPadding(context)),
                               child: _localeChoice(context)),
-                          Container(
+                          // Temporarily disabled
+                          /*Container(
                               margin:
                                   EdgeInsets.only(top: defaultPadding(context)),
                               child: Row(
@@ -303,7 +304,7 @@ class UserDataViewState extends State<UserDataView> {
                                     overflow: TextOverflow.clip,
                                   ))
                                 ],
-                              )),
+                              )),*/
                           Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.center,
