@@ -3,24 +3,28 @@
     <v-card-title>
       <h2 v-if="edit && entityInFocus">
         {{
-          $t('organizationStructure.entityModal.modalTitle.edit', {
-            entity: calculateUILocaleString({ languageTexts: entityInFocus.name.languageTexts }),
+          $t("organizationStructure.entityModal.modalTitle.edit", {
+            entity: calculateUILocaleString({
+              languageTexts: entityInFocus.name.languageTexts,
+            }),
           })
         }}
       </h2>
       <h2 v-else>
         {{
-          $t('organizationStructure.entityModal.modalTitle.create', {
-            entity: calculateUILocaleString({ languageTexts: level.name.languageTexts }),
+          $t("organizationStructure.entityModal.modalTitle.create", {
+            entity: calculateUILocaleString({
+              languageTexts: level.name.languageTexts,
+            }),
           })
         }}
       </h2>
     </v-card-title>
     <v-card-subtitle v-if="edit">
-      {{ $t('organizationStructure.entityModal.modalDescription.edit') }}
+      {{ $t("organizationStructure.entityModal.modalDescription.edit") }}
     </v-card-subtitle>
     <v-card-subtitle v-else>
-      {{ $t('organizationStructure.entityModal.modalDescription.create') }}
+      {{ $t("organizationStructure.entityModal.modalDescription.create") }}
     </v-card-subtitle>
     <v-card-text>
       <v-container>
@@ -29,7 +33,9 @@
             <LocaleTextBox
               labelPrefixI18nSelector="organizationStructure.entityModal.name"
               :passPayloadToI18n="{
-                entity: calculateUILocaleString({ languageTexts: level.name.languageTexts }),
+                entity: calculateUILocaleString({
+                  languageTexts: level.name.languageTexts,
+                }),
               }"
               :initVal="name"
               @res="nameUpdatedHandler"
@@ -51,7 +57,9 @@
             <LocaleTextBox
               labelPrefixI18nSelector="organizationStructure.entityModal.description"
               :passPayloadToI18n="{
-                entity: calculateUILocaleString({ languageTexts: level.name.languageTexts }),
+                entity: calculateUILocaleString({
+                  languageTexts: level.name.languageTexts,
+                }),
               }"
               :initVal="description"
               @res="descriptionUpdatedHandler"
@@ -76,7 +84,9 @@
               item-value="id"
               :label="
                 $t('organizationStructure.entityModal.upperEntityLabel', {
-                  entity: calculateUILocaleString({ languageTexts: upperLevelName.languageTexts }),
+                  entity: calculateUILocaleString({
+                    languageTexts: upperLevelName.languageTexts,
+                  }),
                 })
               "
               dense
@@ -108,12 +118,24 @@
             >
               <template v-slot:v-img="slotProps">
                 <v-img max-height="200px" :src="slotProps.src">
-                  <v-btn class="iv-edit-icon" color="primary" @click="selectImg">
+                  <!-- <v-btn
+                    class="iv-edit-icon"
+                    color="primary"
+                    @click="selectImg"
+                  >
                     <v-icon color="darken-2"> mdi-plus </v-icon>
-                    <span> {{ edit ? $t('general.editImage') : $t('general.addImage') }} </span>
+                    <span>
+                      {{
+                        edit ? $t("general.editImage") : $t("general.addImage")
+                      }}
+                    </span>
                   </v-btn>
 
-                  <FileInput ref="img-upload" style="display: none" :acceptedType="'image/png'" />
+                  <FileInput
+                    ref="img-upload"
+                    style="display: none"
+                    :acceptedType="'image/png'"
+                  /> -->
                 </v-img>
               </template>
             </ImgFromS3>
@@ -122,17 +144,21 @@
               <v-divider></v-divider>
               <v-card-title class="pt-0 pt-sm-2">
                 <span>
-                  {{ $t('organizationStructure.levelModal.customData.title') }}
+                  {{ $t("organizationStructure.levelModal.customData.title") }}
                 </span>
               </v-card-title>
 
-              <div v-for="customDatum in customData" :key="customDatum.customDataID">
+              <div
+                v-for="customDatum in customData"
+                :key="customDatum.customDataID"
+              >
                 <v-text-field
                   :label="`${calculateUILocaleString({
                     languageTexts: customDatum.name.languageTexts,
                   })}
                     (${$t(
-                      'organizationStructure.levelModal.customData.types.' + customDatum.type
+                      'organizationStructure.levelModal.customData.types.' +
+                        customDatum.type
                     )})`"
                   outlined
                   v-model="customDatum.value"
@@ -142,7 +168,9 @@
                       $refs.form.validate();
                     }
                   "
-                  :rules="customDatum.type === Type.INT ? rules.correctNumber : []"
+                  :rules="
+                    customDatum.type === Type.INT ? rules.correctNumber : []
+                  "
                 ></v-text-field>
               </div>
               <v-divider></v-divider>
@@ -153,13 +181,20 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-btn x-large v-if="edit" @click="deleteHandler" color="warning" text>
-        {{ $t('general.delete') }}
+      <v-btn
+        x-large
+        v-if="edit"
+        @click="deleteHandler"
+        color="warning"
+        text
+        :disabled="isDeleteDisabled"
+      >
+        {{ $t("general.delete") }}
         <v-icon large> mdi-delete </v-icon>
       </v-btn>
       <v-spacer></v-spacer>
       <v-btn x-large color="secondary" text @click="closeHandler">
-        {{ $t('general.cancel') }}
+        {{ $t("general.cancel") }}
       </v-btn>
       <v-btn
         x-large
@@ -169,25 +204,32 @@
         @click.prevent="submitHandler"
         :disabled="isSubmitDisabled"
       >
-        {{ $t('general.save') }}
+        {{ $t("general.save") }}
       </v-btn>
     </v-card-actions>
   </v-form>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex';
-import { emptyMutableI18nString, mutableI18nString } from '../../../lib/classes';
-import { modalModesDict, vuexModulesDict } from '../../../lib/constants';
-import { Entity, Type } from '../../../models';
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import {
+  emptyMutableI18nString,
+  mutableI18nString,
+} from "../../../lib/classes";
+import { modalModesDict, vuexModulesDict } from "../../../lib/constants";
+import { Entity, Type } from "../../../models";
 
-import LocaleTextBox from '../../commons/form/LocaleTextBox.vue';
-import FileInput from '../../commons/form/FileInput.vue';
-import ImgFromS3 from '../../commons/ImgFromS3.vue';
+import LocaleTextBox from "../../commons/form/LocaleTextBox.vue";
+// import FileInput from "../../commons/form/FileInput.vue";
+import ImgFromS3 from "../../commons/ImgFromS3.vue";
 
 export default {
-  name: 'EntityModalAsForm',
-  components: { LocaleTextBox, FileInput, ImgFromS3 },
+  name: "EntityModalAsForm",
+  components: {
+    LocaleTextBox,
+    // FileInput,
+    ImgFromS3,
+  },
   data() {
     return {
       Type,
@@ -199,7 +241,10 @@ export default {
       rerenderDescriptionLocaleTextBox: -1,
       customData: [],
       rules: {
-        correctNumber: [(v) => !Number.isNaN(Number(v)) || this.$t('general.form.invalidNumber')],
+        correctNumber: [
+          (v) =>
+            !Number.isNaN(Number(v)) || this.$t("general.form.invalidNumber"),
+        ],
       },
       isFormValid: true,
     };
@@ -216,18 +261,18 @@ export default {
   },
   computed: {
     ...mapGetters({
-      dataModalMode: 'dataModal/getMode',
-      dataIdInFocus: 'dataModal/getDataIdInFocus',
-      dataDraft: 'dataModal/getDataDraft',
-      imageFile: 'dataModal/getImageFile',
-      ENTITYById: 'ENTITY_Data/ENTITYById',
-      allEntitiesOfLevel: 'ENTITY_Data/allEntitiesByLevelId',
-      LEVELById: 'LEVEL_Data/LEVELById',
-      calculateLocalizedString: 'calculateLocalizedString',
-      calculateUILocaleString: 'calculateUILocaleString',
-      getCreatingEntityInLevelId: 'getCreatingEntityInLevelId',
-      getHasChildren: 'ENTITY_Data/hasParentByUpperEntityId',
-      deriveFilePath: 'callDeriveFilePathWithOrganizationId',
+      dataModalMode: "dataModal/getMode",
+      dataIdInFocus: "dataModal/getDataIdInFocus",
+      dataDraft: "dataModal/getDataDraft",
+      imageFile: "dataModal/getImageFile",
+      ENTITYById: "ENTITY_Data/ENTITYById",
+      allEntitiesOfLevel: "ENTITY_Data/allEntitiesByLevelId",
+      LEVELById: "LEVEL_Data/LEVELById",
+      calculateLocalizedString: "calculateLocalizedString",
+      calculateUILocaleString: "calculateUILocaleString",
+      getCreatingEntityInLevelId: "getCreatingEntityInLevelId",
+      hasChildren: "ENTITY_Data/hasChildren",
+      deriveFilePath: "callDeriveFilePathWithOrganizationId",
     }),
     entityInFocus() {
       return this.ENTITYById({ id: this.dataIdInFocus });
@@ -238,7 +283,9 @@ export default {
     },
     level() {
       return this.LEVELById({
-        id: this.edit ? this.entityInFocus.entityLevelId : this.getCreatingEntityInLevelId,
+        id: this.edit
+          ? this.entityInFocus.entityLevelId
+          : this.getCreatingEntityInLevelId,
       });
     },
     upperLevelName() {
@@ -246,16 +293,22 @@ export default {
     },
     deriveImgPath() {
       return this.edit
-        ? this.deriveFilePath('entityPicPath', { entityID: this.dataIdInFocus })
+        ? this.deriveFilePath("entityPicPath", { entityID: this.dataIdInFocus })
         : null;
     },
     assumedSrc() {
       return this.imageFile ?? this.deriveImgPath;
     },
+    isDeleteDisabled() {
+      // TODO: amplify is not working properly, so we can't delete the entity.
+      // see issue https://github.com/aws-amplify/amplify-js/issues/10864
+      return true;
+    },
     isSubmitDisabled() {
       return (
-        this.calculateLocalizedString({ languageTexts: this.name.languageTexts }) ===
-          this.$t('general.noTextProvided') ||
+        this.calculateLocalizedString({
+          languageTexts: this.name.languageTexts,
+        }) === this.$t("general.noTextProvided") ||
         (this.allEntitiesOfUpperLevel.length > 0 && !this.parentEntityID) ||
         !this.isFormValid
       );
@@ -276,25 +329,31 @@ export default {
   },
   methods: {
     ...mapActions({
-      saveData: 'dataModal/saveData',
-      deleteData: 'dataModal/deleteData',
-      abortCreateData: 'dataModal/abortCreateData',
-      abortEditData: 'dataModal/abortEditData',
-      editData: 'dataModal/editData',
+      saveData: "dataModal/saveData",
+      deleteData: "dataModal/deleteData",
+      abortCreateData: "dataModal/abortCreateData",
+      abortEditData: "dataModal/abortEditData",
+      editData: "dataModal/editData",
     }),
     ...mapMutations({
-      setDraft: 'dataModal/setDraft',
+      setDraft: "dataModal/setDraft",
     }),
     deleteHandler() {
-      const hasChildren = this.getHasChildren({ parentEntityID: this.dataIdInFocus });
-      if (hasChildren) {
-        this.$store.dispatch(`${vuexModulesDict.feedback}/showFeedbackForDuration`, {
-          type: 'error',
-          text: this.$t('general.form.cannotDeleteEntityWithChildren'),
-        });
+      if (
+        this.hasChildren({
+          id: this.dataIdInFocus,
+        })
+      ) {
+        this.$store.dispatch(
+          `${vuexModulesDict.feedback}/showFeedbackForDuration`,
+          {
+            type: "error",
+            text: this.$t("general.form.cannotDeleteEntityWithChildren"),
+          }
+        );
         return;
       }
-      this.deleteData({ id: this.dataIdInFocus });
+      this.deleteData();
     },
     closeHandler() {
       if (this.edit) this.abortEditData();
@@ -308,7 +367,11 @@ export default {
     },
     async submitHandler() {
       // show error feedback here
-      if (this.allEntitiesOfUpperLevel.length > 0 && this.parentEntityID === null) return;
+      if (
+        this.allEntitiesOfUpperLevel.length > 0 &&
+        this.parentEntityID === null
+      )
+        return;
       this.setDraft(
         new Entity({
           name: this.name,
@@ -318,20 +381,23 @@ export default {
             : this.getCreatingEntityInLevelId,
           parentEntityID: this.parentEntityID ?? null,
           appliedInterventions: [],
-          customData: this.customData.map(({ customDataID, type, name, value }) => ({
-            customDataID,
-            type,
-            name,
-            intValue: type === Type.INT && value !== null ? Number(value) : null,
-            stringValue: type === Type.STRING ? value : null,
-          })),
+          customData: this.customData.map(
+            ({ customDataID, type, name, value }) => ({
+              customDataID,
+              type,
+              name,
+              intValue:
+                type === Type.INT && value !== null ? Number(value) : null,
+              stringValue: type === Type.STRING ? value : null,
+            })
+          ),
         })
       );
       await this.$nextTick();
       this.saveData();
     },
     selectImg() {
-      const imgInput = this.$refs['img-upload'];
+      const imgInput = this.$refs["img-upload"];
       imgInput.$el.click();
     },
     prefillComponentDataFromDataDraft() {
@@ -355,7 +421,9 @@ export default {
         let value = null;
         if (this.edit && this.entityInFocus.customData[index]) {
           value =
-            this.entityInFocus.customData[index][type === Type.INT ? 'intValue' : 'stringValue'];
+            this.entityInFocus.customData[index][
+              type === Type.INT ? "intValue" : "stringValue"
+            ];
         }
         return {
           name: mutableI18nString(name),
@@ -374,7 +442,11 @@ export default {
     isNumber(evt) {
       evt = evt || window.event;
       const charCode = evt.which ? evt.which : evt.keyCode;
-      if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
         evt.preventDefault();
         return false;
       }

@@ -7,12 +7,14 @@
   },
   "general": {
     "edit": "Düzenle",
+    "continue": "Devam et",
     "searchBox": "Her yerde ara",
     "close": "Kapat",
     "cancel": "İptal",
     "save": "Kaydet",
     "delete": "Sil",
     "archive": "Arşivle",
+    "restore": "Geri yükle",
     "addImage": "Resim ekle",
     "editImage": "Resmi düzenle",
     "form": {
@@ -20,11 +22,12 @@
       "minCharNotMet": "En az {minChar} uzunluğunda olmalı.",
       "required": "Zorunlu alan.",
       "unsavedChanges": "Kaydedilmemiş değişiklikler var. Çıkmak istediğinizden emin misiniz?",
-      "addInNewLocale": "Başka bir dilde",
+      "addInNewLocale": "Başka bir dilde:",
       "invalidForm": "Geçersiz form. Lütfen girdilerin uyarılarına dikkat ediniz.",
       "invalidNumber": "Geçersiz sayı.",
       "cannotDeleteEntityWithChildren": "Bu öğeyi silemezsiniz. Lütfen önce alt öğeleri siliniz.",
-      "email": "Geçersiz e-posta adresi."
+      "email": "Geçersiz e-posta adresi.",
+      "phoneNumber": "Geçersiz telefon numarası."
     },
     "noTextProvided": "Buraya bir metin girilmemiş.",
     "noNumberProvided": "Buraya bir sayı girilmemiş.",
@@ -103,7 +106,8 @@
   "Login": {
     "title": "Hoş geldin!",
     "subtitle": "Lütfen giriş yap.",
-    "email": "Email",
+    "usernamePlaceholder": "Email ya da telefon numarası",
+    "phoneNumber": "Telefon numarası",
     "password": "Şifre",
     "rememberMe": "Oturumu hatırla",
     "forgotPassword": "Şifremi unuttum",
@@ -157,6 +161,7 @@
   },
   "organizationStructure": {
     "title": "Organizasyonel Yapı",
+    "subtitle": "⚠️ Bu versiyonda oluşumları silmek mümkün değildir.",
     "addNewEntity": "Yeni oluşum ekle",
     "addNewLevel": "Yeni seviye ekle",
     "hasNoInterventions": "Bu seviyede henüz hiç müdahale yok.",
@@ -211,6 +216,7 @@
   },
   "interventions": {
     "title": "Müdahaleler",
+    "subtitle": "⚠️ Bu versiyonda müdahaleleri silmek mümkün değildir.",
     "newIntervention": "Yeni müdahale",
     "type": {
       "title": "Müdahale türü",
@@ -242,8 +248,10 @@
   "userManagement": {
     "title": "Kullanıcı Yönetimi",
     "sendInvitation": "Davetiye Gönder",
-    "successfulSentInvitation" : "E-posta adresine bir davetiyenin başarıyla gönderildi",
-    "emailAlreadyInUse": "Bu e-posta zaten kullanımda"
+    "successfulSentInvitation": "Kullanıcı başarıyla oluşturuldu.",
+    "emailAlreadyInUse": "Bu e-posta zaten kullanımda",
+    "groupLabel": "Kapsam",
+    "password": "Kullanıcı oluşturuldu. Kullanıcıya bu şifreyi ulaştırın: {finalPassword}"
   },
   "surveys": {
     "title": "Anketler",
@@ -278,6 +286,7 @@
             "textLabel": "Soru metni",
             "imageTitle": "Soru resmi",
             "addImage": "Resim ekle",
+            "cantAddImage": "⚠️ Admin-App'in bu sürümünde sorulara resim eklemek desteklenmiyor.",
             "audioTitle": "Soru sesi",
             "addAudio": "Ses ekle"
           },
@@ -309,7 +318,8 @@
         "saveDraft": "Taslağı kaydet"
       },
       "finalizeCard": {
-        "publishSurvey": "Anketi yayınla"
+        "publishSurvey": "Anketi yayınla",
+        "backToQuestions": "Sorulara geri dön"
       },
       "stepper": {
         "details": "Anket detayları",

@@ -1,4 +1,4 @@
-import 'package:mobile_app/backend/Blocs/auth/auth_credentials.dart';
+import 'package:mobile_app/backend/Blocs/session/auth_credentials.dart';
 import 'package:mobile_app/backend/callableModels/User.dart';
 
 abstract class SessionState {}

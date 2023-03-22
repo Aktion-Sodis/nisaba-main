@@ -11,9 +11,9 @@ type I18nString {
 } 
 
 type Organization @model @auth(rules: [{allow: private, }]) {
-    nameCamelCase: String!
-    nameKebabCase: String!
-    nameVerbose: String!
+  nameCamelCase: String!
+  nameKebabCase: String!
+  nameVerbose: String!
 
 }
 
@@ -266,4 +266,10 @@ type SessionData @model @auth(rules: [{allow: owner, ownerField: "organization_i
   buildNumber: String
   remoteConfig: String
   platform: String
+}
+
+# Only for testing purposes
+type TestObject @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
+  name: String
+  age: Int!
 }

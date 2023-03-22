@@ -1,9 +1,9 @@
 ---
 name: User story
 about: Describe a request from a user's perspective
-title: "[USER STORY]"
+title: "[USER STORY] your title"
 labels: ''
-assignees: ''
+assignees: '@apolat2000'
 
 ---
 

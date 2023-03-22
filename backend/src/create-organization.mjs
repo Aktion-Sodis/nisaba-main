@@ -21,12 +21,6 @@ const organizationNameVerbose = process.argv[2];
 const emailOfOrganizationAdmin = process.argv[3];
 
 async function main() {
-  console.log({
-    username,
-    password,
-    accessKeyId,
-    secretAccessKey,
-  });
   if (!username || !password || !accessKeyId || !secretAccessKey) {
     console.log(
       "Configure your environment correctly by creating a .env file by copying .env.interface."
@@ -88,6 +82,10 @@ async function main() {
         UserPoolId: awsconfig.aws_user_pools_id,
         GroupName: "admin",
       })
+    );
+    // success log
+    console.log(
+      `Successfully created organization ${newOrga.nameVerbose} with id ${newOrga.id} and added user ${emailOfOrganizationAdmin} as admin.`
     );
   } catch (error) {
     console.log("error signing up:", error);

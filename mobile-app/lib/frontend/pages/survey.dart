@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +28,7 @@ import 'package:mobile_app/frontend/components/imageWidget.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/frontend/strings.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:mobile_app/services/photo_capturing.dart';
+import 'package:mobile_app/utils/photo_capturing.dart';
 
 import '../../backend/callableModels/ExecutedSurvey.dart';
 import '../../backend/callableModels/Survey.dart';
@@ -54,6 +53,7 @@ class AudioPlayerWidgetFromSyncFile extends StatefulWidget {
       _AudioPlayerWidgetFromSyncFileState();
 }
 
+// TODO: Change name. Conflict with SurveyWidget in main_menu_organization.dart
 class SurveyWidget extends StatefulWidget {
   final Survey survey;
   const SurveyWidget({Key? key, required this.survey}) : super(key: key);
@@ -101,8 +101,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
               children: [
                 surveyTitleWidget(
                     context: context,
-                    surveyTitle: widget.survey.name,
-                    entityName: widget.survey.intervention?.name ?? '',
+                    surveyTitle: widget.survey.displayName,
+                    entityName: widget.survey.intervention?.displayName ?? '',
                     imageFile: syncedSurveyImageFile,
                     goBack: _leaveSurveyRegular,
                     proceed: () {
@@ -180,19 +180,20 @@ class SurveyWidgetState extends State<SurveyWidget> {
     _pageController.addListener(() {
       setState(() {});
     });
-    syncedSurveyImageFile = SurveyRepository.getSurveyPic(widget.survey);
+    syncedSurveyImageFile =
+        SurveyRepository.instance.getSurveyPic(widget.survey);
     picAndAudioAnswerFiles = {};
     widget.survey.questions.forEach((element) {
       if (element.type == QuestionType.PICTURE) {
-        picAndAudioAnswerFiles[element.id!] =
-            ExecutedSurveyRepository.getQuestionAnswerPic(
+        picAndAudioAnswerFiles[element.id!] = ExecutedSurveyRepository.instance
+            .getQuestionAnswerPic(
                 (context.read<InAppBloc>().state as SurveyInAppState)
                     .appliedIntervention,
                 preliminaryExecutedSurveyId,
                 element);
       } else if (element.type == QuestionType.AUDIO) {
-        picAndAudioAnswerFiles[element.id!] =
-            ExecutedSurveyRepository.getQuestionAnswerAudio(
+        picAndAudioAnswerFiles[element.id!] = ExecutedSurveyRepository.instance
+            .getQuestionAnswerAudio(
                 (context.read<InAppBloc>().state as SurveyInAppState)
                     .appliedIntervention,
                 preliminaryExecutedSurveyId,
@@ -222,7 +223,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
         ),
         addTaskWidget(
             context: context,
-            surveyTitle: widget.survey.name,
+            surveyTitle: widget.survey.displayName,
             addTask: addTask),
         SizedBox(
           height: defaultPadding(context),
@@ -333,7 +334,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -388,7 +390,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
                           width: defaultPadding(context),
                         ),
                         Flexible(
-                            child: Text(question.questionOptions![index].text,
+                            child: Text(
+                                question.questionOptions![index].displayText,
                                 style: Theme.of(context).textTheme.bodyText1)),
                       ],
                     ),
@@ -407,7 +410,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -449,7 +453,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                         ),
                         Flexible(
                             child: Text(
-                          question.questionOptions![index].text,
+                          question.questionOptions![index].displayText,
                           style: Theme.of(context).textTheme.bodyText1,
                         )),
                       ],
@@ -486,7 +490,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -496,7 +501,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: Text(question.text),
+                child: Text(question.displayText),
               ),
               getReadOutWidget(question: question),
             ],
@@ -540,7 +545,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -550,7 +556,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: Text(question.text,
+                child: Text(question.displayText,
                     style: Theme.of(context).textTheme.bodyText1),
               ),
               getReadOutWidget(question: question),
@@ -594,7 +600,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -628,7 +635,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -666,7 +674,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -715,7 +724,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       shrinkWrap: true,
       children: [
         imageForQuestion(
-            syncedFile: SurveyRepository.getQuestionPic(survey, question)),
+            syncedFile:
+                SurveyRepository.instance.getQuestionPic(survey, question)),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -1037,14 +1047,14 @@ class SurveyWidgetState extends State<SurveyWidget> {
     if (questionAnswer != null) {
       switch (question.type) {
         case QuestionType.SINGLECHOICE:
-          answerWidget = Text(questionAnswer.questionOptions!.first.text,
+          answerWidget = Text(questionAnswer.questionOptions!.first.displayText,
               style: Theme.of(context).textTheme.bodyText1);
           break;
         case QuestionType.MULTIPLECHOICE:
           String answers = '';
           for (QuestionOption questionOption
               in questionAnswer.questionOptions!) {
-            answers += '${questionOption.text}, ';
+            answers += '${questionOption.displayText}, ';
           }
           if (answers.length > 2) {
             answers = answers.substring(0, answers.length - 2);
@@ -1122,7 +1132,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        question.text,
+                        question.displayText,
                         style: Theme.of(context).textTheme.headline2,
                       ),
                       if (questionAnswer != null &&
@@ -1175,7 +1185,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  question.text,
+                  question.displayText,
                   style: Theme.of(context).textTheme.headline2,
                 ),
                 SizedBox(
@@ -1248,11 +1258,15 @@ class SurveyWidgetState extends State<SurveyWidget> {
     var userState = context.read<UserBloc>().state;
     ExecutedSurvey executedSurvey = ExecutedSurvey(
         id: preliminaryId,
-        appliedIntervention: surveyState.appliedIntervention,
-        survey: survey,
-        whoExecutedIt: userState.user!,
+        appliedInterventionExecutedSurveysId:
+            surveyState.appliedIntervention.id,
+        executedSurveySurveyId: survey.id,
+        executedSurveyWhoExecutedItId: userState.user!.id,
         date: DateTime.now(),
-        answers: surveyAnswersAsList);
+        answers: surveyAnswersAsList)
+      ..appliedIntervention = surveyState.appliedIntervention
+      ..survey = survey
+      ..whoExecutedIt = userState.user!;
     context.read<InAppBloc>().add(FinishAndSaveExecutedSurvey(
         executedSurvey,
         surveyState.appliedIntervention,
@@ -1320,7 +1334,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
               padding:
                   EdgeInsets.symmetric(horizontal: defaultPadding(context)),
               child: Text(
-                '${survey.name} $summary',
+                '${survey.displayName} $summary',
                 style: Theme.of(context).textTheme.headline2,
               ),
             ),

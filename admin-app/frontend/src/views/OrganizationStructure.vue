@@ -1,7 +1,8 @@
 <template>
   <div style="overflow-x: scroll; width: 100%; height: calc(100vh - 48px)">
-    <h1 class="ml-8">{{ $t('organizationStructure.title') }}</h1>
-    <div class="mt-8 d-flex" style="height: calc(100% - 172px)">
+    <h1 class="ml-8">{{ $t("organizationStructure.title") }}</h1>
+    <sub class="ml-8">{{ $t("organizationStructure.subtitle") }}</sub>
+    <div class="mt-8 d-flex" style="height: calc(100% - 200px)">
       <div
         v-for="(level, index) in levels"
         :key="level.id"
@@ -11,10 +12,14 @@
       >
         <LevelColumnHeader
           :id="level.id"
-          :name="calculateUILocaleString({ languageTexts: level.name.languageTexts })"
+          :name="
+            calculateUILocaleString({ languageTexts: level.name.languageTexts })
+          "
         />
         <EntitiesColumn
-          :levelName="calculateUILocaleString({ languageTexts: level.name.languageTexts })"
+          :levelName="
+            calculateUILocaleString({ languageTexts: level.name.languageTexts })
+          "
           :levelId="level.id"
           :index="index"
           :parentLevelId="level.parentLevelID"
@@ -22,7 +27,13 @@
         <AddEntityButton class="mt-4" :levelId="level.id" />
       </div>
       <div class="dotted-left-border d-flex align-center justify-center pl-2">
-        <v-btn :disabled="getLoading" rounded x-large color="primary" @click="clickOnAddNewLevel">
+        <v-btn
+          :disabled="getLoading"
+          rounded
+          x-large
+          color="primary"
+          @click="clickOnAddNewLevel"
+        >
           <v-icon class="mr-2">mdi-plus</v-icon>
           <v-skeleton-loader
             v-if="getLoading"
@@ -31,7 +42,7 @@
             type="text"
           ></v-skeleton-loader>
           <span v-else>
-            {{ $t('organizationStructure.addNewLevel') }}
+            {{ $t("organizationStructure.addNewLevel") }}
           </span>
         </v-btn>
       </div>
@@ -40,12 +51,16 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 
-import EntitiesColumn from '../components/organizationStructure/EntitiesColumn.vue';
-import AddEntityButton from '../components/organizationStructure/AddEntityButton.vue';
-import LevelColumnHeader from '../components/organizationStructure/LevelColumnHeader.vue';
-import { dataTypesDict, routeNamesDict, vuexModulesDict } from '../lib/constants';
+import EntitiesColumn from "../components/organizationStructure/EntitiesColumn.vue";
+import AddEntityButton from "../components/organizationStructure/AddEntityButton.vue";
+import LevelColumnHeader from "../components/organizationStructure/LevelColumnHeader.vue";
+import {
+  dataTypesDict,
+  routeNamesDict,
+  vuexModulesDict,
+} from "../lib/constants";
 
 export default {
   name: routeNamesDict.OrganizationStructure,
@@ -61,9 +76,12 @@ export default {
       isModalDisplayed: `${vuexModulesDict.dataModal}/getIsDisplayed`,
       dataType: `${vuexModulesDict.dataModal}/getDataType`,
 
-      calculateUILocaleString: 'calculateUILocaleString',
+      calculateUILocaleString: "calculateUILocaleString",
     }),
   },
+  // async mounted() {
+  //   await DataStore.clear();
+  // },
   methods: {
     ...mapActions({
       createData: `${vuexModulesDict.dataModal}/createData`,

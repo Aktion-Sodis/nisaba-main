@@ -1,9 +1,9 @@
 ---
 name: 'The-App: Bug report'
 about: Create a report to help us improve
-title: "[The-App] Bug report"
+title: "[The-App] [BUG] Your title"
 labels: bug, the-app
-assignees: ''
+assignees: 'arthur-becker'
 
 ---
 

@@ -11,9 +11,19 @@ export enum PermissionType {
   ADMIN = "ADMIN"
 }
 
+export enum Type {
+  INT = "INT",
+  STRING = "STRING"
+}
+
 export enum InterventionType {
   TECHNOLOGY = "TECHNOLOGY",
   EDUCATION = "EDUCATION"
+}
+
+export enum SurveyType {
+  INITIAL = "INITIAL",
+  DEFAULT = "DEFAULT"
 }
 
 export enum QuestionType {
@@ -26,16 +36,6 @@ export enum QuestionType {
   INT = "INT",
   DOUBLE = "DOUBLE",
   RATING = "RATING"
-}
-
-export enum SurveyType {
-  INITIAL = "INITIAL",
-  DEFAULT = "DEFAULT"
-}
-
-export enum Type {
-  INT = "INT",
-  STRING = "STRING"
 }
 
 type EagerI18nString = {
@@ -88,6 +88,22 @@ export declare type ColorTheme = LazyLoading extends LazyLoadingDisabled ? Eager
 
 export declare const ColorTheme: (new (init: ModelInit<ColorTheme>) => ColorTheme)
 
+type EagerCustomData = {
+  readonly id: string;
+  readonly name: I18nString;
+  readonly type: Type | keyof typeof Type;
+}
+
+type LazyCustomData = {
+  readonly id: string;
+  readonly name: I18nString;
+  readonly type: Type | keyof typeof Type;
+}
+
+export declare type CustomData = LazyLoading extends LazyLoadingDisabled ? EagerCustomData : LazyCustomData
+
+export declare const CustomData: (new (init: ModelInit<CustomData>) => CustomData)
+
 type EagerQuestion = {
   readonly id: string;
   readonly text: I18nString;
@@ -123,22 +139,6 @@ type LazyQuestionOption = {
 export declare type QuestionOption = LazyLoading extends LazyLoadingDisabled ? EagerQuestionOption : LazyQuestionOption
 
 export declare const QuestionOption: (new (init: ModelInit<QuestionOption>) => QuestionOption)
-
-type EagerCustomData = {
-  readonly id: string;
-  readonly name: I18nString;
-  readonly type: Type | keyof typeof Type;
-}
-
-type LazyCustomData = {
-  readonly id: string;
-  readonly name: I18nString;
-  readonly type: Type | keyof typeof Type;
-}
-
-export declare type CustomData = LazyLoading extends LazyLoadingDisabled ? EagerCustomData : LazyCustomData
-
-export declare const CustomData: (new (init: ModelInit<CustomData>) => CustomData)
 
 type EagerLocation = {
   readonly latitude?: number | null;
@@ -442,38 +442,6 @@ export declare const Content: (new (init: ModelInit<Content>) => Content) & {
   copyOf(source: Content, mutator: (draft: MutableModel<Content>) => MutableModel<Content> | void): Content;
 }
 
-type EagerContentTag = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<ContentTag, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly text: I18nString;
-  readonly schemeVersion?: number | null;
-  readonly contents: ContentContentTagRelation[];
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyContentTag = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<ContentTag, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly text: I18nString;
-  readonly schemeVersion?: number | null;
-  readonly contents: AsyncCollection<ContentContentTagRelation>;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type ContentTag = LazyLoading extends LazyLoadingDisabled ? EagerContentTag : LazyContentTag
-
-export declare const ContentTag: (new (init: ModelInit<ContentTag>) => ContentTag) & {
-  copyOf(source: ContentTag, mutator: (draft: MutableModel<ContentTag>) => MutableModel<ContentTag> | void): ContentTag;
-}
-
 type EagerSurvey = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Survey, 'id'>;
@@ -516,70 +484,6 @@ export declare type Survey = LazyLoading extends LazyLoadingDisabled ? EagerSurv
 
 export declare const Survey: (new (init: ModelInit<Survey>) => Survey) & {
   copyOf(source: Survey, mutator: (draft: MutableModel<Survey>) => MutableModel<Survey> | void): Survey;
-}
-
-type EagerSurveyTag = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<SurveyTag, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly text: I18nString;
-  readonly schemeVersion?: number | null;
-  readonly surveys: SurveySurveyTagRelation[];
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazySurveyTag = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<SurveyTag, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly text: I18nString;
-  readonly schemeVersion?: number | null;
-  readonly surveys: AsyncCollection<SurveySurveyTagRelation>;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type SurveyTag = LazyLoading extends LazyLoadingDisabled ? EagerSurveyTag : LazySurveyTag
-
-export declare const SurveyTag: (new (init: ModelInit<SurveyTag>) => SurveyTag) & {
-  copyOf(source: SurveyTag, mutator: (draft: MutableModel<SurveyTag>) => MutableModel<SurveyTag> | void): SurveyTag;
-}
-
-type EagerInterventionTag = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<InterventionTag, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly text: I18nString;
-  readonly schemeVersion?: number | null;
-  readonly interventions: InterventionInterventionTagRelation[];
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyInterventionTag = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<InterventionTag, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly text: I18nString;
-  readonly schemeVersion?: number | null;
-  readonly interventions: AsyncCollection<InterventionInterventionTagRelation>;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type InterventionTag = LazyLoading extends LazyLoadingDisabled ? EagerInterventionTag : LazyInterventionTag
-
-export declare const InterventionTag: (new (init: ModelInit<InterventionTag>) => InterventionTag) & {
-  copyOf(source: InterventionTag, mutator: (draft: MutableModel<InterventionTag>) => MutableModel<InterventionTag> | void): InterventionTag;
 }
 
 type EagerEntity = {
@@ -778,6 +682,102 @@ export declare const Task: (new (init: ModelInit<Task>) => Task) & {
   copyOf(source: Task, mutator: (draft: MutableModel<Task>) => MutableModel<Task> | void): Task;
 }
 
+type EagerContentTag = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ContentTag, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly text: I18nString;
+  readonly schemeVersion?: number | null;
+  readonly contents: ContentContentTagRelation[];
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyContentTag = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<ContentTag, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly text: I18nString;
+  readonly schemeVersion?: number | null;
+  readonly contents: AsyncCollection<ContentContentTagRelation>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type ContentTag = LazyLoading extends LazyLoadingDisabled ? EagerContentTag : LazyContentTag
+
+export declare const ContentTag: (new (init: ModelInit<ContentTag>) => ContentTag) & {
+  copyOf(source: ContentTag, mutator: (draft: MutableModel<ContentTag>) => MutableModel<ContentTag> | void): ContentTag;
+}
+
+type EagerInterventionTag = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<InterventionTag, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly text: I18nString;
+  readonly schemeVersion?: number | null;
+  readonly interventions: InterventionInterventionTagRelation[];
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyInterventionTag = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<InterventionTag, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly text: I18nString;
+  readonly schemeVersion?: number | null;
+  readonly interventions: AsyncCollection<InterventionInterventionTagRelation>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type InterventionTag = LazyLoading extends LazyLoadingDisabled ? EagerInterventionTag : LazyInterventionTag
+
+export declare const InterventionTag: (new (init: ModelInit<InterventionTag>) => InterventionTag) & {
+  copyOf(source: InterventionTag, mutator: (draft: MutableModel<InterventionTag>) => MutableModel<InterventionTag> | void): InterventionTag;
+}
+
+type EagerSurveyTag = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<SurveyTag, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly text: I18nString;
+  readonly schemeVersion?: number | null;
+  readonly surveys: SurveySurveyTagRelation[];
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazySurveyTag = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<SurveyTag, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly text: I18nString;
+  readonly schemeVersion?: number | null;
+  readonly surveys: AsyncCollection<SurveySurveyTagRelation>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type SurveyTag = LazyLoading extends LazyLoadingDisabled ? EagerSurveyTag : LazySurveyTag
+
+export declare const SurveyTag: (new (init: ModelInit<SurveyTag>) => SurveyTag) & {
+  copyOf(source: SurveyTag, mutator: (draft: MutableModel<SurveyTag>) => MutableModel<SurveyTag> | void): SurveyTag;
+}
+
 type EagerSessionData = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<SessionData, 'id'>;
@@ -816,6 +816,36 @@ export declare type SessionData = LazyLoading extends LazyLoadingDisabled ? Eage
 
 export declare const SessionData: (new (init: ModelInit<SessionData>) => SessionData) & {
   copyOf(source: SessionData, mutator: (draft: MutableModel<SessionData>) => MutableModel<SessionData> | void): SessionData;
+}
+
+type EagerTestObject = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<TestObject, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name?: string | null;
+  readonly age: number;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyTestObject = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<TestObject, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name?: string | null;
+  readonly age: number;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type TestObject = LazyLoading extends LazyLoadingDisabled ? EagerTestObject : LazyTestObject
+
+export declare const TestObject: (new (init: ModelInit<TestObject>) => TestObject) & {
+  copyOf(source: TestObject, mutator: (draft: MutableModel<TestObject>) => MutableModel<TestObject> | void): TestObject;
 }
 
 type EagerLevelInterventionRelation = {

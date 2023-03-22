@@ -11,9 +11,19 @@ const PermissionType = {
   "ADMIN": "ADMIN"
 };
 
+const Type = {
+  "INT": "INT",
+  "STRING": "STRING"
+};
+
 const InterventionType = {
   "TECHNOLOGY": "TECHNOLOGY",
   "EDUCATION": "EDUCATION"
+};
+
+const SurveyType = {
+  "INITIAL": "INITIAL",
+  "DEFAULT": "DEFAULT"
 };
 
 const QuestionType = {
@@ -28,17 +38,7 @@ const QuestionType = {
   "RATING": "RATING"
 };
 
-const SurveyType = {
-  "INITIAL": "INITIAL",
-  "DEFAULT": "DEFAULT"
-};
-
-const Type = {
-  "INT": "INT",
-  "STRING": "STRING"
-};
-
-const { Organization, User, Config, Level, Intervention, Content, ContentTag, Survey, SurveyTag, InterventionTag, Entity, AppliedIntervention, ExecutedSurvey, Task, SessionData, LevelInterventionRelation, InterventionContentRelation, InterventionInterventionTagRelation, ContentContentTagRelation, SurveySurveyTagRelation, I18nString, Permission, ColorTheme, Question, QuestionOption, CustomData, Location, AppliedCustomData, QuestionAnswer, Marking } = initSchema(schema);
+const { Organization, User, Config, Level, Intervention, Content, Survey, Entity, AppliedIntervention, ExecutedSurvey, Task, ContentTag, InterventionTag, SurveyTag, SessionData, TestObject, LevelInterventionRelation, InterventionContentRelation, InterventionInterventionTagRelation, ContentContentTagRelation, SurveySurveyTagRelation, I18nString, Permission, ColorTheme, CustomData, Question, QuestionOption, Location, AppliedCustomData, QuestionAnswer, Marking } = initSchema(schema);
 
 export {
   Organization,
@@ -47,31 +47,32 @@ export {
   Level,
   Intervention,
   Content,
-  ContentTag,
   Survey,
-  SurveyTag,
-  InterventionTag,
   Entity,
   AppliedIntervention,
   ExecutedSurvey,
   Task,
+  ContentTag,
+  InterventionTag,
+  SurveyTag,
   SessionData,
+  TestObject,
   LevelInterventionRelation,
   InterventionContentRelation,
   InterventionInterventionTagRelation,
   ContentContentTagRelation,
   SurveySurveyTagRelation,
   PermissionType,
-  InterventionType,
-  QuestionType,
-  SurveyType,
   Type,
+  InterventionType,
+  SurveyType,
+  QuestionType,
   I18nString,
   Permission,
   ColorTheme,
+  CustomData,
   Question,
   QuestionOption,
-  CustomData,
   Location,
   AppliedCustomData,
   QuestionAnswer,

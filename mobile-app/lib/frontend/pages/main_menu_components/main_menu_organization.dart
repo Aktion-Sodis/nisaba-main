@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,9 +8,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:mobile_app/backend/Blocs/in_app/in_app_bloc.dart';
+import 'package:mobile_app/backend/Blocs/in_app/in_app_events.dart';
 import 'package:mobile_app/backend/Blocs/organization_view/organization_view_bloc.dart';
 import 'package:mobile_app/backend/Blocs/organization_view/organization_view_events.dart';
 import 'package:mobile_app/backend/Blocs/organization_view/organization_view_state.dart';
+import 'package:mobile_app/backend/Blocs/sync/sync_bloc.dart';
+import 'package:mobile_app/backend/Blocs/sync/sync_state.dart';
 import 'package:mobile_app/backend/Blocs/task/task_bloc.dart';
 import 'package:mobile_app/backend/Blocs/task/task_state.dart';
 import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
@@ -26,13 +28,17 @@ import 'package:mobile_app/frontend/components/buttons.dart';
 import 'package:mobile_app/frontend/components/imageWidget.dart';
 import 'package:mobile_app/frontend/components/loadingsign.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
+import 'package:mobile_app/frontend/pages/main_menu.dart';
 import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_commonwidgets.dart';
 import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_tasks.dart';
 import 'package:mobile_app/frontend/strings.dart' as strings;
 import 'package:mobile_app/frontend/common_widgets.dart';
-import 'package:mobile_app/services/photo_capturing.dart';
+import 'package:mobile_app/utils/photo_capturing.dart';
 import 'package:mobile_app/frontend/pages/survey.dart' as surveyarea;
 
+import '../../../backend/callableModels/Relation.dart';
+
+// TODO: refactor this file as the code is not readable
 class MainMenuOrganization extends StatelessWidget {
   Widget appBarWidget(BuildContext context,
       EntitiesLoadedOrganizationViewState organizationViewState) {
@@ -81,7 +87,43 @@ class MainMenuOrganization extends StatelessWidget {
                                 style: Theme.of(context).textTheme.headline2,
                                 overflow: TextOverflow.ellipsis,
                               ))),
-                      if (organizationViewState.organizationViewType ==
+                      if (!show_all_menu_pages)
+                        Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: defaultPadding(context)),
+                            child: BlocBuilder<SyncBloc, SyncState>(
+                                builder: (context, state) {
+                              if (state is FullySyncedState) {
+                                return Icon(MdiIcons.cloudCheckOutline,
+                                    color: Colors.green,
+                                    size: width(context) * .08);
+                              } else if (state is CannotSyncState) {
+                                return Icon(MdiIcons.cloudOffOutline,
+                                    color: Colors.red,
+                                    size: width(context) * .08);
+                              } else {
+                                return Icon(MdiIcons.cloudSyncOutline,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground,
+                                    size: width(context) * .08);
+                              }
+                            })),
+                      //if no menu shown, add user management for highest element and if no other main menu pages shown
+                      if (true &&
+                          (organizationViewState.organizationViewType ==
+                                  OrganizationViewType.LIST &&
+                              !show_all_menu_pages) &&
+                          organizationViewState
+                                  .currentLevelContent.level.parentLevelID ==
+                              null)
+                        CustomIconButton(() {
+                          context.read<InAppBloc>().add(GoToUserPageEvent());
+                        },
+                            MdiIcons.human,
+                            Size(width(context) * .1, width(context) * .1),
+                            true),
+                      /*if (organizationViewState.organizationViewType ==
                               OrganizationViewType.LIST &&
                           organizationViewState.addEntityPossible)
                         Container(
@@ -113,7 +155,7 @@ class MainMenuOrganization extends StatelessWidget {
                                 iconData: MdiIcons.plus,
                                 buttonSizes: ButtonSizes.small,
                                 fillColor:
-                                    Theme.of(context).colorScheme.secondary)),
+                                    Theme.of(context).colorScheme.secondary)),*/
                       if (organizationViewState.organizationViewType ==
                               OrganizationViewType.SURVEYS ||
                           organizationViewState.organizationViewType ==
@@ -263,7 +305,8 @@ class MainMenuOrganization extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             appBarWidget(context, state as EntitiesLoadedOrganizationViewState),
-            levelIndicatorWidget(context, state),
+            levelIndicatorWidget(
+                context, state as EntitiesLoadedOrganizationViewState),
             Expanded(child: mainWidget(context, state))
           ],
         );
@@ -320,7 +363,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
           controller: customDataControllers[index],
           decoration: InputDecoration(
               prefixIcon: const Icon(MdiIcons.pen),
-              labelText: widget.level.customData[index].name),
+              labelText: widget.level.customData[index].displayName),
           textInputAction: TextInputAction.next,
           keyboardType:
               widget.level.customData[index].type == CustomDataType.INT
@@ -342,8 +385,8 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
     if (widget.entity != null) {
       create = false;
       entity = widget.entity;
-      nameEditingController.text = entity!.name;
-      descriptionEditingController.text = entity!.description;
+      nameEditingController.text = entity!.displayName;
+      descriptionEditingController.text = entity!.displayDescription;
       entity!.customData.forEach((cd) {
         int index = widget.level.customData
             .indexWhere((element) => element.id == cd.customDataID);
@@ -354,7 +397,8 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
     } else {
       preliminaryEntityId = UUID.getUUID();
     }
-    syncedFile = EntityRepository.getEntityPicByID(preliminaryEntityId!);
+    syncedFile =
+        EntityRepository.instance.getEntityPicByID(preliminaryEntityId!);
     super.initState();
   }
 
@@ -367,7 +411,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
         return AppliedCustomData(
           customDataID: customData.id!,
           type: customData.type,
-          name_ml: customData.name_ml,
+          name: customData.name,
           intValue: customData.type == CustomDataType.INT
               ? int.tryParse(customDataControllers[index].text.trim()) ?? 0
               : null,
@@ -378,7 +422,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
       });
       print("saving entity: customData");
       appliedCustomDatas.forEach((element) {
-        print(element.name +
+        print(element.displayName +
             " " +
             element.intValue.toString() +
             " " +
@@ -387,8 +431,8 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
       if (create) {
         Entity toSave = Entity(
             id: preliminaryEntityId,
-            name_ml: I18nString.fromString(string: nameEditingController.text),
-            description_ml: I18nString.fromString(
+            name: I18nString.fromString(string: nameEditingController.text),
+            description: I18nString.fromString(
                 string: descriptionEditingController.text),
             level: widget.level,
             customData: appliedCustomDatas,
@@ -396,13 +440,13 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
             parentEntityID: widget.parentEntityID);
         Navigator.of(context).pop(toSave);
       } else {
-        I18nString nameToSet = widget.entity!.name_ml;
+        I18nString nameToSet = widget.entity!.name;
         nameToSet.text = nameEditingController.text;
-        I18nString description = widget.entity!.description_ml;
+        I18nString description = widget.entity!.description;
         description.text = descriptionEditingController.text;
         Entity toSave = widget.entity!;
-        toSave.name_ml = nameToSet;
-        toSave.description_ml = description;
+        toSave.name = nameToSet;
+        toSave.description = description;
         toSave.customData = appliedCustomDatas;
 
         Navigator.of(context).pop(toSave);
@@ -597,11 +641,12 @@ class ListWidget extends StatelessWidget {
   Widget listItem(BuildContext buildContext, int index,
       EntitiesLoadedOrganizationViewState state) {
     String parentEntityName = state.levelContentList.last.parentEntity != null
-        ? state.levelContentList.last.parentEntity!.name
+        ? state.levelContentList.last.parentEntity!.displayName
         : "";
     List<Entity> entities = state.currentLevelContent.daughterEntities;
 
-    SyncedFile imageFile = EntityRepository.getEntityPic(entities[index]);
+    SyncedFile imageFile =
+        EntityRepository.instance.getEntityPic(entities[index]);
     return Card(
         margin: EdgeInsets.symmetric(
             horizontal: defaultPadding(buildContext),
@@ -614,13 +659,13 @@ class ListWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                ImageWidget(
+                /*ImageWidget(
                   imageFile: imageFile,
                   key: imageFile.key,
                   width: width(buildContext) - defaultPadding(buildContext) * 2,
                   height: height(buildContext) * .2,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-                ),
+                ),*/
                 Container(
                   padding: EdgeInsets.only(
                       left: defaultPadding(buildContext),
@@ -629,7 +674,7 @@ class ListWidget extends StatelessWidget {
                       bottom: parentEntityName == ""
                           ? defaultPadding(buildContext)
                           : 0),
-                  child: Text(entities[index].name,
+                  child: Text(entities[index].displayName,
                       style: Theme.of(buildContext).textTheme.headline2),
                 ),
                 if (parentEntityName != "")
@@ -678,7 +723,9 @@ class ListWidget extends StatelessWidget {
             ),
             Positioned(
                 right: defaultPadding(buildContext),
-                top: height(buildContext) * .2 - width(buildContext) * .06,
+                top: /*height(buildContext) * .2 - width(buildContext) * .06*/ defaultPadding(
+                        buildContext) /
+                    2,
                 child: ElevatedButton(
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
@@ -733,42 +780,13 @@ class ListWidget extends StatelessWidget {
           return Container(
               child: Scrollbar(
             controller: _scrollController,
-            child: LazyLoadScrollView(
-                onEndOfPage: () => context.read<OrganizationViewBloc>().add(
-                    LoadDaughterEntities(
-                        entitiesLoadedOrganizationViewState
-                            .levelContentList.last.parentEntity,
-                        entitiesLoadedOrganizationViewState
-                            .levelContentList.last.page)),
-                child: ListView.builder(
-                    controller: _scrollController,
-                    itemBuilder: (context, index) {
-                      if (entitiesLoadedOrganizationViewState
-                              .levelContentList.last.hasMoreToLoad &&
-                          index == entities.length) {
-                        return Container(
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            height: 80,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                SizedBox(
-                                  width: 40,
-                                  height: 40,
-                                  child: CircularProgressIndicator(),
-                                ),
-                              ],
-                            ));
-                      } else {
-                        return listItem(context, index,
-                            entitiesLoadedOrganizationViewState);
-                      }
-                    },
-                    itemCount: entities.length +
-                        (entitiesLoadedOrganizationViewState
-                                .levelContentList.last.hasMoreToLoad
-                            ? 1
-                            : 0))),
+            child: ListView.builder(
+                controller: _scrollController,
+                itemBuilder: (context, index) {
+                  return listItem(
+                      context, index, entitiesLoadedOrganizationViewState);
+                },
+                itemCount: entities.length),
           ));
         });
   }
@@ -791,7 +809,7 @@ class OverviewWidget extends StatelessWidget {
 
   Widget generalCardContent(BuildContext context) {
     print("general card content rebuild");
-    SyncedFile syncedFile = EntityRepository.getEntityPic(entity);
+    SyncedFile syncedFile = EntityRepository.instance.getEntityPic(entity);
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -817,13 +835,13 @@ class OverviewWidget extends StatelessWidget {
                   true,
                 )
               ])),
-          if (entity.description.isNotEmpty)
+          if (entity.displayDescription.isNotEmpty)
             Container(
                 margin: EdgeInsets.only(
                     left: defaultPadding(context),
                     right: defaultPadding(context),
                     bottom: defaultPadding(context) / 2),
-                child: Text(entity.description,
+                child: Text(entity.displayDescription,
                     style: Theme.of(context).textTheme.bodyText1)),
           if (entity.customData.isNotEmpty)
             Container(
@@ -842,7 +860,8 @@ class OverviewWidget extends StatelessWidget {
                             child: RichText(
                                 text: TextSpan(children: [
                               TextSpan(
-                                  text: entity.customData[index].name + ": ",
+                                  text: entity.customData[index].displayName +
+                                      ": ",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText1!
@@ -929,8 +948,8 @@ class OverviewWidget extends StatelessWidget {
               children: List.generate(
                   firstThreeSurveys.length,
                   (index) => surveyRow(context, firstThreeSurveys[index],
-                      image: SurveyRepository.getSurveyPic(
-                          firstThreeSurveys[index]),
+                      image: SurveyRepository.instance
+                          .getSurveyPic(firstThreeSurveys[index]),
                       separator: index != firstThreeSurveys.length - 1)),
             ),
           Container(
@@ -1011,13 +1030,36 @@ class OverviewWidget extends StatelessWidget {
     print("overview widget key: $key");
     return Scrollbar(
         key: key,
-        child: ListView.builder(
+        child:
+            // Hide generalCard and taskCard, as generalCard is not needed and taskCard is not needed
+            /* ListView.builder(
             key: key,
             itemBuilder: childWidget,
             itemCount: entity.level.interventionsAreAllowed
                 ? (entity.level.allowedInterventions!.isNotEmpty ? 4 : 2)
                 : 2,
-            addAutomaticKeepAlives: false));
+            addAutomaticKeepAlives: false)*/
+            SingleChildScrollView(
+          child: Wrap(children: [
+            Column(
+              children: entity.level.interventionsAreAllowed &&
+                      entity.level.allowedInterventions!.isNotEmpty
+                  ? [
+                      Card(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: defaultPadding(context),
+                              vertical: defaultPadding(context) / 2),
+                          child: surveyCardContent(context)),
+                      Card(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: defaultPadding(context),
+                              vertical: defaultPadding(context) / 2),
+                          child: appliedInterventionCardContent(context))
+                    ]
+                  : [],
+            )
+          ]),
+        ));
   }
 }
 
@@ -1032,7 +1074,7 @@ class AppliedInterventionOverviewPage extends StatelessWidget {
         .appliedInterventions;
     Intervention intervention = interventions[index].intervention;
     return interventionRow(buildContext, intervention,
-        image: InterventionRepository.getInterventionPic(intervention),
+        image: InterventionRepository.instance.getInterventionPic(intervention),
         separator: interventions.length - 1 != index,
         pressable: true, onPressed: () async {
       buildContext
@@ -1125,8 +1167,8 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
     entity = (context.read<OrganizationViewBloc>().state
             as EntitiesLoadedOrganizationViewState)
         .currentDetailEntity!;
-    imageFileSynced = AppliedInterventionRepository.appliedInterventionPic(
-        appliedIntervention);
+    imageFileSynced = AppliedInterventionRepository.instance
+        .appliedInterventionPic(appliedIntervention);
     imageFileSynced.file().then((value) {
       try {
         setState(() {});
@@ -1145,7 +1187,8 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
         child: SingleChildScrollView(
             child: Column(
       children: [
-        Card(
+        // HIDDEN AS IT IS NOT STABLE
+        /*Card(
           margin: EdgeInsets.all(defaultPadding(context)),
           child: Container(
               height: height(context) * .3,
@@ -1169,8 +1212,10 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
                           true))
                 ],
               )),
-        ),
-        if (appliedIntervention.intervention.interventionType ==
+        ),*/
+
+        // HIDDEN AS IT IS NOT STABLE
+        /*if (appliedIntervention.intervention.interventionType ==
             InterventionType.TECHNOLOGY)
           Card(
               margin: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
@@ -1199,7 +1244,7 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
                                 style: Theme.of(context).textTheme.bodyText1))
                       ],
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min))),
+                      mainAxisSize: MainAxisSize.min))),*/
         if (nonArchivedSurveys.isNotEmpty)
           Card(
               margin: EdgeInsets.all(defaultPadding(context)),
@@ -1219,7 +1264,7 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
                               : surveyRow(
                                   context,
                                   nonArchivedSurveys[index - 1],
-                                  image: SurveyRepository.getSurveyPic(
+                                  image: SurveyRepository.instance.getSurveyPic(
                                       nonArchivedSurveys[index - 1]),
                                   pressable: true,
                                   onPressed: () {
@@ -1287,15 +1332,15 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
 
   set appliedIntervention(AppliedIntervention? appliedIntervention) {
     _appliedIntervention = appliedIntervention;
-    syncedFile = AppliedInterventionRepository.appliedInterventionPic(
-        appliedIntervention!);
+    syncedFile = AppliedInterventionRepository.instance
+        .appliedInterventionPic(appliedIntervention!);
   }
 
   updatePic() async {
     XFile r = await CameraFunctionality.takePicture(context: context);
     if (appliedIntervention != null) {
-      syncedFile ??= AppliedInterventionRepository.appliedInterventionPic(
-          appliedIntervention!);
+      syncedFile ??= AppliedInterventionRepository.instance
+          .appliedInterventionPic(appliedIntervention!);
       await syncedFile!.updateAsPic(r);
       setState(() {});
     }
@@ -1316,12 +1361,13 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
     if (widget.appliedIntervention != null) {
       create = false;
       appliedIntervention = widget.appliedIntervention;
-      syncedFile = AppliedInterventionRepository.appliedInterventionPic(
-          appliedIntervention!);
+      syncedFile = AppliedInterventionRepository.instance
+          .appliedInterventionPic(appliedIntervention!);
     }
     super.initState();
     if (widget.appliedIntervention == null) {
-      InterventionRepository.getInterventionsByLevelConnections(
+      InterventionRepository.instance
+          .getInterventionsByLevelConnections(
               widget.entity.level.allowedInterventions!)
           .then((value) => setState(() {
                 interventions = value;
@@ -1333,18 +1379,26 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
   Widget interventionItem(BuildContext buildContext, int index) {
     //todo: implement localization
     return interventionRow(context, interventions![index],
+        iconData: MdiIcons.plus,
         separator: (index != interventions!.length - 1),
-        image: InterventionRepository.getInterventionPic(interventions![index]),
+        image: InterventionRepository.instance
+            .getInterventionPic(interventions![index]),
         pressable: true, onPressed: () {
       AppliedIntervention toCreate = AppliedIntervention(
           id: UUID.getUUID(),
-          whoDidIt: widget.user,
-          intervention: interventions![index],
-          executedSurveys: [],
-          isOkay: true);
-      setState(() {
+          appliedInterventionWhoDidItId: widget.user.id,
+          entityAppliedInterventionsId: widget.entity.id,
+          appliedInterventionInterventionId: interventions![index].id,
+          isOkay: true)
+        ..intervention = interventions![index]
+        ..whoDidIt = widget.user
+        ..entity = widget.entity;
+
+      // SKIP THE NEXT STEP
+      Navigator.of(context).pop(toCreate);
+      /*setState(() {
         appliedIntervention = toCreate;
-      });
+      });*/
     });
   }
 
@@ -1414,6 +1468,7 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
                           : Container(
                               child: Column(
                               children: [
+                                // HIDDEN AS IT IS NOT STABLE YET
                                 Card(
                                   margin:
                                       EdgeInsets.all(defaultPadding(context)),
@@ -1521,8 +1576,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
 
   Widget listItem(BuildContext buildContext, int i) {
     return surveyRow(context, currentlyDisplayedSurveys[i]["survey"],
-        image: SurveyRepository.getSurveyPic(
-            currentlyDisplayedSurveys[i]["survey"]),
+        image: SurveyRepository.instance
+            .getSurveyPic(currentlyDisplayedSurveys[i]["survey"]),
         pressable: true, onPressed: () {
       buildContext.read<OrganizationViewBloc>().add(StartSurvey(
           currentlyDisplayedSurveys[i]["survey"],
@@ -1595,17 +1650,13 @@ class ExecutedSurveyWidget extends StatelessWidget {
         mappedAnswers[question] = answer;
       }
       if (question.type == QuestionType.AUDIO) {
-        syncedFileMap[question.id!] =
-            ExecutedSurveyRepository.getQuestionAnswerAudio(
-                executedSurvey.appliedIntervention,
-                executedSurvey.id!,
-                question);
+        syncedFileMap[question.id!] = ExecutedSurveyRepository.instance
+            .getQuestionAnswerAudio(executedSurvey.appliedIntervention,
+                executedSurvey.id!, question);
       } else if (question.type == QuestionType.PICTURE) {
-        syncedFileMap[question.id!] =
-            ExecutedSurveyRepository.getQuestionAnswerPic(
-                executedSurvey.appliedIntervention,
-                executedSurvey.id!,
-                question);
+        syncedFileMap[question.id!] = ExecutedSurveyRepository.instance
+            .getQuestionAnswerPic(executedSurvey.appliedIntervention,
+                executedSurvey.id!, question);
       }
     }
   }

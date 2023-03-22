@@ -7,12 +7,14 @@
   },
   "general": {
     "edit": "Edit",
+    "continue": "Continue",
     "searchBox": "Search anything",
     "close": "Close",
     "cancel": "Cancel",
     "save": "Save",
     "delete": "Delete",
     "archive": "Archive",
+    "restore": "Restore",
     "addImage": "Add image",
     "editImage": "Edit image",
     "form": {
@@ -20,11 +22,12 @@
       "minCharNotMet": "Minimum {minChar} characters.",
       "required": "Required.",
       "unsavedChanges": "There are unsaved changes. Are you sure you want to leave?",
-      "addInNewLocale": "In another language",
+      "addInNewLocale": "{x} in:",
       "invalidForm": "The form is invalid. Please pay attention to warnings of inputs.",
       "invalidNumber": "This is an invalid number.",
       "cannotDeleteEntityWithChildren": "This entity has children and cannot be deleted.",
-      "email": "This is an invalid email address."
+      "email": "This is an invalid email address.",
+      "phoneNumber": "This is an invalid phone number."
     },
     "noTextProvided": "No text was provided.",
     "noNumberProvided": "No number was provided.",
@@ -103,7 +106,8 @@
   "Login": {
     "title": "Welcome back!",
     "subtitle": "Please sign in with your credentials.",
-    "email": "Email",
+    "usernamePlaceholder": "Email or phone number",
+    "phoneNumber": "Phone number",
     "password": "Password",
     "rememberMe": "Remember me",
     "forgotPassword": "Forgot Password",
@@ -157,6 +161,7 @@
   },
   "organizationStructure": {
     "title": "Organization Structure",
+    "subtitle": "⚠️ Deleting entities is not allowed in this version.",
     "addNewEntity": "Add new entity",
     "addNewLevel": "Add new level",
     "hasNoInterventions": "There are no interventions for this level.",
@@ -211,6 +216,7 @@
   },
   "interventions": {
     "title": "Interventions",
+    "subtitle": "⚠️ Deleting interventions is not allowed in this version.",
     "newIntervention": "New intervention",
     "type": {
       "title": "Intervention Type",
@@ -242,8 +248,10 @@
   "userManagement": {
     "title": "User Management",
     "sendInvitation": "Send Invitation",
-    "successfulSentInvitation" : "An invitation has been successfully sent to the email",
-    "emailAlreadyInUse": "This email is already in use"
+    "successfulSentInvitation": "User is successfully created",
+    "emailAlreadyInUse": "This email is already in use",
+    "groupLabel": "Product",
+    "password": "User created. Make sure you reach this password to the user: {finalPassword}"
   },
   "surveys": {
     "title": "Surveys",
@@ -278,6 +286,7 @@
             "textLabel": "Question text",
             "imageTitle": "Question image",
             "addImage": "Add image",
+            "cantAddImage": "⚠️ You cannot add an image in this version of the Admin-App.",
             "audioTitle": "Question audio",
             "addAudio": "Add audio"
           },
@@ -309,7 +318,8 @@
         "saveDraft": "Save draft"
       },
       "finalizeCard": {
-        "publishSurvey": "Publish survey"
+        "publishSurvey": "Publish survey",
+        "backToQuestions": "Back to questions"
       },
       "stepper": {
         "details": "Survey details",

@@ -74,7 +74,6 @@ class LevelContent {
   Entity? parentEntity;
   List<Entity> daughterEntities = [];
   int page = 0;
-  bool hasMoreToLoad = true;
 
   LevelContent(this.level, this.parentEntity);
 }

@@ -19,7 +19,7 @@
         outlined
       ></v-text-field>
     </div>
-    <v-text-field
+    <!-- <v-text-field
       outlined
       required
       v-model="password"
@@ -30,38 +30,45 @@
       :label="$t('CompleteUserInfo.password.label')"
       :hint="$t('CompleteUserInfo.password.hint')"
       @click:append="showPassword = !showPassword"
-    ></v-text-field>
-    <v-btn :disabled="loading" type="submit" block large color="primary" class="text-none">
+    ></v-text-field> -->
+    <v-btn
+      :disabled="loading"
+      type="submit"
+      block
+      large
+      color="primary"
+      class="text-none"
+    >
       <v-progress-circular indeterminate v-if="loading"></v-progress-circular>
       <span v-else>
-        {{ $t('CompleteUserInfo.start') }}
+        {{ $t("CompleteUserInfo.start") }}
       </span>
     </v-btn>
   </v-form>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { formValidators } from '../../lib/utils';
+import { mapActions } from "vuex";
+import { formValidators } from "../../lib/utils";
 import {
   routeNamesDict,
   signInStatusDict,
   typesDictionary,
   vuexModulesDict,
-} from '../../lib/constants';
+} from "../../lib/constants";
 
 export default {
-  name: 'UpdateUserForm',
+  name: "UpdateUserForm",
   data() {
     return {
       firstName: null,
       lastName: null,
-      password: '',
-      showPassword: false,
+      // password: "",
+      // showPassword: false,
       loading: false,
       rules: {
         required: formValidators.required,
-        minPasswordLength: formValidators.minPasswordLength,
+        // minPasswordLength: formValidators.minPasswordLength,
         notEmpty: formValidators.notEmpty,
       },
     };
@@ -76,7 +83,7 @@ export default {
       if (!valid) {
         this.showFeedbackForDuration({
           type: typesDictionary.error,
-          text: this.$t('general.form.invalidForm'),
+          text: this.$t("general.form.invalidForm"),
         });
         return;
       }
@@ -85,7 +92,7 @@ export default {
       const signInStatus = await this.completeUserInformation({
         firstName: this.firstName,
         lastName: this.lastName,
-        newPassword: this.password,
+        // newPassword: this.password,
       });
       this.loading = false;
 
@@ -96,14 +103,13 @@ export default {
       if (signInStatus === signInStatusDict.failed) {
         this.showFeedbackForDuration({
           type: typesDictionary.error,
-          text: this.$t('general.errorCodes.InternalErrorException'),
+          text: this.$t("general.errorCodes.InternalErrorException"),
         });
         return;
       }
       if (signInStatus === signInStatusDict.completeUserInfo) {
         this.$router.push({ name: routeNamesDict.CompleteUserInfo });
       }
-      
     },
   },
 };

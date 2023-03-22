@@ -375,7 +375,7 @@ import ImgFromS3 from '../commons/ImgFromS3.vue';
 
 const interventionDescriptionMaxChar = Math.max(
   parseInt(process.env.VUE_APP_INTERVENTION_DESCRIPTION_MAX_CHAR, 10),
-  0
+  0,
 );
 
 export default {
@@ -386,8 +386,7 @@ export default {
       interventionDescriptionMaxChar,
       InterventionType,
       rules: {
-        maxChar: (value) =>
-          value.length <= interventionDescriptionMaxChar || this.maxCharExceededi18n,
+        maxChar: (value) => value.length <= interventionDescriptionMaxChar || this.maxCharExceededi18n,
       },
       id: null,
       name: emptyMutableI18nString(),
@@ -493,8 +492,7 @@ export default {
     },
     closeHandler() {
       if (this.read) this.abortReadInterventionHandler();
-      else if (this.create)
-        this.abortNewInterventionHandler({ dataType: dataTypesDict.intervention });
+      else if (this.create) this.abortNewInterventionHandler({ dataType: dataTypesDict.intervention });
       else if (this.edit) {
         this.abortEditInterventionHandler({
           dataId: this.dataIdInFocus,
@@ -524,7 +522,7 @@ export default {
           surveys: [], // TODO
           levels: [],
           contents: this.contents, // TODO
-        })
+        }),
       );
       await this.$nextTick();
       this.saveInterventionHandler({ dataType: dataTypesDict.intervention, originalVersion });

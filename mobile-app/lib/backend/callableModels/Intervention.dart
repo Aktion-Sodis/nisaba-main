@@ -1,95 +1,121 @@
+import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/callableModels/Content.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
+import 'package:mobile_app/backend/callableModels/Relation.dart';
 import 'package:mobile_app/backend/callableModels/Survey.dart';
 import 'package:mobile_app/backend/callableModels/InterventionTag.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-class Intervention {
-  String? id;
-  late I18nString name_ml;
-  late I18nString description_ml;
+import 'Level.dart';
+
+import 'package:json_annotation/json_annotation.dart';
+
+part 'Intervention.g.dart';
+part 'Intervention.db_model.dart';
+
+@DBModelAnnotation()
+@JsonSerializable()
+class Intervention extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory Intervention.fromJson(Map<String, dynamic> json) =>
+      _$InterventionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$InterventionToJson(this);
+
+  static Map<String, dynamic> queryFields() => _$Intervention;
+
+  late I18nString name;
+  late I18nString description;
   late InterventionType interventionType;
-  late List<amp.InterventionContentRelation> interventionContentRelations;
-  late List<Survey> surveys;
-  late List<amp.InterventionInterventionTagRelation> tagConnections;
-  late List<amp.LevelInterventionRelation> levelConnections;
+
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  late List<InterventionContentRelation>
+      interventionContentRelations; // Unpopulated allowed
+
+  late List<Survey> surveys; // Unpopulated allowed
+
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  late List<InterventionInterventionTagRelation>
+      tagConnections; // Unpopulated allowed
+
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  late List<LevelInterventionRelation> levelConnections; // Unpopulated allowed
+
   int? schemeVersion;
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  String get name => name_ml.text;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String get displayName => name.text;
 
-  set name(String name) => name_ml.text = name;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  set displayName(String name) => this.name.text = name;
 
-  String get description => description_ml.text;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String get displayDescription => description.text;
 
-  set description(String description) => description_ml.text = description;
+  @DBModelIgnore()
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  set displayDescription(String description) =>
+      this.description.text = description;
 
-  List<InterventionTag> get tags => List.generate(
-      tagConnections.length,
-      (index) => InterventionTag.fromAmplifyModel(
-          tagConnections[index].interventionTag));
-
-  void addInterventionTag(InterventionTag interventionTag) {
-    tagConnections.add(amp.InterventionInterventionTagRelation(
-        intervention: toAmplifyModel(),
-        interventionTag: interventionTag.toAmplifyModel()));
-  }
-
-  void updateInterventionTag(InterventionTag interventionTag) {
-    int index = tagConnections.indexWhere(
-        (element) => element.interventionTag.id == interventionTag.id);
-    if (index >= 0) {
-      tagConnections[index] = tagConnections[index]
-          .copyWith(interventionTag: interventionTag.toAmplifyModel());
-    } else {
-      addInterventionTag(interventionTag);
-    }
-  }
+  List<InterventionTag> get tags =>
+      tagConnections.map((e) => e.second!).toList();
 
   Intervention(
-      {this.id,
-      required this.name_ml,
-      required this.description_ml,
+      {String? id,
+      required this.name,
+      required this.description,
       required this.interventionType,
-      required this.interventionContentRelations,
-      required this.surveys,
-      required this.tagConnections,
-      required this.levelConnections,
+      List<InterventionContentRelation>? interventionContentRelations,
+      List<Survey>? surveys,
+      List<InterventionInterventionTagRelation>? tagConnections,
+      List<LevelInterventionRelation>? levelConnections,
       this.schemeVersion,
       this.createdAt,
-      this.updatedAt});
-
-  Intervention.fromAmplifyModel(amp.Intervention intervention) {
-    id = intervention.id;
-    name_ml = I18nString.fromAmplifyModel(intervention.name);
-    description_ml = I18nString.fromAmplifyModel(intervention.description);
-    interventionType = interventionTypeFromAmplifyInterventionType(
-        intervention.interventionType);
-    interventionContentRelations = intervention.contents;
-    surveys = List.generate(intervention.surveys.length,
-        (index) => Survey.fromAmplifyModel(intervention.surveys[index]));
-    tagConnections = intervention.tags;
-    schemeVersion = intervention.schemeVersion;
-    createdAt = intervention.createdAt?.getDateTimeInUtc();
-    updatedAt = intervention.updatedAt?.getDateTimeInUtc();
-    levelConnections = intervention.levels;
+      this.updatedAt})
+      : super(id) {
+    this.surveys = surveys ?? [];
+    this.interventionContentRelations = interventionContentRelations ?? [];
+    this.tagConnections = tagConnections ?? [];
+    this.levelConnections = levelConnections ?? [];
   }
 
-  amp.Intervention toAmplifyModel() {
-    return (amp.Intervention(
-        id: id,
-        name: name_ml.toAmplifyModel(),
-        description: description_ml.toAmplifyModel(),
-        interventionType:
-            amplifyInterventionTypeFromInterventionType(interventionType),
-        contents: interventionContentRelations,
-        tags: tagConnections,
-        surveys: List.generate(
-            surveys.length, (index) => surveys[index].toAmplifyModel()),
-        levels: levelConnections,
-        schemeVersion: schemeVersion));
+  Intervention.unpopulated(String? id) : super(id) {
+    isPopulated = false;
+  }
+  @override
+  DBModel getUnpopulated() {
+    return Intervention.unpopulated(id);
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (other is Intervention) {
+      return (id == other.id &&
+          name == other.name &&
+          description == other.description &&
+          interventionType == other.interventionType &&
+          schemeVersion == other.schemeVersion &&
+          unpopulatedListsEqual(interventionContentRelations,
+              other.interventionContentRelations) &&
+          unpopulatedListsEqual(surveys, other.surveys) &&
+          unpopulatedListsEqual(tagConnections, other.tagConnections) &&
+          unpopulatedListsEqual(levelConnections, other.levelConnections));
+    } else {
+      return false;
+    }
   }
 }
 

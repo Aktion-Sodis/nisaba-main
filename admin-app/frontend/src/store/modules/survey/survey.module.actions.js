@@ -1,14 +1,22 @@
-import { DataStore, Storage } from 'aws-amplify';
-import { v4 as uuidv4 } from 'uuid';
-import { I18nString, Question, QuestionOption, Survey } from '../../../models';
-import { emptyQuestion, emptyQuestionOption } from '../../../lib/classes';
-import { dataTypesDict, modalModesDict, vuexModulesDict } from '../../../lib/constants';
+import { v4 as uuidv4 } from "uuid";
+import {
+  I18nString,
+  Question,
+  QuestionOption,
+  Survey,
+  SurveySurveyTagRelation,
+  SurveyTag,
+} from "../../../models";
+import { emptyQuestion, emptyQuestionOption } from "../../../lib/classes";
+import { dataTypesDict, modalModesDict, vuexModulesDict } from "../../../lib/constants";
+import { DataStore } from "@aws-amplify/datastore";
+import { Storage } from "@aws-amplify/storage";
 
 /** @type {import("vuex").ActionTree<import("./survey.module").SurveyState>} */
 const actions = {
   APIpost: async ({ commit, dispatch, rootGetters }) => {
     let success = true;
-    commit('setLoading', { newValue: true });
+    commit("setLoading", { newValue: true });
 
     const questionsWithUnnecessaryLastOne =
       rootGetters[`${vuexModulesDict.question}/getQuestionDrafts`];
@@ -18,7 +26,7 @@ const actions = {
 
     // eslint-disable-next-line no-restricted-syntax
     for (const rawOption of rawOptions) {
-      options.push(rawOption.filter((o) => !o.text.languageTexts.every((t) => t === '')));
+      options.push(rawOption.filter((o) => !o.text.languageTexts.every((t) => t === "")));
     }
 
     const surveyDraft = rootGetters[`${vuexModulesDict.dataModal}/getDataDraft`];
@@ -32,7 +40,12 @@ const actions = {
           new Question({
             ...q,
             questionOptions: options[i].map(
-              (o) => new QuestionOption({ ...o, id: uuidv4(), followUpQuestionID: null })
+              (o) =>
+                new QuestionOption({
+                  ...o,
+                  id: uuidv4(),
+                  followUpQuestionIDs: null,
+                })
             ),
           })
       ),
@@ -56,7 +69,7 @@ const actions = {
 
       if (rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]) {
         await Storage.put(
-          rootGetters.callDeriveFilePathWithOrganizationId('interventionSurveyPicPath', {
+          rootGetters.callDeriveFilePathWithOrganizationId("interventionSurveyPicPath", {
             interventionID: survey.interventionSurveysId,
             surveyId: postResponse.id,
           }),
@@ -68,7 +81,7 @@ const actions = {
         async (questionImg, index) => {
           if (questionImg) {
             await Storage.put(
-              rootGetters.callDeriveFilePathWithOrganizationId('questionPicPath', {
+              rootGetters.callDeriveFilePathWithOrganizationId("questionPicPath", {
                 interventionID: survey.interventionSurveysId,
                 surveyId: postResponse.id,
                 questionId: survey.questions[index].id,
@@ -79,7 +92,11 @@ const actions = {
         }
       );
 
-      commit('addSurvey', postResponse);
+      // delete surveyDraft in localStorage
+      localStorage.removeItem("surveyDraft");
+      commit("setShowContinue", { newValue: false });
+
+      commit("addSurvey", postResponse);
       dispatch(
         `${vuexModulesDict.dataModal}/readData`,
         {
@@ -94,13 +111,13 @@ const actions = {
       success = false;
     }
 
-    commit('setLoading', { newValue: false });
+    commit("setLoading", { newValue: false });
     dispatch(
       `${vuexModulesDict.dataModal}/abortCreateData`,
       { dataType: dataTypesDict.survey },
       { root: true }
     );
-    commit('setSurveyModalCompletionIndex', { newValue: 1 }, { root: true });
+    commit("setSurveyModalCompletionIndex", { newValue: 1 }, { root: true });
     commit(
       `${vuexModulesDict.question}/setQuestions`,
       { payload: [emptyQuestion()] },
@@ -116,8 +133,9 @@ const actions = {
   },
   APIput: async ({ commit, dispatch, getters, rootGetters }, { newData, originalId }) => {
     let success = true;
-    commit('setLoading', { newValue: true });
-    const original = getters.SURVEYById({ id: originalId });
+    commit("setLoading", { newValue: true });
+    // const original = getters.SURVEYById({ id: originalId });
+    const original = await DataStore.query(Survey, originalId);
 
     try {
       const res = await DataStore.save(
@@ -126,18 +144,21 @@ const actions = {
           updated.description = newData.description;
           // updated.questions = newData.questions;
           updated.surveyType = newData.surveyType;
-          updated.intervention = newData.intervention;
+          updated.interventionSurveysId = newData.interventionSurveysId;
           updated.archived = newData.archived;
         })
       );
 
       if (rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]) {
         await Storage.put(
-          rootGetters.callDeriveFilePathWithOrganizationId('interventionSurveyPicPath', {
-            interventionID: res.intervention.id,
+          rootGetters.callDeriveFilePathWithOrganizationId("interventionSurveyPicPath", {
+            interventionID: res.interventionSurveysId,
             surveyId: res.id,
           }),
-          rootGetters[`${vuexModulesDict.dataModal}/getImageFile`]
+          rootGetters[`${vuexModulesDict.dataModal}/getImageFile`],
+          {
+            contentType: "image/png",
+          }
         );
       }
 
@@ -151,15 +172,16 @@ const actions = {
           root: true,
         }
       );
-    } catch {
+    } catch (e) {
+      console.log(e);
       success = false;
     }
-    commit('setLoading', { newValue: false });
+    commit("setLoading", { newValue: false });
     return success;
   },
   APIdelete: async ({ commit, dispatch, getters, rootGetters }, { id, _version }) => {
     let success = true;
-    commit('setLoading', { newValue: true });
+    commit("setLoading", { newValue: true });
 
     try {
       const toDelete = await DataStore.query(Survey, id);
@@ -170,13 +192,13 @@ const actions = {
 
     if (success) {
       const survey = getters.SURVEYById({ id });
-      commit('deleteSurvey', {
+      commit("deleteSurvey", {
         id,
       });
 
       Storage.remove(
-        rootGetters.callDeriveFilePathWithOrganizationId('interventionSurveyPicPath', {
-          interventionID: survey.intervention.id,
+        rootGetters.callDeriveFilePathWithOrganizationId("interventionSurveyPicPath", {
+          interventionID: survey.interventionSurveysId,
           surveyId: survey.id,
         })
       );
@@ -196,15 +218,29 @@ const actions = {
       );
     }
 
-    commit('setLoading', { newValue: false });
+    commit("setLoading", { newValue: false });
     return success;
   },
   APIgetAll: async () => {
+    let apiSurveys;
+    let apiSurveyTags;
+    let apiSurveyTagRelations;
     try {
-      return await DataStore.query(Survey);
+      apiSurveys = await DataStore.query(Survey);
     } catch {
-      return [];
+      apiSurveys = [];
     }
+    try {
+      apiSurveyTags = await DataStore.query(SurveyTag);
+    } catch {
+      apiSurveyTags = [];
+    }
+    try {
+      apiSurveyTagRelations = await DataStore.query(SurveySurveyTagRelation);
+    } catch {
+      apiSurveyTagRelations = [];
+    }
+    return { apiSurveys, apiSurveyTags, apiSurveyTagRelations };
   },
 };
 

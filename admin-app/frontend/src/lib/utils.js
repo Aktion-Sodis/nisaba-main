@@ -1,18 +1,19 @@
-import { databaseOntologies } from './constants';
+import { databaseOntologies } from "./constants";
 
-import i18n from '../i18n';
+import i18n from "../i18n";
 
 export const formValidators = {
-  required: (value) => !!value || i18n.t('general.form.required'),
+  required: (value) => !!value || i18n.t("general.form.required"),
   minPasswordLength: (value) => {
     const minChar = process.env.VUE_APP_MIN_PASSWORD_LENGTH;
-    const minCharI18n = i18n.t('general.form.minCharNotMet', {
+    const minCharI18n = i18n.t("general.form.minCharNotMet", {
       minChar,
     });
     return value.length >= process.env.VUE_APP_MIN_PASSWORD_LENGTH || minCharI18n;
   },
-  notEmpty: (value) => !value || value.replace(/ /g, '') !== '' || i18n.t('general.form.required'),
-  isEmail: (value) => /.+@.+\..+/.test(value) || i18n.t('general.form.email'),
+  notEmpty: (value) => !value || value.replace(/ /g, "") !== "" || i18n.t("general.form.required"),
+  isEmail: (value) => /.+@.+\..+/.test(value) || i18n.t("general.form.email"),
+  isPhoneNumber: (value) => /^\+?[0-9]{6,}$/.test(value) || i18n.t("general.form.phoneNumber"),
 };
 
 /* eslint-disable-next-line no-unused-vars */

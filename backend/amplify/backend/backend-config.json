@@ -172,6 +172,11 @@
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
+    },
+    "syncConflictHandler5b19c779": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "hosting": {
@@ -243,6 +248,22 @@
         {
           "category": "function",
           "resourceName": "nisabaUserManagement"
+        }
+      ]
+    },
+    "AMPLIFY_function_syncConflictHandler5b19c779_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "syncConflictHandler5b19c779"
+        }
+      ]
+    },
+    "AMPLIFY_function_syncConflictHandler5b19c779_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "syncConflictHandler5b19c779"
         }
       ]
     },

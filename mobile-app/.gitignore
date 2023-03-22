@@ -1,3 +1,6 @@
+*.db_model.dart
+*.g.dart
+
 # Miscellaneous
 *.class
 *.log
@@ -53,7 +56,10 @@ amplify/team-provider-info.json
 lib/amplifyconfiguration.dart
 
 amplify/
-lib/models/
+
+### The following folder is auto generated in by Amplify CLI,
+### but we need to check it in for the CI/CD pipeline to work:
+#lib/models/
 
 
 amplify/backend/function
@@ -63,6 +69,7 @@ amplify/\#current-cloud-backend
 amplify/.config/local-*
 amplify/logs
 amplify/mock-data
+amplify/mock-api-resources
 amplify/backend/amplify-meta.json
 amplify/backend/.temp
 build/

@@ -1,6 +1,60 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createOrganization = /* GraphQL */ `
+  mutation CreateOrganization(
+    $input: CreateOrganizationInput!
+    $condition: ModelOrganizationConditionInput
+  ) {
+    createOrganization(input: $input, condition: $condition) {
+      nameCamelCase
+      nameKebabCase
+      nameVerbose
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateOrganization = /* GraphQL */ `
+  mutation UpdateOrganization(
+    $input: UpdateOrganizationInput!
+    $condition: ModelOrganizationConditionInput
+  ) {
+    updateOrganization(input: $input, condition: $condition) {
+      nameCamelCase
+      nameKebabCase
+      nameVerbose
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteOrganization = /* GraphQL */ `
+  mutation DeleteOrganization(
+    $input: DeleteOrganizationInput!
+    $condition: ModelOrganizationConditionInput
+  ) {
+    deleteOrganization(input: $input, condition: $condition) {
+      nameCamelCase
+      nameKebabCase
+      nameVerbose
+      id
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser(
     $input: CreateUserInput!
@@ -21,6 +75,7 @@ export const createUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -44,6 +99,7 @@ export const updateUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -67,6 +123,7 @@ export const deleteUser = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -92,6 +149,7 @@ export const createConfig = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -117,6 +175,7 @@ export const updateConfig = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -142,6 +201,7 @@ export const deleteConfig = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -164,13 +224,14 @@ export const createLevel = /* GraphQL */ `
       allowedInterventions {
         items {
           id
-          levelID
-          interventionID
+          levelId
+          interventionId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -190,6 +251,7 @@ export const createLevel = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -212,13 +274,14 @@ export const updateLevel = /* GraphQL */ `
       allowedInterventions {
         items {
           id
-          levelID
-          interventionID
+          levelId
+          interventionId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -238,6 +301,7 @@ export const updateLevel = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -260,13 +324,14 @@ export const deleteLevel = /* GraphQL */ `
       allowedInterventions {
         items {
           id
-          levelID
-          interventionID
+          levelId
+          interventionId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -286,6 +351,7 @@ export const deleteLevel = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -307,13 +373,14 @@ export const createIntervention = /* GraphQL */ `
       contents {
         items {
           id
-          interventionID
-          contentID
+          interventionId
+          contentId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -330,6 +397,7 @@ export const createIntervention = /* GraphQL */ `
           _deleted
           _lastChangedAt
           interventionSurveysId
+          organization_id
         }
         nextToken
         startedAt
@@ -337,13 +405,14 @@ export const createIntervention = /* GraphQL */ `
       tags {
         items {
           id
-          interventionID
-          interventionTagID
+          interventionId
+          interventionTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -352,13 +421,14 @@ export const createIntervention = /* GraphQL */ `
       levels {
         items {
           id
-          levelID
-          interventionID
+          levelId
+          interventionId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -369,6 +439,7 @@ export const createIntervention = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -390,13 +461,14 @@ export const updateIntervention = /* GraphQL */ `
       contents {
         items {
           id
-          interventionID
-          contentID
+          interventionId
+          contentId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -413,6 +485,7 @@ export const updateIntervention = /* GraphQL */ `
           _deleted
           _lastChangedAt
           interventionSurveysId
+          organization_id
         }
         nextToken
         startedAt
@@ -420,13 +493,14 @@ export const updateIntervention = /* GraphQL */ `
       tags {
         items {
           id
-          interventionID
-          interventionTagID
+          interventionId
+          interventionTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -435,13 +509,14 @@ export const updateIntervention = /* GraphQL */ `
       levels {
         items {
           id
-          levelID
-          interventionID
+          levelId
+          interventionId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -452,6 +527,7 @@ export const updateIntervention = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -473,13 +549,14 @@ export const deleteIntervention = /* GraphQL */ `
       contents {
         items {
           id
-          interventionID
-          contentID
+          interventionId
+          contentId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -496,6 +573,7 @@ export const deleteIntervention = /* GraphQL */ `
           _deleted
           _lastChangedAt
           interventionSurveysId
+          organization_id
         }
         nextToken
         startedAt
@@ -503,13 +581,14 @@ export const deleteIntervention = /* GraphQL */ `
       tags {
         items {
           id
-          interventionID
-          interventionTagID
+          interventionId
+          interventionTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -518,13 +597,14 @@ export const deleteIntervention = /* GraphQL */ `
       levels {
         items {
           id
-          levelID
-          interventionID
+          levelId
+          interventionId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -535,6 +615,7 @@ export const deleteIntervention = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -555,13 +636,14 @@ export const createContent = /* GraphQL */ `
       interventions {
         items {
           id
-          interventionID
-          contentID
+          interventionId
+          contentId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -569,13 +651,14 @@ export const createContent = /* GraphQL */ `
       tags {
         items {
           id
-          contentID
-          contentTagID
+          contentId
+          contentTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -587,6 +670,7 @@ export const createContent = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -607,13 +691,14 @@ export const updateContent = /* GraphQL */ `
       interventions {
         items {
           id
-          interventionID
-          contentID
+          interventionId
+          contentId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -621,13 +706,14 @@ export const updateContent = /* GraphQL */ `
       tags {
         items {
           id
-          contentID
-          contentTagID
+          contentId
+          contentTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -639,6 +725,7 @@ export const updateContent = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -659,13 +746,14 @@ export const deleteContent = /* GraphQL */ `
       interventions {
         items {
           id
-          interventionID
-          contentID
+          interventionId
+          contentId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -673,13 +761,14 @@ export const deleteContent = /* GraphQL */ `
       tags {
         items {
           id
-          contentID
-          contentTagID
+          contentId
+          contentTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -691,6 +780,7 @@ export const deleteContent = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -741,6 +831,7 @@ export const createSurvey = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       questions {
         id
@@ -758,13 +849,14 @@ export const createSurvey = /* GraphQL */ `
       tags {
         items {
           id
-          surveyID
-          surveyTagID
+          surveyId
+          surveyTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -779,6 +871,7 @@ export const createSurvey = /* GraphQL */ `
       _deleted
       _lastChangedAt
       interventionSurveysId
+      organization_id
     }
   }
 `;
@@ -829,6 +922,7 @@ export const updateSurvey = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       questions {
         id
@@ -846,13 +940,14 @@ export const updateSurvey = /* GraphQL */ `
       tags {
         items {
           id
-          surveyID
-          surveyTagID
+          surveyId
+          surveyTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -867,6 +962,7 @@ export const updateSurvey = /* GraphQL */ `
       _deleted
       _lastChangedAt
       interventionSurveysId
+      organization_id
     }
   }
 `;
@@ -917,6 +1013,7 @@ export const deleteSurvey = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       questions {
         id
@@ -934,13 +1031,14 @@ export const deleteSurvey = /* GraphQL */ `
       tags {
         items {
           id
-          surveyID
-          surveyTagID
+          surveyId
+          surveyTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -955,6 +1053,7 @@ export const deleteSurvey = /* GraphQL */ `
       _deleted
       _lastChangedAt
       interventionSurveysId
+      organization_id
     }
   }
 `;
@@ -999,6 +1098,7 @@ export const createEntity = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       location {
         latitude
@@ -1027,6 +1127,7 @@ export const createEntity = /* GraphQL */ `
           entityAppliedInterventionsId
           appliedInterventionWhoDidItId
           appliedInterventionInterventionId
+          organization_id
         }
         nextToken
         startedAt
@@ -1039,6 +1140,7 @@ export const createEntity = /* GraphQL */ `
       _deleted
       _lastChangedAt
       entityLevelId
+      organization_id
     }
   }
 `;
@@ -1083,6 +1185,7 @@ export const updateEntity = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       location {
         latitude
@@ -1111,6 +1214,7 @@ export const updateEntity = /* GraphQL */ `
           entityAppliedInterventionsId
           appliedInterventionWhoDidItId
           appliedInterventionInterventionId
+          organization_id
         }
         nextToken
         startedAt
@@ -1123,6 +1227,7 @@ export const updateEntity = /* GraphQL */ `
       _deleted
       _lastChangedAt
       entityLevelId
+      organization_id
     }
   }
 `;
@@ -1167,6 +1272,7 @@ export const deleteEntity = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       location {
         latitude
@@ -1195,6 +1301,7 @@ export const deleteEntity = /* GraphQL */ `
           entityAppliedInterventionsId
           appliedInterventionWhoDidItId
           appliedInterventionInterventionId
+          organization_id
         }
         nextToken
         startedAt
@@ -1207,6 +1314,7 @@ export const deleteEntity = /* GraphQL */ `
       _deleted
       _lastChangedAt
       entityLevelId
+      organization_id
     }
   }
 `;
@@ -1231,6 +1339,7 @@ export const createAppliedIntervention = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       intervention {
         name {
@@ -1265,6 +1374,7 @@ export const createAppliedIntervention = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       location {
         latitude
@@ -1285,6 +1395,7 @@ export const createAppliedIntervention = /* GraphQL */ `
           appliedInterventionExecutedSurveysId
           executedSurveySurveyId
           executedSurveyWhoExecutedItId
+          organization_id
         }
         nextToken
         startedAt
@@ -1299,6 +1410,7 @@ export const createAppliedIntervention = /* GraphQL */ `
       entityAppliedInterventionsId
       appliedInterventionWhoDidItId
       appliedInterventionInterventionId
+      organization_id
     }
   }
 `;
@@ -1323,6 +1435,7 @@ export const updateAppliedIntervention = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       intervention {
         name {
@@ -1357,6 +1470,7 @@ export const updateAppliedIntervention = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       location {
         latitude
@@ -1377,6 +1491,7 @@ export const updateAppliedIntervention = /* GraphQL */ `
           appliedInterventionExecutedSurveysId
           executedSurveySurveyId
           executedSurveyWhoExecutedItId
+          organization_id
         }
         nextToken
         startedAt
@@ -1391,6 +1506,7 @@ export const updateAppliedIntervention = /* GraphQL */ `
       entityAppliedInterventionsId
       appliedInterventionWhoDidItId
       appliedInterventionInterventionId
+      organization_id
     }
   }
 `;
@@ -1415,6 +1531,7 @@ export const deleteAppliedIntervention = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       intervention {
         name {
@@ -1449,6 +1566,7 @@ export const deleteAppliedIntervention = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       location {
         latitude
@@ -1469,6 +1587,7 @@ export const deleteAppliedIntervention = /* GraphQL */ `
           appliedInterventionExecutedSurveysId
           executedSurveySurveyId
           executedSurveyWhoExecutedItId
+          organization_id
         }
         nextToken
         startedAt
@@ -1483,6 +1602,7 @@ export const deleteAppliedIntervention = /* GraphQL */ `
       entityAppliedInterventionsId
       appliedInterventionWhoDidItId
       appliedInterventionInterventionId
+      organization_id
     }
   }
 `;
@@ -1504,6 +1624,7 @@ export const createExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         intervention {
           interventionType
@@ -1514,6 +1635,7 @@ export const createExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -1534,6 +1656,7 @@ export const createExecutedSurvey = /* GraphQL */ `
         entityAppliedInterventionsId
         appliedInterventionWhoDidItId
         appliedInterventionInterventionId
+        organization_id
       }
       survey {
         name {
@@ -1553,6 +1676,7 @@ export const createExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         questions {
           id
@@ -1573,6 +1697,7 @@ export const createExecutedSurvey = /* GraphQL */ `
         _deleted
         _lastChangedAt
         interventionSurveysId
+        organization_id
       }
       surveyID
       whoExecutedIt {
@@ -1590,6 +1715,7 @@ export const createExecutedSurvey = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       date
       location {
@@ -1627,6 +1753,7 @@ export const createExecutedSurvey = /* GraphQL */ `
       appliedInterventionExecutedSurveysId
       executedSurveySurveyId
       executedSurveyWhoExecutedItId
+      organization_id
     }
   }
 `;
@@ -1648,6 +1775,7 @@ export const updateExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         intervention {
           interventionType
@@ -1658,6 +1786,7 @@ export const updateExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -1678,6 +1807,7 @@ export const updateExecutedSurvey = /* GraphQL */ `
         entityAppliedInterventionsId
         appliedInterventionWhoDidItId
         appliedInterventionInterventionId
+        organization_id
       }
       survey {
         name {
@@ -1697,6 +1827,7 @@ export const updateExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         questions {
           id
@@ -1717,6 +1848,7 @@ export const updateExecutedSurvey = /* GraphQL */ `
         _deleted
         _lastChangedAt
         interventionSurveysId
+        organization_id
       }
       surveyID
       whoExecutedIt {
@@ -1734,6 +1866,7 @@ export const updateExecutedSurvey = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       date
       location {
@@ -1771,6 +1904,7 @@ export const updateExecutedSurvey = /* GraphQL */ `
       appliedInterventionExecutedSurveysId
       executedSurveySurveyId
       executedSurveyWhoExecutedItId
+      organization_id
     }
   }
 `;
@@ -1792,6 +1926,7 @@ export const deleteExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         intervention {
           interventionType
@@ -1802,6 +1937,7 @@ export const deleteExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -1822,6 +1958,7 @@ export const deleteExecutedSurvey = /* GraphQL */ `
         entityAppliedInterventionsId
         appliedInterventionWhoDidItId
         appliedInterventionInterventionId
+        organization_id
       }
       survey {
         name {
@@ -1841,6 +1978,7 @@ export const deleteExecutedSurvey = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         questions {
           id
@@ -1861,6 +1999,7 @@ export const deleteExecutedSurvey = /* GraphQL */ `
         _deleted
         _lastChangedAt
         interventionSurveysId
+        organization_id
       }
       surveyID
       whoExecutedIt {
@@ -1878,6 +2017,7 @@ export const deleteExecutedSurvey = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       date
       location {
@@ -1915,6 +2055,7 @@ export const deleteExecutedSurvey = /* GraphQL */ `
       appliedInterventionExecutedSurveysId
       executedSurveySurveyId
       executedSurveyWhoExecutedItId
+      organization_id
     }
   }
 `;
@@ -1947,6 +2088,7 @@ export const createTask = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       userID
       entity {
@@ -1969,6 +2111,7 @@ export const createTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -1992,6 +2135,7 @@ export const createTask = /* GraphQL */ `
         _deleted
         _lastChangedAt
         entityLevelId
+        organization_id
       }
       appliedIntervention {
         whoDidIt {
@@ -2005,6 +2149,7 @@ export const createTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         intervention {
           interventionType
@@ -2015,6 +2160,7 @@ export const createTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -2035,6 +2181,7 @@ export const createTask = /* GraphQL */ `
         entityAppliedInterventionsId
         appliedInterventionWhoDidItId
         appliedInterventionInterventionId
+        organization_id
       }
       executedSurvey {
         appliedIntervention {
@@ -2049,6 +2196,7 @@ export const createTask = /* GraphQL */ `
           entityAppliedInterventionsId
           appliedInterventionWhoDidItId
           appliedInterventionInterventionId
+          organization_id
         }
         survey {
           surveyType
@@ -2061,6 +2209,7 @@ export const createTask = /* GraphQL */ `
           _deleted
           _lastChangedAt
           interventionSurveysId
+          organization_id
         }
         surveyID
         whoExecutedIt {
@@ -2074,6 +2223,7 @@ export const createTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         date
         location {
@@ -2100,6 +2250,7 @@ export const createTask = /* GraphQL */ `
         appliedInterventionExecutedSurveysId
         executedSurveySurveyId
         executedSurveyWhoExecutedItId
+        organization_id
       }
       schemeVersion
       picIDs
@@ -2114,6 +2265,7 @@ export const createTask = /* GraphQL */ `
       taskEntityId
       taskAppliedInterventionId
       taskExecutedSurveyId
+      organization_id
     }
   }
 `;
@@ -2146,6 +2298,7 @@ export const updateTask = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       userID
       entity {
@@ -2168,6 +2321,7 @@ export const updateTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -2191,6 +2345,7 @@ export const updateTask = /* GraphQL */ `
         _deleted
         _lastChangedAt
         entityLevelId
+        organization_id
       }
       appliedIntervention {
         whoDidIt {
@@ -2204,6 +2359,7 @@ export const updateTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         intervention {
           interventionType
@@ -2214,6 +2370,7 @@ export const updateTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -2234,6 +2391,7 @@ export const updateTask = /* GraphQL */ `
         entityAppliedInterventionsId
         appliedInterventionWhoDidItId
         appliedInterventionInterventionId
+        organization_id
       }
       executedSurvey {
         appliedIntervention {
@@ -2248,6 +2406,7 @@ export const updateTask = /* GraphQL */ `
           entityAppliedInterventionsId
           appliedInterventionWhoDidItId
           appliedInterventionInterventionId
+          organization_id
         }
         survey {
           surveyType
@@ -2260,6 +2419,7 @@ export const updateTask = /* GraphQL */ `
           _deleted
           _lastChangedAt
           interventionSurveysId
+          organization_id
         }
         surveyID
         whoExecutedIt {
@@ -2273,6 +2433,7 @@ export const updateTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         date
         location {
@@ -2299,6 +2460,7 @@ export const updateTask = /* GraphQL */ `
         appliedInterventionExecutedSurveysId
         executedSurveySurveyId
         executedSurveyWhoExecutedItId
+        organization_id
       }
       schemeVersion
       picIDs
@@ -2313,6 +2475,7 @@ export const updateTask = /* GraphQL */ `
       taskEntityId
       taskAppliedInterventionId
       taskExecutedSurveyId
+      organization_id
     }
   }
 `;
@@ -2345,6 +2508,7 @@ export const deleteTask = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       userID
       entity {
@@ -2367,6 +2531,7 @@ export const deleteTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -2390,6 +2555,7 @@ export const deleteTask = /* GraphQL */ `
         _deleted
         _lastChangedAt
         entityLevelId
+        organization_id
       }
       appliedIntervention {
         whoDidIt {
@@ -2403,6 +2569,7 @@ export const deleteTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         intervention {
           interventionType
@@ -2413,6 +2580,7 @@ export const deleteTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         location {
           latitude
@@ -2433,6 +2601,7 @@ export const deleteTask = /* GraphQL */ `
         entityAppliedInterventionsId
         appliedInterventionWhoDidItId
         appliedInterventionInterventionId
+        organization_id
       }
       executedSurvey {
         appliedIntervention {
@@ -2447,6 +2616,7 @@ export const deleteTask = /* GraphQL */ `
           entityAppliedInterventionsId
           appliedInterventionWhoDidItId
           appliedInterventionInterventionId
+          organization_id
         }
         survey {
           surveyType
@@ -2459,6 +2629,7 @@ export const deleteTask = /* GraphQL */ `
           _deleted
           _lastChangedAt
           interventionSurveysId
+          organization_id
         }
         surveyID
         whoExecutedIt {
@@ -2472,6 +2643,7 @@ export const deleteTask = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         date
         location {
@@ -2498,6 +2670,7 @@ export const deleteTask = /* GraphQL */ `
         appliedInterventionExecutedSurveysId
         executedSurveySurveyId
         executedSurveyWhoExecutedItId
+        organization_id
       }
       schemeVersion
       picIDs
@@ -2512,6 +2685,7 @@ export const deleteTask = /* GraphQL */ `
       taskEntityId
       taskAppliedInterventionId
       taskExecutedSurveyId
+      organization_id
     }
   }
 `;
@@ -2529,13 +2703,14 @@ export const createContentTag = /* GraphQL */ `
       contents {
         items {
           id
-          contentID
-          contentTagID
+          contentId
+          contentTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2546,6 +2721,7 @@ export const createContentTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -2563,13 +2739,14 @@ export const updateContentTag = /* GraphQL */ `
       contents {
         items {
           id
-          contentID
-          contentTagID
+          contentId
+          contentTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2580,6 +2757,7 @@ export const updateContentTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -2597,13 +2775,14 @@ export const deleteContentTag = /* GraphQL */ `
       contents {
         items {
           id
-          contentID
-          contentTagID
+          contentId
+          contentTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2614,6 +2793,7 @@ export const deleteContentTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -2631,13 +2811,14 @@ export const createInterventionTag = /* GraphQL */ `
       interventions {
         items {
           id
-          interventionID
-          interventionTagID
+          interventionId
+          interventionTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2648,6 +2829,7 @@ export const createInterventionTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -2665,13 +2847,14 @@ export const updateInterventionTag = /* GraphQL */ `
       interventions {
         items {
           id
-          interventionID
-          interventionTagID
+          interventionId
+          interventionTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2682,6 +2865,7 @@ export const updateInterventionTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -2699,13 +2883,14 @@ export const deleteInterventionTag = /* GraphQL */ `
       interventions {
         items {
           id
-          interventionID
-          interventionTagID
+          interventionId
+          interventionTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2716,6 +2901,7 @@ export const deleteInterventionTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -2733,13 +2919,14 @@ export const createSurveyTag = /* GraphQL */ `
       surveys {
         items {
           id
-          surveyID
-          surveyTagID
+          surveyId
+          surveyTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2750,6 +2937,7 @@ export const createSurveyTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -2767,13 +2955,14 @@ export const updateSurveyTag = /* GraphQL */ `
       surveys {
         items {
           id
-          surveyID
-          surveyTagID
+          surveyId
+          surveyTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2784,6 +2973,7 @@ export const updateSurveyTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -2801,13 +2991,14 @@ export const deleteSurveyTag = /* GraphQL */ `
       surveys {
         items {
           id
-          surveyID
-          surveyTagID
+          surveyId
+          surveyTagId
           createdAt
           updatedAt
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         nextToken
         startedAt
@@ -2818,6 +3009,7 @@ export const deleteSurveyTag = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -2840,6 +3032,7 @@ export const createSessionData = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -2862,6 +3055,7 @@ export const updateSessionData = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -2884,6 +3078,7 @@ export const deleteSessionData = /* GraphQL */ `
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -2894,8 +3089,8 @@ export const createLevelInterventionRelation = /* GraphQL */ `
   ) {
     createLevelInterventionRelation(input: $input, condition: $condition) {
       id
-      levelID
-      interventionID
+      levelId
+      interventionId
       level {
         name {
           languageKeys
@@ -2922,6 +3117,7 @@ export const createLevelInterventionRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       intervention {
         name {
@@ -2956,12 +3152,14 @@ export const createLevelInterventionRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -2972,8 +3170,8 @@ export const updateLevelInterventionRelation = /* GraphQL */ `
   ) {
     updateLevelInterventionRelation(input: $input, condition: $condition) {
       id
-      levelID
-      interventionID
+      levelId
+      interventionId
       level {
         name {
           languageKeys
@@ -3000,6 +3198,7 @@ export const updateLevelInterventionRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       intervention {
         name {
@@ -3034,12 +3233,14 @@ export const updateLevelInterventionRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -3050,8 +3251,8 @@ export const deleteLevelInterventionRelation = /* GraphQL */ `
   ) {
     deleteLevelInterventionRelation(input: $input, condition: $condition) {
       id
-      levelID
-      interventionID
+      levelId
+      interventionId
       level {
         name {
           languageKeys
@@ -3078,6 +3279,7 @@ export const deleteLevelInterventionRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       intervention {
         name {
@@ -3112,12 +3314,14 @@ export const deleteLevelInterventionRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -3128,8 +3332,8 @@ export const createInterventionContentRelation = /* GraphQL */ `
   ) {
     createInterventionContentRelation(input: $input, condition: $condition) {
       id
-      interventionID
-      contentID
+      interventionId
+      contentId
       intervention {
         name {
           languageKeys
@@ -3163,6 +3367,7 @@ export const createInterventionContentRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       content {
         name {
@@ -3188,12 +3393,14 @@ export const createInterventionContentRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -3204,8 +3411,8 @@ export const updateInterventionContentRelation = /* GraphQL */ `
   ) {
     updateInterventionContentRelation(input: $input, condition: $condition) {
       id
-      interventionID
-      contentID
+      interventionId
+      contentId
       intervention {
         name {
           languageKeys
@@ -3239,6 +3446,7 @@ export const updateInterventionContentRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       content {
         name {
@@ -3264,12 +3472,14 @@ export const updateInterventionContentRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -3280,8 +3490,8 @@ export const deleteInterventionContentRelation = /* GraphQL */ `
   ) {
     deleteInterventionContentRelation(input: $input, condition: $condition) {
       id
-      interventionID
-      contentID
+      interventionId
+      contentId
       intervention {
         name {
           languageKeys
@@ -3315,6 +3525,7 @@ export const deleteInterventionContentRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       content {
         name {
@@ -3340,12 +3551,14 @@ export const deleteInterventionContentRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -3359,8 +3572,8 @@ export const createInterventionInterventionTagRelation = /* GraphQL */ `
       condition: $condition
     ) {
       id
-      interventionID
-      interventionTagID
+      interventionId
+      interventionTagId
       intervention {
         name {
           languageKeys
@@ -3394,6 +3607,7 @@ export const createInterventionInterventionTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       interventionTag {
         text {
@@ -3411,12 +3625,14 @@ export const createInterventionInterventionTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -3430,8 +3646,8 @@ export const updateInterventionInterventionTagRelation = /* GraphQL */ `
       condition: $condition
     ) {
       id
-      interventionID
-      interventionTagID
+      interventionId
+      interventionTagId
       intervention {
         name {
           languageKeys
@@ -3465,6 +3681,7 @@ export const updateInterventionInterventionTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       interventionTag {
         text {
@@ -3482,12 +3699,14 @@ export const updateInterventionInterventionTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -3501,8 +3720,8 @@ export const deleteInterventionInterventionTagRelation = /* GraphQL */ `
       condition: $condition
     ) {
       id
-      interventionID
-      interventionTagID
+      interventionId
+      interventionTagId
       intervention {
         name {
           languageKeys
@@ -3536,6 +3755,7 @@ export const deleteInterventionInterventionTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       interventionTag {
         text {
@@ -3553,12 +3773,14 @@ export const deleteInterventionInterventionTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -3569,8 +3791,8 @@ export const createContentContentTagRelation = /* GraphQL */ `
   ) {
     createContentContentTagRelation(input: $input, condition: $condition) {
       id
-      contentID
-      contentTagID
+      contentId
+      contentTagId
       content {
         name {
           languageKeys
@@ -3595,6 +3817,7 @@ export const createContentContentTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       contentTag {
         text {
@@ -3612,12 +3835,14 @@ export const createContentContentTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -3628,8 +3853,8 @@ export const updateContentContentTagRelation = /* GraphQL */ `
   ) {
     updateContentContentTagRelation(input: $input, condition: $condition) {
       id
-      contentID
-      contentTagID
+      contentId
+      contentTagId
       content {
         name {
           languageKeys
@@ -3654,6 +3879,7 @@ export const updateContentContentTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       contentTag {
         text {
@@ -3671,12 +3897,14 @@ export const updateContentContentTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -3687,8 +3915,8 @@ export const deleteContentContentTagRelation = /* GraphQL */ `
   ) {
     deleteContentContentTagRelation(input: $input, condition: $condition) {
       id
-      contentID
-      contentTagID
+      contentId
+      contentTagId
       content {
         name {
           languageKeys
@@ -3713,6 +3941,7 @@ export const deleteContentContentTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       contentTag {
         text {
@@ -3730,12 +3959,14 @@ export const deleteContentContentTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -3746,8 +3977,8 @@ export const createSurveySurveyTagRelation = /* GraphQL */ `
   ) {
     createSurveySurveyTagRelation(input: $input, condition: $condition) {
       id
-      surveyID
-      surveyTagID
+      surveyId
+      surveyTagId
       survey {
         name {
           languageKeys
@@ -3766,6 +3997,7 @@ export const createSurveySurveyTagRelation = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         questions {
           id
@@ -3786,6 +4018,7 @@ export const createSurveySurveyTagRelation = /* GraphQL */ `
         _deleted
         _lastChangedAt
         interventionSurveysId
+        organization_id
       }
       surveyTag {
         text {
@@ -3803,12 +4036,14 @@ export const createSurveySurveyTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -3819,8 +4054,8 @@ export const updateSurveySurveyTagRelation = /* GraphQL */ `
   ) {
     updateSurveySurveyTagRelation(input: $input, condition: $condition) {
       id
-      surveyID
-      surveyTagID
+      surveyId
+      surveyTagId
       survey {
         name {
           languageKeys
@@ -3839,6 +4074,7 @@ export const updateSurveySurveyTagRelation = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         questions {
           id
@@ -3859,6 +4095,7 @@ export const updateSurveySurveyTagRelation = /* GraphQL */ `
         _deleted
         _lastChangedAt
         interventionSurveysId
+        organization_id
       }
       surveyTag {
         text {
@@ -3876,12 +4113,14 @@ export const updateSurveySurveyTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;
@@ -3892,8 +4131,8 @@ export const deleteSurveySurveyTagRelation = /* GraphQL */ `
   ) {
     deleteSurveySurveyTagRelation(input: $input, condition: $condition) {
       id
-      surveyID
-      surveyTagID
+      surveyId
+      surveyTagId
       survey {
         name {
           languageKeys
@@ -3912,6 +4151,7 @@ export const deleteSurveySurveyTagRelation = /* GraphQL */ `
           _version
           _deleted
           _lastChangedAt
+          organization_id
         }
         questions {
           id
@@ -3932,6 +4172,7 @@ export const deleteSurveySurveyTagRelation = /* GraphQL */ `
         _deleted
         _lastChangedAt
         interventionSurveysId
+        organization_id
       }
       surveyTag {
         text {
@@ -3949,12 +4190,14 @@ export const deleteSurveySurveyTagRelation = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+        organization_id
       }
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      organization_id
     }
   }
 `;

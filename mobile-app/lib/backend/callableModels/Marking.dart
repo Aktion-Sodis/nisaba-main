@@ -1,6 +1,20 @@
+import 'package:db_model_generator/db_model_annotations.dart';
+import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
+import 'package:json_annotation/json_annotation.dart';
 
-class Marking {
+part 'Marking.g.dart';
+part 'Marking.db_model.dart';
+
+@DBModelAnnotation(true)
+@JsonSerializable()
+class Marking extends DBModel {
+  // JsonSerializable factory and toJson methods
+  factory Marking.fromJson(Map<String, dynamic> json) =>
+      _$MarkingFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MarkingToJson(this);
+
   late double x;
   late double y;
   late double rx;
@@ -12,16 +26,38 @@ class Marking {
       required this.y,
       required this.rx,
       required this.ry,
-      required this.text});
+      required this.text})
+      : super(null);
 
   amp.Marking toAmplifyModel() =>
       amp.Marking(x: x, y: y, rx: rx, ry: ry, text: text);
 
-  Marking.fromAmplifyModel(amp.Marking marking) {
+  Marking.fromAmplifyModel(amp.Marking marking) : super(null) {
     x = marking.x;
     y = marking.y;
     rx = marking.rx;
     ry = marking.ry;
     text = marking.text;
+  }
+
+  @override
+  DBModel getUnpopulated() {
+    throw UnimplementedError();
+  }
+
+  // Operator == is used to compare two objects. It compares
+  // all the properties of the objects except for lists and returns true if
+  // all the properties are equal.
+  @override
+  bool operator ==(Object other) {
+    if (other is Marking) {
+      return x == other.x &&
+          y == other.y &&
+          rx == other.rx &&
+          ry == other.ry &&
+          text == other.text;
+    } else {
+      return false;
+    }
   }
 }

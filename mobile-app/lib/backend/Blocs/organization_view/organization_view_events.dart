@@ -11,12 +11,6 @@ class NavigateToDaughterView extends OrganizationViewEvent {
   NavigateToDaughterView(this.parent);
 }
 
-class LoadDaughterEntities extends OrganizationViewEvent {
-  Entity? parent;
-  int page;
-  LoadDaughterEntities(this.parent, this.page);
-}
-
 class NavigateToEntityOverview extends OrganizationViewEvent {
   Entity entity;
   NavigateToEntityOverview(this.entity);

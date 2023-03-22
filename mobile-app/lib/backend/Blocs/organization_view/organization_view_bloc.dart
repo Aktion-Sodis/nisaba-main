@@ -9,7 +9,7 @@ import 'package:mobile_app/backend/repositories/EntityRepository.dart';
 import 'package:mobile_app/backend/repositories/LevelRepository.dart';
 import 'package:mobile_app/frontend/pages/task_form/task_form.dart';
 import 'package:mobile_app/frontend/strings.dart' as strings;
-import 'package:mobile_app/services/gps.dart';
+import 'package:mobile_app/utils/gps.dart';
 
 class OrganizationViewBloc
     extends Bloc<OrganizationViewEvent, OrganizationViewState> {
@@ -21,17 +21,31 @@ class OrganizationViewBloc
       this.entityRepository, this.appliedInterventionRepository, this.inAppBloc)
       : super(LoadingOrganizationViewState()) {
     on<OrganizationViewEvent>(_mapEventToState);
-    LevelRepository.getAllLevels().then((allLevels) {
-      String startingAppBarString = allLevels.first.name;
+    LevelRepository.instance.getAllLevels().then((allLevels) async {
+      String startingAppBarString = allLevels.first.displayName;
+      var levelContent = LevelContent(allLevels.first, null);
+      await _loadEntities(levelContent, null);
+
       // ignore: invalid_use_of_visible_for_testing_member
       emit(EntitiesLoadedOrganizationViewState(
           allLevels: allLevels,
           organizationViewType: OrganizationViewType.LIST,
-          levelContentList: [LevelContent(allLevels.first, null)],
+          levelContentList: [levelContent],
           appBarString: startingAppBarString,
           addEntityPossible: true));
-      add(LoadDaughterEntities(null, 0));
     });
+  }
+
+  Future<void> _loadEntities(
+      LevelContent content, String? parentEntityID) async {
+    List<Entity> loadedEntities = await EntityRepository.instance.getEntities(
+        byParentEntityID: true, parentEntityID: parentEntityID, page: 0);
+
+    loadedEntities.forEach((element) {
+      element.level = content.level;
+    });
+
+    content.daughterEntities.addAll(loadedEntities);
   }
 
   void _mapEventToState(
@@ -45,7 +59,8 @@ class OrganizationViewBloc
           case OrganizationViewType.LIST:
             if (loadedState.levelContentList.length > 1) {
               loadedState.levelContentList.removeLast();
-              String appBarName = loadedState.levelContentList.last.level.name;
+              String appBarName =
+                  loadedState.levelContentList.last.level.displayName;
               emit(loadedState.copyWith(appBarString: appBarName));
             }
             break;
@@ -53,13 +68,14 @@ class OrganizationViewBloc
             emit(loadedState.copyWith(
                 organizationViewType: OrganizationViewType.LIST,
                 currentDetailEntity: null,
-                appBarString: loadedState.levelContentList.last.level.name));
+                appBarString:
+                    loadedState.levelContentList.last.level.displayName));
             break;
           case OrganizationViewType.APPLIEDINTERVENTIONS:
             emit(loadedState.copyWith(
                 organizationViewType: OrganizationViewType.OVERVIEW,
                 currentDetailEntity: loadedState.currentDetailEntity,
-                appBarString: loadedState.currentDetailEntity!.name));
+                appBarString: loadedState.currentDetailEntity!.displayName));
             break;
           case OrganizationViewType.APPLIEDINTERVENTIONDETAIL:
             emit(loadedState.copyWith(
@@ -71,13 +87,13 @@ class OrganizationViewBloc
             emit(loadedState.copyWith(
                 organizationViewType: OrganizationViewType.OVERVIEW,
                 currentDetailEntity: loadedState.currentDetailEntity,
-                appBarString: loadedState.currentDetailEntity!.name));
+                appBarString: loadedState.currentDetailEntity!.displayName));
             break;
           case OrganizationViewType.TASKS:
             emit(loadedState.copyWith(
                 organizationViewType: OrganizationViewType.OVERVIEW,
                 currentDetailEntity: loadedState.currentDetailEntity,
-                appBarString: loadedState.currentDetailEntity!.name));
+                appBarString: loadedState.currentDetailEntity!.displayName));
             break;
           case OrganizationViewType.HISTORY:
             emit(loadedState.copyWith(
@@ -96,45 +112,25 @@ class OrganizationViewBloc
           default:
             emit(loadedState.copyWith(
                 organizationViewType: OrganizationViewType.OVERVIEW,
-                appBarString: loadedState.currentDetailEntity!.name));
+                appBarString: loadedState.currentDetailEntity!.displayName));
             break;
         }
       } else if (event is NavigateToDaughterView) {
         Level nextLevel = loadedState.allLevels.firstWhere(
           (element) => element.parentLevelID == event.parent.level.id,
         );
+        var levelContent = LevelContent(nextLevel, event.parent);
+        _loadEntities(levelContent, event.parent.id);
         emit(loadedState.copyWith(
             organizationViewType: OrganizationViewType.LIST,
-            levelContentList: loadedState.levelContentList
-              ..add(LevelContent(nextLevel, event.parent)),
-            appBarString: nextLevel.name));
-        add(LoadDaughterEntities(event.parent, 0));
-      } else if (event is LoadDaughterEntities &&
-          loadedState.currentLevelContent.hasMoreToLoad) {
-        List<Entity> loadedEntities = await EntityRepository.getEntities(
-            byParentEntityID: true,
-            parentEntityID: event.parent == null ? null : event.parent!.id,
-            page: event.page);
-
-        loadedState.levelContentList
-            .where(
-          (element) => element.parentEntity == event.parent,
-        )
-            .forEach(((element) {
-          if (loadedEntities.isEmpty) {
-            element.hasMoreToLoad = false;
-          } else {
-            element.daughterEntities.addAll(loadedEntities);
-          }
-          element.page++;
-        }));
-
-        emit(loadedState.copyWith());
+            levelContentList: loadedState.levelContentList..add(levelContent),
+            appBarString: nextLevel.displayName));
+        // add(LoadDaughterEntities(event.parent, 0));
       } else if (event is NavigateToEntityOverview) {
         emit(loadedState.copyWith(
             organizationViewType: OrganizationViewType.OVERVIEW,
             currentDetailEntity: event.entity,
-            appBarString: event.entity.name));
+            appBarString: event.entity.displayName));
       } else if (event is NavigateToEntityTasks) {
         emit(loadedState.copyWith(
             organizationViewType: OrganizationViewType.TASKS,
@@ -198,15 +194,15 @@ class OrganizationViewBloc
         } catch (e) {
           // Probably: LocationServiceDisabledException or TimeoutException
         }
-        String id = await EntityRepository.createEntity(newEntity);
+        String id = await EntityRepository.instance.createEntity(newEntity);
         newEntity.id = id;
         loadedState.levelContentList.last.daughterEntities.add(newEntity);
 
         emit(loadedState.copyWith());
       } else if (event is UpdateEntity) {
-        EntityRepository.updateEntity(event.entity);
+        EntityRepository.instance.updateEntity(event.entity);
         emit(loadedState.copyWith(
-            appBarString: event.entity.name,
+            appBarString: event.entity.displayName,
             currentDetailEntity: event.entity));
       } else if (event is AddAppliedIntervention) {
         try {
@@ -215,9 +211,8 @@ class OrganizationViewBloc
         } catch (e) {
           // Probably: LocationServiceDisabledException or TimeoutException
         }
-        String id =
-            await AppliedInterventionRepository.createAppliedIntervention(
-                event.appliedIntervention, event.entity);
+        String id = await AppliedInterventionRepository.instance
+            .createAppliedIntervention(event.appliedIntervention, event.entity);
         print("new InterventionID: $id");
         AppliedIntervention toAdd = event.appliedIntervention;
         toAdd.id = id;
@@ -243,8 +238,8 @@ class OrganizationViewBloc
         emit(loadedState.copyWith(
             currentDetailEntity: loadedState.currentDetailEntity));
       } else if (event is UpdateAppliedIntervention) {
-        AppliedInterventionRepository.updateAppliedIntervention(
-            event.appliedIntervention, event.entity);
+        AppliedInterventionRepository.instance
+            .updateAppliedIntervention(event.appliedIntervention, event.entity);
         AppliedIntervention toAdd = event.appliedIntervention;
         Entity toSet = event.entity;
 
@@ -260,7 +255,7 @@ class OrganizationViewBloc
                     : null));
       } else if (event is NavigateToEntityAppliedInterventionDetail) {
         emit(loadedState.copyWith(
-            appBarString: event.appliedIntervention.intervention.name,
+            appBarString: event.appliedIntervention.intervention.displayName,
             currentDetailEntity: loadedState.currentDetailEntity,
             organizationViewType:
                 OrganizationViewType.APPLIEDINTERVENTIONDETAIL,
@@ -269,7 +264,7 @@ class OrganizationViewBloc
         emit(loadedState.copyWith(
           appBarString: TaskForm.formatDate(event.executedSurvey.date) +
               ": " +
-              event.executedSurvey.survey.name,
+              event.executedSurvey.survey.displayName,
           executedSurveyToDisplay: event.executedSurvey,
           currentDetailEntity: loadedState.currentDetailEntity,
           organizationViewType: OrganizationViewType.EXECUTEDSURVEY,
