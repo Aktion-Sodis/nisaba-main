@@ -15,6 +15,10 @@
         "keyDescription": "Nisaba API Key"
       }
     ],
-    "conflictResolution": {}
+    "conflictResolution": {
+      "defaultResolutionStrategy": {
+        "type": "OPTIMISTIC_CONCURRENCY"
+      }
+    }
   }
 }

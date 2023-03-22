@@ -12,18 +12,17 @@ const USER_POOL_ID = process.env.AUTH_AUTHNISABA_USERPOOLID;
  * @returns {Promise<import('@types/aws-lambda').APIGatewayProxyResult>}
  */
 const createUser = async (event) => {
-  // Get the phoneNumber from the request body
-  const { phoneNumber, group } = JSON.parse(event.body);
+  const { username, group } = JSON.parse(event.body);
 
   // validation
-  if (!phoneNumber || !group) {
+  if (!username || !group) {
     return {
       statusCode: 400,
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "*",
       },
-      body: JSON.stringify({ error: "phoneNumber and group are required" }),
+      body: JSON.stringify({ error: "username and group are required" }),
     };
   }
 
@@ -39,6 +38,9 @@ const createUser = async (event) => {
     };
   }
 
+  const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+  const isEmail = emailRegex.test(username);
+
   // Get the custom claim `custom:organization_id` from event.requestContext.authorizer.claims
   const { claims } = event.requestContext.authorizer;
   const organization_id = claims["custom:organization_id"];
@@ -47,24 +49,27 @@ const createUser = async (event) => {
   const temporaryPassword = `${Math.random().toString(36).slice(-8)}Aa0!`;
   const finalPassword = `${Math.random().toString(36).slice(-8)}Aa0!`;
 
+  const userAttributes = [
+    {
+      Name: "custom:organization_id",
+      Value: organization_id,
+    },
+  ];
+
+  userAttributes.push({
+    Name: isEmail ? "email" : "phone_number",
+    Value: username,
+  });
+  userAttributes.push({
+    Name: isEmail ? "email_verified" : "phone_number_verified",
+    Value: "true",
+  });
+
   /** @type {import('aws-sdk').CognitoIdentityServiceProvider.AdminCreateUserRequest} */
   const params = {
     UserPoolId: USER_POOL_ID,
-    Username: phoneNumber,
-    UserAttributes: [
-      {
-        Name: "phone_number",
-        Value: phoneNumber,
-      },
-      {
-        Name: "phone_number_verified",
-        Value: "true",
-      },
-      {
-        Name: "custom:organization_id",
-        Value: organization_id,
-      },
-    ],
+    Username: username,
+    UserAttributes: userAttributes,
     TemporaryPassword: temporaryPassword,
   };
 
@@ -76,7 +81,7 @@ const createUser = async (event) => {
     await cognitoIdentityServiceProvider
       .adminAddUserToGroup({
         UserPoolId: USER_POOL_ID,
-        Username: phoneNumber,
+        Username: username,
         GroupName: group,
       })
       .promise();
@@ -84,7 +89,7 @@ const createUser = async (event) => {
     await cognitoIdentityServiceProvider
       .adminSetUserPassword({
         UserPoolId: USER_POOL_ID,
-        Username: phoneNumber,
+        Username: username,
         Password: finalPassword,
         Permanent: true,
       })
