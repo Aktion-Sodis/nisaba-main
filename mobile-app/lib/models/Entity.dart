@@ -273,12 +273,12 @@ class Entity extends Model {
   static final QueryField PARENTENTITYID = QueryField(fieldName: "parentEntityID");
   static final QueryField LEVEL = QueryField(
     fieldName: "level",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Level'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Level).toString()));
   static final QueryField LOCATION = QueryField(fieldName: "location");
   static final QueryField CUSTOMDATA = QueryField(fieldName: "customData");
   static final QueryField APPLIEDINTERVENTIONS = QueryField(
     fieldName: "appliedInterventions",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'AppliedIntervention'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (AppliedIntervention).toString()));
   static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
   static final QueryField ENTITYLEVELID = QueryField(fieldName: "entityLevelId");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
@@ -322,7 +322,7 @@ class Entity extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
       key: Entity.LEVEL,
       isRequired: true,
-      ofModelName: 'Level',
+      ofModelName: (Level).toString(),
       associatedKey: Level.ID
     ));
     
@@ -342,7 +342,7 @@ class Entity extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: Entity.APPLIEDINTERVENTIONS,
       isRequired: true,
-      ofModelName: 'AppliedIntervention',
+      ofModelName: (AppliedIntervention).toString(),
       associatedKey: AppliedIntervention.ENTITYAPPLIEDINTERVENTIONSID
     ));
     
@@ -380,11 +380,6 @@ class _EntityModelType extends ModelType<Entity> {
   @override
   Entity fromJson(Map<String, dynamic> jsonData) {
     return Entity.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'Entity';
   }
 }
 

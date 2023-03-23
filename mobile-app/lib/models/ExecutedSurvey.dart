@@ -284,14 +284,14 @@ class ExecutedSurvey extends Model {
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField APPLIEDINTERVENTION = QueryField(
     fieldName: "appliedIntervention",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'AppliedIntervention'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (AppliedIntervention).toString()));
   static final QueryField SURVEY = QueryField(
     fieldName: "survey",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Survey'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Survey).toString()));
   static final QueryField SURVEYID = QueryField(fieldName: "surveyID");
   static final QueryField WHOEXECUTEDIT = QueryField(
     fieldName: "whoExecutedIt",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'User'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (User).toString()));
   static final QueryField DATE = QueryField(fieldName: "date");
   static final QueryField LOCATION = QueryField(fieldName: "location");
   static final QueryField ANSWERS = QueryField(fieldName: "answers");
@@ -325,14 +325,14 @@ class ExecutedSurvey extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: ExecutedSurvey.APPLIEDINTERVENTION,
       isRequired: true,
-      targetNames: ['appliedInterventionExecutedSurveysId'],
-      ofModelName: 'AppliedIntervention'
+      targetNames: ["appliedInterventionExecutedSurveysId"],
+      ofModelName: (AppliedIntervention).toString()
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
       key: ExecutedSurvey.SURVEY,
       isRequired: true,
-      ofModelName: 'Survey',
+      ofModelName: (Survey).toString(),
       associatedKey: Survey.ID
     ));
     
@@ -345,7 +345,7 @@ class ExecutedSurvey extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
       key: ExecutedSurvey.WHOEXECUTEDIT,
       isRequired: true,
-      ofModelName: 'User',
+      ofModelName: (User).toString(),
       associatedKey: User.ID
     ));
     
@@ -408,11 +408,6 @@ class _ExecutedSurveyModelType extends ModelType<ExecutedSurvey> {
   @override
   ExecutedSurvey fromJson(Map<String, dynamic> jsonData) {
     return ExecutedSurvey.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'ExecutedSurvey';
   }
 }
 

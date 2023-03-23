@@ -277,11 +277,6 @@ class _SessionDataModelType extends ModelType<SessionData> {
   SessionData fromJson(Map<String, dynamic> jsonData) {
     return SessionData.fromJson(jsonData);
   }
-  
-  @override
-  String modelName() {
-    return 'SessionData';
-  }
 }
 
 /**

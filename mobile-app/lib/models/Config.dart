@@ -212,11 +212,6 @@ class _ConfigModelType extends ModelType<Config> {
   Config fromJson(Map<String, dynamic> jsonData) {
     return Config.fromJson(jsonData);
   }
-  
-  @override
-  String modelName() {
-    return 'Config';
-  }
 }
 
 /**

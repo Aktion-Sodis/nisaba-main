@@ -200,14 +200,13 @@ class MainMenuOrganization extends StatelessWidget {
           ));
           break;
         case OrganizationViewType.OVERVIEW:
+          print('Entity build process');
+          print('on surveys tapped');
+          print(organizationViewState.currentDetailEntity!.displayName);
           return Container(
-              key: ValueKey(
-                  organizationViewState.keyDateTime.toIso8601String() +
-                      "overview-container"),
+              key: ValueKey(DateTime.now().toIso8601String()),
               child: OverviewWidget(
-                  key: ValueKey(
-                      organizationViewState.keyDateTime.toIso8601String() +
-                          "Overview"),
+                  key: ValueKey(DateTime.now().toIso8601String()),
                   entity: organizationViewState.currentDetailEntity!,
                   onTasksTapped: (entity) {
                     context
@@ -639,7 +638,7 @@ class ListWidget extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
 
   Widget listItem(BuildContext buildContext, int index,
-      EntitiesLoadedOrganizationViewState state) {
+      EntitiesLoadedOrganizationViewState state, bool showdetailspossible) {
     String parentEntityName = state.levelContentList.last.parentEntity != null
         ? state.levelContentList.last.parentEntity!.displayName
         : "";
@@ -721,47 +720,55 @@ class ListWidget extends StatelessWidget {
                   )
               ],
             ),
-            Positioned(
-                right: defaultPadding(buildContext),
-                top: /*height(buildContext) * .2 - width(buildContext) * .06*/ defaultPadding(
-                        buildContext) /
-                    2,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8))),
-                    minimumSize: MaterialStateProperty.all(Size(
-                        width(buildContext) * .2, width(buildContext) * .12)),
-                    backgroundColor: MaterialStateProperty.all(
-                        Theme.of(buildContext)
-                            .colorScheme
-                            .primary), //todo: change
-                  ),
-                  onPressed: () {
-                    buildContext
-                        .read<OrganizationViewBloc>()
-                        .add(NavigateToEntityOverview(entities[index]));
-                  },
-                  child: Center(
-                      child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                        Icon(MdiIcons.fileDocument,
-                            color:
-                                Theme.of(buildContext).colorScheme.onSecondary),
-                        SizedBox(
-                          width: defaultPadding(buildContext),
-                        ),
-                        Container(
-                            child: Text(strings.organization_view_info_button,
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Theme.of(buildContext)
-                                        .colorScheme
-                                        .onPrimary)))
-                      ])),
-                ))
+            if (showdetailspossible)
+              Positioned(
+                  right: defaultPadding(buildContext),
+                  top: /*height(buildContext) * .2 - width(buildContext) * .06*/ defaultPadding(
+                          buildContext) /
+                      2,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8))),
+                      minimumSize: MaterialStateProperty.all(Size(
+                          width(buildContext) * .2, width(buildContext) * .12)),
+                      backgroundColor: MaterialStateProperty.all(
+                          Theme.of(buildContext)
+                              .colorScheme
+                              .primary), //todo: change
+                    ),
+                    onPressed: () {
+                      var entity_to_pass = entities[index];
+                      print('Details of entity: ' +
+                          entity_to_pass.displayName +
+                          ' - ' +
+                          entity_to_pass.appliedInterventions.length
+                              .toString());
+                      buildContext
+                          .read<OrganizationViewBloc>()
+                          .add(NavigateToEntityOverview(entity_to_pass));
+                    },
+                    child: Center(
+                        child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                          Icon(MdiIcons.fileDocument,
+                              color: Theme.of(buildContext)
+                                  .colorScheme
+                                  .onSecondary),
+                          SizedBox(
+                            width: defaultPadding(buildContext),
+                          ),
+                          Container(
+                              child: Text(strings.organization_view_info_button,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Theme.of(buildContext)
+                                          .colorScheme
+                                          .onPrimary)))
+                        ])),
+                  ))
           ],
         )));
   }
@@ -777,6 +784,15 @@ class ListWidget extends StatelessWidget {
               state as EntitiesLoadedOrganizationViewState;
           List<Entity> entities = entitiesLoadedOrganizationViewState
               .currentLevelContent.daughterEntities;
+
+          var appliedInterventionsAllowed =
+              entities.first.level.interventionsAreAllowed;
+
+          if (appliedInterventionsAllowed) {
+            appliedInterventionsAllowed =
+                entities.first.level.allowedInterventions!.isNotEmpty;
+          }
+
           return Container(
               child: Scrollbar(
             controller: _scrollController,
@@ -784,7 +800,10 @@ class ListWidget extends StatelessWidget {
                 controller: _scrollController,
                 itemBuilder: (context, index) {
                   return listItem(
-                      context, index, entitiesLoadedOrganizationViewState);
+                      context,
+                      index,
+                      entitiesLoadedOrganizationViewState,
+                      appliedInterventionsAllowed);
                 },
                 itemCount: entities.length),
           ));
@@ -1029,7 +1048,7 @@ class OverviewWidget extends StatelessWidget {
     print("building overview widget");
     print("overview widget key: $key");
     return Scrollbar(
-        key: key,
+        //key: key,
         child:
             // Hide generalCard and taskCard, as generalCard is not needed and taskCard is not needed
             /* ListView.builder(
@@ -1040,26 +1059,26 @@ class OverviewWidget extends StatelessWidget {
                 : 2,
             addAutomaticKeepAlives: false)*/
             SingleChildScrollView(
-          child: Wrap(children: [
-            Column(
-              children: entity.level.interventionsAreAllowed &&
-                      entity.level.allowedInterventions!.isNotEmpty
-                  ? [
-                      Card(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: defaultPadding(context),
-                              vertical: defaultPadding(context) / 2),
-                          child: surveyCardContent(context)),
-                      Card(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: defaultPadding(context),
-                              vertical: defaultPadding(context) / 2),
-                          child: appliedInterventionCardContent(context))
-                    ]
-                  : [],
-            )
-          ]),
-        ));
+      child: Wrap(children: [
+        Column(
+          children: entity.level.interventionsAreAllowed &&
+                  entity.level.allowedInterventions!.isNotEmpty
+              ? [
+                  Card(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: defaultPadding(context),
+                          vertical: defaultPadding(context) / 2),
+                      child: surveyCardContent(context)),
+                  Card(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: defaultPadding(context),
+                          vertical: defaultPadding(context) / 2),
+                      child: appliedInterventionCardContent(context))
+                ]
+              : [],
+        )
+      ]),
+    ));
   }
 }
 

@@ -166,7 +166,7 @@ class InterventionTag extends Model {
   static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
   static final QueryField INTERVENTIONS = QueryField(
     fieldName: "interventions",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'InterventionInterventionTagRelation'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (InterventionInterventionTagRelation).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "InterventionTag";
     modelSchemaDefinition.pluralName = "InterventionTags";
@@ -202,7 +202,7 @@ class InterventionTag extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: InterventionTag.INTERVENTIONS,
       isRequired: true,
-      ofModelName: 'InterventionInterventionTagRelation',
+      ofModelName: (InterventionInterventionTagRelation).toString(),
       associatedKey: InterventionInterventionTagRelation.INTERVENTIONTAG
     ));
     
@@ -228,11 +228,6 @@ class _InterventionTagModelType extends ModelType<InterventionTag> {
   @override
   InterventionTag fromJson(Map<String, dynamic> jsonData) {
     return InterventionTag.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'InterventionTag';
   }
 }
 

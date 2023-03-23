@@ -151,10 +151,10 @@ class InterventionInterventionTagRelation extends Model {
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField INTERVENTION = QueryField(
     fieldName: "intervention",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Intervention'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Intervention).toString()));
   static final QueryField INTERVENTIONTAG = QueryField(
     fieldName: "interventionTag",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'InterventionTag'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (InterventionTag).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "InterventionInterventionTagRelation";
     modelSchemaDefinition.pluralName = "InterventionInterventionTagRelations";
@@ -169,15 +169,15 @@ class InterventionInterventionTagRelation extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: InterventionInterventionTagRelation.INTERVENTION,
       isRequired: true,
-      targetNames: ['interventionId'],
-      ofModelName: 'Intervention'
+      targetNames: ["interventionId"],
+      ofModelName: (Intervention).toString()
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: InterventionInterventionTagRelation.INTERVENTIONTAG,
       isRequired: true,
-      targetNames: ['interventionTagId'],
-      ofModelName: 'InterventionTag'
+      targetNames: ["interventionTagId"],
+      ofModelName: (InterventionTag).toString()
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
@@ -202,11 +202,6 @@ class _InterventionInterventionTagRelationModelType extends ModelType<Interventi
   @override
   InterventionInterventionTagRelation fromJson(Map<String, dynamic> jsonData) {
     return InterventionInterventionTagRelation.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'InterventionInterventionTagRelation';
   }
 }
 

@@ -224,11 +224,6 @@ class _OrganizationModelType extends ModelType<Organization> {
   Organization fromJson(Map<String, dynamic> jsonData) {
     return Organization.fromJson(jsonData);
   }
-  
-  @override
-  String modelName() {
-    return 'Organization';
-  }
 }
 
 /**

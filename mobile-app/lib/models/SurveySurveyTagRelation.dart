@@ -151,10 +151,10 @@ class SurveySurveyTagRelation extends Model {
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField SURVEY = QueryField(
     fieldName: "survey",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Survey'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Survey).toString()));
   static final QueryField SURVEYTAG = QueryField(
     fieldName: "surveyTag",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'SurveyTag'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (SurveyTag).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "SurveySurveyTagRelation";
     modelSchemaDefinition.pluralName = "SurveySurveyTagRelations";
@@ -169,15 +169,15 @@ class SurveySurveyTagRelation extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: SurveySurveyTagRelation.SURVEY,
       isRequired: true,
-      targetNames: ['surveyId'],
-      ofModelName: 'Survey'
+      targetNames: ["surveyId"],
+      ofModelName: (Survey).toString()
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: SurveySurveyTagRelation.SURVEYTAG,
       isRequired: true,
-      targetNames: ['surveyTagId'],
-      ofModelName: 'SurveyTag'
+      targetNames: ["surveyTagId"],
+      ofModelName: (SurveyTag).toString()
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
@@ -202,11 +202,6 @@ class _SurveySurveyTagRelationModelType extends ModelType<SurveySurveyTagRelatio
   @override
   SurveySurveyTagRelation fromJson(Map<String, dynamic> jsonData) {
     return SurveySurveyTagRelation.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'SurveySurveyTagRelation';
   }
 }
 

@@ -166,7 +166,7 @@ class ContentTag extends Model {
   static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
   static final QueryField CONTENTS = QueryField(
     fieldName: "contents",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'ContentContentTagRelation'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (ContentContentTagRelation).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "ContentTag";
     modelSchemaDefinition.pluralName = "ContentTags";
@@ -202,7 +202,7 @@ class ContentTag extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: ContentTag.CONTENTS,
       isRequired: true,
-      ofModelName: 'ContentContentTagRelation',
+      ofModelName: (ContentContentTagRelation).toString(),
       associatedKey: ContentContentTagRelation.CONTENTTAG
     ));
     
@@ -228,11 +228,6 @@ class _ContentTagModelType extends ModelType<ContentTag> {
   @override
   ContentTag fromJson(Map<String, dynamic> jsonData) {
     return ContentTag.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'ContentTag';
   }
 }
 

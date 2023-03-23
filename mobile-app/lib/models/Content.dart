@@ -210,10 +210,10 @@ class Content extends Model {
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
   static final QueryField INTERVENTIONS = QueryField(
     fieldName: "interventions",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'InterventionContentRelation'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (InterventionContentRelation).toString()));
   static final QueryField TAGS = QueryField(
     fieldName: "tags",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'ContentContentTagRelation'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (ContentContentTagRelation).toString()));
   static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Content";
@@ -250,14 +250,14 @@ class Content extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: Content.INTERVENTIONS,
       isRequired: true,
-      ofModelName: 'InterventionContentRelation',
+      ofModelName: (InterventionContentRelation).toString(),
       associatedKey: InterventionContentRelation.CONTENT
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: Content.TAGS,
       isRequired: true,
-      ofModelName: 'ContentContentTagRelation',
+      ofModelName: (ContentContentTagRelation).toString(),
       associatedKey: ContentContentTagRelation.CONTENT
     ));
     
@@ -289,11 +289,6 @@ class _ContentModelType extends ModelType<Content> {
   @override
   Content fromJson(Map<String, dynamic> jsonData) {
     return Content.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'Content';
   }
 }
 

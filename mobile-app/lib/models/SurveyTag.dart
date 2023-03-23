@@ -166,7 +166,7 @@ class SurveyTag extends Model {
   static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
   static final QueryField SURVEYS = QueryField(
     fieldName: "surveys",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'SurveySurveyTagRelation'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (SurveySurveyTagRelation).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "SurveyTag";
     modelSchemaDefinition.pluralName = "SurveyTags";
@@ -202,7 +202,7 @@ class SurveyTag extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: SurveyTag.SURVEYS,
       isRequired: true,
-      ofModelName: 'SurveySurveyTagRelation',
+      ofModelName: (SurveySurveyTagRelation).toString(),
       associatedKey: SurveySurveyTagRelation.SURVEYTAG
     ));
     
@@ -228,11 +228,6 @@ class _SurveyTagModelType extends ModelType<SurveyTag> {
   @override
   SurveyTag fromJson(Map<String, dynamic> jsonData) {
     return SurveyTag.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'SurveyTag';
   }
 }
 

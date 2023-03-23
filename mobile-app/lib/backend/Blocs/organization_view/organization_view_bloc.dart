@@ -38,13 +38,16 @@ class OrganizationViewBloc
 
   Future<void> _loadEntities(
       LevelContent content, String? parentEntityID) async {
+    print('Loads entities');
     List<Entity> loadedEntities = await EntityRepository.instance.getEntities(
         byParentEntityID: true, parentEntityID: parentEntityID, page: 0);
-
+    print('Loaded entities length: ${loadedEntities.length}');
     loadedEntities.forEach((element) {
       element.level = content.level;
+      print('Loaded entity: ${element.displayName}');
     });
-
+    //todo: hier läuft es iwie nicht
+    //state wird nicht geupdatet
     content.daughterEntities.addAll(loadedEntities);
   }
 
@@ -112,6 +115,7 @@ class OrganizationViewBloc
           default:
             emit(loadedState.copyWith(
                 organizationViewType: OrganizationViewType.OVERVIEW,
+                currentDetailEntity: loadedState.currentDetailEntity,
                 appBarString: loadedState.currentDetailEntity!.displayName));
             break;
         }
@@ -120,13 +124,16 @@ class OrganizationViewBloc
           (element) => element.parentLevelID == event.parent.level.id,
         );
         var levelContent = LevelContent(nextLevel, event.parent);
-        _loadEntities(levelContent, event.parent.id);
+        await _loadEntities(levelContent, event.parent.id);
         emit(loadedState.copyWith(
             organizationViewType: OrganizationViewType.LIST,
             levelContentList: loadedState.levelContentList..add(levelContent),
             appBarString: nextLevel.displayName));
         // add(LoadDaughterEntities(event.parent, 0));
       } else if (event is NavigateToEntityOverview) {
+        print('Event coming: ');
+        print(event.entity.displayName);
+        print(event.entity.appliedInterventions.length);
         emit(loadedState.copyWith(
             organizationViewType: OrganizationViewType.OVERVIEW,
             currentDetailEntity: event.entity,

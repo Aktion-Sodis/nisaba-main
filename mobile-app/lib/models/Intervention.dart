@@ -276,17 +276,17 @@ class Intervention extends Model {
   static final QueryField INTERVENTIONTYPE = QueryField(fieldName: "interventionType");
   static final QueryField CONTENTS = QueryField(
     fieldName: "contents",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'InterventionContentRelation'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (InterventionContentRelation).toString()));
   static final QueryField SURVEYS = QueryField(
     fieldName: "surveys",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Survey'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Survey).toString()));
   static final QueryField TAGS = QueryField(
     fieldName: "tags",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'InterventionInterventionTagRelation'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (InterventionInterventionTagRelation).toString()));
   static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
   static final QueryField LEVELS = QueryField(
     fieldName: "levels",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'LevelInterventionRelation'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (LevelInterventionRelation).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Intervention";
     modelSchemaDefinition.pluralName = "Interventions";
@@ -328,21 +328,21 @@ class Intervention extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: Intervention.CONTENTS,
       isRequired: true,
-      ofModelName: 'InterventionContentRelation',
+      ofModelName: (InterventionContentRelation).toString(),
       associatedKey: InterventionContentRelation.INTERVENTION
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: Intervention.SURVEYS,
       isRequired: true,
-      ofModelName: 'Survey',
+      ofModelName: (Survey).toString(),
       associatedKey: Survey.INTERVENTION
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: Intervention.TAGS,
       isRequired: true,
-      ofModelName: 'InterventionInterventionTagRelation',
+      ofModelName: (InterventionInterventionTagRelation).toString(),
       associatedKey: InterventionInterventionTagRelation.INTERVENTION
     ));
     
@@ -355,7 +355,7 @@ class Intervention extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: Intervention.LEVELS,
       isRequired: true,
-      ofModelName: 'LevelInterventionRelation',
+      ofModelName: (LevelInterventionRelation).toString(),
       associatedKey: LevelInterventionRelation.INTERVENTION
     ));
     
@@ -381,11 +381,6 @@ class _InterventionModelType extends ModelType<Intervention> {
   @override
   Intervention fromJson(Map<String, dynamic> jsonData) {
     return Intervention.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'Intervention';
   }
 }
 

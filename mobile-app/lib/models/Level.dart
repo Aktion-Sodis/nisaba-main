@@ -233,7 +233,7 @@ class Level extends Model {
   static final QueryField INTERVENTIONSAREALLOWED = QueryField(fieldName: "interventionsAreAllowed");
   static final QueryField ALLOWEDINTERVENTIONS = QueryField(
     fieldName: "allowedInterventions",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'LevelInterventionRelation'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (LevelInterventionRelation).toString()));
   static final QueryField CUSTOMDATA = QueryField(fieldName: "customData");
   static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
@@ -283,7 +283,7 @@ class Level extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: Level.ALLOWEDINTERVENTIONS,
       isRequired: true,
-      ofModelName: 'LevelInterventionRelation',
+      ofModelName: (LevelInterventionRelation).toString(),
       associatedKey: LevelInterventionRelation.LEVEL
     ));
     
@@ -322,11 +322,6 @@ class _LevelModelType extends ModelType<Level> {
   @override
   Level fromJson(Map<String, dynamic> jsonData) {
     return Level.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'Level';
   }
 }
 

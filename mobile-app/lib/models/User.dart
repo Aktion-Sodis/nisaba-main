@@ -269,11 +269,6 @@ class _UserModelType extends ModelType<User> {
   User fromJson(Map<String, dynamic> jsonData) {
     return User.fromJson(jsonData);
   }
-  
-  @override
-  String modelName() {
-    return 'User';
-  }
 }
 
 /**

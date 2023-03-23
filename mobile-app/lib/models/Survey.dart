@@ -252,11 +252,11 @@ class Survey extends Model {
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
   static final QueryField INTERVENTION = QueryField(
     fieldName: "intervention",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Intervention'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Intervention).toString()));
   static final QueryField QUESTIONS = QueryField(fieldName: "questions");
   static final QueryField TAGS = QueryField(
     fieldName: "tags",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'SurveySurveyTagRelation'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (SurveySurveyTagRelation).toString()));
   static final QueryField SURVEYTYPE = QueryField(fieldName: "surveyType");
   static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
   static final QueryField ARCHIVED = QueryField(fieldName: "archived");
@@ -295,8 +295,8 @@ class Survey extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: Survey.INTERVENTION,
       isRequired: false,
-      targetNames: ['interventionSurveysId'],
-      ofModelName: 'Intervention'
+      targetNames: ["interventionSurveysId"],
+      ofModelName: (Intervention).toString()
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
@@ -309,7 +309,7 @@ class Survey extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: Survey.TAGS,
       isRequired: true,
-      ofModelName: 'SurveySurveyTagRelation',
+      ofModelName: (SurveySurveyTagRelation).toString(),
       associatedKey: SurveySurveyTagRelation.SURVEY
     ));
     
@@ -353,11 +353,6 @@ class _SurveyModelType extends ModelType<Survey> {
   @override
   Survey fromJson(Map<String, dynamic> jsonData) {
     return Survey.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'Survey';
   }
 }
 

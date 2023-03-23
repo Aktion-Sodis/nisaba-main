@@ -151,10 +151,10 @@ class LevelInterventionRelation extends Model {
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField LEVEL = QueryField(
     fieldName: "level",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Level'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Level).toString()));
   static final QueryField INTERVENTION = QueryField(
     fieldName: "intervention",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Intervention'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Intervention).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "LevelInterventionRelation";
     modelSchemaDefinition.pluralName = "LevelInterventionRelations";
@@ -169,15 +169,15 @@ class LevelInterventionRelation extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: LevelInterventionRelation.LEVEL,
       isRequired: true,
-      targetNames: ['levelId'],
-      ofModelName: 'Level'
+      targetNames: ["levelId"],
+      ofModelName: (Level).toString()
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: LevelInterventionRelation.INTERVENTION,
       isRequired: true,
-      targetNames: ['interventionId'],
-      ofModelName: 'Intervention'
+      targetNames: ["interventionId"],
+      ofModelName: (Intervention).toString()
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
@@ -202,11 +202,6 @@ class _LevelInterventionRelationModelType extends ModelType<LevelInterventionRel
   @override
   LevelInterventionRelation fromJson(Map<String, dynamic> jsonData) {
     return LevelInterventionRelation.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'LevelInterventionRelation';
   }
 }
 

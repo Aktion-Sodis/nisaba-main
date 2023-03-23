@@ -59,7 +59,7 @@ class EntitiesLoadedOrganizationViewState extends OrganizationViewState {
     return EntitiesLoadedOrganizationViewState(
         allLevels: allLevels ?? this.allLevels,
         organizationViewType: organizationViewType ?? this.organizationViewType,
-        currentDetailEntity: currentDetailEntity,
+        currentDetailEntity: currentDetailEntity ?? this.currentDetailEntity,
         appBarString: appBarString ?? this.appBarString,
         addEntityPossible: addEntityPossible ?? this.addEntityPossible,
         currentDetailAppliedIntervention: currentDetailAppliedIntervention ??

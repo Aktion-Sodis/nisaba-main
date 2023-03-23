@@ -192,11 +192,6 @@ class _TestObjectModelType extends ModelType<TestObject> {
   TestObject fromJson(Map<String, dynamic> jsonData) {
     return TestObject.fromJson(jsonData);
   }
-  
-  @override
-  String modelName() {
-    return 'TestObject';
-  }
 }
 
 /**

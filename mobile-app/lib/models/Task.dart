@@ -345,17 +345,17 @@ class Task extends Model {
   static final QueryField LOCATION = QueryField(fieldName: "location");
   static final QueryField USER = QueryField(
     fieldName: "user",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'User'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (User).toString()));
   static final QueryField USERID = QueryField(fieldName: "userID");
   static final QueryField ENTITY = QueryField(
     fieldName: "entity",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Entity'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Entity).toString()));
   static final QueryField APPLIEDINTERVENTION = QueryField(
     fieldName: "appliedIntervention",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'AppliedIntervention'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (AppliedIntervention).toString()));
   static final QueryField EXECUTEDSURVEY = QueryField(
     fieldName: "executedSurvey",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'ExecutedSurvey'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (ExecutedSurvey).toString()));
   static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
   static final QueryField PICIDS = QueryField(fieldName: "picIDs");
   static final QueryField AUDIOIDS = QueryField(fieldName: "audioIDs");
@@ -420,7 +420,7 @@ class Task extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
       key: Task.USER,
       isRequired: true,
-      ofModelName: 'User',
+      ofModelName: (User).toString(),
       associatedKey: User.ID
     ));
     
@@ -433,21 +433,21 @@ class Task extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
       key: Task.ENTITY,
       isRequired: false,
-      ofModelName: 'Entity',
+      ofModelName: (Entity).toString(),
       associatedKey: Entity.ID
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
       key: Task.APPLIEDINTERVENTION,
       isRequired: false,
-      ofModelName: 'AppliedIntervention',
+      ofModelName: (AppliedIntervention).toString(),
       associatedKey: AppliedIntervention.ID
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
       key: Task.EXECUTEDSURVEY,
       isRequired: false,
-      ofModelName: 'ExecutedSurvey',
+      ofModelName: (ExecutedSurvey).toString(),
       associatedKey: ExecutedSurvey.ID
     ));
     
@@ -517,11 +517,6 @@ class _TaskModelType extends ModelType<Task> {
   @override
   Task fromJson(Map<String, dynamic> jsonData) {
     return Task.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'Task';
   }
 }
 

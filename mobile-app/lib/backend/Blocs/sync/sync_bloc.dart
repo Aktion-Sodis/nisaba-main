@@ -57,13 +57,17 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }
 
   void _updateProgress(SyncStatus syncStatus) {
-    if (syncStatus == SyncStatus.SYNCING || syncStatus == SyncStatus.WAITING) {
-      add(StartSyncEvent());
-    } else if (syncStatus == SyncStatus.UP_TO_DATE) {
-      add(FinishedSyncEvent());
-    } else if (syncStatus == SyncStatus.STOPPED) {
-      add(CancelSyncEvent());
-    }
+    try {
+      if (syncStatus == SyncStatus.SYNCING ||
+          syncStatus == SyncStatus.WAITING) {
+        add(StartSyncEvent());
+        //todo: könnte Problem sein
+      } else if (syncStatus == SyncStatus.UP_TO_DATE) {
+        add(FinishedSyncEvent());
+      } else if (syncStatus == SyncStatus.STOPPED) {
+        add(CancelSyncEvent());
+      }
+    } catch (e) {}
   }
 
   void _mapEventToState(SyncEvent event, Emitter<SyncState> emit) async {

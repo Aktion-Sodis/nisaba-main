@@ -151,10 +151,10 @@ class InterventionContentRelation extends Model {
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField INTERVENTION = QueryField(
     fieldName: "intervention",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Intervention'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Intervention).toString()));
   static final QueryField CONTENT = QueryField(
     fieldName: "content",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Content'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Content).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "InterventionContentRelation";
     modelSchemaDefinition.pluralName = "InterventionContentRelations";
@@ -169,15 +169,15 @@ class InterventionContentRelation extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: InterventionContentRelation.INTERVENTION,
       isRequired: true,
-      targetNames: ['interventionId'],
-      ofModelName: 'Intervention'
+      targetNames: ["interventionId"],
+      ofModelName: (Intervention).toString()
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
       key: InterventionContentRelation.CONTENT,
       isRequired: true,
-      targetNames: ['contentId'],
-      ofModelName: 'Content'
+      targetNames: ["contentId"],
+      ofModelName: (Content).toString()
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
@@ -202,11 +202,6 @@ class _InterventionContentRelationModelType extends ModelType<InterventionConten
   @override
   InterventionContentRelation fromJson(Map<String, dynamic> jsonData) {
     return InterventionContentRelation.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'InterventionContentRelation';
   }
 }
 

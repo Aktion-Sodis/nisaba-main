@@ -262,15 +262,15 @@ class AppliedIntervention extends Model {
   static final QueryField ID = QueryField(fieldName: "id");
   static final QueryField WHODIDIT = QueryField(
     fieldName: "whoDidIt",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'User'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (User).toString()));
   static final QueryField INTERVENTION = QueryField(
     fieldName: "intervention",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Intervention'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Intervention).toString()));
   static final QueryField LOCATION = QueryField(fieldName: "location");
   static final QueryField ISOKAY = QueryField(fieldName: "isOkay");
   static final QueryField EXECUTEDSURVEYS = QueryField(
     fieldName: "executedSurveys",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'ExecutedSurvey'));
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (ExecutedSurvey).toString()));
   static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
   static final QueryField ENTITYAPPLIEDINTERVENTIONSID = QueryField(fieldName: "entityAppliedInterventionsId");
   static final QueryField APPLIEDINTERVENTIONWHODIDITID = QueryField(fieldName: "appliedInterventionWhoDidItId");
@@ -298,14 +298,14 @@ class AppliedIntervention extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
       key: AppliedIntervention.WHODIDIT,
       isRequired: true,
-      ofModelName: 'User',
+      ofModelName: (User).toString(),
       associatedKey: User.ID
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
       key: AppliedIntervention.INTERVENTION,
       isRequired: true,
-      ofModelName: 'Intervention',
+      ofModelName: (Intervention).toString(),
       associatedKey: Intervention.ID
     ));
     
@@ -324,7 +324,7 @@ class AppliedIntervention extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
       key: AppliedIntervention.EXECUTEDSURVEYS,
       isRequired: true,
-      ofModelName: 'ExecutedSurvey',
+      ofModelName: (ExecutedSurvey).toString(),
       associatedKey: ExecutedSurvey.APPLIEDINTERVENTION
     ));
     
@@ -374,11 +374,6 @@ class _AppliedInterventionModelType extends ModelType<AppliedIntervention> {
   @override
   AppliedIntervention fromJson(Map<String, dynamic> jsonData) {
     return AppliedIntervention.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'AppliedIntervention';
   }
 }
 
