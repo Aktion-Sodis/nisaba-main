@@ -16,7 +16,7 @@ const getOrganizationName = () => {
 
 
 export const rememberedOrganizationName = reactive({
-    value: getRememberedOrganization().nameVerbose,
+    value: getOrganizationName(),
     refresh(){
        this.value = getOrganizationName() 
     }
