@@ -17,7 +17,7 @@ application.config.from_object(__name__)
 application.config['JSON_AS_ASCII'] = False
 
 # enable CORS
-# CORS(application, resources={r'/*': {'origins': '*'}})
+CORS(application, resources={r'/*': {'origins': '*'}})
 
 
 # sanity check route
