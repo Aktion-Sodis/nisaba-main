@@ -55,9 +55,9 @@ def getSurveys():
 @application.route('/getExecutedSurveysByID', methods=['GET', 'POST'])
 def getExecutedSurveysByID():
     survey_id = request.args.get("SurveyID")
-    print(survey_id)
-    survey_id ="6b3175ea-e2b8-44a9-9836-99e71c2001ac"
+
     executedSurveys = aggregate_survey_data(survey_id)
+    
     response = jsonify({
         'executedSurveys': executedSurveys
     })
