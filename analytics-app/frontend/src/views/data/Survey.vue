@@ -46,14 +46,15 @@
             collapsed: collapsed,
             active: this.selectedQuestion.question_id === question.question_id,
           }"
-          v-for="(question, index) in surveyData"
+          v-for="(question, index) in surveyData.questions"
           :key="question.question_id"
           @click="selectQuestion(question)"
         >
           <div class="index-wrapper">{{ index + 1 }}</div>
           <div class="question-wrapper" :class="{ collapsed: collapsed }">
             <!-- {{ question.question_name["en-US"] }} -->
-            {{ getLanguageTextFromLanguageKey(question.question_name) }}
+            <!-- TODO: it is better to pass just question.text. Then user can see any filled language, if their language contains an empty string -->
+            {{ getLanguageTextFromLanguageKey(question.text.languageTexts) }}
           </div>
         </div>
       </div>
@@ -62,7 +63,7 @@
       <div class="content-header">
         <div v-if="selectedQuestion !== null">
           <!-- {{ selectedQuestion.question_name["en-US"] }} -->
-          {{ getLanguageTextFromLanguageKey(selectedQuestion.question_name) }}
+          {{ getLanguageTextFromLanguageKey(selectedQuestion.text) }}
         </div>
       </div>
     </div>
@@ -136,6 +137,9 @@ export default {
   },
   methods: {
     getLanguageTextFromLanguageKey(languageText) {
+      if(languageText == null || languageText == undefined) {
+        return "[PROBLEM HERE]";
+      }
       // check selected Locale
       const languageKey = localStorage.getItem("lang");
       if (
@@ -169,7 +173,13 @@ export default {
       }
     },
     initIDs() {
-      this.selected_IDs = this.selectedQuestion.answer_IDs;
+      console.log("initIDs", this.selectedQuestion);
+      if(this.selectedQuestion !== null && this.selectedQuestion !== undefined){
+        this.selected_IDs = this.selectedQuestion.answer_IDs;
+      }
+      else {
+        this.selected_IDs = [];
+      }
       return this.selected_IDs;
     },
     openSurveyModal() {
@@ -188,7 +198,7 @@ export default {
       getRequest("/getExecutedSurveysByID",{SurveyID: this.surveyID})
         .then((res) => {
           this.surveyData = res.data.executedSurveys;
-          this.selectQuestion(this.surveyData[0]);
+          this.selectQuestion(this.surveyData.questions[0]);
           this.initIDs();
         })
         .catch((error) => {
