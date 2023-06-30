@@ -1,0 +1,10 @@
+{
+  "login": {
+    "welcome-title": "Welcome to Nisaba! 👋🏻",
+    "welcome-subtitle": "Please sign-in to your account",
+    "email-label": "Email",
+    "password-label": "Password",
+    "remember-me-label": "Remember me",
+    "login-label": "login"
+  }
+}

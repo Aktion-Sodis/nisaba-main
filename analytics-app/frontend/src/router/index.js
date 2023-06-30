@@ -14,6 +14,20 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/',
+    component: () => import('../layouts/blank.vue'),
+    children: [
+      {
+        path: 'login',
+        component: () => import('@/pages/login.vue'),
+      },
+      // {
+      //   path: '/:pathMatch(.*)*',
+      //   component: () => import('../pages/[...all].vue'),
+      // },
+    ],
+  },
 ]
 
 const router = createRouter({

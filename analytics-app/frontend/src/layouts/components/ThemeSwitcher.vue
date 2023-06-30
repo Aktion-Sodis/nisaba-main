@@ -1,5 +1,5 @@
 <template>
-    <v-btn icon variant="text" v-bind="props">
+    <v-btn icon variant="text" v-bind="$props">
         <v-icon size="25" @click="toggleTheme">{{ theme.global.current.value.dark ? 'mdi-theme-light-dark' : 'mdi-theme-light-dark' }}</v-icon>
     </v-btn>
   </template>

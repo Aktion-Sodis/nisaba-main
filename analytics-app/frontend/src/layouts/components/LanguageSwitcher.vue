@@ -26,7 +26,7 @@
   
   <script>
   import { mapStores } from "pinia";
-//   import { usei18nStore } from "@/store/i18n";
+  import { usei18nStore } from "@/store/i18n";
   
   
   export default {
@@ -60,9 +60,9 @@
     },
     
     // Computed properties
-    // computed: {
-    //   ...mapStores(usei18nStore),
-    // },
+    computed: {
+      ...mapStores(usei18nStore),
+    },
     
     // Watchers
     watch: {},
@@ -74,15 +74,15 @@
     // Methods
     methods: {
       changeLocale(locale) {
-        // localStorage.setItem("lang", locale);
-        // this.$i18n.locale = locale;
-        // return localStorage, this.$i18n.locale;
+        localStorage.setItem("lang", locale);
+        this.$i18n.locale = locale;
+        return localStorage, this.$i18n.locale;
       },
   
       formattedLocale() {
-        // const locale = this.$i18n.locale;
-        // const language = this.languages.find((lang) => lang.locale === locale);
-        // return language ? language.name : locale;
+        const locale = this.$i18n.locale;
+        const language = this.languages.find((lang) => lang.locale === locale);
+        return language ? language.name : locale;
       },
   
     },
