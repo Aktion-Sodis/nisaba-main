@@ -1,7 +1,5 @@
 <template>
-  <router-view />
+  <VApp>
+    <RouterView />
+  </VApp>
 </template>
-
-<script setup>
-  //
-</script>
