@@ -1,11 +1,13 @@
-// Composables
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
+
+import { useAuthStore } from '@/store/authentication';
 
 const routes = [
   {
     path: '/',
     redirect: '/dashboard',
     component: () => import('@/layouts/default.vue'),
+    meta: { requiresAuth: false},
     children: [
       {
         path: 'dashboard',
@@ -33,6 +35,18 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+})
+
+
+router.beforeEach(async (to, from, next) => {  
+  const authStore = useAuthStore();
+  console.log(authStore.isLoggedIn)
+  if (to.meta.requiresAuth && !authStore.isLoggedIn) {
+    return next({
+        path: '/login'
+    });
+  }
+  return next()
 })
 
 export default router
