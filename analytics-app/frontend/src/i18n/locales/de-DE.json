@@ -6,5 +6,15 @@
     "password-label": "Passwort",
     "remember-me-label": "Angemeldet bleiben",
     "login-label": "login"
+  },
+  "navbar": {
+    "items": {
+      "dashboard": "Dashboard",
+      "surveys": "Umfragen",
+      "maps": "Karte"
+    },
+    "user-profile": {
+      "logout": "Ausloggen"
+    }
   }
 }

@@ -21,7 +21,7 @@
                     <template v-slot:prepend>
                         <v-icon class="vertical-navbar-item-icon" icon="mdi-home-city"></v-icon>
                     </template>
-                    <v-list-item-title>Dashboard</v-list-item-title>
+                    <v-list-item-title>{{ $t("navbar.items.dashboard") }}</v-list-item-title>
                 </v-list-item>
 
                 <v-list-item
@@ -30,7 +30,7 @@
                     <template v-slot:prepend>
                         <v-icon class="vertical-navbar-item-icon" icon="mdi-account"></v-icon>
                     </template>
-                    <v-list-item-title>Surveys</v-list-item-title>
+                    <v-list-item-title>{{ $t("navbar.items.surveys") }}</v-list-item-title>
                 </v-list-item>
 
                 <v-list-item
@@ -39,7 +39,7 @@
                     <template v-slot:prepend>
                         <v-icon class="vertical-navbar-item-icon" icon="mdi-google-maps"></v-icon>
                     </template>
-                    <v-list-item-title>Maps</v-list-item-title>
+                    <v-list-item-title>{{ $t("navbar.items.maps") }}</v-list-item-title>
                 </v-list-item>
 
             </v-list>

@@ -21,7 +21,7 @@
                 <template v-slot:prepend>
                     <v-icon class="item-icon" icon="mdi-logout"></v-icon>
                 </template>
-                <v-list-item-title>Logout</v-list-item-title>
+                <v-list-item-title @click="logout()">{{ $t("navbar.user-profile.logout") }}</v-list-item-title>
             </v-list-item>
         </v-list>
       </v-menu>
@@ -29,8 +29,8 @@
   
   
   <script>
-  import { mapStores } from "pinia";
-//   import { usei18nStore } from "@/store/i18n";
+  import { useAuthStore } from '@/store/authentication';
+
   
   
   export default {
@@ -50,9 +50,8 @@
     },
     
     // Computed properties
-    // computed: {
-    //   ...mapStores(usei18nStore),
-    // },
+    computed: {
+    },
     
     // Watchers
     watch: {},
@@ -63,7 +62,11 @@
     
     // Methods
     methods: {
-  
+        logout() {
+            const authStore = useAuthStore()
+            authStore.signOut()
+            this.$router.push('/login')
+        },
     },
   };
   </script>
