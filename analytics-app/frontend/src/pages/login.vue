@@ -23,7 +23,7 @@
       </v-card-text>
 
       <v-card-text>
-        <v-form @submit.prevent="$router.push('/')">
+        <v-form v-model="form" @submit.prevent="login()">
           <v-row>
             <!-- email -->
             <v-col cols="12">
@@ -64,10 +64,13 @@
 
               <!-- login button -->
               <v-btn
-                block
-                type="submit"
-                color="primary"
-                class="login-btn"
+              :disabled="!form"
+              :loading="loading"
+              block
+              size="large"
+              type="submit"
+              variant="elevated"
+              color="primary"
               >
               {{ $t("login.login-label") }}
               </v-btn>
@@ -81,7 +84,7 @@
 </template>
 
 <script>
-// import { useAuthStore } from '@/store/authentication';
+import { useAuthStore } from '@/store/authentication';
 
 export default {
     name: 'AuthLogin',
@@ -101,15 +104,15 @@ export default {
 
     methods: {
       login() {
-        //   this.loading = true
+          this.loading = true
           
-        //   setTimeout(async () => {
-        //     const authStore = useAuthStore()
-        //     await authStore.signIn(this.email, this.password)
+          setTimeout(async () => {
+            const authStore = useAuthStore()
+            await authStore.signIn(this.email, this.password)
 
-        //     this.$router.push('/')
+            this.$router.push('/')
 
-        //   }, 1000)
+          }, 1000)
       },
       required (v) {
           return !!v || 'Field is required'
