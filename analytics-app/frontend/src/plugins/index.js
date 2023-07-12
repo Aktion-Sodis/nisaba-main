@@ -25,6 +25,9 @@ import awsExports from '../aws-exports'
 import AmplifyVue from '@aws-amplify/ui-vue'
 import '@aws-amplify/ui-vue'
 
+// ApexCharts
+import VueApexCharts from "vue3-apexcharts";
+
 
 // Amplify
 awsExports.graphql_headers = async () => {
@@ -54,4 +57,5 @@ export function registerPlugins (app) {
     .use(router)
     .use(i18n)
     .use(AmplifyVue)
+    .use(VueApexCharts)
 }
