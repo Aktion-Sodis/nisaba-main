@@ -28,6 +28,11 @@ import '@aws-amplify/ui-vue'
 // ApexCharts
 import VueApexCharts from "vue3-apexcharts";
 
+// Leaflet
+import { Map, TileLayer, Marker, Icon } from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+
+
 
 // Amplify
 awsExports.graphql_headers = async () => {
@@ -58,4 +63,9 @@ export function registerPlugins (app) {
     .use(i18n)
     .use(AmplifyVue)
     .use(VueApexCharts)
+
+    app.component('LMap', Map)
+    app.component('LTileLayer', TileLayer)
+    app.component('LMarker', Marker)
+    app.component('LIcon', Icon)
 }

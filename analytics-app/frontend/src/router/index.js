@@ -14,6 +14,16 @@ const routes = [
         name: 'Dashboard',
         component: () => import('@/pages/dashboard.vue'),
       },
+      {
+        path: 'surveys',
+        name: 'Surveys',
+        component: () => import('@/pages/surveys.vue'),
+      },
+      {
+        path: 'maps',
+        name: 'Maps',
+        component: () => import('@/pages/maps.vue'),
+      },
     ],
   },
   {
