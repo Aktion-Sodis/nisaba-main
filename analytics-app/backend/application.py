@@ -3,8 +3,6 @@ import os
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-# from QueryMethods import (get_intervention_types, get_interventions, get_surveys, get_total_number_of_surveys, get_total_number_of_executed_surveys, get_total_number_of_executed_surveys_by_survey_id)
-
 from QueryMethods import QueryMethods
 
 # configuration
@@ -34,6 +32,69 @@ def getTotalNumberOfSurveys():
     })
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
+
+
+@application.route('/getAllSurveys', methods=['GET'])
+def getAllSurveys():
+    res = query_methods.get_all_surveys()
+    response = jsonify({
+        'res': res
+    })
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+
+@application.route('/getSurveyBySurveyID', methods=['GET', 'POST'])
+def getSurveyByID():
+    survey_id = request.args.get("SurveyID")
+    res = query_methods.get_survey_by_surveyID(survey_id)
+    response = jsonify({
+        'res': res
+    })
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+
+@application.route('/getSurveyDataBySurveyID', methods=['GET', 'POST'])
+def getSurveyDataBySurveyID():
+    survey_id = request.args.get("SurveyID")
+    res = query_methods.get_survey_data_by_surveyID(survey_id)
+    response = jsonify({
+        'res': res
+    })
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+
+@application.route('/getLevels', methods=['GET'])
+def getLevels():
+    res = query_methods.get_levels()
+    response = jsonify({
+        'res': res
+    })
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+
+@application.route('/getEntities', methods=['GET'])
+def getEntities():
+    res = query_methods.get_entities()
+    response = jsonify({
+        'res': res
+    })
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+# @application.route('/getExecutedSurveysBySurveyID', methods=['GET', 'POST'])
+# def getExecutedSurveysBySurveyID():
+#     survey_id = request.args.get("SurveyID")
+#     res = query_methods.get_executed_surveys_by_surveyID(survey_id)
+
+#     response = jsonify({
+#         'res': res
+#     })
+#     response.headers.add('Access-Control-Allow-Origin', '*')
+#     return response
 
 
 
