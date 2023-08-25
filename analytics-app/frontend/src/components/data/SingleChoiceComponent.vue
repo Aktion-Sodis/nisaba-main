@@ -1,42 +1,24 @@
 <template>
-  <v-card class="outer-wrapper">
-    <v-row class="top-row">
-      <v-col class="settings-column text-right">
-        <v-btn
-          :ripple="false"
-          color="primary"
-          size="small"
-          @click="settings = true"
-        >
-          <v-icon size="20">mdi-cog</v-icon>
-        </v-btn>
-      </v-col>
-    </v-row>
-    <v-row class="bottom-row">
-      <v-col class="chart-column">
-        <apexchart
-          width="600"
-          type="pie"
-          :options="chartOptions"
-          :series="series"
-          class="chart"
-        >
-        </apexchart>
-      </v-col>
-    </v-row>
-  </v-card>
+  <ChartComponent
+    :chart-type="selectedChartType"
+    :series="series"
+    :labels="labels"
+  ></ChartComponent>
 </template>
 
 <script>
-import VueApexCharts from "vue3-apexcharts";
+import { mapStores } from "pinia";
+import { usei18nStore } from "@/store/i18n";
+import { useChartStore } from "@/store/chart";
+
+import ChartComponent from "@/components/data/ChartComponent.vue";
 
 export default {
   // Component name
   name: "SingleChoiceComponent",
 
-  components: {
-    ApexChart: VueApexCharts,
-  },
+  // Components
+  components: { ChartComponent },
 
   // Component props
   props: {
@@ -46,64 +28,54 @@ export default {
     },
   },
 
-  // Data
   data() {
     return {
-      selectedChart: {
-        type: "pie",
-      },
-      chartOptions: {
-        chart: {
-          id: "apexchart-example",
-        },
-        title: {
-          text: "Fruit distribution",
-          align: "center",
-          margin: 40,
-          style: {
-            fontSize: "20px",
-            fontWeight: "bold",
-            color: "#263238",
-          },
-        },
-        colors: ["#2E93fA", "#46DA62", "#242E8A", "#E91E63", "#FF9800"],
-        dataLabels: {
-          enabled: true,
-        },
-        legend: {
-          show: true,
-          position: "bottom",
-        },
-        labels: ["Apple", "Mango", "Orange", "Watermelon"],
-      },
+      selectedChartType: "pie",
       series: [44, 55, 41, 17],
-      chartWidth: "500px",
+      labels: ["Apple", "Mango", "Orange", "Watermelon"],
     };
   },
 
-  mounted() {},
+  // Watchers
+  watch: {
+    questionProperties: {
+      immediate: true,
+      deep: true,
+      handler(newQuestionProperties) {
+        this.labels = this.createLabels();
+        this.series = this.createSeries();
+      },
+    },
+  },
+
+  // Computed properties
+  computed: {
+    ...mapStores(usei18nStore, useChartStore),
+  },
+
+  created() {
+    this.labels = this.createLabels();
+    this.series = this.createSeries();
+  },
 
   // Methods
-  methods: {},
+  methods: {
+    createLabels() {
+      const newLabels = this.chartStore.createLabelList(
+        this.questionProperties.question_options,
+        this.$i18n.locale
+      );
+      return newLabels;
+    },
+
+    createSeries() {
+      const newSeries = this.chartStore.sumAnswerValues(
+        this.questionProperties.answers
+      );
+      return newSeries;
+    },
+  },
 };
 </script>
 
-<style scoped>
-.outer-wrapper {
-  min-height: 100%;
-}
-.top-row {
-  height: 60px;
-  background-color: lightblue;
-}
-.bottom-row {
-  background-color: lightgreen;
-}
-.chart {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
+<style scoped></style>
