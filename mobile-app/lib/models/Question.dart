@@ -20,13 +20,11 @@
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'ModelProvider.dart';
-import 'package:amplify_core/amplify_core.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 
 
 /** This is an auto generated class representing the Question type in your schema. */
-@immutable
 class Question {
   final String id;
   final I18nString? _text;
@@ -38,10 +36,10 @@ class Question {
     try {
       return _text!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -51,10 +49,10 @@ class Question {
     try {
       return _type!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -68,10 +66,10 @@ class Question {
     try {
       return _isFollowUpQuestion!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -81,7 +79,7 @@ class Question {
   
   factory Question({String? id, required I18nString text, required QuestionType type, List<QuestionOption>? questionOptions, required bool isFollowUpQuestion}) {
     return Question._internal(
-      id: id == null ? UUID.getUUID() : id,
+      id: id == null ? amplify_core.UUID.getUUID() : id,
       text: text,
       type: type,
       questionOptions: questionOptions != null ? List<QuestionOption>.unmodifiable(questionOptions) : questionOptions,
@@ -113,7 +111,7 @@ class Question {
     buffer.write("Question {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("text=" + (_text != null ? _text!.toString() : "null") + ", ");
-    buffer.write("type=" + (_type != null ? enumToString(_type)! : "null") + ", ");
+    buffer.write("type=" + (_type != null ? amplify_core.enumToString(_type)! : "null") + ", ");
     buffer.write("questionOptions=" + (_questionOptions != null ? _questionOptions!.toString() : "null") + ", ");
     buffer.write("isFollowUpQuestion=" + (_isFollowUpQuestion != null ? _isFollowUpQuestion!.toString() : "null"));
     buffer.write("}");
@@ -130,12 +128,28 @@ class Question {
       isFollowUpQuestion: isFollowUpQuestion ?? this.isFollowUpQuestion);
   }
   
+  Question copyWithModelFieldValues({
+    ModelFieldValue<String>? id,
+    ModelFieldValue<I18nString>? text,
+    ModelFieldValue<QuestionType>? type,
+    ModelFieldValue<List<QuestionOption>>? questionOptions,
+    ModelFieldValue<bool>? isFollowUpQuestion
+  }) {
+    return Question._internal(
+      id: id == null ? this.id : id.value,
+      text: text == null ? this.text : text.value,
+      type: type == null ? this.type : type.value,
+      questionOptions: questionOptions == null ? this.questionOptions : questionOptions.value,
+      isFollowUpQuestion: isFollowUpQuestion == null ? this.isFollowUpQuestion : isFollowUpQuestion.value
+    );
+  }
+  
   Question.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _text = json['text']?['serializedData'] != null
         ? I18nString.fromJson(new Map<String, dynamic>.from(json['text']['serializedData']))
         : null,
-      _type = enumFromString<QuestionType>(json['type'], QuestionType.values),
+      _type = amplify_core.enumFromString<QuestionType>(json['type'], QuestionType.values),
       _questionOptions = json['questionOptions'] is List
         ? (json['questionOptions'] as List)
           .where((e) => e != null)
@@ -145,46 +159,50 @@ class Question {
       _isFollowUpQuestion = json['isFollowUpQuestion'];
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'text': _text?.toJson(), 'type': enumToString(_type), 'questionOptions': _questionOptions?.map((QuestionOption? e) => e?.toJson()).toList(), 'isFollowUpQuestion': _isFollowUpQuestion
+    'id': id, 'text': _text?.toJson(), 'type': amplify_core.enumToString(_type), 'questionOptions': _questionOptions?.map((QuestionOption? e) => e?.toJson()).toList(), 'isFollowUpQuestion': _isFollowUpQuestion
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'text': _text, 'type': _type, 'questionOptions': _questionOptions, 'isFollowUpQuestion': _isFollowUpQuestion
+    'id': id,
+    'text': _text,
+    'type': _type,
+    'questionOptions': _questionOptions,
+    'isFollowUpQuestion': _isFollowUpQuestion
   };
 
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Question";
     modelSchemaDefinition.pluralName = "Questions";
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'id',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
       fieldName: 'text',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'I18nString')
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embedded, ofCustomTypeName: 'I18nString')
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'type',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.enumeration)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
       fieldName: 'questionOptions',
       isRequired: false,
       isArray: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embeddedCollection, ofCustomTypeName: 'QuestionOption')
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embeddedCollection, ofCustomTypeName: 'QuestionOption')
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'isFollowUpQuestion',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.bool)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.bool)
     ));
   });
 }

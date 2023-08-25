@@ -20,17 +20,15 @@
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'ModelProvider.dart';
-import 'package:amplify_core/amplify_core.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 
 
 /** This is an auto generated class representing the QuestionAnswer type in your schema. */
-@immutable
 class QuestionAnswer {
   final String id;
   final String? _questionID;
-  final TemporalDateTime? _date;
+  final amplify_core.TemporalDateTime? _date;
   final QuestionType? _type;
   final String? _text;
   final int? _intValue;
@@ -43,23 +41,23 @@ class QuestionAnswer {
     try {
       return _questionID!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
   }
   
-  TemporalDateTime get date {
+  amplify_core.TemporalDateTime get date {
     try {
       return _date!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -69,10 +67,10 @@ class QuestionAnswer {
     try {
       return _type!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -104,9 +102,9 @@ class QuestionAnswer {
   
   const QuestionAnswer._internal({required this.id, required questionID, required date, required type, text, intValue, doubleValue, rating, questionOptions, markings}): _questionID = questionID, _date = date, _type = type, _text = text, _intValue = intValue, _doubleValue = doubleValue, _rating = rating, _questionOptions = questionOptions, _markings = markings;
   
-  factory QuestionAnswer({String? id, required String questionID, required TemporalDateTime date, required QuestionType type, String? text, int? intValue, double? doubleValue, int? rating, List<QuestionOption>? questionOptions, List<Marking>? markings}) {
+  factory QuestionAnswer({String? id, required String questionID, required amplify_core.TemporalDateTime date, required QuestionType type, String? text, int? intValue, double? doubleValue, int? rating, List<QuestionOption>? questionOptions, List<Marking>? markings}) {
     return QuestionAnswer._internal(
-      id: id == null ? UUID.getUUID() : id,
+      id: id == null ? amplify_core.UUID.getUUID() : id,
       questionID: questionID,
       date: date,
       type: type,
@@ -149,7 +147,7 @@ class QuestionAnswer {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("questionID=" + "$_questionID" + ", ");
     buffer.write("date=" + (_date != null ? _date!.format() : "null") + ", ");
-    buffer.write("type=" + (_type != null ? enumToString(_type)! : "null") + ", ");
+    buffer.write("type=" + (_type != null ? amplify_core.enumToString(_type)! : "null") + ", ");
     buffer.write("text=" + "$_text" + ", ");
     buffer.write("intValue=" + (_intValue != null ? _intValue!.toString() : "null") + ", ");
     buffer.write("doubleValue=" + (_doubleValue != null ? _doubleValue!.toString() : "null") + ", ");
@@ -161,7 +159,7 @@ class QuestionAnswer {
     return buffer.toString();
   }
   
-  QuestionAnswer copyWith({String? id, String? questionID, TemporalDateTime? date, QuestionType? type, String? text, int? intValue, double? doubleValue, int? rating, List<QuestionOption>? questionOptions, List<Marking>? markings}) {
+  QuestionAnswer copyWith({String? id, String? questionID, amplify_core.TemporalDateTime? date, QuestionType? type, String? text, int? intValue, double? doubleValue, int? rating, List<QuestionOption>? questionOptions, List<Marking>? markings}) {
     return QuestionAnswer._internal(
       id: id ?? this.id,
       questionID: questionID ?? this.questionID,
@@ -175,11 +173,37 @@ class QuestionAnswer {
       markings: markings ?? this.markings);
   }
   
+  QuestionAnswer copyWithModelFieldValues({
+    ModelFieldValue<String>? id,
+    ModelFieldValue<String>? questionID,
+    ModelFieldValue<amplify_core.TemporalDateTime>? date,
+    ModelFieldValue<QuestionType>? type,
+    ModelFieldValue<String?>? text,
+    ModelFieldValue<int?>? intValue,
+    ModelFieldValue<double?>? doubleValue,
+    ModelFieldValue<int?>? rating,
+    ModelFieldValue<List<QuestionOption>>? questionOptions,
+    ModelFieldValue<List<Marking>>? markings
+  }) {
+    return QuestionAnswer._internal(
+      id: id == null ? this.id : id.value,
+      questionID: questionID == null ? this.questionID : questionID.value,
+      date: date == null ? this.date : date.value,
+      type: type == null ? this.type : type.value,
+      text: text == null ? this.text : text.value,
+      intValue: intValue == null ? this.intValue : intValue.value,
+      doubleValue: doubleValue == null ? this.doubleValue : doubleValue.value,
+      rating: rating == null ? this.rating : rating.value,
+      questionOptions: questionOptions == null ? this.questionOptions : questionOptions.value,
+      markings: markings == null ? this.markings : markings.value
+    );
+  }
+  
   QuestionAnswer.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _questionID = json['questionID'],
-      _date = json['date'] != null ? TemporalDateTime.fromString(json['date']) : null,
-      _type = enumFromString<QuestionType>(json['type'], QuestionType.values),
+      _date = json['date'] != null ? amplify_core.TemporalDateTime.fromString(json['date']) : null,
+      _type = amplify_core.enumFromString<QuestionType>(json['type'], QuestionType.values),
       _text = json['text'],
       _intValue = (json['intValue'] as num?)?.toInt(),
       _doubleValue = (json['doubleValue'] as num?)?.toDouble(),
@@ -198,77 +222,86 @@ class QuestionAnswer {
         : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'questionID': _questionID, 'date': _date?.format(), 'type': enumToString(_type), 'text': _text, 'intValue': _intValue, 'doubleValue': _doubleValue, 'rating': _rating, 'questionOptions': _questionOptions?.map((QuestionOption? e) => e?.toJson()).toList(), 'markings': _markings?.map((Marking? e) => e?.toJson()).toList()
+    'id': id, 'questionID': _questionID, 'date': _date?.format(), 'type': amplify_core.enumToString(_type), 'text': _text, 'intValue': _intValue, 'doubleValue': _doubleValue, 'rating': _rating, 'questionOptions': _questionOptions?.map((QuestionOption? e) => e?.toJson()).toList(), 'markings': _markings?.map((Marking? e) => e?.toJson()).toList()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'questionID': _questionID, 'date': _date, 'type': _type, 'text': _text, 'intValue': _intValue, 'doubleValue': _doubleValue, 'rating': _rating, 'questionOptions': _questionOptions, 'markings': _markings
+    'id': id,
+    'questionID': _questionID,
+    'date': _date,
+    'type': _type,
+    'text': _text,
+    'intValue': _intValue,
+    'doubleValue': _doubleValue,
+    'rating': _rating,
+    'questionOptions': _questionOptions,
+    'markings': _markings
   };
 
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "QuestionAnswer";
     modelSchemaDefinition.pluralName = "QuestionAnswers";
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'id',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'questionID',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'date',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'type',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.enumeration)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'text',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'intValue',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'doubleValue',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.double)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.double)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'rating',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
       fieldName: 'questionOptions',
       isRequired: false,
       isArray: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embeddedCollection, ofCustomTypeName: 'QuestionOption')
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embeddedCollection, ofCustomTypeName: 'QuestionOption')
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
       fieldName: 'markings',
       isRequired: false,
       isArray: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embeddedCollection, ofCustomTypeName: 'Marking')
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embeddedCollection, ofCustomTypeName: 'Marking')
     ));
   });
 }

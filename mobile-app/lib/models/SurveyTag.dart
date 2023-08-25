@@ -20,21 +20,19 @@
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'ModelProvider.dart';
-import 'package:amplify_core/amplify_core.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 
 
 /** This is an auto generated class representing the SurveyTag type in your schema. */
-@immutable
-class SurveyTag extends Model {
+class SurveyTag extends amplify_core.Model {
   static const classType = const _SurveyTagModelType();
   final String id;
   final I18nString? _text;
   final int? _schemeVersion;
   final List<SurveySurveyTagRelation>? _surveys;
-  final TemporalDateTime? _createdAt;
-  final TemporalDateTime? _updatedAt;
+  final amplify_core.TemporalDateTime? _createdAt;
+  final amplify_core.TemporalDateTime? _updatedAt;
 
   @override
   getInstanceType() => classType;
@@ -53,10 +51,10 @@ class SurveyTag extends Model {
     try {
       return _text!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -66,32 +64,23 @@ class SurveyTag extends Model {
     return _schemeVersion;
   }
   
-  List<SurveySurveyTagRelation> get surveys {
-    try {
-      return _surveys!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  List<SurveySurveyTagRelation>? get surveys {
+    return _surveys;
   }
   
-  TemporalDateTime? get createdAt {
+  amplify_core.TemporalDateTime? get createdAt {
     return _createdAt;
   }
   
-  TemporalDateTime? get updatedAt {
+  amplify_core.TemporalDateTime? get updatedAt {
     return _updatedAt;
   }
   
-  const SurveyTag._internal({required this.id, required text, schemeVersion, required surveys, createdAt, updatedAt}): _text = text, _schemeVersion = schemeVersion, _surveys = surveys, _createdAt = createdAt, _updatedAt = updatedAt;
+  const SurveyTag._internal({required this.id, required text, schemeVersion, surveys, createdAt, updatedAt}): _text = text, _schemeVersion = schemeVersion, _surveys = surveys, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory SurveyTag({String? id, required I18nString text, int? schemeVersion, required List<SurveySurveyTagRelation> surveys}) {
+  factory SurveyTag({String? id, required I18nString text, int? schemeVersion, List<SurveySurveyTagRelation>? surveys}) {
     return SurveyTag._internal(
-      id: id == null ? UUID.getUUID() : id,
+      id: id == null ? amplify_core.UUID.getUUID() : id,
       text: text,
       schemeVersion: schemeVersion,
       surveys: surveys != null ? List<SurveySurveyTagRelation>.unmodifiable(surveys) : surveys);
@@ -137,6 +126,19 @@ class SurveyTag extends Model {
       surveys: surveys ?? this.surveys);
   }
   
+  SurveyTag copyWithModelFieldValues({
+    ModelFieldValue<I18nString>? text,
+    ModelFieldValue<int?>? schemeVersion,
+    ModelFieldValue<List<SurveySurveyTagRelation>>? surveys
+  }) {
+    return SurveyTag._internal(
+      id: id,
+      text: text == null ? this.text : text.value,
+      schemeVersion: schemeVersion == null ? this.schemeVersion : schemeVersion.value,
+      surveys: surveys == null ? this.surveys : surveys.value
+    );
+  }
+  
   SurveyTag.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _text = json['text']?['serializedData'] != null
@@ -149,80 +151,85 @@ class SurveyTag extends Model {
           .map((e) => SurveySurveyTagRelation.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
           .toList()
         : null,
-      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
-      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
+      _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
     'id': id, 'text': _text?.toJson(), 'schemeVersion': _schemeVersion, 'surveys': _surveys?.map((SurveySurveyTagRelation? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'text': _text, 'schemeVersion': _schemeVersion, 'surveys': _surveys, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id,
+    'text': _text,
+    'schemeVersion': _schemeVersion,
+    'surveys': _surveys,
+    'createdAt': _createdAt,
+    'updatedAt': _updatedAt
   };
 
-  static final QueryModelIdentifier<SurveyTagModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<SurveyTagModelIdentifier>();
-  static final QueryField ID = QueryField(fieldName: "id");
-  static final QueryField TEXT = QueryField(fieldName: "text");
-  static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
-  static final QueryField SURVEYS = QueryField(
+  static final amplify_core.QueryModelIdentifier<SurveyTagModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<SurveyTagModelIdentifier>();
+  static final ID = amplify_core.QueryField(fieldName: "id");
+  static final TEXT = amplify_core.QueryField(fieldName: "text");
+  static final SCHEMEVERSION = amplify_core.QueryField(fieldName: "schemeVersion");
+  static final SURVEYS = amplify_core.QueryField(
     fieldName: "surveys",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'SurveySurveyTagRelation'));
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'SurveySurveyTagRelation'));
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "SurveyTag";
     modelSchemaDefinition.pluralName = "SurveyTags";
     
     modelSchemaDefinition.authRules = [
-      AuthRule(
-        authStrategy: AuthStrategy.OWNER,
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.OWNER,
         ownerField: "organization_id",
         identityClaim: "custom:organization_id",
-        provider: AuthRuleProvider.USERPOOLS,
-        operations: [
-          ModelOperation.CREATE,
-          ModelOperation.UPDATE,
-          ModelOperation.DELETE,
-          ModelOperation.READ
+        provider: amplify_core.AuthRuleProvider.USERPOOLS,
+        operations: const [
+          amplify_core.ModelOperation.CREATE,
+          amplify_core.ModelOperation.UPDATE,
+          amplify_core.ModelOperation.DELETE,
+          amplify_core.ModelOperation.READ
         ])
     ];
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
       fieldName: 'text',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'I18nString')
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embedded, ofCustomTypeName: 'I18nString')
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: SurveyTag.SCHEMEVERSION,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: SurveyTag.SURVEYS,
       isRequired: true,
       ofModelName: 'SurveySurveyTagRelation',
       associatedKey: SurveySurveyTagRelation.SURVEYTAG
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
       fieldName: 'createdAt',
       isRequired: false,
       isReadOnly: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
       fieldName: 'updatedAt',
       isRequired: false,
       isReadOnly: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
   });
 }
 
-class _SurveyTagModelType extends ModelType<SurveyTag> {
+class _SurveyTagModelType extends amplify_core.ModelType<SurveyTag> {
   const _SurveyTagModelType();
   
   @override
@@ -240,8 +247,7 @@ class _SurveyTagModelType extends ModelType<SurveyTag> {
  * This is an auto generated class representing the model identifier
  * of [SurveyTag] in your schema.
  */
-@immutable
-class SurveyTagModelIdentifier implements ModelIdentifier<SurveyTag> {
+class SurveyTagModelIdentifier implements amplify_core.ModelIdentifier<SurveyTag> {
   final String id;
 
   /** Create an instance of SurveyTagModelIdentifier using [id] the primary key. */
