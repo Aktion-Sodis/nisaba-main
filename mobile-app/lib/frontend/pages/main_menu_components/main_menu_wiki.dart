@@ -13,7 +13,7 @@ import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_app_bar.dart';
 import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_commonwidgets.dart';
 import 'package:mobile_app/frontend/strings.dart' as strings;
-import 'package:advance_pdf_viewer_fork/advance_pdf_viewer_fork.dart';
+//import 'package:advance_pdf_viewer_fork/advance_pdf_viewer_fork.dart';
 
 class MainMenuWiki extends StatelessWidget {
   @override
@@ -51,11 +51,11 @@ class MainMenuWiki extends StatelessWidget {
                             itemBuilder: (context, index) => contentRow(context,
                                     loadedContentState.contentsToDisplay[index],
                                     () {
-                                  Navigator.of(context).push(MaterialPageRoute(
+                                  /*Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => PDFViewWidget(
                                             content: loadedContentState
                                                 .contentsToDisplay[index],
-                                          )));
+                                          )));*/
                                 },
                                     separator: index !=
                                         (loadedContentState
@@ -72,7 +72,7 @@ class MainMenuWiki extends StatelessWidget {
   }
 }
 
-class PDFViewWidget extends StatefulWidget {
+/*class PDFViewWidget extends StatefulWidget {
   PDFViewWidget({Key? key, required this.content}) : super(key: key);
   Content content;
 
@@ -135,4 +135,4 @@ class PDFViewWidgetState extends State<PDFViewWidget> {
                           }))
                 ]))));
   }
-}
+}*/
