@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app/backend/Blocs/organization_view/organization_view_bloc.dart';
 import 'package:mobile_app/backend/Blocs/organization_view/organization_view_state.dart';
@@ -138,14 +137,14 @@ class TaskFormCubit extends Cubit<TaskFormState> {
 
   void openCalendarToSetDeadline(BuildContext context) {
     // TODO: auto setting correct locale
-    LocaleType locale = LocaleType.en;
+    /*LocaleType locale = LocaleType.en;
 
     DatePicker.showDatePicker(context, showTitleActions: true,
         onChanged: (date) {
       setDeadline(date);
     }, onConfirm: (date) {
       setDeadline(date);
-    }, currentTime: DateTime.now(), minTime: DateTime.now(), locale: locale);
+    }, currentTime: DateTime.now(), minTime: DateTime.now(), locale: locale);*/
   }
 
   void addAttachment(Attachment attachment) {
