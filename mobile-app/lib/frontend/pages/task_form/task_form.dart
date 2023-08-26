@@ -306,7 +306,7 @@ class TaskForm<T extends TaskFormCubit> extends StatelessWidget {
                         padding: EdgeInsets.symmetric(
                             horizontal: defaultPadding(context)),
                         child: ShadowBox(
-                          child: DropdownSearch<Entity>(
+                          child: /*DropdownSearch<Entity>(
                             selectedItem: _cubit!.state.entity,
                             searchDelay: const Duration(seconds: 0),
                             onFind: _cubit!.searchForEntities,
@@ -352,7 +352,8 @@ class TaskForm<T extends TaskFormCubit> extends StatelessWidget {
                                 _cubit!.clearEntity();
                               }
                             },
-                          ),
+                          ),*/
+                          Container()
                         ),
                       ),
                       Padding(
