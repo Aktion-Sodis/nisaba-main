@@ -1,26 +1,24 @@
 <template>
-  <v-row>
-    <v-col class="pa-0 pl-2">
-      <v-card v-if="categories.length > 0" class="chart-component-wrapper">
-        <ChartComponent
-          :xaxis-categories="categories"
-          :series-data="data"
-          :chart-title="title"
-        />
-      </v-card>
-    </v-col>
-  </v-row>
+  <ChartComponent
+    :chart-type="selectedChartType"
+    :series="series"
+    :labels="labels"
+  ></ChartComponent>
 </template>
 
 <script>
 import { mapStores } from "pinia";
 import { usei18nStore } from "@/store/i18n";
+import { useChartStore } from "@/store/chart";
 
 import ChartComponent from "@/components/data/ChartComponent.vue";
 
 export default {
   // Component name
   name: "MultipleChoiceComponent",
+
+  // Components
+  components: { ChartComponent },
 
   // Component props
   props: {
@@ -30,23 +28,12 @@ export default {
     },
   },
 
-  // Components used in the template
-  components: {
-    ChartComponent,
-  },
-
-  // Data properties
   data() {
     return {
-      categories: [],
-      data: [],
-      title: "Test",
+      selectedChartType: "bar",
+      series: [],
+      labels: [],
     };
-  },
-
-  // Computed properties
-  computed: {
-    ...mapStores(usei18nStore),
   },
 
   // Watchers
@@ -55,67 +42,46 @@ export default {
       immediate: true,
       deep: true,
       handler(newQuestionProperties) {
-        this.createCategoryList(newQuestionProperties.question_options);
-        this.sumAnswerValues(newQuestionProperties.answers);
-        this.setChartTitle(newQuestionProperties.question_text);
+        this.labels = this.createLabels();
+        this.series = this.createSeries();
       },
     },
   },
 
-  // Lifecycle hooks
-  created() {},
+  // Computed properties
+  computed: {
+    ...mapStores(usei18nStore, useChartStore),
+  },
 
-  mounted() {},
+  created() {
+    this.labels = this.createLabels();
+    this.series = this.createSeries();
+  },
 
   // Methods
   methods: {
-    setChartTitle(question_text) {
-      // console.log(question_text)
-      this.title = this.i18nStore.getLanguageText(
-        question_text.languageKeys,
-        question_text.languageTexts,
+    createLabels() {
+      const newLabels = this.chartStore.createLabelList(
+        this.questionProperties.question_options,
         this.$i18n.locale
       );
+      return newLabels;
     },
 
-    createCategoryList(question_options) {
-      this.categories = [];
-      question_options.forEach((option, index) => {
-        const option_text = this.i18nStore.getLanguageText(
-          option.text.languageKeys,
-          option.text.languageTexts,
-          this.$i18n.locale
-        );
-        if (option_text !== -1) {
-          this.categories.push(option_text);
-        }
-      });
-    },
+    createSeries() {
+      const newData = this.chartStore.sumAnswerValues(
+        this.questionProperties.answers
+      );
 
-    sumAnswerValues(answers) {
-      if (answers.length === 0) {
-        this.data = [];
-        return;
-      }
-      const columnSums = answers.reduce((acc, answer) => {
-        answer.answer_value.forEach((value, index) => {
-          if (acc[index] === undefined) {
-            acc[index] = 0;
-          }
-          acc[index] += value;
-        });
-        return acc;
-      }, []);
-      this.data = columnSums;
-      console.log(this.data);
+      const newSeries = [
+        {
+          data: newData,
+        },
+      ];
+      return newSeries;
     },
   },
 };
 </script>
 
-<style scoped>
-.chart-component-wrapper {
-  height: 100%;
-  width: 100%;
-}
-</style>
+<style></style>

@@ -36,18 +36,16 @@ export default {
 
 <style scoped>
 .component-wrapper {
-  background-color: #444463;
   height: 100%;
   width: 100%;
   overflow: auto;
 }
 .list-item {
-  /* border: 1px black solid; */
   padding-top: 10px;
   padding-bottom: 10px;
   height: 70px;
-  /* width: 300px; */
   border-radius: 5px;
+  border: black 1px solid;
   background-color: #ffffff;
 }
 .list-item-subtitle {

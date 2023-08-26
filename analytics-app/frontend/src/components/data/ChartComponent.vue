@@ -103,16 +103,15 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .outer-wrapper {
   min-height: 100%;
+  background-color: white;
 }
 .top-row {
   height: 60px;
-  background-color: lightblue;
 }
 .bottom-row {
-  background-color: lightgreen;
 }
 .chart {
   width: 100%;

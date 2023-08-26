@@ -94,7 +94,6 @@
             v-if="selectedQuestion.type === 'SINGLECHOICE'"
             :questionProperties="selectedQuestionProperties"
           />
-          <div v-else>{{ selectedQuestion.type }}</div>
         </v-col>
       </v-row>
     </v-col>
@@ -159,7 +158,7 @@ export default {
     },
 
     selectQuestion(question) {
-      console.log(this.selectedQuestionProperties);
+      // console.log(this.selectedQuestionProperties);
       this.selectedQuestion = { ...question };
       this.getQuestionProperties(
         this.surveyStore.selectedSurveyData,
@@ -261,6 +260,8 @@ export default {
 }
 .content-row {
   height: calc(100vh - 96px - 70px);
+  background-color: white;
+  border-radius: 5px;
 }
 
 .sidebar-panel {
