@@ -31,8 +31,8 @@ export default {
   data() {
     return {
       selectedChartType: "pie",
-      series: [44, 55, 41, 17],
-      labels: ["Apple", "Mango", "Orange", "Watermelon"],
+      series: [],
+      labels: [],
     };
   },
 
@@ -42,8 +42,8 @@ export default {
       immediate: true,
       deep: true,
       handler(newQuestionProperties) {
-        this.labels = this.createLabels();
-        this.series = this.createSeries();
+        this.createLabels();
+        this.createSeries();
       },
     },
   },
@@ -54,25 +54,23 @@ export default {
   },
 
   created() {
-    this.labels = this.createLabels();
-    this.series = this.createSeries();
+    this.createLabels();
+    this.createSeries();
   },
 
   // Methods
   methods: {
     createLabels() {
-      const newLabels = this.chartStore.createLabelList(
+      this.labels = this.chartStore.createLabelList(
         this.questionProperties.question_options,
         this.$i18n.locale
       );
-      return newLabels;
     },
 
     createSeries() {
-      const newSeries = this.chartStore.sumAnswerValues(
+      this.series = this.chartStore.sumAnswerValues(
         this.questionProperties.answers
       );
-      return newSeries;
     },
   },
 };

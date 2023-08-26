@@ -31,7 +31,11 @@ export default {
   data() {
     return {
       selectedChartType: "bar",
-      series: [],
+      series: [
+        {
+          data: [],
+        },
+      ],
       labels: [],
     };
   },
@@ -42,8 +46,8 @@ export default {
       immediate: true,
       deep: true,
       handler(newQuestionProperties) {
-        this.labels = this.createLabels();
-        this.series = this.createSeries();
+        this.createLabels();
+        this.createSeries();
       },
     },
   },
@@ -54,18 +58,17 @@ export default {
   },
 
   created() {
-    this.labels = this.createLabels();
-    this.series = this.createSeries();
+    this.createLabels();
+    this.createSeries();
   },
 
   // Methods
   methods: {
     createLabels() {
-      const newLabels = this.chartStore.createLabelList(
+      this.labels = this.chartStore.createLabelList(
         this.questionProperties.question_options,
         this.$i18n.locale
       );
-      return newLabels;
     },
 
     createSeries() {
@@ -73,12 +76,11 @@ export default {
         this.questionProperties.answers
       );
 
-      const newSeries = [
+      this.series = [
         {
           data: newData,
         },
       ];
-      return newSeries;
     },
   },
 };
