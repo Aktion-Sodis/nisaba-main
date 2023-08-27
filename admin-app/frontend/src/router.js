@@ -94,6 +94,18 @@ export const routes = [
     },
   },
   {
+    path: "/interventions",
+    name: routeNamesDict.Interventions,
+    component: Interventions,
+    meta: {
+      requiresAuth: true,
+      shouldBeSynced: true,
+      title: i18n.t("general.routes.Interventions"),
+      onSideBar: true,
+      icon: "mdi-wrench-outline",
+    },
+  },
+  {
     path: "/surveys",
     name: routeNamesDict.Surveys,
     component: Surveys,
@@ -116,18 +128,6 @@ export const routes = [
   //     onSideBar: false,
   //   },
   // },
-  {
-    path: "/interventions",
-    name: routeNamesDict.Interventions,
-    component: Interventions,
-    meta: {
-      requiresAuth: true,
-      shouldBeSynced: true,
-      title: i18n.t("general.routes.Interventions"),
-      onSideBar: true,
-      icon: "mdi-wrench-outline",
-    },
-  },
   {
     path: "/user-management",
     name: routeNamesDict.UserManagement,
