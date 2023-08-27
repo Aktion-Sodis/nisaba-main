@@ -191,7 +191,7 @@ class UserDataViewState extends State<UserDataView> {
                 builder: (buildContext, state) {
               return Column(
                 children: [
-                  /*Expanded(
+                  Expanded(
                       child: Center(
                           child: Container(
                               width: width(context) * .5,
@@ -227,7 +227,7 @@ class UserDataViewState extends State<UserDataView> {
                                             width(context) * .04)),
                                   )
                                 ],
-                              )))),*/
+                              )))),
                   if (!widget.inApp)
                     Container(
                         margin: EdgeInsets.only(
