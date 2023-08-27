@@ -19,7 +19,7 @@ part 'Entity.db_model.dart';
 @JsonSerializable()
 class Entity extends DBModel {
   // JsonSerializable factory and toJson methods
-  factory Entity.fromJson(Map<String, dynamic> json) => _$EntityFromJson(json);
+  factory Entity.fromJson(Map<String, dynamic> json) {Entity tr = _$EntityFromJson(json); tr.entityLevelId = tr.level.id; return tr;}
 
   Map<String, dynamic> toJson() => _$EntityToJson(this);
 
@@ -28,7 +28,10 @@ class Entity extends DBModel {
   late I18nString name;
   late I18nString description;
   String? parentEntityID;
-  late Level level; // Unpopulated allowed
+
+  late Level level;
+
+  late String entityLevelId;
 
   Location? location;
   late List<AppliedCustomData> customData;
@@ -74,6 +77,7 @@ class Entity extends DBModel {
     if (appliedInterventions != null) {
       this.appliedInterventions = appliedInterventions;
     }
+    entityLevelId = level.id;
   }
 
   List<ExecutedSurvey> executedSurveysDescending() {

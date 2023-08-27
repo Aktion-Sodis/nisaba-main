@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart' as gql_flutter;
 import 'package:mobile_app/backend/callableModels/TestObject.dart';
 import 'package:mobile_app/backend/database/DB.dart';
@@ -51,6 +52,14 @@ class GraphQLDB extends DB<GraphQLDBModelRegistration> {
         .map((e) => ast.ObjectFieldNode(
             name: ast.NameNode(value: e.key), value: _toValueNode(e.value)))
         .toList();
+
+    //hacky workaround for sync issues -> todo: adress properly @arthur-becker
+    if ((dbAction == DBAction.UPDATE || dbAction == DBAction.CREATE) && object.runtimeType.toString() == 'Entity') {
+      print('[GQL] removing level from query');
+      fields.removeWhere((element) => element.name.value == 'level');
+      fields.removeWhere((element) => element.name.value == 'createdAt');
+      fields.removeWhere(((element) => element.name.value == 'updatedAt'));
+    }
 
     String mutationName = "";
     switch (dbAction) {
@@ -187,13 +196,17 @@ class GraphQLDB extends DB<GraphQLDBModelRegistration> {
 
   @override
   Future<void> create(DBModel object) async {
+    print('[GQL] Create operation');
     String query = _mutation(object, DBAction.CREATE);
+
+    print('[GQL] Query: ' + query);
 
     ConfigGraphQL config = ConfigGraphQL();
     var response = await config.client!
         .mutate(gql_flutter.MutationOptions(document: gql_flutter.gql(query)));
 
     if (response.hasException) {
+      debugPrint('[GQL] Exception: ' + response.exception.toString(), wrapWidth: 1024);
       throw response.exception!;
     }
 
@@ -262,8 +275,24 @@ class GraphQLDB extends DB<GraphQLDBModelRegistration> {
   }
 
   @override
-  Future<void> update(DBModel object) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<void> update(DBModel object) async {
+    print('[GQL] Update operation');
+    String query = _mutation(object, DBAction.UPDATE);
+
+    print('[GQL] Query: ' + query);
+
+    ConfigGraphQL config = ConfigGraphQL();
+    var response = await config.client!
+        .mutate(gql_flutter.MutationOptions(document: gql_flutter.gql(query)));
+
+    if (response.hasException) {
+      debugPrint('[GQL] Exception: ' + response.exception.toString(), wrapWidth: 1024);
+      throw response.exception!;
+    }
+
+    String updateMutationName =
+        getRegisteredModel(object.runtimeType).updateMutation;
+
+    object.id = response.data![updateMutationName]!["id"];
   }
 }
