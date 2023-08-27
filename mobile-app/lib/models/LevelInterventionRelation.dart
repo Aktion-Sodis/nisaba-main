@@ -182,15 +182,15 @@ class LevelInterventionRelation extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: LevelInterventionRelation.LEVEL,
       isRequired: true,
-      targetNames: ['levelId'],
-      ofModelName: 'Level'
+      targetNames: ["levelId"],
+      ofModelName: (Level).toString()
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: LevelInterventionRelation.INTERVENTION,
       isRequired: true,
-      targetNames: ['interventionId'],
-      ofModelName: 'Intervention'
+      targetNames: ["interventionId"],
+      ofModelName: (Intervention).toString()
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
@@ -215,11 +215,6 @@ class _LevelInterventionRelationModelType extends amplify_core.ModelType<LevelIn
   @override
   LevelInterventionRelation fromJson(Map<String, dynamic> jsonData) {
     return LevelInterventionRelation.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'LevelInterventionRelation';
   }
 }
 

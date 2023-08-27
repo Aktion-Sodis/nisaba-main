@@ -182,15 +182,15 @@ class InterventionContentRelation extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: InterventionContentRelation.INTERVENTION,
       isRequired: true,
-      targetNames: ['interventionId'],
-      ofModelName: 'Intervention'
+      targetNames: ["interventionId"],
+      ofModelName: (Intervention).toString()
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: InterventionContentRelation.CONTENT,
       isRequired: true,
-      targetNames: ['contentId'],
-      ofModelName: 'Content'
+      targetNames: ["contentId"],
+      ofModelName: (Content).toString()
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
@@ -215,11 +215,6 @@ class _InterventionContentRelationModelType extends amplify_core.ModelType<Inter
   @override
   InterventionContentRelation fromJson(Map<String, dynamic> jsonData) {
     return InterventionContentRelation.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'InterventionContentRelation';
   }
 }
 

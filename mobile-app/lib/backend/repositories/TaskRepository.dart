@@ -12,7 +12,8 @@ class TaskRepository {
   User user;
 
   Future<List<Task>> getAllTasks() async {
-    throw UnimplementedError();
+    return [];
+    //throw UnimplementedError();
   }
 
   Future<amp.Task> _populate(amp.Task task) async {

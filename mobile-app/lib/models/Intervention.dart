@@ -323,21 +323,21 @@ class Intervention extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Intervention.CONTENTS,
       isRequired: true,
-      ofModelName: 'InterventionContentRelation',
+      ofModelName: (InterventionContentRelation).toString(),
       associatedKey: InterventionContentRelation.INTERVENTION
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Intervention.SURVEYS,
       isRequired: true,
-      ofModelName: 'Survey',
+      ofModelName: (Survey).toString(),
       associatedKey: Survey.INTERVENTION
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Intervention.TAGS,
       isRequired: true,
-      ofModelName: 'InterventionInterventionTagRelation',
+      ofModelName: (InterventionInterventionTagRelation).toString(),
       associatedKey: InterventionInterventionTagRelation.INTERVENTION
     ));
     
@@ -350,7 +350,7 @@ class Intervention extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Intervention.LEVELS,
       isRequired: true,
-      ofModelName: 'LevelInterventionRelation',
+      ofModelName: (LevelInterventionRelation).toString(),
       associatedKey: LevelInterventionRelation.INTERVENTION
     ));
     
@@ -376,11 +376,6 @@ class _InterventionModelType extends amplify_core.ModelType<Intervention> {
   @override
   Intervention fromJson(Map<String, dynamic> jsonData) {
     return Intervention.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'Intervention';
   }
 }
 

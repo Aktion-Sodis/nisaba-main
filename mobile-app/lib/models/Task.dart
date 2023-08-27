@@ -478,7 +478,7 @@ class Task extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
       key: Task.USER,
       isRequired: true,
-      ofModelName: 'User',
+      ofModelName: (User).toString(),
       associatedKey: User.ID
     ));
     
@@ -491,21 +491,21 @@ class Task extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
       key: Task.ENTITY,
       isRequired: false,
-      ofModelName: 'Entity',
+      ofModelName: (Entity).toString(),
       associatedKey: Entity.ID
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
       key: Task.APPLIEDINTERVENTION,
       isRequired: false,
-      ofModelName: 'AppliedIntervention',
+      ofModelName: (AppliedIntervention).toString(),
       associatedKey: AppliedIntervention.ID
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
       key: Task.EXECUTEDSURVEY,
       isRequired: false,
-      ofModelName: 'ExecutedSurvey',
+      ofModelName: (ExecutedSurvey).toString(),
       associatedKey: ExecutedSurvey.ID
     ));
     
@@ -575,11 +575,6 @@ class _TaskModelType extends amplify_core.ModelType<Task> {
   @override
   Task fromJson(Map<String, dynamic> jsonData) {
     return Task.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'Task';
   }
 }
 

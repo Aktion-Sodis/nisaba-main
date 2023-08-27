@@ -209,7 +209,7 @@ class ContentTag extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: ContentTag.CONTENTS,
       isRequired: true,
-      ofModelName: 'ContentContentTagRelation',
+      ofModelName: (ContentContentTagRelation).toString(),
       associatedKey: ContentContentTagRelation.CONTENTTAG
     ));
     
@@ -235,11 +235,6 @@ class _ContentTagModelType extends amplify_core.ModelType<ContentTag> {
   @override
   ContentTag fromJson(Map<String, dynamic> jsonData) {
     return ContentTag.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'ContentTag';
   }
 }
 

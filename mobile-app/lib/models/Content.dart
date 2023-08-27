@@ -254,14 +254,14 @@ class Content extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Content.INTERVENTIONS,
       isRequired: true,
-      ofModelName: 'InterventionContentRelation',
+      ofModelName: (InterventionContentRelation).toString(),
       associatedKey: InterventionContentRelation.CONTENT
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Content.TAGS,
       isRequired: true,
-      ofModelName: 'ContentContentTagRelation',
+      ofModelName: (ContentContentTagRelation).toString(),
       associatedKey: ContentContentTagRelation.CONTENT
     ));
     
@@ -293,11 +293,6 @@ class _ContentModelType extends amplify_core.ModelType<Content> {
   @override
   Content fromJson(Map<String, dynamic> jsonData) {
     return Content.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'Content';
   }
 }
 

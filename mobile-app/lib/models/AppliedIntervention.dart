@@ -323,14 +323,14 @@ class AppliedIntervention extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
       key: AppliedIntervention.WHODIDIT,
       isRequired: true,
-      ofModelName: 'User',
+      ofModelName: (User).toString(),
       associatedKey: User.ID
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
       key: AppliedIntervention.INTERVENTION,
       isRequired: true,
-      ofModelName: 'Intervention',
+      ofModelName: (Intervention).toString(),
       associatedKey: Intervention.ID
     ));
     
@@ -349,7 +349,7 @@ class AppliedIntervention extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: AppliedIntervention.EXECUTEDSURVEYS,
       isRequired: true,
-      ofModelName: 'ExecutedSurvey',
+      ofModelName: (ExecutedSurvey).toString(),
       associatedKey: ExecutedSurvey.APPLIEDINTERVENTION
     ));
     
@@ -399,11 +399,6 @@ class _AppliedInterventionModelType extends amplify_core.ModelType<AppliedInterv
   @override
   AppliedIntervention fromJson(Map<String, dynamic> jsonData) {
     return AppliedIntervention.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'AppliedIntervention';
   }
 }
 

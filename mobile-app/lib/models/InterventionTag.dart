@@ -209,7 +209,7 @@ class InterventionTag extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: InterventionTag.INTERVENTIONS,
       isRequired: true,
-      ofModelName: 'InterventionInterventionTagRelation',
+      ofModelName: (InterventionInterventionTagRelation).toString(),
       associatedKey: InterventionInterventionTagRelation.INTERVENTIONTAG
     ));
     
@@ -235,11 +235,6 @@ class _InterventionTagModelType extends amplify_core.ModelType<InterventionTag> 
   @override
   InterventionTag fromJson(Map<String, dynamic> jsonData) {
     return InterventionTag.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'InterventionTag';
   }
 }
 

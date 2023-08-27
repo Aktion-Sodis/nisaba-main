@@ -182,15 +182,15 @@ class InterventionInterventionTagRelation extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: InterventionInterventionTagRelation.INTERVENTION,
       isRequired: true,
-      targetNames: ['interventionId'],
-      ofModelName: 'Intervention'
+      targetNames: ["interventionId"],
+      ofModelName: (Intervention).toString()
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: InterventionInterventionTagRelation.INTERVENTIONTAG,
       isRequired: true,
-      targetNames: ['interventionTagId'],
-      ofModelName: 'InterventionTag'
+      targetNames: ["interventionTagId"],
+      ofModelName: (InterventionTag).toString()
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
@@ -215,11 +215,6 @@ class _InterventionInterventionTagRelationModelType extends amplify_core.ModelTy
   @override
   InterventionInterventionTagRelation fromJson(Map<String, dynamic> jsonData) {
     return InterventionInterventionTagRelation.fromJson(jsonData);
-  }
-  
-  @override
-  String modelName() {
-    return 'InterventionInterventionTagRelation';
   }
 }
 
