@@ -1169,12 +1169,12 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
         .intervention.surveys
         .where((element) => !element.archived));
 
-    return Scrollbar(
+    return Align(alignment: Alignment.topCenter, child: Scrollbar(
         child: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // HIDDEN AS IT IS NOT STABLE
-        /*Card(
+        Card(
           margin: EdgeInsets.all(defaultPadding(context)),
           child: Container(
               height: height(context) * .3,
@@ -1198,7 +1198,7 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
                           true))
                 ],
               )),
-        ),*/
+        ),
 
         // HIDDEN AS IT IS NOT STABLE
         /*if (appliedIntervention.intervention.interventionType ==
@@ -1267,7 +1267,7 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
                                   },
                                 )))))
       ],
-    )));
+    ))));
   }
 }
 
