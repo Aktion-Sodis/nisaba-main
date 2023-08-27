@@ -359,6 +359,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
             left: defaultPadding(context),
             right: defaultPadding(context)),
         child: TextFormField(
+          enabled: create,
           controller: customDataControllers[index],
           decoration: InputDecoration(
               prefixIcon: const Icon(MdiIcons.pen),
@@ -402,7 +403,8 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
   }
 
   void save() async {
-    if (_formKey.currentState!.validate()) {
+    if (create) {
+      if (_formKey.currentState!.validate()) {
       List<AppliedCustomData> appliedCustomDatas =
           List.generate(widget.level.customData.length, (index) {
         CustomData customData = widget.level.customData[index];
@@ -451,6 +453,10 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
         Navigator.of(context).pop(toSave);
       }
     }
+    } else {
+      Navigator.of(context).pop();
+    }
+    
   }
 
   late SyncedFile syncedFile;
@@ -500,6 +506,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
           margin: EdgeInsets.only(
               left: defaultPadding(context), right: defaultPadding(context)),
           child: TextFormField(
+            enabled: create,
             controller: nameEditingController,
             decoration: InputDecoration(
                 prefixIcon: const Icon(FontAwesomeIcons.user),
@@ -516,6 +523,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
               left: defaultPadding(context),
               right: defaultPadding(context)),
           child: TextFormField(
+            enabled: create,
             controller: descriptionEditingController,
             decoration: InputDecoration(
                 prefixIcon: const Icon(MdiIcons.pen),
