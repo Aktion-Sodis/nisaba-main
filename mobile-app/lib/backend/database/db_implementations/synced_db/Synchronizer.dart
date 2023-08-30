@@ -76,6 +76,7 @@ class Synchronizer {
 
   Future<void> syncDownstream() async {
     await _downstreamSyncLock.synchronized(() async {
+      print('[Sync] Syncing Downstream');
       downstreamSyncStatus = SyncStatus.SYNCING;
       try {
         // Download all entries from remoteDB

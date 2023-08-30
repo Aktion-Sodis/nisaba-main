@@ -200,6 +200,13 @@ class SurveyWidgetState extends State<SurveyWidget> {
                 element);
       }
     });
+    print('initialised State of SurveyWidget');
+    print('picAndAudioAnswerFilesPaths:');
+    //print path for each picAndAudioAnswerFile
+    picAndAudioAnswerFiles.forEach((key, value) {
+      print('key: $key, value: ${value.path}');
+    });
+
     super.initState();
   }
 
@@ -540,6 +547,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
       {required BuildContext context,
       required Question question,
       required Survey survey}) {
+    print('Building TakePhotoQuestionWidget');
     return Scrollbar(
         child: ListView(
       shrinkWrap: true,
@@ -573,17 +581,20 @@ class SurveyWidgetState extends State<SurveyWidget> {
           height: defaultPadding(context),
         ),
         getTakePhotoWidget(
-          syncedFile: picAndAudioAnswerFiles[question.id!]!,
+          syncedFile: picAndAudioAnswerFiles[question.id]!,
           callback: (sF) async {
-            setState(() {
-              picAndAudioAnswerFiles[question.id!] = sF;
-            });
-            if (answers[question] == null) {
-              answers[question] = QuestionAnswer(
-                  questionID: question.id!,
-                  date: DateTime.now(),
-                  type: question.type);
-            }
+              if (answers[question] == null) {
+                answers[question] = QuestionAnswer(
+                    questionID: question.id!,
+                    date: DateTime.now(),
+                    type: question.type);
+              }
+              sF.key = ValueKey(DateTime.now().toIso8601String());
+              setState(() {
+                print('now setting state again');
+                picAndAudioAnswerFiles[question.id] = sF;
+              });
+              
           },
           context: context,
         ),
@@ -867,11 +878,11 @@ class SurveyWidgetState extends State<SurveyWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
+          Expanded(child: Text(
             surveyTitle,
             style: Theme.of(context).textTheme.headline2,
-          ),
-          MaterialButton(
+          )),
+          /*MaterialButton(
               onPressed: () {
                 addTask();
               },
@@ -907,7 +918,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                     ),
                   ],
                 ),
-              )),
+              )),*/
         ],
       ),
     );
@@ -1017,8 +1028,9 @@ class SurveyWidgetState extends State<SurveyWidget> {
     //return CustomIconButton(onPressed, iconData, size, true)
     return CustomIconButton(() async {
       XFile r = await CameraFunctionality.takePicture(context: context);
-
+      print('now updating synced file');
       await syncedFile.updateAsPic(r);
+      print('updated synced file, now callback');
       callback.call(syncedFile);
     }, MdiIcons.camera, const Size(50, 50), true);
   }

@@ -32,6 +32,7 @@ class SyncedFile {
     cached = await localCacheFile.exists();
 
     if (!cached) {
+      print('not found file: return null');
       return null;
     }
     key = ValueKey(DateTime.now().toIso8601String());
@@ -81,7 +82,9 @@ class SyncedFile {
     key = ValueKey(DateTime.now().toIso8601String());
     print("pic update finished: $key");
     StorageRepository.uploadFile(localCacheFile, path);
-    return await getCachePath();
+    var tR = await getCachePath();
+    key = ValueKey(DateTime.now().toIso8601String());
+    return tR;
   }
 
   Future<File?> updateAsAudio(File file) async {

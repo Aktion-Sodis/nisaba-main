@@ -20,9 +20,10 @@ class LocalDataRepository {
     String? result = _table.get("organizationID");
     if (result == null) {
       // TODO: throw an exception and log out
+      print('exception because organizationID is null');
       return "unknown";
     }
-    return result!;
+    return result;
   }
 
   set organizationID(String? value) => _table.put("organizationID", value);
