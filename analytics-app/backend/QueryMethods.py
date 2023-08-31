@@ -128,6 +128,7 @@ class QueryMethods:
                                 if option_text in answer_option_texts:
                                     index = answer_option_texts.index(option_text)
                                     answer_value[index] = 1
+
                                 
                         # Add each answer to the answer array for the question
                         answer_array.append({
@@ -144,22 +145,8 @@ class QueryMethods:
                 'question_type': question_type,
                 'answers': answer_array
             })
-        
 
         return new_dataset
-
-
-
-    def get_levels(self):
-        res = gql_client.execute(
-            query = listLevels["query"], 
-            operation_name = listLevels["operationName"],
-            variables = {}
-        )
-
-        items = res["data"]
-        print(items)
-        return items
 
 
     def get_entities(self):
@@ -171,5 +158,39 @@ class QueryMethods:
         )
 
         items = res["data"]
-        print(items)
         return items
+
+
+    def get_levels(self):
+        res = gql_client.execute(
+            query = listLevels["query"], 
+            operation_name = listLevels["operationName"],
+            variables = {}
+        )
+
+        items = res["data"]["listLevels"]["items"]
+        
+        sorted_levels = self.sort_levels_by_parent_level_id(items)
+
+        return sorted_levels
+
+
+    def sort_levels_by_parent_level_id(self, levels):
+
+        level_dict = {level["id"]: level for level in levels}
+        sorted_levels = []
+
+        current_level_id = None
+
+        while len(level_dict) > 0:
+            for level_id in level_dict:
+
+                parent_level_id = level_dict[level_id]['parentLevelID']
+
+                if parent_level_id == current_level_id:
+                    sorted_levels.append(level_dict[level_id])
+                    level_dict.pop(level_id)
+                    current_level_id = level_id
+                    break
+
+        return sorted_levels

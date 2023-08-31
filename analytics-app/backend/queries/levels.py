@@ -3,8 +3,12 @@ listLevels = {
   "query": """query listLevels {
     listLevels {
       items {
-        description
-        name
+        parentLevelID
+        name {
+          languageKeys
+          languageTexts
+        }
+        id
       }
     }
   }
@@ -17,8 +21,26 @@ listEntities = {
   "query": """query listEntities {
     listEntities {
       items {
-        level
-        name
+        id
+        name {
+          languageKeys
+          languageTexts
+        }
+        appliedInterventions {
+          items {
+            executedSurveys {
+              items {
+                executedSurveySurveyId
+                id
+                surveyID
+              }
+            }
+          }
+        }
+        parentEntityID
+        level {
+          id
+        }
       }
     }
   }
