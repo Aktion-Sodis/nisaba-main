@@ -95,15 +95,15 @@
         >
           <TextComponent
             v-if="selectedQuestion.type === 'TEXT'"
-            :questionProperties="selectedQuestionProperties"
+            :questionProperties="filteredQuestionProperties"
           />
           <MultipleChoiceComponent
             v-if="selectedQuestion.type === 'MULTIPLECHOICE'"
-            :questionProperties="selectedQuestionProperties"
+            :questionProperties="filteredQuestionProperties"
           />
           <SingleChoiceComponent
             v-if="selectedQuestion.type === 'SINGLECHOICE'"
-            :questionProperties="selectedQuestionProperties"
+            :questionProperties="filteredQuestionProperties"
           />
         </v-col>
         <v-col v-if="filterSidebarOpen" cols="3" class="filter-sidebar pa-0">
@@ -122,6 +122,7 @@
                   v-model="selected"
                   :label="getName(entity)"
                   :value="entity.id"
+                  @change="checkSelected()"
                 ></v-checkbox>
                 <!-- <div
                   v-for="entity in filteredEntities(level.id)"
@@ -158,9 +159,10 @@ export default {
     selectedQuestion: [],
     selectedQuestionProperties: [],
     filteredQuestionProperties: [],
-    filterSidebarOpen: true,
+    filterSidebarOpen: false,
     selected: [],
     selectedAll: [],
+    isCheckingSelected: false,
   }),
 
   computed: {
@@ -174,11 +176,6 @@ export default {
       this.getQuestions(newData);
       this.loading = false;
     },
-    selected(newSelected) {
-      // This function will be called whenever the 'selected' array changes
-      console.log("Selected entities have changed:", newSelected);
-      this.filterQuestionProperties();
-    },
   },
 
   mounted() {
@@ -188,10 +185,11 @@ export default {
         this.surveyStore
           .fetchSurveyDataBySurveyID(this.surveyStore.selectedSurveyID)
           .then(() => {
-            this.selectQuestion(this.surveyQuestions[0]);
+            // this.selectQuestion(this.surveyQuestions[0]);
+            this.selectedQuestion = { ...this.surveyQuestions[0] };
+            this.addAllEntities();
           });
       });
-    this.addAllEntities();
   },
 
   methods: {
@@ -201,6 +199,36 @@ export default {
         const entityIds = levelEntities.map((entity) => entity.id);
         this.selected.push(...entityIds);
       }
+      // console.log("SELECTED");
+      // console.log(this.selectedQuestion.question_id);
+      // console.log("DATASET1");
+      this.getQuestionProperties(
+        this.surveyStore.selectedSurveyData,
+        this.selectedQuestion.question_id
+      );
+      // console.log(this.selectedQuestionProperties);
+    },
+
+    checkSelected() {
+      const selectedEntities = [];
+      const selectedArray = this.selected;
+      const entitiesList = this.surveyStore.entitiesList;
+
+      for (let i = selectedArray.length - 1; i >= 0; i--) {
+        const entityId = selectedArray[i];
+        const entity = entitiesList.find((entity) => entity.id === entityId);
+
+        if (!entity || !entity.parentEntityID) {
+          selectedEntities.push(entityId); // Add to the new array
+          continue;
+        }
+
+        if (selectedArray.includes(entity.parentEntityID)) {
+          selectedEntities.push(entityId); // Add to the new array
+        }
+      }
+      this.selected = selectedEntities;
+      this.filterQuestionProperties();
     },
 
     filteredEntities(levelID) {
@@ -228,7 +256,7 @@ export default {
     },
 
     resetSelectedSurvey() {
-      this.surveyStore.setSelectedSurveyID(null);
+      this.surveyStore.resetSelectedSurvey();
     },
 
     selectQuestion(question) {
@@ -268,26 +296,34 @@ export default {
         };
         this.surveyQuestions.push(formattedQuestion);
         if (index === 0) {
-          this.selectQuestion(formattedQuestion);
+          this.selectedQuestion = { ...formattedQuestion };
         }
       });
     },
 
     getQuestionProperties(dataset, questionId) {
+      // console.log(dataset);
       this.selectedQuestionProperties = dataset.find(
         (item) => item.question_id === questionId
       );
+      this.filterQuestionProperties();
     },
 
     filterQuestionProperties() {
-      this.filteredQuestionProperties = this.selectedQuestionProperties;
+      const newFilteredQuestionProperties = {
+        ...this.selectedQuestionProperties,
+      };
 
-      const filteredAnswers = this.filteredQuestionProperties.answers.filter(
+      const filteredAnswers = this.selectedQuestionProperties.answers.filter(
         (answer) => this.selected.includes(answer.entity_id)
       );
-      this.filteredQuestionProperties.answers = filteredAnswers;
-      console.log("Filter");
-      console.log(filteredAnswers);
+
+      newFilteredQuestionProperties.answers = filteredAnswers; // Set the answers property
+
+      this.filteredQuestionProperties = newFilteredQuestionProperties; // Update the original property
+
+      // console.log(filteredAnswers);
+      // console.log(this.filteredQuestionProperties);
     },
   },
 };
@@ -301,6 +337,7 @@ export default {
   /* background-color: #2d91be; */
   overflow-y: auto;
   max-height: 100%;
+  border-left: solid grey 1px;
 }
 .survey-name {
   font-size: 18px;

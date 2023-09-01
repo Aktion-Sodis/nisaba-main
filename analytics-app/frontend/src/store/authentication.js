@@ -46,7 +46,7 @@ export const useAuthStore = defineStore('auth', {
 
     async signIn(email, password) {
       try {
-        console.log(this.isLoggedIn)
+        // console.log(this.isLoggedIn)
         const user = await Auth.signIn(email, password);
         const organizationID = user["attributes"]["custom:organization_id"]
 
@@ -56,8 +56,8 @@ export const useAuthStore = defineStore('auth', {
         const apiOrganization = await DataStore.query(Organization, organizationID);
         this.organization = apiOrganization
 
-        console.log('user', this.user)
-        console.log('organization', this.organization)
+        // console.log('user', this.user)
+        // console.log('organization', this.organization)
       } catch (error) {
         // Error handling
       }
@@ -69,7 +69,7 @@ export const useAuthStore = defineStore('auth', {
         this.user = null
         this.organization = null
         this.isLoggedIn = false
-        console.log(this.isLoggedIn)
+        // console.log(this.isLoggedIn)
       } catch (error) {
         // Error handling
       }

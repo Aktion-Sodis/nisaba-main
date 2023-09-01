@@ -3,6 +3,7 @@
     :chart-type="selectedChartType"
     :series="series"
     :labels="labels"
+    :title="title"
   ></ChartComponent>
 </template>
 
@@ -37,6 +38,7 @@ export default {
         },
       ],
       labels: [],
+      title: null,
     };
   },
 
@@ -48,6 +50,7 @@ export default {
       handler(newQuestionProperties) {
         this.createLabels();
         this.createSeries();
+        this.setChartTitle();
       },
     },
   },
@@ -60,10 +63,21 @@ export default {
   created() {
     this.createLabels();
     this.createSeries();
+    this.setChartTitle();
   },
 
   // Methods
   methods: {
+    setChartTitle() {
+      // console.log(this.questionProperties.question_text);
+      const question_text = this.questionProperties.question_text;
+      this.title = this.i18nStore.getLanguageText(
+        question_text.languageKeys,
+        question_text.languageTexts,
+        this.$i18n.locale
+      );
+    },
+
     createLabels() {
       this.labels = this.chartStore.createLabelList(
         this.questionProperties.question_options,

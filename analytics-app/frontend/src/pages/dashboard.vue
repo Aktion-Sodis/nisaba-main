@@ -7,7 +7,7 @@
         :refreshMethod="refreshNumberOfSurveys"
       />
     </v-col>
-    <v-col cols="12" sm="6" md="4" lg="3" class="pa-2">
+    <!-- <v-col cols="12" sm="6" md="4" lg="3" class="pa-2">
       <KPICard
         title="Executed Surveys"
         :number="surveyStore.totalNumberOfSurveys"
@@ -41,7 +41,7 @@
         :number="surveyStore.totalNumberOfSurveys"
         :refreshMethod="refreshNumberOfSurveys"
       />
-    </v-col>
+    </v-col> -->
   </v-row>
 </template>
 

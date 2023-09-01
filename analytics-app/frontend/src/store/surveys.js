@@ -6,7 +6,7 @@ export const useSurveyStore = defineStore('survey', {
     totalNumberOfSurveys: 0,
     surveyList: [],
     levelList: [],
-    entitiesList: "Test",
+    entitiesList: [],
     selectedSurveyID: null,
     selectedSurvey: null,
     selectedSurveyData: null,
@@ -20,9 +20,16 @@ export const useSurveyStore = defineStore('survey', {
 
   actions: {
 
+    resetSelectedSurvey() {
+      this.selectedSurveyID = null;
+      this.selectedSurvey = null;
+      this.selectedSurveyData = null;
+      this.levelList = [];
+      this.entitiesList = [];
+    },
+
     setSelectedSurveyID(surveyID) {
       this.selectedSurveyID = surveyID;
-      console.log(this.selectedSurveyID)
     },
 
     async fetchTotalNumberOfSurveys() {
@@ -43,23 +50,23 @@ export const useSurveyStore = defineStore('survey', {
       }
     },
 
-    async fetchLevels() {
-      try {
-        const response = await getRequest('/getLevels')
-        this.levelList = response;
-      } catch (error) {
-        console.log(error);
-      }
-    },
+    // async fetchLevels() {
+    //   try {
+    //     const response = await getRequest('/getLevels')
+    //     this.levelList = response;
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
 
-    async fetchEntities() {
-      try {
-        const response = await getRequest('/getEntities')
-        this.entitiesList = response;
-      } catch (error) {
-        console.log(error);
-      }
-    },
+    // async fetchEntities() {
+    //   try {
+    //     const response = await getRequest('/getEntities')
+    //     this.entitiesList = response;
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
 
     async fetchSurveyBySurveyID(surveyID) {
       try {
@@ -73,20 +80,22 @@ export const useSurveyStore = defineStore('survey', {
     async fetchSurveyDataBySurveyID(surveyID) {
       try {
         const response = await getRequest('/getSurveyDataBySurveyID', { SurveyID: surveyID})
-        this.selectedSurveyData = response;
+        this.selectedSurveyData = response.dataset;
+        this.levelList = response.levels;
+        this.entitiesList = response.entities;
       } catch (error) {
         console.log(error)
       }
     },
 
-    async fetchExecutedSurveysBySurveyID(surveyID) {
-      try {
-        const response = await getRequest('/getExecutedSurveysBySurveyID', { SurveyID: surveyID })
-        this.selectedSurveyData = response;
-      } catch (error) {
-        console.log(error)
-      }
-    },
+    // async fetchExecutedSurveysBySurveyID(surveyID) {
+    //   try {
+    //     const response = await getRequest('/getExecutedSurveysBySurveyID', { SurveyID: surveyID })
+    //     this.selectedSurveyData = response;
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+    // },
 
   },
 });

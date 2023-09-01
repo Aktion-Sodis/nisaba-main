@@ -5,7 +5,7 @@
       :key="i"
       :value="answer"
       color="primary"
-      class="list-item mb-2 ml-2"
+      class="list-item mb-2 ml-2 mr-2"
     >
       <v-list-item-subtitle class="list-item-subtitle">
         {{ answer.answer_value }}

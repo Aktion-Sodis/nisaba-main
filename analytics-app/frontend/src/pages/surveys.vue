@@ -20,8 +20,8 @@ export default {
     ...mapStores(useSurveyStore),
   },
   created() {
-    this.surveyStore.fetchLevels();
-    this.surveyStore.fetchEntities();
+    // this.surveyStore.fetchLevels();
+    // this.surveyStore.fetchEntities();
   },
   methods: {},
 };

@@ -1,6 +1,6 @@
 <template>
   <v-card class="outer-wrapper">
-    <v-row class="top-row">
+    <!-- <v-row class="top-row">
       <v-col class="settings-column text-right">
         <v-btn
           :ripple="false"
@@ -11,7 +11,7 @@
           <v-icon size="20">mdi-cog</v-icon>
         </v-btn>
       </v-col>
-    </v-row>
+    </v-row> -->
     <v-row class="bottom-row">
       <v-col class="chart-column">
         <apexchart
@@ -52,6 +52,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    title: {
+      type: String,
+      default: () => "Set Chart Title",
+    },
   },
 
   // Data
@@ -62,7 +66,7 @@ export default {
           id: "apexchart",
         },
         title: {
-          text: "Set Chart Title",
+          text: this.title,
           align: "center",
           margin: 40,
           style: {
@@ -76,7 +80,7 @@ export default {
         },
         legend: {
           show: true,
-          position: "top",
+          position: "bottom",
         },
         labels: this.labels,
       },
@@ -87,9 +91,17 @@ export default {
   watch: {
     labels: {
       handler(newLabels) {
-        console.log(newLabels);
+        // console.log(newLabels);
         this.chartOptions = {
+          legend: {
+            show: true,
+            position: "bottom",
+          },
           labels: newLabels,
+          title: {
+            text: this.title,
+            align: "center",
+          },
         };
       },
       immediate: true,
