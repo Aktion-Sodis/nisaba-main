@@ -65,6 +65,7 @@ class QueryMethods:
         return self.executed_surveys
 
     def get_survey_data_by_surveyID(self, survey_id):
+        self.get_survey_by_surveyID(survey_id)
         self.get_executed_surveys_by_surveyID(survey_id)
 
         self.all_entities = self.get_entities_v2()
