@@ -1,6 +1,6 @@
 listLevels = {
-  "operationName": "listLevels",
-  "query": """query listLevels {
+    "operationName": "listLevels",
+    "query": """query listLevels {
     listLevels {
       items {
         parentLevelID
@@ -12,13 +12,13 @@ listLevels = {
       }
     }
   }
-  """
+  """,
 }
 
 
 listEntities = {
-  "operationName": "listEntities",
-  "query": """query listEntities {
+    "operationName": "listEntities",
+    "query": """query listEntities {
     listEntities {
       items {
         id
@@ -32,7 +32,6 @@ listEntities = {
               items {
                 executedSurveySurveyId
                 id
-                surveyID
               }
             }
           }
@@ -44,5 +43,5 @@ listEntities = {
       }
     }
   }
-  """
+  """,
 }

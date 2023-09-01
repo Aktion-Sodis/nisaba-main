@@ -1,20 +1,20 @@
 # TODO: done
 listTotalNumberOfSurveys = {
-  "operationName": "listAllSurveys",
-  "query": """query listAllSurveys {
+    "operationName": "listAllSurveys",
+    "query": """query listAllSurveys {
     listSurveys {
       items {
         id
       }
     }
   }
-  """
+  """,
 }
 
 
 listAllSurveys = {
-  "operationName": "listAllSurveys",
-  "query": """query listAllSurveys {
+    "operationName": "listAllSurveys",
+    "query": """query listAllSurveys {
     listSurveys {
       items {
         name {
@@ -27,9 +27,8 @@ listAllSurveys = {
       }
     }
   }
-  """
+  """,
 }
-
 
 
 # getSurveyBySurveyID = {
@@ -65,8 +64,8 @@ listAllSurveys = {
 
 
 getSurveyBySurveyID = {
-  "operationName": "getSurvey",
-  "query": """query getSurvey($surveyID: ID!) {
+    "operationName": "getSurvey",
+    "query": """query getSurvey($surveyID: ID!) {
     getSurvey(id: $surveyID) {
       description {
         languageKeys
@@ -93,16 +92,16 @@ getSurveyBySurveyID = {
       }
     }
   }
-  """
+  """,
 }
 
 
-
 getExecutedSurveyDataBySurveyID = {
-  "operationName": "listExecutedSurveys",
-  "query": """ query listExecutedSurveys($surveyID: ID!) {
+    "operationName": "listExecutedSurveys",
+    "query": """ query listExecutedSurveys($surveyID: ID!) {
     listExecutedSurveys(filter: {executedSurveySurveyId: {eq: $surveyID}}) {
       items {
+        executedSurveySurveyId
         id
         answers {
           intValue
@@ -123,5 +122,5 @@ getExecutedSurveyDataBySurveyID = {
       }
     }
   }
-  """
+  """,
 }
