@@ -38,7 +38,7 @@
           </div>
         </v-col>
         <v-col cols="2" class="settings text-right pa-0">
-          <v-btn class="settings-btn">
+          <v-btn class="settings-btn" @click="toggleFilterSidebar">
             <v-icon icon="mdi-filter"></v-icon>
           </v-btn>
         </v-col>
@@ -81,7 +81,18 @@
             </v-list-item>
           </div>
         </v-col>
-        <v-col :cols="questionListExpanded ? 9 : 11" class="answers pa-0">
+        <v-col
+          :cols="
+            filterSidebarOpen
+              ? questionListExpanded
+                ? 6
+                : 8
+              : questionListExpanded
+              ? 9
+              : 11
+          "
+          class="answers pa-0"
+        >
           <TextComponent
             v-if="selectedQuestion.type === 'TEXT'"
             :questionProperties="selectedQuestionProperties"
@@ -94,6 +105,33 @@
             v-if="selectedQuestion.type === 'SINGLECHOICE'"
             :questionProperties="selectedQuestionProperties"
           />
+        </v-col>
+        <v-col v-if="filterSidebarOpen" cols="3" class="filter-sidebar pa-0">
+          <v-expansion-panels variant="accordion">
+            <v-expansion-panel
+              v-for="level in surveyStore.levelList"
+              :key="level.id"
+              ><v-expansion-panel-title>{{
+                getName(level)
+              }}</v-expansion-panel-title>
+              <v-expansion-panel-text>
+                <v-checkbox
+                  class="entity-checkbox"
+                  v-for="entity in filteredEntities(level.id)"
+                  :key="entity.id"
+                  v-model="selected"
+                  :label="getName(entity)"
+                  :value="entity.id"
+                ></v-checkbox>
+                <!-- <div
+                  v-for="entity in filteredEntities(level.id)"
+                  :key="entity.id"
+                >
+                  {{ entity }}
+                </div> -->
+              </v-expansion-panel-text>
+            </v-expansion-panel>
+          </v-expansion-panels>
         </v-col>
       </v-row>
     </v-col>
@@ -119,6 +157,10 @@ export default {
     loading: false,
     selectedQuestion: [],
     selectedQuestionProperties: [],
+    filteredQuestionProperties: [],
+    filterSidebarOpen: true,
+    selected: [],
+    selectedAll: [],
   }),
 
   computed: {
@@ -128,9 +170,14 @@ export default {
   watch: {
     "surveyStore.selectedSurvey"(newData) {
       this.loading = true;
-      this.getSurveyName(newData);
+      this.surveyName = this.getName(newData);
       this.getQuestions(newData);
       this.loading = false;
+    },
+    selected(newSelected) {
+      // This function will be called whenever the 'selected' array changes
+      console.log("Selected entities have changed:", newSelected);
+      this.filterQuestionProperties();
     },
   },
 
@@ -138,17 +185,44 @@ export default {
     this.surveyStore
       .fetchSurveyBySurveyID(this.surveyStore.selectedSurveyID)
       .then(() => {
-        // Call fetchSurveyDataBySurveyID after fetchSurveyBySurveyID is completed
         this.surveyStore
           .fetchSurveyDataBySurveyID(this.surveyStore.selectedSurveyID)
           .then(() => {
-            // Call selectQuestion after fetchSurveyDataBySurveyID is completed
             this.selectQuestion(this.surveyQuestions[0]);
           });
       });
+    this.addAllEntities();
   },
 
   methods: {
+    addAllEntities() {
+      for (const level of this.surveyStore.levelList) {
+        const levelEntities = this.filteredEntities(level.id);
+        const entityIds = levelEntities.map((entity) => entity.id);
+        this.selected.push(...entityIds);
+      }
+    },
+
+    filteredEntities(levelID) {
+      const selectedParents = new Set(this.selected);
+
+      const filteredEntities = this.surveyStore.entitiesList.filter(
+        (entity) => {
+          return (
+            entity.level.id === levelID &&
+            (entity.parentEntityID === null ||
+              selectedParents.has(entity.parentEntityID))
+          );
+        }
+      );
+
+      return filteredEntities;
+    },
+
+    toggleFilterSidebar() {
+      this.filterSidebarOpen = !this.filterSidebarOpen;
+    },
+
     toggleQuestionList() {
       this.questionListExpanded = !this.questionListExpanded;
     },
@@ -158,7 +232,6 @@ export default {
     },
 
     selectQuestion(question) {
-      // console.log(this.selectedQuestionProperties);
       this.selectedQuestion = { ...question };
       this.getQuestionProperties(
         this.surveyStore.selectedSurveyData,
@@ -166,15 +239,17 @@ export default {
       );
     },
 
-    getSurveyName(data) {
+    getName(data) {
       const languageKeys = data.name.languageKeys;
       const languageTexts = data.name.languageTexts;
 
-      this.surveyName = this.i18nStore.getLanguageText(
+      const name = this.i18nStore.getLanguageText(
         languageKeys,
         languageTexts,
         this.$i18n
       );
+
+      return name;
     },
 
     getQuestions(data) {
@@ -203,11 +278,30 @@ export default {
         (item) => item.question_id === questionId
       );
     },
+
+    filterQuestionProperties() {
+      this.filteredQuestionProperties = this.selectedQuestionProperties;
+
+      const filteredAnswers = this.filteredQuestionProperties.answers.filter(
+        (answer) => this.selected.includes(answer.entity_id)
+      );
+      this.filteredQuestionProperties.answers = filteredAnswers;
+      console.log("Filter");
+      console.log(filteredAnswers);
+    },
   },
 };
 </script>
 
 <style scoped>
+.entity-checkbox {
+  height: 40px;
+}
+.filter-sidebar {
+  /* background-color: #2d91be; */
+  overflow-y: auto;
+  max-height: 100%;
+}
 .survey-name {
   font-size: 18px;
   margin-left: 10px;
