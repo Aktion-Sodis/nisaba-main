@@ -46,7 +46,7 @@
           }}</v-list-item-title>
         </v-list-item>
 
-        <v-list-item
+        <!-- <v-list-item
           class="vertical-navbar-item"
           :to="{ name: 'Maps' }"
           :class="{ 'active-route': $route.name === 'Maps' }"
@@ -58,7 +58,7 @@
             ></v-icon>
           </template>
           <v-list-item-title>{{ $t("navbar.items.maps") }}</v-list-item-title>
-        </v-list-item>
+        </v-list-item> -->
       </v-list>
     </v-navigation-drawer>
     <v-main class="main-wrapper ma-0">
