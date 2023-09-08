@@ -123,9 +123,11 @@ class QueryMethods:
         )
 
         items = res["data"]["listEntities"]["items"]
-        return items
+        entities = list(filter(lambda x: x is not None, items))
+        return entities
 
     def filter_entities_by_executed_survey_id(self, entities, survey_ids):
+
         result_entities = []
 
         # Create a set of IDs from array2 for faster lookup
@@ -133,6 +135,7 @@ class QueryMethods:
 
         # Iterate through entities in array1
         for entity in entities:
+            # if entity is not None:
             applied_interventions = entity.get("appliedInterventions", {}).get(
                 "items", []
             )
@@ -162,6 +165,7 @@ class QueryMethods:
             entity["parentEntityID"] for entity in filtered_entities
         )
         remaining_entities = all_entities.copy()
+
 
         while unique_parent_ids:
             new_filtered_entities = []

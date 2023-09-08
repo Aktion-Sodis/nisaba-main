@@ -92,3 +92,4 @@ def getEntities():
 if __name__ == "__main__":
     application.debug = True
     application.run(port=3000)
+    # application.run(ssl_context="adhoc")
