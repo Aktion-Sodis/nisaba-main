@@ -14,6 +14,8 @@ abstract class EntityRepository {
 
   Future<List<Entity>> getAllEntities({int? page});
 
+  Future<List<Entity>> getAllEntitiesInclAppliedInterventionsAndExecutedSurveys();
+
   Future<List<Entity>> getEntities(
       {int? page,
       bool byParentEntityID = false,
@@ -21,6 +23,9 @@ abstract class EntityRepository {
       String? searchByName});
 
   Future<Entity> ampEntityByID(String id);
+
+  Future<List<Entity>> populateWithAppliedInterventionsAndExecutedSurveys(
+      List<Entity> entities);
 
   Future<String> createEntity(Entity entity);
 

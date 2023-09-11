@@ -88,6 +88,20 @@ class InterventionRepositoryCustom extends definition.InterventionRepository {
     return toReturn;
   }
 
+  Future<Intervention> populateWithConnectionsAndSurveys(Intervention toPopulate) async {
+    toPopulate.levelConnections = await levelInterventionRelationsByInterventionID(toPopulate);
+    toPopulate.surveys = await SurveyRepository.instance.getAmpSurveysByIntervention(toPopulate);
+    for (Survey survey in toPopulate.surveys) {
+      survey.intervention = toPopulate;
+    }
+    return toPopulate;
+  }
+
+  Future<List<Intervention>> populateListWithConnectionsAndSurveys(List<Intervention> toPopulate) async {
+    List<Future<Intervention>> toWait = List.generate(toPopulate.length, (index) => populateWithConnectionsAndSurveys(toPopulate[index]));
+    return Future.wait(toWait);
+  }
+
   @override
   Future<List<InterventionContentRelation>>
       interventionContentRelationsByInterventionID(
@@ -124,5 +138,11 @@ class InterventionRepositoryCustom extends definition.InterventionRepository {
     Intervention intervention =
         await db.getById(Intervention, id) as Intervention;
     return populate(intervention);
+  }
+
+  @override
+  Future<List<Intervention>> allInterventionsIncludingSurveys() async {
+    List<Intervention> interventions = await getAllAmpIntervention();
+    return populateListWithConnectionsAndSurveys(interventions);
   }
 }

@@ -99,7 +99,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }
 
   void fulfillSync(bool filesSyncEnabled) async {
-    /*InternetConnectionType internetConnectionType =
+    InternetConnectionType internetConnectionType =
         await StorageRepository.currentInternetConnectionType();
     if (LocalDataRepository.instance.wifiOnly &&
         internetConnectionType != InternetConnectionType.WIFI) {
@@ -108,177 +108,36 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     }
     add(StartSyncEvent());
 
-    List<amp.Level> allAmpLevels =
+    //all Levels
+    List<Level> allLevels =
         await LevelRepository.instance.getAllAmpLevels();
-    List<amp.Entity> allAmpEntities =
-        (await EntityRepository.instance.getAllAmpEntities())
-            .map((e) => e.copyWith(
-                appliedInterventions: [],
-                level: allAmpLevels
-                    .where((element) => element.id == e.entityLevelId)
-                    .first))
-            .toList();
-    List<amp.Intervention> allAmpInterventions = (await InterventionRepository
-            .instance
-            .getAllAmpIntervention())
-        .map((e) => e.copyWith(tags: [], contents: [], levels: [], surveys: []))
-        .toList();
-    List<amp.AppliedIntervention> allAmpAppliedInterventions =
-        (await AppliedInterventionRepository.instance
-                .getAllAmpAppliedInterventions())
-            .where((element) =>
-                element.entityAppliedInterventionsId != null &&
-                allAmpInterventions.any((intervention) =>
-                    intervention.id ==
-                    element.appliedInterventionInterventionId))
-            .toList();
-    List<amp.Survey> allAmpSurveys =
-        (await SurveyRepository.instance.getAllAmpSurveys())
-            .where(
-              (element) => element.intervention != null,
-            )
-            .toList()
-            .map((e) => e.copyWith(
-                  tags: [],
-                ))
-            .toList();
-    List<amp.ExecutedSurvey> allAmpExecutedSurveys =
-        await ExecutedSurveyRepository.instance.getAllAmpExecutedSurveys();
 
-    // TODO: check population of surveys with SurveySurveyTagRelations
+    //Entities including applied Interventions and Executed Surveys
+    List<Entity> allEntities = await EntityRepository.instance
+        .getAllEntitiesInclAppliedInterventionsAndExecutedSurveys();
 
-    // TODO: populate contents, tags, levels of Interventions
+    //Entities including Interventions
+    List<Intervention> allInterventions = await InterventionRepository.instance.allInterventionsIncludingSurveys();
 
-    // Populate Intervention and Surveys
-    allAmpInterventions.sort((a, b) => a.id.compareTo(b.id));
-    allAmpSurveys
-        .sort(((a, b) => a.intervention!.id.compareTo(b.intervention!.id)));
-    await populateSortedLists<amp.Intervention, amp.Survey, String>(
-        allAmpInterventions,
-        (p0) => p0.id,
-        allAmpSurveys,
-        (p1) => p1.intervention!.id, (i1, i2) async {
-      allAmpSurveys[i2] = allAmpSurveys[i2].copyWith(
-          intervention: allAmpInterventions[i1]
-              .copyWith(contents: [], tags: [], surveys: [], levels: []));
+    //User
+    User? user = userBloc.state.user;
 
-      allAmpInterventions[i1] = allAmpInterventions[i1].copyWith(
-          surveys: (allAmpInterventions[i1].surveys ?? [])
-            ..add(allAmpSurveys[i2]));
-    });
+    //download: level, interventions, surveys, aktuellen user was sich geändert hat
+    //entsprechend anpassen -> option einfügen, die dies prüft
 
-    // Populate AppliedInterventions with Interventions
-    allAmpAppliedInterventions.sort(((a, b) => a
-        .appliedInterventionInterventionId
-        .compareTo(b.appliedInterventionInterventionId)));
-    await populateSortedLists<amp.Intervention, amp.AppliedIntervention,
-            String>(
-        allAmpInterventions,
-        (p0) => p0.id,
-        allAmpAppliedInterventions,
-        (p1) => p1.appliedInterventionInterventionId, (i1, i2) async {
-      amp.Intervention intervention = allAmpInterventions[i1];
-      amp.User user = await UserRepository.instance.getAmpUserByID(
-          allAmpAppliedInterventions[i2].appliedInterventionWhoDidItId);
-      allAmpAppliedInterventions[i2] = allAmpAppliedInterventions[i2].copyWith(
-          intervention: intervention, whoDidIt: user, executedSurveys: []);
-    });
-
-    // Populate AppliedInterventions with ExecutedSurveys
-    allAmpAppliedInterventions.sort(((a, b) => a.id.compareTo(b.id)));
-    allAmpExecutedSurveys.sort(((a, b) =>
-        a.appliedIntervention.id.compareTo(b.appliedIntervention.id)));
-    await populateSortedLists<amp.AppliedIntervention, amp.ExecutedSurvey,
-            String>(
-        allAmpAppliedInterventions,
-        (p0) => p0.id,
-        allAmpExecutedSurveys,
-        (p1) => p1.appliedIntervention.id, (i1, i2) async {
-      var user = await UserRepository.instance.getAmpUserByID(
-          allAmpExecutedSurveys[i2].executedSurveyWhoExecutedItId);
-
-      amp.Survey survey = allAmpSurveys
-          .where((element) =>
-              element.id == allAmpExecutedSurveys[i2].executedSurveySurveyId)
-          .first;
-      allAmpExecutedSurveys[i2] = allAmpExecutedSurveys[i2].copyWith(
-          appliedIntervention: allAmpAppliedInterventions[i1].copyWith(
-            executedSurveys: [],
-          ),
-          survey: survey,
-          whoExecutedIt: user);
-
-      allAmpAppliedInterventions[i1] = allAmpAppliedInterventions[i1].copyWith(
-          executedSurveys: allAmpAppliedInterventions[i1].executedSurveys
-            ..add(allAmpExecutedSurveys[i2]));
-    });
-
-    // Populate Entities with AppliedInterventions
-    allAmpAppliedInterventions.sort(((a, b) => a.entityAppliedInterventionsId!
-        .compareTo(b.entityAppliedInterventionsId!)));
-    allAmpEntities.sort(((a, b) => a.id.compareTo(b.id)));
-    await populateSortedLists<amp.Entity, amp.AppliedIntervention, String>(
-        allAmpEntities,
-        (p0) => p0.id,
-        allAmpAppliedInterventions,
-        (p1) => p1.entityAppliedInterventionsId!, (i1, i2) async {
-      allAmpEntities[i1] = allAmpEntities[i1].copyWith(
-          appliedInterventions: (allAmpEntities[i1].appliedInterventions ?? [])
-            ..add(allAmpAppliedInterventions[i2]));
-    });
-
-    List<Entity> allEntities = allAmpEntities.map((e) {
-      return Entity.fromAmplifyModel(e);
-    }).toList();
-    List<Level> allLevels = await LevelRepository.instance.getAllLevels();
-    //List<Task> allTasksToSync = await taskBloc.taskRepository.getAllTasks();
-    List<InterventionContentRelation> allContentRelations =
-        await ContentRepository.instance
-            .getAllRelationsWithPopulatedContentsAndInterventions();
-
-    List<Content> allContents = [];
-    List<Intervention> allInterventions = [];
-    for (InterventionContentRelation interventionContentRelation
-        in allContentRelations) {
-      if (!allContents.any(
-          (element) => element.id == interventionContentRelation.content.id)) {
-        allContents
-            .add(Content.fromAmplifyModel(interventionContentRelation.content));
-      }
-    }
-    for (var entity in allEntities) {
-      if (!allLevels.any((element) => element.id == entity.level.id!)) {
-        allLevels.add(entity.level);
-      }
-    }
-    for (Level level in allLevels) {
-      if (level.interventionsAreAllowed) {
-        List<Intervention> toAdd = await InterventionRepository.instance
-            .getInterventionsByLevelConnections(level.allowedInterventions!
-                .map((e) => LevelInterventionRelation(
-                    level: e.first.toAmplifyModel(),
-                    intervention: e.second.toAmplifyModel(),
-                    id: e.id))
-                .toList());
-        for (Intervention intervention in toAdd) {
-          if (!allInterventions
-              .any((element) => element.id == intervention.id)) {
-            allInterventions.add(intervention);
-          }
-        }
-      }
-    }
+    //upload: alles was sich geändert hat
+    //ist bereits so
 
     if (filesSyncEnabled) {
       syncLevels(allLevels);
       syncInterventions(allInterventions);
       //syncTasks(allTasksToSync);
-      syncContents(allContents);
+      //syncContents(allContents);
       syncEntities(allEntities);
-      if (userBloc.state.user != null) {
-        syncUser(userBloc.state.user!);
+      if (user!=null) {
+        syncUser(user);
       }
-    }*/
+    }
   }
 
   Future<void> populateSortedLists<P, Q, R extends Comparable>(
@@ -306,6 +165,8 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }
 
   void syncLevels(List<Level> levels) async {
+    //download everything
+    //upload everything
     for (Level level in levels) {
       LevelRepository.instance.getLevelPicFile(level).sync(this);
       for (CustomData customData in level.customData) {
@@ -317,6 +178,8 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }
 
   void syncInterventions(List<Intervention> interventions) async {
+    //download everything
+    //upload everything
     for (Intervention intervention in interventions) {
       InterventionRepository.instance
           .getInterventionPic(intervention)
@@ -391,6 +254,9 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }
 
   void syncUser(User user) async {
+    //download
+    //upload
     UserRepository.instance.getUserPicFile(user).sync(this);
   }
+
 }

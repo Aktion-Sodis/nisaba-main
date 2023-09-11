@@ -102,14 +102,16 @@ class SyncedFile {
     key = ValueKey(DateTime.now().toIso8601String());
   }
 
-  Future<bool> sync(SyncBloc syncBloc) async {
+  Future<bool> sync(SyncBloc syncBloc, {bool onlyUpload = false}) async {
     try {
       syncBloc.add(StartLoadingFileEvent());
       File localCacheFile = await getCachePath();
       bool cached = await localCacheFile.exists();
       if (!cached) {
-        await StorageRepository.downloadFile(localCacheFile, path,
+        if(!onlyUpload) {
+          await StorageRepository.downloadFile(localCacheFile, path,
             checkConnection: false);
+        }
       } else {
         ListResult listResult = await Amplify.Storage.list(path: path);
         if (listResult.items.isEmpty) {
@@ -126,13 +128,13 @@ class SyncedFile {
                 checkConnection: false);
           } else if (lastModifiedLocal == null) {
             await StorageRepository.downloadFile(localCacheFile, path,
-                checkConnection: false);
+                checkConnection: false, lastModifiedOnline: lastModifiedOnline);
           } else if (lastModifiedLocal.isAfter(lastModifiedOnline)) {
             await StorageRepository.uploadFile(localCacheFile, path,
                 checkConnection: false);
           } else if (lastModifiedLocal.isBefore(lastModifiedOnline)) {
             await StorageRepository.downloadFile(localCacheFile, path,
-                checkConnection: false);
+                checkConnection: false, lastModifiedOnline: lastModifiedOnline);
           }
         }
       }
