@@ -31,10 +31,14 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
 
   @override
   Future<void> create(DBModel object) async {
+    print('[Remote DB] create called');
     Type modelType = object.runtimeType;
     try {
+      print('[RemoteDB] Create object: $object');
       DBModelRegistration modelRegistration = getRegisteredModel(modelType);
       Model amplifyModel = modelRegistration.fromDBModel(object);
+      print('[RemoteDB] Create object: $amplifyModel');
+
       final request = ModelMutations.create(amplifyModel);
       final response = await Amplify.API.mutate(request: request).response;
 
@@ -122,11 +126,19 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
 
   @override
   Future<void> update(DBModel object) async {
-    Type modelType = object.runtimeType;
+    //not working due to missing versioning which is required for update
+    //todo: implement
+
+    throw UnimplementedError();
+    /*Type modelType = object.runtimeType;
     try {
       Model amplifyObject =
           getRegisteredModel(modelType).fromDBModel(object) as Model;
+      //shitty workouraround for create and update of levels, applied interventions, ...
       final request = ModelMutations.update(amplifyObject);
+
+      print('[RemoteDB] Update object: $amplifyObject');
+
       final response = await Amplify.API.mutate(request: request).response;
     } on ApiException catch (e) {
       bool connected = await isThereInternetConnection();
@@ -134,7 +146,7 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
         throw NoConnectionException();
       }
       rethrow;
-    }
+    }*/
   }
 
   DBModel? _modelToDBModel(Type type, Model model) {

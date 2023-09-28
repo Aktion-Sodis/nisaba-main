@@ -197,6 +197,8 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
       //} else if (_getClassType(classElement) == _ClassType.SUBTYPE) {
     } else if (_getClassType(classElement) == _ClassType.TYPE ||
         _getClassType(classElement) == _ClassType.SUBTYPE) {
+        //todo: add option for classes where connection ID for an element is relevant
+
       return MapEntry(_getName(value), _translateClassElement(classElement));
     } else if (value.type.isDartCoreList) {
       return MapEntry(_getName(value), _translateList(value.type));

@@ -36,6 +36,16 @@ class EntityRepositoryCustom extends definition.EntityRepository {
   }
 
   @override
+  Future<List<Entity>> getAllEntitiesInclAppliedInterventionsAndExecutedSurveys() async {
+    List<Entity> toReturn = await db.get(Entity);
+
+    List<Entity> popluatedEntities =
+        await _populateMultipleConnections(toReturn);
+
+    return popluatedEntities;
+  }
+
+  @override
   Future<List<Entity>> getEntities(
       {int? page,
       bool byParentEntityID = false,
@@ -63,10 +73,22 @@ class EntityRepositoryCustom extends definition.EntityRepository {
 
     //todo: gut möglich, dass hier level fehlen
 
+    //todo: check if executed surveys are included
     toReturn.appliedInterventions = await AppliedInterventionRepository.instance
         .getAmpAppliedInterventionsByEntityID(toReturn.id);
 
     return toReturn;
+  }
+
+  @override
+  Future<List<Entity>> populateWithAppliedInterventionsAndExecutedSurveys(
+      List<Entity> entities) async {
+    List<Entity> toReturn = entities;
+
+    List<Entity> popluatedEntities =
+        await _populateMultipleConnections(toReturn);
+
+    return popluatedEntities;
   }
 
   @override

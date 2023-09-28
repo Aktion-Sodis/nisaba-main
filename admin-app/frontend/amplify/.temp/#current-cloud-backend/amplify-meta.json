@@ -1,0 +1,357 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-nisaba-dev-233526-authRole",
+      "UnauthRoleArn": "arn:aws:iam::404541487485:role/amplify-nisaba-dev-233526-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::404541487485:role/amplify-nisaba-dev-233526-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-nisaba-dev-233526-deployment",
+      "UnauthRoleName": "amplify-nisaba-dev-233526-unauthRole",
+      "StackName": "amplify-nisaba-dev-233526",
+      "StackId": "arn:aws:cloudformation:eu-central-1:404541487485:stack/amplify-nisaba-dev-233526/6fa1c890-84a4-11ed-a4c9-0210983a558a",
+      "AmplifyAppId": "d26pqqtndacxsh",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-nisaba-dev-233526-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-nisaba-dev-233526-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
+    }
+  },
+  "api": {
+    "AdminQueries": {
+      "authorizationType": "AMAZON_COGNITO_USER_POOLS",
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "authnisaba"
+        },
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "AdminQueries8dc38185"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway",
+      "output": {
+        "ApiName": "AdminQueries",
+        "RootUrl": "https://0jjrdox7q4.execute-api.eu-central-1.amazonaws.com/dev",
+        "ApiId": "0jjrdox7q4"
+      },
+      "lastPushTimeStamp": "2023-08-25T20:59:47.853Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-nisaba-dev-233526-deployment/amplify-cfn-templates/api/AdminQueries-cloudformation-template.json",
+        "logicalId": "apiAdminQueries"
+      }
+    },
+    "apinisaba": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "authnisaba"
+        }
+      ],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [
+            {
+              "apiKeyConfig": {
+                "apiKeyExpirationDate": "2023-04-24T21:56:53.757Z",
+                "apiKeyExpirationDays": 120,
+                "description": "Nisaba API Key"
+              },
+              "authenticationType": "API_KEY"
+            }
+          ],
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authauthnisaba"
+            }
+          }
+        },
+        "GraphQLAPIIdOutput": "wr332ekiibfm7mmoz4fznrddai",
+        "GraphQLAPIEndpointOutput": "https://eipusflypjbjlhw6d7gfbuiwke.appsync-api.eu-central-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-apsdeak4ofgrjp546464rmjllu"
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync",
+      "lastPushTimeStamp": "2023-08-25T20:59:47.874Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-nisaba-dev-233526-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiapinisaba"
+      }
+    },
+    "nisabaUserManagementApi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "nisabaUserManagement"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway",
+      "output": {
+        "ApiName": "nisabaUserManagementApi",
+        "RootUrl": "https://m4f6q5my14.execute-api.eu-central-1.amazonaws.com/dev",
+        "ApiId": "m4f6q5my14"
+      },
+      "lastPushTimeStamp": "2023-08-25T20:59:47.887Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-nisaba-dev-233526-deployment/amplify-cfn-templates/api/nisabaUserManagementApi-cloudformation-template.json",
+        "logicalId": "apinisabaUserManagementApi"
+      }
+    }
+  },
+  "auth": {
+    "authnisaba": {
+      "customAuth": false,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "authnisabaPreTokenGeneration",
+          "triggerProvider": "Cognito"
+        }
+      ],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": "6",
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_UPPERCASE",
+            "REQUIRES_NUMBERS"
+          ]
+        },
+        "signupAttributes": [],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL",
+          "PHONE_NUMBER"
+        ],
+        "verificationMechanisms": [
+          "PHONE_NUMBER"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "output": {
+        "CreatedSNSRole": "arn:aws:iam::404541487485:role/sns0b693253233526-dev",
+        "UserPoolId": "eu-central-1_HuRToBFza",
+        "AppClientIDWeb": "2l5tpjrd125oqk6cb8c6iidji3",
+        "AppClientID": "7nfr52eo1805bbffsq7351famq",
+        "IdentityPoolId": "eu-central-1:b2407afa-e126-4a69-94a9-464a24bd3b0a",
+        "UserPoolArn": "arn:aws:cognito-idp:eu-central-1:404541487485:userpool/eu-central-1_HuRToBFza",
+        "IdentityPoolName": "nisaba_identity_pool__dev",
+        "UserPoolName": "nisaba_user_pool"
+      },
+      "lastPushTimeStamp": "2023-08-25T20:59:47.909Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-nisaba-dev-233526-deployment/amplify-cfn-templates/auth/authnisaba-cloudformation-template.json",
+        "logicalId": "authauthnisaba"
+      }
+    },
+    "userPoolGroups": {
+      "dependsOn": [
+        {
+          "category": "auth",
+          "resourceName": "authnisaba",
+          "attributes": [
+            "UserPoolId",
+            "AppClientIDWeb",
+            "AppClientID",
+            "IdentityPoolId"
+          ]
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito-UserPool-Groups",
+      "output": {
+        "adminGroupRole": "arn:aws:iam::404541487485:role/eu-central-1_HuRToBFza-adminGroupRole",
+        "analyticsGroupRole": "arn:aws:iam::404541487485:role/eu-central-1_HuRToBFza-analyticsGroupRole",
+        "superadminGroupRole": "arn:aws:iam::404541487485:role/eu-central-1_HuRToBFza-superadminGroupRole",
+        "mobileGroupRole": "arn:aws:iam::404541487485:role/eu-central-1_HuRToBFza-mobileGroupRole"
+      },
+      "lastPushTimeStamp": "2023-08-25T20:59:47.920Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-nisaba-dev-233526-deployment/amplify-cfn-templates/auth/userPoolGroups-cloudformation-template.json",
+        "logicalId": "authuserPoolGroups"
+      }
+    }
+  },
+  "function": {
+    "AdminQueries8dc38185": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "authnisaba"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::404541487485:role/AdminQueries8dc38185LambdaRole-dev",
+        "Region": "eu-central-1",
+        "Arn": "arn:aws:lambda:eu-central-1:404541487485:function:AdminQueries8dc38185-dev",
+        "Name": "AdminQueries8dc38185-dev",
+        "LambdaExecutionRole": "AdminQueries8dc38185LambdaRole-dev"
+      },
+      "lastPushTimeStamp": "2023-08-25T20:59:47.930Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-nisaba-dev-233526-deployment/amplify-cfn-templates/function/AdminQueries8dc38185-cloudformation-template.json",
+        "logicalId": "functionAdminQueries8dc38185"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-nisaba-dev-233526-deployment",
+        "s3Key": "amplify-builds/AdminQueries8dc38185-5a4174542b442b567470-build.zip"
+      }
+    },
+    "authnisabaPreTokenGeneration": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::404541487485:role/authnisabaPreTokenGeneration-dev",
+        "Region": "eu-central-1",
+        "Arn": "arn:aws:lambda:eu-central-1:404541487485:function:authnisabaPreTokenGeneration-dev",
+        "Name": "authnisabaPreTokenGeneration-dev",
+        "LambdaExecutionRole": "authnisabaPreTokenGeneration-dev"
+      },
+      "lastPushTimeStamp": "2023-08-25T20:59:47.952Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-nisaba-dev-233526-deployment/amplify-cfn-templates/function/authnisabaPreTokenGeneration-cloudformation-template.json",
+        "logicalId": "functionauthnisabaPreTokenGeneration"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-nisaba-dev-233526-deployment",
+        "s3Key": "amplify-builds/authnisabaPreTokenGeneration-354b5a3446773846716a-build.zip"
+      }
+    },
+    "nisabaAdminSdkLayer": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer",
+      "output": {
+        "Arn": "arn:aws:lambda:eu-central-1:404541487485:layer:nisabaAdminSdkLayer-dev:1"
+      },
+      "lastPushTimeStamp": "2023-08-25T20:59:47.975Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-nisaba-dev-233526-deployment/amplify-cfn-templates/function/nisabaAdminSdkLayer-awscloudformation-template.json",
+        "logicalId": "functionnisabaAdminSdkLayer"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-nisaba-dev-233526-deployment",
+        "s3Key": "amplify-builds/nisabaAdminSdkLayer-LambdaLayerVersion4b1563d4-build.zip"
+      }
+    },
+    "nisabaUserManagement": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "nisabaAdminSdkLayer"
+        },
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "authnisaba"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::404541487485:role/nisabaLambdaRolecb63dd9e-dev",
+        "Region": "eu-central-1",
+        "Arn": "arn:aws:lambda:eu-central-1:404541487485:function:nisabaUserManagement-dev",
+        "Name": "nisabaUserManagement-dev",
+        "LambdaExecutionRole": "nisabaLambdaRolecb63dd9e-dev"
+      },
+      "lastPushTimeStamp": "2023-08-25T20:59:47.996Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-nisaba-dev-233526-deployment/amplify-cfn-templates/function/nisabaUserManagement-cloudformation-template.json",
+        "logicalId": "functionnisabaUserManagement"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-nisaba-dev-233526-deployment",
+        "s3Key": "amplify-builds/nisabaUserManagement-6a37457132494c736f4c-build.zip"
+      }
+    },
+    "syncConflictHandler5b19c779": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::404541487485:role/syncConflictHandler5b19c779LambdaRole-dev",
+        "Region": "eu-central-1",
+        "Arn": "arn:aws:lambda:eu-central-1:404541487485:function:syncConflictHandler5b19c779-dev",
+        "Name": "syncConflictHandler5b19c779-dev",
+        "LambdaExecutionRole": "syncConflictHandler5b19c779LambdaRole-dev"
+      },
+      "lastPushTimeStamp": "2023-08-25T20:59:48.005Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-nisaba-dev-233526-deployment/amplify-cfn-templates/function/syncConflictHandler5b19c779-cloudformation-template.json",
+        "logicalId": "functionsyncConflictHandler5b19c779"
+      },
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-nisaba-dev-233526-deployment",
+        "s3Key": "amplify-builds/syncConflictHandler5b19c779-736d4962543068355742-build.zip"
+      }
+    }
+  },
+  "hosting": {
+    "amplifyhosting": {
+      "providerPlugin": "awscloudformation",
+      "service": "amplifyhosting",
+      "type": "manual",
+      "output": {},
+      "lastPushTimeStamp": "2023-08-25T20:59:48.024Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-nisaba-dev-233526-deployment/amplify-cfn-templates/hosting/amplifyhosting-template.json",
+        "logicalId": "hostingamplifyhosting"
+      }
+    }
+  },
+  "storage": {
+    "nisabas3dev": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "lastPushTimeStamp": "2023-08-25T20:59:49.801Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-nisaba-dev-233526-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storagenisabas3dev"
+      },
+      "output": {
+        "BucketName": "nisabas3dev233526-dev",
+        "Region": "eu-central-1"
+      },
+      "lastPushDirHash": "0srVAWb0hF54n34GFX46XgeTwmI="
+    }
+  }
+}

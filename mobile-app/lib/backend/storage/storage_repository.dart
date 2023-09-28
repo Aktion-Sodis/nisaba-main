@@ -9,7 +9,7 @@ import 'dataStorePaths.dart';
 
 class StorageRepository {
   static Future<void> downloadFile(File toDownload, String path,
-      {bool checkConnection = true}) async {
+      {bool checkConnection = true, DateTime? lastModifiedOnline}) async {
     try {
       print("trying to get file: $path");
       if (checkConnection) {
@@ -21,6 +21,26 @@ class StorageRepository {
       }
 
       await Amplify.Storage.downloadFile(key: path, local: toDownload);
+      //set local last changed to onlyine last changed
+
+      if(lastModifiedOnline!=null) {
+        await toDownload.setLastModified(lastModifiedOnline);
+      }
+      else {
+        try {
+          ListResult listResult = await Amplify.Storage.list(path: path);
+          if(listResult.items.isNotEmpty) {
+            lastModifiedOnline = listResult.items.first.lastModified;
+            if(lastModifiedOnline!=null) {
+              await toDownload.setLastModified(lastModifiedOnline);
+            }
+          }
+        } catch(e) {
+          print('Error in catching last modified online');
+        }
+      }
+
+
       print("file for $path successfully downloaded");
     } catch (e) {
       print("not found $path");

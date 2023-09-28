@@ -123,7 +123,7 @@ class MainMenuOrganization extends StatelessWidget {
                             MdiIcons.human,
                             Size(width(context) * .1, width(context) * .1),
                             true),
-                      /*if (organizationViewState.organizationViewType ==
+                      if (organizationViewState.organizationViewType ==
                               OrganizationViewType.LIST &&
                           organizationViewState.addEntityPossible)
                         Container(
@@ -155,7 +155,7 @@ class MainMenuOrganization extends StatelessWidget {
                                 iconData: MdiIcons.plus,
                                 buttonSizes: ButtonSizes.small,
                                 fillColor:
-                                    Theme.of(context).colorScheme.secondary)),*/
+                                    Theme.of(context).colorScheme.secondary)),
                       if (organizationViewState.organizationViewType ==
                               OrganizationViewType.SURVEYS ||
                           organizationViewState.organizationViewType ==
@@ -200,14 +200,13 @@ class MainMenuOrganization extends StatelessWidget {
           ));
           break;
         case OrganizationViewType.OVERVIEW:
+          print('Entity build process');
+          print('on surveys tapped');
+          print(organizationViewState.currentDetailEntity!.displayName);
           return Container(
-              key: ValueKey(
-                  organizationViewState.keyDateTime.toIso8601String() +
-                      "overview-container"),
+              key: ValueKey(DateTime.now().toIso8601String()),
               child: OverviewWidget(
-                  key: ValueKey(
-                      organizationViewState.keyDateTime.toIso8601String() +
-                          "Overview"),
+                  key: ValueKey(DateTime.now().toIso8601String()),
                   entity: organizationViewState.currentDetailEntity!,
                   onTasksTapped: (entity) {
                     context
@@ -360,6 +359,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
             left: defaultPadding(context),
             right: defaultPadding(context)),
         child: TextFormField(
+          enabled: create,
           controller: customDataControllers[index],
           decoration: InputDecoration(
               prefixIcon: const Icon(MdiIcons.pen),
@@ -403,7 +403,8 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
   }
 
   void save() async {
-    if (_formKey.currentState!.validate()) {
+    if (create) {
+      if (_formKey.currentState!.validate()) {
       List<AppliedCustomData> appliedCustomDatas =
           List.generate(widget.level.customData.length, (index) {
         CustomData customData = widget.level.customData[index];
@@ -452,6 +453,10 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
         Navigator.of(context).pop(toSave);
       }
     }
+    } else {
+      Navigator.of(context).pop();
+    }
+    
   }
 
   late SyncedFile syncedFile;
@@ -501,6 +506,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
           margin: EdgeInsets.only(
               left: defaultPadding(context), right: defaultPadding(context)),
           child: TextFormField(
+            enabled: create,
             controller: nameEditingController,
             decoration: InputDecoration(
                 prefixIcon: const Icon(FontAwesomeIcons.user),
@@ -517,6 +523,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
               left: defaultPadding(context),
               right: defaultPadding(context)),
           child: TextFormField(
+            enabled: create,
             controller: descriptionEditingController,
             decoration: InputDecoration(
                 prefixIcon: const Icon(MdiIcons.pen),
@@ -639,7 +646,7 @@ class ListWidget extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
 
   Widget listItem(BuildContext buildContext, int index,
-      EntitiesLoadedOrganizationViewState state) {
+      EntitiesLoadedOrganizationViewState state, bool showdetailspossible) {
     String parentEntityName = state.levelContentList.last.parentEntity != null
         ? state.levelContentList.last.parentEntity!.displayName
         : "";
@@ -659,13 +666,13 @@ class ListWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                /*ImageWidget(
+                ImageWidget(
                   imageFile: imageFile,
                   key: imageFile.key,
                   width: width(buildContext) - defaultPadding(buildContext) * 2,
                   height: height(buildContext) * .2,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-                ),*/
+                ),
                 Container(
                   padding: EdgeInsets.only(
                       left: defaultPadding(buildContext),
@@ -718,14 +725,13 @@ class ListWidget extends StatelessWidget {
                         left: defaultPadding(buildContext),
                         right: defaultPadding(buildContext),
                         bottom: defaultPadding(buildContext)),
-                  )
+                  ),
+                
               ],
             ),
             Positioned(
                 right: defaultPadding(buildContext),
-                top: /*height(buildContext) * .2 - width(buildContext) * .06*/ defaultPadding(
-                        buildContext) /
-                    2,
+                top: height(buildContext) * .2 - width(buildContext) * .06,
                 child: ElevatedButton(
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
@@ -766,6 +772,10 @@ class ListWidget extends StatelessWidget {
         )));
   }
 
+  addEntity(BuildContext context) async {
+    //todo: implement auto start here
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<OrganizationViewBloc, OrganizationViewState>(
@@ -777,6 +787,20 @@ class ListWidget extends StatelessWidget {
               state as EntitiesLoadedOrganizationViewState;
           List<Entity> entities = entitiesLoadedOrganizationViewState
               .currentLevelContent.daughterEntities;
+
+          if(entities.isEmpty){
+            addEntity(context);
+            return Container();
+          }
+
+          var appliedInterventionsAllowed =
+              entities.first.level.interventionsAreAllowed;
+
+          if (appliedInterventionsAllowed) {
+            appliedInterventionsAllowed =
+                entities.first.level.allowedInterventions!.isNotEmpty;
+          }
+
           return Container(
               child: Scrollbar(
             controller: _scrollController,
@@ -784,7 +808,10 @@ class ListWidget extends StatelessWidget {
                 controller: _scrollController,
                 itemBuilder: (context, index) {
                   return listItem(
-                      context, index, entitiesLoadedOrganizationViewState);
+                      context,
+                      index,
+                      entitiesLoadedOrganizationViewState,
+                      appliedInterventionsAllowed);
                 },
                 itemCount: entities.length),
           ));
@@ -1030,36 +1057,13 @@ class OverviewWidget extends StatelessWidget {
     print("overview widget key: $key");
     return Scrollbar(
         key: key,
-        child:
-            // Hide generalCard and taskCard, as generalCard is not needed and taskCard is not needed
-            /* ListView.builder(
+        child: ListView.builder(
             key: key,
             itemBuilder: childWidget,
             itemCount: entity.level.interventionsAreAllowed
                 ? (entity.level.allowedInterventions!.isNotEmpty ? 4 : 2)
                 : 2,
-            addAutomaticKeepAlives: false)*/
-            SingleChildScrollView(
-          child: Wrap(children: [
-            Column(
-              children: entity.level.interventionsAreAllowed &&
-                      entity.level.allowedInterventions!.isNotEmpty
-                  ? [
-                      Card(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: defaultPadding(context),
-                              vertical: defaultPadding(context) / 2),
-                          child: surveyCardContent(context)),
-                      Card(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: defaultPadding(context),
-                              vertical: defaultPadding(context) / 2),
-                          child: appliedInterventionCardContent(context))
-                    ]
-                  : [],
-            )
-          ]),
-        ));
+            addAutomaticKeepAlives: false));
   }
 }
 
@@ -1183,12 +1187,12 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
         .intervention.surveys
         .where((element) => !element.archived));
 
-    return Scrollbar(
+    return Align(alignment: Alignment.topCenter, child: Scrollbar(
         child: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // HIDDEN AS IT IS NOT STABLE
-        /*Card(
+        Card(
           margin: EdgeInsets.all(defaultPadding(context)),
           child: Container(
               height: height(context) * .3,
@@ -1212,7 +1216,7 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
                           true))
                 ],
               )),
-        ),*/
+        ),
 
         // HIDDEN AS IT IS NOT STABLE
         /*if (appliedIntervention.intervention.interventionType ==
@@ -1281,7 +1285,7 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
                                   },
                                 )))))
       ],
-    )));
+    ))));
   }
 }
 
@@ -1379,7 +1383,6 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
   Widget interventionItem(BuildContext buildContext, int index) {
     //todo: implement localization
     return interventionRow(context, interventions![index],
-        iconData: MdiIcons.plus,
         separator: (index != interventions!.length - 1),
         image: InterventionRepository.instance
             .getInterventionPic(interventions![index]),
@@ -1393,12 +1396,9 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
         ..intervention = interventions![index]
         ..whoDidIt = widget.user
         ..entity = widget.entity;
-
-      // SKIP THE NEXT STEP
-      Navigator.of(context).pop(toCreate);
-      /*setState(() {
+      setState(() {
         appliedIntervention = toCreate;
-      });*/
+      });
     });
   }
 
@@ -1468,7 +1468,6 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
                           : Container(
                               child: Column(
                               children: [
-                                // HIDDEN AS IT IS NOT STABLE YET
                                 Card(
                                   margin:
                                       EdgeInsets.all(defaultPadding(context)),

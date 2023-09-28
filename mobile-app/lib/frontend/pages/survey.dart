@@ -28,6 +28,8 @@ import 'package:mobile_app/frontend/components/imageWidget.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/frontend/strings.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:mobile_app/frontend/theme.dart';
+import 'package:mobile_app/utils/audio.dart';
 import 'package:mobile_app/utils/photo_capturing.dart';
 
 import '../../backend/callableModels/ExecutedSurvey.dart';
@@ -200,6 +202,13 @@ class SurveyWidgetState extends State<SurveyWidget> {
                 element);
       }
     });
+    print('initialised State of SurveyWidget');
+    print('picAndAudioAnswerFilesPaths:');
+    //print path for each picAndAudioAnswerFile
+    picAndAudioAnswerFiles.forEach((key, value) {
+      print('key: $key, value: ${value.path}');
+    });
+
     super.initState();
   }
 
@@ -339,7 +348,18 @@ class SurveyWidgetState extends State<SurveyWidget> {
         SizedBox(
           height: defaultPadding(context),
         ),
-        questionTitleWidget(question: question, context: context),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: questionTitleWidget(question: question, context: context),
+              ),
+              getReadOutWidget(question: question),
+            ],
+          ),
+        ),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -415,7 +435,18 @@ class SurveyWidgetState extends State<SurveyWidget> {
         SizedBox(
           height: defaultPadding(context),
         ),
-        questionTitleWidget(question: question, context: context),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: questionTitleWidget(question: question, context: context),
+              ),
+              getReadOutWidget(question: question),
+            ],
+          ),
+        ),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -501,7 +532,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: Text(question.displayText),
+                child: questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -520,15 +551,15 @@ class SurveyWidgetState extends State<SurveyWidget> {
         getTakeAudioWidget(
           syncedFile: picAndAudioAnswerFiles[question.id!]!,
           callback: (sF) async {
-            setState(() {
-              picAndAudioAnswerFiles[question.id!] = sF;
-            });
             if (answers[question] == null) {
               answers[question] = QuestionAnswer(
                   questionID: question.id!,
                   date: DateTime.now(),
                   type: question.type);
             }
+            setState(() {
+              picAndAudioAnswerFiles[question.id!] = sF;
+            });
           },
           context: context,
         )
@@ -540,6 +571,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
       {required BuildContext context,
       required Question question,
       required Survey survey}) {
+    print('Building TakePhotoQuestionWidget');
     return Scrollbar(
         child: ListView(
       shrinkWrap: true,
@@ -556,8 +588,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: Text(question.displayText,
-                    style: Theme.of(context).textTheme.bodyText1),
+                child: questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -573,17 +604,20 @@ class SurveyWidgetState extends State<SurveyWidget> {
           height: defaultPadding(context),
         ),
         getTakePhotoWidget(
-          syncedFile: picAndAudioAnswerFiles[question.id!]!,
+          syncedFile: picAndAudioAnswerFiles[question.id]!,
           callback: (sF) async {
-            setState(() {
-              picAndAudioAnswerFiles[question.id!] = sF;
-            });
-            if (answers[question] == null) {
-              answers[question] = QuestionAnswer(
-                  questionID: question.id!,
-                  date: DateTime.now(),
-                  type: question.type);
-            }
+              if (answers[question] == null) {
+                answers[question] = QuestionAnswer(
+                    questionID: question.id!,
+                    date: DateTime.now(),
+                    type: question.type);
+              }
+              sF.key = ValueKey(DateTime.now().toIso8601String());
+              setState(() {
+                print('now setting state again');
+                picAndAudioAnswerFiles[question.id] = sF;
+              });
+              
           },
           context: context,
         ),
@@ -605,7 +639,18 @@ class SurveyWidgetState extends State<SurveyWidget> {
         SizedBox(
           height: defaultPadding(context),
         ),
-        questionTitleWidget(question: question, context: context),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: questionTitleWidget(question: question, context: context),
+              ),
+              getReadOutWidget(question: question),
+            ],
+          ),
+        ),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -640,7 +685,18 @@ class SurveyWidgetState extends State<SurveyWidget> {
         SizedBox(
           height: defaultPadding(context),
         ),
-        questionTitleWidget(question: question, context: context),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: questionTitleWidget(question: question, context: context),
+              ),
+              getReadOutWidget(question: question),
+            ],
+          ),
+        ),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -679,7 +735,18 @@ class SurveyWidgetState extends State<SurveyWidget> {
         SizedBox(
           height: defaultPadding(context),
         ),
-        questionTitleWidget(question: question, context: context),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: questionTitleWidget(question: question, context: context),
+              ),
+              getReadOutWidget(question: question),
+            ],
+          ),
+        ),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -729,7 +796,18 @@ class SurveyWidgetState extends State<SurveyWidget> {
         SizedBox(
           height: defaultPadding(context),
         ),
-        questionTitleWidget(question: question, context: context),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: questionTitleWidget(question: question, context: context),
+              ),
+              getReadOutWidget(question: question),
+            ],
+          ),
+        ),
         SizedBox(
           height: defaultPadding(context),
         ),
@@ -867,11 +945,11 @@ class SurveyWidgetState extends State<SurveyWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
+          Expanded(child: Text(
             surveyTitle,
             style: Theme.of(context).textTheme.headline2,
-          ),
-          MaterialButton(
+          )),
+          /*MaterialButton(
               onPressed: () {
                 addTask();
               },
@@ -907,7 +985,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                     ),
                   ],
                 ),
-              )),
+              )),*/
         ],
       ),
     );
@@ -981,24 +1059,76 @@ class SurveyWidgetState extends State<SurveyWidget> {
     return Container();
   }
 
+  static Widget _iconButton(IconData iconData, Function() onPressed) {
+    BorderRadius borderRadius = BorderRadius.circular(15);
+    return Container(
+      height: 60,
+      width: 60,
+      decoration:
+          BoxDecoration(boxShadow: [defaultShadow], borderRadius: borderRadius),
+      child: Material(
+        borderRadius: borderRadius,
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: borderRadius,
+          child: Icon(
+            iconData,
+            size: 33,
+          ),
+        ),
+      ),
+    );
+  }
+
+
   static Widget getTakeAudioWidget(
       {required SyncedFile syncedFile,
       required ValueChanged<SyncedFile> callback,
       required BuildContext context}) {
-    return RecorderWidget(
-        restingViewBuilder: (a) => Container(
-              child: Icon(
-                MdiIcons.record,
-              ),
-            ),
-        recordingViewBuilder: (a) => Container(
-              child: Icon(MdiIcons.pause),
-            ),
+    /*
+    RecorderWidget(
+                                      restingViewBuilder: (startPlaying) {
+                                    return _iconButton(
+                                        MdiIcons.microphoneOutline,
+                                        startPlaying);
+                                  }, recordingViewBuilder: (stopPlaying) {
+                                    return _iconButton(
+                                        MdiIcons.stopCircleOutline,
+                                        stopPlaying);
+                                  }, onAudioRecorded: (uri) {
+                                    _cubit!.addAttachment(AudioAttachment(uri));
+                                  }, loadingViewBuilder: () {
+                                    return _iconButton(
+                                        MdiIcons.microphoneOutline, () {
+                                      // TODO: add explaining toast, that widget is not ready yet
+                                      debugPrint(
+                                          "Recorder widget is not ready yet");
+                                    });
+                                  })
+    */
+
+    return Padding(padding: EdgeInsets.symmetric(horizontal: defaultPadding(context)), child: RecorderWidget(
+        restingViewBuilder: (startPlaying) {
+                                    return _iconButton(
+                                        MdiIcons.microphoneOutline,
+                                        startPlaying);
+                                  }, recordingViewBuilder: (stopPlaying) {
+                                    return _iconButton(
+                                        MdiIcons.stopCircleOutline,
+                                        stopPlaying);
+                                  }, loadingViewBuilder: () {
+                                    return _iconButton(
+                                        MdiIcons.microphoneOutline, () {
+                                      // TODO: add explaining toast, that widget is not ready yet
+                                      debugPrint(
+                                          "Recorder widget is not ready yet");
+                                    });
+                                  },
         onAudioRecorded: (path) async {
           await syncedFile.updateAsAudio(File(path));
           callback(syncedFile);
         },
-        loadingViewBuilder: () => Container());
+       ));
     return MaterialButton(
       onPressed: () {},
       child: Container(
@@ -1017,8 +1147,9 @@ class SurveyWidgetState extends State<SurveyWidget> {
     //return CustomIconButton(onPressed, iconData, size, true)
     return CustomIconButton(() async {
       XFile r = await CameraFunctionality.takePicture(context: context);
-
+      print('now updating synced file');
       await syncedFile.updateAsPic(r);
+      print('updated synced file, now callback');
       callback.call(syncedFile);
     }, MdiIcons.camera, const Size(50, 50), true);
   }
@@ -1501,16 +1632,7 @@ class _AnimatedProgressBarState extends State<AnimatedProgressBar>
 
 class _AudioPlayerWidgetFromSyncFileState
     extends State<AudioPlayerWidgetFromSyncFile> {
-  @override
-  Widget build(BuildContext context) {
-    return audioFile == null
-        ? Container()
-        : PlayerWidget(
-            audioURL: audioFile!.path,
-            restingViewBuilder: (a) => const Icon(MdiIcons.play),
-            loadingViewBuilder: () => Container(),
-            playingViewBuilder: (a) => const Icon(MdiIcons.pause));
-  }
+  
 
   bool loading = true;
   File? audioFile;
@@ -1531,6 +1653,61 @@ class _AudioPlayerWidgetFromSyncFileState
       }
     });
   }
+
+  bool _isPlaying = false;
+
+  @override
+  Widget build(BuildContext context) {
+    if (audioFile == null) {
+      return Container();
+    }
+    return AnimatedContainer(
+          margin: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: _isPlaying ? ThemeColors.yellow : ThemeColors.green),
+          duration: const Duration(milliseconds: 300),
+          child: Material(
+            color: Colors.transparent,
+            child: Center(
+              child: PlayerWidget(
+                audio: Audio.instance,
+                onStatusChange: (isPlaying) {
+                  _isPlaying = isPlaying;
+                  if (mounted) setState(() {});
+                },
+                loadingViewBuilder: () {
+                  return IconButton(
+                      onPressed: () {
+                        // TODO: create a toast notifying that the audio has not been initialized yet
+                      },
+                      iconSize: 50,
+                      splashRadius: 40,
+                      icon: const Icon(MdiIcons.playCircleOutline));
+                },
+                audioURL: audioFile!.uri.toString(),
+                playingViewBuilder: (dynamic Function() stopPlaying) {
+                  return IconButton(
+                    onPressed: () {
+                      stopPlaying();
+                    },
+                    iconSize: 50,
+                    splashRadius: 40,
+                    icon: const Icon(MdiIcons.stopCircleOutline),
+                  );
+                },
+                restingViewBuilder: (dynamic Function() startPlaying) {
+                  return IconButton(
+                      onPressed: () {
+                        startPlaying();
+                      },
+                      iconSize: 50,
+                      splashRadius: 40,
+                      icon: const Icon(MdiIcons.playCircleOutline));
+                },
+              ),
+            ),
+          ));
+  }
+
 }
 
 const double _kOuterRadius = 8.0;
@@ -1583,3 +1760,4 @@ class _FakeRadioPainter extends CustomPainter {
     }
   }
 }
+

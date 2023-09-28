@@ -122,7 +122,7 @@ class AuthRepository {
       }
 
       //todo: hier weiterleiten auf account erstellen seite
-
+      await initSession();
       return session.isSignedIn ? (await _getUserIdFromAttributes()) : null;
     } on SessionDataInconsistentException catch (e) {
       throw e;

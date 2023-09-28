@@ -40,4 +40,6 @@ abstract class InterventionRepository {
   SyncedFile getInterventionPic(Intervention intervention);
 
   Future<Intervention> populatedInterventionFromContent(String id);
+
+  Future<List<Intervention>> allInterventionsIncludingSurveys();
 }

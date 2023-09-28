@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDB.dart';
@@ -35,6 +36,13 @@ class Synchronizer {
       try {
         DBQueueObject? queueObject = await queue.get();
         while (queueObject != null) {
+          print('[Sync] processing queue object ' + queueObject.action.toString());
+
+        if((queueObject.action == DBAction.CREATE || queueObject.action == DBAction.UPDATE) && queueObject.modelType == 'Entity') {
+          print('Entity gets created or updated');
+          //remove level from json paiload
+        }  
+
           if (queueObject.action == DBAction.DELETE) {
             await remoteDB.delete(queueObject.object);
           } else if (queueObject.action == DBAction.CREATE) {
@@ -42,6 +50,7 @@ class Synchronizer {
           } else if (queueObject.action == DBAction.UPDATE) {
             await remoteDB.update(queueObject.object);
           }
+          
           await queue.delete(queueObject);
           queueObject = await queue.get();
         }
@@ -49,6 +58,8 @@ class Synchronizer {
       } on NoConnectionException catch (e) {
         upstreamSyncStatus = SyncStatus.WAITING;
       } catch (e) {
+        print('[Sync] Error in DB Upstream Sync:');
+        print(e);
         upstreamSyncStatus = SyncStatus.STOPPED;
       }
     });
@@ -65,6 +76,7 @@ class Synchronizer {
 
   Future<void> syncDownstream() async {
     await _downstreamSyncLock.synchronized(() async {
+      print('[Sync] Syncing Downstream');
       downstreamSyncStatus = SyncStatus.SYNCING;
       try {
         // Download all entries from remoteDB
@@ -84,6 +96,8 @@ class Synchronizer {
 
         // TODO: consistency check
       } catch (e) {
+        print('Error in DB Downstream Sync:');
+        print(e);
         downstreamSyncStatus = SyncStatus.UP_TO_DATE;
         rethrow;
       }

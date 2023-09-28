@@ -1,0 +1,13 @@
+{
+  "resourceName": "nisabas3dev",
+  "policyUUID": "6d3cb3a2",
+  "bucketName": "nisabas3dev",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE"
+}

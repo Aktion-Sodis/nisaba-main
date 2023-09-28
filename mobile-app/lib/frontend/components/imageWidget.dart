@@ -94,17 +94,21 @@ class _ImageFromSyncedFileState extends State<ImageFromSyncedFile> {
   @override
   void initState() {
     print("reinitializing image widget");
+    super.initState();
     widget.syncedFile?.file().then((value) async {
+      print('Image synced File != null: ' + (value != null).toString());
       imageFile = value;
-      fileImage = FileImage(imageFile!);
-      await fileImage!.evict();
+      if (imageFile != null) {
+        fileImage = FileImage(imageFile!);
+        await fileImage!.evict();
+      }
       if (mounted) {
         setState(() {
-          fileImage = fileImage;
+          //fileImage = fileImage;
           loading = false;
         });
       } else {
-        fileImage = fileImage;
+        //fileImage = fileImage;
         loading = false;
       }
     });
@@ -112,10 +116,18 @@ class _ImageFromSyncedFileState extends State<ImageFromSyncedFile> {
 
   @override
   Widget build(BuildContext context) {
-    return imageFile == null
+    print('Building ImageFromSyncedFile Widget');
+    try {
+      return imageFile == null
         ? Container()
         : Container(
             constraints: BoxConstraints(maxHeight: height(context) * .25),
             child: Image.file(imageFile!));
+    }
+    catch(e) {
+      print('Error in building imageFile');
+      print(e);
+      return Container();
+    }
   }
 }
