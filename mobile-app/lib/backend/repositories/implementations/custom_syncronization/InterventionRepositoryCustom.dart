@@ -90,7 +90,7 @@ class InterventionRepositoryCustom extends definition.InterventionRepository {
 
   Future<Intervention> populateWithConnectionsAndSurveys(Intervention toPopulate) async {
     toPopulate.levelConnections = await levelInterventionRelationsByInterventionID(toPopulate);
-    toPopulate.surveys = await SurveyRepository.instance.getAmpSurveysByIntervention(toPopulate);
+    //toPopulate.surveys = await SurveyRepository.instance.getAmpSurveysByIntervention(toPopulate);
     for (Survey survey in toPopulate.surveys) {
       survey.intervention = toPopulate;
     }

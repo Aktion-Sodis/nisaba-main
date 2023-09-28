@@ -76,6 +76,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
         emit(InSyncState(totalFiles: 0, loadedFiles: 0, progress: 0));
       }
     } else if (event is StartLoadingFileEvent) {
+      print('start loading file event');
       if (state is InSyncState) {
         emit((state as InSyncState)
             .copyWith(totalFiles: (state as InSyncState).totalFiles + 1));
@@ -83,8 +84,10 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
         emit(InSyncState(totalFiles: 1, loadedFiles: 0, progress: 0));
       }
     } else if (event is LoadedFileEvent) {
+      
       if (state is InSyncState) {
         InSyncState inSyncState = state as InSyncState;
+        print('loaded file event - loaded: ${inSyncState.loadedFiles + 1} total: ${inSyncState.totalFiles}');
         if (inSyncState.loadedFiles + 1 == inSyncState.totalFiles) {
           add(FinishedSyncEvent());
         } else {
@@ -99,6 +102,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }
 
   void fulfillSync(bool filesSyncEnabled) async {
+    print('fulfillSync called');
     InternetConnectionType internetConnectionType =
         await StorageRepository.currentInternetConnectionType();
     if (LocalDataRepository.instance.wifiOnly &&
@@ -111,16 +115,24 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     //all Levels
     List<Level> allLevels =
         await LevelRepository.instance.getAllAmpLevels();
+      
+    print('sync: levels loaded');
 
     //Entities including applied Interventions and Executed Surveys
     List<Entity> allEntities = await EntityRepository.instance
         .getAllEntitiesInclAppliedInterventionsAndExecutedSurveys();
 
+    print('sync: entities loaded');
+
     //Entities including Interventions
     List<Intervention> allInterventions = await InterventionRepository.instance.allInterventionsIncludingSurveys();
 
+    print('sync: interventions loaded');
+
     //User
     User? user = userBloc.state.user;
+
+    print('sync: user loaded');
 
     //download: level, interventions, surveys, aktuellen user was sich geändert hat
     //entsprechend anpassen -> option einfügen, die dies prüft
@@ -129,6 +141,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     //ist bereits so
 
     if (filesSyncEnabled) {
+      print('Sync: Starting file sync');
       syncLevels(allLevels);
       syncInterventions(allInterventions);
       //syncTasks(allTasksToSync);
