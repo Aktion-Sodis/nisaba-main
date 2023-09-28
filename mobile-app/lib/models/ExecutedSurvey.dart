@@ -362,14 +362,14 @@ class ExecutedSurvey extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: ExecutedSurvey.APPLIEDINTERVENTION,
       isRequired: true,
-      targetNames: ["appliedInterventionExecutedSurveysId"],
-      ofModelName: (AppliedIntervention).toString()
+      targetNames: ['appliedInterventionExecutedSurveysId'],
+      ofModelName: 'AppliedIntervention'
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
       key: ExecutedSurvey.SURVEY,
       isRequired: true,
-      ofModelName: (Survey).toString(),
+      ofModelName: 'Survey',
       associatedKey: Survey.ID
     ));
     
@@ -382,7 +382,7 @@ class ExecutedSurvey extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
       key: ExecutedSurvey.WHOEXECUTEDIT,
       isRequired: true,
-      ofModelName: (User).toString(),
+      ofModelName: 'User',
       associatedKey: User.ID
     ));
     
@@ -445,6 +445,11 @@ class _ExecutedSurveyModelType extends amplify_core.ModelType<ExecutedSurvey> {
   @override
   ExecutedSurvey fromJson(Map<String, dynamic> jsonData) {
     return ExecutedSurvey.fromJson(jsonData);
+  }
+  
+  @override
+  String modelName() {
+    return 'ExecutedSurvey';
   }
 }
 

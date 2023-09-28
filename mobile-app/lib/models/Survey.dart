@@ -317,8 +317,8 @@ class Survey extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: Survey.INTERVENTION,
       isRequired: false,
-      targetNames: ["interventionSurveysId"],
-      ofModelName: (Intervention).toString()
+      targetNames: ['interventionSurveysId'],
+      ofModelName: 'Intervention'
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
@@ -331,7 +331,7 @@ class Survey extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Survey.TAGS,
       isRequired: true,
-      ofModelName: (SurveySurveyTagRelation).toString(),
+      ofModelName: 'SurveySurveyTagRelation',
       associatedKey: SurveySurveyTagRelation.SURVEY
     ));
     
@@ -375,6 +375,11 @@ class _SurveyModelType extends amplify_core.ModelType<Survey> {
   @override
   Survey fromJson(Map<String, dynamic> jsonData) {
     return Survey.fromJson(jsonData);
+  }
+  
+  @override
+  String modelName() {
+    return 'Survey';
   }
 }
 

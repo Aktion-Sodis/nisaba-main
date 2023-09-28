@@ -182,15 +182,15 @@ class SurveySurveyTagRelation extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: SurveySurveyTagRelation.SURVEY,
       isRequired: true,
-      targetNames: ["surveyId"],
-      ofModelName: (Survey).toString()
+      targetNames: ['surveyId'],
+      ofModelName: 'Survey'
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: SurveySurveyTagRelation.SURVEYTAG,
       isRequired: true,
-      targetNames: ["surveyTagId"],
-      ofModelName: (SurveyTag).toString()
+      targetNames: ['surveyTagId'],
+      ofModelName: 'SurveyTag'
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
@@ -215,6 +215,11 @@ class _SurveySurveyTagRelationModelType extends amplify_core.ModelType<SurveySur
   @override
   SurveySurveyTagRelation fromJson(Map<String, dynamic> jsonData) {
     return SurveySurveyTagRelation.fromJson(jsonData);
+  }
+  
+  @override
+  String modelName() {
+    return 'SurveySurveyTagRelation';
   }
 }
 

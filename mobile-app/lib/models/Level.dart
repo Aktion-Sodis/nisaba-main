@@ -311,7 +311,7 @@ class Level extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Level.ALLOWEDINTERVENTIONS,
       isRequired: true,
-      ofModelName: (LevelInterventionRelation).toString(),
+      ofModelName: 'LevelInterventionRelation',
       associatedKey: LevelInterventionRelation.LEVEL
     ));
     
@@ -350,6 +350,11 @@ class _LevelModelType extends amplify_core.ModelType<Level> {
   @override
   Level fromJson(Map<String, dynamic> jsonData) {
     return Level.fromJson(jsonData);
+  }
+  
+  @override
+  String modelName() {
+    return 'Level';
   }
 }
 

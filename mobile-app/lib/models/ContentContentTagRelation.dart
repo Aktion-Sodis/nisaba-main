@@ -182,15 +182,15 @@ class ContentContentTagRelation extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: ContentContentTagRelation.CONTENT,
       isRequired: true,
-      targetNames: ["contentId"],
-      ofModelName: (Content).toString()
+      targetNames: ['contentId'],
+      ofModelName: 'Content'
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: ContentContentTagRelation.CONTENTTAG,
       isRequired: true,
-      targetNames: ["contentTagId"],
-      ofModelName: (ContentTag).toString()
+      targetNames: ['contentTagId'],
+      ofModelName: 'ContentTag'
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
@@ -215,6 +215,11 @@ class _ContentContentTagRelationModelType extends amplify_core.ModelType<Content
   @override
   ContentContentTagRelation fromJson(Map<String, dynamic> jsonData) {
     return ContentContentTagRelation.fromJson(jsonData);
+  }
+  
+  @override
+  String modelName() {
+    return 'ContentContentTagRelation';
   }
 }
 

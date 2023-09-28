@@ -347,7 +347,7 @@ class Entity extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
       key: Entity.LEVEL,
       isRequired: true,
-      ofModelName: (Level).toString(),
+      ofModelName: 'Level',
       associatedKey: Level.ID
     ));
     
@@ -367,7 +367,7 @@ class Entity extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Entity.APPLIEDINTERVENTIONS,
       isRequired: true,
-      ofModelName: (AppliedIntervention).toString(),
+      ofModelName: 'AppliedIntervention',
       associatedKey: AppliedIntervention.ENTITYAPPLIEDINTERVENTIONSID
     ));
     
@@ -405,6 +405,11 @@ class _EntityModelType extends amplify_core.ModelType<Entity> {
   @override
   Entity fromJson(Map<String, dynamic> jsonData) {
     return Entity.fromJson(jsonData);
+  }
+  
+  @override
+  String modelName() {
+    return 'Entity';
   }
 }
 

@@ -209,7 +209,7 @@ class SurveyTag extends amplify_core.Model {
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: SurveyTag.SURVEYS,
       isRequired: true,
-      ofModelName: (SurveySurveyTagRelation).toString(),
+      ofModelName: 'SurveySurveyTagRelation',
       associatedKey: SurveySurveyTagRelation.SURVEYTAG
     ));
     
@@ -235,6 +235,11 @@ class _SurveyTagModelType extends amplify_core.ModelType<SurveyTag> {
   @override
   SurveyTag fromJson(Map<String, dynamic> jsonData) {
     return SurveyTag.fromJson(jsonData);
+  }
+  
+  @override
+  String modelName() {
+    return 'SurveyTag';
   }
 }
 
