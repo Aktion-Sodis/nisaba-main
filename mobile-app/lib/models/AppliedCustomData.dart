@@ -20,12 +20,10 @@
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'ModelProvider.dart';
-import 'package:amplify_core/amplify_core.dart';
-import 'package:flutter/foundation.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 
 
 /** This is an auto generated class representing the AppliedCustomData type in your schema. */
-@immutable
 class AppliedCustomData {
   final String? _customDataID;
   final Type? _type;
@@ -37,10 +35,10 @@ class AppliedCustomData {
     try {
       return _customDataID!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -50,10 +48,10 @@ class AppliedCustomData {
     try {
       return _type!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -63,10 +61,10 @@ class AppliedCustomData {
     try {
       return _name!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -115,7 +113,7 @@ class AppliedCustomData {
     
     buffer.write("AppliedCustomData {");
     buffer.write("customDataID=" + "$_customDataID" + ", ");
-    buffer.write("type=" + (_type != null ? enumToString(_type)! : "null") + ", ");
+    buffer.write("type=" + (_type != null ? amplify_core.enumToString(_type)! : "null") + ", ");
     buffer.write("name=" + (_name != null ? _name!.toString() : "null") + ", ");
     buffer.write("intValue=" + (_intValue != null ? _intValue!.toString() : "null") + ", ");
     buffer.write("stringValue=" + "$_stringValue");
@@ -133,9 +131,25 @@ class AppliedCustomData {
       stringValue: stringValue ?? this.stringValue);
   }
   
+  AppliedCustomData copyWithModelFieldValues({
+    ModelFieldValue<String>? customDataID,
+    ModelFieldValue<Type>? type,
+    ModelFieldValue<I18nString>? name,
+    ModelFieldValue<int?>? intValue,
+    ModelFieldValue<String?>? stringValue
+  }) {
+    return AppliedCustomData._internal(
+      customDataID: customDataID == null ? this.customDataID : customDataID.value,
+      type: type == null ? this.type : type.value,
+      name: name == null ? this.name : name.value,
+      intValue: intValue == null ? this.intValue : intValue.value,
+      stringValue: stringValue == null ? this.stringValue : stringValue.value
+    );
+  }
+  
   AppliedCustomData.fromJson(Map<String, dynamic> json)  
     : _customDataID = json['customDataID'],
-      _type = enumFromString<Type>(json['type'], Type.values),
+      _type = amplify_core.enumFromString<Type>(json['type'], Type.values),
       _name = json['name']?['serializedData'] != null
         ? I18nString.fromJson(new Map<String, dynamic>.from(json['name']['serializedData']))
         : null,
@@ -143,45 +157,49 @@ class AppliedCustomData {
       _stringValue = json['stringValue'];
   
   Map<String, dynamic> toJson() => {
-    'customDataID': _customDataID, 'type': enumToString(_type), 'name': _name?.toJson(), 'intValue': _intValue, 'stringValue': _stringValue
+    'customDataID': _customDataID, 'type': amplify_core.enumToString(_type), 'name': _name?.toJson(), 'intValue': _intValue, 'stringValue': _stringValue
   };
   
   Map<String, Object?> toMap() => {
-    'customDataID': _customDataID, 'type': _type, 'name': _name, 'intValue': _intValue, 'stringValue': _stringValue
+    'customDataID': _customDataID,
+    'type': _type,
+    'name': _name,
+    'intValue': _intValue,
+    'stringValue': _stringValue
   };
 
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "AppliedCustomData";
     modelSchemaDefinition.pluralName = "AppliedCustomData";
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'customDataID',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'type',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.enumeration)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
       fieldName: 'name',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'I18nString')
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embedded, ofCustomTypeName: 'I18nString')
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'intValue',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'stringValue',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
   });
 }

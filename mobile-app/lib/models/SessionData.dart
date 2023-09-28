@@ -19,24 +19,23 @@
 
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
-import 'package:amplify_core/amplify_core.dart';
-import 'package:flutter/foundation.dart';
+import 'ModelProvider.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 
 
 /** This is an auto generated class representing the SessionData type in your schema. */
-@immutable
-class SessionData extends Model {
+class SessionData extends amplify_core.Model {
   static const classType = const _SessionDataModelType();
   final String id;
-  final TemporalDateTime? _date;
+  final amplify_core.TemporalDateTime? _date;
   final String? _userID;
   final String? _app;
   final String? _version;
   final String? _buildNumber;
   final String? _remoteConfig;
   final String? _platform;
-  final TemporalDateTime? _createdAt;
-  final TemporalDateTime? _updatedAt;
+  final amplify_core.TemporalDateTime? _createdAt;
+  final amplify_core.TemporalDateTime? _updatedAt;
 
   @override
   getInstanceType() => classType;
@@ -51,14 +50,14 @@ class SessionData extends Model {
       );
   }
   
-  TemporalDateTime get date {
+  amplify_core.TemporalDateTime get date {
     try {
       return _date!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -88,19 +87,19 @@ class SessionData extends Model {
     return _platform;
   }
   
-  TemporalDateTime? get createdAt {
+  amplify_core.TemporalDateTime? get createdAt {
     return _createdAt;
   }
   
-  TemporalDateTime? get updatedAt {
+  amplify_core.TemporalDateTime? get updatedAt {
     return _updatedAt;
   }
   
   const SessionData._internal({required this.id, required date, userID, app, version, buildNumber, remoteConfig, platform, createdAt, updatedAt}): _date = date, _userID = userID, _app = app, _version = version, _buildNumber = buildNumber, _remoteConfig = remoteConfig, _platform = platform, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory SessionData({String? id, required TemporalDateTime date, String? userID, String? app, String? version, String? buildNumber, String? remoteConfig, String? platform}) {
+  factory SessionData({String? id, required amplify_core.TemporalDateTime date, String? userID, String? app, String? version, String? buildNumber, String? remoteConfig, String? platform}) {
     return SessionData._internal(
-      id: id == null ? UUID.getUUID() : id,
+      id: id == null ? amplify_core.UUID.getUUID() : id,
       date: date,
       userID: userID,
       app: app,
@@ -151,7 +150,7 @@ class SessionData extends Model {
     return buffer.toString();
   }
   
-  SessionData copyWith({TemporalDateTime? date, String? userID, String? app, String? version, String? buildNumber, String? remoteConfig, String? platform}) {
+  SessionData copyWith({amplify_core.TemporalDateTime? date, String? userID, String? app, String? version, String? buildNumber, String? remoteConfig, String? platform}) {
     return SessionData._internal(
       id: id,
       date: date ?? this.date,
@@ -163,114 +162,144 @@ class SessionData extends Model {
       platform: platform ?? this.platform);
   }
   
+  SessionData copyWithModelFieldValues({
+    ModelFieldValue<amplify_core.TemporalDateTime>? date,
+    ModelFieldValue<String?>? userID,
+    ModelFieldValue<String?>? app,
+    ModelFieldValue<String?>? version,
+    ModelFieldValue<String?>? buildNumber,
+    ModelFieldValue<String?>? remoteConfig,
+    ModelFieldValue<String?>? platform
+  }) {
+    return SessionData._internal(
+      id: id,
+      date: date == null ? this.date : date.value,
+      userID: userID == null ? this.userID : userID.value,
+      app: app == null ? this.app : app.value,
+      version: version == null ? this.version : version.value,
+      buildNumber: buildNumber == null ? this.buildNumber : buildNumber.value,
+      remoteConfig: remoteConfig == null ? this.remoteConfig : remoteConfig.value,
+      platform: platform == null ? this.platform : platform.value
+    );
+  }
+  
   SessionData.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
-      _date = json['date'] != null ? TemporalDateTime.fromString(json['date']) : null,
+      _date = json['date'] != null ? amplify_core.TemporalDateTime.fromString(json['date']) : null,
       _userID = json['userID'],
       _app = json['app'],
       _version = json['version'],
       _buildNumber = json['buildNumber'],
       _remoteConfig = json['remoteConfig'],
       _platform = json['platform'],
-      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
-      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
+      _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
     'id': id, 'date': _date?.format(), 'userID': _userID, 'app': _app, 'version': _version, 'buildNumber': _buildNumber, 'remoteConfig': _remoteConfig, 'platform': _platform, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'date': _date, 'userID': _userID, 'app': _app, 'version': _version, 'buildNumber': _buildNumber, 'remoteConfig': _remoteConfig, 'platform': _platform, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id,
+    'date': _date,
+    'userID': _userID,
+    'app': _app,
+    'version': _version,
+    'buildNumber': _buildNumber,
+    'remoteConfig': _remoteConfig,
+    'platform': _platform,
+    'createdAt': _createdAt,
+    'updatedAt': _updatedAt
   };
 
-  static final QueryModelIdentifier<SessionDataModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<SessionDataModelIdentifier>();
-  static final QueryField ID = QueryField(fieldName: "id");
-  static final QueryField DATE = QueryField(fieldName: "date");
-  static final QueryField USERID = QueryField(fieldName: "userID");
-  static final QueryField APP = QueryField(fieldName: "app");
-  static final QueryField VERSION = QueryField(fieldName: "version");
-  static final QueryField BUILDNUMBER = QueryField(fieldName: "buildNumber");
-  static final QueryField REMOTECONFIG = QueryField(fieldName: "remoteConfig");
-  static final QueryField PLATFORM = QueryField(fieldName: "platform");
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  static final amplify_core.QueryModelIdentifier<SessionDataModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<SessionDataModelIdentifier>();
+  static final ID = amplify_core.QueryField(fieldName: "id");
+  static final DATE = amplify_core.QueryField(fieldName: "date");
+  static final USERID = amplify_core.QueryField(fieldName: "userID");
+  static final APP = amplify_core.QueryField(fieldName: "app");
+  static final VERSION = amplify_core.QueryField(fieldName: "version");
+  static final BUILDNUMBER = amplify_core.QueryField(fieldName: "buildNumber");
+  static final REMOTECONFIG = amplify_core.QueryField(fieldName: "remoteConfig");
+  static final PLATFORM = amplify_core.QueryField(fieldName: "platform");
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "SessionData";
     modelSchemaDefinition.pluralName = "SessionData";
     
     modelSchemaDefinition.authRules = [
-      AuthRule(
-        authStrategy: AuthStrategy.OWNER,
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.OWNER,
         ownerField: "organization_id",
         identityClaim: "custom:organization_id",
-        provider: AuthRuleProvider.USERPOOLS,
-        operations: [
-          ModelOperation.CREATE,
-          ModelOperation.UPDATE,
-          ModelOperation.DELETE,
-          ModelOperation.READ
+        provider: amplify_core.AuthRuleProvider.USERPOOLS,
+        operations: const [
+          amplify_core.ModelOperation.CREATE,
+          amplify_core.ModelOperation.UPDATE,
+          amplify_core.ModelOperation.DELETE,
+          amplify_core.ModelOperation.READ
         ])
     ];
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: SessionData.DATE,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: SessionData.USERID,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: SessionData.APP,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: SessionData.VERSION,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: SessionData.BUILDNUMBER,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: SessionData.REMOTECONFIG,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: SessionData.PLATFORM,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
       fieldName: 'createdAt',
       isRequired: false,
       isReadOnly: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
       fieldName: 'updatedAt',
       isRequired: false,
       isReadOnly: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
   });
 }
 
-class _SessionDataModelType extends ModelType<SessionData> {
+class _SessionDataModelType extends amplify_core.ModelType<SessionData> {
   const _SessionDataModelType();
   
   @override
@@ -288,8 +317,7 @@ class _SessionDataModelType extends ModelType<SessionData> {
  * This is an auto generated class representing the model identifier
  * of [SessionData] in your schema.
  */
-@immutable
-class SessionDataModelIdentifier implements ModelIdentifier<SessionData> {
+class SessionDataModelIdentifier implements amplify_core.ModelIdentifier<SessionData> {
   final String id;
 
   /** Create an instance of SessionDataModelIdentifier using [id] the primary key. */

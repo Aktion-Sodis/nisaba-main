@@ -101,7 +101,7 @@
             >
               <template v-slot:v-img="slotProps">
                 <v-img max-height="200px" :src="slotProps.src">
-                  <!-- <v-btn
+                  <v-btn
                     class="iv-edit-icon"
                     color="primary"
                     @click="selectImg"
@@ -118,7 +118,7 @@
                     ref="img-upload"
                     style="display: none"
                     :acceptedType="'image/png'"
-                  /> -->
+                  />
                 </v-img>
               </template>
             </ImgFromS3>
@@ -166,14 +166,14 @@ import { modalModesDict } from "../../../lib/constants";
 import { Intervention, InterventionType } from "../../../models";
 
 import LocaleTextBox from "../../commons/form/LocaleTextBox.vue";
-// import FileInput from "../../commons/form/FileInput.vue";
+ import FileInput from "../../commons/form/FileInput.vue";
 import ImgFromS3 from "../../commons/ImgFromS3.vue";
 
 export default {
   name: "InterventionModalAsForm",
   components: {
     LocaleTextBox,
-    // FileInput,
+    FileInput,
     ImgFromS3,
   },
   data() {

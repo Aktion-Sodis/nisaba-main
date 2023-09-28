@@ -20,14 +20,12 @@
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'ModelProvider.dart';
-import 'package:amplify_core/amplify_core.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 
 
 /** This is an auto generated class representing the Entity type in your schema. */
-@immutable
-class Entity extends Model {
+class Entity extends amplify_core.Model {
   static const classType = const _EntityModelType();
   final String id;
   final I18nString? _name;
@@ -38,8 +36,8 @@ class Entity extends Model {
   final List<AppliedCustomData>? _customData;
   final List<AppliedIntervention>? _appliedInterventions;
   final int? _schemeVersion;
-  final TemporalDateTime? _createdAt;
-  final TemporalDateTime? _updatedAt;
+  final amplify_core.TemporalDateTime? _createdAt;
+  final amplify_core.TemporalDateTime? _updatedAt;
   final String? _entityLevelId;
 
   @override
@@ -59,10 +57,10 @@ class Entity extends Model {
     try {
       return _name!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -72,10 +70,10 @@ class Entity extends Model {
     try {
       return _description!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -89,10 +87,10 @@ class Entity extends Model {
     try {
       return _level!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -106,37 +104,28 @@ class Entity extends Model {
     try {
       return _customData!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
   }
   
-  List<AppliedIntervention> get appliedInterventions {
-    try {
-      return _appliedInterventions!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  List<AppliedIntervention>? get appliedInterventions {
+    return _appliedInterventions;
   }
   
   int? get schemeVersion {
     return _schemeVersion;
   }
   
-  TemporalDateTime? get createdAt {
+  amplify_core.TemporalDateTime? get createdAt {
     return _createdAt;
   }
   
-  TemporalDateTime? get updatedAt {
+  amplify_core.TemporalDateTime? get updatedAt {
     return _updatedAt;
   }
   
@@ -144,20 +133,20 @@ class Entity extends Model {
     try {
       return _entityLevelId!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
   }
   
-  const Entity._internal({required this.id, required name, required description, parentEntityID, required level, location, required customData, required appliedInterventions, schemeVersion, createdAt, updatedAt, required entityLevelId}): _name = name, _description = description, _parentEntityID = parentEntityID, _level = level, _location = location, _customData = customData, _appliedInterventions = appliedInterventions, _schemeVersion = schemeVersion, _createdAt = createdAt, _updatedAt = updatedAt, _entityLevelId = entityLevelId;
+  const Entity._internal({required this.id, required name, required description, parentEntityID, required level, location, required customData, appliedInterventions, schemeVersion, createdAt, updatedAt, required entityLevelId}): _name = name, _description = description, _parentEntityID = parentEntityID, _level = level, _location = location, _customData = customData, _appliedInterventions = appliedInterventions, _schemeVersion = schemeVersion, _createdAt = createdAt, _updatedAt = updatedAt, _entityLevelId = entityLevelId;
   
-  factory Entity({String? id, required I18nString name, required I18nString description, String? parentEntityID, required Level level, Location? location, required List<AppliedCustomData> customData, required List<AppliedIntervention> appliedInterventions, int? schemeVersion, required String entityLevelId}) {
+  factory Entity({String? id, required I18nString name, required I18nString description, String? parentEntityID, required Level level, Location? location, required List<AppliedCustomData> customData, List<AppliedIntervention>? appliedInterventions, int? schemeVersion, required String entityLevelId}) {
     return Entity._internal(
-      id: id == null ? UUID.getUUID() : id,
+      id: id == null ? amplify_core.UUID.getUUID() : id,
       name: name,
       description: description,
       parentEntityID: parentEntityID,
@@ -226,6 +215,31 @@ class Entity extends Model {
       entityLevelId: entityLevelId ?? this.entityLevelId);
   }
   
+  Entity copyWithModelFieldValues({
+    ModelFieldValue<I18nString>? name,
+    ModelFieldValue<I18nString>? description,
+    ModelFieldValue<String?>? parentEntityID,
+    ModelFieldValue<Level>? level,
+    ModelFieldValue<Location?>? location,
+    ModelFieldValue<List<AppliedCustomData>?>? customData,
+    ModelFieldValue<List<AppliedIntervention>>? appliedInterventions,
+    ModelFieldValue<int?>? schemeVersion,
+    ModelFieldValue<String>? entityLevelId
+  }) {
+    return Entity._internal(
+      id: id,
+      name: name == null ? this.name : name.value,
+      description: description == null ? this.description : description.value,
+      parentEntityID: parentEntityID == null ? this.parentEntityID : parentEntityID.value,
+      level: level == null ? this.level : level.value,
+      location: location == null ? this.location : location.value,
+      customData: customData == null ? this.customData : customData.value,
+      appliedInterventions: appliedInterventions == null ? this.appliedInterventions : appliedInterventions.value,
+      schemeVersion: schemeVersion == null ? this.schemeVersion : schemeVersion.value,
+      entityLevelId: entityLevelId == null ? this.entityLevelId : entityLevelId.value
+    );
+  }
+  
   Entity.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _name = json['name']?['serializedData'] != null
@@ -254,8 +268,8 @@ class Entity extends Model {
           .toList()
         : null,
       _schemeVersion = (json['schemeVersion'] as num?)?.toInt(),
-      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
-      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null,
+      _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null,
       _entityLevelId = json['entityLevelId'];
   
   Map<String, dynamic> toJson() => {
@@ -263,118 +277,129 @@ class Entity extends Model {
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'name': _name, 'description': _description, 'parentEntityID': _parentEntityID, 'level': _level, 'location': _location, 'customData': _customData, 'appliedInterventions': _appliedInterventions, 'schemeVersion': _schemeVersion, 'createdAt': _createdAt, 'updatedAt': _updatedAt, 'entityLevelId': _entityLevelId
+    'id': id,
+    'name': _name,
+    'description': _description,
+    'parentEntityID': _parentEntityID,
+    'level': _level,
+    'location': _location,
+    'customData': _customData,
+    'appliedInterventions': _appliedInterventions,
+    'schemeVersion': _schemeVersion,
+    'createdAt': _createdAt,
+    'updatedAt': _updatedAt,
+    'entityLevelId': _entityLevelId
   };
 
-  static final QueryModelIdentifier<EntityModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<EntityModelIdentifier>();
-  static final QueryField ID = QueryField(fieldName: "id");
-  static final QueryField NAME = QueryField(fieldName: "name");
-  static final QueryField DESCRIPTION = QueryField(fieldName: "description");
-  static final QueryField PARENTENTITYID = QueryField(fieldName: "parentEntityID");
-  static final QueryField LEVEL = QueryField(
+  static final amplify_core.QueryModelIdentifier<EntityModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<EntityModelIdentifier>();
+  static final ID = amplify_core.QueryField(fieldName: "id");
+  static final NAME = amplify_core.QueryField(fieldName: "name");
+  static final DESCRIPTION = amplify_core.QueryField(fieldName: "description");
+  static final PARENTENTITYID = amplify_core.QueryField(fieldName: "parentEntityID");
+  static final LEVEL = amplify_core.QueryField(
     fieldName: "level",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Level'));
-  static final QueryField LOCATION = QueryField(fieldName: "location");
-  static final QueryField CUSTOMDATA = QueryField(fieldName: "customData");
-  static final QueryField APPLIEDINTERVENTIONS = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Level'));
+  static final LOCATION = amplify_core.QueryField(fieldName: "location");
+  static final CUSTOMDATA = amplify_core.QueryField(fieldName: "customData");
+  static final APPLIEDINTERVENTIONS = amplify_core.QueryField(
     fieldName: "appliedInterventions",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'AppliedIntervention'));
-  static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
-  static final QueryField ENTITYLEVELID = QueryField(fieldName: "entityLevelId");
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'AppliedIntervention'));
+  static final SCHEMEVERSION = amplify_core.QueryField(fieldName: "schemeVersion");
+  static final ENTITYLEVELID = amplify_core.QueryField(fieldName: "entityLevelId");
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Entity";
     modelSchemaDefinition.pluralName = "Entities";
     
     modelSchemaDefinition.authRules = [
-      AuthRule(
-        authStrategy: AuthStrategy.OWNER,
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.OWNER,
         ownerField: "organization_id",
         identityClaim: "custom:organization_id",
-        provider: AuthRuleProvider.USERPOOLS,
-        operations: [
-          ModelOperation.CREATE,
-          ModelOperation.UPDATE,
-          ModelOperation.DELETE,
-          ModelOperation.READ
+        provider: amplify_core.AuthRuleProvider.USERPOOLS,
+        operations: const [
+          amplify_core.ModelOperation.CREATE,
+          amplify_core.ModelOperation.UPDATE,
+          amplify_core.ModelOperation.DELETE,
+          amplify_core.ModelOperation.READ
         ])
     ];
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
       fieldName: 'name',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'I18nString')
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embedded, ofCustomTypeName: 'I18nString')
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
       fieldName: 'description',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'I18nString')
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embedded, ofCustomTypeName: 'I18nString')
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Entity.PARENTENTITYID,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
       key: Entity.LEVEL,
       isRequired: true,
       ofModelName: 'Level',
       associatedKey: Level.ID
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
       fieldName: 'location',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'Location')
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embedded, ofCustomTypeName: 'Location')
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
       fieldName: 'customData',
       isRequired: true,
       isArray: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embeddedCollection, ofCustomTypeName: 'AppliedCustomData')
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embeddedCollection, ofCustomTypeName: 'AppliedCustomData')
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Entity.APPLIEDINTERVENTIONS,
       isRequired: true,
       ofModelName: 'AppliedIntervention',
       associatedKey: AppliedIntervention.ENTITYAPPLIEDINTERVENTIONSID
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Entity.SCHEMEVERSION,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
       fieldName: 'createdAt',
       isRequired: false,
       isReadOnly: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
       fieldName: 'updatedAt',
       isRequired: false,
       isReadOnly: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Entity.ENTITYLEVELID,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
   });
 }
 
-class _EntityModelType extends ModelType<Entity> {
+class _EntityModelType extends amplify_core.ModelType<Entity> {
   const _EntityModelType();
   
   @override
@@ -392,8 +417,7 @@ class _EntityModelType extends ModelType<Entity> {
  * This is an auto generated class representing the model identifier
  * of [Entity] in your schema.
  */
-@immutable
-class EntityModelIdentifier implements ModelIdentifier<Entity> {
+class EntityModelIdentifier implements amplify_core.ModelIdentifier<Entity> {
   final String id;
 
   /** Create an instance of EntityModelIdentifier using [id] the primary key. */

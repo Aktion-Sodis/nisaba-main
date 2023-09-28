@@ -20,14 +20,12 @@
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'ModelProvider.dart';
-import 'package:amplify_core/amplify_core.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 
 
 /** This is an auto generated class representing the Intervention type in your schema. */
-@immutable
-class Intervention extends Model {
+class Intervention extends amplify_core.Model {
   static const classType = const _InterventionModelType();
   final String id;
   final I18nString? _name;
@@ -38,8 +36,8 @@ class Intervention extends Model {
   final List<InterventionInterventionTagRelation>? _tags;
   final int? _schemeVersion;
   final List<LevelInterventionRelation>? _levels;
-  final TemporalDateTime? _createdAt;
-  final TemporalDateTime? _updatedAt;
+  final amplify_core.TemporalDateTime? _createdAt;
+  final amplify_core.TemporalDateTime? _updatedAt;
 
   @override
   getInstanceType() => classType;
@@ -58,10 +56,10 @@ class Intervention extends Model {
     try {
       return _name!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -71,10 +69,10 @@ class Intervention extends Model {
     try {
       return _description!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -84,84 +82,48 @@ class Intervention extends Model {
     try {
       return _interventionType!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
   }
   
-  List<InterventionContentRelation> get contents {
-    try {
-      return _contents!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  List<InterventionContentRelation>? get contents {
+    return _contents;
   }
   
-  List<Survey> get surveys {
-    try {
-      return _surveys!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  List<Survey>? get surveys {
+    return _surveys;
   }
   
-  List<InterventionInterventionTagRelation> get tags {
-    try {
-      return _tags!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  List<InterventionInterventionTagRelation>? get tags {
+    return _tags;
   }
   
   int? get schemeVersion {
     return _schemeVersion;
   }
   
-  List<LevelInterventionRelation> get levels {
-    try {
-      return _levels!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
+  List<LevelInterventionRelation>? get levels {
+    return _levels;
   }
   
-  TemporalDateTime? get createdAt {
+  amplify_core.TemporalDateTime? get createdAt {
     return _createdAt;
   }
   
-  TemporalDateTime? get updatedAt {
+  amplify_core.TemporalDateTime? get updatedAt {
     return _updatedAt;
   }
   
-  const Intervention._internal({required this.id, required name, required description, required interventionType, required contents, required surveys, required tags, schemeVersion, required levels, createdAt, updatedAt}): _name = name, _description = description, _interventionType = interventionType, _contents = contents, _surveys = surveys, _tags = tags, _schemeVersion = schemeVersion, _levels = levels, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Intervention._internal({required this.id, required name, required description, required interventionType, contents, surveys, tags, schemeVersion, levels, createdAt, updatedAt}): _name = name, _description = description, _interventionType = interventionType, _contents = contents, _surveys = surveys, _tags = tags, _schemeVersion = schemeVersion, _levels = levels, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Intervention({String? id, required I18nString name, required I18nString description, required InterventionType interventionType, required List<InterventionContentRelation> contents, required List<Survey> surveys, required List<InterventionInterventionTagRelation> tags, int? schemeVersion, required List<LevelInterventionRelation> levels}) {
+  factory Intervention({String? id, required I18nString name, required I18nString description, required InterventionType interventionType, List<InterventionContentRelation>? contents, List<Survey>? surveys, List<InterventionInterventionTagRelation>? tags, int? schemeVersion, List<LevelInterventionRelation>? levels}) {
     return Intervention._internal(
-      id: id == null ? UUID.getUUID() : id,
+      id: id == null ? amplify_core.UUID.getUUID() : id,
       name: name,
       description: description,
       interventionType: interventionType,
@@ -202,7 +164,7 @@ class Intervention extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("name=" + (_name != null ? _name!.toString() : "null") + ", ");
     buffer.write("description=" + (_description != null ? _description!.toString() : "null") + ", ");
-    buffer.write("interventionType=" + (_interventionType != null ? enumToString(_interventionType)! : "null") + ", ");
+    buffer.write("interventionType=" + (_interventionType != null ? amplify_core.enumToString(_interventionType)! : "null") + ", ");
     buffer.write("schemeVersion=" + (_schemeVersion != null ? _schemeVersion!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
@@ -224,6 +186,29 @@ class Intervention extends Model {
       levels: levels ?? this.levels);
   }
   
+  Intervention copyWithModelFieldValues({
+    ModelFieldValue<I18nString>? name,
+    ModelFieldValue<I18nString>? description,
+    ModelFieldValue<InterventionType>? interventionType,
+    ModelFieldValue<List<InterventionContentRelation>>? contents,
+    ModelFieldValue<List<Survey>>? surveys,
+    ModelFieldValue<List<InterventionInterventionTagRelation>>? tags,
+    ModelFieldValue<int?>? schemeVersion,
+    ModelFieldValue<List<LevelInterventionRelation>>? levels
+  }) {
+    return Intervention._internal(
+      id: id,
+      name: name == null ? this.name : name.value,
+      description: description == null ? this.description : description.value,
+      interventionType: interventionType == null ? this.interventionType : interventionType.value,
+      contents: contents == null ? this.contents : contents.value,
+      surveys: surveys == null ? this.surveys : surveys.value,
+      tags: tags == null ? this.tags : tags.value,
+      schemeVersion: schemeVersion == null ? this.schemeVersion : schemeVersion.value,
+      levels: levels == null ? this.levels : levels.value
+    );
+  }
+  
   Intervention.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _name = json['name']?['serializedData'] != null
@@ -232,7 +217,7 @@ class Intervention extends Model {
       _description = json['description']?['serializedData'] != null
         ? I18nString.fromJson(new Map<String, dynamic>.from(json['description']['serializedData']))
         : null,
-      _interventionType = enumFromString<InterventionType>(json['interventionType'], InterventionType.values),
+      _interventionType = amplify_core.enumFromString<InterventionType>(json['interventionType'], InterventionType.values),
       _contents = json['contents'] is List
         ? (json['contents'] as List)
           .where((e) => e?['serializedData'] != null)
@@ -258,124 +243,134 @@ class Intervention extends Model {
           .map((e) => LevelInterventionRelation.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
           .toList()
         : null,
-      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
-      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
+      _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name?.toJson(), 'description': _description?.toJson(), 'interventionType': enumToString(_interventionType), 'contents': _contents?.map((InterventionContentRelation? e) => e?.toJson()).toList(), 'surveys': _surveys?.map((Survey? e) => e?.toJson()).toList(), 'tags': _tags?.map((InterventionInterventionTagRelation? e) => e?.toJson()).toList(), 'schemeVersion': _schemeVersion, 'levels': _levels?.map((LevelInterventionRelation? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'name': _name?.toJson(), 'description': _description?.toJson(), 'interventionType': amplify_core.enumToString(_interventionType), 'contents': _contents?.map((InterventionContentRelation? e) => e?.toJson()).toList(), 'surveys': _surveys?.map((Survey? e) => e?.toJson()).toList(), 'tags': _tags?.map((InterventionInterventionTagRelation? e) => e?.toJson()).toList(), 'schemeVersion': _schemeVersion, 'levels': _levels?.map((LevelInterventionRelation? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'name': _name, 'description': _description, 'interventionType': _interventionType, 'contents': _contents, 'surveys': _surveys, 'tags': _tags, 'schemeVersion': _schemeVersion, 'levels': _levels, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id,
+    'name': _name,
+    'description': _description,
+    'interventionType': _interventionType,
+    'contents': _contents,
+    'surveys': _surveys,
+    'tags': _tags,
+    'schemeVersion': _schemeVersion,
+    'levels': _levels,
+    'createdAt': _createdAt,
+    'updatedAt': _updatedAt
   };
 
-  static final QueryModelIdentifier<InterventionModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<InterventionModelIdentifier>();
-  static final QueryField ID = QueryField(fieldName: "id");
-  static final QueryField NAME = QueryField(fieldName: "name");
-  static final QueryField DESCRIPTION = QueryField(fieldName: "description");
-  static final QueryField INTERVENTIONTYPE = QueryField(fieldName: "interventionType");
-  static final QueryField CONTENTS = QueryField(
+  static final amplify_core.QueryModelIdentifier<InterventionModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<InterventionModelIdentifier>();
+  static final ID = amplify_core.QueryField(fieldName: "id");
+  static final NAME = amplify_core.QueryField(fieldName: "name");
+  static final DESCRIPTION = amplify_core.QueryField(fieldName: "description");
+  static final INTERVENTIONTYPE = amplify_core.QueryField(fieldName: "interventionType");
+  static final CONTENTS = amplify_core.QueryField(
     fieldName: "contents",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'InterventionContentRelation'));
-  static final QueryField SURVEYS = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'InterventionContentRelation'));
+  static final SURVEYS = amplify_core.QueryField(
     fieldName: "surveys",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Survey'));
-  static final QueryField TAGS = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Survey'));
+  static final TAGS = amplify_core.QueryField(
     fieldName: "tags",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'InterventionInterventionTagRelation'));
-  static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
-  static final QueryField LEVELS = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'InterventionInterventionTagRelation'));
+  static final SCHEMEVERSION = amplify_core.QueryField(fieldName: "schemeVersion");
+  static final LEVELS = amplify_core.QueryField(
     fieldName: "levels",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'LevelInterventionRelation'));
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'LevelInterventionRelation'));
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Intervention";
     modelSchemaDefinition.pluralName = "Interventions";
     
     modelSchemaDefinition.authRules = [
-      AuthRule(
-        authStrategy: AuthStrategy.OWNER,
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.OWNER,
         ownerField: "organization_id",
         identityClaim: "custom:organization_id",
-        provider: AuthRuleProvider.USERPOOLS,
-        operations: [
-          ModelOperation.CREATE,
-          ModelOperation.UPDATE,
-          ModelOperation.DELETE,
-          ModelOperation.READ
+        provider: amplify_core.AuthRuleProvider.USERPOOLS,
+        operations: const [
+          amplify_core.ModelOperation.CREATE,
+          amplify_core.ModelOperation.UPDATE,
+          amplify_core.ModelOperation.DELETE,
+          amplify_core.ModelOperation.READ
         ])
     ];
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
       fieldName: 'name',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'I18nString')
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embedded, ofCustomTypeName: 'I18nString')
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
       fieldName: 'description',
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'I18nString')
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embedded, ofCustomTypeName: 'I18nString')
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Intervention.INTERVENTIONTYPE,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.enumeration)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Intervention.CONTENTS,
       isRequired: true,
       ofModelName: 'InterventionContentRelation',
       associatedKey: InterventionContentRelation.INTERVENTION
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Intervention.SURVEYS,
       isRequired: true,
       ofModelName: 'Survey',
       associatedKey: Survey.INTERVENTION
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Intervention.TAGS,
       isRequired: true,
       ofModelName: 'InterventionInterventionTagRelation',
       associatedKey: InterventionInterventionTagRelation.INTERVENTION
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Intervention.SCHEMEVERSION,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasMany(
       key: Intervention.LEVELS,
       isRequired: true,
       ofModelName: 'LevelInterventionRelation',
       associatedKey: LevelInterventionRelation.INTERVENTION
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
       fieldName: 'createdAt',
       isRequired: false,
       isReadOnly: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
       fieldName: 'updatedAt',
       isRequired: false,
       isReadOnly: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
   });
 }
 
-class _InterventionModelType extends ModelType<Intervention> {
+class _InterventionModelType extends amplify_core.ModelType<Intervention> {
   const _InterventionModelType();
   
   @override
@@ -393,8 +388,7 @@ class _InterventionModelType extends ModelType<Intervention> {
  * This is an auto generated class representing the model identifier
  * of [Intervention] in your schema.
  */
-@immutable
-class InterventionModelIdentifier implements ModelIdentifier<Intervention> {
+class InterventionModelIdentifier implements amplify_core.ModelIdentifier<Intervention> {
   final String id;
 
   /** Create an instance of InterventionModelIdentifier using [id] the primary key. */

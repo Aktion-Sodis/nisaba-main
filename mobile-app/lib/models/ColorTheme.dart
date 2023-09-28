@@ -19,12 +19,11 @@
 
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
-import 'package:amplify_core/amplify_core.dart';
-import 'package:flutter/foundation.dart';
+import 'ModelProvider.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 
 
 /** This is an auto generated class representing the ColorTheme type in your schema. */
-@immutable
 class ColorTheme {
   final String? _highlight;
   final String? _secondaryHighlight;
@@ -114,6 +113,24 @@ class ColorTheme {
       backgroundTwoDark: backgroundTwoDark ?? this.backgroundTwoDark);
   }
   
+  ColorTheme copyWithModelFieldValues({
+    ModelFieldValue<String?>? highlight,
+    ModelFieldValue<String?>? secondaryHighlight,
+    ModelFieldValue<String?>? backgroundOneLight,
+    ModelFieldValue<String?>? backgroundTwoLight,
+    ModelFieldValue<String?>? backgroundOneDark,
+    ModelFieldValue<String?>? backgroundTwoDark
+  }) {
+    return ColorTheme._internal(
+      highlight: highlight == null ? this.highlight : highlight.value,
+      secondaryHighlight: secondaryHighlight == null ? this.secondaryHighlight : secondaryHighlight.value,
+      backgroundOneLight: backgroundOneLight == null ? this.backgroundOneLight : backgroundOneLight.value,
+      backgroundTwoLight: backgroundTwoLight == null ? this.backgroundTwoLight : backgroundTwoLight.value,
+      backgroundOneDark: backgroundOneDark == null ? this.backgroundOneDark : backgroundOneDark.value,
+      backgroundTwoDark: backgroundTwoDark == null ? this.backgroundTwoDark : backgroundTwoDark.value
+    );
+  }
+  
   ColorTheme.fromJson(Map<String, dynamic> json)  
     : _highlight = json['highlight'],
       _secondaryHighlight = json['secondaryHighlight'],
@@ -127,47 +144,52 @@ class ColorTheme {
   };
   
   Map<String, Object?> toMap() => {
-    'highlight': _highlight, 'secondaryHighlight': _secondaryHighlight, 'backgroundOneLight': _backgroundOneLight, 'backgroundTwoLight': _backgroundTwoLight, 'backgroundOneDark': _backgroundOneDark, 'backgroundTwoDark': _backgroundTwoDark
+    'highlight': _highlight,
+    'secondaryHighlight': _secondaryHighlight,
+    'backgroundOneLight': _backgroundOneLight,
+    'backgroundTwoLight': _backgroundTwoLight,
+    'backgroundOneDark': _backgroundOneDark,
+    'backgroundTwoDark': _backgroundTwoDark
   };
 
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "ColorTheme";
     modelSchemaDefinition.pluralName = "ColorThemes";
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'highlight',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'secondaryHighlight',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'backgroundOneLight',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'backgroundTwoLight',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'backgroundOneDark',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.customTypeField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
       fieldName: 'backgroundTwoDark',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
   });
 }

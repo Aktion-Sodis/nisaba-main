@@ -20,19 +20,17 @@
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'ModelProvider.dart';
-import 'package:amplify_core/amplify_core.dart';
-import 'package:flutter/foundation.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 
 
 /** This is an auto generated class representing the LevelInterventionRelation type in your schema. */
-@immutable
-class LevelInterventionRelation extends Model {
+class LevelInterventionRelation extends amplify_core.Model {
   static const classType = const _LevelInterventionRelationModelType();
   final String id;
   final Level? _level;
   final Intervention? _intervention;
-  final TemporalDateTime? _createdAt;
-  final TemporalDateTime? _updatedAt;
+  final amplify_core.TemporalDateTime? _createdAt;
+  final amplify_core.TemporalDateTime? _updatedAt;
 
   @override
   getInstanceType() => classType;
@@ -51,10 +49,10 @@ class LevelInterventionRelation extends Model {
     try {
       return _level!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -64,20 +62,20 @@ class LevelInterventionRelation extends Model {
     try {
       return _intervention!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
   }
   
-  TemporalDateTime? get createdAt {
+  amplify_core.TemporalDateTime? get createdAt {
     return _createdAt;
   }
   
-  TemporalDateTime? get updatedAt {
+  amplify_core.TemporalDateTime? get updatedAt {
     return _updatedAt;
   }
   
@@ -85,7 +83,7 @@ class LevelInterventionRelation extends Model {
   
   factory LevelInterventionRelation({String? id, required Level level, required Intervention intervention}) {
     return LevelInterventionRelation._internal(
-      id: id == null ? UUID.getUUID() : id,
+      id: id == null ? amplify_core.UUID.getUUID() : id,
       level: level,
       intervention: intervention);
   }
@@ -128,6 +126,17 @@ class LevelInterventionRelation extends Model {
       intervention: intervention ?? this.intervention);
   }
   
+  LevelInterventionRelation copyWithModelFieldValues({
+    ModelFieldValue<Level>? level,
+    ModelFieldValue<Intervention>? intervention
+  }) {
+    return LevelInterventionRelation._internal(
+      id: id,
+      level: level == null ? this.level : level.value,
+      intervention: intervention == null ? this.intervention : intervention.value
+    );
+  }
+  
   LevelInterventionRelation.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _level = json['level']?['serializedData'] != null
@@ -136,67 +145,71 @@ class LevelInterventionRelation extends Model {
       _intervention = json['intervention']?['serializedData'] != null
         ? Intervention.fromJson(new Map<String, dynamic>.from(json['intervention']['serializedData']))
         : null,
-      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
-      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
+      _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
     'id': id, 'level': _level?.toJson(), 'intervention': _intervention?.toJson(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'level': _level, 'intervention': _intervention, 'createdAt': _createdAt, 'updatedAt': _updatedAt
+    'id': id,
+    'level': _level,
+    'intervention': _intervention,
+    'createdAt': _createdAt,
+    'updatedAt': _updatedAt
   };
 
-  static final QueryModelIdentifier<LevelInterventionRelationModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<LevelInterventionRelationModelIdentifier>();
-  static final QueryField ID = QueryField(fieldName: "id");
-  static final QueryField LEVEL = QueryField(
+  static final amplify_core.QueryModelIdentifier<LevelInterventionRelationModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<LevelInterventionRelationModelIdentifier>();
+  static final ID = amplify_core.QueryField(fieldName: "id");
+  static final LEVEL = amplify_core.QueryField(
     fieldName: "level",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Level'));
-  static final QueryField INTERVENTION = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Level'));
+  static final INTERVENTION = amplify_core.QueryField(
     fieldName: "intervention",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Intervention'));
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Intervention'));
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "LevelInterventionRelation";
     modelSchemaDefinition.pluralName = "LevelInterventionRelations";
     
     modelSchemaDefinition.indexes = [
-      ModelIndex(fields: const ["levelId"], name: "byLevel"),
-      ModelIndex(fields: const ["interventionId"], name: "byIntervention")
+      amplify_core.ModelIndex(fields: const ["levelId"], name: "byLevel"),
+      amplify_core.ModelIndex(fields: const ["interventionId"], name: "byIntervention")
     ];
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: LevelInterventionRelation.LEVEL,
       isRequired: true,
       targetNames: ['levelId'],
       ofModelName: 'Level'
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.belongsTo(
       key: LevelInterventionRelation.INTERVENTION,
       isRequired: true,
       targetNames: ['interventionId'],
       ofModelName: 'Intervention'
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
       fieldName: 'createdAt',
       isRequired: false,
       isReadOnly: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
       fieldName: 'updatedAt',
       isRequired: false,
       isReadOnly: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
   });
 }
 
-class _LevelInterventionRelationModelType extends ModelType<LevelInterventionRelation> {
+class _LevelInterventionRelationModelType extends amplify_core.ModelType<LevelInterventionRelation> {
   const _LevelInterventionRelationModelType();
   
   @override
@@ -214,8 +227,7 @@ class _LevelInterventionRelationModelType extends ModelType<LevelInterventionRel
  * This is an auto generated class representing the model identifier
  * of [LevelInterventionRelation] in your schema.
  */
-@immutable
-class LevelInterventionRelationModelIdentifier implements ModelIdentifier<LevelInterventionRelation> {
+class LevelInterventionRelationModelIdentifier implements amplify_core.ModelIdentifier<LevelInterventionRelation> {
   final String id;
 
   /** Create an instance of LevelInterventionRelationModelIdentifier using [id] the primary key. */

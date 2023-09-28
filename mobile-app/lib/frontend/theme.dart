@@ -11,9 +11,9 @@ Future<ThemeData> getThemeData() async {
             borderRadius: BorderRadius.all(Radius.circular(8)))),
     colorScheme: ColorScheme(
         primary: Colors.blue,
-        primaryVariant: Colors.blueAccent,
+        //primaryVariant: Colors.blueAccent,
         secondary: Colors.green,
-        secondaryVariant: Colors.lightGreen,
+        //secondaryVariant: Colors.lightGreen,
         surface: Colors.white,
         background: Colors.white,
         error: Colors.red,

@@ -20,20 +20,18 @@
 // ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'ModelProvider.dart';
-import 'package:amplify_core/amplify_core.dart';
+import 'package:amplify_core/amplify_core.dart' as amplify_core;
 import 'package:collection/collection.dart';
-import 'package:flutter/foundation.dart';
 
 
 /** This is an auto generated class representing the Task type in your schema. */
-@immutable
-class Task extends Model {
+class Task extends amplify_core.Model {
   static const classType = const _TaskModelType();
   final String id;
   final String? _title;
   final String? _text;
-  final TemporalDateTime? _dueDate;
-  final TemporalDateTime? _finishedDate;
+  final amplify_core.TemporalDateTime? _dueDate;
+  final amplify_core.TemporalDateTime? _finishedDate;
   final Location? _location;
   final User? _user;
   final String? _userID;
@@ -43,8 +41,8 @@ class Task extends Model {
   final int? _schemeVersion;
   final List<int>? _picIDs;
   final List<int>? _audioIDs;
-  final TemporalDateTime? _createdAt;
-  final TemporalDateTime? _updatedAt;
+  final amplify_core.TemporalDateTime? _createdAt;
+  final amplify_core.TemporalDateTime? _updatedAt;
   final String? _taskUserId;
   final String? _taskEntityId;
   final String? _taskAppliedInterventionId;
@@ -67,10 +65,10 @@ class Task extends Model {
     try {
       return _title!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -80,11 +78,11 @@ class Task extends Model {
     return _text;
   }
   
-  TemporalDateTime? get dueDate {
+  amplify_core.TemporalDateTime? get dueDate {
     return _dueDate;
   }
   
-  TemporalDateTime? get finishedDate {
+  amplify_core.TemporalDateTime? get finishedDate {
     return _finishedDate;
   }
   
@@ -96,10 +94,10 @@ class Task extends Model {
     try {
       return _user!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -109,10 +107,10 @@ class Task extends Model {
     try {
       return _userID!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -138,10 +136,10 @@ class Task extends Model {
     try {
       return _picIDs!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -151,20 +149,20 @@ class Task extends Model {
     try {
       return _audioIDs!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
   }
   
-  TemporalDateTime? get createdAt {
+  amplify_core.TemporalDateTime? get createdAt {
     return _createdAt;
   }
   
-  TemporalDateTime? get updatedAt {
+  amplify_core.TemporalDateTime? get updatedAt {
     return _updatedAt;
   }
   
@@ -172,10 +170,10 @@ class Task extends Model {
     try {
       return _taskUserId!;
     } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
@@ -195,9 +193,9 @@ class Task extends Model {
   
   const Task._internal({required this.id, required title, text, dueDate, finishedDate, location, required user, required userID, entity, appliedIntervention, executedSurvey, schemeVersion, required picIDs, required audioIDs, createdAt, updatedAt, required taskUserId, taskEntityId, taskAppliedInterventionId, taskExecutedSurveyId}): _title = title, _text = text, _dueDate = dueDate, _finishedDate = finishedDate, _location = location, _user = user, _userID = userID, _entity = entity, _appliedIntervention = appliedIntervention, _executedSurvey = executedSurvey, _schemeVersion = schemeVersion, _picIDs = picIDs, _audioIDs = audioIDs, _createdAt = createdAt, _updatedAt = updatedAt, _taskUserId = taskUserId, _taskEntityId = taskEntityId, _taskAppliedInterventionId = taskAppliedInterventionId, _taskExecutedSurveyId = taskExecutedSurveyId;
   
-  factory Task({String? id, required String title, String? text, TemporalDateTime? dueDate, TemporalDateTime? finishedDate, Location? location, required User user, required String userID, Entity? entity, AppliedIntervention? appliedIntervention, ExecutedSurvey? executedSurvey, int? schemeVersion, required List<int> picIDs, required List<int> audioIDs, required String taskUserId, String? taskEntityId, String? taskAppliedInterventionId, String? taskExecutedSurveyId}) {
+  factory Task({String? id, required String title, String? text, amplify_core.TemporalDateTime? dueDate, amplify_core.TemporalDateTime? finishedDate, Location? location, required User user, required String userID, Entity? entity, AppliedIntervention? appliedIntervention, ExecutedSurvey? executedSurvey, int? schemeVersion, required List<int> picIDs, required List<int> audioIDs, required String taskUserId, String? taskEntityId, String? taskAppliedInterventionId, String? taskExecutedSurveyId}) {
     return Task._internal(
-      id: id == null ? UUID.getUUID() : id,
+      id: id == null ? amplify_core.UUID.getUUID() : id,
       title: title,
       text: text,
       dueDate: dueDate,
@@ -274,7 +272,7 @@ class Task extends Model {
     return buffer.toString();
   }
   
-  Task copyWith({String? title, String? text, TemporalDateTime? dueDate, TemporalDateTime? finishedDate, Location? location, User? user, String? userID, Entity? entity, AppliedIntervention? appliedIntervention, ExecutedSurvey? executedSurvey, int? schemeVersion, List<int>? picIDs, List<int>? audioIDs, String? taskUserId, String? taskEntityId, String? taskAppliedInterventionId, String? taskExecutedSurveyId}) {
+  Task copyWith({String? title, String? text, amplify_core.TemporalDateTime? dueDate, amplify_core.TemporalDateTime? finishedDate, Location? location, User? user, String? userID, Entity? entity, AppliedIntervention? appliedIntervention, ExecutedSurvey? executedSurvey, int? schemeVersion, List<int>? picIDs, List<int>? audioIDs, String? taskUserId, String? taskEntityId, String? taskAppliedInterventionId, String? taskExecutedSurveyId}) {
     return Task._internal(
       id: id,
       title: title ?? this.title,
@@ -296,12 +294,53 @@ class Task extends Model {
       taskExecutedSurveyId: taskExecutedSurveyId ?? this.taskExecutedSurveyId);
   }
   
+  Task copyWithModelFieldValues({
+    ModelFieldValue<String>? title,
+    ModelFieldValue<String?>? text,
+    ModelFieldValue<amplify_core.TemporalDateTime?>? dueDate,
+    ModelFieldValue<amplify_core.TemporalDateTime?>? finishedDate,
+    ModelFieldValue<Location?>? location,
+    ModelFieldValue<User>? user,
+    ModelFieldValue<String>? userID,
+    ModelFieldValue<Entity?>? entity,
+    ModelFieldValue<AppliedIntervention?>? appliedIntervention,
+    ModelFieldValue<ExecutedSurvey?>? executedSurvey,
+    ModelFieldValue<int?>? schemeVersion,
+    ModelFieldValue<List<int>>? picIDs,
+    ModelFieldValue<List<int>>? audioIDs,
+    ModelFieldValue<String>? taskUserId,
+    ModelFieldValue<String?>? taskEntityId,
+    ModelFieldValue<String?>? taskAppliedInterventionId,
+    ModelFieldValue<String?>? taskExecutedSurveyId
+  }) {
+    return Task._internal(
+      id: id,
+      title: title == null ? this.title : title.value,
+      text: text == null ? this.text : text.value,
+      dueDate: dueDate == null ? this.dueDate : dueDate.value,
+      finishedDate: finishedDate == null ? this.finishedDate : finishedDate.value,
+      location: location == null ? this.location : location.value,
+      user: user == null ? this.user : user.value,
+      userID: userID == null ? this.userID : userID.value,
+      entity: entity == null ? this.entity : entity.value,
+      appliedIntervention: appliedIntervention == null ? this.appliedIntervention : appliedIntervention.value,
+      executedSurvey: executedSurvey == null ? this.executedSurvey : executedSurvey.value,
+      schemeVersion: schemeVersion == null ? this.schemeVersion : schemeVersion.value,
+      picIDs: picIDs == null ? this.picIDs : picIDs.value,
+      audioIDs: audioIDs == null ? this.audioIDs : audioIDs.value,
+      taskUserId: taskUserId == null ? this.taskUserId : taskUserId.value,
+      taskEntityId: taskEntityId == null ? this.taskEntityId : taskEntityId.value,
+      taskAppliedInterventionId: taskAppliedInterventionId == null ? this.taskAppliedInterventionId : taskAppliedInterventionId.value,
+      taskExecutedSurveyId: taskExecutedSurveyId == null ? this.taskExecutedSurveyId : taskExecutedSurveyId.value
+    );
+  }
+  
   Task.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _title = json['title'],
       _text = json['text'],
-      _dueDate = json['dueDate'] != null ? TemporalDateTime.fromString(json['dueDate']) : null,
-      _finishedDate = json['finishedDate'] != null ? TemporalDateTime.fromString(json['finishedDate']) : null,
+      _dueDate = json['dueDate'] != null ? amplify_core.TemporalDateTime.fromString(json['dueDate']) : null,
+      _finishedDate = json['finishedDate'] != null ? amplify_core.TemporalDateTime.fromString(json['finishedDate']) : null,
       _location = json['location']?['serializedData'] != null
         ? Location.fromJson(new Map<String, dynamic>.from(json['location']['serializedData']))
         : null,
@@ -321,8 +360,8 @@ class Task extends Model {
       _schemeVersion = (json['schemeVersion'] as num?)?.toInt(),
       _picIDs = (json['picIDs'] as List?)?.map((e) => (e as num).toInt()).toList(),
       _audioIDs = (json['audioIDs'] as List?)?.map((e) => (e as num).toInt()).toList(),
-      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
-      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null,
+      _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null,
       _taskUserId = json['taskUserId'],
       _taskEntityId = json['taskEntityId'],
       _taskAppliedInterventionId = json['taskAppliedInterventionId'],
@@ -333,185 +372,204 @@ class Task extends Model {
   };
   
   Map<String, Object?> toMap() => {
-    'id': id, 'title': _title, 'text': _text, 'dueDate': _dueDate, 'finishedDate': _finishedDate, 'location': _location, 'user': _user, 'userID': _userID, 'entity': _entity, 'appliedIntervention': _appliedIntervention, 'executedSurvey': _executedSurvey, 'schemeVersion': _schemeVersion, 'picIDs': _picIDs, 'audioIDs': _audioIDs, 'createdAt': _createdAt, 'updatedAt': _updatedAt, 'taskUserId': _taskUserId, 'taskEntityId': _taskEntityId, 'taskAppliedInterventionId': _taskAppliedInterventionId, 'taskExecutedSurveyId': _taskExecutedSurveyId
+    'id': id,
+    'title': _title,
+    'text': _text,
+    'dueDate': _dueDate,
+    'finishedDate': _finishedDate,
+    'location': _location,
+    'user': _user,
+    'userID': _userID,
+    'entity': _entity,
+    'appliedIntervention': _appliedIntervention,
+    'executedSurvey': _executedSurvey,
+    'schemeVersion': _schemeVersion,
+    'picIDs': _picIDs,
+    'audioIDs': _audioIDs,
+    'createdAt': _createdAt,
+    'updatedAt': _updatedAt,
+    'taskUserId': _taskUserId,
+    'taskEntityId': _taskEntityId,
+    'taskAppliedInterventionId': _taskAppliedInterventionId,
+    'taskExecutedSurveyId': _taskExecutedSurveyId
   };
 
-  static final QueryModelIdentifier<TaskModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<TaskModelIdentifier>();
-  static final QueryField ID = QueryField(fieldName: "id");
-  static final QueryField TITLE = QueryField(fieldName: "title");
-  static final QueryField TEXT = QueryField(fieldName: "text");
-  static final QueryField DUEDATE = QueryField(fieldName: "dueDate");
-  static final QueryField FINISHEDDATE = QueryField(fieldName: "finishedDate");
-  static final QueryField LOCATION = QueryField(fieldName: "location");
-  static final QueryField USER = QueryField(
+  static final amplify_core.QueryModelIdentifier<TaskModelIdentifier> MODEL_IDENTIFIER = amplify_core.QueryModelIdentifier<TaskModelIdentifier>();
+  static final ID = amplify_core.QueryField(fieldName: "id");
+  static final TITLE = amplify_core.QueryField(fieldName: "title");
+  static final TEXT = amplify_core.QueryField(fieldName: "text");
+  static final DUEDATE = amplify_core.QueryField(fieldName: "dueDate");
+  static final FINISHEDDATE = amplify_core.QueryField(fieldName: "finishedDate");
+  static final LOCATION = amplify_core.QueryField(fieldName: "location");
+  static final USER = amplify_core.QueryField(
     fieldName: "user",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'User'));
-  static final QueryField USERID = QueryField(fieldName: "userID");
-  static final QueryField ENTITY = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'User'));
+  static final USERID = amplify_core.QueryField(fieldName: "userID");
+  static final ENTITY = amplify_core.QueryField(
     fieldName: "entity",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'Entity'));
-  static final QueryField APPLIEDINTERVENTION = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'Entity'));
+  static final APPLIEDINTERVENTION = amplify_core.QueryField(
     fieldName: "appliedIntervention",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'AppliedIntervention'));
-  static final QueryField EXECUTEDSURVEY = QueryField(
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'AppliedIntervention'));
+  static final EXECUTEDSURVEY = amplify_core.QueryField(
     fieldName: "executedSurvey",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: 'ExecutedSurvey'));
-  static final QueryField SCHEMEVERSION = QueryField(fieldName: "schemeVersion");
-  static final QueryField PICIDS = QueryField(fieldName: "picIDs");
-  static final QueryField AUDIOIDS = QueryField(fieldName: "audioIDs");
-  static final QueryField TASKUSERID = QueryField(fieldName: "taskUserId");
-  static final QueryField TASKENTITYID = QueryField(fieldName: "taskEntityId");
-  static final QueryField TASKAPPLIEDINTERVENTIONID = QueryField(fieldName: "taskAppliedInterventionId");
-  static final QueryField TASKEXECUTEDSURVEYID = QueryField(fieldName: "taskExecutedSurveyId");
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+    fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'ExecutedSurvey'));
+  static final SCHEMEVERSION = amplify_core.QueryField(fieldName: "schemeVersion");
+  static final PICIDS = amplify_core.QueryField(fieldName: "picIDs");
+  static final AUDIOIDS = amplify_core.QueryField(fieldName: "audioIDs");
+  static final TASKUSERID = amplify_core.QueryField(fieldName: "taskUserId");
+  static final TASKENTITYID = amplify_core.QueryField(fieldName: "taskEntityId");
+  static final TASKAPPLIEDINTERVENTIONID = amplify_core.QueryField(fieldName: "taskAppliedInterventionId");
+  static final TASKEXECUTEDSURVEYID = amplify_core.QueryField(fieldName: "taskExecutedSurveyId");
+  static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Task";
     modelSchemaDefinition.pluralName = "Tasks";
     
     modelSchemaDefinition.authRules = [
-      AuthRule(
-        authStrategy: AuthStrategy.OWNER,
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.OWNER,
         ownerField: "organization_id",
         identityClaim: "custom:organization_id",
-        provider: AuthRuleProvider.USERPOOLS,
-        operations: [
-          ModelOperation.CREATE,
-          ModelOperation.UPDATE,
-          ModelOperation.DELETE,
-          ModelOperation.READ
+        provider: amplify_core.AuthRuleProvider.USERPOOLS,
+        operations: const [
+          amplify_core.ModelOperation.CREATE,
+          amplify_core.ModelOperation.UPDATE,
+          amplify_core.ModelOperation.DELETE,
+          amplify_core.ModelOperation.READ
         ])
     ];
     
     modelSchemaDefinition.indexes = [
-      ModelIndex(fields: const ["userID"], name: "byUser")
+      amplify_core.ModelIndex(fields: const ["userID"], name: "byUser")
     ];
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.id());
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.id());
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Task.TITLE,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Task.TEXT,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Task.DUEDATE,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Task.FINISHEDDATE,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.embedded(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
       fieldName: 'location',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.embedded, ofCustomTypeName: 'Location')
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embedded, ofCustomTypeName: 'Location')
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
       key: Task.USER,
       isRequired: true,
       ofModelName: 'User',
       associatedKey: User.ID
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Task.USERID,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
       key: Task.ENTITY,
       isRequired: false,
       ofModelName: 'Entity',
       associatedKey: Entity.ID
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
       key: Task.APPLIEDINTERVENTION,
       isRequired: false,
       ofModelName: 'AppliedIntervention',
       associatedKey: AppliedIntervention.ID
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.hasOne(
       key: Task.EXECUTEDSURVEY,
       isRequired: false,
       ofModelName: 'ExecutedSurvey',
       associatedKey: ExecutedSurvey.ID
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Task.SCHEMEVERSION,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Task.PICIDS,
       isRequired: true,
       isArray: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.collection, ofModelName: describeEnum(ModelFieldTypeEnum.int))
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.collection, ofModelName: amplify_core.ModelFieldTypeEnum.int.name)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Task.AUDIOIDS,
       isRequired: true,
       isArray: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.collection, ofModelName: describeEnum(ModelFieldTypeEnum.int))
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.collection, ofModelName: amplify_core.ModelFieldTypeEnum.int.name)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
       fieldName: 'createdAt',
       isRequired: false,
       isReadOnly: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(
       fieldName: 'updatedAt',
       isRequired: false,
       isReadOnly: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Task.TASKUSERID,
       isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Task.TASKENTITYID,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Task.TASKAPPLIEDINTERVENTIONID,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Task.TASKEXECUTEDSURVEYID,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
   });
 }
 
-class _TaskModelType extends ModelType<Task> {
+class _TaskModelType extends amplify_core.ModelType<Task> {
   const _TaskModelType();
   
   @override
@@ -529,8 +587,7 @@ class _TaskModelType extends ModelType<Task> {
  * This is an auto generated class representing the model identifier
  * of [Task] in your schema.
  */
-@immutable
-class TaskModelIdentifier implements ModelIdentifier<Task> {
+class TaskModelIdentifier implements amplify_core.ModelIdentifier<Task> {
   final String id;
 
   /** Create an instance of TaskModelIdentifier using [id] the primary key. */
