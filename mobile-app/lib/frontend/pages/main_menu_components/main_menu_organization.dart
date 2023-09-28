@@ -725,7 +725,8 @@ class ListWidget extends StatelessWidget {
                         left: defaultPadding(buildContext),
                         right: defaultPadding(buildContext),
                         bottom: defaultPadding(buildContext)),
-                  )
+                  ),
+                
               ],
             ),
             Positioned(
@@ -771,6 +772,10 @@ class ListWidget extends StatelessWidget {
         )));
   }
 
+  addEntity(BuildContext context) async {
+    //todo: implement auto start here
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<OrganizationViewBloc, OrganizationViewState>(
@@ -782,6 +787,11 @@ class ListWidget extends StatelessWidget {
               state as EntitiesLoadedOrganizationViewState;
           List<Entity> entities = entitiesLoadedOrganizationViewState
               .currentLevelContent.daughterEntities;
+
+          if(entities.isEmpty){
+            addEntity(context);
+            return Container();
+          }
 
           var appliedInterventionsAllowed =
               entities.first.level.interventionsAreAllowed;
