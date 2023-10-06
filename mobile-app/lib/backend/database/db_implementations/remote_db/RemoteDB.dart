@@ -86,6 +86,10 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
       final response = await Amplify.API.query(request: request).response;
 
       final data = response.data;
+
+      print('response data: ');
+      print(data.toString());
+
       if (data == null) {
         return Future.value([]);
       }

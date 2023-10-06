@@ -36,6 +36,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           phoneNumber: state.isPhoneNumber ? state.emailOrPhoneNumber : null,
           password: state.password,
         );
+        print('got user id: $userId');
         emit(state.copyWith(formStatus: SubmissionSuccess()));
         print("now launching session");
         //todo: hier bezüglich offline login arbeiten

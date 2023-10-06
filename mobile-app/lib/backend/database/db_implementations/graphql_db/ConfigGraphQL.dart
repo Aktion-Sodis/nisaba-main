@@ -40,13 +40,19 @@ class ConfigGraphQL {
       getEndpoint(),
     );
 
+    print('endpoint_Link: $_httpLink');
+
     final _authLink = AuthLink(
       getToken: () {
         return CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
       },
     );
 
+    print('authLink: $_authLink');
+
     Link _link = _authLink.concat(_httpLink);
+
+    print('endpoint link graphql: ${_link}');
 
     /// subscriptions must be split otherwise `HttpLink` will. swallow them
     /*if (websocketEndpoint != null) {
@@ -75,5 +81,6 @@ class ConfigGraphQL {
       ),
       link: _link,
     );
+    print('graph ql client initialized');
   }
 }

@@ -15,7 +15,8 @@ class StorageRepository {
       if (checkConnection) {
         InternetConnectionType internetConnectionType =
             await StorageRepository.currentInternetConnectionType();
-        if (internetConnectionType != InternetConnectionType.WIFI) {
+        if (LocalDataRepository.instance.wifiOnly &&
+        internetConnectionType != InternetConnectionType.WIFI) {
           return;
         }
       }

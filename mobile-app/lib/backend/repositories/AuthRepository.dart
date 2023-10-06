@@ -54,12 +54,15 @@ class AuthRepository {
     try {
       /*final result = await Amplify.DataStore.query(amp.Organization.classType,
           where: amp.Organization.ID.eq(organizationID));*/
-
+      print('queries for organization');
+      //todo: hier ist der Fehler
+      
       final result = await Amplify.API
           .query(
               request:
                   ModelQueries.get(amp.Organization.classType, organizationID))
           .response;
+      print('got organization');
 
       amp.Organization organization = result.data!;
       LocalDataRepository.instance.organizationNameVerbose =
@@ -195,17 +198,20 @@ class AuthRepository {
         //dann pushen zu create user?
       }*/
       LocalDataRepository.instance.user = user;*/
-
+      print('initiates Session with db');
       await initSession();
 
+      print('gets user id');
       String userID = await _getUserIdFromAttributes();
       // TODO: loading a user
+      print('gets user');
       User? user = await UserRepository.instance.fetchUserByID(userID);
       /*if (user == null) {
         throw UserNotFoundInDatabaseException();
         //todo: wie soll das offline funktionieren -> dann gibt online db immer null zurück?
         //dann pushen zu create user?
       }*/
+      print('got user and sets it');
       LocalDataRepository.instance.user = user;
       return userID;
     } else {
@@ -216,15 +222,20 @@ class AuthRepository {
   bool _sessionInitialized = false;
   Future<void> initSession() async {
     if (_sessionInitialized) return;
-
+    print('clears synced db');
     await SyncedDB.instance.clear();
+    print('initis graphql client');
     ConfigGraphQL().initClient();
+    print('gets user id again from attributes');
     final userID = await _getUserIdFromAttributes();
+    print('saves attributes locally');
     await _rememberUserAttributesLocally();
+    print('fetches and remembers auth token');
     await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
+    print('remembers user organization');
     await _rememberUserOrganization(
         LocalDataRepository.instance.organizationID);
-
+    print('now inits sync');
     // Init sync
     await SyncedDB.instance.synchronizer.syncDownstream();
 
