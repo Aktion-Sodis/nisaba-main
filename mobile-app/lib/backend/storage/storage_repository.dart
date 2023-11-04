@@ -11,7 +11,7 @@ class StorageRepository {
   static Future<void> downloadFile(File toDownload, String path,
       {bool checkConnection = true, DateTime? lastModifiedOnline}) async {
     try {
-      print("trying to get file: $path");
+      //print("trying to get file: $path");
       if (checkConnection) {
         InternetConnectionType internetConnectionType =
             await StorageRepository.currentInternetConnectionType();

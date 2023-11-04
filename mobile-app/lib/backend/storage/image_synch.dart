@@ -54,7 +54,7 @@ class SyncedFile {
     await Directory(appDocDir.path + "/" + toCreateDir).create(recursive: true);
     File localCacheFile = File('${appDocDir.path}/$path');
     key = ValueKey(DateTime.now().toIso8601String());
-    print("returning cache path: $key");
+    //print("returning cache path: $key");
     return localCacheFile;
   }
 

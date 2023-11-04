@@ -1460,11 +1460,12 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
                       ? Center(child: loadingSign(context))
                       : appliedIntervention == null
                           ? Container(
+                              height: height(context) * .8,
                               child: Scrollbar(
                                   child: ListView.builder(
                                       itemBuilder: interventionItem,
                                       itemCount: interventions!.length,
-                                      shrinkWrap: true)))
+                                      shrinkWrap: false)))
                           : Container(
                               child: Column(
                               children: [
