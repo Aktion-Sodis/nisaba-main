@@ -221,7 +221,10 @@ class AuthRepository {
 
   bool _sessionInitialized = false;
   Future<void> initSession() async {
+    //todo: sync-fix -> hier vor clearen prüfen ob upstream gesynced
     if (_sessionInitialized) return;
+    SyncedDB.instance.synchronizer.syncUpstream();
+
     print('clears synced db');
     await SyncedDB.instance.clear();
     print('initis graphql client');
@@ -236,6 +239,12 @@ class AuthRepository {
     await _rememberUserOrganization(
         LocalDataRepository.instance.organizationID);
     print('now inits sync');
+    print('upstream sync');
+    SyncedDB.instance.synchronizer.syncUpstream();
+
+    print('clears synced db');
+    await SyncedDB.instance.clear();
+
     // Init sync
     await SyncedDB.instance.synchronizer.syncDownstream();
 

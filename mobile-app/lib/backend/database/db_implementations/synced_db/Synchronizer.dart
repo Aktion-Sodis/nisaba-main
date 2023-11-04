@@ -38,10 +38,10 @@ class Synchronizer {
         while (queueObject != null) {
           print('[Sync] processing queue object ' + queueObject.action.toString());
 
-        if((queueObject.action == DBAction.CREATE || queueObject.action == DBAction.UPDATE) && queueObject.modelType == 'Entity') {
+        /*if((queueObject.action == DBAction.CREATE || queueObject.action == DBAction.UPDATE) && queueObject.modelType == 'Entity') {
           print('Entity gets created or updated');
           //remove level from json paiload
-        }  
+        } */
 
           if (queueObject.action == DBAction.DELETE) {
             await remoteDB.delete(queueObject.object);

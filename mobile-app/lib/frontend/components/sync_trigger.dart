@@ -35,7 +35,11 @@ class _SyncTriggerState extends State<SyncTrigger> with WidgetsBindingObserver {
         SyncedDB.instance.synchronizer.syncUpstream();
         break;
       case AppLifecycleState.inactive:
+        SyncedDB.instance.synchronizer.syncUpstream();
+        break;
       case AppLifecycleState.paused:
+        SyncedDB.instance.synchronizer.syncUpstream();
+        break;
       case AppLifecycleState.detached:
         break;
     }
