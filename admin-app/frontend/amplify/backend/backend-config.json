@@ -219,6 +219,22 @@
         }
       ]
     },
+    "AMPLIFY_function_nisabaAdminSdkLayer_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "nisabaAdminSdkLayer"
+        }
+      ]
+    },
+    "AMPLIFY_function_nisabaAdminSdkLayer_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "nisabaAdminSdkLayer"
+        }
+      ]
+    },
     "AMPLIFY_function_nisabaUserManagement_deploymentBucketName": {
       "usedBy": [
         {
@@ -270,7 +286,43 @@
   },
   "storage": {
     "nisabarelease": {
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "authnisaba"
+        },
+        {
+          "attributes": [
+            "superadminGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "adminGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "mobileGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "analyticsGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "S3"
     }

@@ -8,5 +8,27 @@
     "CREATE_AND_UPDATE",
     "READ",
     "DELETE"
-  ]
+  ],
+  "groupAccess": {
+    "superadmin": [
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
+    ],
+    "admin": [
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
+    ],
+    "mobile": [
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
+    ],
+    "analytics": [
+      "CREATE_AND_UPDATE",
+      "READ",
+      "DELETE"
+    ]
+  }
 }
