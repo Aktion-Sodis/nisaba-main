@@ -37,8 +37,8 @@
           "additionalAuthenticationProviders": [
             {
               "apiKeyConfig": {
-                "apiKeyExpirationDate": "2024-10-04T17:34:44.364Z",
-                "apiKeyExpirationDays": 365,
+                "apiKeyExpirationDate": "2023-04-24T21:56:53.757Z",
+                "apiKeyExpirationDays": 120,
                 "description": "Nisaba API Key"
               },
               "authenticationType": "API_KEY"
@@ -219,6 +219,22 @@
         }
       ]
     },
+    "AMPLIFY_function_nisabaAdminSdkLayer_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "nisabaAdminSdkLayer"
+        }
+      ]
+    },
+    "AMPLIFY_function_nisabaAdminSdkLayer_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "nisabaAdminSdkLayer"
+        }
+      ]
+    },
     "AMPLIFY_function_nisabaUserManagement_deploymentBucketName": {
       "usedBy": [
         {
@@ -269,7 +285,7 @@
     }
   },
   "storage": {
-    "nisabarelease": {
+    "nisabas3dev": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3"

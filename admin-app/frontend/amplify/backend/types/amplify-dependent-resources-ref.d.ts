@@ -68,7 +68,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "storage": {
-    "nisabarelease": {
+    "nisabas3dev": {
       "BucketName": "string",
       "Region": "string"
     }
