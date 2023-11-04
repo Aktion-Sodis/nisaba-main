@@ -202,8 +202,11 @@ class GraphQLDB extends DB<GraphQLDBModelRegistration> {
     print('[GQL] Query: ' + query);
 
     ConfigGraphQL config = ConfigGraphQL();
+    print('[GQL] client: ${config.client}');
+
     var response = await config.client!
         .mutate(gql_flutter.MutationOptions(document: gql_flutter.gql(query)));
+    print('[GQL] Got Respone');
 
     if (response.hasException) {
       debugPrint('[GQL] Exception: ' + response.exception.toString(), wrapWidth: 1024);

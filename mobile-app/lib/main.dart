@@ -29,6 +29,7 @@ void main() async {
 
   // Init SyncedDB
   await SyncedDB.instance.localDB.initLocalDB();
+  //todo: sync-fix: maybe add all objects to sync downstream?
   SyncedDB.instance.synchronizer.modelsToSyncDownstream.addAll([TestObject]);
   registerModels();
 

@@ -289,9 +289,9 @@ class IntegratedSyncedDBTest extends StatelessWidget {
     }*/
 
     // Clear the queue
-    var store = stringMapStoreFactory.store(DBQueue.queueStoreName);
-    await store.delete(db.localDB.db,
-        finder: Finder(filter: Filter.custom((record) => true)));
+    //var store = stringMapStoreFactory.store(DBQueue.queueStoreName);
+    //await store.delete(db.localDB.db,
+    //    finder: Finder(filter: Filter.custom((record) => true)));
 
     print("DBQueue cleared");
   }

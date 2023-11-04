@@ -27,30 +27,38 @@ class Synchronizer {
       this.modelsToSyncDownstream, this.registeredTypes);
 
   Future<void> syncUpstream() async {
+    print('[SYNC] sync upstream');
     await _upstreamSyncLock.synchronized(() async {
-      if (upstreamSyncStatus == SyncStatus.STOPPED) {
+      print('[Sync] Syncing Upstream not locked');
+      /*if (upstreamSyncStatus == SyncStatus.STOPPED) {
+        print('[Sync] Syncing Upstream stopped status');
         return;
-      }
+      }*/
 
       upstreamSyncStatus = SyncStatus.SYNCING;
       try {
         DBQueueObject? queueObject = await queue.get();
         while (queueObject != null) {
           print('[Sync] processing queue object ' + queueObject.action.toString());
+          print('[Sync] processing queue object ' + queueObject.toJson().toString());
 
-        if((queueObject.action == DBAction.CREATE || queueObject.action == DBAction.UPDATE) && queueObject.modelType == 'Entity') {
+        /*if((queueObject.action == DBAction.CREATE || queueObject.action == DBAction.UPDATE) && queueObject.modelType == 'Entity') {
           print('Entity gets created or updated');
           //remove level from json paiload
-        }  
+        } */
 
           if (queueObject.action == DBAction.DELETE) {
+            print('[Sync] now deletes');
             await remoteDB.delete(queueObject.object);
           } else if (queueObject.action == DBAction.CREATE) {
+            print('[Sync] now creates');
             await remoteDB.create(queueObject.object);
           } else if (queueObject.action == DBAction.UPDATE) {
+            print('[Sync] now updates');
             await remoteDB.update(queueObject.object);
           }
           
+          print('[Sync] now deletes queue object');
           await queue.delete(queueObject);
           queueObject = await queue.get();
         }
@@ -86,7 +94,7 @@ class Synchronizer {
           List<DBModel> modelEntries = await remoteDB.get(modelType);
           entries.addAll(modelEntries);
         }
-
+        print('[LocalDB] now clearing due to downstream sync');
         // Delete all entries from localDB
         await localDB.clear();
 
@@ -96,6 +104,8 @@ class Synchronizer {
         }
 
         // TODO: consistency check
+      } on NoConnectionException catch (e) {
+        downstreamSyncStatus = SyncStatus.WAITING;
       } catch (e) {
         print('Error in DB Downstream Sync:');
         print(e);

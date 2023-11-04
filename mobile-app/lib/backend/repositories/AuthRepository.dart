@@ -10,6 +10,7 @@
 /// - bei login immer an device erinnern
 /// - bei logout device vergewssen
 
+import 'dart:io';
 import 'package:amplify_api/model_queries.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
@@ -108,7 +109,7 @@ class AuthRepository {
     LocalDataRepository.instance.organizationNameKebabCase = null;
     LocalDataRepository.instance.organizationNameCamelCase = null;
     LocalDataRepository.instance.user = null;
-
+    print('[LocalDB] clearing session data');
     SyncedDB.instance.clear();
   }
 
@@ -125,7 +126,24 @@ class AuthRepository {
       }
 
       //todo: hier weiterleiten auf account erstellen seite
-      await initSession();
+      print('[LocalDB] initsSession from auto login');
+      //todo: only do this if there is internet connectivity
+      bool internetconnection = false;
+      try {
+        final result = await InternetAddress.lookup('google.com');
+        if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+          internetconnection = true;
+        }
+      } on SocketException catch (_) {
+        internetconnection = false;
+      }
+      if (internetconnection) {
+        await initSession();
+      }
+      else {
+        print('performing offline login');
+      }
+      //await initSession();
       return session.isSignedIn ? (await _getUserIdFromAttributes()) : null;
     } on SessionDataInconsistentException catch (e) {
       throw e;
@@ -221,11 +239,12 @@ class AuthRepository {
 
   bool _sessionInitialized = false;
   Future<void> initSession() async {
+    //todo: sync-fix -> hier vor clearen prüfen ob upstream gesynced
     if (_sessionInitialized) return;
-    print('clears synced db');
-    await SyncedDB.instance.clear();
-    print('initis graphql client');
     ConfigGraphQL().initClient();
+
+    await SyncedDB.instance.synchronizer.syncUpstream();
+
     print('gets user id again from attributes');
     final userID = await _getUserIdFromAttributes();
     print('saves attributes locally');
@@ -236,6 +255,12 @@ class AuthRepository {
     await _rememberUserOrganization(
         LocalDataRepository.instance.organizationID);
     print('now inits sync');
+    print('upstream sync');
+    SyncedDB.instance.synchronizer.syncUpstream();
+
+    print('[LocalDB] clears synced db from init session');
+    await SyncedDB.instance.clear();
+
     // Init sync
     await SyncedDB.instance.synchronizer.syncDownstream();
 

@@ -329,9 +329,9 @@ class SyncedDBRestrictedTest extends StatelessWidget {
     print(objectList1.length.toString() + " objects deleted from the local DB");
 
     // Clear the queue
-    var store = stringMapStoreFactory.store(DBQueue.queueStoreName);
-    await store.delete(db.localDB.db,
-        finder: Finder(filter: Filter.custom((record) => true)));
+    //var store = stringMapStoreFactory.store(DBQueue.queueStoreName);
+    //await store.delete(db.localDB.db,
+    //    finder: Finder(filter: Filter.custom((record) => true)));
 
     // Cler the remote DB
     if (!(db.remoteDB is GraphQLDB)) {

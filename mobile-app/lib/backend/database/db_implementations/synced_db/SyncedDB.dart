@@ -103,7 +103,8 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
   @override
   Future<void> clear() async {
     await localDB.clear();
-    await queue.clear();
+    //todo: sync-fix: maybe await upstream sync or kill
+    //await queue.clear();
   }
 
   @override
