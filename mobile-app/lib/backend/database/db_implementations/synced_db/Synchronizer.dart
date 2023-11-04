@@ -82,6 +82,7 @@ class Synchronizer {
         // Download all entries from remoteDB
         List<DBModel> entries = [];
         for (Type modelType in modelsToSyncDownstream) {
+          print('getting model type: ' + modelType.toString());
           List<DBModel> modelEntries = await remoteDB.get(modelType);
           entries.addAll(modelEntries);
         }
