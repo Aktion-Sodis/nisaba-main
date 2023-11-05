@@ -90,7 +90,7 @@ class SyncedFile {
   Future<File?> updateAsAudio(File file) async {
     File localCacheFile = await getCachePath();
     await localCacheFile.writeAsBytes(file.readAsBytesSync(), flush: true);
-    await StorageRepository.uploadFile(localCacheFile, path);
+    StorageRepository.uploadFile(localCacheFile, path);
     key = ValueKey(DateTime.now().toIso8601String());
     return await getCachePath();
   }

@@ -185,6 +185,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
     syncedSurveyImageFile =
         SurveyRepository.instance.getSurveyPic(widget.survey);
     picAndAudioAnswerFiles = {};
+    textEditingControllers = {};
     widget.survey.questions.forEach((element) {
       if (element.type == QuestionType.PICTURE) {
         picAndAudioAnswerFiles[element.id!] = ExecutedSurveyRepository.instance
@@ -200,6 +201,9 @@ class SurveyWidgetState extends State<SurveyWidget> {
                     .appliedIntervention,
                 preliminaryExecutedSurveyId,
                 element);
+      }
+      if (element.type == QuestionType.TEXT || element.type == QuestionType.INT || element.type == QuestionType.DOUBLE) {
+        textEditingControllers[element] = TextEditingController();
       }
     });
     print('initialised State of SurveyWidget');
@@ -333,6 +337,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
   }
 
   late Map<String, SyncedFile> picAndAudioAnswerFiles;
+
+  late Map<Question, TextEditingController> textEditingControllers;
 
   Widget mcQuestionWidget(
       {required BuildContext context,
@@ -629,8 +635,6 @@ class SurveyWidgetState extends State<SurveyWidget> {
       {required BuildContext context,
       required Question question,
       required Survey survey}) {
-    TextEditingController textEditingController = TextEditingController();
-    textEditingController.text = answers[question]?.text ?? '';
 
     return Scrollbar(
         child: ListView(
@@ -660,7 +664,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
           child: TextField(
-            controller: textEditingController,
+            controller: textEditingControllers[question],
             maxLines: 5,
             onChanged: (String result) {
               answers[question] = QuestionAnswer(
@@ -679,9 +683,6 @@ class SurveyWidgetState extends State<SurveyWidget> {
       {required BuildContext context,
       required Question question,
       required Survey survey}) {
-    TextEditingController textEditingController = TextEditingController();
-    textEditingController.text = answers[question]?.intValue?.toString() ?? '';
-
     return Scrollbar(
         child: ListView(
       shrinkWrap: true,
@@ -711,7 +712,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
           child: Container(
               width: width(context) * .25,
               child: TextField(
-                controller: textEditingController,
+                controller: textEditingControllers[question],
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 keyboardType: TextInputType.number,
                 onChanged: (String result) {
@@ -794,9 +795,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
       {required BuildContext context,
       required Question question,
       required Survey survey}) {
-    TextEditingController textEditingController = TextEditingController();
-    textEditingController.text =
-        answers[question]?.doubleValue?.toString() ?? '';
+    
     return Scrollbar(
         child: ListView(
       shrinkWrap: true,
@@ -826,7 +825,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
           child: Container(
               width: width(context) * .25,
               child: TextField(
-                controller: textEditingController,
+                controller: textEditingControllers[question],
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d*')),
                 ],
