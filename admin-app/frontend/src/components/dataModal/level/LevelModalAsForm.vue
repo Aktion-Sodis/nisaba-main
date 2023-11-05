@@ -125,12 +125,13 @@
                         'organizationStructure.levelModal.manageAllowedInterventions'
                       )
                     "
-                    multiple
+                    multiple = true
                     dense
                     outlined
                     persistent-hint
                     item-value="id"
                     item-text="name"
+                    track-by="id"
                     :disabled="!areInterventionsAllowed"
                   ></v-select>
                 </div>
@@ -423,6 +424,20 @@ export default {
         parentLevelID = this.edit
           ? this.levelInFocus.parentLevelID
           : this.lowestLevelId;
+      //todo: check for doubled allowed interventions here
+      //check if allowedInterventions != null
+      if(this.allowedInterventionIds !== null) {
+        if(this.allowedInterventionIds.length > 0) {
+          var toSet = [];
+          //add each allowed intervention form list that is not contained in to set already
+          this.allowedInterventionIds.forEach((id) => {
+            if(!toSet.includes(id)) {
+              toSet.push(id);
+            }
+          });
+          this.allowedInterventionIds = toSet;
+        }
+      }
 
       this.setDraft({
         name: this.name,
@@ -456,6 +471,9 @@ export default {
         this.interventionsOfLevelById({ levelId: this.dataIdInFocus }).map(
           (i) => i.id
         ) ?? [];
+      
+
+        
       this.customData =
         this.dataDraft?.customData.map((cd) => ({
           id: cd.id,
