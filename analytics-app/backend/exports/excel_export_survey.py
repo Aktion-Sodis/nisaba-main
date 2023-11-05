@@ -1,17 +1,20 @@
 
 
 def get_excel_workbook_for_survey_id(query_methods, survey_id):
+
     #get data from query methods
 
     #get survey
-    survey = query_methods.get_survey_by_survey_id(survey_id)
+    survey = query_methods.get_survey_by_surveyID(survey_id)
 
     #get executed surveys
-    executed_surveys = query_methods.get_executed_surveys_by_survey_id(survey_id)
+    executed_surveys = query_methods.get_executed_surveys_by_surveyID_including_context(survey_id)
 
     #get entities
     entity_ids = get_entity_ids_from_surveys(executed_surveys)
     entities = query_methods.get_entity_list_from_IDs(entity_ids)
+
+    print('got data from queries, now building xlsx')
 
     return create_pandas_frames_for_export(survey, executed_surveys, entities)
 

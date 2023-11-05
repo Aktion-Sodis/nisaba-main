@@ -100,8 +100,11 @@ def getSurveyResultsAsXLSX():
     
     attachment_name = 'results_' + survey_id + '_' + str(datetime.datetime.now()) + '.xlsx'
 
-    response =  send_file(output, download_name=attachment_name, as_attachment=True)
+    response =  send_file(output, download_name=attachment_name, as_attachment=False)
     response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('content-length', str(output.getbuffer().nbytes))
+
+    print('now returns response')
     return response
 
 

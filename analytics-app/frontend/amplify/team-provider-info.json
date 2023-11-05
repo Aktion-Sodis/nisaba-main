@@ -1,0 +1,54 @@
+{
+  "release": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-nisaba-release-21818-authRole",
+      "UnauthRoleArn": "arn:aws:iam::404541487485:role/amplify-nisaba-release-21818-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::404541487485:role/amplify-nisaba-release-21818-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-nisaba-release-21818-deployment",
+      "UnauthRoleName": "amplify-nisaba-release-21818-unauthRole",
+      "StackName": "amplify-nisaba-release-21818",
+      "StackId": "arn:aws:cloudformation:eu-central-1:404541487485:stack/amplify-nisaba-release-21818/75e02510-ba2a-11ed-b22e-0a59d64d0bd6",
+      "AmplifyAppId": "d26pqqtndacxsh",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-nisaba-release-21818-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-nisaba-release-21818-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d26pqqtndacxsh",
+          "type": "manual"
+        }
+      },
+      "auth": {
+        "authnisaba": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "AdminQueries8dc38185": {
+          "deploymentBucketName": "amplify-nisaba-release-21818-deployment",
+          "s3Key": "amplify-builds/AdminQueries8dc38185-5a4174542b442b567470-build.zip"
+        },
+        "authnisabaPreTokenGeneration": {
+          "deploymentBucketName": "amplify-nisaba-release-21818-deployment",
+          "s3Key": "amplify-builds/authnisabaPreTokenGeneration-354b5a3446773846716a-build.zip"
+        },
+        "nisabaAdminSdkLayer": {
+          "deploymentBucketName": "amplify-nisaba-release-21818-deployment",
+          "s3Key": "amplify-builds/nisabaAdminSdkLayer-LambdaLayerVersion1d024d8f-build.zip"
+        },
+        "nisabaUserManagement": {
+          "deploymentBucketName": "amplify-nisaba-release-21818-deployment",
+          "s3Key": "amplify-builds/nisabaUserManagement-6a37457132494c736f4c-build.zip"
+        },
+        "syncConflictHandler5b19c779": {
+          "deploymentBucketName": "amplify-nisaba-release-21818-deployment",
+          "s3Key": "amplify-builds/syncConflictHandler5b19c779-736d4962543068355742-build.zip"
+        }
+      },
+      "storage": {
+        "nisabarelease": {}
+      }
+    }
+  }
+}
