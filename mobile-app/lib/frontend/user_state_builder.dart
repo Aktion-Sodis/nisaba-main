@@ -36,7 +36,10 @@ class UserStateBuilder extends StatelessWidget {
                 child: UserDataView(userBloc: context.read<UserBloc>())),
           if (state.user != null) _buildUserExistsState(context, state)
         ],
-        onPopPage: (route, result) => route.didPop(result),
+        onPopPage: (route, result) {
+          print('Pop Page of Main Navigator called');
+          return route.didPop(result);
+        },
       );
     });
   }

@@ -185,6 +185,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
     syncedSurveyImageFile =
         SurveyRepository.instance.getSurveyPic(widget.survey);
     picAndAudioAnswerFiles = {};
+    textEditingControllers = {};
     widget.survey.questions.forEach((element) {
       if (element.type == QuestionType.PICTURE) {
         picAndAudioAnswerFiles[element.id!] = ExecutedSurveyRepository.instance
@@ -200,6 +201,9 @@ class SurveyWidgetState extends State<SurveyWidget> {
                     .appliedIntervention,
                 preliminaryExecutedSurveyId,
                 element);
+      }
+      if (element.type == QuestionType.TEXT || element.type == QuestionType.INT || element.type == QuestionType.DOUBLE) {
+        textEditingControllers[element] = TextEditingController();
       }
     });
     print('initialised State of SurveyWidget');
@@ -280,12 +284,14 @@ class SurveyWidgetState extends State<SurveyWidget> {
                 }
                 if (answers[currentQuestion] != null) {
                   //check for followUpQuestions
-                  if (currentQuestion.type == QuestionType.SINGLECHOICE) {
-                    List<String>? followUpIDs = answers[currentQuestion]!
-                        .questionOptions!
-                        .first
-                        .followUpQuestionIDs;
-                    if (followUpIDs != null) {
+                  if (currentQuestion.type == QuestionType.SINGLECHOICE || currentQuestion.type == QuestionType.MULTIPLECHOICE) {
+                    List<String> followUpIDs = [];
+                    for (var element in answers[currentQuestion]!.questionOptions!) {
+                      followUpIDs.addAll((element.followUpQuestionIDs??[]));
+                    }
+                    //remove potential duplicates from followUpQuestionIDs
+                    followUpIDs = followUpIDs.toSet().toList();
+                    if (followUpIDs.isNotEmpty) {
                       List<Question> followUpQuestions = widget.survey.questions
                           .where((element) =>
                               followUpIDs.any((fu) => fu == element.id))
@@ -307,14 +313,6 @@ class SurveyWidgetState extends State<SurveyWidget> {
                     //todo: hier sinn nicht direkt nachvollziehbar
                     //@arthur-becker bitte allgemein nochmal prüfen
                     //habe es nur so geändert, dass build möglich ist
-                    questions.removeWhere((element) {
-                      bool result = element.isFollowUpQuestion &&
-                          !(followUpIDs?.contains(element.id) ?? false);
-                      if (result) {
-                        answers.remove(element);
-                      }
-                      return result;
-                    });
                   }
                   _proceedToNextPage(currentQuestion);
                 }
@@ -333,6 +331,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
   }
 
   late Map<String, SyncedFile> picAndAudioAnswerFiles;
+
+  late Map<Question, TextEditingController> textEditingControllers;
 
   Widget mcQuestionWidget(
       {required BuildContext context,
@@ -629,6 +629,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
       {required BuildContext context,
       required Question question,
       required Survey survey}) {
+
     return Scrollbar(
         child: ListView(
       shrinkWrap: true,
@@ -657,6 +658,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
           child: TextField(
+            controller: textEditingControllers[question],
             maxLines: 5,
             onChanged: (String result) {
               answers[question] = QuestionAnswer(
@@ -704,6 +706,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
           child: Container(
               width: width(context) * .25,
               child: TextField(
+                controller: textEditingControllers[question],
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 keyboardType: TextInputType.number,
                 onChanged: (String result) {
@@ -765,7 +768,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                 ),
               ),
               itemSize: width(context) * .05,
-              initialRating: (answers[question]?.rating ?? 0) / maxRating,
+              initialRating: (answers[question]?.rating ?? 0).toDouble(),
               itemPadding:
                   EdgeInsets.symmetric(horizontal: defaultPadding(context) / 2),
               allowHalfRating: false,
@@ -786,6 +789,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
       {required BuildContext context,
       required Question question,
       required Survey survey}) {
+    
     return Scrollbar(
         child: ListView(
       shrinkWrap: true,
@@ -815,6 +819,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
           child: Container(
               width: width(context) * .25,
               child: TextField(
+                controller: textEditingControllers[question],
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d*')),
                 ],
