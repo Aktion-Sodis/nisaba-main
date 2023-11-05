@@ -108,6 +108,7 @@ class UserDataViewState extends State<UserDataView> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () async {
+          print('will pop scope called');
           if (widget.inApp) {
             context.read<InAppBloc>().add(MainViewEvent());
           }

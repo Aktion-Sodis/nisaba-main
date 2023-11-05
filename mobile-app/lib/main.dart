@@ -75,7 +75,7 @@ class MyAppState extends State<MyApp> {
         theme: themeData ?? ThemeData.light(),
         home: themeData == null
             ? const Center(child: CircularProgressIndicator())
-            : HiveDBInitializer(
+            : WillPopScope(onWillPop: () => Future.value(false), child: HiveDBInitializer(
                 child: MultiRepositoryProvider(
                   providers: [
                     RepositoryProvider(create: (context) => AuthRepository()),
@@ -102,6 +102,6 @@ class MyAppState extends State<MyApp> {
                             )),
                   ),
                 ),
-              ));
+              )));
   }
 }
