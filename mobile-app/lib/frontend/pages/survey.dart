@@ -284,12 +284,14 @@ class SurveyWidgetState extends State<SurveyWidget> {
                 }
                 if (answers[currentQuestion] != null) {
                   //check for followUpQuestions
-                  if (currentQuestion.type == QuestionType.SINGLECHOICE) {
-                    List<String>? followUpIDs = answers[currentQuestion]!
-                        .questionOptions!
-                        .first
-                        .followUpQuestionIDs;
-                    if (followUpIDs != null) {
+                  if (currentQuestion.type == QuestionType.SINGLECHOICE || currentQuestion.type == QuestionType.MULTIPLECHOICE) {
+                    List<String> followUpIDs = [];
+                    for (var element in answers[currentQuestion]!.questionOptions!) {
+                      followUpIDs.addAll((element.followUpQuestionIDs??[]));
+                    }
+                    //remove potential duplicates from followUpQuestionIDs
+                    followUpIDs = followUpIDs.toSet().toList();
+                    if (followUpIDs.isNotEmpty) {
                       List<Question> followUpQuestions = widget.survey.questions
                           .where((element) =>
                               followUpIDs.any((fu) => fu == element.id))
@@ -311,14 +313,6 @@ class SurveyWidgetState extends State<SurveyWidget> {
                     //todo: hier sinn nicht direkt nachvollziehbar
                     //@arthur-becker bitte allgemein nochmal prüfen
                     //habe es nur so geändert, dass build möglich ist
-                    questions.removeWhere((element) {
-                      bool result = element.isFollowUpQuestion &&
-                          !(followUpIDs?.contains(element.id) ?? false);
-                      if (result) {
-                        answers.remove(element);
-                      }
-                      return result;
-                    });
                   }
                   _proceedToNextPage(currentQuestion);
                 }
