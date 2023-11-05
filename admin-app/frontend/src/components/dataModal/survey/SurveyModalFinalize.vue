@@ -9,7 +9,7 @@
         }}
       </h2>
       <v-spacer></v-spacer>
-      <v-btn x-large text class="text-none" @click="saveData" :disabled="false">
+      <v-btn x-large text class="text-none" @click="saveDataCustom" :disabled="surveyPublishPressed">
         {{ $t("surveys.modal.finalizeCard.publishSurvey") }}
         <v-icon large class="ml-2"> mdi-bullhorn-outline </v-icon>
       </v-btn>
@@ -125,6 +125,11 @@ import { QuestionType } from "../../../models";
 
 export default {
   name: "SurveyModalFinalize",
+  data() {
+    return {
+      surveyPublishPressed: false,
+    };
+  },
   computed: {
     ...mapGetters({
       surveyDraft: `${vuexModulesDict.dataModal}/getDataDraft`,
@@ -148,6 +153,10 @@ export default {
     ...mapActions({
       saveData: `${vuexModulesDict.dataModal}/saveData`,
     }),
+    saveDataCustom() {
+      this.surveyPublishPressed = true;
+      this.saveData();
+    },
     ...mapMutations({
       incrementCompletionIndex: "incrementSurveyModalCompletionIndex",
       decrementCompletionIndex: "decrementSurveyModalCompletionIndex",
