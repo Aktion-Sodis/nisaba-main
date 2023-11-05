@@ -1640,7 +1640,9 @@ class _AudioPlayerWidgetFromSyncFileState
   @override
   void initState() {
     print("reinitializing image widget");
+    super.initState();
     widget.syncedFile?.file().then((value) async {
+      print('got file for audio player widget: $audioFile');
       audioFile = value;
       if (mounted) {
         setState(() {
