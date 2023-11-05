@@ -1,9 +1,16 @@
 import os
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
 
 from QueryMethods import QueryMethods
+
+from exports import excel_export_survey
+
+import io
+import xlsxwriter
+import pandas as pd
+import datetime
 
 # configuration
 # DEBUG = True
@@ -74,6 +81,27 @@ def getEntities():
     res = query_methods.get_entities()
     response = jsonify({"res": res})
     response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+@application.route('/getSurveyResultsAsXLSX', methods=['GET', 'POST'])
+def getSurveyResultsAsXLSX():
+    survey_id = request.args.get("SurveyID")
+    survey_question_frame, executed_survey_frame = excel_export_survey.get_excel_workbook_for_survey_id(query_methods, survey_id)
+
+    output = io.BytesIO()
+
+    #create workbook and write in two sheets
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+
+    survey_question_frame.to_excel(writer, sheet_name='survey')
+    executed_survey_frame.to_excel(writer, sheet_name='answers')
+
+    writer.close()
+    
+    attachment_name = 'results_' + survey_id + '_' + str(datetime.datetime.now()) + '.xlsx'
+
+    response =  send_file(output, download_name=attachment_name, as_attachment=True)
+    response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
 

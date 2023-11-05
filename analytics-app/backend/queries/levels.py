@@ -45,3 +45,22 @@ listEntities = {
   }
   """,
 }
+
+getEntityByID = {
+    "operationName": "getEntity",
+    "query": """query getEntity($entityID: ID!) {
+      getEntity(id: $entityID) {
+        id
+        name {
+          languageKeys
+          languageTexts
+        }
+        level {
+          name {
+            languageKeys
+            languageTexts
+          }
+        }
+      }
+    }"""
+}
