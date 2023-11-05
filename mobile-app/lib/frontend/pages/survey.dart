@@ -629,6 +629,9 @@ class SurveyWidgetState extends State<SurveyWidget> {
       {required BuildContext context,
       required Question question,
       required Survey survey}) {
+    TextEditingController textEditingController = TextEditingController();
+    textEditingController.text = answers[question]?.text ?? '';
+
     return Scrollbar(
         child: ListView(
       shrinkWrap: true,
@@ -657,6 +660,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
           child: TextField(
+            controller: textEditingController,
             maxLines: 5,
             onChanged: (String result) {
               answers[question] = QuestionAnswer(
@@ -675,6 +679,9 @@ class SurveyWidgetState extends State<SurveyWidget> {
       {required BuildContext context,
       required Question question,
       required Survey survey}) {
+    TextEditingController textEditingController = TextEditingController();
+    textEditingController.text = answers[question]?.intValue?.toString() ?? '';
+
     return Scrollbar(
         child: ListView(
       shrinkWrap: true,
@@ -704,6 +711,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
           child: Container(
               width: width(context) * .25,
               child: TextField(
+                controller: textEditingController,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 keyboardType: TextInputType.number,
                 onChanged: (String result) {
@@ -765,7 +773,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                 ),
               ),
               itemSize: width(context) * .05,
-              initialRating: (answers[question]?.rating ?? 0) / maxRating,
+              initialRating: (answers[question]?.rating ?? 0).toDouble(),
               itemPadding:
                   EdgeInsets.symmetric(horizontal: defaultPadding(context) / 2),
               allowHalfRating: false,
@@ -786,6 +794,9 @@ class SurveyWidgetState extends State<SurveyWidget> {
       {required BuildContext context,
       required Question question,
       required Survey survey}) {
+    TextEditingController textEditingController = TextEditingController();
+    textEditingController.text =
+        answers[question]?.doubleValue?.toString() ?? '';
     return Scrollbar(
         child: ListView(
       shrinkWrap: true,
@@ -815,6 +826,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
           child: Container(
               width: width(context) * .25,
               child: TextField(
+                controller: textEditingController,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d*')),
                 ],
