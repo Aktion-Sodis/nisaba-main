@@ -38,14 +38,14 @@
           </div>
         </v-col>
         <v-col cols="2" class="settings text-right pa-0">
-          <v-btn class="settings-btn" @click="toggleFilterSidebar">
-            <v-icon icon="mdi-filter"></v-icon>
-          </v-btn>
-        </v-col>
-        <v-col cols="2" class="settings text-right pa-0">
-          <v-btn class="settings-btn" @click="startSurveyFileDownload">
-            <v-icon icon="mdi-table-arrow-down"></v-icon>
-          </v-btn>
+          <div>
+            <v-btn class="settings-btn" @click="toggleFilterSidebar">
+              <v-icon icon="mdi-filter"></v-icon>
+            </v-btn>
+            <v-btn class="settings-btn" @click="startSurveyFileDownload">
+              <v-icon icon="mdi-table-arrow-down"></v-icon>
+            </v-btn>
+          </div>
         </v-col>
       </v-row>
       <v-row v-if="loading" class="ma-0 mr-2 align-center">
@@ -350,6 +350,9 @@ export default {
 </script>
 
 <style scoped>
+.settings-btn {
+  margin-right: 10px; /* Adjust the margin as needed */
+}
 .entity-checkbox {
   height: 40px;
 }

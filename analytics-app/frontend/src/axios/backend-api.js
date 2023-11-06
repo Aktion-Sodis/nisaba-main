@@ -28,17 +28,11 @@ export const getRequestFile = async (path, payload={}) => {
   const config = {
     headers: {
       Authorization: token
-    }
+    },
+    responseType: 'blob'
   };
 
-  const response = await axios({
-    method: 'get',
-    url: url,
-    headers: {
-      Authorization: token,
-    },
-    responseType: 'arraybuffer',
-    maxContentLength: 200000000000000000,
-  });
+  const response = await axios.get(url, config);
+  console.log('got response')
   return response;
 };

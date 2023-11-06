@@ -100,10 +100,14 @@ def getSurveyResultsAsXLSX():
     
     attachment_name = 'results_' + survey_id + '_' + str(datetime.datetime.now()) + '.xlsx'
 
+    output.seek(0)
+
     response =  send_file(output, download_name=attachment_name, as_attachment=False)
     response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('content-length', str(output.getbuffer().nbytes))
-
+    print('response:')
+    print(str(response))
+    print(str(response.headers))
+    print('file size from buffer length: ' + str(len(output.getvalue())))
     print('now returns response')
     return response
 
