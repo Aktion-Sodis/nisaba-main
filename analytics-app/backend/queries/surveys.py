@@ -124,3 +124,55 @@ getExecutedSurveyDataBySurveyID = {
   }
   """,
 }
+
+getExecutedSurveyDataBySurveyIDInclContext = {
+"operationName": "listExecutedSurveys",
+"query": """
+query listExecutedSurveys($surveyID: ID!) {
+  listExecutedSurveys(filter: {executedSurveySurveyId: {eq: $surveyID}}) {
+    items {
+      id
+      _deleted
+      answers {
+        date
+        doubleValue
+        id
+        intValue
+        markings {
+          rx
+          ry
+          text
+          x
+          y
+        }
+        questionID
+        questionOptions {
+          followUpQuestionIDs
+          id
+          text {
+            languageKeys
+            languageTexts
+          }
+        }
+        rating
+        text
+        type
+      }
+      appliedIntervention {
+        entityAppliedInterventionsId
+      }
+      updatedAt
+      location {
+        latitude
+        longitude
+      }
+      date
+      whoExecutedIt {
+        firstName
+        lastName
+      }
+    }
+  }
+}
+"""
+}

@@ -38,9 +38,14 @@
           </div>
         </v-col>
         <v-col cols="2" class="settings text-right pa-0">
-          <v-btn class="settings-btn" @click="toggleFilterSidebar">
-            <v-icon icon="mdi-filter"></v-icon>
-          </v-btn>
+          <div>
+            <v-btn class="settings-btn" @click="toggleFilterSidebar">
+              <v-icon icon="mdi-filter"></v-icon>
+            </v-btn>
+            <v-btn class="settings-btn" @click="startSurveyFileDownload">
+              <v-icon icon="mdi-table-arrow-down"></v-icon>
+            </v-btn>
+          </div>
         </v-col>
       </v-row>
       <v-row v-if="loading" class="ma-0 mr-2 align-center">
@@ -148,6 +153,8 @@ import MultipleChoiceComponent from "@/components/data/MultipleChoiceComponent.v
 import SingleChoiceComponent from "@/components/data/SingleChoiceComponent.vue";
 import TextComponent from "@/components/data/TextComponent.vue";
 
+import { getRequestFile } from '@/axios/backend-api';
+
 export default {
   name: "SurveyData",
   components: { MultipleChoiceComponent, TextComponent, SingleChoiceComponent },
@@ -251,6 +258,19 @@ export default {
       this.filterSidebarOpen = !this.filterSidebarOpen;
     },
 
+    async startSurveyFileDownload() {
+      console.log('Requesting File');
+      const response = await getRequestFile('/getSurveyResultsAsXLSX', {SurveyID: this.surveyStore.selectedSurveyID});
+      console.log('Got Response');
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${this.surveyStore.selectedSurveyID}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      console.log('Started Download');
+    },
+
     toggleQuestionList() {
       this.questionListExpanded = !this.questionListExpanded;
     },
@@ -330,6 +350,9 @@ export default {
 </script>
 
 <style scoped>
+.settings-btn {
+  margin-right: 10px; /* Adjust the margin as needed */
+}
 .entity-checkbox {
   height: 40px;
 }

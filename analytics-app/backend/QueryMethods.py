@@ -8,9 +8,10 @@ from queries.surveys import (
     listAllSurveys,
     getSurveyBySurveyID,
     getExecutedSurveyDataBySurveyID,
+    getExecutedSurveyDataBySurveyIDInclContext
 )
 
-from queries.levels import listLevels, listEntities
+from queries.levels import listLevels, listEntities, getEntityByID
 
 
 gql_client = GraphqlClient()
@@ -63,6 +64,32 @@ class QueryMethods:
         self.executed_surveys = res["data"]["listExecutedSurveys"]["items"]
 
         return self.executed_surveys
+
+    def get_executed_surveys_by_surveyID_including_context(self, survey_id):
+        res = gql_client.execute(
+            query=getExecutedSurveyDataBySurveyIDInclContext["query"],
+            operation_name=getExecutedSurveyDataBySurveyIDInclContext["operationName"],
+            variables={"surveyID": survey_id},
+        )
+        self.executed_surveys = res["data"]["listExecutedSurveys"]["items"]
+
+        return self.executed_surveys
+    
+    def get_entity_list_from_IDs(self, entity_ids):
+        #remove duplicates from entity_ids
+        entity_ids = list(set(entity_ids))
+
+        results = []
+
+        for entity_id in entity_ids:
+            res = gql_client.execute(
+                query=getEntityByID["query"],
+                operation_name=getEntityByID["operationName"],
+                variables={"entityID": entity_id},
+            )
+            results.append(res["data"]["getEntity"])
+        
+        return results
 
     def get_survey_data_by_surveyID(self, survey_id):
         self.get_survey_by_surveyID(survey_id)
