@@ -155,8 +155,10 @@ def create_pandas_frames_for_export(survey, executed_surveys, entities):
             }
             question_answers = []
             for esurvey in executed_surveys:
+                added = False
                 for answer in esurvey["answers"]:
                     if answer["questionID"] == question["id"]:
+                        added = True
                         if answer.get("questionOptions", None) != None:
                             question_answers.append(
                                 string_from_Question_Option_Answers(
@@ -165,6 +167,8 @@ def create_pandas_frames_for_export(survey, executed_surveys, entities):
                             )
                         else:
                             question_answers.append("")
+                if not added:
+                    question_answers.append("")
 
         elif question["type"] == "MULTIPLECHOICE":
             questions_for_table[str(i) + " -- ID: " + question["id"]] = {
@@ -174,8 +178,10 @@ def create_pandas_frames_for_export(survey, executed_surveys, entities):
             }
             question_answers = []
             for esurvey in executed_surveys:
+                added = False
                 for answer in esurvey["answers"]:
                     if answer["questionID"] == question["id"]:
+                        added = True
                         if answer.get("questionOptions", None) != None:
                             question_answers.append(
                                 string_from_Question_Option_Answers(
@@ -184,10 +190,14 @@ def create_pandas_frames_for_export(survey, executed_surveys, entities):
                             )
                         else:
                             question_answers.append("")
+                if not added:
+                    question_answers.append("")
 
         question_answer_lists[str(i) + " -- ID: " + question["id"]] = question_answers
 
     for key, value in question_answer_lists.items():
+        print('key: ' + str(key))
+        print('value length: ' + str(len(value)))
         executed_survey_frame[key] = value
 
     survey_question_frame = pd.DataFrame(questions_for_table).T

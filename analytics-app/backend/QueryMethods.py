@@ -8,7 +8,8 @@ from queries.surveys import (
     listAllSurveys,
     getSurveyBySurveyID,
     getExecutedSurveyDataBySurveyID,
-    getExecutedSurveyDataBySurveyIDInclContext
+    getExecutedSurveyDataBySurveyIDInclContext,
+    getExecutedSurveyDataBySurveyIDInclContextFromNextToken
 )
 
 from queries.levels import listLevels, listEntities, getEntityByID
@@ -66,14 +67,33 @@ class QueryMethods:
         return self.executed_surveys
 
     def get_executed_surveys_by_surveyID_including_context(self, survey_id):
+        print('getting executed surveys by survey id including context')
         res = gql_client.execute(
             query=getExecutedSurveyDataBySurveyIDInclContext["query"],
             operation_name=getExecutedSurveyDataBySurveyIDInclContext["operationName"],
             variables={"surveyID": survey_id},
         )
-        self.executed_surveys = res["data"]["listExecutedSurveys"]["items"]
+        print('returned first batch of executed surveys')
+        to_return_surveys = res["data"]["listExecutedSurveys"]["items"]
 
-        return self.executed_surveys
+        next_token = res["data"]["listExecutedSurveys"].get("nextToken", None)
+
+        print('got first batch of executed surveys')
+
+        while next_token:
+            print('getting next batch of executed surveys')
+            print(next_token)
+            res = gql_client.execute(
+            query=getExecutedSurveyDataBySurveyIDInclContextFromNextToken["query"],
+            operation_name=getExecutedSurveyDataBySurveyIDInclContextFromNextToken["operationName"],
+            variables={"surveyID": survey_id, "nextToken": next_token},
+            )
+            
+            to_return_surveys.extend(res["data"]["listExecutedSurveys"]["items"])
+
+            next_token = res["data"]["listExecutedSurveys"].get("nextToken", None)
+        
+        return to_return_surveys
     
     def get_entity_list_from_IDs(self, entity_ids):
         #remove duplicates from entity_ids
