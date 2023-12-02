@@ -45,8 +45,24 @@ def create_pandas_frames_for_export(survey, executed_surveys, entities):
         for esurvey in executed_surveys
     ]
 
+    executed_survey_entity = []
+
+    for esurvey in executed_surveys:
+        toAppend = None
+        for entity in entities:
+            if entity["id"] == esurvey["appliedIntervention"]["entityAppliedInterventionsId"]:
+                toAppendFromLang = None
+                for langOption in entity["name"]["languageTexts"]:
+                    if langOption != "":
+                        toAppendFromLang = langOption
+                        break
+                toAppend = toAppendFromLang
+                break
+        executed_survey_entity.append(toAppend)
+                
+
     executed_survey_frame = pd.DataFrame(
-        {"executor": executed_survey_executor}, index=executed_survey_ids
+        {"executor": executed_survey_executor, "entity": executed_survey_entity}, index=executed_survey_ids
     )
 
     executed_survey_date = [esurvey["date"] for esurvey in executed_surveys]
@@ -155,8 +171,10 @@ def create_pandas_frames_for_export(survey, executed_surveys, entities):
             }
             question_answers = []
             for esurvey in executed_surveys:
+                added = False
                 for answer in esurvey["answers"]:
                     if answer["questionID"] == question["id"]:
+                        added = True
                         if answer.get("questionOptions", None) != None:
                             question_answers.append(
                                 string_from_Question_Option_Answers(
@@ -165,6 +183,8 @@ def create_pandas_frames_for_export(survey, executed_surveys, entities):
                             )
                         else:
                             question_answers.append("")
+                if not added:
+                    question_answers.append("")
 
         elif question["type"] == "MULTIPLECHOICE":
             questions_for_table[str(i) + " -- ID: " + question["id"]] = {
@@ -174,8 +194,10 @@ def create_pandas_frames_for_export(survey, executed_surveys, entities):
             }
             question_answers = []
             for esurvey in executed_surveys:
+                added = False
                 for answer in esurvey["answers"]:
                     if answer["questionID"] == question["id"]:
+                        added = True
                         if answer.get("questionOptions", None) != None:
                             question_answers.append(
                                 string_from_Question_Option_Answers(
@@ -184,10 +206,14 @@ def create_pandas_frames_for_export(survey, executed_surveys, entities):
                             )
                         else:
                             question_answers.append("")
+                if not added:
+                    question_answers.append("")
 
         question_answer_lists[str(i) + " -- ID: " + question["id"]] = question_answers
 
     for key, value in question_answer_lists.items():
+        print('key: ' + str(key))
+        print('value length: ' + str(len(value)))
         executed_survey_frame[key] = value
 
     survey_question_frame = pd.DataFrame(questions_for_table).T

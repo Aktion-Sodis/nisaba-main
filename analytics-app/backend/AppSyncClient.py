@@ -33,5 +33,6 @@ class GraphqlClient:
             method='POST',
             data=data.encode('utf8')
         )
+
         response = request.urlopen(r).read()
         return json.loads(response.decode('utf8'))
