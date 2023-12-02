@@ -45,8 +45,24 @@ def create_pandas_frames_for_export(survey, executed_surveys, entities):
         for esurvey in executed_surveys
     ]
 
+    executed_survey_entity = []
+
+    for esurvey in executed_surveys:
+        toAppend = None
+        for entity in entities:
+            if entity["id"] == esurvey["appliedIntervention"]["entityAppliedInterventionsId"]:
+                toAppendFromLang = None
+                for langOption in entity["name"]["languageTexts"]:
+                    if langOption != "":
+                        toAppendFromLang = langOption
+                        break
+                toAppend = toAppendFromLang
+                break
+        executed_survey_entity.append(toAppend)
+                
+
     executed_survey_frame = pd.DataFrame(
-        {"executor": executed_survey_executor}, index=executed_survey_ids
+        {"executor": executed_survey_executor, "entity": executed_survey_entity}, index=executed_survey_ids
     )
 
     executed_survey_date = [esurvey["date"] for esurvey in executed_surveys]
