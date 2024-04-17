@@ -1,5 +1,5 @@
 <template>
-  <a href="https://github.com/Aktion-Sodis/software-main" class="d-none d-md-block" target="_blank">
+  <a href="https://github.com/Aktion-Sodis/nisaba-main" class="d-none d-md-block" target="_blank">
     <v-alert
       class="version-wrapper white--text"
       :outlined="!isInAuthView()"
