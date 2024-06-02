@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_app/backend/Blocs/sync/sync_bloc.dart';
+import 'package:mobile_app/backend/Blocs/sync/sync_events.dart';
+import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
 
 class SyncTrigger extends StatefulWidget {
@@ -11,6 +15,8 @@ class SyncTrigger extends StatefulWidget {
 }
 
 class _SyncTriggerState extends State<SyncTrigger> with WidgetsBindingObserver {
+  //todo: sync
+
   @override
   void initState() {
     super.initState();
@@ -49,6 +55,15 @@ class _SyncTriggerState extends State<SyncTrigger> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     // Sync on start
     //SyncedDB.instance.synchronizer.syncDownstream();
+
+    //add user bloc to sync bloc via event
+
+    context.read<SyncBloc>().add(AddUserBlocEvent(context.read<UserBloc>()));
+
+    context.read<SyncBloc>().add(TriggerFileSyncEvent());
+
+    //trigger sync bloc to sync images and stuff via event
+
     SyncedDB.instance.synchronizer.syncUpstream();
 
     return widget.child;

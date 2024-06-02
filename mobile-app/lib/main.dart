@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:mobile_app/backend/Blocs/sync/sync_bloc.dart';
+import 'package:mobile_app/backend/database/db_implementations/graphql_db/GraphQLDB.dart';
+import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDB.dart';
 import 'package:mobile_app/frontend/models_auto_registration.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
 import 'package:mobile_app/backend/repositories/AuthRepository.dart';
@@ -24,19 +27,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
 
-  // Init HiveDB
-  await HiveDBHelper.instance.init();
-
-  // Init SyncedDB
-  await SyncedDB.instance.localDB.initLocalDB();
-  //todo: sync-fix: maybe add all objects to sync downstream?
-  SyncedDB.instance.synchronizer.modelsToSyncDownstream.addAll([TestObject]);
-  registerModels();
-
   // Frontend settings
   SystemChrome.setPreferredOrientations(
           [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp])
-      .then((_) => runApp(const MyApp()));
+      .then((_) => runApp(BlocProvider<SyncBloc>(
+          create: (context) => SyncBloc(), child: const MyApp())));
 }
 
 class MyApp extends StatefulWidget {
@@ -52,6 +47,19 @@ class MyAppState extends State<MyApp> {
 
   //async initStateMethod handling the futures
   initStateAsync() async {
+    // Init HiveDB
+    await HiveDBHelper.instance.init();
+
+    // Init SyncedDB
+    SyncedDB.instance =
+        SyncedDB(LocalDB(), GraphQLDB(), BlocProvider.of<SyncBloc>(context));
+
+    // Init SyncedDB
+    await SyncedDB.instance.localDB.initLocalDB();
+    //todo: sync-fix: maybe add all objects to sync downstream?
+    SyncedDB.instance.synchronizer.modelsToSyncDownstream.addAll([TestObject]);
+    registerModels();
+
     await AmplifyIntegration.initialize();
 
     // todo: set _isAmplifyConfigured Flag for showing loading view?
@@ -75,33 +83,35 @@ class MyAppState extends State<MyApp> {
         theme: themeData ?? ThemeData.light(),
         home: themeData == null
             ? const Center(child: CircularProgressIndicator())
-            : WillPopScope(onWillPop: () => Future.value(false), child: HiveDBInitializer(
-                child: MultiRepositoryProvider(
-                  providers: [
-                    RepositoryProvider(create: (context) => AuthRepository()),
-                    RepositoryProvider(
-                        create: (context) => UserRepository.instance),
-                    RepositoryProvider(
-                        create: (context) => LocalDataRepository())
-                  ],
-                  child: BlocProvider<RequestPermissionsCubit>(
-                    create: (context) => RequestPermissionsCubit.instance,
-                    child: Builder(
-                        builder: (context) => PermissionsChecker(
-                              child: BlocProvider<SessionCubit>(
-                                create: (context) => SessionCubit(
-                                  authRepo: context.read<AuthRepository>(),
-                                  userRepo: context.read<UserRepository>(),
+            : WillPopScope(
+                onWillPop: () => Future.value(false),
+                child: HiveDBInitializer(
+                  child: MultiRepositoryProvider(
+                    providers: [
+                      RepositoryProvider(create: (context) => AuthRepository()),
+                      RepositoryProvider(
+                          create: (context) => UserRepository.instance),
+                      RepositoryProvider(
+                          create: (context) => LocalDataRepository())
+                    ],
+                    child: BlocProvider<RequestPermissionsCubit>(
+                      create: (context) => RequestPermissionsCubit.instance,
+                      child: Builder(
+                          builder: (context) => PermissionsChecker(
+                                child: BlocProvider<SessionCubit>(
+                                  create: (context) => SessionCubit(
+                                    authRepo: context.read<AuthRepository>(),
+                                    userRepo: context.read<UserRepository>(),
+                                  ),
+                                  child: Builder(
+                                      builder: (context) =>
+                                          WifiOnlySettingChecker(
+                                              child:
+                                                  AuthenticationStateBuilder())),
                                 ),
-                                child: Builder(
-                                    builder: (context) =>
-                                        WifiOnlySettingChecker(
-                                            child:
-                                                AuthenticationStateBuilder())),
-                              ),
-                            )),
+                              )),
+                    ),
                   ),
-                ),
-              )));
+                )));
   }
 }

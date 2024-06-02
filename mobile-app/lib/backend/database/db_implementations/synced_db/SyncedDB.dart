@@ -1,3 +1,6 @@
+import 'package:mobile_app/backend/Blocs/sync/sync_bloc.dart';
+import 'package:mobile_app/backend/Blocs/sync/sync_events.dart';
+import 'package:mobile_app/backend/callableModels/Survey.dart';
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
@@ -20,13 +23,14 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
   final List<Type> registeredModelTypes = [];
   late final DBQueue queue;
   late final Synchronizer synchronizer;
+  final SyncBloc syncBloc;
 
   bool syncUpstreamAutomatically = true;
 
-  SyncedDB(this.localDB, this.remoteDB) {
+  SyncedDB(this.localDB, this.remoteDB, this.syncBloc) {
     queue = DBQueue(localDB);
     synchronizer = Synchronizer(localDB, remoteDB, queue,
-        _modelsToSyncDownstream, registeredModelTypes);
+        _modelsToSyncDownstream, registeredModelTypes, syncBloc);
     _registerQueueObject();
   }
 
@@ -41,7 +45,7 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
     registeredModelTypes.add(type);
   }
 
-  static final SyncedDB instance = SyncedDB(LocalDB(), GraphQLDB());
+  static late SyncedDB instance;
 
   Type _getRegisteredTypeByString(String typeString) {
     for (Type type in registeredModelTypes) {
@@ -75,6 +79,11 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
     await localDB.create(object);
     await queue.enqueue(object, DBAction.CREATE);
 
+    int surveyCount = object is Survey ? 1 : 0;
+    int entityCount = object is Survey ? 0 : 1;
+
+    syncBloc.add(InitEntityAndSurveyCountEvent(entityCount, surveyCount));
+
     if (syncUpstreamAutomatically) {
       synchronizer.syncUpstream();
     }
@@ -85,6 +94,11 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
     await queue.enqueue(object, DBAction.DELETE);
     await localDB.delete(object);
 
+    int surveyCount = object is Survey ? 1 : 0;
+    int entityCount = object is Survey ? 0 : 1;
+
+    syncBloc.add(InitEntityAndSurveyCountEvent(entityCount, surveyCount));
+
     if (syncUpstreamAutomatically) {
       synchronizer.syncUpstream();
     }
@@ -94,6 +108,11 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
   Future<void> update(DBModel object) async {
     await localDB.update(object);
     await queue.enqueue(object, DBAction.UPDATE);
+
+    int surveyCount = object is Survey ? 1 : 0;
+    int entityCount = object is Survey ? 0 : 1;
+
+    syncBloc.add(InitEntityAndSurveyCountEvent(entityCount, surveyCount));
 
     if (syncUpstreamAutomatically) {
       synchronizer.syncUpstream();

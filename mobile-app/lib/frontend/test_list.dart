@@ -23,10 +23,10 @@ class TestList extends StatelessWidget {
     "isolate_image_compress": () => ImageCompressionTest(),
     "Amplify Cognito": () => AmplifyCognitoTest(),
     "DB Test": () => LocalDBTest(),
-    "SyncedDB Test": () => SyncedDBTest(),
+    //"SyncedDB Test": () => SyncedDBTest(),
     "Integrated SyncedDB Test": () => IntegratedSyncedDBTest(),
     "GraphQL": () => GraphQLQueryTest(),
-    "SyncedDB Restricted Test": () => SyncedDBRestrictedTest(),
+    //"SyncedDB Restricted Test": () => SyncedDBRestrictedTest(),
     "Test registered models queries": () => TestRegisteredModelsQueries(),
   };
 

@@ -91,12 +91,8 @@ class UserStateBuilder extends StatelessWidget {
                                 context.read<InAppBloc>())),
                       ],
                       child: Builder(
-                          builder: (context) => BlocProvider(
-                              create: (context) => SyncBloc(
-                                  taskBloc: context.read<TaskBloc>(),
-                                  userBloc: context.read<UserBloc>()),
-                              child: SyncTrigger(
-                                  child: _buildAuthenticatedView(context)))),
+                          builder: (context) => SyncTrigger(
+                              child: _buildAuthenticatedView(context))),
                     ))));
   }
 

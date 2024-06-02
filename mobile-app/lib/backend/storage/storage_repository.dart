@@ -2,8 +2,10 @@ import 'dart:io';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/services.dart';
 import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/utils/connectivity.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'dataStorePaths.dart';
 
@@ -16,7 +18,7 @@ class StorageRepository {
         InternetConnectionType internetConnectionType =
             await StorageRepository.currentInternetConnectionType();
         if (LocalDataRepository.instance.wifiOnly &&
-        internetConnectionType != InternetConnectionType.WIFI) {
+            internetConnectionType != InternetConnectionType.WIFI) {
           return;
         }
       }
@@ -24,23 +26,21 @@ class StorageRepository {
       await Amplify.Storage.downloadFile(key: path, local: toDownload);
       //set local last changed to onlyine last changed
 
-      if(lastModifiedOnline!=null) {
+      if (lastModifiedOnline != null) {
         await toDownload.setLastModified(lastModifiedOnline);
-      }
-      else {
+      } else {
         try {
           ListResult listResult = await Amplify.Storage.list(path: path);
-          if(listResult.items.isNotEmpty) {
+          if (listResult.items.isNotEmpty) {
             lastModifiedOnline = listResult.items.first.lastModified;
-            if(lastModifiedOnline!=null) {
+            if (lastModifiedOnline != null) {
               await toDownload.setLastModified(lastModifiedOnline);
             }
           }
-        } catch(e) {
+        } catch (e) {
           print('Error in catching last modified online');
         }
       }
-
 
       print("file for $path successfully downloaded");
     } catch (e) {
@@ -115,6 +115,28 @@ class StorageRepository {
     } on SocketException catch (_) {
       //no connection
       return InternetConnectionType.OFFLINE;
+    }
+  }
+
+  static Future<bool> dbObjectSave(
+      Map<String, dynamic> values, String id) async {
+    String path = dataStorePath(DataStorePaths.failedDBObject, [id]);
+
+    try {
+      //upload json files from values
+
+      //create a file in cache from values without a constant path -> will be deleted afterwards
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      File localCacheFile = File('${appDocDir.path}/$path.json');
+      await localCacheFile.writeAsString(values.toString(), flush: true);
+      await Amplify.Storage.uploadFile(
+        local: localCacheFile,
+        key: path,
+      );
+      await localCacheFile.delete();
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }
