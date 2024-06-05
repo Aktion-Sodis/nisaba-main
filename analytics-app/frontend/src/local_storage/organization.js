@@ -2,6 +2,9 @@ import { reactive } from "vue"
 
 
 export const getRememberedOrganization = () => {
+    if (!localStorage.getItem("organization")) {
+        return import.meta.env.VITE_APP_SOCIETY_VERBOSE_NAME
+    }
     return JSON.parse(localStorage.getItem("organization"))
 }
 
