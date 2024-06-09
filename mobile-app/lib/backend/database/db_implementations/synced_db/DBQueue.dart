@@ -49,7 +49,8 @@ class DBQueue {
     List<RecordSnapshot> records = await store.find(localDB.db);
 
     for (var record in records) {
-      if ((record.value! as Map<String, dynamic>)['modelType'] == 'Survey') {
+      if ((record.value! as Map<String, dynamic>)['modelType'] ==
+          'ExecutedSurvey') {
         surveysToUpload++;
       } else {
         otherToUpload++;

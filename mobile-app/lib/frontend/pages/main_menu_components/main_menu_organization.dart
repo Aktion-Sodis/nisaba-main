@@ -27,6 +27,7 @@ import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/frontend/components/buttons.dart';
 import 'package:mobile_app/frontend/components/imageWidget.dart';
 import 'package:mobile_app/frontend/components/loadingsign.dart';
+import 'package:mobile_app/frontend/components/sync_dialog.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/frontend/pages/main_menu.dart';
 import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_commonwidgets.dart';
@@ -93,21 +94,18 @@ class MainMenuOrganization extends StatelessWidget {
                                 horizontal: defaultPadding(context)),
                             child: BlocBuilder<SyncBloc, SyncState>(
                                 builder: (context, state) {
-                              if (state is FullySyncedState) {
-                                return Icon(MdiIcons.cloudCheckOutline,
-                                    color: Colors.green,
-                                    size: width(context) * .08);
-                              } else if (state is CannotSyncState) {
-                                return Icon(MdiIcons.cloudOffOutline,
-                                    color: Colors.red,
-                                    size: width(context) * .08);
-                              } else {
-                                return Icon(MdiIcons.cloudSyncOutline,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
-                                    size: width(context) * .08);
-                              }
+                              return IconButton(
+                                onPressed: () => showSyncDialog(context),
+                                icon: state is FullySyncedState
+                                    ? Icon(MdiIcons.cloudCheckOutline,
+                                        color: Colors.green,
+                                        size: width(context) * .08)
+                                    : Icon(MdiIcons.cloudSyncOutline,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onBackground,
+                                        size: width(context) * .08),
+                              );
                             })),
                       //if no menu shown, add user management for highest element and if no other main menu pages shown
                       if (true &&
@@ -405,58 +403,57 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
   void save() async {
     if (create) {
       if (_formKey.currentState!.validate()) {
-      List<AppliedCustomData> appliedCustomDatas =
-          List.generate(widget.level.customData.length, (index) {
-        CustomData customData = widget.level.customData[index];
-        print("input: ${customDataControllers[index].text.trim()}");
-        return AppliedCustomData(
-          customDataID: customData.id!,
-          type: customData.type,
-          name: customData.name,
-          intValue: customData.type == CustomDataType.INT
-              ? int.tryParse(customDataControllers[index].text.trim()) ?? 0
-              : null,
-          stringValue: customData.type == CustomDataType.STRING
-              ? customDataControllers[index].text.trim()
-              : null,
-        );
-      });
-      print("saving entity: customData");
-      appliedCustomDatas.forEach((element) {
-        print(element.displayName +
-            " " +
-            element.intValue.toString() +
-            " " +
-            (element.stringValue ?? "e"));
-      });
-      if (create) {
-        Entity toSave = Entity(
-            id: preliminaryEntityId,
-            name: I18nString.fromString(string: nameEditingController.text),
-            description: I18nString.fromString(
-                string: descriptionEditingController.text),
-            level: widget.level,
-            customData: appliedCustomDatas,
-            appliedInterventions: [],
-            parentEntityID: widget.parentEntityID);
-        Navigator.of(context).pop(toSave);
-      } else {
-        I18nString nameToSet = widget.entity!.name;
-        nameToSet.text = nameEditingController.text;
-        I18nString description = widget.entity!.description;
-        description.text = descriptionEditingController.text;
-        Entity toSave = widget.entity!;
-        toSave.name = nameToSet;
-        toSave.description = description;
-        toSave.customData = appliedCustomDatas;
+        List<AppliedCustomData> appliedCustomDatas =
+            List.generate(widget.level.customData.length, (index) {
+          CustomData customData = widget.level.customData[index];
+          print("input: ${customDataControllers[index].text.trim()}");
+          return AppliedCustomData(
+            customDataID: customData.id!,
+            type: customData.type,
+            name: customData.name,
+            intValue: customData.type == CustomDataType.INT
+                ? int.tryParse(customDataControllers[index].text.trim()) ?? 0
+                : null,
+            stringValue: customData.type == CustomDataType.STRING
+                ? customDataControllers[index].text.trim()
+                : null,
+          );
+        });
+        print("saving entity: customData");
+        appliedCustomDatas.forEach((element) {
+          print(element.displayName +
+              " " +
+              element.intValue.toString() +
+              " " +
+              (element.stringValue ?? "e"));
+        });
+        if (create) {
+          Entity toSave = Entity(
+              id: preliminaryEntityId,
+              name: I18nString.fromString(string: nameEditingController.text),
+              description: I18nString.fromString(
+                  string: descriptionEditingController.text),
+              level: widget.level,
+              customData: appliedCustomDatas,
+              appliedInterventions: [],
+              parentEntityID: widget.parentEntityID);
+          Navigator.of(context).pop(toSave);
+        } else {
+          I18nString nameToSet = widget.entity!.name;
+          nameToSet.text = nameEditingController.text;
+          I18nString description = widget.entity!.description;
+          description.text = descriptionEditingController.text;
+          Entity toSave = widget.entity!;
+          toSave.name = nameToSet;
+          toSave.description = description;
+          toSave.customData = appliedCustomDatas;
 
-        Navigator.of(context).pop(toSave);
+          Navigator.of(context).pop(toSave);
+        }
       }
-    }
     } else {
       Navigator.of(context).pop();
     }
-    
   }
 
   late SyncedFile syncedFile;
@@ -726,7 +723,6 @@ class ListWidget extends StatelessWidget {
                         right: defaultPadding(buildContext),
                         bottom: defaultPadding(buildContext)),
                   ),
-                
               ],
             ),
             Positioned(
@@ -788,7 +784,7 @@ class ListWidget extends StatelessWidget {
           List<Entity> entities = entitiesLoadedOrganizationViewState
               .currentLevelContent.daughterEntities;
 
-          if(entities.isEmpty){
+          if (entities.isEmpty) {
             addEntity(context);
             return Container();
           }
@@ -1187,39 +1183,41 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
         .intervention.surveys
         .where((element) => !element.archived));
 
-    return Align(alignment: Alignment.topCenter, child: Scrollbar(
-        child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Card(
-          margin: EdgeInsets.all(defaultPadding(context)),
-          child: Container(
-              height: height(context) * .3,
-              width: width(context) * .92,
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  ImageWidget(
-                      imageFile: imageFileSynced,
-                      key: imageFileSynced.key,
-                      width: width(context) * .92,
-                      height: height(context) * .3,
-                      borderRadius: BorderRadius.circular(8)),
-                  Positioned(
-                      right: defaultPadding(context),
-                      bottom: defaultPadding(context),
-                      child: CustomIconButton(
-                          updatePic,
-                          MdiIcons.camera,
-                          Size(width(context) * .15, width(context) * .15),
-                          true))
-                ],
-              )),
-        ),
+    return Align(
+        alignment: Alignment.topCenter,
+        child: Scrollbar(
+            child: SingleChildScrollView(
+                child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Card(
+              margin: EdgeInsets.all(defaultPadding(context)),
+              child: Container(
+                  height: height(context) * .3,
+                  width: width(context) * .92,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      ImageWidget(
+                          imageFile: imageFileSynced,
+                          key: imageFileSynced.key,
+                          width: width(context) * .92,
+                          height: height(context) * .3,
+                          borderRadius: BorderRadius.circular(8)),
+                      Positioned(
+                          right: defaultPadding(context),
+                          bottom: defaultPadding(context),
+                          child: CustomIconButton(
+                              updatePic,
+                              MdiIcons.camera,
+                              Size(width(context) * .15, width(context) * .15),
+                              true))
+                    ],
+                  )),
+            ),
 
-        // HIDDEN AS IT IS NOT STABLE
-        /*if (appliedIntervention.intervention.interventionType ==
+            // HIDDEN AS IT IS NOT STABLE
+            /*if (appliedIntervention.intervention.interventionType ==
             InterventionType.TECHNOLOGY)
           Card(
               margin: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
@@ -1249,43 +1247,46 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
                       ],
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min))),*/
-        if (nonArchivedSurveys.isNotEmpty)
-          Card(
-              margin: EdgeInsets.all(defaultPadding(context)),
-              child: Container(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(
-                          nonArchivedSurveys.length + 1,
-                          (index) => index == 0
-                              ? Container(
-                                  margin:
-                                      EdgeInsets.all(defaultPadding(context)),
-                                  child: Text(strings.organization_view_surveys,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline2))
-                              : surveyRow(
-                                  context,
-                                  nonArchivedSurveys[index - 1],
-                                  image: SurveyRepository.instance.getSurveyPic(
-                                      nonArchivedSurveys[index - 1]),
-                                  pressable: true,
-                                  onPressed: () {
-                                    context.read<OrganizationViewBloc>().add(
-                                        StartSurvey(
-                                            nonArchivedSurveys[index - 1],
-                                            appliedIntervention,
-                                            (context
-                                                        .read<
-                                                            OrganizationViewBloc>()
-                                                        .state
-                                                    as EntitiesLoadedOrganizationViewState)
-                                                .currentDetailEntity!));
-                                  },
-                                )))))
-      ],
-    ))));
+            if (nonArchivedSurveys.isNotEmpty)
+              Card(
+                  margin: EdgeInsets.all(defaultPadding(context)),
+                  child: Container(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List.generate(
+                              nonArchivedSurveys.length + 1,
+                              (index) => index == 0
+                                  ? Container(
+                                      margin: EdgeInsets.all(
+                                          defaultPadding(context)),
+                                      child: Text(
+                                          strings.organization_view_surveys,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline2))
+                                  : surveyRow(
+                                      context,
+                                      nonArchivedSurveys[index - 1],
+                                      image: SurveyRepository.instance
+                                          .getSurveyPic(
+                                              nonArchivedSurveys[index - 1]),
+                                      pressable: true,
+                                      onPressed: () {
+                                        context
+                                            .read<OrganizationViewBloc>()
+                                            .add(StartSurvey(
+                                                nonArchivedSurveys[index - 1],
+                                                appliedIntervention,
+                                                (context
+                                                            .read<
+                                                                OrganizationViewBloc>()
+                                                            .state
+                                                        as EntitiesLoadedOrganizationViewState)
+                                                    .currentDetailEntity!));
+                                      },
+                                    )))))
+          ],
+        ))));
   }
 }
 

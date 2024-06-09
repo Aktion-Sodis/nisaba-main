@@ -56,6 +56,7 @@ class MyAppState extends State<MyApp> {
 
     // Init SyncedDB
     await SyncedDB.instance.localDB.initLocalDB();
+    SyncedDB.instance.initSynchronizer();
     //todo: sync-fix: maybe add all objects to sync downstream?
     SyncedDB.instance.synchronizer.modelsToSyncDownstream.addAll([TestObject]);
     registerModels();

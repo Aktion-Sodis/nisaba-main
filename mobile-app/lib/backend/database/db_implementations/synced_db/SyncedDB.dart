@@ -1,5 +1,6 @@
 import 'package:mobile_app/backend/Blocs/sync/sync_bloc.dart';
 import 'package:mobile_app/backend/Blocs/sync/sync_events.dart';
+import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:mobile_app/backend/callableModels/Survey.dart';
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/Query.dart';
@@ -29,9 +30,12 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
 
   SyncedDB(this.localDB, this.remoteDB, this.syncBloc) {
     queue = DBQueue(localDB);
+    _registerQueueObject();
+  }
+
+  void initSynchronizer() {
     synchronizer = Synchronizer(localDB, remoteDB, queue,
         _modelsToSyncDownstream, registeredModelTypes, syncBloc);
-    _registerQueueObject();
   }
 
   @override
@@ -79,8 +83,8 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
     await localDB.create(object);
     await queue.enqueue(object, DBAction.CREATE);
 
-    int surveyCount = object is Survey ? 1 : 0;
-    int entityCount = object is Survey ? 0 : 1;
+    int surveyCount = object is ExecutedSurvey ? 1 : 0;
+    int entityCount = object is ExecutedSurvey ? 0 : 1;
 
     syncBloc.add(InitEntityAndSurveyCountEvent(entityCount, surveyCount));
 
@@ -94,8 +98,8 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
     await queue.enqueue(object, DBAction.DELETE);
     await localDB.delete(object);
 
-    int surveyCount = object is Survey ? 1 : 0;
-    int entityCount = object is Survey ? 0 : 1;
+    int surveyCount = object is ExecutedSurvey ? 1 : 0;
+    int entityCount = object is ExecutedSurvey ? 0 : 1;
 
     syncBloc.add(InitEntityAndSurveyCountEvent(entityCount, surveyCount));
 
@@ -109,8 +113,8 @@ class SyncedDB extends DB<SyncedDBModelRegistration> {
     await localDB.update(object);
     await queue.enqueue(object, DBAction.UPDATE);
 
-    int surveyCount = object is Survey ? 1 : 0;
-    int entityCount = object is Survey ? 0 : 1;
+    int surveyCount = object is ExecutedSurvey ? 1 : 0;
+    int entityCount = object is ExecutedSurvey ? 0 : 1;
 
     syncBloc.add(InitEntityAndSurveyCountEvent(entityCount, surveyCount));
 
