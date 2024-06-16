@@ -140,8 +140,11 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
         break;
       //trigger file sync event -> starts syncing files
       case TriggerFileSyncEvent:
+        totalFiles = 0;
+        loadedFiles = 0;
+        progress = 100;
         fulfillSync(true);
-        nofinalpush = true;
+        nofinalpush = false;
         break;
       //loaded file event -> increase loaded files
       case LoadedFileEvent:
@@ -255,6 +258,14 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       //add user bloc event -> set userBloc
       case AddUserBlocEvent:
         userBloc = (event as AddUserBlocEvent).userBloc;
+        break;
+      case RetriggerSyncEvent:
+        totalFiles = 0;
+        loadedFiles = 0;
+        progress = 100;
+        SyncedDB.instance.synchronizer.syncUpstream();
+        fulfillSync(true);
+        nofinalpush = false;
         break;
     }
 

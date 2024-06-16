@@ -169,7 +169,7 @@ class SyncOverviewDialog extends StatelessWidget {
     }
     return ElevatedButton(
         onPressed: () {
-          BlocProvider.of<SyncBloc>(context).add(StartSyncEvent());
+          BlocProvider.of<SyncBloc>(context).add(RetriggerSyncEvent());
         },
         child: Text(syncButtonStart));
   }

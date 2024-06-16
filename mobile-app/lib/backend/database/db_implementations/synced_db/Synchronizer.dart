@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobile_app/backend/Blocs/sync/sync_bloc.dart';
 import 'package:mobile_app/backend/Blocs/sync/sync_events.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
@@ -66,7 +67,7 @@ class Synchronizer {
             print('[Sync] now deletes queue object');
             await queue.delete(queueObject);
 
-            if (queueObject.object is Survey) {
+            if (queueObject.object is ExecutedSurvey) {
               syncBloc.add(UploadedSurveyEvent());
             } else {
               syncBloc.add(UploadedOtherEntityEvent());
@@ -75,9 +76,27 @@ class Synchronizer {
             queueObject = await queue.get();
           } on NoConnectionException catch (e) {
             //rethrow exception to stop sync process
-            throw e;
-          } catch (e) {
-            if (queueObject!.object is Survey) {
+            rethrow;
+          } on OperationException catch (e) {
+            if (e.graphqlErrors.isEmpty && e.linkException is ServerException) {
+              //no graph ql error but server exception
+              ServerException serverException =
+                  e.linkException! as ServerException;
+              if (serverException.statusCode == null) {
+                throw (NoConnectionException());
+              }
+            } else if (e.graphqlErrors.isEmpty &&
+                e.linkException is UnknownException) {
+              UnknownException unknownException =
+                  e.linkException! as UnknownException;
+              if (unknownException.message
+                  .contains('SessionExpiredException')) {
+                throw (NoConnectionException());
+              }
+            }
+
+            //only called if no internet exception
+            if (queueObject!.object is ExecutedSurvey) {
               syncBloc.add(FailedSurveyEvent());
             } else {
               syncBloc.add(FailedOtherEntityEvent());
@@ -100,6 +119,38 @@ class Synchronizer {
               }
               //remove from queue
               await queue.delete(queueObject);
+            } else {
+              throw (NoConnectionException());
+            }
+
+            //then set queueObject
+            queueObject = await queue.get();
+          } catch (e) {
+            if (queueObject!.object is ExecutedSurvey) {
+              syncBloc.add(FailedSurveyEvent());
+            } else {
+              syncBloc.add(FailedOtherEntityEvent());
+            }
+
+            //todo: handle other error in upload -> upload in s3 bucket
+            print('[Sync] Error in DB Upstream Sync:');
+            print(e);
+
+            Map<String, dynamic> objectJson = queueObject!.object.toJson();
+
+            bool hasBeenSaved = await StorageRepository.dbObjectSave(
+                objectJson, objectJson['id']);
+
+            if (hasBeenSaved) {
+              if (queueObject.object is Survey) {
+                syncBloc.add(SavedFailedSurveyEvent());
+              } else {
+                syncBloc.add(SavedFailedOtherEntityEvent());
+              }
+              //remove from queue
+              await queue.delete(queueObject);
+            } else {
+              throw (NoConnectionException());
             }
 
             //then set queueObject

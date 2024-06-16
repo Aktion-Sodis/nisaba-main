@@ -38,3 +38,5 @@ class AddUserBlocEvent extends SyncEvent {
 
   AddUserBlocEvent(this.userBloc);
 }
+
+class RetriggerSyncEvent extends SyncEvent {}

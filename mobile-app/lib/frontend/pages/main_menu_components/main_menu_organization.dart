@@ -100,11 +100,17 @@ class MainMenuOrganization extends StatelessWidget {
                                     ? Icon(MdiIcons.cloudCheckOutline,
                                         color: Colors.green,
                                         size: width(context) * .08)
-                                    : Icon(MdiIcons.cloudSyncOutline,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onBackground,
-                                        size: width(context) * .08),
+                                    : state is CannotSyncState
+                                        ? Icon(
+                                            MdiIcons.cloudOffOutline,
+                                            color: Colors.orange,
+                                            size: width(context) * .08,
+                                          )
+                                        : Icon(MdiIcons.cloudSyncOutline,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onBackground,
+                                            size: width(context) * .08),
                               );
                             })),
                       //if no menu shown, add user management for highest element and if no other main menu pages shown

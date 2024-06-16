@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobile_app/backend/Blocs/sync/sync_bloc.dart';
 import 'package:mobile_app/backend/database/db_implementations/graphql_db/GraphQLDB.dart';
 import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDB.dart';
+import 'package:mobile_app/backend/storage/storage_repository.dart';
 import 'package:mobile_app/frontend/models_auto_registration.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
 import 'package:mobile_app/backend/repositories/AuthRepository.dart';
@@ -49,6 +50,8 @@ class MyAppState extends State<MyApp> {
   initStateAsync() async {
     // Init HiveDB
     await HiveDBHelper.instance.init();
+
+    StorageRepository.syncBloc = BlocProvider.of<SyncBloc>(context);
 
     // Init SyncedDB
     SyncedDB.instance =
