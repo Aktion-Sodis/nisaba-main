@@ -59,6 +59,7 @@ class CognitoOIDCAuthProvider extends OIDCAuthProvider {
   static String? _token;
 
   static Future<String?> fetchAndRememberAuthToken() async {
+    //todo: here session experied exception when offline
     final session = await Amplify.Auth.fetchAuthSession(
       options: CognitoSessionOptions(getAWSCredentials: true),
     ) as CognitoAuthSession;

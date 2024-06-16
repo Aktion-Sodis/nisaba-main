@@ -97,8 +97,8 @@ final Map<DataStorePaths, dynamic> databaseOntologies = {
     "toBeReplaced": ["taskID", "audioID"],
   },
   DataStorePaths.failedDBObject: {
-    "path": "failedDBObjects/failedDBObjectID.json",
-    "toBeReplaced": ["failedDBObjectID"],
+    "path": "failedDBObjects/type/failedDBObjectID.json",
+    "toBeReplaced": ["type", "failedDBObjectID"],
   },
 };
 

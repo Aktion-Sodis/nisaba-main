@@ -11,6 +11,7 @@ import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncStatus.dart';
 import 'package:mobile_app/backend/repositories/AppliedInterventionRepository.dart';
+import 'package:mobile_app/backend/repositories/AuthRepository.dart';
 import 'package:mobile_app/backend/repositories/ContentRepository.dart';
 import 'package:mobile_app/backend/repositories/EntityRepository.dart';
 import 'package:mobile_app/backend/repositories/ExecutedSurveyRepository.dart';
@@ -31,6 +32,7 @@ import '../../database/db_implementations/synced_db/SyncedDB.dart';
 
 class SyncBloc extends Bloc<SyncEvent, SyncState> {
   UserBloc? userBloc;
+  AuthRepository? authRepo;
   static SyncedDB db = SyncedDB.instance;
 
   SyncBloc() : super(PrepareSyncState()) {
@@ -169,10 +171,14 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
         //progresses
         if (toSyncSurveys != 0) {
           syncProgressSurveys = ((syncedSurveys / toSyncSurveys) * 100).round();
+        } else {
+          syncProgressSurveys = 100;
         }
-        if (syncProgressOtherEntities != 0) {
+        if (otherEntities != 0) {
           syncProgressOtherEntities =
               ((syncedOtherEntities / otherEntities) * 100).round();
+        } else {
+          syncProgressOtherEntities = 100;
         }
         break;
       //uploaded survey event -> increase synced surveys
@@ -263,8 +269,15 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
         totalFiles = 0;
         loadedFiles = 0;
         progress = 100;
-        SyncedDB.instance.synchronizer.syncUpstream();
-        fulfillSync(true);
+        if (authRepo != null) {
+          authRepo!.lateLogin().then((value) {
+            SyncedDB.instance.synchronizer.syncUpstream();
+            fulfillSync(true);
+          });
+        } else {
+          SyncedDB.instance.synchronizer.syncUpstream();
+          fulfillSync(true);
+        }
         nofinalpush = false;
         break;
     }
@@ -469,8 +482,8 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
                   .getQuestionAnswerAudio(
                       appliedIntervention,
                       executedSurvey.id!,
-                      executedSurvey.survey.questions.firstWhere(
-                          (element) => element.id == questionAnswer.id!))
+                      executedSurvey.survey.questions.firstWhere((element) =>
+                          element.id == questionAnswer.questionID!))
                   .sync(this);
             } else if (questionAnswer.type == QuestionType.PICTURE ||
                 questionAnswer.type == QuestionType.PICTUREWITHTAGS) {
@@ -478,8 +491,8 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
                   .getQuestionAnswerPic(
                       appliedIntervention,
                       executedSurvey.id!,
-                      executedSurvey.survey.questions.firstWhere(
-                          (element) => element.id == questionAnswer.id!))
+                      executedSurvey.survey.questions.firstWhere((element) =>
+                          element.id == questionAnswer.questionID!))
                   .sync(this);
             }
           }

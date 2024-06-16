@@ -53,6 +53,12 @@ class Synchronizer {
             print('[Sync] processing queue object ' +
                 queueObject.toJson().toString());
 
+            //for test purposes of fallback -> set false for any release
+            bool test_fallback_s3 = false;
+            if (test_fallback_s3) {
+              throw (Exception('Test Fallback S3'));
+            }
+
             if (queueObject.action == DBAction.DELETE) {
               print('[Sync] now deletes');
               await remoteDB.delete(queueObject.object);
@@ -108,11 +114,11 @@ class Synchronizer {
 
             Map<String, dynamic> objectJson = queueObject!.object.toJson();
 
-            bool hasBeenSaved = await StorageRepository.dbObjectSave(
-                objectJson, objectJson['id']);
+            bool hasBeenSaved = await StorageRepository.dbObjectSave(objectJson,
+                objectJson['id'], queueObject.object.runtimeType.toString());
 
             if (hasBeenSaved) {
-              if (queueObject.object is Survey) {
+              if (queueObject.object is ExecutedSurvey) {
                 syncBloc.add(SavedFailedSurveyEvent());
               } else {
                 syncBloc.add(SavedFailedOtherEntityEvent());
@@ -138,11 +144,11 @@ class Synchronizer {
 
             Map<String, dynamic> objectJson = queueObject!.object.toJson();
 
-            bool hasBeenSaved = await StorageRepository.dbObjectSave(
-                objectJson, objectJson['id']);
+            bool hasBeenSaved = await StorageRepository.dbObjectSave(objectJson,
+                objectJson['id'], queueObject.object.runtimeType.toString());
 
             if (hasBeenSaved) {
-              if (queueObject.object is Survey) {
+              if (queueObject.object is ExecutedSurvey) {
                 syncBloc.add(SavedFailedSurveyEvent());
               } else {
                 syncBloc.add(SavedFailedOtherEntityEvent());

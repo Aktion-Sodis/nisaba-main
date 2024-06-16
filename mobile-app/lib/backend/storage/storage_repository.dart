@@ -16,7 +16,11 @@ class StorageRepository {
 
   static Future<bool> hasConnectivity() async {
     if (_last_connectivity_check != null) {
-      if (_last_connectivity_check!.difference(DateTime.now()).inSeconds < 2) {
+      if (_last_connectivity_check!
+              .difference(DateTime.now())
+              .inMilliseconds
+              .abs() <
+          500) {
         if (_had_connectivity != null) {
           return Future.value(_had_connectivity);
         }
@@ -188,15 +192,17 @@ class StorageRepository {
   }
 
   static Future<bool> dbObjectSave(
-      Map<String, dynamic> values, String id) async {
-    String path = dataStorePath(DataStorePaths.failedDBObject, [id]);
+      Map<String, dynamic> values, String id, String type) async {
+    String path = dataStorePath(DataStorePaths.failedDBObject, [type, id]);
 
     try {
       //upload json files from values
 
       //create a file in cache from values without a constant path -> will be deleted afterwards
       Directory appDocDir = await getApplicationDocumentsDirectory();
-      File localCacheFile = File('${appDocDir.path}/$path.json');
+      Directory(appDocDir.path).createSync(recursive: true);
+      File localCacheFile = File('${appDocDir.path}/$path');
+      localCacheFile.parent.createSync(recursive: true);
       await localCacheFile.writeAsString(values.toString(), flush: true);
       await Amplify.Storage.uploadFile(
         local: localCacheFile,

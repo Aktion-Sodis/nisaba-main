@@ -100,20 +100,22 @@ class MyAppState extends State<MyApp> {
                     ],
                     child: BlocProvider<RequestPermissionsCubit>(
                       create: (context) => RequestPermissionsCubit.instance,
-                      child: Builder(
-                          builder: (context) => PermissionsChecker(
-                                child: BlocProvider<SessionCubit>(
-                                  create: (context) => SessionCubit(
-                                    authRepo: context.read<AuthRepository>(),
-                                    userRepo: context.read<UserRepository>(),
-                                  ),
-                                  child: Builder(
-                                      builder: (context) =>
-                                          WifiOnlySettingChecker(
-                                              child:
-                                                  AuthenticationStateBuilder())),
-                                ),
-                              )),
+                      child: Builder(builder: (context) {
+                        context.read<SyncBloc>().authRepo =
+                            context.read<AuthRepository>();
+
+                        return PermissionsChecker(
+                          child: BlocProvider<SessionCubit>(
+                            create: (context) => SessionCubit(
+                              authRepo: context.read<AuthRepository>(),
+                              userRepo: context.read<UserRepository>(),
+                            ),
+                            child: Builder(
+                                builder: (context) => WifiOnlySettingChecker(
+                                    child: AuthenticationStateBuilder())),
+                          ),
+                        );
+                      }),
                     ),
                   ),
                 )));
