@@ -1,4 +1,4 @@
-package com.example.mobile_app
+package org.aktionsodis.nisaba.mobile
 
 import io.flutter.embedding.android.FlutterActivity
 
