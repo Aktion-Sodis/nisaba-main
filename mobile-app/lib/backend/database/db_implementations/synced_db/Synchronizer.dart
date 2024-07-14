@@ -1,11 +1,15 @@
 import 'dart:async';
 
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:mobile_app/backend/Blocs/sync/sync_bloc.dart';
+import 'package:mobile_app/backend/Blocs/sync/sync_events.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDB.dart';
 import 'package:mobile_app/backend/database/db_implementations/remote_db/DBExceptions.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/DBQueue.dart';
+import 'package:mobile_app/backend/storage/storage_repository.dart';
 import 'package:synchronized/synchronized.dart';
 import '../../../../frontend/tests/synced_db_test.dart';
 import '../../DB.dart';
@@ -19,12 +23,16 @@ class Synchronizer {
   final Set<Type> modelsToSyncDownstream;
   final List<Type> registeredTypes;
   final DBQueue queue;
+  final SyncBloc syncBloc;
 
   final Lock _downstreamSyncLock = Lock();
   final Lock _upstreamSyncLock = Lock();
 
   Synchronizer(this.localDB, this.remoteDB, this.queue,
-      this.modelsToSyncDownstream, this.registeredTypes);
+      this.modelsToSyncDownstream, this.registeredTypes, this.syncBloc) {
+    queue.getNumberOfQueuedEntries().then((value) =>
+        syncBloc.add(InitEntityAndSurveyCountEvent(value[1], value[0])));
+  }
 
   Future<void> syncUpstream() async {
     print('[SYNC] sync upstream');
@@ -39,35 +47,130 @@ class Synchronizer {
       try {
         DBQueueObject? queueObject = await queue.get();
         while (queueObject != null) {
-          print('[Sync] processing queue object ' + queueObject.action.toString());
-          print('[Sync] processing queue object ' + queueObject.toJson().toString());
+          try {
+            print('[Sync] processing queue object ' +
+                queueObject.action.toString());
+            print('[Sync] processing queue object ' +
+                queueObject.toJson().toString());
 
-        /*if((queueObject.action == DBAction.CREATE || queueObject.action == DBAction.UPDATE) && queueObject.modelType == 'Entity') {
-          print('Entity gets created or updated');
-          //remove level from json paiload
-        } */
+            //for test purposes of fallback -> set false for any release
+            bool test_fallback_s3 = false;
+            if (test_fallback_s3) {
+              throw (Exception('Test Fallback S3'));
+            }
 
-          if (queueObject.action == DBAction.DELETE) {
-            print('[Sync] now deletes');
-            await remoteDB.delete(queueObject.object);
-          } else if (queueObject.action == DBAction.CREATE) {
-            print('[Sync] now creates');
-            await remoteDB.create(queueObject.object);
-          } else if (queueObject.action == DBAction.UPDATE) {
-            print('[Sync] now updates');
-            await remoteDB.update(queueObject.object);
+            if (queueObject.action == DBAction.DELETE) {
+              print('[Sync] now deletes');
+              await remoteDB.delete(queueObject.object);
+            } else if (queueObject.action == DBAction.CREATE) {
+              print('[Sync] now creates');
+              await remoteDB.create(queueObject.object);
+            } else if (queueObject.action == DBAction.UPDATE) {
+              print('[Sync] now updates');
+              await remoteDB.update(queueObject.object);
+            }
+
+            print('[Sync] now deletes queue object');
+            await queue.delete(queueObject);
+
+            if (queueObject.object is ExecutedSurvey) {
+              syncBloc.add(UploadedSurveyEvent());
+            } else {
+              syncBloc.add(UploadedOtherEntityEvent());
+            }
+
+            queueObject = await queue.get();
+          } on NoConnectionException catch (e) {
+            //rethrow exception to stop sync process
+            rethrow;
+          } on OperationException catch (e) {
+            if (e.graphqlErrors.isEmpty && e.linkException is ServerException) {
+              //no graph ql error but server exception
+              ServerException serverException =
+                  e.linkException! as ServerException;
+              if (serverException.statusCode == null) {
+                throw (NoConnectionException());
+              }
+            } else if (e.graphqlErrors.isEmpty &&
+                e.linkException is UnknownException) {
+              UnknownException unknownException =
+                  e.linkException! as UnknownException;
+              if (unknownException.message
+                  .contains('SessionExpiredException')) {
+                throw (NoConnectionException());
+              }
+            }
+
+            //only called if no internet exception
+            if (queueObject!.object is ExecutedSurvey) {
+              syncBloc.add(FailedSurveyEvent());
+            } else {
+              syncBloc.add(FailedOtherEntityEvent());
+            }
+
+            //todo: handle other error in upload -> upload in s3 bucket
+            print('[Sync] Error in DB Upstream Sync:');
+            print(e);
+
+            Map<String, dynamic> objectJson = queueObject!.object.toJson();
+
+            bool hasBeenSaved = await StorageRepository.dbObjectSave(objectJson,
+                objectJson['id'], queueObject.object.runtimeType.toString());
+
+            if (hasBeenSaved) {
+              if (queueObject.object is ExecutedSurvey) {
+                syncBloc.add(SavedFailedSurveyEvent());
+              } else {
+                syncBloc.add(SavedFailedOtherEntityEvent());
+              }
+              //remove from queue
+              await queue.delete(queueObject);
+            } else {
+              throw (NoConnectionException());
+            }
+
+            //then set queueObject
+            queueObject = await queue.get();
+          } catch (e) {
+            if (queueObject!.object is ExecutedSurvey) {
+              syncBloc.add(FailedSurveyEvent());
+            } else {
+              syncBloc.add(FailedOtherEntityEvent());
+            }
+
+            //todo: handle other error in upload -> upload in s3 bucket
+            print('[Sync] Error in DB Upstream Sync:');
+            print(e);
+
+            Map<String, dynamic> objectJson = queueObject!.object.toJson();
+
+            bool hasBeenSaved = await StorageRepository.dbObjectSave(objectJson,
+                objectJson['id'], queueObject.object.runtimeType.toString());
+
+            if (hasBeenSaved) {
+              if (queueObject.object is ExecutedSurvey) {
+                syncBloc.add(SavedFailedSurveyEvent());
+              } else {
+                syncBloc.add(SavedFailedOtherEntityEvent());
+              }
+              //remove from queue
+              await queue.delete(queueObject);
+            } else {
+              throw (NoConnectionException());
+            }
+
+            //then set queueObject
+            queueObject = await queue.get();
           }
-          
-          print('[Sync] now deletes queue object');
-          await queue.delete(queueObject);
-          queueObject = await queue.get();
         }
         upstreamSyncStatus = SyncStatus.UP_TO_DATE;
       } on NoConnectionException catch (e) {
+        syncBloc.add(CancelSyncEvent());
         upstreamSyncStatus = SyncStatus.WAITING;
       } catch (e) {
         print('[Sync] Error in DB Upstream Sync:');
         print(e);
+        syncBloc.add(CancelSyncEvent());
         upstreamSyncStatus = SyncStatus.STOPPED;
       }
     });

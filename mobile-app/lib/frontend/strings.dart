@@ -161,7 +161,16 @@ Map<String, dynamic> stringMap = {
     "restrict_mobile_data_question":
         "Usage of mobile data can be more expensive than usage of WiFi. Do you want to restrict uploading audio and photos via mobile data?",
     "use_only_wifi_button": "Use only WiFi",
-    "use_wifi_and_mobile_data": "Use WiFi and mobile data"
+    "use_wifi_and_mobile_data": "Use WiFi and mobile data",
+    "sync_in_preparation": "Sync in preparation",
+    "sync_surveys": "Surveys",
+    "sync_other_elements": "Other elements",
+    "sync_files": "Fotos and Audios",
+    "sync_failed_saved_surveys": "Problematic but secured surveys",
+    "sync_failed_other_elements": "Problematic but secured other elements",
+    "sync_interrupted": "Synchronization interrupted",
+    "sync_button_start": "Start synchronization",
+    "sync_button_in_sync": "Synchronizing..."
   },
   "es-BO": {
     "emailorphonenumber": "correo electrónico/número de teléfono",
@@ -282,7 +291,16 @@ Map<String, dynamic> stringMap = {
     "restrict_mobile_data_question":
         "El uso de datos móviles puede ser más caro que el uso de WiFi. Quieres restringir la carga de audio y fotos a través de los datos móviles?",
     "use_only_wifi_button": "Usar sólo WiFi",
-    "use_wifi_and_mobile_data": "Utilizar el WiFi y los datos móviles"
+    "use_wifi_and_mobile_data": "Utilizar el WiFi y los datos móviles",
+    "sync_in_preparation": "Sincronización en preparación",
+    "sync_surveys": "Entrevistas",
+    "sync_other_elements": "Otros elementos",
+    "sync_files": "Fotos y Audios",
+    "sync_failed_saved_surveys": "Entrevistas problemáticas pero seguras",
+    "sync_failed_other_elements": "Otros elementos problemáticos pero seguros",
+    "sync_interrupted": "Sincronización interrumpida",
+    "sync_button_start": "Iniciar sincronización",
+    "sync_button_in_sync": "Sincronizando..."
   }
 };
 
@@ -511,3 +529,25 @@ String get useOnlyWifiButton =>
     stringMap[currentLanguage]["use_only_wifi_button"];
 String get useWifiAndMobileData =>
     stringMap[currentLanguage]["use_wifi_and_mobile_data"];
+
+String get syncInPreparation =>
+    stringMap[currentLanguage]["sync_in_preparation"];
+
+String get syncSurveys => stringMap[currentLanguage]["sync_surveys"];
+
+String get syncOtherElements =>
+    stringMap[currentLanguage]["sync_other_elements"];
+
+String get syncFiles => stringMap[currentLanguage]["sync_files"];
+
+String get syncFailedSavedSurveys =>
+    stringMap[currentLanguage]["sync_failed_saved_surveys"];
+
+String get syncFailedOtherElements =>
+    stringMap[currentLanguage]["sync_failed_other_elements"];
+
+String get syncInterrupted => stringMap[currentLanguage]["sync_interrupted"];
+
+String get syncButtonStart => stringMap[currentLanguage]["sync_button_start"];
+
+String get syncButtonInSync => stringMap[currentLanguage]["sync_button_in_sync"];

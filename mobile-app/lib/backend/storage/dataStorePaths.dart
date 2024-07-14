@@ -26,7 +26,8 @@ enum DataStorePaths {
   appliedInterventionPicPath,
   entityPicPath,
   taskPicPath,
-  taskAudioPath
+  taskAudioPath,
+  failedDBObject,
 }
 
 ///Map of ontoligies including the replacable parameters
@@ -94,6 +95,10 @@ final Map<DataStorePaths, dynamic> databaseOntologies = {
   DataStorePaths.taskAudioPath: {
     "path": "taskFiles/taskID/audioID.aac",
     "toBeReplaced": ["taskID", "audioID"],
+  },
+  DataStorePaths.failedDBObject: {
+    "path": "failedDBObjects/type/failedDBObjectID.json",
+    "toBeReplaced": ["type", "failedDBObjectID"],
   },
 };
 

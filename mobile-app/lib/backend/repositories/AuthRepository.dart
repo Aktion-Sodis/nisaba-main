@@ -57,7 +57,7 @@ class AuthRepository {
           where: amp.Organization.ID.eq(organizationID));*/
       print('queries for organization');
       //todo: hier ist der Fehler
-      
+
       final result = await Amplify.API
           .query(
               request:
@@ -139,8 +139,7 @@ class AuthRepository {
       }
       if (internetconnection) {
         await initSession();
-      }
-      else {
+      } else {
         print('performing offline login');
       }
       //await initSession();
@@ -158,6 +157,30 @@ class AuthRepository {
         print("offline login not possible");
         return null;
       }
+    }
+  }
+
+  Future<void> lateLogin() async {
+    //check for internet connection
+    bool internetconnection = false;
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        internetconnection = true;
+      }
+    } on SocketException catch (_) {
+      internetconnection = false;
+    }
+    if (internetconnection) {
+      //auth
+      print("trying auto login");
+
+      final session = await Amplify.Auth.fetchAuthSession();
+      await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
+      print("autoLogin logged in?: ${session.isSignedIn}");
+
+      bool autoLoggedIn = session.isSignedIn;
+      ConfigGraphQL().initClient();
     }
   }
 

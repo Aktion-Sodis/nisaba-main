@@ -13,7 +13,7 @@ class DBQueue {
 
   //static const String queueStoreName = 'DBQueue';
 
-  static String queueStoreName () {
+  static String queueStoreName() {
     String orga_id = LocalDataRepository.instance.organizationID;
     return 'DBQueue_' + orga_id;
   }
@@ -25,6 +25,38 @@ class DBQueue {
     var entry = DBQueueObject(object.runtimeType.toString(), object, action);
     await store.add(localDB.db,
         localDB.getRegisteredModel(DBQueueObject).fromDBModel(entry)!);
+  }
+
+  Future<List<int>> getNumberOfQueuedEntries() async {
+    //returns [number of Surveys, number of other entries]
+    var store = intMapStoreFactory.store(queueStoreName());
+    //number of entries of type Survey
+    /**
+     * entry structure: instance.modelType == Survey
+     * <String, dynamic>{
+      'id': instance.id,
+      'action': _$DBActionEnumMap[instance.action]!,
+      'modelType': instance.modelType,
+      'object': DBModelConverter.instance.toJson(instance.object),
+      'deleted': instance.deleted,
+    };
+     * 
+     * 
+     */
+
+    int surveysToUpload = 0;
+    int otherToUpload = 0;
+    List<RecordSnapshot> records = await store.find(localDB.db);
+
+    for (var record in records) {
+      if ((record.value! as Map<String, dynamic>)['modelType'] ==
+          'ExecutedSurvey') {
+        surveysToUpload++;
+      } else {
+        otherToUpload++;
+      }
+    }
+    return [surveysToUpload, otherToUpload];
   }
 
   Future<DBQueueObject?> get() async {

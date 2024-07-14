@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile_app/backend/Blocs/sync/sync_bloc.dart';
 import 'package:mobile_app/backend/repositories/AuthRepository.dart';
 import 'package:mobile_app/backend/Blocs/session/session_cubit.dart';
 import 'package:mobile_app/backend/Blocs/session/session_state.dart';
@@ -49,6 +50,8 @@ class AuthenticationStateBuilder extends StatelessWidget {
               authRepo: context.read<AuthRepository>(),
               userID: state.userID,
               userRepository: context.read<UserRepository>()),
+
+          //todo: insert here the sync bloc -> so it is accessible
           child: UserStateBuilder()),
     );
   }

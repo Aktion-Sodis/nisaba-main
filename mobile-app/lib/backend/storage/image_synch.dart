@@ -104,13 +104,12 @@ class SyncedFile {
 
   Future<bool> sync(SyncBloc syncBloc, {bool onlyUpload = false}) async {
     try {
-      syncBloc.add(StartLoadingFileEvent());
       File localCacheFile = await getCachePath();
       bool cached = await localCacheFile.exists();
       if (!cached) {
-        if(!onlyUpload) {
+        if (!onlyUpload) {
           await StorageRepository.downloadFile(localCacheFile, path,
-            checkConnection: false);
+              checkConnection: false);
         }
       } else {
         ListResult listResult = await Amplify.Storage.list(path: path);
@@ -138,7 +137,6 @@ class SyncedFile {
           }
         }
       }
-      syncBloc.add(LoadedFileEvent());
       return true;
     } catch (e) {
       return false;

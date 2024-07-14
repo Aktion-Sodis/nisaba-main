@@ -11,6 +11,7 @@ import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncStatus.dart';
 import 'package:mobile_app/backend/repositories/AppliedInterventionRepository.dart';
+import 'package:mobile_app/backend/repositories/AuthRepository.dart';
 import 'package:mobile_app/backend/repositories/ContentRepository.dart';
 import 'package:mobile_app/backend/repositories/EntityRepository.dart';
 import 'package:mobile_app/backend/repositories/ExecutedSurveyRepository.dart';
@@ -30,30 +31,12 @@ import 'package:mobile_app/utils/connectivity.dart';
 import '../../database/db_implementations/synced_db/SyncedDB.dart';
 
 class SyncBloc extends Bloc<SyncEvent, SyncState> {
-  TaskBloc taskBloc;
-  UserBloc userBloc;
+  UserBloc? userBloc;
+  AuthRepository? authRepo;
   static SyncedDB db = SyncedDB.instance;
 
-  SyncBloc({
-    required this.taskBloc,
-    required this.userBloc,
-  }) : super(_getStateBySyncStatus(db.synchronizer.upstreamSyncStatus)) {
+  SyncBloc() : super(PrepareSyncState()) {
     on<SyncEvent>(_mapEventToState);
-    fulfillSync(true);
-
-    db.synchronizer.subscribeUpstreamSyncStatusStream(_updateProgress);
-  }
-
-  static SyncState _getStateBySyncStatus(SyncStatus status) {
-    if (status == SyncStatus.SYNCING || status == SyncStatus.WAITING) {
-      return InSyncState(totalFiles: 0, loadedFiles: 0, progress: 0);
-    } else if (status == SyncStatus.UP_TO_DATE) {
-      return FullySyncedState();
-    } else if (status == SyncStatus.STOPPED) {
-      return CannotSyncState();
-    } else {
-      return CannotSyncState();
-    }
   }
 
   void _updateProgress(SyncStatus syncStatus) {
@@ -71,34 +54,286 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
   }
 
   void _mapEventToState(SyncEvent event, Emitter<SyncState> emit) async {
-    if (event is StartSyncEvent) {
-      if ((state is! InSyncState)) {
-        emit(InSyncState(totalFiles: 0, loadedFiles: 0, progress: 0));
-      }
-    } else if (event is StartLoadingFileEvent) {
-      print('start loading file event');
-      if (state is InSyncState) {
-        emit((state as InSyncState)
-            .copyWith(totalFiles: (state as InSyncState).totalFiles + 1));
-      } else {
-        emit(InSyncState(totalFiles: 1, loadedFiles: 0, progress: 0));
-      }
-    } else if (event is LoadedFileEvent) {
-      
-      if (state is InSyncState) {
+    int totalFiles = 0;
+    int loadedFiles = 0;
+    int progress = 100;
+
+    int toSyncSurveys = 0;
+    int syncedSurveys = 0;
+    int syncProgressSurveys = 100;
+
+    int otherEntities = 0;
+    int syncedOtherEntities = 0;
+    int syncProgressOtherEntities = 100;
+
+    int failedSurveys = 0;
+    int failedOtherEntities = 0;
+
+    int savedFailedSurveys = 0;
+    int savedFailedOtherEntities = 0;
+
+    int saveProgress = 100;
+
+    //update values according to previous state
+    switch (state.runtimeType) {
+      case InSyncState:
         InSyncState inSyncState = state as InSyncState;
-        print('loaded file event - loaded: ${inSyncState.loadedFiles + 1} total: ${inSyncState.totalFiles}');
-        if (inSyncState.loadedFiles + 1 == inSyncState.totalFiles) {
-          add(FinishedSyncEvent());
+        totalFiles = inSyncState.totalFiles;
+        loadedFiles = inSyncState.loadedFiles;
+        progress = inSyncState.progress;
+        toSyncSurveys = inSyncState.toSyncSurveys;
+        syncedSurveys = inSyncState.syncedSurveys;
+        syncProgressSurveys = inSyncState.syncProgressSurveys;
+        otherEntities = inSyncState.otherEntities;
+        syncedOtherEntities = inSyncState.syncedOtherEntities;
+        syncProgressOtherEntities = inSyncState.syncProgressOtherEntities;
+        failedSurveys = inSyncState.failedSurveys;
+        failedOtherEntities = inSyncState.failedOtherEntities;
+        savedFailedSurveys = inSyncState.savedFailedSurveys;
+        savedFailedOtherEntities = inSyncState.savedFailedOtherEntities;
+        saveProgress = inSyncState.saveProgress;
+        break;
+      case FullySyncedState:
+        FullySyncedState fullySyncedState = state as FullySyncedState;
+        loadedFiles = fullySyncedState.loadedFiles;
+        totalFiles = loadedFiles;
+        progress = 100;
+        toSyncSurveys = fullySyncedState.syncedSurveys;
+        syncedSurveys = fullySyncedState.syncedSurveys;
+        syncProgressSurveys = 100;
+        otherEntities = fullySyncedState.syncedOtherEntities;
+        syncedOtherEntities = fullySyncedState.syncedOtherEntities;
+        syncProgressOtherEntities = 100;
+        failedSurveys = fullySyncedState.savedFailedSurveys;
+        failedOtherEntities = fullySyncedState.savedFailedOtherEntities;
+        savedFailedSurveys = fullySyncedState.savedFailedSurveys;
+        savedFailedOtherEntities = fullySyncedState.savedFailedOtherEntities;
+        saveProgress = 100;
+        break;
+      case CannotSyncState:
+        CannotSyncState cannotSyncState = state as CannotSyncState;
+        loadedFiles = cannotSyncState.loadedFiles;
+        totalFiles = cannotSyncState.totalFiles;
+        progress = cannotSyncState.progress;
+        toSyncSurveys = cannotSyncState.toSyncSurveys;
+        syncedSurveys = cannotSyncState.syncedSurveys;
+        syncProgressSurveys = cannotSyncState.syncProgressSurveys;
+        otherEntities = cannotSyncState.otherEntities;
+        syncedOtherEntities = cannotSyncState.syncedOtherEntities;
+        syncProgressOtherEntities = cannotSyncState.syncProgressOtherEntities;
+        failedSurveys = cannotSyncState.failedSurveys;
+        failedOtherEntities = cannotSyncState.failedOtherEntities;
+        savedFailedSurveys = cannotSyncState.savedFailedSurveys;
+        savedFailedOtherEntities = cannotSyncState.savedFailedOtherEntities;
+        saveProgress = cannotSyncState.saveProgress;
+        break;
+      default:
+        break;
+    }
+
+    bool failed = false;
+
+    bool nofinalpush = false;
+
+    //handle events correctly
+    switch (event.runtimeType) {
+      //start sync -> just as a notification to show it is in sync
+      case StartSyncEvent:
+        break;
+      //trigger file sync event -> starts syncing files
+      case TriggerFileSyncEvent:
+        totalFiles = 0;
+        loadedFiles = 0;
+        progress = 100;
+        fulfillSync(true);
+        nofinalpush = false;
+        break;
+      //loaded file event -> increase loaded files
+      case LoadedFileEvent:
+        loadedFiles++;
+        //determine progress of loaded files (in percent)
+        if (totalFiles != 0) {
+          progress = ((loadedFiles / totalFiles) * 100).round();
+        }
+        break;
+      //start loading file event -> increase total files
+      case StartLoadingFileEvent:
+        totalFiles++;
+        //progress
+        if (totalFiles != 0) {
+          progress = ((loadedFiles / totalFiles) * 100).round();
+        }
+        break;
+      //init entity and survey count event -> set entity and survey count
+      case InitEntityAndSurveyCountEvent:
+        toSyncSurveys += (event as InitEntityAndSurveyCountEvent).surveyCount;
+        otherEntities += event.entityCount;
+        //progresses
+        if (toSyncSurveys != 0) {
+          syncProgressSurveys = ((syncedSurveys / toSyncSurveys) * 100).round();
         } else {
-          emit(inSyncState.copyWith(loadedFiles: inSyncState.loadedFiles + 1));
+          syncProgressSurveys = 100;
+        }
+        if (otherEntities != 0) {
+          syncProgressOtherEntities =
+              ((syncedOtherEntities / otherEntities) * 100).round();
+        } else {
+          syncProgressOtherEntities = 100;
+        }
+        break;
+      //uploaded survey event -> increase synced surveys
+      case UploadedSurveyEvent:
+        syncedSurveys++;
+        //progress
+        if (toSyncSurveys != 0) {
+          syncProgressSurveys = ((syncedSurveys / toSyncSurveys) * 100).round();
+        }
+        break;
+      //uploaded other entity event -> increase synced other entities
+      case UploadedOtherEntityEvent:
+        syncedOtherEntities++;
+        //progress
+        if (otherEntities != 0) {
+          syncProgressOtherEntities =
+              ((syncedOtherEntities / otherEntities) * 100).round();
+        }
+        break;
+      //failed survey event -> increase failed surveys
+      case FailedSurveyEvent:
+        failedSurveys++;
+        if (failedSurveys + failedOtherEntities != 0) {
+          saveProgress = ((savedFailedSurveys + savedFailedOtherEntities) /
+                  (failedSurveys + failedOtherEntities) *
+                  100)
+              .round();
+        }
+        break;
+      //failed other entity event -> increase failed other entities
+      case FailedOtherEntityEvent:
+        failedOtherEntities++;
+        if (failedSurveys + failedOtherEntities != 0) {
+          saveProgress = ((savedFailedSurveys + savedFailedOtherEntities) /
+                  (failedSurveys + failedOtherEntities) *
+                  100)
+              .round();
+        }
+        break;
+      //saved failed survey event -> decrease toSyncSurveys
+      case SavedFailedSurveyEvent:
+        savedFailedSurveys++;
+        toSyncSurveys--;
+        //progress
+        if (toSyncSurveys != 0) {
+          syncProgressSurveys = ((syncedSurveys / toSyncSurveys) * 100).round();
+        } else {
+          syncProgressSurveys = 100;
+        }
+        if (failedSurveys + failedOtherEntities != 0) {
+          saveProgress = ((savedFailedSurveys + savedFailedOtherEntities) /
+                  (failedSurveys + failedOtherEntities) *
+                  100)
+              .round();
+        }
+
+        break;
+      //saved failed other entity event -> decrease otherEntities
+      case SavedFailedOtherEntityEvent:
+        savedFailedOtherEntities++;
+        otherEntities--;
+        //progress
+        if (otherEntities != 0) {
+          syncProgressOtherEntities =
+              ((syncedOtherEntities / otherEntities) * 100).round();
+        } else {
+          syncProgressOtherEntities = 100;
+        }
+        if (failedSurveys + failedOtherEntities != 0) {
+          saveProgress = ((savedFailedSurveys + savedFailedOtherEntities) /
+                  (failedSurveys + failedOtherEntities) *
+                  100)
+              .round();
+        }
+        break;
+      //finished sync event -> nothing
+      case FinishedSyncEvent:
+        break;
+      //cancel sync event -> nothing
+      case CancelSyncEvent:
+        failed = true;
+        break;
+      //add user bloc event -> set userBloc
+      case AddUserBlocEvent:
+        userBloc = (event as AddUserBlocEvent).userBloc;
+        break;
+      case RetriggerSyncEvent:
+        totalFiles = 0;
+        loadedFiles = 0;
+        progress = 100;
+        if (authRepo != null) {
+          authRepo!.lateLogin().then((value) {
+            SyncedDB.instance.synchronizer.syncUpstream();
+            fulfillSync(true);
+          });
+        } else {
+          SyncedDB.instance.synchronizer.syncUpstream();
+          fulfillSync(true);
+        }
+        nofinalpush = false;
+        break;
+    }
+
+    if (!nofinalpush) {
+      if (failed) {
+        emit(CannotSyncState(
+          totalFiles: totalFiles,
+          loadedFiles: loadedFiles,
+          toSyncSurveys: toSyncSurveys,
+          syncedSurveys: syncedSurveys,
+          otherEntities: otherEntities,
+          syncedOtherEntities: syncedOtherEntities,
+          failedSurveys: failedSurveys,
+          failedOtherEntities: failedOtherEntities,
+          savedFailedSurveys: savedFailedSurveys,
+          savedFailedOtherEntities: savedFailedOtherEntities,
+        ));
+      } else {
+        //check whether complete
+        bool finished = isComplete(progress, syncProgressSurveys,
+            syncProgressOtherEntities, saveProgress);
+        if (finished) {
+          emit(FullySyncedState(
+              loadedFiles: loadedFiles,
+              syncedSurveys: syncedSurveys,
+              syncedOtherEntities: syncedOtherEntities,
+              savedFailedSurveys: savedFailedSurveys,
+              savedFailedOtherEntities: savedFailedOtherEntities));
+        } else {
+          emit(InSyncState(
+              totalFiles: totalFiles,
+              loadedFiles: loadedFiles,
+              progress: progress,
+              toSyncSurveys: toSyncSurveys,
+              syncedSurveys: syncedSurveys,
+              syncProgressSurveys: syncProgressSurveys,
+              otherEntities: otherEntities,
+              syncedOtherEntities: syncedOtherEntities,
+              syncProgressOtherEntities: syncProgressOtherEntities,
+              failedSurveys: failedSurveys,
+              failedOtherEntities: failedOtherEntities,
+              savedFailedSurveys: savedFailedSurveys,
+              savedFailedOtherEntities: savedFailedOtherEntities,
+              saveProgress: saveProgress));
         }
       }
-    } else if (event is FinishedSyncEvent) {
-      emit(FullySyncedState());
-    } else if (event is CancelSyncEvent) {
-      emit(CannotSyncState());
     }
+  }
+
+  bool isComplete(int progress, int syncProgressSurveys,
+      int syncProgressOtherEntities, int saveProgress) {
+    return progress == 100 &&
+        syncProgressSurveys == 100 &&
+        syncProgressOtherEntities == 100 &&
+        saveProgress == 100;
   }
 
   void fulfillSync(bool filesSyncEnabled) async {
@@ -113,9 +348,8 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     add(StartSyncEvent());
 
     //all Levels
-    List<Level> allLevels =
-        await LevelRepository.instance.getAllAmpLevels();
-      
+    List<Level> allLevels = await LevelRepository.instance.getAllAmpLevels();
+
     print('sync: levels loaded');
 
     //Entities including applied Interventions and Executed Surveys
@@ -125,12 +359,13 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     print('sync: entities loaded');
 
     //Entities including Interventions
-    List<Intervention> allInterventions = await InterventionRepository.instance.allInterventionsIncludingSurveys();
+    List<Intervention> allInterventions = await InterventionRepository.instance
+        .allInterventionsIncludingSurveys();
 
     print('sync: interventions loaded');
 
     //User
-    User? user = userBloc.state.user;
+    User? user = userBloc?.state.user;
 
     print('sync: user loaded');
 
@@ -147,7 +382,7 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
       //syncTasks(allTasksToSync);
       //syncContents(allContents);
       syncEntities(allEntities);
-      if (user!=null) {
+      if (user != null) {
         syncUser(user);
       }
     }
@@ -247,8 +482,8 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
                   .getQuestionAnswerAudio(
                       appliedIntervention,
                       executedSurvey.id!,
-                      executedSurvey.survey.questions.firstWhere(
-                          (element) => element.id == questionAnswer.id!))
+                      executedSurvey.survey.questions.firstWhere((element) =>
+                          element.id == questionAnswer.questionID!))
                   .sync(this);
             } else if (questionAnswer.type == QuestionType.PICTURE ||
                 questionAnswer.type == QuestionType.PICTUREWITHTAGS) {
@@ -256,8 +491,8 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
                   .getQuestionAnswerPic(
                       appliedIntervention,
                       executedSurvey.id!,
-                      executedSurvey.survey.questions.firstWhere(
-                          (element) => element.id == questionAnswer.id!))
+                      executedSurvey.survey.questions.firstWhere((element) =>
+                          element.id == questionAnswer.questionID!))
                   .sync(this);
             }
           }
@@ -271,5 +506,4 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
     //upload
     UserRepository.instance.getUserPicFile(user).sync(this);
   }
-
 }

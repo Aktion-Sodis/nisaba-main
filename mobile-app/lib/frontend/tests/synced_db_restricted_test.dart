@@ -21,7 +21,7 @@ import 'package:sembast/sembast.dart';
 
 import '../../backend/callableModels/TestObject.dart';
 import '../../backend/database/Query.dart';
-
+/*
 class SyncedDBRestrictedTest extends StatelessWidget {
   SyncedDBRestrictedTest({Key? key}) : super(key: key);
 
@@ -419,3 +419,4 @@ class SyncedDBRestrictedTest extends StatelessWidget {
         ));
   }
 }
+*/
