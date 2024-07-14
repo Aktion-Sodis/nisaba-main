@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 Future<ThemeData> getThemeData() async {
   return ThemeData(
-
     cardTheme: CardTheme(
         color: Colors.white,
         shadowColor: Colors.grey,
@@ -32,13 +31,12 @@ Future<ThemeData> getThemeData() async {
         unselectedLabelStyle: const TextStyle(color: Colors.grey),
         showUnselectedLabels: true),
     textTheme: TextTheme(
-        overline: TextStyle(color: Colors.black87),
-
-        headline1: TextStyle(color: Colors.blue, fontSize: 26),
-        headline2: TextStyle(color: Colors.black87, fontSize: 26),
-        subtitle1: TextStyle(color: Colors.black87, fontSize: 22),
-        subtitle2: TextStyle(color: Colors.black87, fontSize: 20),
-        bodyText1: TextStyle(color: Colors.black87, fontSize: 18)),
+        headlineLarge: TextStyle(color: Colors.black87),
+        headlineMedium: TextStyle(color: Colors.blue, fontSize: 26),
+        headlineSmall: TextStyle(color: Colors.black87, fontSize: 26),
+        titleLarge: TextStyle(color: Colors.black87, fontSize: 22),
+        titleMedium: TextStyle(color: Colors.black87, fontSize: 20),
+        bodyMedium: TextStyle(color: Colors.black87, fontSize: 18)),
     inputDecorationTheme: InputDecorationTheme(
         labelStyle: TextStyle(color: Colors.grey, fontSize: 18),
         floatingLabelStyle: TextStyle(color: Colors.blue, fontSize: 18),
@@ -60,9 +58,7 @@ Future<ThemeData> getThemeData() async {
     iconTheme: const IconThemeData(
       size: 25,
     ),
-
   );
-
 }
 
 class ThemeColors {
@@ -73,7 +69,6 @@ class ThemeColors {
   static const Color red = Color.fromARGB(255, 219, 79, 71);
   static const Color mobster = Color.fromARGB(
       255, 120, 117, 121); // actually, light grey with purple tones
-
 }
 
 BoxShadow defaultShadow = BoxShadow(

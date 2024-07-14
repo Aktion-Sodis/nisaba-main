@@ -237,7 +237,7 @@ class UserDataViewState extends State<UserDataView> {
                             top: width(context) * .1),
                         child: Text(
                           strings.user_create_info,
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ))
                   else
                     Container(height: height(context) * .1),

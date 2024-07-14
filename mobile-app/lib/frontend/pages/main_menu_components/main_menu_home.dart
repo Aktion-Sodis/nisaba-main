@@ -95,7 +95,7 @@ class MainMenuHomeState extends State<MainMenuHome> {
                         horizontal: defaultPadding(context)),
                     alignment: Alignment.centerLeft,
                     child: Text(strings.main_menu_home,
-                        style: Theme.of(context).textTheme.headline2))),*/
+                        style: Theme.of(context).textTheme.headlineSmall))),*/
               CustomIconButton(() {
                 context.read<InAppBloc>().add(GoToUserPageEvent());
               }, MdiIcons.human, Size(width(context) * .1, width(context) * .1),
@@ -175,7 +175,8 @@ class MainMenuHomeState extends State<MainMenuHome> {
                               margin:
                                   EdgeInsets.only(top: defaultPadding(context)),
                               child: Text(strings.main_menu_tasks,
-                                  style: Theme.of(context).textTheme.subtitle1))
+                                  style:
+                                      Theme.of(context).textTheme.titleLarge))
                         ]),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -198,7 +199,7 @@ class MainMenuHomeState extends State<MainMenuHome> {
                                   child: Text(strings.main_menu_organization,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .subtitle1))
+                                          .titleLarge))
                             ]),
                         Column(
                             mainAxisSize: MainAxisSize.min,
@@ -218,7 +219,7 @@ class MainMenuHomeState extends State<MainMenuHome> {
                                   child: Text(strings.main_menu_wiki,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .subtitle1))
+                                          .titleLarge))
                             ]),
                       ],
                     )

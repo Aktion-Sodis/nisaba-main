@@ -31,7 +31,7 @@ Widget MainMenuAppBar(
                     children: [
                   Container(
                       child: Text(text,
-                          style: Theme.of(context).textTheme.headline2))
+                          style: Theme.of(context).textTheme.headlineMedium))
                 ]))
           ],
         )),

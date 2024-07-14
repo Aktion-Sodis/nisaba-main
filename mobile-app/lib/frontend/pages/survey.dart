@@ -202,7 +202,9 @@ class SurveyWidgetState extends State<SurveyWidget> {
                 preliminaryExecutedSurveyId,
                 element);
       }
-      if (element.type == QuestionType.TEXT || element.type == QuestionType.INT || element.type == QuestionType.DOUBLE) {
+      if (element.type == QuestionType.TEXT ||
+          element.type == QuestionType.INT ||
+          element.type == QuestionType.DOUBLE) {
         textEditingControllers[element] = TextEditingController();
       }
     });
@@ -284,10 +286,12 @@ class SurveyWidgetState extends State<SurveyWidget> {
                 }
                 if (answers[currentQuestion] != null) {
                   //check for followUpQuestions
-                  if (currentQuestion.type == QuestionType.SINGLECHOICE || currentQuestion.type == QuestionType.MULTIPLECHOICE) {
+                  if (currentQuestion.type == QuestionType.SINGLECHOICE ||
+                      currentQuestion.type == QuestionType.MULTIPLECHOICE) {
                     List<String> followUpIDs = [];
-                    for (var element in answers[currentQuestion]!.questionOptions!) {
-                      followUpIDs.addAll((element.followUpQuestionIDs??[]));
+                    for (var element
+                        in answers[currentQuestion]!.questionOptions!) {
+                      followUpIDs.addAll((element.followUpQuestionIDs ?? []));
                     }
                     //remove potential duplicates from followUpQuestionIDs
                     followUpIDs = followUpIDs.toSet().toList();
@@ -354,7 +358,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: questionTitleWidget(question: question, context: context),
+                child:
+                    questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -412,7 +417,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                         Flexible(
                             child: Text(
                                 question.questionOptions![index].displayText,
-                                style: Theme.of(context).textTheme.bodyText1)),
+                                style: Theme.of(context).textTheme.bodyMedium)),
                       ],
                     ),
                   ),
@@ -441,7 +446,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: questionTitleWidget(question: question, context: context),
+                child:
+                    questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -485,7 +491,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                         Flexible(
                             child: Text(
                           question.questionOptions![index].displayText,
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         )),
                       ],
                     ),
@@ -532,7 +538,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: questionTitleWidget(question: question, context: context),
+                child:
+                    questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -588,7 +595,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: questionTitleWidget(question: question, context: context),
+                child:
+                    questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -606,18 +614,17 @@ class SurveyWidgetState extends State<SurveyWidget> {
         getTakePhotoWidget(
           syncedFile: picAndAudioAnswerFiles[question.id]!,
           callback: (sF) async {
-              if (answers[question] == null) {
-                answers[question] = QuestionAnswer(
-                    questionID: question.id!,
-                    date: DateTime.now(),
-                    type: question.type);
-              }
-              sF.key = ValueKey(DateTime.now().toIso8601String());
-              setState(() {
-                print('now setting state again');
-                picAndAudioAnswerFiles[question.id] = sF;
-              });
-              
+            if (answers[question] == null) {
+              answers[question] = QuestionAnswer(
+                  questionID: question.id!,
+                  date: DateTime.now(),
+                  type: question.type);
+            }
+            sF.key = ValueKey(DateTime.now().toIso8601String());
+            setState(() {
+              print('now setting state again');
+              picAndAudioAnswerFiles[question.id] = sF;
+            });
           },
           context: context,
         ),
@@ -629,7 +636,6 @@ class SurveyWidgetState extends State<SurveyWidget> {
       {required BuildContext context,
       required Question question,
       required Survey survey}) {
-
     return Scrollbar(
         child: ListView(
       shrinkWrap: true,
@@ -646,7 +652,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: questionTitleWidget(question: question, context: context),
+                child:
+                    questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -693,7 +700,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: questionTitleWidget(question: question, context: context),
+                child:
+                    questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -744,7 +752,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: questionTitleWidget(question: question, context: context),
+                child:
+                    questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -789,7 +798,6 @@ class SurveyWidgetState extends State<SurveyWidget> {
       {required BuildContext context,
       required Question question,
       required Survey survey}) {
-    
     return Scrollbar(
         child: ListView(
       shrinkWrap: true,
@@ -806,7 +814,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: questionTitleWidget(question: question, context: context),
+                child:
+                    questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -841,8 +850,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
     bool confirmation = await showDialog(
         context: context,
         builder: (context) => AlertDialog(
-            title:
-                Text(abortSurvey, style: Theme.of(context).textTheme.headline2),
+            title: Text(abortSurvey,
+                style: Theme.of(context).textTheme.headlineSmall),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -850,7 +859,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     abortSurveyText,
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
                 SizedBox(
@@ -864,7 +873,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                           padding: EdgeInsets.all(defaultPadding(context)),
                           child: Text(
                             confirmAbort,
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ),
                         onPressed: () {
@@ -875,7 +884,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                           padding: EdgeInsets.all(defaultPadding(context)),
                           child: Text(
                             doNotAbort,
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ),
                         onPressed: () {
@@ -950,9 +959,10 @@ class SurveyWidgetState extends State<SurveyWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(child: Text(
+          Expanded(
+              child: Text(
             surveyTitle,
-            style: Theme.of(context).textTheme.headline2,
+            style: Theme.of(context).textTheme.headlineSmall,
           )),
           /*MaterialButton(
               onPressed: () {
@@ -1033,7 +1043,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
             padding: EdgeInsets.all(defaultPadding(context)),
             child: Text(
               endSurvey,
-              style: Theme.of(context).textTheme.headline2,
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
           ),
         ),
@@ -1085,7 +1095,6 @@ class SurveyWidgetState extends State<SurveyWidget> {
     );
   }
 
-
   static Widget getTakeAudioWidget(
       {required SyncedFile syncedFile,
       required ValueChanged<SyncedFile> callback,
@@ -1112,28 +1121,26 @@ class SurveyWidgetState extends State<SurveyWidget> {
                                   })
     */
 
-    return Padding(padding: EdgeInsets.symmetric(horizontal: defaultPadding(context)), child: RecorderWidget(
-        restingViewBuilder: (startPlaying) {
-                                    return _iconButton(
-                                        MdiIcons.microphoneOutline,
-                                        startPlaying);
-                                  }, recordingViewBuilder: (stopPlaying) {
-                                    return _iconButton(
-                                        MdiIcons.stopCircleOutline,
-                                        stopPlaying);
-                                  }, loadingViewBuilder: () {
-                                    return _iconButton(
-                                        MdiIcons.microphoneOutline, () {
-                                      // TODO: add explaining toast, that widget is not ready yet
-                                      debugPrint(
-                                          "Recorder widget is not ready yet");
-                                    });
-                                  },
-        onAudioRecorded: (path) async {
-          await syncedFile.updateAsAudio(File(path));
-          callback(syncedFile);
-        },
-       ));
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
+        child: RecorderWidget(
+          restingViewBuilder: (startPlaying) {
+            return _iconButton(MdiIcons.microphoneOutline, startPlaying);
+          },
+          recordingViewBuilder: (stopPlaying) {
+            return _iconButton(MdiIcons.stopCircleOutline, stopPlaying);
+          },
+          loadingViewBuilder: () {
+            return _iconButton(MdiIcons.microphoneOutline, () {
+              // TODO: add explaining toast, that widget is not ready yet
+              debugPrint("Recorder widget is not ready yet");
+            });
+          },
+          onAudioRecorded: (path) async {
+            await syncedFile.updateAsAudio(File(path));
+            callback(syncedFile);
+          },
+        ));
     return MaterialButton(
       onPressed: () {},
       child: Container(
@@ -1184,7 +1191,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
       switch (question.type) {
         case QuestionType.SINGLECHOICE:
           answerWidget = Text(questionAnswer.questionOptions!.first.displayText,
-              style: Theme.of(context).textTheme.bodyText1);
+              style: Theme.of(context).textTheme.bodyMedium);
           break;
         case QuestionType.MULTIPLECHOICE:
           String answers = '';
@@ -1196,7 +1203,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
             answers = answers.substring(0, answers.length - 2);
           }
           answerWidget =
-              Text(answers, style: Theme.of(context).textTheme.bodyText1);
+              Text(answers, style: Theme.of(context).textTheme.bodyMedium);
           break;
         case QuestionType.PICTURE:
           answerWidget = Column(
@@ -1205,7 +1212,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
               SizedBox(
                 height: defaultPadding(context),
               ),
-              Text(yourShot, style: Theme.of(context).textTheme.bodyText1),
+              Text(yourShot, style: Theme.of(context).textTheme.bodyMedium),
               SizedBox(
                 height: defaultPadding(context),
               ),
@@ -1215,7 +1222,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
           break;
         case QuestionType.TEXT:
           answerWidget = Text(questionAnswer.text ?? '',
-              style: Theme.of(context).textTheme.bodyText1);
+              style: Theme.of(context).textTheme.bodyMedium);
           break;
         case QuestionType.AUDIO:
           answerWidget = Column(
@@ -1224,7 +1231,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
               SizedBox(
                 height: defaultPadding(context),
               ),
-              Text(yourShot, style: Theme.of(context).textTheme.bodyText1),
+              Text(yourShot, style: Theme.of(context).textTheme.bodyMedium),
               SizedBox(
                 height: defaultPadding(context),
               ),
@@ -1235,15 +1242,15 @@ class SurveyWidgetState extends State<SurveyWidget> {
           break;
         case QuestionType.INT:
           answerWidget = Text(questionAnswer.intValue!.toString(),
-              style: Theme.of(context).textTheme.bodyText1);
+              style: Theme.of(context).textTheme.bodyMedium);
           break;
         case QuestionType.DOUBLE:
           answerWidget = Text(questionAnswer.doubleValue!.toString(),
-              style: Theme.of(context).textTheme.bodyText1);
+              style: Theme.of(context).textTheme.bodyMedium);
           break;
         case QuestionType.RATING:
           answerWidget = Text(questionAnswer.rating!.toString() + "/9",
-              style: Theme.of(context).textTheme.bodyText1);
+              style: Theme.of(context).textTheme.bodyMedium);
           break;
         default:
           answerWidget = Container();
@@ -1269,7 +1276,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                     children: [
                       Text(
                         question.displayText,
-                        style: Theme.of(context).textTheme.headline2,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       if (questionAnswer != null &&
                           ((questionAnswer.type ==
@@ -1322,7 +1329,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
               children: [
                 Text(
                   question.displayText,
-                  style: Theme.of(context).textTheme.headline2,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 SizedBox(
                   height: defaultPadding(context),
@@ -1330,7 +1337,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                 Text(
                   resolveQuestionTypeDescriptionFromQuestion(
                       question: question),
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
             ),
@@ -1422,7 +1429,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
             padding: EdgeInsets.all(defaultPadding(context)),
             child: Text(
               savedSurvey,
-              style: Theme.of(context).textTheme.headline2,
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
           ),
         ),
@@ -1471,7 +1478,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                   EdgeInsets.symmetric(horizontal: defaultPadding(context)),
               child: Text(
                 '${survey.displayName} $summary',
-                style: Theme.of(context).textTheme.headline2,
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),
           ),
@@ -1548,11 +1555,11 @@ class SurveyWidgetState extends State<SurveyWidget> {
                 children: [
                   Text(
                     surveyTitle,
-                    style: Theme.of(context).textTheme.headline2,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   Text(
                     entityName,
-                    style: Theme.of(context).textTheme.headline2,
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ],
               ),
@@ -1637,8 +1644,6 @@ class _AnimatedProgressBarState extends State<AnimatedProgressBar>
 
 class _AudioPlayerWidgetFromSyncFileState
     extends State<AudioPlayerWidgetFromSyncFile> {
-  
-
   bool loading = true;
   File? audioFile;
 
@@ -1667,52 +1672,53 @@ class _AudioPlayerWidgetFromSyncFileState
       return Container();
     }
     return AnimatedContainer(
-          margin: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: _isPlaying ? ThemeColors.yellow : ThemeColors.green),
-          duration: const Duration(milliseconds: 300),
-          child: Material(
-            color: Colors.transparent,
-            child: Center(
-              child: PlayerWidget(
-                audio: Audio.instance,
-                onStatusChange: (isPlaying) {
-                  _isPlaying = isPlaying;
-                  if (mounted) setState(() {});
-                },
-                loadingViewBuilder: () {
-                  return IconButton(
-                      onPressed: () {
-                        // TODO: create a toast notifying that the audio has not been initialized yet
-                      },
-                      iconSize: 50,
-                      splashRadius: 40,
-                      icon: const Icon(MdiIcons.playCircleOutline));
-                },
-                audioURL: audioFile!.uri.toString(),
-                playingViewBuilder: (dynamic Function() stopPlaying) {
-                  return IconButton(
+        margin: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: _isPlaying ? ThemeColors.yellow : ThemeColors.green),
+        duration: const Duration(milliseconds: 300),
+        child: Material(
+          color: Colors.transparent,
+          child: Center(
+            child: PlayerWidget(
+              audio: Audio.instance,
+              onStatusChange: (isPlaying) {
+                _isPlaying = isPlaying;
+                if (mounted) setState(() {});
+              },
+              loadingViewBuilder: () {
+                return IconButton(
                     onPressed: () {
-                      stopPlaying();
+                      // TODO: create a toast notifying that the audio has not been initialized yet
                     },
                     iconSize: 50,
                     splashRadius: 40,
-                    icon: const Icon(MdiIcons.stopCircleOutline),
-                  );
-                },
-                restingViewBuilder: (dynamic Function() startPlaying) {
-                  return IconButton(
-                      onPressed: () {
-                        startPlaying();
-                      },
-                      iconSize: 50,
-                      splashRadius: 40,
-                      icon: const Icon(MdiIcons.playCircleOutline));
-                },
-              ),
+                    icon: const Icon(MdiIcons.playCircleOutline));
+              },
+              audioURL: audioFile!.uri.toString(),
+              playingViewBuilder: (dynamic Function() stopPlaying) {
+                return IconButton(
+                  onPressed: () {
+                    stopPlaying();
+                  },
+                  iconSize: 50,
+                  splashRadius: 40,
+                  icon: const Icon(MdiIcons.stopCircleOutline),
+                );
+              },
+              restingViewBuilder: (dynamic Function() startPlaying) {
+                return IconButton(
+                    onPressed: () {
+                      startPlaying();
+                    },
+                    iconSize: 50,
+                    splashRadius: 40,
+                    icon: const Icon(MdiIcons.playCircleOutline));
+              },
             ),
-          ));
+          ),
+        ));
   }
-
 }
 
 const double _kOuterRadius = 8.0;
@@ -1765,4 +1771,3 @@ class _FakeRadioPainter extends CustomPainter {
     }
   }
 }
-

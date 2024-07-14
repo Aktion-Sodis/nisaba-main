@@ -168,7 +168,7 @@ class LoginView extends StatelessWidget {
                 "Invalid login data. Please try again or talk to your admin!",
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText1!
+                    .bodyMedium!
                     .copyWith(color: Theme.of(context).colorScheme.error),
                 textAlign: TextAlign.center),
             alignment: Alignment.center,

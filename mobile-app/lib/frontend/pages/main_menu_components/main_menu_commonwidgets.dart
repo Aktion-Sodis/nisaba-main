@@ -119,7 +119,7 @@ Widget surveyRow(BuildContext context, Survey survey,
               children: [
                 Expanded(
                     child: Text(survey.displayName,
-                        style: Theme.of(context).textTheme.bodyText1)),
+                        style: Theme.of(context).textTheme.bodyMedium)),
                 if (pressable)
                   CommonWidgets.defaultIconButton(
                       onPressed: onPressed,
@@ -156,7 +156,7 @@ Widget entityRow(BuildContext context, Entity entity) {
           SizedBox(width: defaultPadding(context) / 2),
           Container(
               child: Text(entity.displayName,
-                  style: Theme.of(context).textTheme.bodyText1))
+                  style: Theme.of(context).textTheme.bodyMedium))
         ],
       ));
 }
@@ -186,7 +186,7 @@ Widget interventionRow(BuildContext context, Intervention intervention,
               children: [
                 Expanded(
                     child: Text(intervention.displayName,
-                        style: Theme.of(context).textTheme.bodyText1)),
+                        style: Theme.of(context).textTheme.bodyMedium)),
                 if (pressable)
                   CommonWidgets.defaultIconButton(
                       onPressed: onPressed,
@@ -242,7 +242,7 @@ Widget taskRow(BuildContext context, Task task,
                                       child: Text(task.title,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle2)),
+                                              .titleMedium)),
                                   if (showDate && task.dueDate != null)
                                     Container(
                                         margin: EdgeInsets.only(
@@ -314,7 +314,7 @@ Widget executedSurveyRow(
                                           executedSurvey.survey.displayName,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle2)),
+                                              .titleMedium)),
                                   Container(
                                       margin: EdgeInsets.only(
                                           top: defaultPadding(context)),
@@ -375,7 +375,7 @@ Widget contentRow(BuildContext context, Content content, VoidCallback onPressed,
                                       child: Text(content.name,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .subtitle2)),
+                                              .titleMedium)),
                                   Container(
                                       margin: EdgeInsets.only(
                                           top: defaultPadding(context)),
@@ -469,10 +469,11 @@ class InterventionFilterWidgetState extends State<InterventionFilterWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: SingleChildScrollView(child: Wrap(
-            direction: Axis.horizontal,
-            alignment: WrapAlignment.center,
-            children: getWrapChildren(),
-            spacing: defaultPadding(context))));
+        child: SingleChildScrollView(
+            child: Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.center,
+                children: getWrapChildren(),
+                spacing: defaultPadding(context))));
   }
 }

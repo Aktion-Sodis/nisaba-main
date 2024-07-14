@@ -85,7 +85,8 @@ class MainMenuOrganization extends StatelessWidget {
                                   vertical: defaultPadding(context)),
                               child: Text(
                                 organizationViewState.appBarString,
-                                style: Theme.of(context).textTheme.headline2,
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
                                 overflow: TextOverflow.ellipsis,
                               ))),
                       if (!show_all_menu_pages)
@@ -590,7 +591,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
                                                       .organization_view_dialog_add_entity,
                                                   style: Theme.of(context)
                                                       .textTheme
-                                                      .headline2))),
+                                                      .headlineSmall))),
                                     ],
                                   ),
                                 )
@@ -685,7 +686,7 @@ class ListWidget extends StatelessWidget {
                           ? defaultPadding(buildContext)
                           : 0),
                   child: Text(entities[index].displayName,
-                      style: Theme.of(buildContext).textTheme.headline2),
+                      style: Theme.of(buildContext).textTheme.headlineSmall),
                 ),
                 if (parentEntityName != "")
                   Container(
@@ -695,7 +696,7 @@ class ListWidget extends StatelessWidget {
                         top: defaultPadding(buildContext),
                         bottom: defaultPadding(buildContext)),
                     child: Text(parentEntityName,
-                        style: Theme.of(buildContext).textTheme.subtitle2),
+                        style: Theme.of(buildContext).textTheme.titleMedium),
                   ),
                 if (state.addChildPossible(entities[index]))
                   Container(
@@ -855,7 +856,7 @@ class OverviewWidget extends StatelessWidget {
               child: Row(children: [
                 Expanded(
                     child: Text(strings.organization_view_info,
-                        style: Theme.of(context).textTheme.headline2)),
+                        style: Theme.of(context).textTheme.headlineSmall)),
                 SizedBox(width: defaultPadding(context)),
                 CustomIconButton(
                   () => onUpdateEntityTapped(entity),
@@ -871,7 +872,7 @@ class OverviewWidget extends StatelessWidget {
                     right: defaultPadding(context),
                     bottom: defaultPadding(context) / 2),
                 child: Text(entity.displayDescription,
-                    style: Theme.of(context).textTheme.bodyText1)),
+                    style: Theme.of(context).textTheme.bodyMedium)),
           if (entity.customData.isNotEmpty)
             Container(
                 margin: EdgeInsets.only(
@@ -893,7 +894,7 @@ class OverviewWidget extends StatelessWidget {
                                       ": ",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyText1!
+                                      .bodyMedium!
                                       .copyWith(fontWeight: FontWeight.bold)),
                               TextSpan(
                                   text: entity.customData[index].type ==
@@ -902,7 +903,7 @@ class OverviewWidget extends StatelessWidget {
                                           .toString()
                                       : (entity.customData[index].stringValue ??
                                           ""),
-                                  style: Theme.of(context).textTheme.bodyText1)
+                                  style: Theme.of(context).textTheme.bodyMedium)
                             ]))))))
         ]);
   }
@@ -922,7 +923,7 @@ class OverviewWidget extends StatelessWidget {
             Container(
                 margin: EdgeInsets.only(bottom: defaultPadding(context) / 2),
                 child: Text(strings.main_menu_tasks,
-                    style: Theme.of(context).textTheme.headline2)),
+                    style: Theme.of(context).textTheme.headlineSmall)),
             if (firstThreeTasks.isNotEmpty)
               Column(
                 children: List.generate(
@@ -971,7 +972,7 @@ class OverviewWidget extends StatelessWidget {
           Container(
               margin: EdgeInsets.only(bottom: defaultPadding(context) / 2),
               child: Text(strings.organization_view_surveys,
-                  style: Theme.of(context).textTheme.headline2)),
+                  style: Theme.of(context).textTheme.headlineSmall)),
           if (firstThreeSurveys.isNotEmpty)
             Column(
               children: List.generate(
@@ -998,7 +999,7 @@ class OverviewWidget extends StatelessWidget {
           Container(
               margin: EdgeInsets.only(bottom: defaultPadding(context) / 2),
               child: Text(strings.organization_view_applied_interventions,
-                  style: Theme.of(context).textTheme.headline2)),
+                  style: Theme.of(context).textTheme.headlineSmall)),
           if (firstThreeAppliedInterventions.isNotEmpty)
             Container(
                 margin: EdgeInsets.only(
@@ -1237,19 +1238,19 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
                             child: Text(
                                 strings
                                     .organization_view_appliedintervention_detail_techonology_working,
-                                style: Theme.of(context).textTheme.headline2)),
+                                style: Theme.of(context).textTheme.headlineSmall)),
                         RadioListTile(
                             value: true,
                             groupValue: appliedIntervention.isOkay,
                             onChanged: updateState,
                             title: Text(strings.yes,
-                                style: Theme.of(context).textTheme.bodyText1)),
+                                style: Theme.of(context).textTheme.bodyMedium)),
                         RadioListTile(
                             value: false,
                             groupValue: appliedIntervention.isOkay,
                             onChanged: updateState,
                             title: Text(strings.no,
-                                style: Theme.of(context).textTheme.bodyText1))
+                                style: Theme.of(context).textTheme.bodyMedium))
                       ],
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min))),*/
@@ -1269,7 +1270,7 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
                                           strings.organization_view_surveys,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .headline2))
+                                              .headlineSmall))
                                   : surveyRow(
                                       context,
                                       nonArchivedSurveys[index - 1],
@@ -1457,7 +1458,7 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
                                                         .organization_view_dialog_update_appliedintervention,
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .headline2))),
+                                                    .headlineSmall))),
                                   ],
                                 ),
                               )
