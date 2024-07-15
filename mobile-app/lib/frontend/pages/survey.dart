@@ -98,6 +98,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
             color: Theme.of(context).canvasColor,
             child: SafeArea(
                 child: PageView(
+              //todo: maybe change here for audio
               physics: const NeverScrollableScrollPhysics(),
               controller: _pageController,
               children: [
@@ -248,6 +249,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
           height: defaultPadding(context),
         ),
         Expanded(
+          //todo: maybe change here for audio
           child: PageView(
               key: inSurveyPageViewKey,
               physics: const NeverScrollableScrollPhysics(),
@@ -1681,7 +1683,6 @@ class _AudioPlayerWidgetFromSyncFileState
           color: Colors.transparent,
           child: Center(
             child: PlayerWidget(
-              audio: Audio.instance,
               onStatusChange: (isPlaying) {
                 _isPlaying = isPlaying;
                 if (mounted) setState(() {});
