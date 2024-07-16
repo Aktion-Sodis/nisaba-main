@@ -63,14 +63,26 @@ class _RecorderWidgetState extends AudioStatefulWidgetState<RecorderWidget> {
     if (!_recording) return;
 
     if (mounted) {
-      setState(() {
+      try {
+        setState(() {
+          _recording = false;
+        });
+      } catch (e) {
         _recording = false;
-      });
+      }
     }
 
     String? recordedURL = await widget.audio.recorder.stopRecorder();
 
     if (recordedURL != null) widget.onAudioRecorded(recordedURL);
+  }
+
+  @override
+  void dispose() {
+    if (_recording) {
+      _stopRecording();
+    }
+    super.dispose();
   }
 
   @override

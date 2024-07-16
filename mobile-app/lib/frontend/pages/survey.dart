@@ -78,6 +78,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
   late List<Question> questions;
   late final String preliminaryExecutedSurveyId;
 
+  bool isCurrentlyRecording = false;
+
   void addTask() async {
     return openTaskForm(
       entity: (context.read<InAppBloc>().state as SurveyInAppState).entity,
@@ -261,6 +263,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
         ),
         bottomRowWidget(
             context: context,
+            isActive: !isCurrentlyRecording,
             onGoBack: () {
               if (_inSurveyPageController.page?.round() != null) {
                 int page = _inSurveyPageController.page!.round();
@@ -568,6 +571,11 @@ class SurveyWidgetState extends State<SurveyWidget> {
             }
             setState(() {
               picAndAudioAnswerFiles[question.id!] = sF;
+            });
+          },
+          isRecording: (isRecordingBoo) {
+            setState(() {
+              isCurrentlyRecording = isRecordingBoo;
             });
           },
           context: context,
@@ -1010,6 +1018,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
 
   static Widget bottomRowWidget(
       {required BuildContext context,
+      required bool isActive,
       required Function onGoBack,
       required Function onDismiss,
       required Function onProceed}) {
@@ -1019,11 +1028,11 @@ class SurveyWidgetState extends State<SurveyWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CommonWidgets.defaultBackwardButton(
-              context: context, goBack: onGoBack),
+              context: context, goBack: onGoBack, isActive: isActive),
           CommonWidgets.defaultDismissButton(
-              context: context, dismiss: onDismiss),
+              context: context, dismiss: onDismiss, isActive: isActive),
           CommonWidgets.defaultForwardButton(
-              context: context, proceed: onProceed),
+              context: context, proceed: onProceed, isActive: isActive),
         ],
       ),
     );
@@ -1076,7 +1085,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
     return Container();
   }
 
-  static Widget _iconButton(IconData iconData, Function() onPressed) {
+  static Widget _iconButton(IconData iconData, Function() onPressed,
+      {Color? color}) {
     BorderRadius borderRadius = BorderRadius.circular(15);
     return Container(
       height: 60,
@@ -1088,10 +1098,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
         child: InkWell(
           onTap: onPressed,
           borderRadius: borderRadius,
-          child: Icon(
-            iconData,
-            size: 33,
-          ),
+          child: Icon(iconData, size: 33, color: color),
         ),
       ),
     );
@@ -1100,6 +1107,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
   static Widget getTakeAudioWidget(
       {required SyncedFile syncedFile,
       required ValueChanged<SyncedFile> callback,
+      required ValueChanged<bool> isRecording,
       required BuildContext context}) {
     /*
     RecorderWidget(
@@ -1127,13 +1135,19 @@ class SurveyWidgetState extends State<SurveyWidget> {
         padding: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
         child: RecorderWidget(
           restingViewBuilder: (startPlaying) {
-            return _iconButton(MdiIcons.microphoneOutline, startPlaying);
+            return _iconButton(MdiIcons.microphoneOutline, () {
+              isRecording(true);
+              startPlaying();
+            });
           },
           recordingViewBuilder: (stopPlaying) {
-            return _iconButton(MdiIcons.stopCircleOutline, stopPlaying);
+            return _iconButton(MdiIcons.stopCircleOutline, () {
+              stopPlaying();
+              isRecording(false);
+            }, color: Colors.yellow);
           },
           loadingViewBuilder: () {
-            return _iconButton(MdiIcons.microphoneOutline, () {
+            return _iconButton(MdiIcons.loading, () {
               // TODO: add explaining toast, that widget is not ready yet
               debugPrint("Recorder widget is not ready yet");
             });

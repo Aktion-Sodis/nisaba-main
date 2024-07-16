@@ -7,6 +7,7 @@ abstract class CommonWidgets {
       {required BuildContext context,
       Function? goBack,
       ButtonSizes buttonSizes = ButtonSizes.medium,
+      bool isActive = true,
       EdgeInsets? padding}) {
     return Center(
       child: Column(
@@ -14,15 +15,21 @@ abstract class CommonWidgets {
         children: [
           Container(
             child: MaterialButton(
+              disabledColor: Colors.grey,
               minWidth: 0,
               padding: padding ?? EdgeInsets.zero,
               color: Theme.of(context).canvasColor,
-              onPressed: () {
-                goBack?.call();
-              },
+              onPressed: isActive
+                  ? () {
+                      goBack?.call();
+                    }
+                  : null,
               shape: CircleBorder(
                   side: BorderSide(
-                      color: Theme.of(context).buttonTheme.colorScheme?.background ??
+                      color: Theme.of(context)
+                              .buttonTheme
+                              .colorScheme
+                              ?.background ??
                           Colors.green,
                       width: 1)),
               child: Container(
@@ -30,7 +37,10 @@ abstract class CommonWidgets {
                   child: Center(
                     child: Icon(
                       MdiIcons.arrowLeft,
-                      color: Theme.of(context).buttonTheme.colorScheme?.background ??
+                      color: Theme.of(context)
+                              .buttonTheme
+                              .colorScheme
+                              ?.background ??
                           Colors.green,
                     ),
                   )),
@@ -44,14 +54,18 @@ abstract class CommonWidgets {
   static Widget defaultForwardButton(
       {required BuildContext context,
       Function? proceed,
-      ButtonSizes buttonSizes = ButtonSizes.medium}) {
+      ButtonSizes buttonSizes = ButtonSizes.medium,
+      bool isActive = true}) {
     return MaterialButton(
+      disabledColor: Colors.grey,
       minWidth: 0,
       padding: EdgeInsets.zero,
       color: Theme.of(context).floatingActionButtonTheme.backgroundColor,
-      onPressed: () {
-        proceed?.call();
-      },
+      onPressed: isActive
+          ? () {
+              proceed?.call();
+            }
+          : null,
       shape: CircleBorder(),
       child: Padding(
         padding: EdgeInsets.all(defaultPadding(context) *
@@ -108,13 +122,17 @@ abstract class CommonWidgets {
   static Widget defaultDismissButton(
       {required BuildContext context,
       Function? dismiss,
-      ButtonSizes buttonSizes = ButtonSizes.small}) {
+      ButtonSizes buttonSizes = ButtonSizes.small,
+      isActive = true}) {
     return MaterialButton(
+      disabledColor: Colors.grey,
       minWidth: 0,
       color: Colors.red,
-      onPressed: () {
-        dismiss?.call();
-      },
+      onPressed: isActive
+          ? () {
+              dismiss?.call();
+            }
+          : null,
       shape: CircleBorder(),
       child: Padding(
         padding: EdgeInsets.all(defaultPadding(context) *
@@ -135,7 +153,7 @@ abstract class CommonWidgets {
     );
   }
 
-  static Widget separator({required BuildContext context}){
+  static Widget separator({required BuildContext context}) {
     return Container(
       height: 1,
       color: Colors.grey,
