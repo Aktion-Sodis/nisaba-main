@@ -15,19 +15,37 @@ listTotalNumberOfSurveys = {
 listAllSurveys = {
     "operationName": "listAllSurveys",
     "query": """query listAllSurveys {
-    listSurveys {
-      items {
-        name {
-          languageKeys
-          languageTexts
+        listSurveys {
+            nextToken
+            items {
+                name {
+                    languageKeys
+                    languageTexts
+                }
+                interventionSurveysId
+                createdAt
+                id
+            }
         }
-        interventionSurveysId
-        createdAt
-        id
-      }
-    }
-  }
-  """,
+    }""",
+}
+
+listAllSurveysFromNextToken = {
+    "operationName": "listAllSurveys",
+    "query": """query listAllSurveys($nextToken: String!) {
+        listSurveys(nextToken: $nextToken) {
+            nextToken
+            items {
+                name {
+                    languageKeys
+                    languageTexts
+                }
+                interventionSurveysId
+                createdAt
+                id
+            }
+        }
+    }""",
 }
 
 
@@ -67,6 +85,7 @@ getSurveyBySurveyID = {
     "operationName": "getSurvey",
     "query": """query getSurvey($surveyID: ID!) {
     getSurvey(id: $surveyID) {
+      organization_id
       description {
         languageKeys
         languageTexts
@@ -160,6 +179,7 @@ query listExecutedSurveys($surveyID: ID!) {
         type
       }
       appliedIntervention {
+        id
         entityAppliedInterventionsId
       }
       updatedAt
@@ -213,6 +233,7 @@ query listExecutedSurveys($surveyID: ID!, $nextToken: String!) {
         type
       }
       appliedIntervention {
+        id
         entityAppliedInterventionsId
       }
       updatedAt

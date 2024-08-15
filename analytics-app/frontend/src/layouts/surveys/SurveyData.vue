@@ -3,32 +3,15 @@
     <v-col class="pa-0">
       <v-row class="ma-0 mr-2 ml-2 top-row align-center">
         <v-col cols="10" class="pa-0">
-          <v-btn
-            @click="resetSelectedSurvey"
-            :ripple="false"
-            class="reset-btn"
-            color="primary"
-          >
+          <v-btn @click="resetSelectedSurvey" :ripple="false" class="reset-btn" color="primary">
             <v-icon size="25">mdi-arrow-left</v-icon>
           </v-btn>
-          <v-tooltip
-            :text="
-              questionListExpanded ? 'Hide Question List' : 'Show Question List'
-            "
-          >
+          <v-tooltip :text="questionListExpanded ? 'Hide Question List' : 'Show Question List'
+            ">
             <template v-slot:activator="{ props }">
-              <v-btn
-                icon
-                @click="toggleQuestionList"
-                :ripple="false"
-                class="toggle-btn"
-                variant="text"
-                color="primary"
-                v-bind="props"
-              >
-                <v-icon v-if="questionListExpanded" size="25"
-                  >mdi-chevron-double-left</v-icon
-                >
+              <v-btn icon @click="toggleQuestionList" :ripple="false" class="toggle-btn" variant="text" color="primary"
+                v-bind="props">
+                <v-icon v-if="questionListExpanded" size="25">mdi-chevron-double-left</v-icon>
                 <v-icon v-else size="25">mdi-chevron-double-right</v-icon>
               </v-btn>
             </template>
@@ -50,85 +33,51 @@
       </v-row>
       <v-row v-if="loading" class="ma-0 mr-2 align-center">
         <v-col class="d-flex justify-center align-center pa-0">
-          <v-progress-circular
-            :size="70"
-            :width="7"
-            color="primary"
-            indeterminate
-          ></v-progress-circular>
+          <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
         </v-col>
       </v-row>
       <v-row v-else class="content-row ma-0 mr-2 ml-2">
         <v-col :cols="questionListExpanded ? 3 : 1" class="sidebar-panel pa-0">
           <div class="sidebar-panel-inside">
-            <v-list-item
-              v-for="(question, i) in surveyQuestions"
-              :key="i"
-              :value="question"
-              color="primary"
-              class="list-item mb-2"
-              :class="{
-                collapsed: questionListExpanded === false,
-                active:
-                  this.selectedQuestion.question_id === question.question_id,
-              }"
-              @click="selectQuestion(question)"
-            >
+            <v-list-item v-for="(question, i) in surveyQuestions" :key="i" :value="question" color="primary"
+              class="list-item mb-2" :class="{
+            collapsed: questionListExpanded === false,
+            active:
+              this.selectedQuestion.question_id === question.question_id,
+          }" @click="selectQuestion(question)">
               <template v-slot:prepend>
                 <div class="list-item-title">{{ question.id }}</div>
               </template>
-              <v-list-item-subtitle
-                v-if="questionListExpanded"
-                class="list-item-subtitle"
-              >
+              <v-list-item-subtitle v-if="questionListExpanded" class="list-item-subtitle">
                 {{ question.name }}
               </v-list-item-subtitle>
             </v-list-item>
           </div>
         </v-col>
-        <v-col
-          :cols="
-            filterSidebarOpen
-              ? questionListExpanded
-                ? 6
-                : 8
-              : questionListExpanded
+        <v-col :cols="filterSidebarOpen
+            ? questionListExpanded
+              ? 6
+              : 8
+            : questionListExpanded
               ? 9
               : 11
-          "
-          class="answers pa-0"
-        >
-          <TextComponent
-            v-if="selectedQuestion.type === 'TEXT'"
-            :questionProperties="filteredQuestionProperties"
-          />
-          <MultipleChoiceComponent
-            v-if="selectedQuestion.type === 'MULTIPLECHOICE'"
-            :questionProperties="filteredQuestionProperties"
-          />
-          <SingleChoiceComponent
-            v-if="selectedQuestion.type === 'SINGLECHOICE'"
-            :questionProperties="filteredQuestionProperties"
-          />
+            " class="answers pa-0">
+          <TextComponent v-if="selectedQuestion.type === 'TEXT'" :questionProperties="filteredQuestionProperties" />
+          <MultipleChoiceComponent v-if="selectedQuestion.type === 'MULTIPLECHOICE'"
+            :questionProperties="filteredQuestionProperties" />
+          <SingleChoiceComponent v-if="selectedQuestion.type === 'SINGLECHOICE'"
+            :questionProperties="filteredQuestionProperties" />
+          <ImageCardList v-if="selectedQuestion.type === 'PICTURE'" :questionProperties="filteredQuestionProperties" />
+          <AudioCardList v-if="selectedQuestion.type === 'AUDIO'" :questionProperties="filteredQuestionProperties" />
         </v-col>
         <v-col v-if="filterSidebarOpen" cols="3" class="filter-sidebar pa-0">
           <v-expansion-panels variant="accordion">
-            <v-expansion-panel
-              v-for="level in surveyStore.levelList"
-              :key="level.id"
-              ><v-expansion-panel-title>{{
-                getName(level)
-              }}</v-expansion-panel-title>
+            <v-expansion-panel v-for="level in surveyStore.levelList" :key="level.id"><v-expansion-panel-title>{{
+            getName(level)
+          }}</v-expansion-panel-title>
               <v-expansion-panel-text>
-                <v-checkbox
-                  class="entity-checkbox"
-                  v-for="entity in filteredEntities(level.id)"
-                  :key="entity.id"
-                  v-model="selected"
-                  :label="getName(entity)"
-                  :value="entity.id"
-                  @change="checkSelected()"
-                ></v-checkbox>
+                <v-checkbox class="entity-checkbox" v-for="entity in filteredEntities(level.id)" :key="entity.id"
+                  v-model="selected" :label="getName(entity)" :value="entity.id" @change="checkSelected()"></v-checkbox>
                 <!-- <div
                   v-for="entity in filteredEntities(level.id)"
                   :key="entity.id"
@@ -152,12 +101,14 @@ import { usei18nStore } from "@/store/i18n";
 import MultipleChoiceComponent from "@/components/data/MultipleChoiceComponent.vue";
 import SingleChoiceComponent from "@/components/data/SingleChoiceComponent.vue";
 import TextComponent from "@/components/data/TextComponent.vue";
+import ImageCardList from "@/components/data/ImageCardList.vue";
+import AudioCardList from "@/components/data/AudioCardList.vue";
 
 import { getRequestFile } from '@/axios/backend-api';
 
 export default {
   name: "SurveyData",
-  components: { MultipleChoiceComponent, TextComponent, SingleChoiceComponent },
+  components: { MultipleChoiceComponent, TextComponent, SingleChoiceComponent, ImageCardList, AudioCardList },
   data: () => ({
     questionListExpanded: true,
     surveyName: "",
@@ -260,7 +211,7 @@ export default {
 
     async startSurveyFileDownload() {
       console.log('Requesting File');
-      const response = await getRequestFile('/getSurveyResultsAsXLSX', {SurveyID: this.surveyStore.selectedSurveyID});
+      const response = await getRequestFile('/getSurveyResultsAsXLSX', { SurveyID: this.surveyStore.selectedSurveyID });
       console.log('Got Response');
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
@@ -351,38 +302,47 @@ export default {
 
 <style scoped>
 .settings-btn {
-  margin-right: 10px; /* Adjust the margin as needed */
+  margin-right: 10px;
+  /* Adjust the margin as needed */
 }
+
 .entity-checkbox {
   height: 40px;
 }
+
 .filter-sidebar {
   /* background-color: #2d91be; */
   overflow-y: auto;
   max-height: 100%;
   border-left: solid grey 1px;
 }
+
 .survey-name {
   font-size: 18px;
   margin-left: 10px;
 }
+
 .answers {
   overflow-y: auto;
   max-height: 100%;
 }
+
 .reset-btn {
   max-width: 55px;
   min-width: 55px;
 }
+
 .toggle-btn {
   max-width: 35px;
   min-width: 35px;
   min-height: 35px;
   max-height: 35px;
 }
+
 .top-row {
   height: 50px;
 }
+
 .list-item {
   /* border: 1px black solid; */
   padding-top: 10px;
@@ -392,26 +352,32 @@ export default {
   border-radius: 5px;
   background-color: #2d91be;
 }
+
 .list-item:hover {
   background-color: #feaa3a;
   opacity: 0.9;
 }
+
 .active {
   background-color: #feaa3a;
 }
+
 .collapsed {
   width: 53px;
 }
+
 .list-item-title {
   margin: 5px;
   color: white;
   max-width: 40px;
 }
+
 .list-item-subtitle {
   color: white;
   opacity: 1;
   margin-left: 10px;
 }
+
 .content-row {
   height: calc(100vh - 96px - 70px);
   background-color: white;

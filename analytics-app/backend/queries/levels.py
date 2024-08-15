@@ -15,35 +15,64 @@ listLevels = {
   """,
 }
 
-
 listEntities = {
     "operationName": "listEntities",
     "query": """query listEntities {
-    listEntities {
-      items {
-        id
-        name {
-          languageKeys
-          languageTexts
-        }
-        appliedInterventions {
-          items {
-            executedSurveys {
-              items {
-                executedSurveySurveyId
+        listEntities {
+            nextToken
+            items {
                 id
-              }
+                name {
+                    languageKeys
+                    languageTexts
+                }
+                appliedInterventions {
+                    items {
+                        executedSurveys {
+                            items {
+                                executedSurveySurveyId
+                                id
+                            }
+                        }
+                    }
+                }
+                parentEntityID
+                level {
+                    id
+                }
             }
-          }
         }
-        parentEntityID
-        level {
-          id
+    }""",
+}
+
+listEntitiesFromNextToken = {
+    "operationName": "listEntities",
+    "query": """query listEntities($nextToken: String!) {
+        listEntities(nextToken: $nextToken) {
+            nextToken
+            items {
+                id
+                name {
+                    languageKeys
+                    languageTexts
+                }
+                appliedInterventions {
+                    items {
+                        executedSurveys {
+                            items {
+                                executedSurveySurveyId
+                                id
+                            }
+                        }
+                    }
+                }
+                parentEntityID
+                level {
+                    id
+                }
+            }
         }
-      }
-    }
-  }
-  """,
+    }""",
 }
 
 getEntityByID = {

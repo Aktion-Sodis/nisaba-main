@@ -6,13 +6,19 @@ from AppSyncClient import GraphqlClient
 from queries.surveys import (
     listTotalNumberOfSurveys,
     listAllSurveys,
+    listAllSurveysFromNextToken,
     getSurveyBySurveyID,
     getExecutedSurveyDataBySurveyID,
     getExecutedSurveyDataBySurveyIDInclContext,
     getExecutedSurveyDataBySurveyIDInclContextFromNextToken
 )
 
-from queries.levels import listLevels, listEntities, getEntityByID
+from queries.data_store_paths import (
+    get_question_answer_audio_path,
+    get_question_answer_pic_path
+)
+
+from queries.levels import listLevels, listEntities, getEntityByID, listEntitiesFromNextToken
 
 
 gql_client = GraphqlClient()
@@ -37,14 +43,42 @@ class QueryMethods:
         return len(items)
 
     def get_all_surveys(self):
+        print('Getting all surveys')
+        
+        # Initial request
         res = gql_client.execute(
             query=listAllSurveys["query"],
             operation_name=listAllSurveys["operationName"],
             variables={},
         )
 
-        items = res["data"]["listSurveys"]["items"]
-        return items
+        to_return_surveys = res["data"]["listSurveys"]["items"]
+        next_token = res["data"]["listSurveys"].get("nextToken", None)
+
+        print('Got first batch of surveys')
+        print('Next Token: ' + str(next_token))
+
+        # Handle pagination if there is a next token
+        while next_token:
+            print('Getting next batch of surveys')
+            print(next_token)
+            
+            res = gql_client.execute(
+                query=listAllSurveysFromNextToken["query"],
+                operation_name=listAllSurveysFromNextToken["operationName"],
+                variables={"nextToken": next_token},
+            )
+            
+            # Add the new batch of items to the existing list
+            items = res["data"]["listSurveys"]["items"]
+            to_return_surveys.extend(items)
+            
+            # Update the next token
+            next_token = res["data"]["listSurveys"].get("nextToken", None)
+            
+            print('Number of Items with next token: ' + str(len(items)))
+
+        return to_return_surveys
 
     def get_survey_by_surveyID(self, survey_id):
         res = gql_client.execute(
@@ -55,16 +89,6 @@ class QueryMethods:
         self.selected_survey = res["data"]["getSurvey"]
 
         return self.selected_survey
-
-    def get_executed_surveys_by_surveyID(self, survey_id):
-        res = gql_client.execute(
-            query=getExecutedSurveyDataBySurveyID["query"],
-            operation_name=getExecutedSurveyDataBySurveyID["operationName"],
-            variables={"surveyID": survey_id},
-        )
-        self.executed_surveys = res["data"]["listExecutedSurveys"]["items"]
-
-        return self.executed_surveys
 
     def get_executed_surveys_by_surveyID_including_context(self, survey_id):
         print('getting executed surveys by survey id including context')
@@ -88,8 +112,14 @@ class QueryMethods:
             operation_name=getExecutedSurveyDataBySurveyIDInclContextFromNextToken["operationName"],
             variables={"surveyID": survey_id, "nextToken": next_token},
             )
+
+            #items
+            items = res["data"]["listExecutedSurveys"]["items"]
+
+            #print item length
+            print('Number of Items with next token: ' + str(len(items)))
             
-            to_return_surveys.extend(res["data"]["listExecutedSurveys"]["items"])
+            to_return_surveys.extend(items)
 
             next_token = res["data"]["listExecutedSurveys"].get("nextToken", None)
         
@@ -113,9 +143,18 @@ class QueryMethods:
 
     def get_survey_data_by_surveyID(self, survey_id):
         self.get_survey_by_surveyID(survey_id)
-        self.get_executed_surveys_by_surveyID(survey_id)
+        self.executed_surveys = self.get_executed_surveys_by_surveyID_including_context(survey_id)
 
+        #check if error here
         self.all_entities = self.get_entities_v2()
+        
+        #print elements
+        print('survey dataset generation')
+        print('Selected Survey:')
+        print(self.selected_survey)
+        print('Executed Surveys:')
+        print(len(self.executed_surveys))
+
 
         dataset = self.generate_dataset(
             self.selected_survey, self.executed_surveys, self.all_entities
@@ -163,14 +202,42 @@ class QueryMethods:
         return sorted_levels
 
     def get_entities_v2(self):
+        print('Getting all entities')
+        
+        # Initial request
         res = gql_client.execute(
             query=listEntities["query"],
             operation_name=listEntities["operationName"],
             variables={},
         )
 
-        items = res["data"]["listEntities"]["items"]
-        entities = list(filter(lambda x: x is not None, items))
+        to_return_entities = res["data"]["listEntities"]["items"]
+        next_token = res["data"]["listEntities"].get("nextToken", None)
+
+        print('Got first batch of entities')
+
+        # Handle pagination if there is a next token
+        while next_token:
+            print('Getting next batch of entities')
+            print(next_token)
+            
+            res = gql_client.execute(
+                query=listEntitiesFromNextToken["query"],
+                operation_name=listEntitiesFromNextToken["operationName"],
+                variables={"nextToken": next_token},
+            )
+            
+            # Add the new batch of items to the existing list
+            items = res["data"]["listEntities"]["items"]
+            to_return_entities.extend(items)
+            
+            # Update the next token
+            next_token = res["data"]["listEntities"].get("nextToken", None)
+            
+            print('Number of Items with next token: ' + str(len(items)))
+
+        # Filter out any None values, if necessary
+        entities = list(filter(lambda x: x is not None, to_return_entities))
         return entities
 
     def filter_entities_by_executed_survey_id(self, entities, survey_ids):
@@ -265,6 +332,8 @@ class QueryMethods:
         survey_name = survey["name"]
         survey_description = survey["description"]
 
+        organization_id = survey["organization_id"]
+
         # print(len(survey['questions']))
 
         for question in survey["questions"]:
@@ -282,7 +351,7 @@ class QueryMethods:
                     if answer["questionID"] == question_id:
                         answer_date = answer["date"]
                         executed_survey_id = executed_survey["id"]
-
+                        
                         if question_type in ["TEXT", "DOUBLE", "INT", "RATING"]:
                             value = question_types.get(question_type)
                             answer_value = answer[value]
@@ -314,6 +383,30 @@ class QueryMethods:
                                 if option_text in answer_option_texts:
                                     index = answer_option_texts.index(option_text)
                                     answer_value[index] = 1
+
+                        elif question_type == "AUDIO":
+                            #todo: return audio path as answer_value
+                            answer_value = get_question_answer_audio_path(
+                                organization_id,
+                                executed_survey["appliedIntervention"]["id"],
+                                executed_survey["id"],
+                                question_id
+                            )
+
+                        elif question_type == "PICTURE":
+                            answer_value = get_question_answer_pic_path(
+                                organization_id,
+                                executed_survey["appliedIntervention"]["id"],
+                                executed_survey["id"],
+                                question_id
+                            )
+
+                        else:
+
+                            #print unknown answer type
+                            answer_value = None
+                            #print question type
+                            print('unknown question type in dataset generation: ' + question_type)
 
                         entity_id = self.find_entity_by_executed_survey_id(
                             entities, executed_survey_id
