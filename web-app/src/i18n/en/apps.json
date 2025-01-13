@@ -1,0 +1,19 @@
+{
+    "categories": {
+        "admin": "Content Management"
+    },
+    "apps": {
+        "project_structure": {
+            "title": "Project Structure",
+            "description": "Manage the project structure"
+        },
+        "interventions": {
+            "title": "Interventions",
+            "description": "Manage the interventions"
+        },
+        "surveys": {
+            "title": "Surveys",
+            "description": "Manage the surveys"
+        }
+    }
+}
