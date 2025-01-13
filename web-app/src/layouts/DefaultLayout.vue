@@ -21,10 +21,6 @@
     </div>
   </div>
 
-  <alpamayo-toast />
-
-  <alpamayo-confirm-dialog />
-
   <Drawer v-model:visible="configuratorVisible" position="right">
     <template #header>
       <h3
@@ -42,10 +38,7 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
-import AlpamayoConfirmDialog from '@/components/AlpamayoConfirmDialog.vue';
-import AlpamayoToast from '@/components/AlpamayoToast.vue';
-import Configurator from '@/components/Configurator.vue';
-import Navbar from '@/components/Navbar.vue';
+import Configurator from '@/components//elements/LanguageSelector.vue';
 import { useSettingsStore } from '@/store/settings';
 
 /**
