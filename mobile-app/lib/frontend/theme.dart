@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 Future<ThemeData> getThemeData() async {
   return ThemeData(
 
-    cardTheme: CardTheme(
+    cardTheme: const CardTheme(
         color: Colors.white,
         shadowColor: Colors.grey,
         elevation: 3,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(8)))),
-    colorScheme: ColorScheme(
+    colorScheme: const ColorScheme(
         primary: Colors.blue,
         //primaryVariant: Colors.blueAccent,
         secondary: Colors.green,
@@ -28,26 +28,25 @@ Future<ThemeData> getThemeData() async {
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         selectedItemColor: Colors.green,
         unselectedItemColor: Colors.grey,
-        selectedLabelStyle: const TextStyle(color: Colors.green),
-        unselectedLabelStyle: const TextStyle(color: Colors.grey),
+        selectedLabelStyle: TextStyle(color: Colors.green),
+        unselectedLabelStyle: TextStyle(color: Colors.grey),
         showUnselectedLabels: true),
-    textTheme: TextTheme(
-        overline: TextStyle(color: Colors.black87),
-
-        headline1: TextStyle(color: Colors.blue, fontSize: 26),
-        headline2: TextStyle(color: Colors.black87, fontSize: 26),
-        subtitle1: TextStyle(color: Colors.black87, fontSize: 22),
-        subtitle2: TextStyle(color: Colors.black87, fontSize: 20),
-        bodyText1: TextStyle(color: Colors.black87, fontSize: 18)),
-    inputDecorationTheme: InputDecorationTheme(
+    textTheme: const TextTheme(
+        labelSmall: TextStyle(color: Colors.black87),
+        displayLarge: TextStyle(color: Colors.blue, fontSize: 26),
+        displayMedium: TextStyle(color: Colors.black87, fontSize: 26),
+        titleMedium: TextStyle(color: Colors.black87, fontSize: 22),
+        titleSmall: TextStyle(color: Colors.black87, fontSize: 20),
+        bodyLarge: TextStyle(color: Colors.black87, fontSize: 18)),
+    inputDecorationTheme: const InputDecorationTheme(
         labelStyle: TextStyle(color: Colors.grey, fontSize: 18),
         floatingLabelStyle: TextStyle(color: Colors.blue, fontSize: 18),
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
         border: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey),
-            borderRadius: const BorderRadius.all(Radius.circular(8))),
-        focusedBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8))),
+        focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.blue),
             borderRadius: BorderRadius.all(Radius.circular(8))),
         errorBorder: OutlineInputBorder(

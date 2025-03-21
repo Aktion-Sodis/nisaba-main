@@ -17,7 +17,7 @@
 // Generated files can be excluded from analysis in analysis_options.yaml
 // For more info, see: https://dart.dev/guides/language/analysis-options#excluding-code-from-analysis
 
-// ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
+// ignore_for_file: public_member_api_docs, annotate_overrides, dead_code, dead_codepublic_member_api_docs, depend_on_referenced_packages, file_names, library_private_types_in_public_api, no_leading_underscores_for_library_prefixes, no_leading_underscores_for_local_identifiers, non_constant_identifier_names, null_check_on_nullable_type_parameter, override_on_non_overriding_member, prefer_adjacent_string_concatenation, prefer_const_constructors, prefer_if_null_operators, prefer_interpolation_to_compose_strings, slash_for_doc_comments, sort_child_properties_last, unnecessary_const, unnecessary_constructor_name, unnecessary_late, unnecessary_new, unnecessary_null_aware_assignments, unnecessary_nullable_for_final_variable_declarations, unnecessary_string_interpolations, use_build_context_synchronously
 
 import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart' as amplify_core;
@@ -341,21 +341,31 @@ class Task extends amplify_core.Model {
       _text = json['text'],
       _dueDate = json['dueDate'] != null ? amplify_core.TemporalDateTime.fromString(json['dueDate']) : null,
       _finishedDate = json['finishedDate'] != null ? amplify_core.TemporalDateTime.fromString(json['finishedDate']) : null,
-      _location = json['location']?['serializedData'] != null
-        ? Location.fromJson(new Map<String, dynamic>.from(json['location']['serializedData']))
+      _location = json['location'] != null
+          ? json['location']['serializedData'] != null
+              ? Location.fromJson(new Map<String, dynamic>.from(json['location']['serializedData']))
+              : Location.fromJson(new Map<String, dynamic>.from(json['location']))
         : null,
-      _user = json['user']?['serializedData'] != null
-        ? User.fromJson(new Map<String, dynamic>.from(json['user']['serializedData']))
+      _user = json['user'] != null
+        ? json['user']['serializedData'] != null
+          ? User.fromJson(new Map<String, dynamic>.from(json['user']['serializedData']))
+          : User.fromJson(new Map<String, dynamic>.from(json['user']))
         : null,
       _userID = json['userID'],
-      _entity = json['entity']?['serializedData'] != null
-        ? Entity.fromJson(new Map<String, dynamic>.from(json['entity']['serializedData']))
+      _entity = json['entity'] != null
+        ? json['entity']['serializedData'] != null
+          ? Entity.fromJson(new Map<String, dynamic>.from(json['entity']['serializedData']))
+          : Entity.fromJson(new Map<String, dynamic>.from(json['entity']))
         : null,
-      _appliedIntervention = json['appliedIntervention']?['serializedData'] != null
-        ? AppliedIntervention.fromJson(new Map<String, dynamic>.from(json['appliedIntervention']['serializedData']))
+      _appliedIntervention = json['appliedIntervention'] != null
+        ? json['appliedIntervention']['serializedData'] != null
+          ? AppliedIntervention.fromJson(new Map<String, dynamic>.from(json['appliedIntervention']['serializedData']))
+          : AppliedIntervention.fromJson(new Map<String, dynamic>.from(json['appliedIntervention']))
         : null,
-      _executedSurvey = json['executedSurvey']?['serializedData'] != null
-        ? ExecutedSurvey.fromJson(new Map<String, dynamic>.from(json['executedSurvey']['serializedData']))
+      _executedSurvey = json['executedSurvey'] != null
+        ? json['executedSurvey']['serializedData'] != null
+          ? ExecutedSurvey.fromJson(new Map<String, dynamic>.from(json['executedSurvey']['serializedData']))
+          : ExecutedSurvey.fromJson(new Map<String, dynamic>.from(json['executedSurvey']))
         : null,
       _schemeVersion = (json['schemeVersion'] as num?)?.toInt(),
       _picIDs = (json['picIDs'] as List?)?.map((e) => (e as num).toInt()).toList(),

@@ -412,7 +412,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                         Flexible(
                             child: Text(
                                 question.questionOptions![index].displayText,
-                                style: Theme.of(context).textTheme.bodyText1)),
+                                style: Theme.of(context).textTheme.bodyLarge)),
                       ],
                     ),
                   ),
@@ -485,7 +485,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                         Flexible(
                             child: Text(
                           question.questionOptions![index].displayText,
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.bodyLarge,
                         )),
                       ],
                     ),
@@ -842,7 +842,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
         context: context,
         builder: (context) => AlertDialog(
             title:
-                Text(abortSurvey, style: Theme.of(context).textTheme.headline2),
+                Text(abortSurvey, style: Theme.of(context).textTheme.displayMedium),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -850,7 +850,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     abortSurveyText,
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),
                 SizedBox(
@@ -864,7 +864,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                           padding: EdgeInsets.all(defaultPadding(context)),
                           child: Text(
                             confirmAbort,
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
                         onPressed: () {
@@ -875,7 +875,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                           padding: EdgeInsets.all(defaultPadding(context)),
                           child: Text(
                             doNotAbort,
-                            style: Theme.of(context).textTheme.bodyText1,
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
                         onPressed: () {
@@ -952,7 +952,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
         children: [
           Expanded(child: Text(
             surveyTitle,
-            style: Theme.of(context).textTheme.headline2,
+            style: Theme.of(context).textTheme.displayMedium,
           )),
           /*MaterialButton(
               onPressed: () {
@@ -1033,7 +1033,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
             padding: EdgeInsets.all(defaultPadding(context)),
             child: Text(
               endSurvey,
-              style: Theme.of(context).textTheme.headline2,
+              style: Theme.of(context).textTheme.displayMedium,
             ),
           ),
         ),
@@ -1184,7 +1184,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
       switch (question.type) {
         case QuestionType.SINGLECHOICE:
           answerWidget = Text(questionAnswer.questionOptions!.first.displayText,
-              style: Theme.of(context).textTheme.bodyText1);
+              style: Theme.of(context).textTheme.bodyLarge);
           break;
         case QuestionType.MULTIPLECHOICE:
           String answers = '';
@@ -1196,7 +1196,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
             answers = answers.substring(0, answers.length - 2);
           }
           answerWidget =
-              Text(answers, style: Theme.of(context).textTheme.bodyText1);
+              Text(answers, style: Theme.of(context).textTheme.bodyLarge);
           break;
         case QuestionType.PICTURE:
           answerWidget = Column(
@@ -1205,7 +1205,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
               SizedBox(
                 height: defaultPadding(context),
               ),
-              Text(yourShot, style: Theme.of(context).textTheme.bodyText1),
+              Text(yourShot, style: Theme.of(context).textTheme.bodyLarge),
               SizedBox(
                 height: defaultPadding(context),
               ),
@@ -1215,7 +1215,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
           break;
         case QuestionType.TEXT:
           answerWidget = Text(questionAnswer.text ?? '',
-              style: Theme.of(context).textTheme.bodyText1);
+              style: Theme.of(context).textTheme.bodyLarge);
           break;
         case QuestionType.AUDIO:
           answerWidget = Column(
@@ -1224,7 +1224,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
               SizedBox(
                 height: defaultPadding(context),
               ),
-              Text(yourShot, style: Theme.of(context).textTheme.bodyText1),
+              Text(yourShot, style: Theme.of(context).textTheme.bodyLarge),
               SizedBox(
                 height: defaultPadding(context),
               ),
@@ -1235,15 +1235,15 @@ class SurveyWidgetState extends State<SurveyWidget> {
           break;
         case QuestionType.INT:
           answerWidget = Text(questionAnswer.intValue!.toString(),
-              style: Theme.of(context).textTheme.bodyText1);
+              style: Theme.of(context).textTheme.bodyLarge);
           break;
         case QuestionType.DOUBLE:
           answerWidget = Text(questionAnswer.doubleValue!.toString(),
-              style: Theme.of(context).textTheme.bodyText1);
+              style: Theme.of(context).textTheme.bodyLarge);
           break;
         case QuestionType.RATING:
           answerWidget = Text(questionAnswer.rating!.toString() + "/9",
-              style: Theme.of(context).textTheme.bodyText1);
+              style: Theme.of(context).textTheme.bodyLarge);
           break;
         default:
           answerWidget = Container();
@@ -1269,7 +1269,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                     children: [
                       Text(
                         question.displayText,
-                        style: Theme.of(context).textTheme.headline2,
+                        style: Theme.of(context).textTheme.displayMedium,
                       ),
                       if (questionAnswer != null &&
                           ((questionAnswer.type ==
@@ -1322,7 +1322,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
               children: [
                 Text(
                   question.displayText,
-                  style: Theme.of(context).textTheme.headline2,
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
                 SizedBox(
                   height: defaultPadding(context),
@@ -1330,7 +1330,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                 Text(
                   resolveQuestionTypeDescriptionFromQuestion(
                       question: question),
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ],
             ),
@@ -1422,7 +1422,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
             padding: EdgeInsets.all(defaultPadding(context)),
             child: Text(
               savedSurvey,
-              style: Theme.of(context).textTheme.headline2,
+              style: Theme.of(context).textTheme.displayMedium,
             ),
           ),
         ),
@@ -1471,7 +1471,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                   EdgeInsets.symmetric(horizontal: defaultPadding(context)),
               child: Text(
                 '${survey.displayName} $summary',
-                style: Theme.of(context).textTheme.headline2,
+                style: Theme.of(context).textTheme.displayMedium,
               ),
             ),
           ),
@@ -1548,11 +1548,11 @@ class SurveyWidgetState extends State<SurveyWidget> {
                 children: [
                   Text(
                     surveyTitle,
-                    style: Theme.of(context).textTheme.headline2,
+                    style: Theme.of(context).textTheme.displayMedium,
                   ),
                   Text(
                     entityName,
-                    style: Theme.of(context).textTheme.headline2,
+                    style: Theme.of(context).textTheme.displayMedium,
                   ),
                 ],
               ),
