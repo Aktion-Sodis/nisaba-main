@@ -1,21 +1,7 @@
-///Implementierungsvorschlag @christoph
-///eine klasse, über welche statische methoden/futures/variablen aufrufbar sind
-///nötige Methoden/Futures/...
-/// - Log in mit e-mail (am besten Future<String>) -> rückübergabe der erhaltenen ID
-/// - Log in mit Telefonnummer (...) -> ... (muss ggf. noch in amplify hinterlegt werden -> im zweifel @CoachBenedetto fragen)
-/// - Log out (am besten Future<bool>) -> rückgabe true wenn erfolgreich
-/// - Aktuelle user id (Future<String>) -> wenn nicht eingeloggt null
-/// - login status (Future<LoginStatus>) -> Enum für LoginStatus erstellen
-/// - wir verwenden nicht das login ui von amplify zunächst; können wir uns allerdings gemeinsam mit den designern nochmal anschauen
-/// - bei login immer an device erinnern
-/// - bei logout device vergewssen
-
 import 'dart:io';
-import 'package:amplify_api/model_queries.dart';
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
 import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/backend/repositories/UserRepository.dart';
@@ -60,8 +46,10 @@ class AuthRepository {
 
       final result = await Amplify.API
           .query(
-              request:
-                  ModelQueries.get(amp.Organization.classType, organizationID))
+              request: ModelQueries.get(
+                amp.Organization.classType,
+                amp.OrganizationModelIdentifier(id: organizationID),
+              ))
           .response;
       print('got organization');
 
@@ -190,9 +178,6 @@ class AuthRepository {
     String? phoneNumber,
     required String password,
   }) async {
-    Amplify.Auth.streamController.stream.listen((event) {
-      print("login event: ${event.toString()}");
-    });
     print("login called in repo");
 
     print("login is getting attempted with $email + $phoneNumber + $password");
@@ -209,9 +194,9 @@ class AuthRepository {
     print(signInOptions.toString());
 
     final result = await Amplify.Auth.signIn(
-        username: email ?? phoneNumber ?? "",
-        password: password,
-        options: CognitoSignInOptions(clientMetadata: signInOptions));
+      username: email ?? phoneNumber ?? "",
+      password: password,
+    );
 
     print("is Signed in: ${result.isSignedIn}");
     print("next Step: ${result.nextStep?.signInStep}");
@@ -339,7 +324,9 @@ class AuthRepository {
     phoneNumber ??= userAttributes[CognitoUserAttributeKey.phoneNumber] =
         phoneNumber!.trim();
 
-    final options = CognitoSignUpOptions(userAttributes: userAttributes);
+    final options = SignUpOptions(
+      userAttributes: userAttributes,
+    );
     try {
       final result = await Amplify.Auth.signUp(
         username: username.trim(),

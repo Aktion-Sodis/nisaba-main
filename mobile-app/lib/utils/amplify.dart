@@ -15,8 +15,8 @@ class AmplifyIntegration {
 
   ///api of cloud database (responsible for automated syncing)
   static final AmplifyAPI _amplifyAPI = AmplifyAPI(
-      authProviders: const [CognitoOIDCAuthProvider()],
-      modelProvider: ModelProvider());
+    options: APIPluginOptions(modelProvider: ModelProvider.instance),
+  );
 
   ///auth for api and storage
   static final AmplifyAuthCognito _amplifyAuthCognito = AmplifyAuthCognito();
@@ -58,12 +58,17 @@ class CognitoOIDCAuthProvider extends OIDCAuthProvider {
   static String? _token;
 
   static Future<String?> fetchAndRememberAuthToken() async {
-    //todo: here session experied exception when offline
-    final session = await Amplify.Auth.fetchAuthSession(
-      options: CognitoSessionOptions(getAWSCredentials: true),
-    ) as CognitoAuthSession;
-    _token = session.userPoolTokens?.idToken;
-    return Future.value(_token);
+    try {
+      final session = await Amplify.Auth.fetchAuthSession();
+      if (session is CognitoAuthSession) {
+        _token = session.userPoolTokensResult.value.idToken.toString();
+        return _token;
+      }
+      return null;
+    } catch (e) {
+      print('Error fetching auth token: $e');
+      return null;
+    }
   }
 
   @override
@@ -71,8 +76,7 @@ class CognitoOIDCAuthProvider extends OIDCAuthProvider {
     if (_token == null) {
       await fetchAndRememberAuthToken();
     }
-
-    return Future.value(_token);
+    return _token;
   }
 
   static void forgetAuthToken() {

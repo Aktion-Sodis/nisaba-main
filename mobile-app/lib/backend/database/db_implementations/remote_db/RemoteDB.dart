@@ -8,6 +8,7 @@ import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDBModelRegistration.dart';
+import 'package:mobile_app/models/Config.dart';
 import 'package:mobile_app/utils/connectivity.dart';
 
 import '../../../../models/ModelProvider.dart' as amp;
@@ -111,7 +112,57 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
   Future<G?> getById<G extends DBModel>(Type type, String id) async {
     try {
       ModelType modelType = getRegisteredModel(type).modelType!;
-      final request = ModelQueries.get(modelType, id);
+      ModelIdentifier? modelIdentifier;
+      switch (modelType.modelName()) {
+        case "TestObject":
+          modelIdentifier = amp.TestObjectModelIdentifier(id: id);
+          break;
+        case "Entity":
+          modelIdentifier = amp.EntityModelIdentifier(id: id);
+          break;
+        case "Task":
+          modelIdentifier = amp.TaskModelIdentifier(id: id);
+          break;
+        case "ExecutedSurvey":
+          modelIdentifier = amp.ExecutedSurveyModelIdentifier(id: id);
+          break;
+        case "Level":
+          modelIdentifier = amp.LevelModelIdentifier(id: id);
+          break;
+        case "Survey":
+          modelIdentifier = amp.SurveyModelIdentifier(id: id);
+          break;
+        case "User":
+          modelIdentifier = amp.UserModelIdentifier(id: id);
+          break;
+        case "AppliedIntervention":
+          modelIdentifier = amp.AppliedInterventionModelIdentifier(id: id);
+          break;
+        case "Intervention":
+          modelIdentifier = amp.InterventionModelIdentifier(id: id);
+          break;
+        case "LevelInterventionRelation":
+          modelIdentifier = amp.LevelInterventionRelationModelIdentifier(id: id);
+          break;
+        case "SurveySurveyTagRelation":
+          modelIdentifier = amp.SurveySurveyTagRelationModelIdentifier(id: id);
+          break;
+        case "ContentContentTagRelation":
+          modelIdentifier = amp.ContentContentTagRelationModelIdentifier(id: id);
+          break;
+        case "InterventionContentRelation":
+          modelIdentifier = amp.InterventionContentRelationModelIdentifier(id: id);
+          break;
+        case "InterventionInterventionTagRelation":
+          modelIdentifier = amp.InterventionInterventionTagRelationModelIdentifier(id: id);
+          break;
+        case "Organization":
+          modelIdentifier = amp.OrganizationModelIdentifier(id: id);
+          break;
+        default:
+          throw "Model identifier not found";
+      }
+      final request = ModelQueries.get(modelType, modelIdentifier);
       final response = await Amplify.API.query(request: request).response;
       final data = response.data;
       if (data == null) {

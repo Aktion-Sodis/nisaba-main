@@ -65,7 +65,7 @@ class StorageRepository {
         return;
       }
 
-      await Amplify.Storage.downloadFile(key: path, local: toDownload);
+      await Amplify.Storage.downloadFile(path: StoragePath.fromString(path), localFile: AWSFile.fromPath(toDownload.path)).result;
       //set local last changed to onlyine last changed
       syncBloc?.add(LoadedFileEvent());
 
@@ -73,7 +73,7 @@ class StorageRepository {
         await toDownload.setLastModified(lastModifiedOnline);
       } else {
         try {
-          ListResult listResult = await Amplify.Storage.list(path: path);
+          StorageListResult listResult = await Amplify.Storage.list(path: StoragePath.fromString(path)).result;
           if (listResult.items.isNotEmpty) {
             lastModifiedOnline = listResult.items.first.lastModified;
             if (lastModifiedOnline != null) {
@@ -116,14 +116,14 @@ class StorageRepository {
       }
 
       final result = await Amplify.Storage.uploadFile(
-        local: file,
-        key: dataStorePath,
-      );
+        localFile: AWSFile.fromPath(file.path),
+        path: StoragePath.fromString(dataStorePath),
+      ).result;
 
       //remove from sync bloc
       syncBloc?.add(LoadedFileEvent());
 
-      return result.key;
+      return result.uploadedItem.path;
     } catch (e) {
       syncBloc?.add(LoadedFileEvent());
       //remove from sync bloc
@@ -133,8 +133,8 @@ class StorageRepository {
 
   static Future<String> getUrlForFile(String path) async {
     try {
-      final result = await Amplify.Storage.getUrl(key: path);
-      return result.url;
+      final result = await Amplify.Storage.getUrl(path: StoragePath.fromString(path)).result;
+      return result.url.toString();
     } catch (e) {
       rethrow;
     }
@@ -154,13 +154,13 @@ class StorageRepository {
       }
 
       final result = await Amplify.Storage.remove(
-        key: path,
+        path: StoragePath.fromString(path),
         // options: options
-      );
+      ).result;
 
       syncBloc?.add(LoadedFileEvent());
 
-      return result.key;
+      return result.removedItem.path;
     } catch (e) {
       //remove from sync bloc
       syncBloc?.add(LoadedFileEvent());
@@ -205,9 +205,9 @@ class StorageRepository {
       localCacheFile.parent.createSync(recursive: true);
       await localCacheFile.writeAsString(values.toString(), flush: true);
       await Amplify.Storage.uploadFile(
-        local: localCacheFile,
-        key: path,
-      );
+        localFile: AWSFile.fromPath(localCacheFile.path),
+        path: StoragePath.fromString(path),
+      ).result;
       await localCacheFile.delete();
       return true;
     } catch (e) {

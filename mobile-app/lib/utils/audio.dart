@@ -3,13 +3,6 @@ import 'dart:typed_data';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:mobile_app/frontend/components/audio/audio_stateful_widget.dart';
 
-/// This class is a wrapper for `flutter_sound`.
-///
-/// An "opened session" reserves some resources of the device. That is why you
-/// should keep as few sessions opened as possible.
-///
-/// Also, take a look at `RecorderWidget` and `PlayerWidget`,
-/// handling opened sessions automatically
 class Audio {
   static final Audio instance = Audio();
 
@@ -22,18 +15,16 @@ class Audio {
 
   void Function()? _onPlayerStop;
 
-  /// You have to open the audio session before using it. The method initState() is a good place for it.
   Future<void> openSession() async {
-    await _player.openAudioSession();
-    await recorder.openAudioSession();
+    await _player.openPlayer();
+    await recorder.openRecorder();
     _sessionOpened = true;
     _refreshAttachedWidgets();
   }
 
-  /// You have to close the audio session to release all the resources, used by the plugin. The method dispose() is a good place for it.
   Future<void> closeSession() async {
-    await _player.closeAudioSession();
-    await recorder.closeAudioSession();
+    await _player.closePlayer();
+    await recorder.closeRecorder();
     _sessionOpened = false;
     _refreshAttachedWidgets();
   }
@@ -46,14 +37,16 @@ class Audio {
   }) async {
     if (_onPlayerStop != null) _onPlayerStop!();
     _onPlayerStop = whenFinished;
+    
     await _player.startPlayer(
-        fromURI: fromURI,
-        fromDataBuffer: fromDataBuffer,
-        codec: codec,
-        whenFinished: () {
-          _onPlayerStop = null;
-          if (whenFinished != null) whenFinished();
-        });
+      fromURI: fromURI,
+      fromDataBuffer: fromDataBuffer,
+      codec: codec,
+      whenFinished: () {
+        _onPlayerStop = null;
+        whenFinished?.call();
+      },
+    );
   }
 
   Future<void> stopPlayer() async {
@@ -77,7 +70,7 @@ class Audio {
 
   void _refreshAttachedWidgets() {
     for (AudioStatefulWidget widget in attachedTo) {
-      if (widget.refresh != null) widget.refresh!();
+      widget.refresh?.call();
     }
   }
 }

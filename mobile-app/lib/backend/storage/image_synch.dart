@@ -112,7 +112,7 @@ class SyncedFile {
               checkConnection: false);
         }
       } else {
-        ListResult listResult = await Amplify.Storage.list(path: path);
+        StorageListResult listResult = await Amplify.Storage.list(path: StoragePath.fromString(path)).result;
         if (listResult.items.isEmpty) {
           StorageRepository.uploadFile(await getCachePath(), path,
               checkConnection: false);

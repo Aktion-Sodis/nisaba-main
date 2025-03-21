@@ -1,8 +1,7 @@
 import 'dart:io';
-
-import 'package:amplify_api/model_queries.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_app/backend/database/DB.dart';
+import 'package:amplify_api/amplify_api.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
 import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
@@ -23,7 +22,7 @@ class UserRepositoryCustom extends UserRepository {
   Future<User?> fetchUserByID(String id) async {
     GraphQLResponse<amp.User> result = await Amplify.API
         .query(
-          request: ModelQueries.get(amp.User.classType, id),
+          request: ModelQueries.get(amp.User.classType, amp.UserModelIdentifier(id: id)),
         )
         .response;
     return result.data != null ? User.fromAmplifyModel(result.data!) : null;

@@ -40,6 +40,9 @@ class _HiveDBInitializerState extends State<HiveDBInitializer>
       case AppLifecycleState.detached:
         await HiveDBHelper.instance.close();
         break;
+      case AppLifecycleState.hidden:
+        await HiveDBHelper.instance.close();
+        break;
     }
   }
 

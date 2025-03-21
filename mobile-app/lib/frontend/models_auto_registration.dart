@@ -84,7 +84,8 @@ void registerModels() {
       updateMutation: "updateTestObject",
       getQuery: "getTestObject",
       listQuery: "listTestObjects",
-      queryFields: TestObject.queryFields());
+      queryFields: TestObject.queryFields(),
+  );
 
   // Level
   _register(
