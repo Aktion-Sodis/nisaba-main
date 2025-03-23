@@ -1,0 +1,92 @@
+::-webkit-scrollbar {
+  height: 7px;
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgray;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-default);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: gray;
+}
+
+/* Custom bounce animation */
+@keyframes bounce-once {
+  0%,
+  100% {
+    transform: translateY(-25%);
+  }
+  50% {
+    transform: translateY(0);
+  }
+}
+.animate-bounce-once {
+  animation: bounce-once 0.8s ease-in-out;
+}
+
+.form-group {
+  @apply mb-3;
+}
+
+.form-group > label {
+  @apply text-sm md:text-base mb-1 text-gray-500;
+}
+
+.form-group:focus-within > label {
+  @apply text-gray-700;
+}
+
+.h-10v {
+  height: 10vh;
+}
+.h-20v {
+  height: 20vh;
+}
+.h-30v {
+  height: 30vh;
+}
+.h-40v {
+  height: 40vh;
+}
+.h-50v {
+  height: 50vh;
+}
+.h-60v {
+  height: 60vh;
+}
+.h-70v {
+  height: 70vh;
+}
+.h-80v {
+  height: 80vh;
+}
+.h-90v {
+  height: 90vh;
+}
+.h-100v {
+  height: 100vh;
+}
+
+[data-pc-section='treecontainer'] [data-pc-section='nodechildren'] {
+  padding-left: 0 !important;
+}
+
+/* Disabled ring for x button on modal */
+button[data-pc-name='pcclosebutton']:focus {
+  @apply ring-0 !important;
+}
+
+/* Disabled ring for maximize button on modal */
+button[data-pc-name='pcmaximizebutton']:focus {
+  @apply ring-0 !important;
+}

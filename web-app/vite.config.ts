@@ -10,5 +10,8 @@ export default defineConfig({
       'primevue': path.resolve(__dirname, './node_modules/primevue'),
       'primeicons': path.resolve(__dirname, './node_modules/primeicons')
     }
+  },
+  server: {
+    port: 3000
   }
 });

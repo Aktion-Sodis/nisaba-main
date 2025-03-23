@@ -2,6 +2,7 @@
   <div class="language-selector">
     <Select
       v-model="selectedLanguageInternal"
+      :placeholder="$t('placeholder.select')"
       severity="light"
       :size="size"
       :disabled="disabled"
@@ -16,12 +17,10 @@
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { SELECTED_LANGUAGE_KEY } from '@/data/constants';
-import { toUpperCase } from '@/utils/format-string';
+import { toUpperCase } from '@/utils/formatStrings';
 
 /**
  * Define Props
- * Defines the properties passed from the parent component to the child for configuration and data.
  */
 withDefaults(
   defineProps<{
@@ -38,13 +37,13 @@ withDefaults(
 
 /**
  * Initialize Utilities
- * Sets up utility functions and services for use throughout the component.
  */
 const { availableLocales, locale } = useI18n();
 
+const SELECTED_LANGUAGE_KEY = 'selectedLanguage';
+
 /**
  * Computed Properties
- * Defines properties that derive values from reactive state, updated automatically when dependencies change.
  */
 const options = computed(() => {
   return availableLocales.map((locale) => ({
@@ -68,7 +67,6 @@ const selectedLanguageInternal = computed({
 
 /**
  * Define Methods
- * Defines functions that perform specific actions or handle events within the component.
  */
 const getFlagEmoji = (locale: string) => {
   const mapping = {

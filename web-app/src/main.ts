@@ -1,9 +1,10 @@
 import './index.css';
 import PrimeVue from 'primevue/config';
 import primeVuePlugin from './plugins/primevue';
-import Aura from '@primevue/themes/aura';
-import 'primeicons/primeicons.css';  // PrimeVue theme
-
+import '@/assets/css/tailwind.css';
+import '@/assets/css/global.css';
+import 'primeicons/primeicons.css'; 
+import 'material-symbols';
 
 import { Amplify } from 'aws-amplify';
 // @ts-ignore
@@ -26,11 +27,6 @@ app.use(router);
 
 // Use Pinia and PrimeVue
 app.use(createPinia());
-app.use(PrimeVue, {
-    theme: {
-        preset: Aura
-    }
-});
 app.use(primeVuePlugin);
 
 app.use(i18n)
