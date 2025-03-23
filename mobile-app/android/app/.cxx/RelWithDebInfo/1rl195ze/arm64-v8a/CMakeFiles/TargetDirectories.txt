@@ -1,0 +1,2 @@
+/Users/benediktschindele/Programming/Sodis/nisaba-main/mobile-app/android/app/.cxx/RelWithDebInfo/1rl195ze/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/benediktschindele/Programming/Sodis/nisaba-main/mobile-app/android/app/.cxx/RelWithDebInfo/1rl195ze/arm64-v8a/CMakeFiles/rebuild_cache.dir

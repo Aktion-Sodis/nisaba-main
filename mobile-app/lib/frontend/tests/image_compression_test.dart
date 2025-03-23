@@ -2,8 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:isolate_image_compress/isolate_image_compress.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/utils/photo_capturing.dart';
 
@@ -25,9 +25,12 @@ class ImageCompressionTest extends StatelessWidget {
     int upperBoundLength = (lengthBeforeCompressing ~/ 2);
     print("Max expected file size: " + upperBoundLength.toString());
 
-    IsolateImage toCompress = IsolateImage.path(picture.path);
-    Uint8List? compressed =
-        await toCompress.compress(maxSize: upperBoundLength);
+    Uint8List? compressed = await FlutterImageCompress.compressWithFile(
+      picture.path,
+      minWidth: 500,
+      minHeight: 500,
+      quality: 80,
+    );
     File file = File(picture.path);
     await file.writeAsBytes(compressed!);
 
