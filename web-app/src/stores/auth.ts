@@ -106,7 +106,7 @@ export const useAuthStore = defineStore('auth', () => {
                 user.value = currentUser;
             }
         } catch (err) {
-            console.error("Check auth error:", err);
+            //console.error("Check auth error:", err);
             authenticationState.value = AuthenticationState.LoggedOut;
             user.value = null;
         }

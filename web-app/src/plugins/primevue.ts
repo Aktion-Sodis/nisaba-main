@@ -1,4 +1,6 @@
 import { FilterService } from '@primevue/core/api';
+import { Form } from '@primevue/forms';
+import { FormField } from '@primevue/forms';
 import Accordion from 'primevue/accordion';
 import AccordionContent from 'primevue/accordioncontent';
 import AccordionHeader from 'primevue/accordionheader';
@@ -142,6 +144,8 @@ export default {
     app.component('ToggleButton', ToggleButton);
     app.component('ToggleSwitch', ToggleSwitch);
     app.component('Toast', Toast);
+    app.component('Form', Form);
+    app.component('FormField', FormField);
 
     // Directives
     app.directive('badge', BadgeDirective);
