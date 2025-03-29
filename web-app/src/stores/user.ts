@@ -1,14 +1,16 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { getUrl } from '@aws-amplify/storage';
 import { deriveS3Path } from '../utils/s3Paths';
 import { User } from '@/models';
 import { DataStore } from '@aws-amplify/datastore';
+import { AuthenticationState, useAuthStore } from './auth';
 
 export const useUserStore = defineStore('user', () => {
   const user = ref<User | null>(null);
   const userImageUrl = ref<string | null>(null);
   const isLoading = ref(true);
+  const authStore = useAuthStore();
 
   async function initialize(id: string) {
     try {
@@ -35,6 +37,8 @@ export const useUserStore = defineStore('user', () => {
       userImageUrl.value = null;
     }
   }
+
+
 
   return {
     user,

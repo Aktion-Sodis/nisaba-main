@@ -33,6 +33,18 @@
             "sourceMapPathOverrides": {
                 "webpack:///src/*": "${webRoot}/src/*"
             }
+        },
+        {
+            "name": "web-app(arc)",
+            "type": "chrome",
+            "request": "launch",
+            "runtimeExecutable": "/Applications/Arc.app/Contents/MacOS/Arc",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/web-app",
+            "sourceMapPathOverrides": {
+                "webpack:///src/*": "${webRoot}/src/*"
+            }
         }
+        
     ]
 }
