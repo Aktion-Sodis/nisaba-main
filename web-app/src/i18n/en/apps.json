@@ -3,6 +3,10 @@
         "admin": "Content Management"
     },
     "apps": {
+        "login": {
+            "title": "Login",
+            "description": "Login to the application"
+        },
         "project_structure": {
             "title": "Project Structure",
             "description": "Manage the project structure"

@@ -344,9 +344,6 @@
                   <span class="font-bold text-sm md:text-base">
                     {{ displayName }}
                   </span>
-                  <span class="text-xs md:text-sm">
-                    {{ authStore.user?.username ?? '-' }}
-                  </span>
                 </span>
               </div>
             </template>
