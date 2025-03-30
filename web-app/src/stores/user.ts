@@ -1,22 +1,25 @@
 import { defineStore } from 'pinia';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { getUrl } from '@aws-amplify/storage';
 import { deriveS3Path } from '../utils/s3Paths';
-import { User } from '@/models';
-import { DataStore } from '@aws-amplify/datastore';
-import { AuthenticationState, useAuthStore } from './auth';
+import { User } from '@/API';
+import { getUser, listSurveys } from '../graphql/queries';
+import { amplifyDataClient } from '@/utils/amplifyDataClient';
 
 export const useUserStore = defineStore('user', () => {
   const user = ref<User | null>(null);
   const userImageUrl = ref<string | null>(null);
   const isLoading = ref(true);
-  const authStore = useAuthStore();
 
   const initialize = async (id: string) => {
     try {
-      const userQuery = await DataStore.query(User, id);
-      if (userQuery) {
-        user.value = userQuery;
+      const { data } = await amplifyDataClient.graphql({
+        query: getUser,
+        variables: { id }
+      });
+      
+      if (data.getUser) {
+        user.value = data.getUser;
         loadUserImage(id);
       }
     } catch (error) {
