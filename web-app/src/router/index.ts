@@ -8,11 +8,17 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
+    meta: {
+      layout: 'BlankLayout'
+    }
   },
   {
     path: '/',
     name: 'Home',
     component: Index,
+    meta: {
+      layout: 'DefaultLayout'
+    }
   }
   // Add other routes here as needed
 ];

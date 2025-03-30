@@ -31,6 +31,9 @@ const layoutComponent = computed(() => {
 onMounted(() => {
   authStore.checkAuth().then((_) => {
     if(authStore.authenticationState === AuthenticationState.LoggedIn) {
+      if (authStore.user?.userId) {
+        userStore.initialize(authStore.user.userId);
+      }
       router.push('/');
     }
     else {
@@ -39,14 +42,15 @@ onMounted(() => {
   });
 });
 
-watch(() => authStore.authenticationState, (oldState, newState) => {
+watch(() => authStore.authenticationState, (newState, oldState) => {
   if(newState === AuthenticationState.LoggedOut || newState === AuthenticationState.PasswordResetRequired) {
     router.push('/login');
+    userStore.clear();
   }
   else if(newState === AuthenticationState.LoggedIn && oldState !== AuthenticationState.LoggedIn) {
-    if(authStore.authenticationState === AuthenticationState.LoggedIn && authStore.user?.userId) {
-    userStore.initialize(authStore.user?.userId);
-  }
+    if(authStore.user?.userId) {
+      userStore.initialize(authStore.user.userId);
+    }
   }
 });
 </script>

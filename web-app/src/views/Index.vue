@@ -57,6 +57,8 @@
   
   <script lang="ts" setup>
 
+  import MenuCard from '@/components/cards/MenuCard.vue';
+
   
   </script>
   

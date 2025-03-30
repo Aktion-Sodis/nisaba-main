@@ -12,7 +12,7 @@ export const useUserStore = defineStore('user', () => {
   const isLoading = ref(true);
   const authStore = useAuthStore();
 
-  async function initialize(id: string) {
+  const initialize = async (id: string) => {
     try {
       const userQuery = await DataStore.query(User, id);
       if (userQuery) {
@@ -27,7 +27,7 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  async function loadUserImage(userId: string) {
+  const loadUserImage = async (userId: string) => {
     try {
       const s3Path = deriveS3Path('userPicPath', { userID: userId });
       const url = await getUrl({ path: s3Path });
@@ -38,7 +38,11 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-
+  const clear = () => {
+    user.value = null;
+    userImageUrl.value = null;
+    isLoading.value = true;
+  }
 
   return {
     user,
@@ -46,5 +50,6 @@ export const useUserStore = defineStore('user', () => {
     isLoading,
     initialize,
     loadUserImage,
+    clear,
   };
 });
