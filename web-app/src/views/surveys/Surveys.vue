@@ -1,29 +1,35 @@
 <template>
-  <div >
+  <div>
     <h1>Umfragen</h1>
     
-  <DataTable 
-  :value="surveys" 
-  :loading="loading"
-  paginator 
-  :rows="10" 
-  :rowsPerPageOptions="[5, 10, 20, 50]"
-  tableStyle="min-width: 50rem"
- >
-  
-  
-  <template #empty> Keine Umfragen gefunden. </template>
-  <template #loading> Lade Umfragedaten... </template>
-  
-  <Column field="id" header="ID"></Column>
-  <Column field="name" header="Name" sortable ></Column>
-  <Column field="description" header="Beschreibung"></Column>
-  <Column field="createdAt" header="Erstellt am" sortable>
-    <template #body="slotProps">
-     {{ formatDate(slotProps.data.createdAt) }}
-    </template>
-  </Column>
- </DataTable> 
+    <DataTable 
+      :value="surveys" 
+      :loading="loading"
+      paginator 
+      :rows="10" 
+      :rowsPerPageOptions="[5, 10, 20, 50]"
+      tableStyle="min-width: 50rem"
+    >
+      <template #empty> Keine Umfragen gefunden. </template>
+      <template #loading> Lade Umfragedaten... </template>
+      
+      <Column field="id" header="ID"></Column>
+      <Column field="name" header="Name" sortable>
+        <template #body="slotProps">
+          {{ formatMLString(slotProps.data.name) }}
+        </template>
+      </Column>
+      <Column field="description" header="Beschreibung">
+        <template #body="slotProps">
+          {{ formatMLString(slotProps.data.description) }}
+        </template>
+      </Column>
+      <Column field="createdAt" header="Erstellt am" sortable>
+        <template #body="slotProps">
+         {{ formatDate(slotProps.data.createdAt) }}
+        </template>
+      </Column>
+    </DataTable> 
   </div>
 </template>
 
@@ -31,17 +37,13 @@
 import { ref, onMounted } from 'vue';
 import { generateClient } from 'aws-amplify/api';
 import { listSurveys } from '@/graphql/queries';
-//import { FilterMatchMode } from 'primevue/api';
 import { Survey } from '@/models';
+import { formatMLString } from '@/utils/formatStrings'; // Pfad anpassen
+//import { useI18n } from 'vue-i18n'; // I18n-Komposition-API importieren
 
 // Zustandsvariablen
 const surveys = ref<Array<Survey>>([]);
 const loading = ref(true);
-
-// Filter-Einstellungen
-/*const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-}); */
 
 // API-Client erstellen
 const client = generateClient();
@@ -57,7 +59,6 @@ const fetchSurveys = async () => {
     
     surveys.value = response.data.listSurveys.items as unknown as Survey[];
     console.log('Geladene Umfragen:', surveys.value);
-    console.log(surveys.value[0].name);
   } catch (err) {
     console.error('Fehler beim Abrufen der Umfragedaten:', err);
   } finally {
@@ -75,4 +76,3 @@ const formatDate = (dateString) => {
 // Daten beim Laden der Komponente abrufen
 onMounted(fetchSurveys);
 </script>
-
