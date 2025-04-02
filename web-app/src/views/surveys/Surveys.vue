@@ -1,19 +1,28 @@
 <template>
-  <div>
-    <h1>Umfragen</h1>
-    
-    <DataTable 
+  <div class = "h-full">
+    <Card class = "h-full">
+      <template #title>
+        Umfragen
+      </template>
+
+      <template #subtitle>
+        Hier können Sie Ihre Umfragen verwalten.
+      </template>
+
+      <template #content>
+        <DataTable 
       :value="surveys" 
       :loading="loading"
       paginator 
       :rows="10" 
       :rowsPerPageOptions="[5, 10, 20, 50]"
-      tableStyle="min-width: 50rem"
+      tableStyle="min-width: 50rem;"
+      scroll-height="h-[calc(100vh_-_18rem)]"
+      
     >
       <template #empty> Keine Umfragen gefunden. </template>
       <template #loading> Lade Umfragedaten... </template>
       
-      <Column field="id" header="ID"></Column>
       <Column field="name" header="Name" sortable>
         <template #body="slotProps">
           {{ formatMLString(slotProps.data.name) }}
@@ -30,6 +39,10 @@
         </template>
       </Column>
     </DataTable> 
+  </template>
+    </Card>
+    
+    
   </div>
 </template>
 

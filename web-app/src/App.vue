@@ -1,6 +1,6 @@
 <!-- src/App.vue -->
 <template>
-  <div id="app">
+  <div id="app" class="bg-surface-100">
     <component :is="layoutComponent">
       <router-view />
     </component>
