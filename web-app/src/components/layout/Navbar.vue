@@ -6,9 +6,9 @@
         <div
           class="flex md:hidden rounded-md cursor-pointer bg-surface-0 text-surface-600 h-14 p-1 items-center"
         >
-          <div
+            <div
             class="flex items-center justify-center h-full aspect-square hover:bg-surface-50"
-            @click="() => router.push({ name: 'Home' })"
+            @click="() => router.push('/')"
           >
             <i class="material-symbols-outlined text-3xl">apps</i>
           </div>

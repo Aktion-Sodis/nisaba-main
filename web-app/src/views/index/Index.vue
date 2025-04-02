@@ -12,40 +12,54 @@
           <div
             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 h-full gap-4"
           >
-            <menu-card
-              :title="$t('navigation.menu.data_explorer.title')"
-              :subtitle="$t('navigation.menu.data_explorer.subtitle')"
-              bg-color="bg-secondary-800"
-              @click=""
-            >
-              <template #icon>
-                <scatter-plot-svg class="text-surface-0 max-w-12 xl:max-w-14" />
-              </template>
-            </menu-card>
-            <menu-card
-              
-              :title="$t('navigation.menu.deep_fmea.title')"
-              :subtitle="$t('navigation.menu.deep_fmea.subtitle')"
-              bg-color="bg-secondary-700"
-              
-              @click=""
-            >
-              <template #icon>
-                <i class="pi pi-sitemap text-surface-0 text-5xl md:text-6xl" />
-              </template>
-            </menu-card>
-            <menu-card
-              
-              :title="$t('navigation.menu.rules_and_alarms.title')"
-              :subtitle="$t('navigation.menu.rules_and_alarms.subtitle')"
-              bg-color="bg-secondary-600"
-              
-              @click=""
-            >
-              <template #icon>
-                <warning-svg class="text-surface-0 max-w-12 xl:max-w-14" />
-              </template>
-            </menu-card>
+                <menu-card
+                          
+                          :title="$t('navigation.menu.surveys.title')"
+                          :subtitle="$t('navigation.menu.surveys.subtitle')"
+                          bg-color="bg-secondary-700"
+                          
+                            @click="$router.push('/surveys')"
+                        >
+                          <template #icon>
+                          <i class="pi pi-clipboard text-surface-0 text-5xl md:text-6xl" />
+                          </template>
+                        </menu-card>
+            <!--
+                  <menu-card
+                    :title="$t('navigation.menu.data_explorer.title')"
+                    :subtitle="$t('navigation.menu.data_explorer.subtitle')"
+                    bg-color="bg-secondary-800"
+                    @click=""
+                  >
+                    <template #icon>
+                    <scatter-plot-svg class="text-surface-0 max-w-12 xl:max-w-14" />
+                    </template>
+                  </menu-card>
+                  <menu-card
+                    
+                    :title="$t('navigation.menu.deep_fmea.title')"
+                    :subtitle="$t('navigation.menu.deep_fmea.subtitle')"
+                    bg-color="bg-secondary-700"
+                    
+                    @click=""
+                  >
+                    <template #icon>
+                    <i class="pi pi-sitemap text-surface-0 text-5xl md:text-6xl" />
+                    </template>
+                  </menu-card>
+                  <menu-card
+                    
+                    :title="$t('navigation.menu.rules_and_alarms.title')"
+                    :subtitle="$t('navigation.menu.rules_and_alarms.subtitle')"
+                    bg-color="bg-secondary-600"
+                    
+                    @click=""
+                  >
+                    <template #icon>
+                    <warning-svg class="text-surface-0 max-w-12 xl:max-w-14" />
+                    </template>
+                  </menu-card>
+            -->
             
           </div>
         </div>
