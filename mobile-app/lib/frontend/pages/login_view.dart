@@ -34,9 +34,10 @@ class LoginView extends StatelessWidget {
                         : MediaQuery.of(context).padding.bottom),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _logo(context),
+                    Expanded(child: _logo(context)),
                     //_pic(context),
                     _loginForm(),
                   ],
@@ -47,8 +48,9 @@ class LoginView extends StatelessWidget {
 
   Widget _logo(BuildContext context) {
     return Container(
-        alignment: Alignment.bottomCenter,
-        margin: EdgeInsets.all(width(context) * .1),
+        constraints: BoxConstraints(
+            maxHeight: height(context) * .3, maxWidth: width(context) * .7),
+        alignment: Alignment.center,
         //constraints: BoxConstraints(maxHeight: height(context) * .07),
         child: Hero(
             tag: 'Logo_Hero',
@@ -74,6 +76,7 @@ class LoginView extends StatelessWidget {
               key: _formKey,
               child: Container(
                 padding: EdgeInsets.only(
+                    bottom: defaultPadding(context),
                     left: width(context) * .1,
                     right: width(context) * .1,
                     top: width(context) * .1),
@@ -184,7 +187,7 @@ class LoginView extends StatelessWidget {
                       : ElevatedButton(
                           style: ButtonStyle(
                             textStyle: MaterialStateProperty.all(
-                                TextStyle(fontSize: 18)),
+                                TextStyle(fontSize: 18, color: Colors.white)),
                             shape: MaterialStateProperty.all(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8))),
@@ -198,7 +201,9 @@ class LoginView extends StatelessWidget {
                               context.read<LoginBloc>().add(LoginSubmitted());
                             }
                           },
-                          child: Text(strings.login),
+                          child: Text(strings.login,
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.white)),
                         ))
             ])
       ]);

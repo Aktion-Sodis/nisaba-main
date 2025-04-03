@@ -32,9 +32,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         print("form is getting submitted");
         print("authRepo not null: ${authRepo != null}");
         final userId = await authRepo.login(
-          email: state.isPhoneNumber ? null : state.emailOrPhoneNumber,
-          phoneNumber: state.isPhoneNumber ? state.emailOrPhoneNumber : null,
-          password: state.password,
+          email: state.isPhoneNumber ? null : state.emailOrPhoneNumber.trim(),
+          phoneNumber:
+              state.isPhoneNumber ? state.emailOrPhoneNumber.trim() : null,
+          password: state.password.trim(),
         );
         print('got user id: $userId');
         emit(state.copyWith(formStatus: SubmissionSuccess()));
@@ -42,10 +43,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         //todo: hier bezüglich offline login arbeiten
 
         sessionCubit.showSession(AuthCredentials(
-          userName: state.emailOrPhoneNumber,
-          email: state.isPhoneNumber ? null : state.emailOrPhoneNumber,
-          phoneNumber: state.isPhoneNumber ? state.emailOrPhoneNumber : null,
-          password: state.password,
+          userName: state.emailOrPhoneNumber.trim(),
+          email: state.isPhoneNumber ? null : state.emailOrPhoneNumber.trim(),
+          phoneNumber:
+              state.isPhoneNumber ? state.emailOrPhoneNumber.trim() : null,
+          password: state.password.trim(),
           userId: userId,
         ));
         print("session launched");
