@@ -1,45 +1,76 @@
 export type AmplifyDependentResourcesAttributes = {
-    "api": {
-        "AdminQueries": {
-            "RootUrl": "string",
-            "ApiName": "string",
-            "ApiId": "string"
-        },
-        "monitoring": {
-            "GraphQLAPIKeyOutput": "string",
-            "GraphQLAPIIdOutput": "string",
-            "GraphQLAPIEndpointOutput": "string"
-        }
+  "api": {
+    "AdminQueries": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
     },
-    "auth": {
-        "userPoolGroups": {
-            "adminGroupRole": "string",
-            "appusersGroupRole": "string",
-            "statisticusersGroupRole": "string"
-        },
-        "sodisusers": {
-            "IdentityPoolId": "string",
-            "IdentityPoolName": "string",
-            "UserPoolId": "string",
-            "UserPoolArn": "string",
-            "UserPoolName": "string",
-            "AppClientIDWeb": "string",
-            "AppClientID": "string",
-            "CreatedSNSRole": "string"
-        }
+    "apinisaba": {
+      "GraphQLAPIEndpointOutput": "string",
+      "GraphQLAPIIdOutput": "string",
+      "GraphQLAPIKeyOutput": "string"
     },
-    "function": {
-        "AdminQueries3df1db39": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        }
-    },
-    "storage": {
-        "s3e48a1903": {
-            "BucketName": "string",
-            "Region": "string"
-        }
+    "nisabaUserManagementApi": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
     }
+  },
+  "auth": {
+    "authnisaba": {
+      "AppClientID": "string",
+      "AppClientIDWeb": "string",
+      "CreatedSNSRole": "string",
+      "IdentityPoolId": "string",
+      "IdentityPoolName": "string",
+      "UserPoolArn": "string",
+      "UserPoolId": "string",
+      "UserPoolName": "string"
+    },
+    "userPoolGroups": {
+      "adminGroupRole": "string",
+      "analyticsGroupRole": "string",
+      "mobileGroupRole": "string",
+      "superadminGroupRole": "string"
+    }
+  },
+  "function": {
+    "AdminQueries8dc38185": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "authnisabaPreTokenGeneration": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "nisabaAdminSdkLayer": {
+      "Arn": "string"
+    },
+    "nisabaUserManagement": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "syncConflictHandler5b19c779": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    }
+  },
+  "storage": {
+    "nisabarelease": {
+      "BucketName": "string",
+      "Region": "string"
+    }
+  }
 }

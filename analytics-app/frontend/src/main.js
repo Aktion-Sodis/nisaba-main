@@ -1,52 +1,14 @@
+// Components
+import App from './App.vue'
 
-import { createApp } from 'vue';
-import App from './App.vue';
+// Composables
+import { createApp } from 'vue'
 
-import router from './router';
-import store from './store';
+// Plugins
+import { registerPlugins } from '@/plugins'
 
-import ElementPlus from 'element-plus';
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+const app = createApp(App)
 
-import i18n from './i18n'
-import VueApexCharts from "vue3-apexcharts";
+registerPlugins(app)
 
-import '@fortawesome/fontawesome-free/js/all';
-import 'element-plus/dist/index.css';
-
-// import 'bootstrap/dist/css/bootstrap.css'
-
-import AmplifyVue from '@aws-amplify/ui-vue';
-import '@aws-amplify/ui-vue'
-
-import { Amplify, Auth } from 'aws-amplify';
-import awsExports from './aws-exports';
-
-awsExports.graphql_headers = async () => {
-  try {
-    const token = (await Auth.currentSession()).idToken.jwtToken;
-    return { Authorization: token }
-  }
-  catch (e) {
-      console.error(e);
-      return {};
-  }
-}
-Amplify.configure(awsExports);
-
-const app = createApp(App);
-
-app.use(AmplifyVue);
-
-app.use(router);
-app.use(store);
-
-app.use(i18n)
-app.use(VueApexCharts)
-
-app.use(ElementPlus);
-for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-  app.component(key, component)
-}
-
-app.mount('#app');
+app.mount('#app')

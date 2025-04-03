@@ -1,56 +1,54 @@
 <template>
-  <div class="text-wrapper">
-    <div
-      class="text-answer"
-      v-for="(answer, index) in filteredAnswers"
-      :key="index"
+  <v-card class="component-wrapper">
+    <v-list-item
+      v-for="(answer, i) in questionProperties.answers"
+      :key="i"
+      :value="answer"
+      color="primary"
+      class="list-item mb-2 ml-2 mr-2"
     >
-      {{ answer }}
-    </div>
-  </div>
+      <v-list-item-subtitle class="list-item-subtitle">
+        {{ answer.answer_value }}
+      </v-list-item-subtitle>
+    </v-list-item>
+  </v-card>
 </template>
 
 <script>
 export default {
-  name: "TextComponent",
-  props: ["question", "selectedIDs"],
-  created() {
-    this.filterDataByIDs(this.selectedIDs);
-  },
-  watch: {
-    selectedIDs: function (newVal, oldVal) {
-      this.filteredAnswers = this.filterDataByIDs(this.selectedIDs);
-    },
-    question: function (newVal, oldVal) {
-      this.filteredAnswers = this.filterDataByIDs(this.selectedIDs);
+  // Component name
+  name: "ChartComponent",
+
+  // Component props
+  props: {
+    questionProperties: {
+      type: Object,
+      required: true,
     },
   },
-  methods: {
-    filterDataByIDs(selected_IDs) {
-      this.filteredAnswers = [];
-      for (var i in selected_IDs) {
-        if (selected_IDs.includes(selected_IDs[i])) {
-          var index = this.question.answer_IDs.indexOf(selected_IDs[i]);
-          var answer = this.question.answers[index];
-          this.filteredAnswers.push(answer);
-        }
-      }
-      return this.filteredAnswers;
-    },
-  },
-  data: function () {
-    return {
-      filteredAnswers: [],
-    };
+
+  // Data
+  data() {
+    return {};
   },
 };
 </script>
 
 <style scoped>
-.text-answer {
-  border: 1px solid rgb(125, 125, 125);
+.component-wrapper {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+.list-item {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  height: 70px;
   border-radius: 5px;
-  margin-top: 20px;
-  padding: 15px 0;
+  border: black 1px solid;
+  background-color: #ffffff;
+}
+.list-item-subtitle {
+  color: black;
 }
 </style>

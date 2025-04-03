@@ -1,12 +1,16 @@
 import os
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
 
-from QueryMethods import get_intervention_types
-from QueryMethods import get_surveys
-from QueryMethods import get_interventions
-from QueryMethods import aggregate_survey_data
+from QueryMethods import QueryMethods
+
+from exports import excel_export_survey
+
+import io
+import xlsxwriter
+import pandas as pd
+import datetime
 
 # configuration
 # DEBUG = True
@@ -14,57 +18,113 @@ from QueryMethods import aggregate_survey_data
 # instantiate the app
 application = Flask(__name__)
 application.config.from_object(__name__)
-application.config['JSON_AS_ASCII'] = False
+application.config["JSON_AS_ASCII"] = False
 
 # enable CORS
-# CORS(application, resources={r'/*': {'origins': '*'}})
+CORS(application, resources={r"/*": {"origins": "*"}})
+
+query_methods = QueryMethods()
 
 
 # sanity check route
-@application.route('/', methods=['GET'])
+@application.route("/", methods=["GET"])
 def ping_pong():
-    return jsonify('Home')
+    return jsonify("Home")
 
-@application.route('/getInterventionTypes', methods=['GET'])
-def getInterventionTypes():
-    interventionTypes = get_intervention_types()
-    response = jsonify({
-        'inteventionTypes': interventionTypes
-    })
-    response.headers.add('Access-Control-Allow-Origin', '*')
+
+@application.route("/getTotalNumberOfSurveys", methods=["GET"])
+def getTotalNumberOfSurveys():
+    res = query_methods.get_total_number_of_surveys()
+    response = jsonify({"res": res})
+    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
-@application.route('/getInterventions', methods=['GET'])
-def getInterventions():
-    interventions = get_interventions()
-    response = jsonify({
-        'interventions': interventions
-    })
-    response.headers.add('Access-Control-Allow-Origin', '*')
+
+@application.route("/getAllSurveys", methods=["GET"])
+def getAllSurveys():
+    res = query_methods.get_all_surveys()
+    response = jsonify({"res": res})
+    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
-@application.route('/getSurveys', methods=['GET'])
-def getSurveys():
-    surveys = get_surveys()
-    response = jsonify({
-        'surveys': surveys
-    })
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
 
-@application.route('/getExecutedSurveysByID', methods=['GET', 'POST'])
-def getExecutedSurveysByID():
+@application.route("/getSurveyBySurveyID", methods=["GET", "POST"])
+def getSurveyByID():
     survey_id = request.args.get("SurveyID")
-    print(survey_id)
-    survey_id ="6b3175ea-e2b8-44a9-9836-99e71c2001ac"
-    executedSurveys = aggregate_survey_data(survey_id)
-    response = jsonify({
-        'executedSurveys': executedSurveys
-    })
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    res = query_methods.get_survey_by_surveyID(survey_id)
+    response = jsonify({"res": res})
+    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
 
-if __name__ == '__main__':
+@application.route("/getSurveyDataBySurveyID", methods=["GET", "POST"])
+def getSurveyDataBySurveyID():
+    survey_id = request.args.get("SurveyID")
+    res = query_methods.get_survey_data_by_surveyID(survey_id)
+    response = jsonify({"res": res})
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+
+@application.route("/getLevels", methods=["GET", "POST"])
+def getLevels():
+    res = query_methods.get_levels()
+    response = jsonify({"res": res})
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+
+@application.route("/getEntities", methods=["GET", "POST"])
+def getEntities():
+    # data = request.get_json()
+    # print(data)
+    res = query_methods.get_entities()
+    response = jsonify({"res": res})
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+@application.route('/getSurveyResultsAsXLSX', methods=['GET', 'POST'])
+def getSurveyResultsAsXLSX():
+    survey_id = request.args.get("SurveyID")
+    survey_question_frame, executed_survey_frame = excel_export_survey.get_excel_workbook_for_survey_id(query_methods, survey_id)
+
+    output = io.BytesIO()
+
+    #create workbook and write in two sheets
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+
+    survey_question_frame.to_excel(writer, sheet_name='survey')
+    executed_survey_frame.to_excel(writer, sheet_name='answers')
+
+    writer.close()
+    
+    attachment_name = 'results_' + survey_id + '_' + str(datetime.datetime.now()) + '.xlsx'
+
+    output.seek(0)
+
+    response =  send_file(output, download_name=attachment_name, as_attachment=False)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    print('response:')
+    print(str(response))
+    print(str(response.headers))
+    print('file size from buffer length: ' + str(len(output.getvalue())))
+    print('now returns response')
+    return response
+
+
+# @application.route('/getExecutedSurveysBySurveyID', methods=['GET', 'POST'])
+# def getExecutedSurveysBySurveyID():
+#     survey_id = request.args.get("SurveyID")
+#     res = query_methods.get_executed_surveys_by_surveyID(survey_id)
+
+#     response = jsonify({
+#         'res': res
+#     })
+#     response.headers.add('Access-Control-Allow-Origin', '*')
+#     return response
+
+
+if __name__ == "__main__":
     application.debug = True
     application.run(port=3000)
+    # application.run(ssl_context="adhoc")
