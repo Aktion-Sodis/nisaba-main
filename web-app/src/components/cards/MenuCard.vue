@@ -16,7 +16,7 @@
         <slot name="icon"></slot>
       </div>
   
-      <div class="flex flex-col justify-center p-4 h-24 gap-0.5">
+      <div class="flex flex-col justify-center p-4 h-24 gap-0.5 pr-12">
         <h3>
           {{ title }}
         </h3>
