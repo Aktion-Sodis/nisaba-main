@@ -19,7 +19,7 @@
               label="Filter zurücksetzen" 
               outlined 
               @click="clearFilter()" 
-              class="mr-2"
+              class="mr-2"a
             />
             <IconField>
               <InputIcon>

@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Login from '@/views/login/Login.vue';
 import Index from '@/views/index/Index.vue';
 import Umfragen from '@/views/surveys/Surveys.vue';
+import Interventions from '@/views/interventions/interventions.vue';
 
 
 const routes = [
@@ -33,6 +34,15 @@ const routes = [
       i18n_title: 'apps.surveys.title',
     },
   },
+  {
+    path: '/interventions',
+    name: 'Interventions',
+    component: Interventions,
+    meta: {
+      layout: 'DefaultLayout',
+      i18n_title: 'apps.interventions.title',
+    },
+  }, 
   // Add other routes here as needed
 ];
 

@@ -24,6 +24,19 @@
                           <i class="pi pi-clipboard text-surface-0 text-5xl md:text-6xl" />
                           </template>
                         </menu-card>
+                <menu-card
+                          
+                          :title="$t('navigation.menu.interventions.title')"
+                          :subtitle="$t('navigation.menu.interventions.subtitle')"
+                          bg-color="bg-secondary-700"
+                          
+                            @click="$router.push('/interventions')"
+                        >
+                          <template #icon>
+                          <i class="pi pi-clipboard text-surface-0 text-5xl md:text-6xl" />
+                          </template>
+                        </menu-card>
+                
             <!--
                   <menu-card
                     :title="$t('navigation.menu.data_explorer.title')"

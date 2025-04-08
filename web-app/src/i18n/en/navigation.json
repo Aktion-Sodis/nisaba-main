@@ -2,7 +2,11 @@
     "menu": {
         "surveys": {
             "title": "Surveys",
-            "subtitle": "Manage the surveys"
+            "subtitle": "Manage your surveys"
+        },
+        "interventions": {
+            "title": "Activities",
+            "subtitle": "Manage your activities"
         }
     }
 }
