@@ -6,3 +6,9 @@ scripts/nodejs/node_modules
 
 **/.DS_Store
 analytics-app/frontend/.env
+analytics-app/entity_data.json
+analytics-app/level_data.json
+analytics-app/survey_data.json
+analytics-app/entities.json
+analytics-app/executed_survey_data.json
+analytics-app/filtered_entities.json

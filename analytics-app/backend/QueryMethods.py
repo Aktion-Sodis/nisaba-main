@@ -3,212 +3,477 @@ import json
 
 from AppSyncClient import GraphqlClient
 
-from queries import listInterventionTypes
-from queries import listSurveys
-from queries import getSurveyByID
-from queries import getExecutedSurveysBySurveyID
-from queries import listExecutedSurveys
+from queries.surveys import (
+    listTotalNumberOfSurveys,
+    listAllSurveys,
+    listAllSurveysFromNextToken,
+    getSurveyBySurveyID,
+    getExecutedSurveyDataBySurveyID,
+    getExecutedSurveyDataBySurveyIDInclContext,
+    getExecutedSurveyDataBySurveyIDInclContextFromNextToken
+)
 
+from queries.data_store_paths import (
+    get_question_answer_audio_path,
+    get_question_answer_pic_path
+)
 
-from collections import defaultdict
+from queries.levels import listLevels, listEntities, getEntityByID, listEntitiesFromNextToken
+
 
 gql_client = GraphqlClient()
 
-def get_intervention_types():
-    result = gql_client.execute(
-        query=listInterventionTypes["query"], 
-        operation_name=listInterventionTypes["operationName"],
-        variables={}
-    )
-    result_list = result["data"]["listInterventions"]["items"]
 
-    # create new dict 
-    unique_interventions = []
+class QueryMethods:
+    def __init__(self):
+        self.selected_survey = None
+        self.executed_surveys = None
+        self.all_entities = None
 
-    for item in result_list:
-        interventionType = item["interventionType"]
-        if interventionType in unique_interventions:
-            break
-        else:
-            unique_interventions.append(interventionType)
+    # TODO: done
+    def get_total_number_of_surveys(self):
+        res = gql_client.execute(
+            query=listTotalNumberOfSurveys["query"],
+            operation_name=listTotalNumberOfSurveys["operationName"],
+            variables={},
+        )
+
+        items = res["data"]["listSurveys"]["items"]
+        # return the number of entries
+        return len(items)
+
+    def get_all_surveys(self):
+        print('Getting all surveys')
+        
+        # Initial request
+        res = gql_client.execute(
+            query=listAllSurveys["query"],
+            operation_name=listAllSurveys["operationName"],
+            variables={},
+        )
+
+        to_return_surveys = res["data"]["listSurveys"]["items"]
+        next_token = res["data"]["listSurveys"].get("nextToken", None)
+
+        print('Got first batch of surveys')
+        print('Next Token: ' + str(next_token))
+
+        # Handle pagination if there is a next token
+        while next_token:
+            print('Getting next batch of surveys')
+            print(next_token)
+            
+            res = gql_client.execute(
+                query=listAllSurveysFromNextToken["query"],
+                operation_name=listAllSurveysFromNextToken["operationName"],
+                variables={"nextToken": next_token},
+            )
+            
+            # Add the new batch of items to the existing list
+            items = res["data"]["listSurveys"]["items"]
+            to_return_surveys.extend(items)
+            
+            # Update the next token
+            next_token = res["data"]["listSurveys"].get("nextToken", None)
+            
+            print('Number of Items with next token: ' + str(len(items)))
+
+        return to_return_surveys
+
+    def get_survey_by_surveyID(self, survey_id):
+        res = gql_client.execute(
+            query=getSurveyBySurveyID["query"],
+            operation_name=getSurveyBySurveyID["operationName"],
+            variables={"surveyID": survey_id},
+        )
+        self.selected_survey = res["data"]["getSurvey"]
+
+        return self.selected_survey
+
+    def get_executed_surveys_by_surveyID_including_context(self, survey_id):
+        print('getting executed surveys by survey id including context')
+        res = gql_client.execute(
+            query=getExecutedSurveyDataBySurveyIDInclContext["query"],
+            operation_name=getExecutedSurveyDataBySurveyIDInclContext["operationName"],
+            variables={"surveyID": survey_id},
+        )
+        print('returned first batch of executed surveys')
+        to_return_surveys = res["data"]["listExecutedSurveys"]["items"]
+
+        next_token = res["data"]["listExecutedSurveys"].get("nextToken", None)
+
+        print('got first batch of executed surveys')
+
+        while next_token:
+            print('getting next batch of executed surveys')
+            print(next_token)
+            res = gql_client.execute(
+            query=getExecutedSurveyDataBySurveyIDInclContextFromNextToken["query"],
+            operation_name=getExecutedSurveyDataBySurveyIDInclContextFromNextToken["operationName"],
+            variables={"surveyID": survey_id, "nextToken": next_token},
+            )
+
+            #items
+            items = res["data"]["listExecutedSurveys"]["items"]
+
+            #print item length
+            print('Number of Items with next token: ' + str(len(items)))
+            
+            to_return_surveys.extend(items)
+
+            next_token = res["data"]["listExecutedSurveys"].get("nextToken", None)
+        
+        return to_return_surveys
     
-    return unique_interventions
+    def get_entity_list_from_IDs(self, entity_ids):
+        #remove duplicates from entity_ids
+        entity_ids = list(set(entity_ids))
 
-def get_interventions():
+        results = []
 
-    result = gql_client.execute(
-        query=listInterventionTypes["query"], 
-        operation_name=listInterventionTypes["operationName"],
-        variables={}
-    )
-    interventions = result["data"]["listInterventions"]["items"]
+        for entity_id in entity_ids:
+            res = gql_client.execute(
+                query=getEntityByID["query"],
+                operation_name=getEntityByID["operationName"],
+                variables={"entityID": entity_id},
+            )
+            results.append(res["data"]["getEntity"])
+        
+        return results
 
-    language_keys = interventions[0]["name"]["languageKeys"]
+    def get_survey_data_by_surveyID(self, survey_id):
+        self.get_survey_by_surveyID(survey_id)
+        self.executed_surveys = self.get_executed_surveys_by_surveyID_including_context(survey_id)
 
-    for intervention in interventions:
-        intervention_name = {}
-        for language in language_keys:
-            index = intervention["name"]["languageKeys"].index(language)
-            specific_language_name = intervention["name"]["languageTexts"][index]
-            intervention_name[language] = specific_language_name
-        intervention["name"] = intervention_name 
+        #check if error here
+        self.all_entities = self.get_entities_v2()
+        
+        #print elements
+        print('survey dataset generation')
+        print('Selected Survey:')
+        print(self.selected_survey)
+        print('Executed Surveys:')
+        print(len(self.executed_surveys))
 
-    return interventions
 
-def get_surveys():
-    result = gql_client.execute(
-        query=listSurveys["query"], 
-        operation_name=listSurveys["operationName"],
-        variables={}
-    )
-    surveys = result["data"]["listSurveys"]["items"]
+        dataset = self.generate_dataset(
+            self.selected_survey, self.executed_surveys, self.all_entities
+        )
 
-    language_keys = surveys[0]["name"]["languageKeys"]
+        executed_survey_ids = self.get_unique_executed_survey_ids(dataset)
 
-    for survey in surveys:
-        survey_name = {}
-        for language in language_keys:
-            index = survey["name"]["languageKeys"].index(language)
-            specific_language_name = survey["name"]["languageTexts"][index]
-            survey_name[language] = specific_language_name
-        survey["name"] = survey_name 
+        filtered_entities = self.filter_entities_by_executed_survey_id(
+            self.all_entities, executed_survey_ids
+        )
 
-    return surveys
+        entities = self.filter_parent_entities(filtered_entities, self.all_entities)
 
-# NEU
+        levels = self.get_levels_v2()
 
-def get_executed_surveys_by_surveyID(surveyID):
+        survey_data = {"dataset": dataset, "entities": entities, "levels": levels}
 
-    surveys = gql_client.execute(
-        query=getExecutedSurveysBySurveyID["query"],
-        operation_name=getExecutedSurveysBySurveyID["operationName"],
-        variables={
-            "surveyID": surveyID
+        print(dataset[1])
+
+        return survey_data
+
+    def get_unique_executed_survey_ids(self, dataset):
+        unique_ids = set()
+
+        for question in dataset:
+            answers = question.get("answers", [])
+            for answer in answers:
+                executed_survey_id = answer.get("executed_survey_id")
+                if executed_survey_id:
+                    unique_ids.add(executed_survey_id)
+
+        return list(unique_ids)
+
+    def get_levels_v2(self):
+        res = gql_client.execute(
+            query=listLevels["query"],
+            operation_name=listLevels["operationName"],
+            variables={},
+        )
+
+        items = res["data"]["listLevels"]["items"]
+
+        sorted_levels = self.sort_levels_by_parent_level_id(items)
+        # print(sorted_levels)
+        return sorted_levels
+
+    def get_entities_v2(self):
+        print('Getting all entities')
+        
+        # Initial request
+        res = gql_client.execute(
+            query=listEntities["query"],
+            operation_name=listEntities["operationName"],
+            variables={},
+        )
+
+        to_return_entities = res["data"]["listEntities"]["items"]
+        next_token = res["data"]["listEntities"].get("nextToken", None)
+
+        print('Got first batch of entities')
+
+        # Handle pagination if there is a next token
+        while next_token:
+            print('Getting next batch of entities')
+            print(next_token)
+            
+            res = gql_client.execute(
+                query=listEntitiesFromNextToken["query"],
+                operation_name=listEntitiesFromNextToken["operationName"],
+                variables={"nextToken": next_token},
+            )
+            
+            # Add the new batch of items to the existing list
+            items = res["data"]["listEntities"]["items"]
+            to_return_entities.extend(items)
+            
+            # Update the next token
+            next_token = res["data"]["listEntities"].get("nextToken", None)
+            
+            print('Number of Items with next token: ' + str(len(items)))
+
+        # Filter out any None values, if necessary
+        entities = list(filter(lambda x: x is not None, to_return_entities))
+        return entities
+
+    def filter_entities_by_executed_survey_id(self, entities, survey_ids):
+
+        result_entities = []
+
+        # Create a set of IDs from array2 for faster lookup
+        id_set = set(survey_ids)
+
+        # Iterate through entities in array1
+        for entity in entities:
+            # if entity is not None:
+            applied_interventions = entity.get("appliedInterventions", {}).get(
+                "items", []
+            )
+
+            # Iterate through applied interventions of the entity
+            for intervention in applied_interventions:
+                executed_surveys = intervention.get("executedSurveys", {}).get(
+                    "items", []
+                )
+
+                # Iterate through executed surveys of the intervention
+                for survey in executed_surveys:
+                    executed_survey_id = survey.get("id")
+
+                    # Check if the survey ID is in the set of IDs from array2
+                    if executed_survey_id in id_set:
+                        filtered_entity = entity.copy()
+                        filtered_entity["executedSurveyID"] = executed_survey_id
+                        filtered_entity.pop("appliedInterventions")
+                        result_entities.append(filtered_entity)
+                        break  # Break out of the inner loop since one match is enough
+
+        return result_entities
+
+    def filter_parent_entities(self, filtered_entities, all_entities):
+        unique_parent_ids = set(
+            entity["parentEntityID"] for entity in filtered_entities
+        )
+        remaining_entities = all_entities.copy()
+
+
+        while unique_parent_ids:
+            new_filtered_entities = []
+            new_remaining_entities = []
+
+            for entity in remaining_entities:
+                entity_id = entity["id"]
+                if entity_id in unique_parent_ids:
+                    entity_copy = entity.copy()
+                    entity_copy.pop("appliedInterventions")
+                    new_filtered_entities.append(entity_copy)
+                else:
+                    new_remaining_entities.append(entity)
+
+            filtered_entities.extend(new_filtered_entities)
+            remaining_entities = new_remaining_entities
+            unique_parent_ids = set(
+                entity["parentEntityID"] for entity in new_filtered_entities
+            )
+
+        return filtered_entities
+
+    def find_entity_by_executed_survey_id(self, entities, executed_survey_id):
+        for entity in entities:
+            for intervention in entity["appliedInterventions"]["items"]:
+                for survey in intervention["executedSurveys"]["items"]:
+                    if survey["id"] == executed_survey_id:
+                        return entity["id"]
+
+        return None
+
+    def generate_dataset(self, survey, executed_surveys, entities):
+        question_types = {
+            "TEXT": "text",
+            "INT": "intValue",
+            "DOUBLE": "doubleValue",
+            "RATING": "rating",
+            "SINGLECHOICE": "questionOptions",
+            "MULTIPLECHOICE": "questionOptions",
         }
-    )
-    result_list = surveys["data"]["executedSurveyBySurveyID"]
 
-    return result_list
+        new_dataset = []
 
-def get_survey_by_ID(surveyID):
+        # print(survey['questions'])
 
-    surveys = gql_client.execute(
-        query=getSurveyByID["query"],
-        operation_name=getSurveyByID["operationName"],
-        variables={
-            "id": surveyID
-        }
-    )
-    result_list = surveys["data"]["getSurvey"]
+        # print('----')
 
-    return result_list
+        # print(executed_surveys)
 
+        survey_name = survey["name"]
+        survey_description = survey["description"]
 
-def list_executed_surveys():
+        organization_id = survey["organization_id"]
 
-    surveys = gql_client.execute(
-        query=listExecutedSurveys["query"],
-        operation_name=listExecutedSurveys["operationName"],
-        variables={
-        }
-    )
-    result_list = surveys["data"][listExecutedSurveys["operationName"]]
+        # print(len(survey['questions']))
 
-    return result_list
+        for question in survey["questions"]:
+            question_id = question["id"]
+            question_type = question["type"]
 
-def filter_executed_surveys_by_ID(surveyID, surveys):
+            question_text = question["text"]
+            question_options = question["questionOptions"]
 
-    filtered_executed_surveys = list()
+            # Initialize answer array for each question
+            answer_array = []
 
-    for item in surveys["items"]:
-        if item["executedSurveySurveyId"] == surveyID:
-            filtered_executed_surveys.append(item)
+            for executed_survey in executed_surveys:
+                for answer in executed_survey["answers"]:
+                    if answer["questionID"] == question_id:
+                        answer_date = answer["date"]
+                        executed_survey_id = executed_survey["id"]
+                        
+                        if question_type in ["TEXT", "DOUBLE", "INT", "RATING"]:
+                            value = question_types.get(question_type)
+                            answer_value = answer[value]
 
-    return filtered_executed_surveys
+                        elif question_type in ["SINGLECHOICE", "MULTIPLECHOICE"]:
+                            answer_value = [0] * len(question["questionOptions"])
 
-def aggregate_survey_data(surveyID):
+                            # Getting the first available text for each option
+                            answer_option_texts = [
+                                next(
+                                    (
+                                        text
+                                        for text in option["text"]["languageTexts"]
+                                        if text
+                                    ),
+                                    None,
+                                )
+                                for option in question["questionOptions"]
+                            ]
+                            for option in answer["questionOptions"]:
+                                option_text = next(
+                                    (
+                                        text
+                                        for text in option["text"]["languageTexts"]
+                                        if text
+                                    ),
+                                    None,
+                                )
+                                if option_text in answer_option_texts:
+                                    index = answer_option_texts.index(option_text)
+                                    answer_value[index] = 1
 
-    data = []
+                        elif question_type == "AUDIO":
+                            #todo: return audio path as answer_value
+                            answer_value = get_question_answer_audio_path(
+                                organization_id,
+                                executed_survey["appliedIntervention"]["id"],
+                                executed_survey["id"],
+                                question_id
+                            )
 
-    survey = get_survey_by_ID(surveyID)
+                        elif question_type == "PICTURE":
+                            answer_value = get_question_answer_pic_path(
+                                organization_id,
+                                executed_survey["appliedIntervention"]["id"],
+                                executed_survey["id"],
+                                question_id
+                            )
 
-    unfiltered_executed_surveys = list_executed_surveys()
+                        else:
 
-    executed_surveys = filter_executed_surveys_by_ID(surveyID, unfiltered_executed_surveys)
+                            #print unknown answer type
+                            answer_value = None
+                            #print question type
+                            print('unknown question type in dataset generation: ' + question_type)
 
-    # executed_surveys = get_executed_surveys_by_surveyID(surveyID)
+                        entity_id = self.find_entity_by_executed_survey_id(
+                            entities, executed_survey_id
+                        )
 
-    # get avaliable Langauge Keys
-    languageKeys = survey["questions"][0]["text"]["languageKeys"]
+                        # Add each answer to the answer array for the question
+                        answer_array.append(
+                            {
+                                "answer_date": answer_date,
+                                "executed_survey_id": executed_survey_id,
+                                "answer_value": answer_value,
+                                "entity_id": entity_id,
+                            }
+                        )
 
-    for question in survey["questions"]:
+            # Add question with its answer array to the dataset
+            new_dataset.append(
+                {
+                    "question_id": question_id,
+                    "question_text": question_text,
+                    "question_options": question_options,
+                    "question_type": question_type,
+                    "answers": answer_array,
+                }
+            )
 
-        # Set the Name of the Question
-        question_name = {}
+        return new_dataset
 
-        for language in languageKeys:
-            index = question["text"]["languageKeys"].index(language)
-            question_text = question["text"]["languageTexts"][index]
-            question_name[language] = question_text
+    def get_entities(self):
+        print("Entities are fetched")
+        res = gql_client.execute(
+            query=listEntities["query"],
+            operation_name=listEntities["operationName"],
+            variables={},
+        )
 
-        # Set the answer options
-        answer_options = {}
+        items = res["data"]["listEntities"]["items"]
+        # print(items)
+        return items
 
-        if question["questionOptions"] is not None:
-            for language in languageKeys:
-                options = []
-                for item in question["questionOptions"]:
-                    index = item["text"]["languageKeys"].index(language)
-                    options.append(item["text"]["languageTexts"][index])
-                answer_options[language] = options
+    def get_levels(self):
+        res = gql_client.execute(
+            query=listLevels["query"],
+            operation_name=listLevels["operationName"],
+            variables={},
+        )
 
-        question_data = {
-            "question_id": question["id"],
-            "question_name": question_name,
-            "question_type": question["type"],
-            "answer_options": answer_options,
-        }
+        items = res["data"]["listLevels"]["items"]
 
-        # Get all answers
-        answers = []
-        answer_IDs = []
+        sorted_levels = self.sort_levels_by_parent_level_id(items)
+        # print(sorted_levels)
+        return sorted_levels
 
-        for executed_survey in executed_surveys:
-            for answer in executed_survey["answers"]:
-                if answer["questionID"] == question["id"]:
-                    q_types = list(answer.keys())
-                    q_types.remove("questionID")
-                    q_types.remove("date")
-                    for q_type in q_types:
-                        if answer[q_type] is not None:
-                            if q_type == "questionOptions":
-                                answer_array = [0] * len(answer_options[list(answer_options.keys())[0]])
+    def sort_levels_by_parent_level_id(self, levels):
+        level_dict = {level["id"]: level for level in levels}
+        sorted_levels = []
 
-                                specific_answer = dict()
-                                
-                                for language in languageKeys:
-                                    index = answer[q_type][0]["text"]["languageKeys"].index(language)
-                                    language_answer = answer[q_type][0]["text"]["languageTexts"][index]
+        current_level_id = None
 
-                                    specific_answer[language] = language_answer
+        while len(level_dict) > 0:
+            for level_id in level_dict:
+                parent_level_id = level_dict[level_id]["parentLevelID"]
 
-                                for language in languageKeys:
-                                    if specific_answer[language] != "":
-                                        index = answer_options[language].index(specific_answer[language])
-                                        answer_array[index] = 1
+                if parent_level_id == current_level_id:
+                    sorted_levels.append(level_dict[level_id])
+                    level_dict.pop(level_id)
+                    current_level_id = level_id
+                    break
 
-                                        break
-
-                                answers.append(answer_array)
-
-                            else:
-                                answers.append(answer[q_type])
-
-                            answer_IDs.append(executed_survey["id"])
-
-        question_data["answers"] = answers
-        question_data["answer_IDs"] = answer_IDs
-
-        data.append(question_data)
-
-    return data
+        return sorted_levels

@@ -1,0 +1,20 @@
+{
+  "login": {
+    "welcome-title": "Bienvenido a Nisaba! 👋🏻",
+    "welcome-subtitle": "Inicie sesión en su cuenta",
+    "email-label": "Email",
+    "password-label": "Contraseña",
+    "remember-me-label": "Recuérdame",
+    "login-label": "inicio de sesión"
+  },
+  "navbar": {
+    "items": {
+      "dashboard": "Dashboard",
+      "surveys": "Encuestas",
+      "maps": "Mapas"
+    },
+    "user-profile": {
+      "logout": "Cerrar sesión"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "auth": {
+      "authnisaba": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "nisabaAdminSdkLayer",
+      "version": "Always choose latest version",
+      "isLatestVersionSelected": true,
+      "env": "release"
+    }
+  ],
+  "environmentVariableList": []
+}

@@ -59,9 +59,7 @@ Future<ThemeData> getThemeData() async {
     iconTheme: const IconThemeData(
       size: 25,
     ),
-
   );
-
 }
 
 class ThemeColors {
@@ -72,7 +70,6 @@ class ThemeColors {
   static const Color red = Color.fromARGB(255, 219, 79, 71);
   static const Color mobster = Color.fromARGB(
       255, 120, 117, 121); // actually, light grey with purple tones
-
 }
 
 BoxShadow defaultShadow = BoxShadow(

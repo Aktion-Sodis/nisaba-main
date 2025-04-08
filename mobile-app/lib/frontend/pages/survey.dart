@@ -78,6 +78,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
   late List<Question> questions;
   late final String preliminaryExecutedSurveyId;
 
+  bool isCurrentlyRecording = false;
+
   void addTask() async {
     return openTaskForm(
       entity: (context.read<InAppBloc>().state as SurveyInAppState).entity,
@@ -92,48 +94,54 @@ class SurveyWidgetState extends State<SurveyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () => Future.value(false),
-        child: Material(
-            color: Theme.of(context).canvasColor,
-            child: SafeArea(
-                child: PageView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: _pageController,
-              children: [
-                surveyTitleWidget(
-                    context: context,
-                    surveyTitle: widget.survey.displayName,
-                    entityName: widget.survey.intervention?.displayName ?? '',
-                    imageFile: syncedSurveyImageFile,
-                    goBack: _leaveSurveyRegular,
-                    proceed: () {
-                      _pageController.nextPage(
-                          duration: _pageSlideDuration, curve: _pageSlideCurve);
-                    }),
-                inSurveyWidget(),
-                _summaryWidget(),
-                endSurveyWidget(
-                    context: context,
-                    survey: widget.survey,
-                    answers: answers,
-                    onGoBack: () {
-                      _pageController.previousPage(
-                          duration: _pageSlideDuration, curve: _pageSlideCurve);
-                    },
-                    onProceed: () async {
-                      await saveSurvey(
-                          context: context,
-                          answers: answers,
-                          preliminaryId: preliminaryExecutedSurveyId,
-                          survey: widget.survey);
-                      _pageController.nextPage(
-                          duration: _pageSlideDuration, curve: _pageSlideCurve);
-                    }),
-                successFullyEndedSurvey(
-                    context: context, onProceed: _leaveSurveyRegular),
-              ],
-            ))));
+    return Scaffold(
+        body: WillPopScope(
+            onWillPop: () => Future.value(false),
+            child: Material(
+                color: Theme.of(context).canvasColor,
+                child: SafeArea(
+                    child: PageView(
+                  //todo: maybe change here for audio
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: _pageController,
+                  children: [
+                    surveyTitleWidget(
+                        context: context,
+                        surveyTitle: widget.survey.displayName,
+                        entityName:
+                            widget.survey.intervention?.displayName ?? '',
+                        imageFile: syncedSurveyImageFile,
+                        goBack: _leaveSurveyRegular,
+                        proceed: () {
+                          _pageController.nextPage(
+                              duration: _pageSlideDuration,
+                              curve: _pageSlideCurve);
+                        }),
+                    inSurveyWidget(),
+                    _summaryWidget(),
+                    endSurveyWidget(
+                        context: context,
+                        survey: widget.survey,
+                        answers: answers,
+                        onGoBack: () {
+                          _pageController.previousPage(
+                              duration: _pageSlideDuration,
+                              curve: _pageSlideCurve);
+                        },
+                        onProceed: () async {
+                          await saveSurvey(
+                              context: context,
+                              answers: answers,
+                              preliminaryId: preliminaryExecutedSurveyId,
+                              survey: widget.survey);
+                          _pageController.nextPage(
+                              duration: _pageSlideDuration,
+                              curve: _pageSlideCurve);
+                        }),
+                    successFullyEndedSurvey(
+                        context: context, onProceed: _leaveSurveyRegular),
+                  ],
+                )))));
   }
 
   List<Widget> convertSurveyQuestionsToWidgetList(
@@ -202,7 +210,9 @@ class SurveyWidgetState extends State<SurveyWidget> {
                 preliminaryExecutedSurveyId,
                 element);
       }
-      if (element.type == QuestionType.TEXT || element.type == QuestionType.INT || element.type == QuestionType.DOUBLE) {
+      if (element.type == QuestionType.TEXT ||
+          element.type == QuestionType.INT ||
+          element.type == QuestionType.DOUBLE) {
         textEditingControllers[element] = TextEditingController();
       }
     });
@@ -246,6 +256,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
           height: defaultPadding(context),
         ),
         Expanded(
+          //todo: maybe change here for audio
           child: PageView(
               key: inSurveyPageViewKey,
               physics: const NeverScrollableScrollPhysics(),
@@ -257,6 +268,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
         ),
         bottomRowWidget(
             context: context,
+            isActive: !isCurrentlyRecording,
             onGoBack: () {
               if (_inSurveyPageController.page?.round() != null) {
                 int page = _inSurveyPageController.page!.round();
@@ -284,10 +296,12 @@ class SurveyWidgetState extends State<SurveyWidget> {
                 }
                 if (answers[currentQuestion] != null) {
                   //check for followUpQuestions
-                  if (currentQuestion.type == QuestionType.SINGLECHOICE || currentQuestion.type == QuestionType.MULTIPLECHOICE) {
+                  if (currentQuestion.type == QuestionType.SINGLECHOICE ||
+                      currentQuestion.type == QuestionType.MULTIPLECHOICE) {
                     List<String> followUpIDs = [];
-                    for (var element in answers[currentQuestion]!.questionOptions!) {
-                      followUpIDs.addAll((element.followUpQuestionIDs??[]));
+                    for (var element
+                        in answers[currentQuestion]!.questionOptions!) {
+                      followUpIDs.addAll((element.followUpQuestionIDs ?? []));
                     }
                     //remove potential duplicates from followUpQuestionIDs
                     followUpIDs = followUpIDs.toSet().toList();
@@ -354,7 +368,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: questionTitleWidget(question: question, context: context),
+                child:
+                    questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -441,7 +456,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: questionTitleWidget(question: question, context: context),
+                child:
+                    questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -532,7 +548,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: questionTitleWidget(question: question, context: context),
+                child:
+                    questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -559,6 +576,11 @@ class SurveyWidgetState extends State<SurveyWidget> {
             }
             setState(() {
               picAndAudioAnswerFiles[question.id!] = sF;
+            });
+          },
+          isRecording: (isRecordingBoo) {
+            setState(() {
+              isCurrentlyRecording = isRecordingBoo;
             });
           },
           context: context,
@@ -588,7 +610,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: questionTitleWidget(question: question, context: context),
+                child:
+                    questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -606,18 +629,17 @@ class SurveyWidgetState extends State<SurveyWidget> {
         getTakePhotoWidget(
           syncedFile: picAndAudioAnswerFiles[question.id]!,
           callback: (sF) async {
-              if (answers[question] == null) {
-                answers[question] = QuestionAnswer(
-                    questionID: question.id!,
-                    date: DateTime.now(),
-                    type: question.type);
-              }
-              sF.key = ValueKey(DateTime.now().toIso8601String());
-              setState(() {
-                print('now setting state again');
-                picAndAudioAnswerFiles[question.id] = sF;
-              });
-              
+            if (answers[question] == null) {
+              answers[question] = QuestionAnswer(
+                  questionID: question.id!,
+                  date: DateTime.now(),
+                  type: question.type);
+            }
+            sF.key = ValueKey(DateTime.now().toIso8601String());
+            setState(() {
+              print('now setting state again');
+              picAndAudioAnswerFiles[question.id] = sF;
+            });
           },
           context: context,
         ),
@@ -629,7 +651,6 @@ class SurveyWidgetState extends State<SurveyWidget> {
       {required BuildContext context,
       required Question question,
       required Survey survey}) {
-
     return Scrollbar(
         child: ListView(
       shrinkWrap: true,
@@ -646,7 +667,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: questionTitleWidget(question: question, context: context),
+                child:
+                    questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -693,7 +715,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: questionTitleWidget(question: question, context: context),
+                child:
+                    questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -744,7 +767,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: questionTitleWidget(question: question, context: context),
+                child:
+                    questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -789,7 +813,6 @@ class SurveyWidgetState extends State<SurveyWidget> {
       {required BuildContext context,
       required Question question,
       required Survey survey}) {
-    
     return Scrollbar(
         child: ListView(
       shrinkWrap: true,
@@ -806,7 +829,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: questionTitleWidget(question: question, context: context),
+                child:
+                    questionTitleWidget(question: question, context: context),
               ),
               getReadOutWidget(question: question),
             ],
@@ -950,7 +974,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(child: Text(
+          Expanded(
+              child: Text(
             surveyTitle,
             style: Theme.of(context).textTheme.displayMedium,
           )),
@@ -998,6 +1023,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
 
   static Widget bottomRowWidget(
       {required BuildContext context,
+      required bool isActive,
       required Function onGoBack,
       required Function onDismiss,
       required Function onProceed}) {
@@ -1007,11 +1033,11 @@ class SurveyWidgetState extends State<SurveyWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CommonWidgets.defaultBackwardButton(
-              context: context, goBack: onGoBack),
+              context: context, goBack: onGoBack, isActive: isActive),
           CommonWidgets.defaultDismissButton(
-              context: context, dismiss: onDismiss),
+              context: context, dismiss: onDismiss, isActive: isActive),
           CommonWidgets.defaultForwardButton(
-              context: context, proceed: onProceed),
+              context: context, proceed: onProceed, isActive: isActive),
         ],
       ),
     );
@@ -1064,7 +1090,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
     return Container();
   }
 
-  static Widget _iconButton(IconData iconData, Function() onPressed) {
+  static Widget _iconButton(IconData iconData, Function() onPressed,
+      {Color? color}) {
     BorderRadius borderRadius = BorderRadius.circular(15);
     return Container(
       height: 60,
@@ -1076,19 +1103,16 @@ class SurveyWidgetState extends State<SurveyWidget> {
         child: InkWell(
           onTap: onPressed,
           borderRadius: borderRadius,
-          child: Icon(
-            iconData,
-            size: 33,
-          ),
+          child: Icon(iconData, size: 33, color: color),
         ),
       ),
     );
   }
 
-
   static Widget getTakeAudioWidget(
       {required SyncedFile syncedFile,
       required ValueChanged<SyncedFile> callback,
+      required ValueChanged<bool> isRecording,
       required BuildContext context}) {
     /*
     RecorderWidget(
@@ -1112,28 +1136,32 @@ class SurveyWidgetState extends State<SurveyWidget> {
                                   })
     */
 
-    return Padding(padding: EdgeInsets.symmetric(horizontal: defaultPadding(context)), child: RecorderWidget(
-        restingViewBuilder: (startPlaying) {
-                                    return _iconButton(
-                                        MdiIcons.microphoneOutline,
-                                        startPlaying);
-                                  }, recordingViewBuilder: (stopPlaying) {
-                                    return _iconButton(
-                                        MdiIcons.stopCircleOutline,
-                                        stopPlaying);
-                                  }, loadingViewBuilder: () {
-                                    return _iconButton(
-                                        MdiIcons.microphoneOutline, () {
-                                      // TODO: add explaining toast, that widget is not ready yet
-                                      debugPrint(
-                                          "Recorder widget is not ready yet");
-                                    });
-                                  },
-        onAudioRecorded: (path) async {
-          await syncedFile.updateAsAudio(File(path));
-          callback(syncedFile);
-        },
-       ));
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
+        child: RecorderWidget(
+          restingViewBuilder: (startPlaying) {
+            return _iconButton(MdiIcons.microphoneOutline, () {
+              isRecording(true);
+              startPlaying();
+            });
+          },
+          recordingViewBuilder: (stopPlaying) {
+            return _iconButton(MdiIcons.stopCircleOutline, () {
+              stopPlaying();
+              isRecording(false);
+            }, color: Colors.yellow);
+          },
+          loadingViewBuilder: () {
+            return _iconButton(MdiIcons.loading, () {
+              // TODO: add explaining toast, that widget is not ready yet
+              debugPrint("Recorder widget is not ready yet");
+            });
+          },
+          onAudioRecorded: (path) async {
+            await syncedFile.updateAsAudio(File(path));
+            callback(syncedFile);
+          },
+        ));
     return MaterialButton(
       onPressed: () {},
       child: Container(
@@ -1637,8 +1665,6 @@ class _AnimatedProgressBarState extends State<AnimatedProgressBar>
 
 class _AudioPlayerWidgetFromSyncFileState
     extends State<AudioPlayerWidgetFromSyncFile> {
-  
-
   bool loading = true;
   File? audioFile;
 
@@ -1667,52 +1693,52 @@ class _AudioPlayerWidgetFromSyncFileState
       return Container();
     }
     return AnimatedContainer(
-          margin: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: _isPlaying ? ThemeColors.yellow : ThemeColors.green),
-          duration: const Duration(milliseconds: 300),
-          child: Material(
-            color: Colors.transparent,
-            child: Center(
-              child: PlayerWidget(
-                audio: Audio.instance,
-                onStatusChange: (isPlaying) {
-                  _isPlaying = isPlaying;
-                  if (mounted) setState(() {});
-                },
-                loadingViewBuilder: () {
-                  return IconButton(
-                      onPressed: () {
-                        // TODO: create a toast notifying that the audio has not been initialized yet
-                      },
-                      iconSize: 50,
-                      splashRadius: 40,
-                      icon: const Icon(MdiIcons.playCircleOutline));
-                },
-                audioURL: audioFile!.uri.toString(),
-                playingViewBuilder: (dynamic Function() stopPlaying) {
-                  return IconButton(
+        margin: EdgeInsets.symmetric(horizontal: defaultPadding(context)),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: _isPlaying ? ThemeColors.yellow : ThemeColors.green),
+        duration: const Duration(milliseconds: 300),
+        child: Material(
+          color: Colors.transparent,
+          child: Center(
+            child: PlayerWidget(
+              onStatusChange: (isPlaying) {
+                _isPlaying = isPlaying;
+                if (mounted) setState(() {});
+              },
+              loadingViewBuilder: () {
+                return IconButton(
                     onPressed: () {
-                      stopPlaying();
+                      // TODO: create a toast notifying that the audio has not been initialized yet
                     },
                     iconSize: 50,
                     splashRadius: 40,
-                    icon: const Icon(MdiIcons.stopCircleOutline),
-                  );
-                },
-                restingViewBuilder: (dynamic Function() startPlaying) {
-                  return IconButton(
-                      onPressed: () {
-                        startPlaying();
-                      },
-                      iconSize: 50,
-                      splashRadius: 40,
-                      icon: const Icon(MdiIcons.playCircleOutline));
-                },
-              ),
+                    icon: const Icon(MdiIcons.playCircleOutline));
+              },
+              audioURL: audioFile!.uri.toString(),
+              playingViewBuilder: (dynamic Function() stopPlaying) {
+                return IconButton(
+                  onPressed: () {
+                    stopPlaying();
+                  },
+                  iconSize: 50,
+                  splashRadius: 40,
+                  icon: const Icon(MdiIcons.stopCircleOutline),
+                );
+              },
+              restingViewBuilder: (dynamic Function() startPlaying) {
+                return IconButton(
+                    onPressed: () {
+                      startPlaying();
+                    },
+                    iconSize: 50,
+                    splashRadius: 40,
+                    icon: const Icon(MdiIcons.playCircleOutline));
+              },
             ),
-          ));
+          ),
+        ));
   }
-
 }
 
 const double _kOuterRadius = 8.0;
@@ -1765,4 +1791,3 @@ class _FakeRadioPainter extends CustomPainter {
     }
   }
 }
-

@@ -469,10 +469,11 @@ class InterventionFilterWidgetState extends State<InterventionFilterWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: SingleChildScrollView(child: Wrap(
-            direction: Axis.horizontal,
-            alignment: WrapAlignment.center,
-            children: getWrapChildren(),
-            spacing: defaultPadding(context))));
+        child: SingleChildScrollView(
+            child: Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.center,
+                children: getWrapChildren(),
+                spacing: defaultPadding(context))));
   }
 }
