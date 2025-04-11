@@ -100,7 +100,7 @@
 
                           :title="$t('navigation.menu.surveys.title')"
                           :subtitle="$t('navigation.menu.surveys.subtitle')"
-                          bg-color="bg-secondary-700"
+                          bg-color="bg-blue-600"
 
                             @click="$router.push('/surveys')"
                         >
@@ -112,7 +112,7 @@
 
                           :title="$t('navigation.menu.interventions.title')"
                           :subtitle="$t('navigation.menu.interventions.subtitle')"
-                          bg-color="bg-secondary-700"
+                          bg-color="bg-blue-600"
 
                             @click="$router.push('/interventions')"
                         >
