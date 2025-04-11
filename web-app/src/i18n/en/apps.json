@@ -1,6 +1,7 @@
 {
     "categories": {
-        "admin": "Admin Apps"
+        "admin": "Admin Apps",
+        "analytics": "Analytics Apps"
     },
     "apps": {
         "login": {
@@ -18,6 +19,10 @@
         "umfragen": {
             "title": "Surveys",
             "description": "Manage the surveys"
+        },
+        "reports": {
+            "title": "Reports",
+            "description": "Manage the reports"
         }
     }
 }
