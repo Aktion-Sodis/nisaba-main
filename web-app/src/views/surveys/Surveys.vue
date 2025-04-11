@@ -162,21 +162,6 @@ const filters = ref({
   createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS }
 });
 
-// --- Watcher (Optional, für Debugging) ---
-// Beachte: Die Watcher müssen ggf. an die neuen Feldnamen angepasst werden, falls du sie brauchst
-watch(() => filters.value.global.value, (newValue, oldValue) => {
-  console.log(`Global filter value changed from '${oldValue}' to '${newValue}'`);
-});
-watch(() => filters.value.name_searchable?.value, (newValue, oldValue) => {
-  console.log(`Name filter value changed from '${oldValue}' to '${newValue}'`);
-});
-watch(() => filters.value.description_searchable?.value, (newValue, oldValue) => {
-  console.log(`Description filter value changed from '${oldValue}' to '${newValue}'`);
-});
-watch(() => filters.value.createdAt?.value, (newValue, oldValue) => {
-  console.log(`CreatedAt filter value changed from '${oldValue}' to '${newValue}'`);
-});
-
 
 const isFilterActive = computed(() => {
   return Object.entries(filters.value).some(([key, filter]) => {
