@@ -12,21 +12,21 @@
       <template #content>
         <div class="flex justify-between mb-3">
           <div class="flex items-center">
-            <Button 
-              v-if="isFilterActive" 
-              type="button" 
-              icon="pi pi-filter-slash" 
-              label="Filter zurücksetzen" 
-              outlined 
-              @click="clearFilter()" 
-              class="mr-2"a
-            />
             <IconField>
               <InputIcon>
                 <i class="pi pi-search align-top" />
               </InputIcon>
               <InputText v-model="filters['global'].value" placeholder="Suche..." />
             </IconField>
+            <Button
+              v-if="isFilterActive"
+              type="button"
+              icon="pi pi-filter-slash"
+              label="Filter zurücksetzen"
+              outlined
+              @click="clearFilter()"
+              class="ml-2"
+            />
           </div>
           <div class="flex align-items-center">
             <SelectButton v-model="viewMode" :options="viewOptions" optionValue="value">
@@ -35,79 +35,96 @@
              </template>
             </SelectButton>
           </div>
-
         </div>
 
-        <!-- Tabellen-Ansicht -->
-        <DataTable 
+        <DataTable
           v-if="viewMode === 'table'"
-          :value="surveys" 
+          :value="searchableSurveys"
           :loading="loading"
-          paginator 
-          :rows="10" 
+          paginator
+          :rows="10"
           :rowsPerPageOptions="[5, 10, 20, 50]"
           tableStyle="min-width: 50rem;"
           scroll-height="h-[calc(100vh_-_18rem)]"
           v-model:filters="filters"
           filterDisplay="menu"
-          :globalFilterFields="['name', 'description', 'createdAt']"
+          :globalFilterFields="['name_searchable', 'description_searchable', 'createdAt_formatted']"
         >
           <template #empty> Keine Umfragen gefunden. </template>
           <template #loading> Lade Umfragedaten... </template>
-          
-          <Column field="name" header="Name" sortable>
+
+          <Column field="name_searchable" header="Name" sortable filter>
             <template #body="slotProps">
-              {{ formatMLString(slotProps.data.name) }}
+              {{ formatMLString(slotProps.data.name, locale) }}
             </template>
             <template #filter="{ filterModel }">
-              <InputText v-model="filterModel.value" type="text" placeholder="Nach Name filtern" />
+              <InputText
+                v-model="filterModel.value"
+                type="text"
+                placeholder="Nach Name filtern"
+              />
             </template>
           </Column>
-          <Column field="description" header="Beschreibung">
+
+          <Column field="description_searchable" header="Beschreibung" filter>
             <template #body="slotProps">
-              {{ formatMLString(slotProps.data.description) }}
+              {{ formatMLString(slotProps.data.description, locale) }}
             </template>
             <template #filter="{ filterModel }">
-              <InputText v-model="filterModel.value" type="text" placeholder="Nach Beschreibung filtern" />
+              <InputText
+                v-model="filterModel.value"
+                type="text"
+                placeholder="Nach Beschreibung filtern"
+              />
             </template>
           </Column>
-          <Column field="createdAt" header="Erstellt am" sortable>
-            <template #body="slotProps">
-              {{ formatDate(slotProps.data.createdAt) }}
-            </template>
-            <template #filter="{ filterModel }">
-              <DatePicker v-model="filterModel.value" dateFormat="dd.mm.yy" placeholder="Datum wählen" />
-            </template>
-          </Column>
+
+          <Column field="createdAt" header="Erstellt am" sortable filter>
+             <template #body="slotProps">
+               {{ formatDate(slotProps.data.createdAt) }}
+             </template>
+             <template #filter="{ filterModel }">
+               <DatePicker v-model="filterModel.value" dateFormat="dd.mm.yy" placeholder="Datum wählen" />
+             </template>
+           </Column>
+           <!-- Optional: Spalte für Aktionen hinzufügen -->
+           <!--
+           <Column header="Aktionen">
+             <template #body="slotProps">
+               <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editSurvey(slotProps.data)" />
+               <Button icon="pi pi-trash" class="p-button-rounded p-button-warning" @click="confirmDeleteSurvey(slotProps.data)" />
+             </template>
+           </Column>
+           -->
         </DataTable>
 
-        <!-- Grid-Ansicht mit Flexbox -->
         <div v-else-if="viewMode === 'grid'" class="survey-grid">
-          <div v-if="loading" class="flex justify-content-center">
+          <div v-if="loading" class="flex justify-content-center col-span-full">
             <ProgressSpinner />
           </div>
-          <div v-else-if="surveys.length === 0" class="flex justify-content-center">
-            Keine Umfragen gefunden.
+          <div v-else-if="filteredGridSurveys.length === 0" class="flex justify-content-center col-span-full">
+            Keine Umfragen gefunden{{ filters.global.value ? ' (mit aktivem Filter)' : '' }}.
           </div>
-          <div v-else class="survey-grid-container" paginator  :rows="10" :rowsPerPageOptions="[5, 10, 20, 50]">
-            <div v-for="survey in surveys" :key="survey.id" class="survey-grid-item">
-              <Card class="h-full">
+          <div v-else class="survey-grid-container">
+            <div v-for="survey in filteredGridSurveys" :key="survey.id" class="survey-grid-item">
+              <Card class="h-full flex flex-col">
                 <template #title>
-                  {{ formatMLString(survey.name) }}
+                  {{ formatMLString(survey.name, locale) }}
                 </template>
                 <template #subtitle>
                   Erstellt am: {{ formatDate(survey.createdAt) }}
                 </template>
-                <template #content>
-                  <p class="line-clamp-3">{{ formatMLString(survey.description) }}</p>
+                <template #content class="flex-grow">
+                  <p class="line-clamp-3">{{ formatMLString(survey.description, locale) }}</p>
                 </template>
                 <template #footer>
-                  <!-- Edit and View buttons
-                  
-                  <div class="flex justify-content-end">
-                    <Button icon="pi pi-eye" rounded text aria-label="Details anzeigen" />
-                    <Button icon="pi pi-pencil" rounded text aria-label="Bearbeiten" class="ml-2" />
-                  </div> -->
+                  <div class="flex justify-end">
+                    <!-- Beispiel-Aktionen für Grid -->
+                    <!--
+                    <Button icon="pi pi-pencil" class="p-button-sm p-button-success mr-1" @click="editSurvey(survey)" />
+                    <Button icon="pi pi-trash" class="p-button-sm p-button-warning" @click="confirmDeleteSurvey(survey)" />
+                    -->
+                  </div>
                 </template>
               </Card>
             </div>
@@ -120,128 +137,180 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { generateClient } from 'aws-amplify/api';
 import { listSurveys } from '@/graphql/queries';
-import { Survey } from '@/models';
-import { formatMLString } from '@/utils/formatStrings'; // Pfad anpassen
-import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
+import { Survey, I18nString } from '@/models';
+import { formatMLString } from '@/utils/formatStrings';
+import { FilterMatchMode } from '@primevue/core/api';
 
+const { locale } = useI18n();
 
-// Zustandsvariablen
 const surveys = ref<Array<Survey>>([]);
 const loading = ref(true);
-const viewMode = ref('table'); // 'table' oder 'grid'
+const viewMode = ref('table');
 const viewOptions = ref([
   { value: 'table', icon: 'pi pi-list' },
   { value: 'grid', icon: 'pi pi-th-large' }
 ]);
 
-// Filter-Zustand initialisieren
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  description: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  name_searchable: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  description_searchable: { value: null, matchMode: FilterMatchMode.CONTAINS },
   createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS }
 });
 
-// Computed property zur Überprüfung, ob Filter aktiv sind
-const isFilterActive = computed(() => {
-  return filters.value.global.value !== null ||
-         filters.value.name.value !== null ||
-         filters.value.description.value !== null ||
-         filters.value.createdAt.value !== null;
+// --- Watcher (Optional, für Debugging) ---
+// Beachte: Die Watcher müssen ggf. an die neuen Feldnamen angepasst werden, falls du sie brauchst
+watch(() => filters.value.global.value, (newValue, oldValue) => {
+  console.log(`Global filter value changed from '${oldValue}' to '${newValue}'`);
+});
+watch(() => filters.value.name_searchable?.value, (newValue, oldValue) => {
+  console.log(`Name filter value changed from '${oldValue}' to '${newValue}'`);
+});
+watch(() => filters.value.description_searchable?.value, (newValue, oldValue) => {
+  console.log(`Description filter value changed from '${oldValue}' to '${newValue}'`);
+});
+watch(() => filters.value.createdAt?.value, (newValue, oldValue) => {
+  console.log(`CreatedAt filter value changed from '${oldValue}' to '${newValue}'`);
 });
 
-// Filter zurücksetzen
+
+const isFilterActive = computed(() => {
+  return Object.entries(filters.value).some(([key, filter]) => {
+    // if (key === 'global') return false; // Optional: Globalen Filter ignorieren
+    return filter.value !== null && filter.value !== '';
+  });
+});
+
+const searchableSurveys = computed(() => {
+  if (!Array.isArray(surveys.value)) {
+      return [];
+  }
+  const currentLocale = locale.value;
+  return surveys.value.map(survey => {
+    try {
+      const nameFormatted = formatMLString(survey.name, currentLocale);
+      const descriptionFormatted = formatMLString(survey.description, currentLocale);
+      // Wichtig: Diese Felder werden jetzt für Spalten- UND Globalfilter verwendet
+      const nameSearchable = (nameFormatted || '').toLowerCase();
+      const descriptionSearchable = (descriptionFormatted || '').toLowerCase();
+      const createdAtFormatted = formatDate(survey.createdAt);
+
+      return {
+        ...survey,
+        name_searchable: nameSearchable,
+        description_searchable: descriptionSearchable,
+        createdAt_formatted: createdAtFormatted
+      };
+    } catch (error) {
+        console.error('Error processing survey in searchableSurveys:', survey, error);
+        // Fallback-Werte bereitstellen
+        return { ...survey, name_searchable: '', description_searchable: '', createdAt_formatted: '' };
+    }
+  });
+});
+
+const filteredGridSurveys = computed(() => {
+  const globalFilterValue = filters.value.global.value;
+  if (!globalFilterValue) {
+    return searchableSurveys.value;
+  }
+  const filterText = String(globalFilterValue).toLowerCase();
+  return searchableSurveys.value.filter(survey => {
+    return (
+      survey.name_searchable.includes(filterText) ||
+      survey.description_searchable.includes(filterText) ||
+      survey.createdAt_formatted.toLowerCase().includes(filterText)
+    );
+  });
+});
+
 const clearFilter = () => {
+  // Wichtig: Die Schlüssel müssen mit den Feldern in der DataTable übereinstimmen
   filters.value = {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    description: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    name_searchable: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    description_searchable: { value: null, matchMode: FilterMatchMode.CONTAINS },
     createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS }
   };
 };
 
-// API-Client erstellen
 const client = generateClient();
 
-// Umfragen aus der Datenbank abrufen
 const fetchSurveys = async () => {
   loading.value = true;
-  
   try {
-    const response = await client.graphql({
-      query: listSurveys
-    });
-    
-    surveys.value = response.data.listSurveys.items as unknown as Survey[];
+    const response = await client.graphql({ query: listSurveys });
+    surveys.value = (response.data.listSurveys?.items || []) as Survey[];
     console.log('Geladene Umfragen:', surveys.value);
   } catch (err) {
     console.error('Fehler beim Abrufen der Umfragedaten:', err);
+    surveys.value = [];
   } finally {
     loading.value = false;
   }
 };
 
-// Hilfsfunktion zum Formatieren des Datums
-const formatDate = (dateString) => {
+const formatDate = (dateString: string | null | undefined): string => {
   if (!dateString) return '-';
-  const date = new Date(dateString);
-  return date.toLocaleDateString('de-DE');
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+        return '-';
+    }
+    return date.toLocaleDateString('de-DE', {
+        day: '2-digit', month: '2-digit', year: 'numeric'
+    });
+  } catch (e) {
+    console.error("Error formatting date:", dateString, e);
+    return '-';
+  }
 };
 
-// Daten beim Laden der Komponente abrufen
+// *** filterMLString wurde entfernt ***
+
 onMounted(fetchSurveys);
+
 </script>
 
 <style scoped>
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+:deep(.p-card) {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+:deep(.p-card-content) {
+  flex-grow: 1;
+  overflow: auto; /* Wichtig für scrollbare Tabelle/Grid */
 }
 
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.survey-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
 }
 
 .survey-grid-container {
-  display: flex;
-  flex-wrap: wrap;
-  margin: -0.5rem; /* Negativer Margin für gleichmäßige Abstände */
+  display: contents; /* Lässt die Items direkt im Grid-Kontext sein */
 }
 
-.survey-grid-item {
-  flex: 0 0 calc(25% - 1rem); /* 4 Elemente pro Zeile */
-  max-width: calc(25% - 1rem);
-  margin: 0.5rem;
-  box-sizing: border-box;
+.survey-grid-item .p-card {
+  height: 100%;
 }
 
-/* Responsive Breakpoints */
-@media (max-width: 1200px) {
-  .survey-grid-item {
-    flex: 0 0 calc(33.333% - 1rem); /* 3 Elemente pro Zeile */
-    max-width: calc(33.333% - 1rem);
-  }
+.col-span-full {
+  grid-column: 1 / -1;
 }
 
-@media (max-width: 768px) {
-  .survey-grid-item {
-    flex: 0 0 calc(50% - 1rem); /* 2 Elemente pro Zeile */
-    max-width: calc(50% - 1rem);
-  }
-}
-
-@media (max-width: 480px) {
-  .survey-grid-item {
-    flex: 0 0 calc(100% - 1rem); /* 1 Element pro Zeile */
-    max-width: calc(100% - 1rem);
-  }
+/* Text auf maximal 3 Zeilen beschränken und mit ... abschneiden */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
