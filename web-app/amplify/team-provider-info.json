@@ -95,7 +95,7 @@
         "authnisaba": {},
         "migrateSurveyStatus": {
           "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
-          "s3Key": "amplify-builds/migrateSurveyStatus-352f6455317237695979-build.zip"
+          "s3Key": "amplify-builds/migrateSurveyStatus-73625744704d3450354f-build.zip"
         }
       },
       "hosting": {
