@@ -44,7 +44,66 @@
         "syncConflictHandler5b19c779": {
           "deploymentBucketName": "amplify-nisaba-release-21818-deployment",
           "s3Key": "amplify-builds/syncConflictHandler5b19c779-736d4962543068355742-build.zip"
+        },
+        "authnisaba": {}
+      },
+      "storage": {
+        "nisabarelease": {}
+      }
+    }
+  },
+  "devtfive": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-nisaba-devtfive-d1e51-authRole",
+      "UnauthRoleArn": "arn:aws:iam::404541487485:role/amplify-nisaba-devtfive-d1e51-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::404541487485:role/amplify-nisaba-devtfive-d1e51-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
+      "UnauthRoleName": "amplify-nisaba-devtfive-d1e51-unauthRole",
+      "StackName": "amplify-nisaba-devtfive-d1e51",
+      "StackId": "arn:aws:cloudformation:eu-central-1:404541487485:stack/amplify-nisaba-devtfive-d1e51/a9d24c00-10b2-11f0-bd62-0ad81d97ce0d",
+      "AmplifyAppId": "d26pqqtndacxsh",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-nisaba-devtfive-d1e51-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-nisaba-devtfive-d1e51-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "authnisaba": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "AdminQueries8dc38185": {
+          "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
+          "s3Key": "amplify-builds/AdminQueries8dc38185-5a4174542b442b567470-build.zip"
+        },
+        "authnisabaPreTokenGeneration": {
+          "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
+          "s3Key": "amplify-builds/authnisabaPreTokenGeneration-354b5a3446773846716a-build.zip"
+        },
+        "nisabaAdminSdkLayer": {
+          "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
+          "s3Key": "amplify-builds/nisabaAdminSdkLayer-LambdaLayerVersion876d07a4-build.zip"
+        },
+        "nisabaUserManagement": {
+          "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
+          "s3Key": "amplify-builds/nisabaUserManagement-6a37457132494c736f4c-build.zip"
+        },
+        "syncConflictHandler5b19c779": {
+          "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
+          "s3Key": "amplify-builds/syncConflictHandler5b19c779-736d4962543068355742-build.zip"
+        },
+        "authnisaba": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d26pqqtndacxsh",
+          "type": "manual"
         }
+      },
+      "api": {
+        "AdminQueries": {},
+        "apinisaba": {},
+        "nisabaUserManagementApi": {}
       },
       "storage": {
         "nisabarelease": {}
