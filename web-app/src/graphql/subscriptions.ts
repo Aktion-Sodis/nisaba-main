@@ -680,6 +680,7 @@ export const onCreateSurvey = /* GraphQL */ `subscription OnCreateSurvey(
       __typename
     }
     surveyType
+    status
     schemeVersion
     archived
     id
@@ -736,6 +737,7 @@ export const onUpdateSurvey = /* GraphQL */ `subscription OnUpdateSurvey(
       __typename
     }
     surveyType
+    status
     schemeVersion
     archived
     id
@@ -792,6 +794,7 @@ export const onDeleteSurvey = /* GraphQL */ `subscription OnDeleteSurvey(
       __typename
     }
     surveyType
+    status
     schemeVersion
     archived
     id
@@ -1206,6 +1209,7 @@ export const onCreateExecutedSurvey = /* GraphQL */ `subscription OnCreateExecut
     }
     survey {
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -1290,6 +1294,7 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `subscription OnUpdateExecut
     }
     survey {
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -1374,6 +1379,7 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `subscription OnDeleteExecut
     }
     survey {
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -2709,6 +2715,7 @@ export const onCreateSurveySurveyTagRelation = /* GraphQL */ `subscription OnCre
     surveyTagId
     survey {
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -2758,6 +2765,7 @@ export const onUpdateSurveySurveyTagRelation = /* GraphQL */ `subscription OnUpd
     surveyTagId
     survey {
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -2807,6 +2815,7 @@ export const onDeleteSurveySurveyTagRelation = /* GraphQL */ `subscription OnDel
     surveyTagId
     survey {
       surveyType
+      status
       schemeVersion
       archived
       id

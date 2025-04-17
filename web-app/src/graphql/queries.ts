@@ -587,6 +587,7 @@ export const getSurvey = /* GraphQL */ `query GetSurvey($id: ID!) {
       __typename
     }
     surveyType
+    status
     schemeVersion
     archived
     id
@@ -609,6 +610,7 @@ export const listSurveys = /* GraphQL */ `query ListSurveys(
   listSurveys(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -644,6 +646,7 @@ export const syncSurveys = /* GraphQL */ `query SyncSurveys(
   ) {
     items {
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -929,6 +932,7 @@ export const getExecutedSurvey = /* GraphQL */ `query GetExecutedSurvey($id: ID!
     }
     survey {
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -2075,6 +2079,7 @@ export const getSurveySurveyTagRelation = /* GraphQL */ `query GetSurveySurveyTa
     surveyTagId
     survey {
       surveyType
+      status
       schemeVersion
       archived
       id

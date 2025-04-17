@@ -26,6 +26,12 @@ const SurveyType = {
   "DEFAULT": "DEFAULT"
 };
 
+const SurveyStatus = {
+  "DRAFT": "DRAFT",
+  "ACTIVE": "ACTIVE",
+  "ARCHIVED": "ARCHIVED"
+};
+
 const QuestionType = {
   "TEXT": "TEXT",
   "SINGLECHOICE": "SINGLECHOICE",
@@ -66,6 +72,7 @@ export {
   Type,
   InterventionType,
   SurveyType,
+  SurveyStatus,
   QuestionType,
   I18nString,
   Permission,

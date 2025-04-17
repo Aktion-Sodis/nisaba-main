@@ -466,6 +466,7 @@ export type Survey = {
   questions:  Array<Question >,
   tags?: ModelSurveySurveyTagRelationConnection | null,
   surveyType: SurveyType,
+  status: SurveyStatus,
   schemeVersion?: number | null,
   archived?: boolean | null,
   id: string,
@@ -546,6 +547,13 @@ export type SurveyTag = {
 export enum SurveyType {
   INITIAL = "INITIAL",
   DEFAULT = "DEFAULT",
+}
+
+
+export enum SurveyStatus {
+  DRAFT = "DRAFT",
+  ACTIVE = "ACTIVE",
+  ARCHIVED = "ARCHIVED",
 }
 
 
@@ -685,6 +693,7 @@ export type CreateSurveyInput = {
   description: I18nStringInput,
   questions: Array< QuestionInput >,
   surveyType: SurveyType,
+  status: SurveyStatus,
   schemeVersion?: number | null,
   archived?: boolean | null,
   id?: string | null,
@@ -708,6 +717,7 @@ export type QuestionOptionInput = {
 
 export type ModelSurveyConditionInput = {
   surveyType?: ModelSurveyTypeInput | null,
+  status?: ModelSurveyStatusInput | null,
   schemeVersion?: ModelIntInput | null,
   archived?: ModelBooleanInput | null,
   and?: Array< ModelSurveyConditionInput | null > | null,
@@ -725,11 +735,17 @@ export type ModelSurveyTypeInput = {
   ne?: SurveyType | null,
 };
 
+export type ModelSurveyStatusInput = {
+  eq?: SurveyStatus | null,
+  ne?: SurveyStatus | null,
+};
+
 export type UpdateSurveyInput = {
   name?: I18nStringInput | null,
   description?: I18nStringInput | null,
   questions?: Array< QuestionInput > | null,
   surveyType?: SurveyType | null,
+  status?: SurveyStatus | null,
   schemeVersion?: number | null,
   archived?: boolean | null,
   id: string,
@@ -1589,6 +1605,7 @@ export type ModelContentConnection = {
 
 export type ModelSurveyFilterInput = {
   surveyType?: ModelSurveyTypeInput | null,
+  status?: ModelSurveyStatusInput | null,
   schemeVersion?: ModelIntInput | null,
   archived?: ModelBooleanInput | null,
   id?: ModelIDInput | null,
@@ -1983,6 +2000,7 @@ export type ModelSubscriptionContentFilterInput = {
 
 export type ModelSubscriptionSurveyFilterInput = {
   surveyType?: ModelSubscriptionStringInput | null,
+  status?: ModelSubscriptionStringInput | null,
   schemeVersion?: ModelSubscriptionIntInput | null,
   archived?: ModelSubscriptionBooleanInput | null,
   id?: ModelSubscriptionIDInput | null,
@@ -2842,6 +2860,7 @@ export type CreateSurveyMutation = {
       startedAt?: number | null,
     } | null,
     surveyType: SurveyType,
+    status: SurveyStatus,
     schemeVersion?: number | null,
     archived?: boolean | null,
     id: string,
@@ -2897,6 +2916,7 @@ export type UpdateSurveyMutation = {
       startedAt?: number | null,
     } | null,
     surveyType: SurveyType,
+    status: SurveyStatus,
     schemeVersion?: number | null,
     archived?: boolean | null,
     id: string,
@@ -2952,6 +2972,7 @@ export type DeleteSurveyMutation = {
       startedAt?: number | null,
     } | null,
     surveyType: SurveyType,
+    status: SurveyStatus,
     schemeVersion?: number | null,
     archived?: boolean | null,
     id: string,
@@ -3351,6 +3372,7 @@ export type CreateExecutedSurveyMutation = {
     survey:  {
       __typename: "Survey",
       surveyType: SurveyType,
+      status: SurveyStatus,
       schemeVersion?: number | null,
       archived?: boolean | null,
       id: string,
@@ -3434,6 +3456,7 @@ export type UpdateExecutedSurveyMutation = {
     survey:  {
       __typename: "Survey",
       surveyType: SurveyType,
+      status: SurveyStatus,
       schemeVersion?: number | null,
       archived?: boolean | null,
       id: string,
@@ -3517,6 +3540,7 @@ export type DeleteExecutedSurveyMutation = {
     survey:  {
       __typename: "Survey",
       surveyType: SurveyType,
+      status: SurveyStatus,
       schemeVersion?: number | null,
       archived?: boolean | null,
       id: string,
@@ -4782,6 +4806,7 @@ export type CreateSurveySurveyTagRelationMutation = {
     survey:  {
       __typename: "Survey",
       surveyType: SurveyType,
+      status: SurveyStatus,
       schemeVersion?: number | null,
       archived?: boolean | null,
       id: string,
@@ -4827,6 +4852,7 @@ export type UpdateSurveySurveyTagRelationMutation = {
     survey:  {
       __typename: "Survey",
       surveyType: SurveyType,
+      status: SurveyStatus,
       schemeVersion?: number | null,
       archived?: boolean | null,
       id: string,
@@ -4872,6 +4898,7 @@ export type DeleteSurveySurveyTagRelationMutation = {
     survey:  {
       __typename: "Survey",
       surveyType: SurveyType,
+      status: SurveyStatus,
       schemeVersion?: number | null,
       archived?: boolean | null,
       id: string,
@@ -5466,6 +5493,7 @@ export type GetSurveyQuery = {
       startedAt?: number | null,
     } | null,
     surveyType: SurveyType,
+    status: SurveyStatus,
     schemeVersion?: number | null,
     archived?: boolean | null,
     id: string,
@@ -5491,6 +5519,7 @@ export type ListSurveysQuery = {
     items:  Array< {
       __typename: "Survey",
       surveyType: SurveyType,
+      status: SurveyStatus,
       schemeVersion?: number | null,
       archived?: boolean | null,
       id: string,
@@ -5520,6 +5549,7 @@ export type SyncSurveysQuery = {
     items:  Array< {
       __typename: "Survey",
       surveyType: SurveyType,
+      status: SurveyStatus,
       schemeVersion?: number | null,
       archived?: boolean | null,
       id: string,
@@ -5793,6 +5823,7 @@ export type GetExecutedSurveyQuery = {
     survey:  {
       __typename: "Survey",
       surveyType: SurveyType,
+      status: SurveyStatus,
       schemeVersion?: number | null,
       archived?: boolean | null,
       id: string,
@@ -6866,6 +6897,7 @@ export type GetSurveySurveyTagRelationQuery = {
     survey:  {
       __typename: "Survey",
       surveyType: SurveyType,
+      status: SurveyStatus,
       schemeVersion?: number | null,
       archived?: boolean | null,
       id: string,
@@ -7957,6 +7989,7 @@ export type OnCreateSurveySubscription = {
       startedAt?: number | null,
     } | null,
     surveyType: SurveyType,
+    status: SurveyStatus,
     schemeVersion?: number | null,
     archived?: boolean | null,
     id: string,
@@ -8012,6 +8045,7 @@ export type OnUpdateSurveySubscription = {
       startedAt?: number | null,
     } | null,
     surveyType: SurveyType,
+    status: SurveyStatus,
     schemeVersion?: number | null,
     archived?: boolean | null,
     id: string,
@@ -8067,6 +8101,7 @@ export type OnDeleteSurveySubscription = {
       startedAt?: number | null,
     } | null,
     surveyType: SurveyType,
+    status: SurveyStatus,
     schemeVersion?: number | null,
     archived?: boolean | null,
     id: string,
@@ -8466,6 +8501,7 @@ export type OnCreateExecutedSurveySubscription = {
     survey:  {
       __typename: "Survey",
       surveyType: SurveyType,
+      status: SurveyStatus,
       schemeVersion?: number | null,
       archived?: boolean | null,
       id: string,
@@ -8549,6 +8585,7 @@ export type OnUpdateExecutedSurveySubscription = {
     survey:  {
       __typename: "Survey",
       surveyType: SurveyType,
+      status: SurveyStatus,
       schemeVersion?: number | null,
       archived?: boolean | null,
       id: string,
@@ -8632,6 +8669,7 @@ export type OnDeleteExecutedSurveySubscription = {
     survey:  {
       __typename: "Survey",
       surveyType: SurveyType,
+      status: SurveyStatus,
       schemeVersion?: number | null,
       archived?: boolean | null,
       id: string,
@@ -9897,6 +9935,7 @@ export type OnCreateSurveySurveyTagRelationSubscription = {
     survey:  {
       __typename: "Survey",
       surveyType: SurveyType,
+      status: SurveyStatus,
       schemeVersion?: number | null,
       archived?: boolean | null,
       id: string,
@@ -9942,6 +9981,7 @@ export type OnUpdateSurveySurveyTagRelationSubscription = {
     survey:  {
       __typename: "Survey",
       surveyType: SurveyType,
+      status: SurveyStatus,
       schemeVersion?: number | null,
       archived?: boolean | null,
       id: string,
@@ -9987,6 +10027,7 @@ export type OnDeleteSurveySurveyTagRelationSubscription = {
     survey:  {
       __typename: "Survey",
       surveyType: SurveyType,
+      status: SurveyStatus,
       schemeVersion?: number | null,
       archived?: boolean | null,
       id: string,

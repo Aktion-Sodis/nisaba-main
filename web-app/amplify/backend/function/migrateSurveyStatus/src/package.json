@@ -1,0 +1,10 @@
+{
+  "name": "migrate-survey-status",
+  "version": "1.0.0",
+  "description": "Migration function for survey status",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.1692.0",
+    "graphql-request": "^5.2.0"
+  }
+}

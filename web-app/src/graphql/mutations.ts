@@ -683,6 +683,7 @@ export const createSurvey = /* GraphQL */ `mutation CreateSurvey(
       __typename
     }
     surveyType
+    status
     schemeVersion
     archived
     id
@@ -739,6 +740,7 @@ export const updateSurvey = /* GraphQL */ `mutation UpdateSurvey(
       __typename
     }
     surveyType
+    status
     schemeVersion
     archived
     id
@@ -795,6 +797,7 @@ export const deleteSurvey = /* GraphQL */ `mutation DeleteSurvey(
       __typename
     }
     surveyType
+    status
     schemeVersion
     archived
     id
@@ -1200,6 +1203,7 @@ export const createExecutedSurvey = /* GraphQL */ `mutation CreateExecutedSurvey
     }
     survey {
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -1284,6 +1288,7 @@ export const updateExecutedSurvey = /* GraphQL */ `mutation UpdateExecutedSurvey
     }
     survey {
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -1368,6 +1373,7 @@ export const deleteExecutedSurvey = /* GraphQL */ `mutation DeleteExecutedSurvey
     }
     survey {
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -2673,6 +2679,7 @@ export const createSurveySurveyTagRelation = /* GraphQL */ `mutation CreateSurve
     surveyTagId
     survey {
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -2719,6 +2726,7 @@ export const updateSurveySurveyTagRelation = /* GraphQL */ `mutation UpdateSurve
     surveyTagId
     survey {
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -2765,6 +2773,7 @@ export const deleteSurveySurveyTagRelation = /* GraphQL */ `mutation DeleteSurve
     surveyTagId
     survey {
       surveyType
+      status
       schemeVersion
       archived
       id

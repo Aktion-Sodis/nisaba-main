@@ -1,0 +1,19 @@
+{
+  "lambdaLayers": [],
+  "permissions": {
+    "api": {
+      "apinisaba": [
+        "Query",
+        "Mutation"
+      ]
+    }
+  },
+  "environmentVariables": {
+    "API_GRAPHQLAPIENDPOINTOUTPUT": {
+      "Ref": "apiapinisabaGraphQLAPIEndpointOutput"
+    },
+    "API_GRAPHQLAPIKEYOUTPUT": {
+      "Ref": "apiapinisabaGraphQLAPIKeyOutput"
+    }
+  }
+}

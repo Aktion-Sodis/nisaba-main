@@ -147,6 +147,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "migrateSurveyStatus": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "nisabaAdminSdkLayer": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -216,6 +221,22 @@
         {
           "category": "function",
           "resourceName": "authnisabaPreTokenGeneration"
+        }
+      ]
+    },
+    "AMPLIFY_function_migrateSurveyStatus_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "migrateSurveyStatus"
+        }
+      ]
+    },
+    "AMPLIFY_function_migrateSurveyStatus_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "migrateSurveyStatus"
         }
       ]
     },

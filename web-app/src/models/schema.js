@@ -707,6 +707,15 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": {
+                        "enum": "SurveyStatus"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "schemeVersion": {
                     "name": "schemeVersion",
                     "isArray": false,
@@ -2542,6 +2551,14 @@ export const schema = {
                 "DEFAULT"
             ]
         },
+        "SurveyStatus": {
+            "name": "SurveyStatus",
+            "values": [
+                "DRAFT",
+                "ACTIVE",
+                "ARCHIVED"
+            ]
+        },
         "QuestionType": {
             "name": "QuestionType",
             "values": [
@@ -2942,5 +2959,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "cc0397e401109c26c23f5281c025ca7e"
+    "version": "959631ea8b7c970b171e4196a98121dc"
 };

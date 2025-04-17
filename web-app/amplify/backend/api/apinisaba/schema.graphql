@@ -115,6 +115,7 @@ type Survey @model @auth(rules: [{allow: owner, ownerField: "organization_id", i
   questions: [Question!]!
   tags: [SurveyTag!]! @manyToMany(relationName: "SurveySurveyTagRelation")
   surveyType: SurveyType!
+  status: SurveyStatus! @default(value: "DRAFT")
   schemeVersion: Int @default(value: "0")
   archived: Boolean @default(value: "false")
 }
@@ -122,6 +123,12 @@ type Survey @model @auth(rules: [{allow: owner, ownerField: "organization_id", i
 enum SurveyType {
   INITIAL
   DEFAULT
+}
+
+enum SurveyStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
 }
 
 enum QuestionType {
