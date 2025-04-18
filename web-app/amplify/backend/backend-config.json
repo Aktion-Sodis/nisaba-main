@@ -37,11 +37,14 @@
           "additionalAuthenticationProviders": [
             {
               "apiKeyConfig": {
-                "apiKeyExpirationDate": "2024-10-04T17:34:44.364Z",
+                "apiKeyExpirationDate": "2026-04-18T10:06:09.582Z",
                 "apiKeyExpirationDays": 365,
                 "description": "Nisaba API Key"
               },
               "authenticationType": "API_KEY"
+            },
+            {
+              "authenticationType": "AWS_IAM"
             }
           ],
           "defaultAuthentication": {

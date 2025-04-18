@@ -1673,6 +1673,12 @@ export type ModelExecutedSurveyFilterInput = {
   organization_id?: ModelStringInput | null,
 };
 
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
 export type ModelTaskFilterInput = {
   title?: ModelStringInput | null,
   text?: ModelStringInput | null,
@@ -1869,12 +1875,6 @@ export type ModelSurveySurveyTagRelationFilterInput = {
   _deleted?: ModelBooleanInput | null,
   organization_id?: ModelStringInput | null,
 };
-
-export enum ModelSortDirection {
-  ASC = "ASC",
-  DESC = "DESC",
-}
-
 
 export type ModelSubscriptionOrganizationFilterInput = {
   nameCamelCase?: ModelSubscriptionStringInput | null,
@@ -5942,6 +5942,38 @@ export type SyncExecutedSurveysQuery = {
   } | null,
 };
 
+export type ExecutedSurveyBySurveyIDQueryVariables = {
+  surveyID: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelExecutedSurveyFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ExecutedSurveyBySurveyIDQuery = {
+  executedSurveyBySurveyID?:  {
+    __typename: "ModelExecutedSurveyConnection",
+    items:  Array< {
+      __typename: "ExecutedSurvey",
+      surveyID?: string | null,
+      date: string,
+      schemeVersion?: number | null,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      appliedInterventionExecutedSurveysId: string,
+      executedSurveySurveyId: string,
+      executedSurveyWhoExecutedItId: string,
+      organization_id?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type GetTaskQueryVariables = {
   id: string,
 };
@@ -6079,6 +6111,44 @@ export type SyncTasksQueryVariables = {
 
 export type SyncTasksQuery = {
   syncTasks?:  {
+    __typename: "ModelTaskConnection",
+    items:  Array< {
+      __typename: "Task",
+      title: string,
+      text?: string | null,
+      dueDate?: string | null,
+      finishedDate?: string | null,
+      userID: string,
+      schemeVersion?: number | null,
+      picIDs: Array< number >,
+      audioIDs: Array< number >,
+      id: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      taskUserId: string,
+      taskEntityId?: string | null,
+      taskAppliedInterventionId?: string | null,
+      taskExecutedSurveyId?: string | null,
+      organization_id?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type TaskByUserIDQueryVariables = {
+  userID: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelTaskFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type TaskByUserIDQuery = {
+  taskByUserID?:  {
     __typename: "ModelTaskConnection",
     items:  Array< {
       __typename: "Task",
@@ -6600,6 +6670,62 @@ export type SyncLevelInterventionRelationsQuery = {
   } | null,
 };
 
+export type LevelInterventionRelationsByLevelIdQueryVariables = {
+  levelId: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelLevelInterventionRelationFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type LevelInterventionRelationsByLevelIdQuery = {
+  levelInterventionRelationsByLevelId?:  {
+    __typename: "ModelLevelInterventionRelationConnection",
+    items:  Array< {
+      __typename: "LevelInterventionRelation",
+      id: string,
+      levelId: string,
+      interventionId: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      organization_id?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type LevelInterventionRelationsByInterventionIdQueryVariables = {
+  interventionId: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelLevelInterventionRelationFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type LevelInterventionRelationsByInterventionIdQuery = {
+  levelInterventionRelationsByInterventionId?:  {
+    __typename: "ModelLevelInterventionRelationConnection",
+    items:  Array< {
+      __typename: "LevelInterventionRelation",
+      id: string,
+      levelId: string,
+      interventionId: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      organization_id?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type GetInterventionContentRelationQueryVariables = {
   id: string,
 };
@@ -6677,6 +6803,62 @@ export type SyncInterventionContentRelationsQueryVariables = {
 
 export type SyncInterventionContentRelationsQuery = {
   syncInterventionContentRelations?:  {
+    __typename: "ModelInterventionContentRelationConnection",
+    items:  Array< {
+      __typename: "InterventionContentRelation",
+      id: string,
+      interventionId: string,
+      contentId: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      organization_id?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type InterventionContentRelationsByInterventionIdQueryVariables = {
+  interventionId: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelInterventionContentRelationFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type InterventionContentRelationsByInterventionIdQuery = {
+  interventionContentRelationsByInterventionId?:  {
+    __typename: "ModelInterventionContentRelationConnection",
+    items:  Array< {
+      __typename: "InterventionContentRelation",
+      id: string,
+      interventionId: string,
+      contentId: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      organization_id?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type InterventionContentRelationsByContentIdQueryVariables = {
+  contentId: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelInterventionContentRelationFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type InterventionContentRelationsByContentIdQuery = {
+  interventionContentRelationsByContentId?:  {
     __typename: "ModelInterventionContentRelationConnection",
     items:  Array< {
       __typename: "InterventionContentRelation",
@@ -6790,6 +6972,62 @@ export type SyncInterventionInterventionTagRelationsQuery = {
   } | null,
 };
 
+export type InterventionInterventionTagRelationsByInterventionIdQueryVariables = {
+  interventionId: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelInterventionInterventionTagRelationFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type InterventionInterventionTagRelationsByInterventionIdQuery = {
+  interventionInterventionTagRelationsByInterventionId?:  {
+    __typename: "ModelInterventionInterventionTagRelationConnection",
+    items:  Array< {
+      __typename: "InterventionInterventionTagRelation",
+      id: string,
+      interventionId: string,
+      interventionTagId: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      organization_id?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type InterventionInterventionTagRelationsByInterventionTagIdQueryVariables = {
+  interventionTagId: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelInterventionInterventionTagRelationFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type InterventionInterventionTagRelationsByInterventionTagIdQuery = {
+  interventionInterventionTagRelationsByInterventionTagId?:  {
+    __typename: "ModelInterventionInterventionTagRelationConnection",
+    items:  Array< {
+      __typename: "InterventionInterventionTagRelation",
+      id: string,
+      interventionId: string,
+      interventionTagId: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      organization_id?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type GetContentContentTagRelationQueryVariables = {
   id: string,
 };
@@ -6866,6 +7104,62 @@ export type SyncContentContentTagRelationsQueryVariables = {
 
 export type SyncContentContentTagRelationsQuery = {
   syncContentContentTagRelations?:  {
+    __typename: "ModelContentContentTagRelationConnection",
+    items:  Array< {
+      __typename: "ContentContentTagRelation",
+      id: string,
+      contentId: string,
+      contentTagId: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      organization_id?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type ContentContentTagRelationsByContentIdQueryVariables = {
+  contentId: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelContentContentTagRelationFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ContentContentTagRelationsByContentIdQuery = {
+  contentContentTagRelationsByContentId?:  {
+    __typename: "ModelContentContentTagRelationConnection",
+    items:  Array< {
+      __typename: "ContentContentTagRelation",
+      id: string,
+      contentId: string,
+      contentTagId: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      organization_id?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type ContentContentTagRelationsByContentTagIdQueryVariables = {
+  contentTagId: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelContentContentTagRelationFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ContentContentTagRelationsByContentTagIdQuery = {
+  contentContentTagRelationsByContentTagId?:  {
     __typename: "ModelContentContentTagRelationConnection",
     items:  Array< {
       __typename: "ContentContentTagRelation",
@@ -6970,300 +7264,6 @@ export type SyncSurveySurveyTagRelationsQuery = {
       id: string,
       surveyId: string,
       surveyTagId: string,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      organization_id?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type ExecutedSurveyBySurveyIDQueryVariables = {
-  surveyID: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelExecutedSurveyFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ExecutedSurveyBySurveyIDQuery = {
-  executedSurveyBySurveyID?:  {
-    __typename: "ModelExecutedSurveyConnection",
-    items:  Array< {
-      __typename: "ExecutedSurvey",
-      surveyID?: string | null,
-      date: string,
-      schemeVersion?: number | null,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      appliedInterventionExecutedSurveysId: string,
-      executedSurveySurveyId: string,
-      executedSurveyWhoExecutedItId: string,
-      organization_id?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type TaskByUserIDQueryVariables = {
-  userID: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelTaskFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type TaskByUserIDQuery = {
-  taskByUserID?:  {
-    __typename: "ModelTaskConnection",
-    items:  Array< {
-      __typename: "Task",
-      title: string,
-      text?: string | null,
-      dueDate?: string | null,
-      finishedDate?: string | null,
-      userID: string,
-      schemeVersion?: number | null,
-      picIDs: Array< number >,
-      audioIDs: Array< number >,
-      id: string,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      taskUserId: string,
-      taskEntityId?: string | null,
-      taskAppliedInterventionId?: string | null,
-      taskExecutedSurveyId?: string | null,
-      organization_id?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type LevelInterventionRelationsByLevelIdQueryVariables = {
-  levelId: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelLevelInterventionRelationFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type LevelInterventionRelationsByLevelIdQuery = {
-  levelInterventionRelationsByLevelId?:  {
-    __typename: "ModelLevelInterventionRelationConnection",
-    items:  Array< {
-      __typename: "LevelInterventionRelation",
-      id: string,
-      levelId: string,
-      interventionId: string,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      organization_id?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type LevelInterventionRelationsByInterventionIdQueryVariables = {
-  interventionId: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelLevelInterventionRelationFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type LevelInterventionRelationsByInterventionIdQuery = {
-  levelInterventionRelationsByInterventionId?:  {
-    __typename: "ModelLevelInterventionRelationConnection",
-    items:  Array< {
-      __typename: "LevelInterventionRelation",
-      id: string,
-      levelId: string,
-      interventionId: string,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      organization_id?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type InterventionContentRelationsByInterventionIdQueryVariables = {
-  interventionId: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelInterventionContentRelationFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type InterventionContentRelationsByInterventionIdQuery = {
-  interventionContentRelationsByInterventionId?:  {
-    __typename: "ModelInterventionContentRelationConnection",
-    items:  Array< {
-      __typename: "InterventionContentRelation",
-      id: string,
-      interventionId: string,
-      contentId: string,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      organization_id?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type InterventionContentRelationsByContentIdQueryVariables = {
-  contentId: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelInterventionContentRelationFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type InterventionContentRelationsByContentIdQuery = {
-  interventionContentRelationsByContentId?:  {
-    __typename: "ModelInterventionContentRelationConnection",
-    items:  Array< {
-      __typename: "InterventionContentRelation",
-      id: string,
-      interventionId: string,
-      contentId: string,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      organization_id?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type InterventionInterventionTagRelationsByInterventionIdQueryVariables = {
-  interventionId: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelInterventionInterventionTagRelationFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type InterventionInterventionTagRelationsByInterventionIdQuery = {
-  interventionInterventionTagRelationsByInterventionId?:  {
-    __typename: "ModelInterventionInterventionTagRelationConnection",
-    items:  Array< {
-      __typename: "InterventionInterventionTagRelation",
-      id: string,
-      interventionId: string,
-      interventionTagId: string,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      organization_id?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type InterventionInterventionTagRelationsByInterventionTagIdQueryVariables = {
-  interventionTagId: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelInterventionInterventionTagRelationFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type InterventionInterventionTagRelationsByInterventionTagIdQuery = {
-  interventionInterventionTagRelationsByInterventionTagId?:  {
-    __typename: "ModelInterventionInterventionTagRelationConnection",
-    items:  Array< {
-      __typename: "InterventionInterventionTagRelation",
-      id: string,
-      interventionId: string,
-      interventionTagId: string,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      organization_id?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type ContentContentTagRelationsByContentIdQueryVariables = {
-  contentId: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelContentContentTagRelationFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ContentContentTagRelationsByContentIdQuery = {
-  contentContentTagRelationsByContentId?:  {
-    __typename: "ModelContentContentTagRelationConnection",
-    items:  Array< {
-      __typename: "ContentContentTagRelation",
-      id: string,
-      contentId: string,
-      contentTagId: string,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-      organization_id?: string | null,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type ContentContentTagRelationsByContentTagIdQueryVariables = {
-  contentTagId: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelContentContentTagRelationFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ContentContentTagRelationsByContentTagIdQuery = {
-  contentContentTagRelationsByContentTagId?:  {
-    __typename: "ModelContentContentTagRelationConnection",
-    items:  Array< {
-      __typename: "ContentContentTagRelation",
-      id: string,
-      contentId: string,
-      contentTagId: string,
       createdAt: string,
       updatedAt: string,
       _version: number,

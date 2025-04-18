@@ -67,6 +67,16 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -160,6 +170,16 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -232,6 +252,16 @@ export const schema = {
                                 "ownerField": "organization_id",
                                 "allow": "owner",
                                 "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
                                 "operations": [
                                     "create",
                                     "update",
@@ -352,6 +382,16 @@ export const schema = {
                                 "ownerField": "organization_id",
                                 "allow": "owner",
                                 "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
                                 "operations": [
                                     "create",
                                     "update",
@@ -511,6 +551,16 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -617,6 +667,16 @@ export const schema = {
                                 "ownerField": "organization_id",
                                 "allow": "owner",
                                 "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
                                 "operations": [
                                     "create",
                                     "update",
@@ -776,6 +836,16 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -917,6 +987,16 @@ export const schema = {
                                 "ownerField": "organization_id",
                                 "allow": "owner",
                                 "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
                                 "operations": [
                                     "create",
                                     "update",
@@ -1077,6 +1157,16 @@ export const schema = {
                                 "ownerField": "organization_id",
                                 "allow": "owner",
                                 "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
                                 "operations": [
                                     "create",
                                     "update",
@@ -1254,6 +1344,16 @@ export const schema = {
                                 "ownerField": "organization_id",
                                 "allow": "owner",
                                 "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
                                 "operations": [
                                     "create",
                                     "update",
@@ -1492,6 +1592,16 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -1573,6 +1683,16 @@ export const schema = {
                                 "ownerField": "organization_id",
                                 "allow": "owner",
                                 "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
                                 "operations": [
                                     "create",
                                     "update",
@@ -1666,6 +1786,16 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -1747,6 +1877,16 @@ export const schema = {
                                 "ownerField": "organization_id",
                                 "allow": "owner",
                                 "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
                                 "operations": [
                                     "create",
                                     "update",
@@ -1857,6 +1997,16 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -1920,6 +2070,16 @@ export const schema = {
                                 "ownerField": "organization_id",
                                 "allow": "owner",
                                 "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
                                 "operations": [
                                     "create",
                                     "update",
@@ -2043,6 +2203,16 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -2154,6 +2324,16 @@ export const schema = {
                                 "ownerField": "organization_id",
                                 "allow": "owner",
                                 "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
                                 "operations": [
                                     "create",
                                     "update",
@@ -2277,6 +2457,16 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -2394,6 +2584,16 @@ export const schema = {
                                     "delete",
                                     "read"
                                 ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -2505,6 +2705,16 @@ export const schema = {
                                 "ownerField": "organization_id",
                                 "allow": "owner",
                                 "identityClaim": "custom:organization_id",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "provider": "identityPool",
                                 "operations": [
                                     "create",
                                     "update",
