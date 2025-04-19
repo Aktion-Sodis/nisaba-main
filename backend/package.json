@@ -5,12 +5,15 @@
   "main": "index.js",
   "scripts": {
     "create-organization": "node ./src/create-organization.mjs",
-    "complete-new-password": "node ./src/complete-new-password.mjs"
+    "complete-new-password": "node ./src/complete-new-password.mjs",
+    "seed-test-data": "node ./src/seed-test-data.mjs"
   },
   "author": "apolat2000",
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.229.0",
+    "@aws-sdk/client-lambda": "^3.229.0",
+    "@aws-sdk/credential-provider-env": "^3.229.0",
     "aws-amplify": "^5.0.5",
     "aws-sdk": "^2.1274.0",
     "dotenv": "^16.0.3",

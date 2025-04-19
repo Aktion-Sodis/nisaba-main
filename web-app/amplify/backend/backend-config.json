@@ -150,6 +150,22 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "createDefaultsForTesting": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "apinisaba"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "migrateSurveyStatus": {
       "build": true,
       "dependsOn": [
@@ -235,6 +251,22 @@
         {
           "category": "function",
           "resourceName": "authnisabaPreTokenGeneration"
+        }
+      ]
+    },
+    "AMPLIFY_function_createDefaultsForTesting_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createDefaultsForTesting"
+        }
+      ]
+    },
+    "AMPLIFY_function_createDefaultsForTesting_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createDefaultsForTesting"
         }
       ]
     },

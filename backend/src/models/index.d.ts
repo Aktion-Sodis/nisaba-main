@@ -26,6 +26,12 @@ export enum SurveyType {
   DEFAULT = "DEFAULT"
 }
 
+export enum SurveyStatus {
+  DRAFT = "DRAFT",
+  ACTIVE = "ACTIVE",
+  ARCHIVED = "ARCHIVED"
+}
+
 export enum QuestionType {
   TEXT = "TEXT",
   SINGLECHOICE = "SINGLECHOICE",
@@ -454,6 +460,7 @@ type EagerSurvey = {
   readonly questions: Question[];
   readonly tags: SurveySurveyTagRelation[];
   readonly surveyType: SurveyType | keyof typeof SurveyType;
+  readonly status: SurveyStatus | keyof typeof SurveyStatus;
   readonly schemeVersion?: number | null;
   readonly archived?: boolean | null;
   readonly createdAt?: string | null;
@@ -473,6 +480,7 @@ type LazySurvey = {
   readonly questions: Question[];
   readonly tags: AsyncCollection<SurveySurveyTagRelation>;
   readonly surveyType: SurveyType | keyof typeof SurveyType;
+  readonly status: SurveyStatus | keyof typeof SurveyStatus;
   readonly schemeVersion?: number | null;
   readonly archived?: boolean | null;
   readonly createdAt?: string | null;

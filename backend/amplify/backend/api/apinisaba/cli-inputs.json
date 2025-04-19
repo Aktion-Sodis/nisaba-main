@@ -10,9 +10,12 @@
     "additionalAuthTypes": [
       {
         "mode": "API_KEY",
-        "expirationTime": 120,
-        "apiKeyExpirationDate": "2023-04-24T21:56:53.757Z",
+        "expirationTime": 365,
+        "apiKeyExpirationDate": "2026-04-18T10:06:09.582Z",
         "keyDescription": "Nisaba API Key"
+      },
+      {
+        "mode": "AWS_IAM"
       }
     ],
     "conflictResolution": {
