@@ -6,7 +6,8 @@
   "scripts": {
     "create-organization": "node ./src/create-organization.mjs",
     "complete-new-password": "node ./src/complete-new-password.mjs",
-    "seed-test-data": "node ./src/seed-test-data.mjs"
+    "seed-test-data": "node ./src/seed-test-data.mjs",
+    "create-user": "node ./src/create-user.mjs"
   },
   "author": "apolat2000",
   "license": "ISC",
@@ -17,6 +18,7 @@
     "aws-amplify": "^5.0.5",
     "aws-sdk": "^2.1274.0",
     "dotenv": "^16.0.3",
+    "uuid": "^9.0.0",
     "voca": "^1.4.0"
   },
   "type": "module"
