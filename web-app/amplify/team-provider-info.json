@@ -99,7 +99,7 @@
         },
         "createDefaultsForTesting": {
           "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
-          "s3Key": "amplify-builds/createDefaultsForTesting-74626832782f6c714f71-build.zip"
+          "s3Key": "amplify-builds/createDefaultsForTesting-71706d4d6c7456617258-build.zip"
         }
       },
       "hosting": {
