@@ -10,13 +10,14 @@
 <script setup lang="ts">
 import { computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { AuthenticationState, useAuthStore } from '@/stores/auth';
-import { useUserStore } from '@/stores/user';
-import { useProjectConfigStore } from '@/stores/projectConfigStore';
+
+import router from './router';
 
 import BlankLayout from '@/layouts/BlankLayout.vue';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
-import router from './router';
+import { AuthenticationState, useAuthStore } from '@/stores/auth';
+import { useProjectConfigStore } from '@/stores/projectConfigStore';
+import { useUserStore } from '@/stores/user';
 
 const route = useRoute();
 const authStore = useAuthStore();
@@ -32,29 +33,36 @@ const layoutComponent = computed(() => {
 
 onMounted(() => {
   authStore.checkAuth().then((_) => {
-    if(authStore.authenticationState === AuthenticationState.LoggedIn) {
+    if (authStore.authenticationState === AuthenticationState.LoggedIn) {
       if (authStore.user?.userId) {
         userStore.initialize(authStore.user.userId);
       }
       router.push('/');
-    }
-    else {
+    } else {
       router.push('/login');
     }
   });
 });
 
-watch(() => authStore.authenticationState, (newState, oldState) => {
-  if(newState === AuthenticationState.LoggedOut || newState === AuthenticationState.PasswordResetRequired) {
-    router.push('/login');
-    userStore.clear();
-    projectConfigStore.clear();
-  }
-  else if(newState === AuthenticationState.LoggedIn && oldState !== AuthenticationState.LoggedIn) {
-    if(authStore.user?.userId) {
-      userStore.initialize(authStore.user.userId);
-      projectConfigStore.initialize();
+watch(
+  () => authStore.authenticationState,
+  (newState, oldState) => {
+    if (
+      newState === AuthenticationState.LoggedOut ||
+      newState === AuthenticationState.PasswordResetRequired
+    ) {
+      router.push('/login');
+      userStore.clear();
+      projectConfigStore.clear();
+    } else if (
+      newState === AuthenticationState.LoggedIn &&
+      oldState !== AuthenticationState.LoggedIn
+    ) {
+      if (authStore.user?.userId) {
+        userStore.initialize(authStore.user.userId);
+        projectConfigStore.initialize();
+      }
     }
   }
-});
+);
 </script>

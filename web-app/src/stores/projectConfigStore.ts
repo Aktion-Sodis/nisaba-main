@@ -1,10 +1,22 @@
-import { Level, Intervention, Survey, ModelLevelInterventionRelationConnection } from '@/API'
-import { defineStore } from 'pinia'
-import { computed, onMounted, reactive, ref } from 'vue'
-import { listLevels, listInterventions, listSurveys } from '@/graphql/queries'
-import { createLevel as createLevelMutation, updateLevel as updateLevelMutation, createIntervention as createInterventionMutation, updateIntervention as updateInterventionMutation, createSurvey as createSurveyMutation, updateSurvey as updateSurveyMutation, createLevelInterventionRelation as createLevelInterventionRelationMutation, deleteLevelInterventionRelation as deleteLevelInterventionRelationMutation, deleteLevel as deleteLevelMutation, deleteIntervention as deleteInterventionMutation } from '@/graphql/mutations'
-import { amplifyDataClient } from '@/utils/amplifyDataClient'
-import { GraphQLResult } from '@aws-amplify/api'
+import { GraphQLResult } from '@aws-amplify/api';
+import { defineStore } from 'pinia';
+import { computed, reactive, ref } from 'vue';
+
+import { Level, Intervention, Survey } from '@/API';
+import {
+  createLevel as createLevelMutation,
+  updateLevel as updateLevelMutation,
+  createIntervention as createInterventionMutation,
+  updateIntervention as updateInterventionMutation,
+  createSurvey as createSurveyMutation,
+  updateSurvey as updateSurveyMutation,
+  createLevelInterventionRelation as createLevelInterventionRelationMutation,
+  deleteLevelInterventionRelation as deleteLevelInterventionRelationMutation,
+  deleteLevel as deleteLevelMutation,
+  deleteIntervention as deleteInterventionMutation,
+} from '@/graphql/mutations';
+import { listLevels, listInterventions, listSurveys } from '@/graphql/queries';
+import { amplifyDataClient } from '@/utils/amplifyDataClient';
 
 const listLevelInterventionRelationsMinimal = /* GraphQL */ `
   query ListLevelInterventionRelations(
@@ -26,7 +38,7 @@ const listLevelInterventionRelationsMinimal = /* GraphQL */ `
       startedAt
     }
   }
-`
+`;
 
 interface MinimalLevelInterventionRelation {
   id: string;
@@ -52,7 +64,9 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
   const _levels = reactive<Record<string, StoreLevel>>({});
   const _interventions = reactive<Record<string, StoreIntervention>>({});
   const _surveys = reactive<Record<string, Survey>>({});
-  const _levelInterventionRelations = reactive<Record<string, { id: string, levelId: string, interventionId: string }>>({});
+  const _levelInterventionRelations = reactive<
+    Record<string, { id: string; levelId: string; interventionId: string }>
+  >({});
 
   const isLoadingLevels = ref(false);
   const isLoadingInterventions = ref(false);
@@ -63,9 +77,11 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
   const errorLoadingSurveys = ref<string | null>(null);
   const errorLoadingRelations = ref<string | null>(null);
 
-  
-
-  const _updateInterventionSurveyRelations = (interventionId: string, surveyId: string, isConnected: boolean) => {
+  const _updateInterventionSurveyRelations = (
+    interventionId: string,
+    surveyId: string,
+    isConnected: boolean
+  ) => {
     const intervention = _interventions[interventionId];
     const survey = _surveys[surveyId];
 
@@ -75,21 +91,21 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     const currentInterventionSurveys = intervention.surveys?.items || [];
     if (isConnected) {
       // Add relation if not exists
-      if (!currentInterventionSurveys.some(s => s?.id === surveyId)) {
+      if (!currentInterventionSurveys.some((s) => s?.id === surveyId)) {
         intervention.surveys = {
           __typename: 'ModelSurveyConnection',
           items: [...currentInterventionSurveys, survey],
           nextToken: null,
-          startedAt: null
+          startedAt: null,
         };
       }
     } else {
       // Remove relation if exists
       intervention.surveys = {
         __typename: 'ModelSurveyConnection',
-        items: currentInterventionSurveys.filter(s => s?.id !== surveyId),
+        items: currentInterventionSurveys.filter((s) => s?.id !== surveyId),
         nextToken: null,
-        startedAt: null
+        startedAt: null,
       };
     }
 
@@ -99,22 +115,27 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     } else {
       survey.intervention = null;
     }
-  }
+  };
 
-  const _updateInterventionSurveys = (interventionId: string, newSurveys: any[]) => {
+  const _updateInterventionSurveys = (
+    interventionId: string,
+    newSurveys: any[]
+  ) => {
     const intervention = _interventions[interventionId];
     if (!intervention) return;
 
     const existingSurveys = intervention.surveys?.items || [];
-    
+
     // Find surveys to remove (exist in current but not in new)
     const surveysToRemove = existingSurveys.filter(
-      existing => !newSurveys.some(newSurvey => newSurvey?.id === existing?.id)
+      (existing) =>
+        !newSurveys.some((newSurvey) => newSurvey?.id === existing?.id)
     );
 
     // Find surveys to add (exist in new but not in current)
     const surveysToAdd = newSurveys.filter(
-      newSurvey => !existingSurveys.some(existing => existing?.id === newSurvey?.id)
+      (newSurvey) =>
+        !existingSurveys.some((existing) => existing?.id === newSurvey?.id)
     );
 
     // Remove old relations
@@ -126,155 +147,180 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     surveysToAdd.forEach((survey: any) => {
       _updateInterventionSurveyRelations(interventionId, survey.id, true);
     });
-  }
+  };
 
-  const _updateSurveyIntervention = (surveyId: string, newInterventionId: string | null) => {
+  const _updateSurveyIntervention = (
+    surveyId: string,
+    newInterventionId: string | null
+  ) => {
     const survey = _surveys[surveyId];
     if (!survey) return;
 
     const currentInterventionId = survey.intervention?.id;
-    
+
     // Only update if the intervention has changed
     if (currentInterventionId !== newInterventionId) {
       // Remove old relation if exists
       if (currentInterventionId) {
-        _updateInterventionSurveyRelations(currentInterventionId, surveyId, false);
+        _updateInterventionSurveyRelations(
+          currentInterventionId,
+          surveyId,
+          false
+        );
       }
-      
+
       // Add new relation if exists
       if (newInterventionId) {
         _updateInterventionSurveyRelations(newInterventionId, surveyId, true);
       }
     }
-  }
-
-  
+  };
 
   const loadLevelsFromRemote = async () => {
     try {
       isLoadingLevels.value = true;
       let nextToken: string | null = null;
-      
+
       do {
-        const result = await amplifyDataClient.graphql({
+        const result = (await amplifyDataClient.graphql({
           query: listLevels,
           variables: {
-            nextToken
-          }
-        }) as GraphQLResult<{ listLevels: { items: Level[], nextToken: string | null } }>;
+            nextToken,
+          },
+        })) as GraphQLResult<{
+          listLevels: { items: Level[]; nextToken: string | null };
+        }>;
 
         result.data.listLevels.items.forEach((level: Level) => {
           // Skip if the item is marked as deleted
           if (level._deleted) return;
-          
-          const { allowedInterventions, ...levelWithoutRelations } = level;
+
+          const {
+            allowedInterventions: _allowedInterventions,
+            ...levelWithoutRelations
+          } = level;
           _levels[level.id] = levelWithoutRelations as StoreLevel;
         });
 
         nextToken = result.data.listLevels.nextToken;
       } while (nextToken);
     } catch (error: unknown) {
-      errorLoadingLevels.value = error instanceof Error ? error.message : String(error);
+      errorLoadingLevels.value =
+        error instanceof Error ? error.message : String(error);
     } finally {
       isLoadingLevels.value = false;
     }
-  }
+  };
 
   const loadInterventionsFromRemote = async () => {
     try {
       isLoadingInterventions.value = true;
       let nextToken: string | null = null;
-      
+
       do {
-        const result = await amplifyDataClient.graphql({
+        const result = (await amplifyDataClient.graphql({
           query: listInterventions,
           variables: {
-            nextToken
-          }
-        }) as GraphQLResult<{ listInterventions: { items: Intervention[], nextToken: string | null } }>;
+            nextToken,
+          },
+        })) as GraphQLResult<{
+          listInterventions: {
+            items: Intervention[];
+            nextToken: string | null;
+          };
+        }>;
 
-        result.data.listInterventions.items.forEach((intervention: Intervention) => {
-          // Skip if the item is marked as deleted
-          if (intervention._deleted) return;
-          
-          const { levels, ...interventionWithoutRelations } = intervention;
-          _interventions[intervention.id] = interventionWithoutRelations as StoreIntervention;
-        });
+        result.data.listInterventions.items.forEach(
+          (intervention: Intervention) => {
+            // Skip if the item is marked as deleted
+            if (intervention._deleted) return;
+
+            const { levels: _levels, ...interventionWithoutRelations } =
+              intervention;
+            _interventions[intervention.id] =
+              interventionWithoutRelations as StoreIntervention;
+          }
+        );
 
         nextToken = result.data.listInterventions.nextToken;
       } while (nextToken);
     } catch (error: unknown) {
-      errorLoadingInterventions.value = error instanceof Error ? error.message : String(error);
+      errorLoadingInterventions.value =
+        error instanceof Error ? error.message : String(error);
     } finally {
       isLoadingInterventions.value = false;
     }
-  }
+  };
 
   const loadSurveysFromRemote = async () => {
     try {
       isLoadingSurveys.value = true;
       let nextToken: string | null = null;
-      
+
       do {
-        const result = await amplifyDataClient.graphql({
+        const result = (await amplifyDataClient.graphql({
           query: listSurveys,
           variables: {
-            nextToken
-          }
-        }) as GraphQLResult<{ listSurveys: { items: Survey[], nextToken: string | null } }>;
+            nextToken,
+          },
+        })) as GraphQLResult<{
+          listSurveys: { items: Survey[]; nextToken: string | null };
+        }>;
 
         result.data.listSurveys.items.forEach((survey: Survey) => {
           // Skip if the item is marked as deleted
           if (survey._deleted) return;
-          
+
           _surveys[survey.id] = survey;
         });
 
         nextToken = result.data.listSurveys.nextToken;
       } while (nextToken);
     } catch (error: unknown) {
-      errorLoadingSurveys.value = error instanceof Error ? error.message : String(error);
+      errorLoadingSurveys.value =
+        error instanceof Error ? error.message : String(error);
     } finally {
       isLoadingSurveys.value = false;
     }
-  }
+  };
 
   const loadRelationsFromRemote = async () => {
     try {
       isLoadingRelations.value = true;
       let nextToken: string | null = null;
-      
+
       do {
-        const result = await amplifyDataClient.graphql({
+        const result = (await amplifyDataClient.graphql({
           query: listLevelInterventionRelationsMinimal,
           variables: {
-            nextToken
-          }
-        }) as GraphQLResult<MinimalLevelInterventionRelationsResponse>;
+            nextToken,
+          },
+        })) as GraphQLResult<MinimalLevelInterventionRelationsResponse>;
 
         if (!result.data) {
           throw new Error('No data returned from GraphQL query');
         }
-        
+
         result.data.listLevelInterventionRelations.items.forEach((relation) => {
           // Skip if the item is marked as deleted
           if (relation._deleted) return;
-          
+
           _levelInterventionRelations[relation.id] = {
             id: relation.id,
             levelId: relation.levelId,
-            interventionId: relation.interventionId
+            interventionId: relation.interventionId,
           };
         });
 
         nextToken = result.data.listLevelInterventionRelations.nextToken;
       } while (nextToken);
     } catch (error: unknown) {
-      errorLoadingRelations.value = error instanceof Error ? error.message : String(error);
+      errorLoadingRelations.value =
+        error instanceof Error ? error.message : String(error);
     } finally {
       isLoadingRelations.value = false;
     }
-  }
+  };
 
   const isCreatingLevel = ref(false);
   const createLevel = async (level: StoreLevel) => {
@@ -286,15 +332,18 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
           input: level,
         },
       });
-      // @ts-ignore
-      const { allowedInterventions, ...levelWithoutRelations } = data.createLevel;
+      const {
+        allowedInterventions: _allowedInterventions,
+        ...levelWithoutRelations
+      } = data.createLevel;
       _levels[levelWithoutRelations.id] = levelWithoutRelations as StoreLevel;
     } catch (error: unknown) {
+      console.error(error);
       throw error;
     } finally {
       isCreatingLevel.value = false;
     }
-  }
+  };
 
   const isCreatingIntervention = ref(false);
   const createIntervention = async (intervention: StoreIntervention) => {
@@ -306,20 +355,25 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
           input: intervention,
         },
       });
-      // @ts-ignore
-      const { levels, ...interventionWithoutRelations } = data.createIntervention;
-      _interventions[interventionWithoutRelations.id] = interventionWithoutRelations as StoreIntervention;
+      const { levels: _levels, ...interventionWithoutRelations } =
+        data.createIntervention;
+      _interventions[interventionWithoutRelations.id] =
+        interventionWithoutRelations as StoreIntervention;
 
       // Update relationships in offline state
       if (data.createIntervention.surveys?.items) {
-        _updateInterventionSurveys(data.createIntervention.id, data.createIntervention.surveys.items);
+        _updateInterventionSurveys(
+          data.createIntervention.id,
+          data.createIntervention.surveys.items
+        );
       }
     } catch (error: unknown) {
+      console.error(error);
       throw error;
     } finally {
       isCreatingIntervention.value = false;
     }
-  }
+  };
 
   const isCreatingSurvey = ref(false);
   const createSurvey = async (survey: Survey) => {
@@ -331,19 +385,23 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
           input: survey,
         },
       });
-      // @ts-ignore
+      // @ts-expect-error problems with the type inference
       _surveys[data.createSurvey.id] = data.createSurvey;
 
       // Update relationships in offline state
       if (data.createSurvey.intervention?.id) {
-        _updateSurveyIntervention(data.createSurvey.id, data.createSurvey.intervention.id);
+        _updateSurveyIntervention(
+          data.createSurvey.id,
+          data.createSurvey.intervention.id
+        );
       }
     } catch (error: unknown) {
+      console.error(error);
       throw error;
     } finally {
       isCreatingSurvey.value = false;
     }
-  }
+  };
 
   const isUpdatingLevel = ref(false);
   const updateLevel = async (level: StoreLevel) => {
@@ -355,15 +413,18 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
           input: level,
         },
       });
-      // @ts-ignore
-      const { allowedInterventions, ...levelWithoutRelations } = data.updateLevel;
+      const {
+        allowedInterventions: _allowedInterventions,
+        ...levelWithoutRelations
+      } = data.updateLevel;
       _levels[levelWithoutRelations.id] = levelWithoutRelations as StoreLevel;
     } catch (error: unknown) {
+      console.error(error);
       throw error;
     } finally {
       isUpdatingLevel.value = false;
     }
-  }
+  };
 
   const isUpdatingIntervention = ref(false);
   const updateIntervention = async (intervention: StoreIntervention) => {
@@ -375,20 +436,25 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
           input: intervention,
         },
       });
-      // @ts-ignore
-      const { levels, ...interventionWithoutRelations } = data.updateIntervention;
-      _interventions[interventionWithoutRelations.id] = interventionWithoutRelations as StoreIntervention;
+      const { levels: _levels, ...interventionWithoutRelations } =
+        data.updateIntervention;
+      _interventions[interventionWithoutRelations.id] =
+        interventionWithoutRelations as StoreIntervention;
 
       // Update relationships in offline state
       if (data.updateIntervention.surveys?.items) {
-        _updateInterventionSurveys(intervention.id, data.updateIntervention.surveys.items);
+        _updateInterventionSurveys(
+          intervention.id,
+          data.updateIntervention.surveys.items
+        );
       }
     } catch (error: unknown) {
+      console.error(error);
       throw error;
     } finally {
       isUpdatingIntervention.value = false;
     }
-  }
+  };
 
   const isUpdatingSurvey = ref(false);
   const updateSurvey = async (survey: Survey) => {
@@ -400,116 +466,132 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
           input: survey,
         },
       });
-      
-      // Get existing intervention before updating the store
-      const existingIntervention = _surveys[survey.id]?.intervention;
-      
+
       // Update the store
-      // @ts-ignore
+      // @ts-expect-error problems with the type inference
       _surveys[data.updateSurvey.id] = data.updateSurvey;
 
       // Update relationships in offline state
-      _updateSurveyIntervention(survey.id, data.updateSurvey.intervention?.id ?? null);
+      _updateSurveyIntervention(
+        survey.id,
+        data.updateSurvey.intervention?.id ?? null
+      );
     } catch (error: unknown) {
+      console.error(error);
       throw error;
     } finally {
       isUpdatingSurvey.value = false;
     }
-  }
+  };
 
   const getLevelById = (id: string) => {
     return _levels[id];
-  }
+  };
 
   const getInterventionById = (id: string) => {
     return _interventions[id];
-  }
+  };
 
   const getSurveyById = (id: string) => {
     return _surveys[id];
-  }
+  };
 
   const levelsSortedByHierarchy = computed(() => {
     const levelsArray = Object.values(_levels);
     const toReturn: StoreLevel[] = [];
-    const levelsWithoutParent = levelsArray.filter((level) => level.parentLevelID === null);
+    const levelsWithoutParent = levelsArray.filter(
+      (level) => level.parentLevelID === null
+    );
     toReturn.push(...levelsWithoutParent);
     while (toReturn.length < levelsArray.length) {
       const lastLevel = toReturn[toReturn.length - 1];
-      const nextLevel = levelsArray.find((level) => level.parentLevelID === lastLevel.id);
+      const nextLevel = levelsArray.find(
+        (level) => level.parentLevelID === lastLevel.id
+      );
       if (nextLevel) {
         toReturn.push(nextLevel);
-      }
-      else {
+      } else {
         break;
       }
     }
     return toReturn;
-  })
+  });
 
   const interventions = computed(() => {
     return Object.values(_interventions);
-  })
+  });
 
   const surveys = computed(() => {
     return Object.values(_surveys);
-  })
+  });
 
   const isLoading = computed(() => {
-    return isLoadingLevels.value || isLoadingInterventions.value || isLoadingSurveys.value;
-  })
+    return (
+      isLoadingLevels.value ||
+      isLoadingInterventions.value ||
+      isLoadingSurveys.value
+    );
+  });
 
   const initialize = async () => {
     await Promise.all([
       loadLevelsFromRemote(),
       loadInterventionsFromRemote(),
       loadSurveysFromRemote(),
-      loadRelationsFromRemote()
+      loadRelationsFromRemote(),
     ]);
-  }
+  };
 
   const getInterventionsByLevel = (levelId: string): StoreIntervention[] => {
     const relationIds = Object.values(_levelInterventionRelations)
-      .filter(relation => relation.levelId === levelId)
-      .map(relation => relation.interventionId);
-    
+      .filter((relation) => relation.levelId === levelId)
+      .map((relation) => relation.interventionId);
+
     return relationIds
-      .map(id => _interventions[id])
-      .filter((intervention): intervention is StoreIntervention => intervention !== undefined);
-  }
+      .map((id) => _interventions[id])
+      .filter(
+        (intervention): intervention is StoreIntervention =>
+          intervention !== undefined
+      );
+  };
 
   const getSurveysByIntervention = (interventionId: string): Survey[] => {
     const intervention = _interventions[interventionId];
     if (!intervention) return [];
 
-    return intervention.surveys?.items
-      ?.map(survey => _surveys[survey?.id!])
-      .filter((survey): survey is Survey => survey !== undefined) ?? [];
-  }
+    return (
+      intervention.surveys?.items
+        ?.map((survey) => (survey?.id ? _surveys[survey.id] : undefined))
+        .filter((survey): survey is Survey => survey !== undefined) ?? []
+    );
+  };
 
-  const createLevelInterventionRelation = async (levelId: string, interventionId: string) => {
+  const createLevelInterventionRelation = async (
+    levelId: string,
+    interventionId: string
+  ) => {
     try {
       const { data } = await amplifyDataClient.graphql({
         query: createLevelInterventionRelationMutation,
         variables: {
           input: {
             levelId,
-            interventionId
-          }
-        }
+            interventionId,
+          },
+        },
       });
-      
-      // @ts-ignore
+
       const relationId = data.createLevelInterventionRelation.id;
       _levelInterventionRelations[relationId] = {
         id: relationId,
         levelId,
-        interventionId
+        interventionId,
       };
     } catch (error: unknown) {
+      console.error(error);
       throw error;
     }
-  }
+  };
 
   const deleteLevelInterventionRelation = async (relationId: string) => {
     try {
@@ -517,40 +599,49 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
         query: deleteLevelInterventionRelationMutation,
         variables: {
           input: {
-            id: relationId
-          }
-        }
+            id: relationId,
+          },
+        },
       });
-      
+
       delete _levelInterventionRelations[relationId];
     } catch (error: unknown) {
+      console.error(error);
       throw error;
     }
-  }
+  };
 
   const getRelationsByLevelId = (levelId: string) => {
-    return Object.values(_levelInterventionRelations)
-      .filter(relation => relation.levelId === levelId);
-  }
+    return Object.values(_levelInterventionRelations).filter(
+      (relation) => relation.levelId === levelId
+    );
+  };
 
   const getRelationsByInterventionId = (interventionId: string) => {
-    return Object.values(_levelInterventionRelations)
-      .filter(relation => relation.interventionId === interventionId);
-  }
+    return Object.values(_levelInterventionRelations).filter(
+      (relation) => relation.interventionId === interventionId
+    );
+  };
 
   const getInterventionIdsByLevelId = (levelId: string) => {
-    return getRelationsByLevelId(levelId).map(relation => relation.interventionId);
-  }
+    return getRelationsByLevelId(levelId).map(
+      (relation) => relation.interventionId
+    );
+  };
 
   const getLevelIdsByInterventionId = (interventionId: string) => {
-    return getRelationsByInterventionId(interventionId).map(relation => relation.levelId);
-  }
+    return getRelationsByInterventionId(interventionId).map(
+      (relation) => relation.levelId
+    );
+  };
 
   const clear = () => {
-    Object.keys(_levels).forEach(key => delete _levels[key]);
-    Object.keys(_interventions).forEach(key => delete _interventions[key]);
-    Object.keys(_surveys).forEach(key => delete _surveys[key]);
-    Object.keys(_levelInterventionRelations).forEach(key => delete _levelInterventionRelations[key]);
+    Object.keys(_levels).forEach((key) => delete _levels[key]);
+    Object.keys(_interventions).forEach((key) => delete _interventions[key]);
+    Object.keys(_surveys).forEach((key) => delete _surveys[key]);
+    Object.keys(_levelInterventionRelations).forEach(
+      (key) => delete _levelInterventionRelations[key]
+    );
     isLoadingLevels.value = false;
     isLoadingInterventions.value = false;
     isLoadingSurveys.value = false;
@@ -559,121 +650,145 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     errorLoadingInterventions.value = null;
     errorLoadingSurveys.value = null;
     errorLoadingRelations.value = null;
-  }
+  };
 
   const deleteLevel = async (levelId: string) => {
     try {
       // First, get all relations for this level
       const relations = getRelationsByLevelId(levelId);
-      
+
       // Delete all relations
-      await Promise.all(relations.map(relation => 
-        deleteLevelInterventionRelation(relation.id)
-      ));
-      
+      await Promise.all(
+        relations.map((relation) =>
+          deleteLevelInterventionRelation(relation.id)
+        )
+      );
+
       // Delete the level
       await amplifyDataClient.graphql({
         query: deleteLevelMutation,
         variables: {
           input: {
-            id: levelId
-          }
-        }
+            id: levelId,
+          },
+        },
       });
-      
+
       // Remove from local store
       delete _levels[levelId];
     } catch (error: unknown) {
+      console.error(error);
       throw error;
     }
-  }
+  };
 
   const deleteIntervention = async (interventionId: string) => {
     try {
       // First, get all relations for this intervention
       const relations = getRelationsByInterventionId(interventionId);
-      
+
       // Delete all relations
-      await Promise.all(relations.map(relation => 
-        deleteLevelInterventionRelation(relation.id)
-      ));
-      
+      await Promise.all(
+        relations.map((relation) =>
+          deleteLevelInterventionRelation(relation.id)
+        )
+      );
+
       // Delete the intervention
       await amplifyDataClient.graphql({
         query: deleteInterventionMutation,
         variables: {
           input: {
-            id: interventionId
-          }
-        }
+            id: interventionId,
+          },
+        },
       });
-      
+
       // Remove from local store
       delete _interventions[interventionId];
     } catch (error: unknown) {
+      console.error(error);
       throw error;
     }
-  }
+  };
 
-  const setLevelInterventionRelations = async (levelId: string, interventionIds: string[]) => {
+  const setLevelInterventionRelations = async (
+    levelId: string,
+    interventionIds: string[]
+  ) => {
     try {
       // Get current relations for this level
       const currentRelations = getRelationsByLevelId(levelId);
-      const currentInterventionIds = currentRelations.map(r => r.interventionId);
+      const currentInterventionIds = currentRelations.map(
+        (r) => r.interventionId
+      );
 
       // Find relations to create (in new list but not in current)
       const relationsToCreate = interventionIds.filter(
-        id => !currentInterventionIds.includes(id)
+        (id) => !currentInterventionIds.includes(id)
       );
 
       // Find relations to delete (in current but not in new list)
       const relationsToDelete = currentRelations.filter(
-        relation => !interventionIds.includes(relation.interventionId)
+        (relation) => !interventionIds.includes(relation.interventionId)
       );
 
       // Create new relations
-      await Promise.all(relationsToCreate.map(interventionId =>
-        createLevelInterventionRelation(levelId, interventionId)
-      ));
+      await Promise.all(
+        relationsToCreate.map((interventionId) =>
+          createLevelInterventionRelation(levelId, interventionId)
+        )
+      );
 
       // Delete old relations
-      await Promise.all(relationsToDelete.map(relation =>
-        deleteLevelInterventionRelation(relation.id)
-      ));
+      await Promise.all(
+        relationsToDelete.map((relation) =>
+          deleteLevelInterventionRelation(relation.id)
+        )
+      );
     } catch (error: unknown) {
+      console.error(error);
       throw error;
     }
-  }
+  };
 
-  const setInterventionLevelRelations = async (interventionId: string, levelIds: string[]) => {
+  const setInterventionLevelRelations = async (
+    interventionId: string,
+    levelIds: string[]
+  ) => {
     try {
       // Get current relations for this intervention
       const currentRelations = getRelationsByInterventionId(interventionId);
-      const currentLevelIds = currentRelations.map(r => r.levelId);
+      const currentLevelIds = currentRelations.map((r) => r.levelId);
 
       // Find relations to create (in new list but not in current)
       const relationsToCreate = levelIds.filter(
-        id => !currentLevelIds.includes(id)
+        (id) => !currentLevelIds.includes(id)
       );
 
       // Find relations to delete (in current but not in new list)
       const relationsToDelete = currentRelations.filter(
-        relation => !levelIds.includes(relation.levelId)
+        (relation) => !levelIds.includes(relation.levelId)
       );
 
       // Create new relations
-      await Promise.all(relationsToCreate.map(levelId =>
-        createLevelInterventionRelation(levelId, interventionId)
-      ));
+      await Promise.all(
+        relationsToCreate.map((levelId) =>
+          createLevelInterventionRelation(levelId, interventionId)
+        )
+      );
 
       // Delete old relations
-      await Promise.all(relationsToDelete.map(relation =>
-        deleteLevelInterventionRelation(relation.id)
-      ));
+      await Promise.all(
+        relationsToDelete.map((relation) =>
+          deleteLevelInterventionRelation(relation.id)
+        )
+      );
     } catch (error: unknown) {
+      console.error(error);
       throw error;
     }
-  }
+  };
 
   return {
     createLevel,
@@ -720,7 +835,6 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     isLoadingRelations,
     errorLoadingRelations,
     setLevelInterventionRelations,
-    setInterventionLevelRelations
-  }
-})
-
+    setInterventionLevelRelations,
+  };
+});

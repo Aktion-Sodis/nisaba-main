@@ -1,13 +1,9 @@
 <template>
   <div class="h-full">
     <Card class="h-full">
-      <template #title>
-        Umfragen
-      </template>
+      <template #title>Umfragen</template>
 
-      <template #subtitle>
-        Hier können Sie Ihre Umfragen verwalten.
-      </template>
+      <template #subtitle>Hier können Sie Ihre Umfragen verwalten.</template>
 
       <template #content>
         <div class="flex justify-between mb-3">
@@ -16,7 +12,10 @@
               <InputIcon>
                 <i class="pi pi-search align-top" />
               </InputIcon>
-              <InputText v-model="filters['global'].value" placeholder="Suche..." />
+              <InputText
+                v-model="filters['global'].value"
+                placeholder="Suche..."
+              />
             </IconField>
             <Button
               v-if="isFilterActive"
@@ -24,34 +23,42 @@
               icon="pi pi-filter-slash"
               label="Filter zurücksetzen"
               outlined
-              @click="clearFilter()"
               class="ml-2"
+              @click="clearFilter()"
             />
           </div>
           <div class="flex align-items-center">
-            <SelectButton v-model="viewMode" :options="viewOptions" optionValue="value">
+            <SelectButton
+              v-model="viewMode"
+              :options="viewOptions"
+              option-value="value"
+            >
               <template #option="slotProps">
                 <i :class="slotProps.option.icon"></i>
-             </template>
+              </template>
             </SelectButton>
           </div>
         </div>
 
         <DataTable
           v-if="viewMode === 'table'"
+          v-model:filters="filters"
           :value="searchableSurveys"
           :loading="loading"
           paginator
           :rows="10"
-          :rowsPerPageOptions="[5, 10, 20, 50]"
-          tableStyle="min-width: 50rem;"
+          :rows-per-page-options="[5, 10, 20, 50]"
+          table-style="min-width: 50rem;"
           scroll-height="h-[calc(100vh_-_18rem)]"
-          v-model:filters="filters"
-          filterDisplay="menu"
-          :globalFilterFields="['name_searchable', 'description_searchable', 'createdAt_formatted']"
+          filter-display="menu"
+          :global-filter-fields="[
+            'name_searchable',
+            'description_searchable',
+            'createdAt_formatted',
+          ]"
         >
-          <template #empty> Keine Umfragen gefunden. </template>
-          <template #loading> Lade Umfragedaten... </template>
+          <template #empty>Keine Umfragen gefunden.</template>
+          <template #loading>Lade Umfragedaten...</template>
 
           <Column field="name_searchable" header="Name" sortable filter>
             <template #body="slotProps">
@@ -80,15 +87,19 @@
           </Column>
 
           <Column field="createdAt" header="Erstellt am" sortable filter>
-             <template #body="slotProps">
-               {{ formatDate(slotProps.data.createdAt) }}
-             </template>
-             <template #filter="{ filterModel }">
-               <DatePicker v-model="filterModel.value" dateFormat="dd.mm.yy" placeholder="Datum wählen" />
-             </template>
-           </Column>
-           <!-- Optional: Spalte für Aktionen hinzufügen -->
-           <!--
+            <template #body="slotProps">
+              {{ formatDate(slotProps.data.createdAt) }}
+            </template>
+            <template #filter="{ filterModel }">
+              <DatePicker
+                v-model="filterModel.value"
+                date-format="dd.mm.yy"
+                placeholder="Datum wählen"
+              />
+            </template>
+          </Column>
+          <!-- Optional: Spalte für Aktionen hinzufügen -->
+          <!--
            <Column header="Aktionen">
              <template #body="slotProps">
                <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editSurvey(slotProps.data)" />
@@ -102,11 +113,20 @@
           <div v-if="loading" class="flex justify-content-center col-span-full">
             <ProgressSpinner />
           </div>
-          <div v-else-if="filteredGridSurveys.length === 0" class="flex justify-content-center col-span-full">
-            Keine Umfragen gefunden{{ filters.global.value ? ' (mit aktivem Filter)' : '' }}.
+          <div
+            v-else-if="filteredGridSurveys.length === 0"
+            class="flex justify-content-center col-span-full"
+          >
+            Keine Umfragen gefunden{{
+              filters.global.value ? ' (mit aktivem Filter)' : ''
+            }}.
           </div>
           <div v-else class="survey-grid-container">
-            <div v-for="survey in filteredGridSurveys" :key="survey.id" class="survey-grid-item">
+            <div
+              v-for="survey in filteredGridSurveys"
+              :key="survey.id"
+              class="survey-grid-item"
+            >
               <Card class="h-full flex flex-col">
                 <template #title>
                   {{ formatMLString(survey.name, locale) }}
@@ -114,8 +134,10 @@
                 <template #subtitle>
                   Erstellt am: {{ formatDate(survey.createdAt) }}
                 </template>
-                <template #content class="flex-grow">
-                  <p class="line-clamp-3">{{ formatMLString(survey.description, locale) }}</p>
+                <template #content>
+                  <p class="line-clamp-3">
+                    {{ formatMLString(survey.description, locale) }}
+                  </p>
                 </template>
                 <template #footer>
                   <div class="flex justify-end">
@@ -130,19 +152,18 @@
             </div>
           </div>
         </div>
-
       </template>
     </Card>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { FilterMatchMode } from '@primevue/core/api';
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Survey, I18nString } from '@/models';
-import { formatMLString } from '@/utils/formatStrings';
-import { FilterMatchMode } from '@primevue/core/api';
+
 import { useProjectConfigStore } from '@/stores/projectConfigStore';
+import { formatMLString } from '@/utils/formatStrings';
 
 const { locale } = useI18n();
 const projectConfigStore = useProjectConfigStore();
@@ -152,18 +173,18 @@ const loading = projectConfigStore.isLoadingSurveys;
 const viewMode = ref('table');
 const viewOptions = ref([
   { value: 'table', icon: 'pi pi-list' },
-  { value: 'grid', icon: 'pi pi-th-large' }
+  { value: 'grid', icon: 'pi pi-th-large' },
 ]);
 
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name_searchable: { value: null, matchMode: FilterMatchMode.CONTAINS },
   description_searchable: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS }
+  createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
 });
 
 const isFilterActive = computed(() => {
-  return Object.entries(filters.value).some(([key, filter]) => {
+  return Object.entries(filters.value).some(([_key, filter]) => {
     // if (key === 'global') return false; // Optional: Globalen Filter ignorieren
     return filter.value !== null && filter.value !== '';
   });
@@ -171,13 +192,16 @@ const isFilterActive = computed(() => {
 
 const searchableSurveys = computed(() => {
   if (!Array.isArray(surveys)) {
-      return [];
+    return [];
   }
   const currentLocale = locale.value;
-  return surveys.map(survey => {
+  return surveys.map((survey) => {
     try {
       const nameFormatted = formatMLString(survey.name, currentLocale);
-      const descriptionFormatted = formatMLString(survey.description, currentLocale);
+      const descriptionFormatted = formatMLString(
+        survey.description,
+        currentLocale
+      );
       // Wichtig: Diese Felder werden jetzt für Spalten- UND Globalfilter verwendet
       const nameSearchable = (nameFormatted || '').toLowerCase();
       const descriptionSearchable = (descriptionFormatted || '').toLowerCase();
@@ -187,12 +211,21 @@ const searchableSurveys = computed(() => {
         ...survey,
         name_searchable: nameSearchable,
         description_searchable: descriptionSearchable,
-        createdAt_formatted: createdAtFormatted
+        createdAt_formatted: createdAtFormatted,
       };
     } catch (error) {
-        console.error('Error processing survey in searchableSurveys:', survey, error);
-        // Fallback-Werte bereitstellen
-        return { ...survey, name_searchable: '', description_searchable: '', createdAt_formatted: '' };
+      console.error(
+        'Error processing survey in searchableSurveys:',
+        survey,
+        error
+      );
+      // Fallback-Werte bereitstellen
+      return {
+        ...survey,
+        name_searchable: '',
+        description_searchable: '',
+        createdAt_formatted: '',
+      };
     }
   });
 });
@@ -203,7 +236,7 @@ const filteredGridSurveys = computed(() => {
     return searchableSurveys.value;
   }
   const filterText = String(globalFilterValue).toLowerCase();
-  return searchableSurveys.value.filter(survey => {
+  return searchableSurveys.value.filter((survey) => {
     return (
       survey.name_searchable.includes(filterText) ||
       survey.description_searchable.includes(filterText) ||
@@ -217,8 +250,11 @@ const clearFilter = () => {
   filters.value = {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     name_searchable: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    description_searchable: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS }
+    description_searchable: {
+      value: null,
+      matchMode: FilterMatchMode.CONTAINS,
+    },
+    createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
   };
 };
 
@@ -227,19 +263,20 @@ const formatDate = (dateString: string | null | undefined): string => {
   try {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
-        return '-';
+      return '-';
     }
     return date.toLocaleDateString('de-DE', {
-        day: '2-digit', month: '2-digit', year: 'numeric'
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
     });
   } catch (e) {
-    console.error("Error formatting date:", dateString, e);
+    console.error('Error formatting date:', dateString, e);
     return '-';
   }
 };
 
 // *** filterMLString wurde entfernt ***
-
 </script>
 
 <style scoped>

@@ -6,7 +6,7 @@
         <div
           class="flex md:hidden rounded-md cursor-pointer bg-surface-0 text-surface-600 h-14 p-1 items-center"
         >
-            <div
+          <div
             class="flex items-center justify-center h-full aspect-square hover:bg-surface-50"
             @click="() => router.push('/')"
           >
@@ -297,8 +297,10 @@
       </div>
 
       <div class="flex w-auto gap-2">
-        <div v-if="authStore.authenticationState === AuthenticationState.LoggedIn" class="flex gap-2 h-full">
-
+        <div
+          v-if="authStore.authenticationState === AuthenticationState.LoggedIn"
+          class="flex gap-2 h-full"
+        >
           <button
             class="w-auto h-full md:h-none border-0 bg-surface-0 items-center rounded-lg shadow-sm flex p-3 pl-4 hover:bg-surface-50 dark:hover:bg-surface-800 cursor-pointer transition-colors duration-200"
             aria-haspopup="true"
@@ -385,9 +387,10 @@ import type { MenuItem } from 'primevue/menuitem';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
+
 import logoURL from '@/assets/img/aktionSodisBig.png';
-import { useUserStore } from '@/stores/user';
 import { useAuthStore, AuthenticationState } from '@/stores/auth';
+import { useUserStore } from '@/stores/user';
 
 const getColor = (target: string) => {
   if (route.path !== undefined && route.path.includes(target)) {
@@ -408,9 +411,7 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
-const showModal = ref(false);
 const actionMenu = ref();
-const projectMenu = ref();
 const breadcrumbMenu = ref();
 const breadcrumbMenuLevel = ref();
 
@@ -516,9 +517,7 @@ const breadcrumbMenuItems = computed(() => {
       iconType: 'material',
       color: getColor('test'),
       command: () => {
-        
         router.push({ name: 'test' });
-        
       },
       items: [
         {
@@ -553,10 +552,11 @@ const breadcrumbMenuLevelItems = computed(() => {
   return [];
 });
 
-
 const userInitials = computed(() => {
   if (userStore.user) {
-    return userStore.user.firstName.charAt(0) + userStore.user.lastName.charAt(0);
+    return (
+      userStore.user.firstName.charAt(0) + userStore.user.lastName.charAt(0)
+    );
   }
   return '';
 });
@@ -574,10 +574,6 @@ const toggleBreadcrumbMenu = (event: Event) => {
 
 const toggleBreadcrumbMenuLevel = (event: Event) => {
   breadcrumbMenuLevel.value?.toggle(event);
-};
-
-const toggleProjectMenu = (event: Event) => {
-  projectMenu.value.toggle(event);
 };
 
 const toggleActionMenu = (event: Event) => {

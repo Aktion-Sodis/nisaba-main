@@ -1,5 +1,5 @@
 // /Users/Dev/Programming/nisaba-main/web-app/src/utils/formatStrings.ts
-import { I18nString } from "@/models";
+import { I18nString } from '@/models';
 // import { useI18n } from 'vue-i18n'; // Nicht mehr hier benötigt
 
 // THIS IS UPPER CASE
@@ -15,17 +15,23 @@ export const toUpperCase = (s: string) => {
  */
 export const formatMLString = (
   i18nString: I18nString | null | undefined, // Erlaube null/undefined als Input
-  targetLang: string | null | undefined      // Die Zielsprache von außen
+  targetLang: string | null | undefined // Die Zielsprache von außen
 ): string => {
-
   // Frühzeitige Rückgabe bei ungültigem Input
-  if (!i18nString || !Array.isArray(i18nString.languageKeys) || !Array.isArray(i18nString.languageTexts) || !targetLang) {
+  if (
+    !i18nString ||
+    !Array.isArray(i18nString.languageKeys) ||
+    !Array.isArray(i18nString.languageTexts) ||
+    !targetLang
+  ) {
     // Optional: Versuche den ersten verfügbaren Text als Fallback, wenn keine Zielsprache gegeben, aber Objekt vorhanden
     if (i18nString && Array.isArray(i18nString.languageTexts)) {
-        const firstNonEmptyIndex = i18nString.languageTexts.findIndex((text) => text && text !== '');
-        if (firstNonEmptyIndex > -1) {
-            return i18nString.languageTexts[firstNonEmptyIndex];
-        }
+      const firstNonEmptyIndex = i18nString.languageTexts.findIndex(
+        (text) => text && text !== ''
+      );
+      if (firstNonEmptyIndex > -1) {
+        return i18nString.languageTexts[firstNonEmptyIndex];
+      }
     }
     return '';
   }
@@ -47,12 +53,14 @@ export const formatMLString = (
 
   // 3. Fallback: Versuche Englisch ('en' oder 'en-US')
   index = languageKeys.findIndex((key) => key.startsWith('en'));
-   if (index > -1 && languageTexts[index]) {
-     return languageTexts[index];
-   }
+  if (index > -1 && languageTexts[index]) {
+    return languageTexts[index];
+  }
 
   // 4. Fallback: Nimm den ersten nicht-leeren Text
-  const firstNonEmptyIndex = languageTexts.findIndex((text) => text && text !== '');
+  const firstNonEmptyIndex = languageTexts.findIndex(
+    (text) => text && text !== ''
+  );
   if (firstNonEmptyIndex > -1) {
     return languageTexts[firstNonEmptyIndex];
   }

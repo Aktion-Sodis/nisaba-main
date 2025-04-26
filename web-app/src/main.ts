@@ -1,23 +1,20 @@
-import './index.css';
-import PrimeVue from 'primevue/config';
-import primeVuePlugin from './plugins/primevue';
-import '@/assets/css/tailwind.css';
-import '@/assets/css/global.css';
-import 'primeicons/primeicons.css'; 
+import { fetchAuthSession } from '@aws-amplify/auth';
+import { Amplify } from 'aws-amplify';
+import { createPinia } from 'pinia';
+import { createApp } from 'vue';
+import 'primeicons/primeicons.css';
 import 'material-symbols';
 
-import { Amplify } from 'aws-amplify';
 import config from './amplifyconfiguration.json';
-import { fetchAuthSession } from '@aws-amplify/auth';
-
+import primeVuePlugin from './plugins/primevue';
 import router from './router';
 
-import { createApp } from 'vue';
-import { createPinia } from 'pinia';
-
 import App from '@/App.vue';
-
 import i18n from '@/i18n';
+
+import './index.css';
+import '@/assets/css/tailwind.css';
+import '@/assets/css/global.css';
 
 // Configure Amplify
 Amplify.configure(config, {
@@ -30,9 +27,9 @@ Amplify.configure(config, {
         } catch {
           return {};
         }
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
 const app = createApp(App);

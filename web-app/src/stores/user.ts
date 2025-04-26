@@ -1,9 +1,11 @@
+import { getUrl } from '@aws-amplify/storage';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { getUrl } from '@aws-amplify/storage';
+
+import { getUser } from '../graphql/queries';
 import { deriveS3Path } from '../utils/s3Paths';
+
 import { User } from '@/API';
-import { getUser, listSurveys } from '../graphql/queries';
 import { amplifyDataClient } from '@/utils/amplifyDataClient';
 
 export const useUserStore = defineStore('user', () => {
@@ -15,9 +17,9 @@ export const useUserStore = defineStore('user', () => {
     try {
       const { data } = await amplifyDataClient.graphql({
         query: getUser,
-        variables: { id }
+        variables: { id },
       });
-      
+
       if (data.getUser) {
         user.value = data.getUser;
         loadUserImage(id);
@@ -28,7 +30,7 @@ export const useUserStore = defineStore('user', () => {
     } finally {
       isLoading.value = false;
     }
-  }
+  };
 
   const loadUserImage = async (userId: string) => {
     try {
@@ -39,13 +41,13 @@ export const useUserStore = defineStore('user', () => {
       console.error('Error loading user image:', error);
       userImageUrl.value = null;
     }
-  }
+  };
 
   const clear = () => {
     user.value = null;
     userImageUrl.value = null;
     isLoading.value = true;
-  }
+  };
 
   return {
     user,
