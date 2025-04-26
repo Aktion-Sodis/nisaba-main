@@ -137,18 +137,18 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { generateClient } from 'aws-amplify/api';
-import { listSurveys } from '@/graphql/queries';
 import { Survey, I18nString } from '@/models';
 import { formatMLString } from '@/utils/formatStrings';
 import { FilterMatchMode } from '@primevue/core/api';
+import { useProjectConfigStore } from '@/stores/projectConfigStore';
 
 const { locale } = useI18n();
+const projectConfigStore = useProjectConfigStore();
 
-const surveys = ref<Array<Survey>>([]);
-const loading = ref(true);
+const surveys = projectConfigStore.surveys;
+const loading = projectConfigStore.isLoadingSurveys;
 const viewMode = ref('table');
 const viewOptions = ref([
   { value: 'table', icon: 'pi pi-list' },
@@ -162,7 +162,6 @@ const filters = ref({
   createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS }
 });
 
-
 const isFilterActive = computed(() => {
   return Object.entries(filters.value).some(([key, filter]) => {
     // if (key === 'global') return false; // Optional: Globalen Filter ignorieren
@@ -171,11 +170,11 @@ const isFilterActive = computed(() => {
 });
 
 const searchableSurveys = computed(() => {
-  if (!Array.isArray(surveys.value)) {
+  if (!Array.isArray(surveys)) {
       return [];
   }
   const currentLocale = locale.value;
-  return surveys.value.map(survey => {
+  return surveys.map(survey => {
     try {
       const nameFormatted = formatMLString(survey.name, currentLocale);
       const descriptionFormatted = formatMLString(survey.description, currentLocale);
@@ -223,22 +222,6 @@ const clearFilter = () => {
   };
 };
 
-const client = generateClient();
-
-const fetchSurveys = async () => {
-  loading.value = true;
-  try {
-    const response = await client.graphql({ query: listSurveys });
-    surveys.value = (response.data.listSurveys?.items || []) as Survey[];
-    console.log('Geladene Umfragen:', surveys.value);
-  } catch (err) {
-    console.error('Fehler beim Abrufen der Umfragedaten:', err);
-    surveys.value = [];
-  } finally {
-    loading.value = false;
-  }
-};
-
 const formatDate = (dateString: string | null | undefined): string => {
   if (!dateString) return '-';
   try {
@@ -256,8 +239,6 @@ const formatDate = (dateString: string | null | undefined): string => {
 };
 
 // *** filterMLString wurde entfernt ***
-
-onMounted(fetchSurveys);
 
 </script>
 

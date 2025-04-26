@@ -119,19 +119,19 @@
   // Imports
   import { ref, onMounted, computed } from 'vue';
   import { useI18n } from 'vue-i18n';
-  import { generateClient } from 'aws-amplify/api';
-  import { listInterventions } from '@/graphql/queries';
-  import { Intervention } from '@/models'; // Assuming Intervention model might have I18nString
+  import { Intervention } from '@/models';
   import { formatMLString } from '@/utils/formatStrings';
   import { FilterMatchMode } from '@primevue/core/api';
+  import { useProjectConfigStore } from '@/stores/projectConfigStore';
 
   // i18n
   const { locale } = useI18n();
+  const projectConfigStore = useProjectConfigStore();
 
   // Zustandsvariablen
-  const interventions = ref<Array<Intervention>>([]);
-  const loading = ref(true);
-  const viewMode = ref('table'); // 'table' oder 'grid'
+  const interventions = projectConfigStore.interventions;
+  const loading = projectConfigStore.isLoadingInterventions;
+  const viewMode = ref('table');
   const viewOptions = ref([
     { value: 'table', icon: 'pi pi-list' },
     { value: 'grid', icon: 'pi pi-th-large' }
@@ -155,11 +155,11 @@
 
   // Computed property to create searchable intervention data
   const searchableInterventions = computed(() => {
-    if (!Array.isArray(interventions.value)) {
+    if (!Array.isArray(interventions)) {
         return [];
     }
     const currentLocale = locale.value;
-    return interventions.value.map(intervention => {
+    return interventions.map(intervention => {
       try {
         const nameFormatted = formatMLString(intervention.name, currentLocale);
         const descriptionFormatted = formatMLString(intervention.description, currentLocale);
@@ -210,25 +210,6 @@
     };
   };
 
-  const client = generateClient();
-
-  const fetchInterventions = async () => {
-    loading.value = true;
-    try {
-      const response = await client.graphql({
-        query: listInterventions
-      });
-      // Ensure items is an array before assigning
-      interventions.value = (response.data.listInterventions?.items || []) as Intervention[];
-      console.log('Geladene Aktivitäten:', interventions.value);
-    } catch (err) {
-      console.error('Fehler beim Abrufen der Aktivitätsdaten:', err);
-      interventions.value = []; // Set to empty array on error
-    } finally {
-      loading.value = false;
-    }
-  };
-
   const formatDate = (dateString: string | null | undefined): string => {
     if (!dateString) return '-';
     try {
@@ -246,7 +227,9 @@
     }
   };
 
-  onMounted(fetchInterventions);
+  onMounted(() => {
+    // Fetch interventions if needed
+  });
   </script>
 
   <style scoped>

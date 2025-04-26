@@ -12,6 +12,7 @@ import { computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { AuthenticationState, useAuthStore } from '@/stores/auth';
 import { useUserStore } from '@/stores/user';
+import { useProjectConfigStore } from '@/stores/projectConfigStore';
 
 import BlankLayout from '@/layouts/BlankLayout.vue';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
@@ -20,6 +21,7 @@ import router from './router';
 const route = useRoute();
 const authStore = useAuthStore();
 const userStore = useUserStore();
+const projectConfigStore = useProjectConfigStore();
 
 const layoutComponent = computed(() => {
   if (route.meta.layout === 'BlankLayout') {
@@ -46,10 +48,12 @@ watch(() => authStore.authenticationState, (newState, oldState) => {
   if(newState === AuthenticationState.LoggedOut || newState === AuthenticationState.PasswordResetRequired) {
     router.push('/login');
     userStore.clear();
+    projectConfigStore.clear();
   }
   else if(newState === AuthenticationState.LoggedIn && oldState !== AuthenticationState.LoggedIn) {
     if(authStore.user?.userId) {
       userStore.initialize(authStore.user.userId);
+      projectConfigStore.initialize();
     }
   }
 });
