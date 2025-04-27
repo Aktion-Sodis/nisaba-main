@@ -1,0 +1,13 @@
+dist
+node_modules
+public
+vite.config.js
+vue.config.js
+
+/index.html
+/amplify/*
+/src/graphql/*
+/src/models/*
+/src/amplifyconfiguration.json
+/src/aws-exports.js
+/scripts/**

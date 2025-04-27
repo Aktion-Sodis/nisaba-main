@@ -267,6 +267,31 @@ export const createLevel = /* GraphQL */ `mutation CreateLevel(
         id
         levelId
         interventionId
+        level {
+          parentLevelID
+          interventionsAreAllowed
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -326,6 +351,31 @@ export const updateLevel = /* GraphQL */ `mutation UpdateLevel(
         id
         levelId
         interventionId
+        level {
+          parentLevelID
+          interventionsAreAllowed
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -385,6 +435,31 @@ export const deleteLevel = /* GraphQL */ `mutation DeleteLevel(
         id
         levelId
         interventionId
+        level {
+          parentLevelID
+          interventionsAreAllowed
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -443,6 +518,29 @@ export const createIntervention = /* GraphQL */ `mutation CreateIntervention(
         id
         interventionId
         contentId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -457,7 +555,41 @@ export const createIntervention = /* GraphQL */ `mutation CreateIntervention(
     }
     surveys {
       items {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        questions {
+          id
+          type
+          isFollowUpQuestion
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         surveyType
+        status
         schemeVersion
         archived
         id
@@ -479,6 +611,29 @@ export const createIntervention = /* GraphQL */ `mutation CreateIntervention(
         id
         interventionId
         interventionTagId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        interventionTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -497,6 +652,31 @@ export const createIntervention = /* GraphQL */ `mutation CreateIntervention(
         id
         levelId
         interventionId
+        level {
+          parentLevelID
+          interventionsAreAllowed
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -544,6 +724,29 @@ export const updateIntervention = /* GraphQL */ `mutation UpdateIntervention(
         id
         interventionId
         contentId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -558,7 +761,41 @@ export const updateIntervention = /* GraphQL */ `mutation UpdateIntervention(
     }
     surveys {
       items {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        questions {
+          id
+          type
+          isFollowUpQuestion
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         surveyType
+        status
         schemeVersion
         archived
         id
@@ -580,6 +817,29 @@ export const updateIntervention = /* GraphQL */ `mutation UpdateIntervention(
         id
         interventionId
         interventionTagId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        interventionTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -598,6 +858,31 @@ export const updateIntervention = /* GraphQL */ `mutation UpdateIntervention(
         id
         levelId
         interventionId
+        level {
+          parentLevelID
+          interventionsAreAllowed
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -645,6 +930,29 @@ export const deleteIntervention = /* GraphQL */ `mutation DeleteIntervention(
         id
         interventionId
         contentId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -659,7 +967,41 @@ export const deleteIntervention = /* GraphQL */ `mutation DeleteIntervention(
     }
     surveys {
       items {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        questions {
+          id
+          type
+          isFollowUpQuestion
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         surveyType
+        status
         schemeVersion
         archived
         id
@@ -681,6 +1023,29 @@ export const deleteIntervention = /* GraphQL */ `mutation DeleteIntervention(
         id
         interventionId
         interventionTagId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        interventionTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -699,6 +1064,31 @@ export const deleteIntervention = /* GraphQL */ `mutation DeleteIntervention(
         id
         levelId
         interventionId
+        level {
+          parentLevelID
+          interventionsAreAllowed
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -745,6 +1135,29 @@ export const createContent = /* GraphQL */ `mutation CreateContent(
         id
         interventionId
         contentId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -762,6 +1175,28 @@ export const createContent = /* GraphQL */ `mutation CreateContent(
         id
         contentId
         contentTagId
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        contentTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -809,6 +1244,29 @@ export const updateContent = /* GraphQL */ `mutation UpdateContent(
         id
         interventionId
         contentId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -826,6 +1284,28 @@ export const updateContent = /* GraphQL */ `mutation UpdateContent(
         id
         contentId
         contentTagId
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        contentTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -873,6 +1353,29 @@ export const deleteContent = /* GraphQL */ `mutation DeleteContent(
         id
         interventionId
         contentId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -890,6 +1393,28 @@ export const deleteContent = /* GraphQL */ `mutation DeleteContent(
         id
         contentId
         contentTagId
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        contentTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -945,22 +1470,73 @@ export const createSurvey = /* GraphQL */ `mutation CreateSurvey(
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -984,6 +1560,11 @@ export const createSurvey = /* GraphQL */ `mutation CreateSurvey(
       type
       questionOptions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         followUpQuestionIDs
         __typename
       }
@@ -995,6 +1576,32 @@ export const createSurvey = /* GraphQL */ `mutation CreateSurvey(
         id
         surveyId
         surveyTagId
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
+        surveyTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -1008,6 +1615,7 @@ export const createSurvey = /* GraphQL */ `mutation CreateSurvey(
       __typename
     }
     surveyType
+    status
     schemeVersion
     archived
     id
@@ -1053,22 +1661,73 @@ export const updateSurvey = /* GraphQL */ `mutation UpdateSurvey(
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -1092,6 +1751,11 @@ export const updateSurvey = /* GraphQL */ `mutation UpdateSurvey(
       type
       questionOptions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         followUpQuestionIDs
         __typename
       }
@@ -1103,6 +1767,32 @@ export const updateSurvey = /* GraphQL */ `mutation UpdateSurvey(
         id
         surveyId
         surveyTagId
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
+        surveyTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -1116,6 +1806,7 @@ export const updateSurvey = /* GraphQL */ `mutation UpdateSurvey(
       __typename
     }
     surveyType
+    status
     schemeVersion
     archived
     id
@@ -1161,22 +1852,73 @@ export const deleteSurvey = /* GraphQL */ `mutation DeleteSurvey(
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -1200,6 +1942,11 @@ export const deleteSurvey = /* GraphQL */ `mutation DeleteSurvey(
       type
       questionOptions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         followUpQuestionIDs
         __typename
       }
@@ -1211,6 +1958,32 @@ export const deleteSurvey = /* GraphQL */ `mutation DeleteSurvey(
         id
         surveyId
         surveyTagId
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
+        surveyTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -1224,6 +1997,7 @@ export const deleteSurvey = /* GraphQL */ `mutation DeleteSurvey(
       __typename
     }
     surveyType
+    status
     schemeVersion
     archived
     id
@@ -1271,12 +2045,29 @@ export const createEntity = /* GraphQL */ `mutation CreateEntity(
       parentLevelID
       interventionsAreAllowed
       allowedInterventions {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       customData {
         id
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
         __typename
       }
@@ -1309,7 +2100,43 @@ export const createEntity = /* GraphQL */ `mutation CreateEntity(
     }
     appliedInterventions {
       items {
+        whoDidIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        location {
+          latitude
+          longitude
+          __typename
+        }
         isOkay
+        executedSurveys {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -1373,12 +2200,29 @@ export const updateEntity = /* GraphQL */ `mutation UpdateEntity(
       parentLevelID
       interventionsAreAllowed
       allowedInterventions {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       customData {
         id
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
         __typename
       }
@@ -1411,7 +2255,43 @@ export const updateEntity = /* GraphQL */ `mutation UpdateEntity(
     }
     appliedInterventions {
       items {
+        whoDidIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        location {
+          latitude
+          longitude
+          __typename
+        }
         isOkay
+        executedSurveys {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -1475,12 +2355,29 @@ export const deleteEntity = /* GraphQL */ `mutation DeleteEntity(
       parentLevelID
       interventionsAreAllowed
       allowedInterventions {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       customData {
         id
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
         __typename
       }
@@ -1513,7 +2410,43 @@ export const deleteEntity = /* GraphQL */ `mutation DeleteEntity(
     }
     appliedInterventions {
       items {
+        whoDidIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        location {
+          latitude
+          longitude
+          __typename
+        }
         isOkay
+        executedSurveys {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -1584,22 +2517,73 @@ export const createAppliedIntervention = /* GraphQL */ `mutation CreateAppliedIn
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -1621,8 +2605,68 @@ export const createAppliedIntervention = /* GraphQL */ `mutation CreateAppliedIn
     isOkay
     executedSurveys {
       items {
+        appliedIntervention {
+          isOkay
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+          organization_id
+          __typename
+        }
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         surveyID
+        whoExecutedIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         date
+        location {
+          latitude
+          longitude
+          __typename
+        }
+        answers {
+          id
+          questionID
+          date
+          type
+          text
+          intValue
+          doubleValue
+          rating
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -1695,22 +2739,73 @@ export const updateAppliedIntervention = /* GraphQL */ `mutation UpdateAppliedIn
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -1732,8 +2827,68 @@ export const updateAppliedIntervention = /* GraphQL */ `mutation UpdateAppliedIn
     isOkay
     executedSurveys {
       items {
+        appliedIntervention {
+          isOkay
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+          organization_id
+          __typename
+        }
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         surveyID
+        whoExecutedIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         date
+        location {
+          latitude
+          longitude
+          __typename
+        }
+        answers {
+          id
+          questionID
+          date
+          type
+          text
+          intValue
+          doubleValue
+          rating
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -1806,22 +2961,73 @@ export const deleteAppliedIntervention = /* GraphQL */ `mutation DeleteAppliedIn
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -1843,8 +3049,68 @@ export const deleteAppliedIntervention = /* GraphQL */ `mutation DeleteAppliedIn
     isOkay
     executedSurveys {
       items {
+        appliedIntervention {
+          isOkay
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+          organization_id
+          __typename
+        }
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         surveyID
+        whoExecutedIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         date
+        location {
+          latitude
+          longitude
+          __typename
+        }
+        answers {
+          id
+          questionID
+          date
+          type
+          text
+          intValue
+          doubleValue
+          rating
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -1890,6 +3156,11 @@ export const createExecutedSurvey = /* GraphQL */ `mutation CreateExecutedSurvey
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -1901,8 +3172,38 @@ export const createExecutedSurvey = /* GraphQL */ `mutation CreateExecutedSurvey
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -1919,6 +3220,22 @@ export const createExecutedSurvey = /* GraphQL */ `mutation CreateExecutedSurvey
       }
       isOkay
       executedSurveys {
+        items {
+          surveyID
+          date
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          appliedInterventionExecutedSurveysId
+          executedSurveySurveyId
+          executedSurveyWhoExecutedItId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -1948,8 +3265,38 @@ export const createExecutedSurvey = /* GraphQL */ `mutation CreateExecutedSurvey
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -1961,16 +3308,39 @@ export const createExecutedSurvey = /* GraphQL */ `mutation CreateExecutedSurvey
       }
       questions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
         isFollowUpQuestion
         __typename
       }
       tags {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -2020,6 +3390,11 @@ export const createExecutedSurvey = /* GraphQL */ `mutation CreateExecutedSurvey
       rating
       questionOptions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         followUpQuestionIDs
         __typename
       }
@@ -2061,6 +3436,11 @@ export const updateExecutedSurvey = /* GraphQL */ `mutation UpdateExecutedSurvey
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2072,8 +3452,38 @@ export const updateExecutedSurvey = /* GraphQL */ `mutation UpdateExecutedSurvey
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -2090,6 +3500,22 @@ export const updateExecutedSurvey = /* GraphQL */ `mutation UpdateExecutedSurvey
       }
       isOkay
       executedSurveys {
+        items {
+          surveyID
+          date
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          appliedInterventionExecutedSurveysId
+          executedSurveySurveyId
+          executedSurveyWhoExecutedItId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -2119,8 +3545,38 @@ export const updateExecutedSurvey = /* GraphQL */ `mutation UpdateExecutedSurvey
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -2132,16 +3588,39 @@ export const updateExecutedSurvey = /* GraphQL */ `mutation UpdateExecutedSurvey
       }
       questions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
         isFollowUpQuestion
         __typename
       }
       tags {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -2191,6 +3670,11 @@ export const updateExecutedSurvey = /* GraphQL */ `mutation UpdateExecutedSurvey
       rating
       questionOptions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         followUpQuestionIDs
         __typename
       }
@@ -2232,6 +3716,11 @@ export const deleteExecutedSurvey = /* GraphQL */ `mutation DeleteExecutedSurvey
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2243,8 +3732,38 @@ export const deleteExecutedSurvey = /* GraphQL */ `mutation DeleteExecutedSurvey
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -2261,6 +3780,22 @@ export const deleteExecutedSurvey = /* GraphQL */ `mutation DeleteExecutedSurvey
       }
       isOkay
       executedSurveys {
+        items {
+          surveyID
+          date
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          appliedInterventionExecutedSurveysId
+          executedSurveySurveyId
+          executedSurveyWhoExecutedItId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -2290,8 +3825,38 @@ export const deleteExecutedSurvey = /* GraphQL */ `mutation DeleteExecutedSurvey
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -2303,16 +3868,39 @@ export const deleteExecutedSurvey = /* GraphQL */ `mutation DeleteExecutedSurvey
       }
       questions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
         isFollowUpQuestion
         __typename
       }
       tags {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -2362,6 +3950,11 @@ export const deleteExecutedSurvey = /* GraphQL */ `mutation DeleteExecutedSurvey
       rating
       questionOptions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         followUpQuestionIDs
         __typename
       }
@@ -2440,8 +4033,28 @@ export const createTask = /* GraphQL */ `mutation CreateTask(
       }
       parentEntityID
       level {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         parentLevelID
         interventionsAreAllowed
+        allowedInterventions {
+          nextToken
+          startedAt
+          __typename
+        }
+        customData {
+          id
+          type
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2460,11 +4073,31 @@ export const createTask = /* GraphQL */ `mutation CreateTask(
       customData {
         customDataID
         type
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         intValue
         stringValue
         __typename
       }
       appliedInterventions {
+        items {
+          isOkay
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -2485,6 +4118,11 @@ export const createTask = /* GraphQL */ `mutation CreateTask(
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2496,8 +4134,38 @@ export const createTask = /* GraphQL */ `mutation CreateTask(
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -2514,6 +4182,22 @@ export const createTask = /* GraphQL */ `mutation CreateTask(
       }
       isOkay
       executedSurveys {
+        items {
+          surveyID
+          date
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          appliedInterventionExecutedSurveysId
+          executedSurveySurveyId
+          executedSurveyWhoExecutedItId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -2533,7 +4217,43 @@ export const createTask = /* GraphQL */ `mutation CreateTask(
     }
     executedSurvey {
       appliedIntervention {
+        whoDidIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        location {
+          latitude
+          longitude
+          __typename
+        }
         isOkay
+        executedSurveys {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2548,7 +4268,41 @@ export const createTask = /* GraphQL */ `mutation CreateTask(
         __typename
       }
       survey {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        questions {
+          id
+          type
+          isFollowUpQuestion
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         surveyType
+        status
         schemeVersion
         archived
         id
@@ -2566,6 +4320,11 @@ export const createTask = /* GraphQL */ `mutation CreateTask(
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2591,6 +4350,19 @@ export const createTask = /* GraphQL */ `mutation CreateTask(
         intValue
         doubleValue
         rating
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
+        markings {
+          x
+          y
+          rx
+          ry
+          text
+          __typename
+        }
         __typename
       }
       schemeVersion
@@ -2674,8 +4446,28 @@ export const updateTask = /* GraphQL */ `mutation UpdateTask(
       }
       parentEntityID
       level {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         parentLevelID
         interventionsAreAllowed
+        allowedInterventions {
+          nextToken
+          startedAt
+          __typename
+        }
+        customData {
+          id
+          type
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2694,11 +4486,31 @@ export const updateTask = /* GraphQL */ `mutation UpdateTask(
       customData {
         customDataID
         type
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         intValue
         stringValue
         __typename
       }
       appliedInterventions {
+        items {
+          isOkay
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -2719,6 +4531,11 @@ export const updateTask = /* GraphQL */ `mutation UpdateTask(
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2730,8 +4547,38 @@ export const updateTask = /* GraphQL */ `mutation UpdateTask(
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -2748,6 +4595,22 @@ export const updateTask = /* GraphQL */ `mutation UpdateTask(
       }
       isOkay
       executedSurveys {
+        items {
+          surveyID
+          date
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          appliedInterventionExecutedSurveysId
+          executedSurveySurveyId
+          executedSurveyWhoExecutedItId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -2767,7 +4630,43 @@ export const updateTask = /* GraphQL */ `mutation UpdateTask(
     }
     executedSurvey {
       appliedIntervention {
+        whoDidIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        location {
+          latitude
+          longitude
+          __typename
+        }
         isOkay
+        executedSurveys {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2782,7 +4681,41 @@ export const updateTask = /* GraphQL */ `mutation UpdateTask(
         __typename
       }
       survey {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        questions {
+          id
+          type
+          isFollowUpQuestion
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         surveyType
+        status
         schemeVersion
         archived
         id
@@ -2800,6 +4733,11 @@ export const updateTask = /* GraphQL */ `mutation UpdateTask(
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2825,6 +4763,19 @@ export const updateTask = /* GraphQL */ `mutation UpdateTask(
         intValue
         doubleValue
         rating
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
+        markings {
+          x
+          y
+          rx
+          ry
+          text
+          __typename
+        }
         __typename
       }
       schemeVersion
@@ -2908,8 +4859,28 @@ export const deleteTask = /* GraphQL */ `mutation DeleteTask(
       }
       parentEntityID
       level {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         parentLevelID
         interventionsAreAllowed
+        allowedInterventions {
+          nextToken
+          startedAt
+          __typename
+        }
+        customData {
+          id
+          type
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2928,11 +4899,31 @@ export const deleteTask = /* GraphQL */ `mutation DeleteTask(
       customData {
         customDataID
         type
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         intValue
         stringValue
         __typename
       }
       appliedInterventions {
+        items {
+          isOkay
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -2953,6 +4944,11 @@ export const deleteTask = /* GraphQL */ `mutation DeleteTask(
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2964,8 +4960,38 @@ export const deleteTask = /* GraphQL */ `mutation DeleteTask(
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -2982,6 +5008,22 @@ export const deleteTask = /* GraphQL */ `mutation DeleteTask(
       }
       isOkay
       executedSurveys {
+        items {
+          surveyID
+          date
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          appliedInterventionExecutedSurveysId
+          executedSurveySurveyId
+          executedSurveyWhoExecutedItId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -3001,7 +5043,43 @@ export const deleteTask = /* GraphQL */ `mutation DeleteTask(
     }
     executedSurvey {
       appliedIntervention {
+        whoDidIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        location {
+          latitude
+          longitude
+          __typename
+        }
         isOkay
+        executedSurveys {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -3016,7 +5094,41 @@ export const deleteTask = /* GraphQL */ `mutation DeleteTask(
         __typename
       }
       survey {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        questions {
+          id
+          type
+          isFollowUpQuestion
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         surveyType
+        status
         schemeVersion
         archived
         id
@@ -3034,6 +5146,11 @@ export const deleteTask = /* GraphQL */ `mutation DeleteTask(
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -3059,6 +5176,19 @@ export const deleteTask = /* GraphQL */ `mutation DeleteTask(
         intValue
         doubleValue
         rating
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
+        markings {
+          x
+          y
+          rx
+          ry
+          text
+          __typename
+        }
         __typename
       }
       schemeVersion
@@ -3111,6 +5241,28 @@ export const createContentTag = /* GraphQL */ `mutation CreateContentTag(
         id
         contentId
         contentTagId
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        contentTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3153,6 +5305,28 @@ export const updateContentTag = /* GraphQL */ `mutation UpdateContentTag(
         id
         contentId
         contentTagId
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        contentTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3195,6 +5369,28 @@ export const deleteContentTag = /* GraphQL */ `mutation DeleteContentTag(
         id
         contentId
         contentTagId
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        contentTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3237,6 +5433,29 @@ export const createInterventionTag = /* GraphQL */ `mutation CreateInterventionT
         id
         interventionId
         interventionTagId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        interventionTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3279,6 +5498,29 @@ export const updateInterventionTag = /* GraphQL */ `mutation UpdateInterventionT
         id
         interventionId
         interventionTagId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        interventionTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3321,6 +5563,29 @@ export const deleteInterventionTag = /* GraphQL */ `mutation DeleteInterventionT
         id
         interventionId
         interventionTagId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        interventionTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3363,6 +5628,32 @@ export const createSurveyTag = /* GraphQL */ `mutation CreateSurveyTag(
         id
         surveyId
         surveyTagId
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
+        surveyTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3405,6 +5696,32 @@ export const updateSurveyTag = /* GraphQL */ `mutation UpdateSurveyTag(
         id
         surveyId
         surveyTagId
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
+        surveyTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3447,6 +5764,32 @@ export const deleteSurveyTag = /* GraphQL */ `mutation DeleteSurveyTag(
         id
         surveyId
         surveyTagId
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
+        surveyTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3636,12 +5979,29 @@ export const createLevelInterventionRelation = /* GraphQL */ `mutation CreateLev
       parentLevelID
       interventionsAreAllowed
       allowedInterventions {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       customData {
         id
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
         __typename
       }
@@ -3668,22 +6028,73 @@ export const createLevelInterventionRelation = /* GraphQL */ `mutation CreateLev
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -3732,12 +6143,29 @@ export const updateLevelInterventionRelation = /* GraphQL */ `mutation UpdateLev
       parentLevelID
       interventionsAreAllowed
       allowedInterventions {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       customData {
         id
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
         __typename
       }
@@ -3764,22 +6192,73 @@ export const updateLevelInterventionRelation = /* GraphQL */ `mutation UpdateLev
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -3828,12 +6307,29 @@ export const deleteLevelInterventionRelation = /* GraphQL */ `mutation DeleteLev
       parentLevelID
       interventionsAreAllowed
       allowedInterventions {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       customData {
         id
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
         __typename
       }
@@ -3860,22 +6356,73 @@ export const deleteLevelInterventionRelation = /* GraphQL */ `mutation DeleteLev
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -3923,22 +6470,73 @@ export const createInterventionContentRelation = /* GraphQL */ `mutation CreateI
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -3964,11 +6562,35 @@ export const createInterventionContentRelation = /* GraphQL */ `mutation CreateI
         __typename
       }
       interventions {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4017,22 +6639,73 @@ export const updateInterventionContentRelation = /* GraphQL */ `mutation UpdateI
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4058,11 +6731,35 @@ export const updateInterventionContentRelation = /* GraphQL */ `mutation UpdateI
         __typename
       }
       interventions {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4111,22 +6808,73 @@ export const deleteInterventionContentRelation = /* GraphQL */ `mutation DeleteI
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4152,11 +6900,35 @@ export const deleteInterventionContentRelation = /* GraphQL */ `mutation DeleteI
         __typename
       }
       interventions {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4208,22 +6980,73 @@ export const createInterventionInterventionTagRelation = /* GraphQL */ `mutation
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4245,6 +7068,18 @@ export const createInterventionInterventionTagRelation = /* GraphQL */ `mutation
       }
       schemeVersion
       interventions {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4295,22 +7130,73 @@ export const updateInterventionInterventionTagRelation = /* GraphQL */ `mutation
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4332,6 +7218,18 @@ export const updateInterventionInterventionTagRelation = /* GraphQL */ `mutation
       }
       schemeVersion
       interventions {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4382,22 +7280,73 @@ export const deleteInterventionInterventionTagRelation = /* GraphQL */ `mutation
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4419,6 +7368,18 @@ export const deleteInterventionInterventionTagRelation = /* GraphQL */ `mutation
       }
       schemeVersion
       interventions {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4465,11 +7426,35 @@ export const createContentContentTagRelation = /* GraphQL */ `mutation CreateCon
         __typename
       }
       interventions {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4492,6 +7477,18 @@ export const createContentContentTagRelation = /* GraphQL */ `mutation CreateCon
       }
       schemeVersion
       contents {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4538,11 +7535,35 @@ export const updateContentContentTagRelation = /* GraphQL */ `mutation UpdateCon
         __typename
       }
       interventions {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4565,6 +7586,18 @@ export const updateContentContentTagRelation = /* GraphQL */ `mutation UpdateCon
       }
       schemeVersion
       contents {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4611,11 +7644,35 @@ export const deleteContentContentTagRelation = /* GraphQL */ `mutation DeleteCon
         __typename
       }
       interventions {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4638,6 +7695,18 @@ export const deleteContentContentTagRelation = /* GraphQL */ `mutation DeleteCon
       }
       schemeVersion
       contents {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4684,8 +7753,38 @@ export const createSurveySurveyTagRelation = /* GraphQL */ `mutation CreateSurve
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -4697,16 +7796,39 @@ export const createSurveySurveyTagRelation = /* GraphQL */ `mutation CreateSurve
       }
       questions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
         isFollowUpQuestion
         __typename
       }
       tags {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -4727,6 +7849,18 @@ export const createSurveySurveyTagRelation = /* GraphQL */ `mutation CreateSurve
       }
       schemeVersion
       surveys {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4773,8 +7907,38 @@ export const updateSurveySurveyTagRelation = /* GraphQL */ `mutation UpdateSurve
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -4786,16 +7950,39 @@ export const updateSurveySurveyTagRelation = /* GraphQL */ `mutation UpdateSurve
       }
       questions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
         isFollowUpQuestion
         __typename
       }
       tags {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -4816,6 +8003,18 @@ export const updateSurveySurveyTagRelation = /* GraphQL */ `mutation UpdateSurve
       }
       schemeVersion
       surveys {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4862,8 +8061,38 @@ export const deleteSurveySurveyTagRelation = /* GraphQL */ `mutation DeleteSurve
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -4875,16 +8104,39 @@ export const deleteSurveySurveyTagRelation = /* GraphQL */ `mutation DeleteSurve
       }
       questions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
         isFollowUpQuestion
         __typename
       }
       tags {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -4905,6 +8157,18 @@ export const deleteSurveySurveyTagRelation = /* GraphQL */ `mutation DeleteSurve
       }
       schemeVersion
       surveys {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename

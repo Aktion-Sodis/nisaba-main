@@ -1,4 +1,4 @@
-import { createI18n, type I18nOptions } from 'vue-i18n'
+import { createI18n, type I18nOptions } from 'vue-i18n';
 
 import en from '@/i18n/en';
 
@@ -11,7 +11,7 @@ const options: I18nOptions = {
   globalInjection: true,
   locale: 'en',
   fallbackLocale: 'en',
-  messages
-}
+  messages,
+};
 
-export default createI18n(options)
+export default createI18n(options);

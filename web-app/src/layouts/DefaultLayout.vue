@@ -34,10 +34,10 @@
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
-import SodisConfirmDialog from '@/components/SodisConfirmDialog.vue';
-import SodisToast from '@/components/SodisToast.vue';
 import Configurator from '@/components/Configurator.vue';
 import Navbar from '@/components/layout/Navbar.vue';
+import SodisConfirmDialog from '@/components/SodisConfirmDialog.vue';
+import SodisToast from '@/components/SodisToast.vue';
 
 /**
  * Initialize Utilities

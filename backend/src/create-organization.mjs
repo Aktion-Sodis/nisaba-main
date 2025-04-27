@@ -64,6 +64,10 @@ async function main() {
     });
     const newOrga = newOrgaRes.data.createOrganization;
 
+    console.log('Organization Created');
+    console.log(newOrga);
+    console.log('Adding user to organization');
+
     await client.send(
       new AdminCreateUserCommand({
         Username: emailOfOrganizationAdmin,

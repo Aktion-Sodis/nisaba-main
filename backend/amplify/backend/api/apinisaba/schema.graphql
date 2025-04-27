@@ -10,14 +10,14 @@ type I18nString {
   languageTexts: [String!]!
 } 
 
-type Organization @model @auth(rules: [{allow: private, }]) {
+type Organization @model @auth(rules: [{allow: private}, {allow: private, provider: identityPool}]) {
   nameCamelCase: String!
   nameKebabCase: String!
   nameVerbose: String!
 
 }
 
-type User @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
+type User @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}, {allow: private, provider: identityPool}]) {
   firstName: String!
   lastName: String!
   bio: String
@@ -41,7 +41,7 @@ enum PermissionType {
 
 # config collection
 
-type Config @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
+type Config @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}, {allow: private, provider: identityPool}]) {
   name: String!
   colorTheme: ColorTheme
   schemeVersion: Int @default(value: "0")
@@ -58,7 +58,7 @@ type ColorTheme {
 
 # level collection
 
-type Level @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
+type Level @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}, {allow: private, provider: identityPool}]) {
   name: I18nString!
   description: I18nString!
   parentLevelID: ID
@@ -81,7 +81,7 @@ enum Type {
 
 # intervention collection
 
-type Intervention @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
+type Intervention @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}, {allow: private, provider: identityPool}]) {
   name: I18nString!
   description: I18nString!
   interventionType: InterventionType!
@@ -98,7 +98,7 @@ enum InterventionType {
 }
 
 # content collection
-type Content @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
+type Content @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}, {allow: private, provider: identityPool}]) {
   name: I18nString!
   description: I18nString!
   interventions: [Intervention!]!
@@ -108,13 +108,14 @@ type Content @model @auth(rules: [{allow: owner, ownerField: "organization_id", 
 }
 
 # survey collection
-type Survey @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
+type Survey @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}, {allow: private, provider: identityPool}]) {
   name: I18nString!
   description: I18nString!
   intervention: Intervention @belongsTo
   questions: [Question!]!
   tags: [SurveyTag!]! @manyToMany(relationName: "SurveySurveyTagRelation")
   surveyType: SurveyType!
+  status: SurveyStatus! @default(value: "DRAFT")
   schemeVersion: Int @default(value: "0")
   archived: Boolean @default(value: "false")
 }
@@ -122,6 +123,12 @@ type Survey @model @auth(rules: [{allow: owner, ownerField: "organization_id", i
 enum SurveyType {
   INITIAL
   DEFAULT
+}
+
+enum SurveyStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
 }
 
 enum QuestionType {
@@ -153,7 +160,7 @@ type QuestionOption {
 # entityCollection
 
 # todo: check whether binding the children makes sense
-type Entity @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
+type Entity @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}, {allow: private, provider: identityPool}]) {
   name: I18nString!
   description: I18nString!
   parentEntityID: ID
@@ -180,7 +187,7 @@ type AppliedCustomData {
 # appliedInterventionCollection
 
 # todo: possibly add bidirectional reference entity
-type AppliedIntervention @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
+type AppliedIntervention @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}, {allow: private, provider: identityPool}]) {
   whoDidIt: User! @hasOne
   intervention: Intervention! @hasOne
   location: Location
@@ -191,7 +198,7 @@ type AppliedIntervention @model @auth(rules: [{allow: owner, ownerField: "organi
 
 # executedSurveyCollection
 
-type ExecutedSurvey @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
+type ExecutedSurvey @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}, {allow: private, provider: identityPool}]) {
   appliedIntervention: AppliedIntervention! @belongsTo
   survey: Survey! @hasOne 
   surveyID: String @index(name: "bySurveyID", queryField: "executedSurveyBySurveyID")
@@ -224,7 +231,7 @@ type Marking {
   text: String!
 }
 
-type Task @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
+type Task @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}, {allow: private, provider: identityPool}]) {
   title: String!
   text: String
   dueDate: AWSDateTime
@@ -240,25 +247,25 @@ type Task @model @auth(rules: [{allow: owner, ownerField: "organization_id", ide
   audioIDs: [Int!]!
 }
 
-type ContentTag @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
+type ContentTag @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}, {allow: private, provider: identityPool}]) {
   text: I18nString!
   schemeVersion: Int @default(value: "0")
   contents: [Content!]! @manyToMany(relationName: "ContentContentTagRelation")
 }
 
-type InterventionTag @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
+type InterventionTag @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}, {allow: private, provider: identityPool}]) {
   text: I18nString!
   schemeVersion: Int @default(value: "0")
   interventions: [Intervention!]! @manyToMany(relationName: "InterventionInterventionTagRelation")
 }
 
-type SurveyTag @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
+type SurveyTag @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}, {allow: private, provider: identityPool}]) {
   text: I18nString!
   schemeVersion: Int @default(value: "0")
   surveys: [Survey!]! @manyToMany(relationName: "SurveySurveyTagRelation")
 }
 
-type SessionData @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
+type SessionData @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}, {allow: private, provider: identityPool}]) {
   date: AWSDateTime!
   userID: String
   app: String
@@ -269,7 +276,7 @@ type SessionData @model @auth(rules: [{allow: owner, ownerField: "organization_i
 }
 
 # Only for testing purposes
-type TestObject @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}]) {
+type TestObject @model @auth(rules: [{allow: owner, ownerField: "organization_id", identityClaim: "custom:organization_id"}, {allow: private, provider: identityPool}]) {
   name: String
   age: Int!
 }

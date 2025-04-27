@@ -264,6 +264,31 @@ export const onCreateLevel = /* GraphQL */ `subscription OnCreateLevel(
         id
         levelId
         interventionId
+        level {
+          parentLevelID
+          interventionsAreAllowed
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -323,6 +348,31 @@ export const onUpdateLevel = /* GraphQL */ `subscription OnUpdateLevel(
         id
         levelId
         interventionId
+        level {
+          parentLevelID
+          interventionsAreAllowed
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -382,6 +432,31 @@ export const onDeleteLevel = /* GraphQL */ `subscription OnDeleteLevel(
         id
         levelId
         interventionId
+        level {
+          parentLevelID
+          interventionsAreAllowed
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -440,6 +515,29 @@ export const onCreateIntervention = /* GraphQL */ `subscription OnCreateInterven
         id
         interventionId
         contentId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -454,7 +552,41 @@ export const onCreateIntervention = /* GraphQL */ `subscription OnCreateInterven
     }
     surveys {
       items {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        questions {
+          id
+          type
+          isFollowUpQuestion
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         surveyType
+        status
         schemeVersion
         archived
         id
@@ -476,6 +608,29 @@ export const onCreateIntervention = /* GraphQL */ `subscription OnCreateInterven
         id
         interventionId
         interventionTagId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        interventionTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -494,6 +649,31 @@ export const onCreateIntervention = /* GraphQL */ `subscription OnCreateInterven
         id
         levelId
         interventionId
+        level {
+          parentLevelID
+          interventionsAreAllowed
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -541,6 +721,29 @@ export const onUpdateIntervention = /* GraphQL */ `subscription OnUpdateInterven
         id
         interventionId
         contentId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -555,7 +758,41 @@ export const onUpdateIntervention = /* GraphQL */ `subscription OnUpdateInterven
     }
     surveys {
       items {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        questions {
+          id
+          type
+          isFollowUpQuestion
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         surveyType
+        status
         schemeVersion
         archived
         id
@@ -577,6 +814,29 @@ export const onUpdateIntervention = /* GraphQL */ `subscription OnUpdateInterven
         id
         interventionId
         interventionTagId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        interventionTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -595,6 +855,31 @@ export const onUpdateIntervention = /* GraphQL */ `subscription OnUpdateInterven
         id
         levelId
         interventionId
+        level {
+          parentLevelID
+          interventionsAreAllowed
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -642,6 +927,29 @@ export const onDeleteIntervention = /* GraphQL */ `subscription OnDeleteInterven
         id
         interventionId
         contentId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -656,7 +964,41 @@ export const onDeleteIntervention = /* GraphQL */ `subscription OnDeleteInterven
     }
     surveys {
       items {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        questions {
+          id
+          type
+          isFollowUpQuestion
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         surveyType
+        status
         schemeVersion
         archived
         id
@@ -678,6 +1020,29 @@ export const onDeleteIntervention = /* GraphQL */ `subscription OnDeleteInterven
         id
         interventionId
         interventionTagId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        interventionTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -696,6 +1061,31 @@ export const onDeleteIntervention = /* GraphQL */ `subscription OnDeleteInterven
         id
         levelId
         interventionId
+        level {
+          parentLevelID
+          interventionsAreAllowed
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -742,6 +1132,29 @@ export const onCreateContent = /* GraphQL */ `subscription OnCreateContent(
         id
         interventionId
         contentId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -759,6 +1172,28 @@ export const onCreateContent = /* GraphQL */ `subscription OnCreateContent(
         id
         contentId
         contentTagId
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        contentTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -806,6 +1241,29 @@ export const onUpdateContent = /* GraphQL */ `subscription OnUpdateContent(
         id
         interventionId
         contentId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -823,6 +1281,28 @@ export const onUpdateContent = /* GraphQL */ `subscription OnUpdateContent(
         id
         contentId
         contentTagId
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        contentTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -870,6 +1350,29 @@ export const onDeleteContent = /* GraphQL */ `subscription OnDeleteContent(
         id
         interventionId
         contentId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -887,6 +1390,28 @@ export const onDeleteContent = /* GraphQL */ `subscription OnDeleteContent(
         id
         contentId
         contentTagId
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        contentTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -942,22 +1467,73 @@ export const onCreateSurvey = /* GraphQL */ `subscription OnCreateSurvey(
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -981,6 +1557,11 @@ export const onCreateSurvey = /* GraphQL */ `subscription OnCreateSurvey(
       type
       questionOptions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         followUpQuestionIDs
         __typename
       }
@@ -992,6 +1573,32 @@ export const onCreateSurvey = /* GraphQL */ `subscription OnCreateSurvey(
         id
         surveyId
         surveyTagId
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
+        surveyTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -1005,6 +1612,7 @@ export const onCreateSurvey = /* GraphQL */ `subscription OnCreateSurvey(
       __typename
     }
     surveyType
+    status
     schemeVersion
     archived
     id
@@ -1050,22 +1658,73 @@ export const onUpdateSurvey = /* GraphQL */ `subscription OnUpdateSurvey(
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -1089,6 +1748,11 @@ export const onUpdateSurvey = /* GraphQL */ `subscription OnUpdateSurvey(
       type
       questionOptions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         followUpQuestionIDs
         __typename
       }
@@ -1100,6 +1764,32 @@ export const onUpdateSurvey = /* GraphQL */ `subscription OnUpdateSurvey(
         id
         surveyId
         surveyTagId
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
+        surveyTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -1113,6 +1803,7 @@ export const onUpdateSurvey = /* GraphQL */ `subscription OnUpdateSurvey(
       __typename
     }
     surveyType
+    status
     schemeVersion
     archived
     id
@@ -1158,22 +1849,73 @@ export const onDeleteSurvey = /* GraphQL */ `subscription OnDeleteSurvey(
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -1197,6 +1939,11 @@ export const onDeleteSurvey = /* GraphQL */ `subscription OnDeleteSurvey(
       type
       questionOptions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         followUpQuestionIDs
         __typename
       }
@@ -1208,6 +1955,32 @@ export const onDeleteSurvey = /* GraphQL */ `subscription OnDeleteSurvey(
         id
         surveyId
         surveyTagId
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
+        surveyTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -1221,6 +1994,7 @@ export const onDeleteSurvey = /* GraphQL */ `subscription OnDeleteSurvey(
       __typename
     }
     surveyType
+    status
     schemeVersion
     archived
     id
@@ -1268,12 +2042,29 @@ export const onCreateEntity = /* GraphQL */ `subscription OnCreateEntity(
       parentLevelID
       interventionsAreAllowed
       allowedInterventions {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       customData {
         id
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
         __typename
       }
@@ -1306,7 +2097,43 @@ export const onCreateEntity = /* GraphQL */ `subscription OnCreateEntity(
     }
     appliedInterventions {
       items {
+        whoDidIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        location {
+          latitude
+          longitude
+          __typename
+        }
         isOkay
+        executedSurveys {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -1370,12 +2197,29 @@ export const onUpdateEntity = /* GraphQL */ `subscription OnUpdateEntity(
       parentLevelID
       interventionsAreAllowed
       allowedInterventions {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       customData {
         id
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
         __typename
       }
@@ -1408,7 +2252,43 @@ export const onUpdateEntity = /* GraphQL */ `subscription OnUpdateEntity(
     }
     appliedInterventions {
       items {
+        whoDidIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        location {
+          latitude
+          longitude
+          __typename
+        }
         isOkay
+        executedSurveys {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -1472,12 +2352,29 @@ export const onDeleteEntity = /* GraphQL */ `subscription OnDeleteEntity(
       parentLevelID
       interventionsAreAllowed
       allowedInterventions {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       customData {
         id
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
         __typename
       }
@@ -1510,7 +2407,43 @@ export const onDeleteEntity = /* GraphQL */ `subscription OnDeleteEntity(
     }
     appliedInterventions {
       items {
+        whoDidIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        location {
+          latitude
+          longitude
+          __typename
+        }
         isOkay
+        executedSurveys {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -1584,22 +2517,73 @@ export const onCreateAppliedIntervention = /* GraphQL */ `subscription OnCreateA
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -1621,8 +2605,68 @@ export const onCreateAppliedIntervention = /* GraphQL */ `subscription OnCreateA
     isOkay
     executedSurveys {
       items {
+        appliedIntervention {
+          isOkay
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+          organization_id
+          __typename
+        }
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         surveyID
+        whoExecutedIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         date
+        location {
+          latitude
+          longitude
+          __typename
+        }
+        answers {
+          id
+          questionID
+          date
+          type
+          text
+          intValue
+          doubleValue
+          rating
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -1698,22 +2742,73 @@ export const onUpdateAppliedIntervention = /* GraphQL */ `subscription OnUpdateA
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -1735,8 +2830,68 @@ export const onUpdateAppliedIntervention = /* GraphQL */ `subscription OnUpdateA
     isOkay
     executedSurveys {
       items {
+        appliedIntervention {
+          isOkay
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+          organization_id
+          __typename
+        }
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         surveyID
+        whoExecutedIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         date
+        location {
+          latitude
+          longitude
+          __typename
+        }
+        answers {
+          id
+          questionID
+          date
+          type
+          text
+          intValue
+          doubleValue
+          rating
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -1812,22 +2967,73 @@ export const onDeleteAppliedIntervention = /* GraphQL */ `subscription OnDeleteA
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -1849,8 +3055,68 @@ export const onDeleteAppliedIntervention = /* GraphQL */ `subscription OnDeleteA
     isOkay
     executedSurveys {
       items {
+        appliedIntervention {
+          isOkay
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+          organization_id
+          __typename
+        }
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         surveyID
+        whoExecutedIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         date
+        location {
+          latitude
+          longitude
+          __typename
+        }
+        answers {
+          id
+          questionID
+          date
+          type
+          text
+          intValue
+          doubleValue
+          rating
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -1896,6 +3162,11 @@ export const onCreateExecutedSurvey = /* GraphQL */ `subscription OnCreateExecut
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -1907,8 +3178,38 @@ export const onCreateExecutedSurvey = /* GraphQL */ `subscription OnCreateExecut
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -1925,6 +3226,22 @@ export const onCreateExecutedSurvey = /* GraphQL */ `subscription OnCreateExecut
       }
       isOkay
       executedSurveys {
+        items {
+          surveyID
+          date
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          appliedInterventionExecutedSurveysId
+          executedSurveySurveyId
+          executedSurveyWhoExecutedItId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -1954,8 +3271,38 @@ export const onCreateExecutedSurvey = /* GraphQL */ `subscription OnCreateExecut
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -1967,16 +3314,39 @@ export const onCreateExecutedSurvey = /* GraphQL */ `subscription OnCreateExecut
       }
       questions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
         isFollowUpQuestion
         __typename
       }
       tags {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -2026,6 +3396,11 @@ export const onCreateExecutedSurvey = /* GraphQL */ `subscription OnCreateExecut
       rating
       questionOptions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         followUpQuestionIDs
         __typename
       }
@@ -2067,6 +3442,11 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `subscription OnUpdateExecut
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2078,8 +3458,38 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `subscription OnUpdateExecut
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -2096,6 +3506,22 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `subscription OnUpdateExecut
       }
       isOkay
       executedSurveys {
+        items {
+          surveyID
+          date
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          appliedInterventionExecutedSurveysId
+          executedSurveySurveyId
+          executedSurveyWhoExecutedItId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -2125,8 +3551,38 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `subscription OnUpdateExecut
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -2138,16 +3594,39 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `subscription OnUpdateExecut
       }
       questions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
         isFollowUpQuestion
         __typename
       }
       tags {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -2197,6 +3676,11 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `subscription OnUpdateExecut
       rating
       questionOptions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         followUpQuestionIDs
         __typename
       }
@@ -2238,6 +3722,11 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `subscription OnDeleteExecut
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2249,8 +3738,38 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `subscription OnDeleteExecut
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -2267,6 +3786,22 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `subscription OnDeleteExecut
       }
       isOkay
       executedSurveys {
+        items {
+          surveyID
+          date
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          appliedInterventionExecutedSurveysId
+          executedSurveySurveyId
+          executedSurveyWhoExecutedItId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -2296,8 +3831,38 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `subscription OnDeleteExecut
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -2309,16 +3874,39 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `subscription OnDeleteExecut
       }
       questions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
         isFollowUpQuestion
         __typename
       }
       tags {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -2368,6 +3956,11 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `subscription OnDeleteExecut
       rating
       questionOptions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         followUpQuestionIDs
         __typename
       }
@@ -2446,8 +4039,28 @@ export const onCreateTask = /* GraphQL */ `subscription OnCreateTask(
       }
       parentEntityID
       level {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         parentLevelID
         interventionsAreAllowed
+        allowedInterventions {
+          nextToken
+          startedAt
+          __typename
+        }
+        customData {
+          id
+          type
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2466,11 +4079,31 @@ export const onCreateTask = /* GraphQL */ `subscription OnCreateTask(
       customData {
         customDataID
         type
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         intValue
         stringValue
         __typename
       }
       appliedInterventions {
+        items {
+          isOkay
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -2491,6 +4124,11 @@ export const onCreateTask = /* GraphQL */ `subscription OnCreateTask(
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2502,8 +4140,38 @@ export const onCreateTask = /* GraphQL */ `subscription OnCreateTask(
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -2520,6 +4188,22 @@ export const onCreateTask = /* GraphQL */ `subscription OnCreateTask(
       }
       isOkay
       executedSurveys {
+        items {
+          surveyID
+          date
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          appliedInterventionExecutedSurveysId
+          executedSurveySurveyId
+          executedSurveyWhoExecutedItId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -2539,7 +4223,43 @@ export const onCreateTask = /* GraphQL */ `subscription OnCreateTask(
     }
     executedSurvey {
       appliedIntervention {
+        whoDidIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        location {
+          latitude
+          longitude
+          __typename
+        }
         isOkay
+        executedSurveys {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2554,7 +4274,41 @@ export const onCreateTask = /* GraphQL */ `subscription OnCreateTask(
         __typename
       }
       survey {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        questions {
+          id
+          type
+          isFollowUpQuestion
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         surveyType
+        status
         schemeVersion
         archived
         id
@@ -2572,6 +4326,11 @@ export const onCreateTask = /* GraphQL */ `subscription OnCreateTask(
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2597,6 +4356,19 @@ export const onCreateTask = /* GraphQL */ `subscription OnCreateTask(
         intValue
         doubleValue
         rating
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
+        markings {
+          x
+          y
+          rx
+          ry
+          text
+          __typename
+        }
         __typename
       }
       schemeVersion
@@ -2680,8 +4452,28 @@ export const onUpdateTask = /* GraphQL */ `subscription OnUpdateTask(
       }
       parentEntityID
       level {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         parentLevelID
         interventionsAreAllowed
+        allowedInterventions {
+          nextToken
+          startedAt
+          __typename
+        }
+        customData {
+          id
+          type
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2700,11 +4492,31 @@ export const onUpdateTask = /* GraphQL */ `subscription OnUpdateTask(
       customData {
         customDataID
         type
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         intValue
         stringValue
         __typename
       }
       appliedInterventions {
+        items {
+          isOkay
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -2725,6 +4537,11 @@ export const onUpdateTask = /* GraphQL */ `subscription OnUpdateTask(
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2736,8 +4553,38 @@ export const onUpdateTask = /* GraphQL */ `subscription OnUpdateTask(
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -2754,6 +4601,22 @@ export const onUpdateTask = /* GraphQL */ `subscription OnUpdateTask(
       }
       isOkay
       executedSurveys {
+        items {
+          surveyID
+          date
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          appliedInterventionExecutedSurveysId
+          executedSurveySurveyId
+          executedSurveyWhoExecutedItId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -2773,7 +4636,43 @@ export const onUpdateTask = /* GraphQL */ `subscription OnUpdateTask(
     }
     executedSurvey {
       appliedIntervention {
+        whoDidIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        location {
+          latitude
+          longitude
+          __typename
+        }
         isOkay
+        executedSurveys {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2788,7 +4687,41 @@ export const onUpdateTask = /* GraphQL */ `subscription OnUpdateTask(
         __typename
       }
       survey {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        questions {
+          id
+          type
+          isFollowUpQuestion
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         surveyType
+        status
         schemeVersion
         archived
         id
@@ -2806,6 +4739,11 @@ export const onUpdateTask = /* GraphQL */ `subscription OnUpdateTask(
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2831,6 +4769,19 @@ export const onUpdateTask = /* GraphQL */ `subscription OnUpdateTask(
         intValue
         doubleValue
         rating
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
+        markings {
+          x
+          y
+          rx
+          ry
+          text
+          __typename
+        }
         __typename
       }
       schemeVersion
@@ -2914,8 +4865,28 @@ export const onDeleteTask = /* GraphQL */ `subscription OnDeleteTask(
       }
       parentEntityID
       level {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         parentLevelID
         interventionsAreAllowed
+        allowedInterventions {
+          nextToken
+          startedAt
+          __typename
+        }
+        customData {
+          id
+          type
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2934,11 +4905,31 @@ export const onDeleteTask = /* GraphQL */ `subscription OnDeleteTask(
       customData {
         customDataID
         type
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         intValue
         stringValue
         __typename
       }
       appliedInterventions {
+        items {
+          isOkay
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          entityAppliedInterventionsId
+          appliedInterventionWhoDidItId
+          appliedInterventionInterventionId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -2959,6 +4950,11 @@ export const onDeleteTask = /* GraphQL */ `subscription OnDeleteTask(
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -2970,8 +4966,38 @@ export const onDeleteTask = /* GraphQL */ `subscription OnDeleteTask(
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -2988,6 +5014,22 @@ export const onDeleteTask = /* GraphQL */ `subscription OnDeleteTask(
       }
       isOkay
       executedSurveys {
+        items {
+          surveyID
+          date
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          appliedInterventionExecutedSurveysId
+          executedSurveySurveyId
+          executedSurveyWhoExecutedItId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -3007,7 +5049,43 @@ export const onDeleteTask = /* GraphQL */ `subscription OnDeleteTask(
     }
     executedSurvey {
       appliedIntervention {
+        whoDidIt {
+          firstName
+          lastName
+          bio
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        location {
+          latitude
+          longitude
+          __typename
+        }
         isOkay
+        executedSurveys {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -3022,7 +5100,41 @@ export const onDeleteTask = /* GraphQL */ `subscription OnDeleteTask(
         __typename
       }
       survey {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        questions {
+          id
+          type
+          isFollowUpQuestion
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         surveyType
+        status
         schemeVersion
         archived
         id
@@ -3040,6 +5152,11 @@ export const onDeleteTask = /* GraphQL */ `subscription OnDeleteTask(
         firstName
         lastName
         bio
+        permissions {
+          permissionType
+          allowedEntities
+          __typename
+        }
         schemeVersion
         id
         createdAt
@@ -3065,6 +5182,19 @@ export const onDeleteTask = /* GraphQL */ `subscription OnDeleteTask(
         intValue
         doubleValue
         rating
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
+        markings {
+          x
+          y
+          rx
+          ry
+          text
+          __typename
+        }
         __typename
       }
       schemeVersion
@@ -3117,6 +5247,28 @@ export const onCreateContentTag = /* GraphQL */ `subscription OnCreateContentTag
         id
         contentId
         contentTagId
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        contentTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3159,6 +5311,28 @@ export const onUpdateContentTag = /* GraphQL */ `subscription OnUpdateContentTag
         id
         contentId
         contentTagId
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        contentTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3201,6 +5375,28 @@ export const onDeleteContentTag = /* GraphQL */ `subscription OnDeleteContentTag
         id
         contentId
         contentTagId
+        content {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        contentTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3243,6 +5439,29 @@ export const onCreateInterventionTag = /* GraphQL */ `subscription OnCreateInter
         id
         interventionId
         interventionTagId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        interventionTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3285,6 +5504,29 @@ export const onUpdateInterventionTag = /* GraphQL */ `subscription OnUpdateInter
         id
         interventionId
         interventionTagId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        interventionTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3327,6 +5569,29 @@ export const onDeleteInterventionTag = /* GraphQL */ `subscription OnDeleteInter
         id
         interventionId
         interventionTagId
+        intervention {
+          interventionType
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
+        interventionTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3369,6 +5634,32 @@ export const onCreateSurveyTag = /* GraphQL */ `subscription OnCreateSurveyTag(
         id
         surveyId
         surveyTagId
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
+        surveyTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3411,6 +5702,32 @@ export const onUpdateSurveyTag = /* GraphQL */ `subscription OnUpdateSurveyTag(
         id
         surveyId
         surveyTagId
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
+        surveyTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3453,6 +5770,32 @@ export const onDeleteSurveyTag = /* GraphQL */ `subscription OnDeleteSurveyTag(
         id
         surveyId
         surveyTagId
+        survey {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
+        surveyTag {
+          schemeVersion
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         createdAt
         updatedAt
         _version
@@ -3645,12 +5988,29 @@ export const onCreateLevelInterventionRelation = /* GraphQL */ `subscription OnC
       parentLevelID
       interventionsAreAllowed
       allowedInterventions {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       customData {
         id
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
         __typename
       }
@@ -3677,22 +6037,73 @@ export const onCreateLevelInterventionRelation = /* GraphQL */ `subscription OnC
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -3744,12 +6155,29 @@ export const onUpdateLevelInterventionRelation = /* GraphQL */ `subscription OnU
       parentLevelID
       interventionsAreAllowed
       allowedInterventions {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       customData {
         id
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
         __typename
       }
@@ -3776,22 +6204,73 @@ export const onUpdateLevelInterventionRelation = /* GraphQL */ `subscription OnU
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -3843,12 +6322,29 @@ export const onDeleteLevelInterventionRelation = /* GraphQL */ `subscription OnD
       parentLevelID
       interventionsAreAllowed
       allowedInterventions {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       customData {
         id
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
         __typename
       }
@@ -3875,22 +6371,73 @@ export const onDeleteLevelInterventionRelation = /* GraphQL */ `subscription OnD
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -3941,22 +6488,73 @@ export const onCreateInterventionContentRelation = /* GraphQL */ `subscription O
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -3982,11 +6580,35 @@ export const onCreateInterventionContentRelation = /* GraphQL */ `subscription O
         __typename
       }
       interventions {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4038,22 +6660,73 @@ export const onUpdateInterventionContentRelation = /* GraphQL */ `subscription O
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4079,11 +6752,35 @@ export const onUpdateInterventionContentRelation = /* GraphQL */ `subscription O
         __typename
       }
       interventions {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4135,22 +6832,73 @@ export const onDeleteInterventionContentRelation = /* GraphQL */ `subscription O
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4176,11 +6924,35 @@ export const onDeleteInterventionContentRelation = /* GraphQL */ `subscription O
         __typename
       }
       interventions {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4232,22 +7004,73 @@ export const onCreateInterventionInterventionTagRelation = /* GraphQL */ `subscr
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4269,6 +7092,18 @@ export const onCreateInterventionInterventionTagRelation = /* GraphQL */ `subscr
       }
       schemeVersion
       interventions {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4319,22 +7154,73 @@ export const onUpdateInterventionInterventionTagRelation = /* GraphQL */ `subscr
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4356,6 +7242,18 @@ export const onUpdateInterventionInterventionTagRelation = /* GraphQL */ `subscr
       }
       schemeVersion
       interventions {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4406,22 +7304,73 @@ export const onDeleteInterventionInterventionTagRelation = /* GraphQL */ `subscr
       }
       interventionType
       contents {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveys {
+        items {
+          surveyType
+          status
+          schemeVersion
+          archived
+          id
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          interventionSurveysId
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       schemeVersion
       levels {
+        items {
+          id
+          levelId
+          interventionId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4443,6 +7392,18 @@ export const onDeleteInterventionInterventionTagRelation = /* GraphQL */ `subscr
       }
       schemeVersion
       interventions {
+        items {
+          id
+          interventionId
+          interventionTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4492,11 +7453,35 @@ export const onCreateContentContentTagRelation = /* GraphQL */ `subscription OnC
         __typename
       }
       interventions {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4519,6 +7504,18 @@ export const onCreateContentContentTagRelation = /* GraphQL */ `subscription OnC
       }
       schemeVersion
       contents {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4568,11 +7565,35 @@ export const onUpdateContentContentTagRelation = /* GraphQL */ `subscription OnU
         __typename
       }
       interventions {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4595,6 +7616,18 @@ export const onUpdateContentContentTagRelation = /* GraphQL */ `subscription OnU
       }
       schemeVersion
       contents {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4644,11 +7677,35 @@ export const onDeleteContentContentTagRelation = /* GraphQL */ `subscription OnD
         __typename
       }
       interventions {
+        items {
+          id
+          interventionId
+          contentId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       tags {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4671,6 +7728,18 @@ export const onDeleteContentContentTagRelation = /* GraphQL */ `subscription OnD
       }
       schemeVersion
       contents {
+        items {
+          id
+          contentId
+          contentTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4720,8 +7789,38 @@ export const onCreateSurveySurveyTagRelation = /* GraphQL */ `subscription OnCre
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -4733,16 +7832,39 @@ export const onCreateSurveySurveyTagRelation = /* GraphQL */ `subscription OnCre
       }
       questions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
         isFollowUpQuestion
         __typename
       }
       tags {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -4763,6 +7885,18 @@ export const onCreateSurveySurveyTagRelation = /* GraphQL */ `subscription OnCre
       }
       schemeVersion
       surveys {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4812,8 +7946,38 @@ export const onUpdateSurveySurveyTagRelation = /* GraphQL */ `subscription OnUpd
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -4825,16 +7989,39 @@ export const onUpdateSurveySurveyTagRelation = /* GraphQL */ `subscription OnUpd
       }
       questions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
         isFollowUpQuestion
         __typename
       }
       tags {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -4855,6 +8042,18 @@ export const onUpdateSurveySurveyTagRelation = /* GraphQL */ `subscription OnUpd
       }
       schemeVersion
       surveys {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
@@ -4904,8 +8103,38 @@ export const onDeleteSurveySurveyTagRelation = /* GraphQL */ `subscription OnDel
         __typename
       }
       intervention {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
         interventionType
+        contents {
+          nextToken
+          startedAt
+          __typename
+        }
+        surveys {
+          nextToken
+          startedAt
+          __typename
+        }
+        tags {
+          nextToken
+          startedAt
+          __typename
+        }
         schemeVersion
+        levels {
+          nextToken
+          startedAt
+          __typename
+        }
         id
         createdAt
         updatedAt
@@ -4917,16 +8146,39 @@ export const onDeleteSurveySurveyTagRelation = /* GraphQL */ `subscription OnDel
       }
       questions {
         id
+        text {
+          languageKeys
+          languageTexts
+          __typename
+        }
         type
+        questionOptions {
+          id
+          followUpQuestionIDs
+          __typename
+        }
         isFollowUpQuestion
         __typename
       }
       tags {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
       }
       surveyType
+      status
       schemeVersion
       archived
       id
@@ -4947,6 +8199,18 @@ export const onDeleteSurveySurveyTagRelation = /* GraphQL */ `subscription OnDel
       }
       schemeVersion
       surveys {
+        items {
+          id
+          surveyId
+          surveyTagId
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          organization_id
+          __typename
+        }
         nextToken
         startedAt
         __typename
