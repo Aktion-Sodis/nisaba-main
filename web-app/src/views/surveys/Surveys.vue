@@ -87,15 +87,15 @@
                <DatePicker v-model="filterModel.value" dateFormat="dd.mm.yy" placeholder="Datum wählen" />
              </template>
            </Column>
-           <!-- Optional: Spalte für Aktionen hinzufügen -->
-           <!--
+           
            <Column header="Aktionen">
              <template #body="slotProps">
                <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editSurvey(slotProps.data)" />
                <Button icon="pi pi-trash" class="p-button-rounded p-button-warning" @click="confirmDeleteSurvey(slotProps.data)" />
+               <Button icon="pi pi-eye" class="p-button-rounded p-button-info" @click="viewResults(slotProps.data)" />
              </template>
            </Column>
-           -->
+           
         </DataTable>
 
         <div v-else-if="viewMode === 'grid'" class="survey-grid">
@@ -289,7 +289,7 @@ onMounted(fetchSurveys);
 .col-span-full {
   grid-column: 1 / -1;
 }
-
+🈵
 /* Text auf maximal 3 Zeilen beschränken und mit ... abschneiden */
 .line-clamp-3 {
   display: -webkit-box;
