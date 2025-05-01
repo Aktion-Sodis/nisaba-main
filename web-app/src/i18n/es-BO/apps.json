@@ -1,0 +1,23 @@
+{
+    "categories": {
+        "admin": "Aplicaciones de Administración"
+    },
+    "apps": {
+        "login": {
+            "title": "Iniciar Sesión",
+            "description": "Iniciar sesión en la aplicación"
+        },
+        "project_structure": {
+            "title": "Estructura del Proyecto",
+            "description": "Gestionar la estructura del proyecto"
+        },
+        "interventions": {
+            "title": "Intervenciones",
+            "description": "Gestionar las intervenciones"
+        },
+        "umfragen": {
+            "title": "Encuestas",
+            "description": "Gestionar las encuestas"
+        }
+    }
+} 

@@ -15,6 +15,7 @@
     "@vitejs/plugin-vue": "^5.1.4",
     "aws-amplify": "^6.8.0",
     "core-js": "^3.8.3",
+    "lodash": "^4.17.21",
     "material-symbols": "^0.29.2",
     "pinia": "^2.2.6",
     "primeicons": "^7.0.0",
@@ -30,6 +31,7 @@
     "@babel/core": "^7.12.16",
     "@eslint/eslintrc": "^2.1.4",
     "@eslint/js": "^8.57.0",
+    "@types/lodash": "^4.17.16",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "@vue/cli-plugin-babel": "~5.0.0",
@@ -72,5 +74,4 @@
   "lint-staged": {
     "*.{js,ts,vue}": "eslint --cache --fix"
   }
-
 }
