@@ -177,7 +177,7 @@ const filters = ref({
 
 const isFilterActive = computed(() => {
   return Object.entries(filters.value).some(([key, filter]) => {
-    // if (key === 'global') return false; // Optional: Globalen Filter ignorieren
+    // Optional: Globalen Filter ignorieren
     return filter.value !== null && filter.value !== '';
   });
 });
@@ -191,7 +191,6 @@ const searchableSurveys = computed(() => {
     try {
       const nameFormatted = formatMLString(survey.name, currentLocale);
       const descriptionFormatted = formatMLString(survey.description, currentLocale);
-      // Wichtig: Diese Felder werden jetzt für Spalten- UND Globalfilter verwendet
       const nameSearchable = (nameFormatted || '').toLowerCase();
       const descriptionSearchable = (descriptionFormatted || '').toLowerCase();
       const createdAtFormatted = formatDate(survey.createdAt);
@@ -267,12 +266,10 @@ const formatDate = (dateString: string | null | undefined): string => {
   }
 };
 
-// *** filterMLString wurde entfernt ***
 
-// const menuRefs = reactive<Record<string, any>>({}); // Entfernt
-const menuRef = ref<Menu | null>(null); // Einzelne Ref für das Menü
+const menuRef = ref<Menu | null>(null);
 const menuItems = ref<MenuItem[]>([]);
-const currentSurveyForMenu = ref<Survey | null>(null); // Um die aktuelle Umfrage für das Menü zu speichern
+const currentSurveyForMenu = ref<Survey | null>(null);
 
 const editSurvey = (survey: Survey) => {
   console.log('Edit survey:', survey.id);
@@ -290,7 +287,7 @@ const viewResults = (survey: Survey) => {
 };
 
 
-const getMenuItems = (survey: Survey): MenuItem[] => [ // Nimmt weiterhin Survey entgegen
+const getMenuItems = (survey: Survey): MenuItem[] => [
   {
     label: 'Bearbeiten',
     icon: 'pi pi-pencil',
@@ -307,17 +304,16 @@ const getMenuItems = (survey: Survey): MenuItem[] => [ // Nimmt weiterhin Survey
   {
     label: 'Archivieren',
     icon: 'pi pi-inbox',
-    class: 'text-red-600', // Beibehalten oder anpassen
+    class: 'text-red-600',
     command: () => confirmDeleteSurvey(survey)
   }
 ];
 
 const toggleMenu = (event: Event, survey: Survey) => {
-  currentSurveyForMenu.value = survey; // Speichern, welche Umfrage geklickt wurde
-  menuItems.value = getMenuItems(survey); // Menüpunkte für DIESE Umfrage generieren
-  // const menuRef = menuRefs[survey.id]; // Entfernt
-  if (menuRef.value) { // Prüfen, ob die einzelne Menü-Ref existiert
-    menuRef.value.toggle(event); // Das einzelne Menü togglen
+  currentSurveyForMenu.value = survey;
+  menuItems.value = getMenuItems(survey);
+  if (menuRef.value) {
+    menuRef.value.toggle(event);
   } else {
     console.error("Menu reference not found.");
   }
