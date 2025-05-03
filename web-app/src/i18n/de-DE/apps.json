@@ -1,0 +1,23 @@
+{
+    "categories": {
+        "admin": "Admin-Apps"
+    },
+    "apps": {
+        "login": {
+            "title": "Anmeldung",
+            "description": "Bei der Anwendung anmelden"
+        },
+        "project_structure": {
+            "title": "Projektstruktur",
+            "description": "Projektstruktur verwalten"
+        },
+        "interventions": {
+            "title": "Interventionen",
+            "description": "Interventionen verwalten"
+        },
+        "umfragen": {
+            "title": "Umfragen",
+            "description": "Umfragen verwalten"
+        }
+    }
+} 
