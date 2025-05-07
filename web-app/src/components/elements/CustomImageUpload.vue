@@ -19,7 +19,7 @@
           <span class="text-gray-500">Drag and drop files here to upload</span>
         </div>
       </template>
-      <template #content="{ files }">
+      <template #content>
         <div v-if="imageUrl && imageExists" class="relative group">
           <img :src="imageUrl" class="w-full h-48 object-cover rounded-lg" />
         </div>
@@ -44,7 +44,6 @@
 
 <script setup lang="ts">
 import { getUrl, uploadData, remove, list } from '@aws-amplify/storage';
-import Button from 'primevue/button';
 import FileUpload from 'primevue/fileupload';
 import { useConfirm } from 'primevue/useconfirm';
 import { ref, watch } from 'vue';
@@ -160,7 +159,7 @@ const handleFileSelect = async (event: any) => {
   }
 };
 
-const handleUpdate = () => {
+const _handleUpdate = () => {
   // Trigger file selection dialog
   const input = document.createElement('input');
   input.type = 'file';
@@ -174,7 +173,7 @@ const handleUpdate = () => {
   input.click();
 };
 
-const handleRemove = () => {
+const _handleRemove = () => {
   confirm.require({
     message: 'Are you sure you want to remove this image?',
     header: 'Confirmation',
