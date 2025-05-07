@@ -2,13 +2,14 @@
   <div class="flex flex-col gap-2">
     <template v-if="mode === MLTextFieldMode.AllDisplayed">
       <div
-        v-for="(key, index) in localValue.languageKeys"
+        v-for="(key, index) in localAllowedKeys"
         class="flex gap-2 items-center"
       >
         <InputText
           v-if="nLines === 1"
           v-model="localValue.languageTexts[index]"
           :placeholder="hint"
+          fluid
         />
         <Textarea
           v-else
@@ -16,13 +17,15 @@
           :placeholder="hint"
           :rows="nLines"
           auto-resize
+          fluid
         />
-        <Select
-          :model-value="key"
-          :options="getAvailableLanguages()"
-          option-label="emoji"
+        <InputText
+          :model-value="
+            getAvailableLanguages().find((lang) => lang.key === key)?.emoji ||
+            ''
+          "
           :disabled="true"
-          class="w-12 shrink-0"
+          class="w-10 text-center"
         />
       </div>
     </template>
@@ -32,6 +35,7 @@
           v-if="nLines === 1"
           v-model="selectedText"
           :placeholder="hint"
+          fluid
         />
         <Textarea
           v-else
@@ -39,6 +43,7 @@
           :placeholder="hint"
           :rows="nLines"
           auto-resize
+          fluid
         />
         <Select
           v-model="selectedLanguage"

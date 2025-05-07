@@ -422,7 +422,7 @@ const actionMenuItems = ref<MenuItem[]>([
     items: [
       {
         id: 'user-profile',
-        label: t('actions.profile'),
+        label: t('utils.profile'),
         icon: 'pi pi-user',
         color: '',
         command: () => {
@@ -430,7 +430,7 @@ const actionMenuItems = ref<MenuItem[]>([
         },
       },
       {
-        label: t('actions.settings'),
+        label: t('utils.settings'),
         icon: 'pi pi-cog',
         color: '',
         command: () => {
@@ -439,7 +439,7 @@ const actionMenuItems = ref<MenuItem[]>([
       },
 
       {
-        label: t('actions.sign_out'),
+        label: t('utils.sign_out'),
         icon: 'pi pi-sign-out',
         color: '!text-danger',
         command: () => {
@@ -465,6 +465,14 @@ const breadcrumbItems = computed(() => {
   }
 
   if (route.name !== 'Home' && route.name !== 'ApplicationsOverview') {
+    if (route.path.includes('surveys')) {
+      return [
+        {
+          label: t('apps.groups.surveys'),
+          route: route,
+        },
+      ];
+    }
     return [
       {
         label: t(route.meta.i18n_title),
@@ -508,28 +516,44 @@ const breadcrumbMenuItems = computed(() => {
   const items: MenuItem[] = [
     {
       id: 'applications',
-      label: t('navigation.applications'),
+      label: t('apps.categories.admin'),
     },
     {
-      id: 'test',
-      label: t('test'),
-      icon: 'build',
+      id: 'surveys',
+      label: t('apps.groups.surveys'),
+      icon: 'assignment',
       iconType: 'material',
-      color: getColor('test'),
-      command: () => {
-        router.push({ name: 'test' });
-      },
+      color: getColor('surveys'),
       items: [
         {
-          id: 'test',
-          label: t('test'),
-          icon: 'build',
+          id: 'surveys',
+          label: t('apps.apps.umfragen.title'),
+          icon: 'assignment',
           iconType: 'material',
-          color: getColor('test'),
-          active: isActive('test'),
-          command: () => router.push({ name: 'test' }),
+          color: getColor('surveys'),
+          active: isActive('surveys'),
+          command: () => router.push({ name: 'Surveys' }),
+        },
+        {
+          id: 'surveyeditor',
+          label: t('apps.apps.surveyeditor.title'),
+          icon: 'edit_note',
+          iconType: 'material',
+          color: getColor('surveyeditor'),
+          active: isActive('surveyeditor'),
+          command: () => router.push({ name: 'SurveyEditor' }),
         },
       ],
+    },
+    {
+      id: 'interventions',
+      label: t('apps.apps.interventions.title'),
+      icon: 'medical_services',
+      iconType: 'material',
+      color: getColor('interventions'),
+      command: () => {
+        router.push({ name: 'Interventions' });
+      },
     },
   ];
 

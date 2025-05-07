@@ -27,6 +27,13 @@
               @click="clearFilter()"
             />
           </div>
+          <div>
+            <Button
+              icon="pi pi-plus"
+              label="Neue Umfrage"
+              @click="createSurvey()"
+            />
+          </div>
           <div class="flex align-items-center">
             <SelectButton
               v-model="viewMode"
@@ -162,6 +169,9 @@ import { FilterMatchMode } from '@primevue/core/api';
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { useSurveyDetailStore } from '../surveydetail/surveyDetailStore';
+
+import router from '@/router';
 import { useProjectConfigStore } from '@/stores/projectConfigStore';
 import { formatMLString } from '@/utils/formatStrings';
 
@@ -274,6 +284,12 @@ const formatDate = (dateString: string | null | undefined): string => {
     console.error('Error formatting date:', dateString, e);
     return '-';
   }
+};
+
+const createSurvey = () => {
+  const surveyDetailStore = useSurveyDetailStore();
+  surveyDetailStore.initCreate();
+  router.push('/surveys/editor');
 };
 
 // *** filterMLString wurde entfernt ***

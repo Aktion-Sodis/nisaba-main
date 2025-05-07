@@ -15,7 +15,7 @@
             :title="$t('navigation.menu.surveys.title')"
             :subtitle="$t('navigation.menu.surveys.subtitle')"
             bg-color="bg-secondary-700"
-            @click="$router.push('/surveys')"
+            @click="$router.push('/surveys/overview')"
           >
             <template #icon>
               <i class="pi pi-clipboard text-surface-0 text-5xl md:text-6xl" />

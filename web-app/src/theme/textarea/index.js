@@ -2,7 +2,7 @@ export default {
   root: ({ context, props, parent }) => ({
     class: [
       // Font
-      'leading-none',
+      'leading-normal',
 
       // Spacing
       'm-0',
@@ -10,6 +10,8 @@ export default {
 
       // Shape
       'rounded-md',
+
+      { 'w-full': props.fluid },
 
       // Colors
       'text-surface-800 dark:text-white/80',

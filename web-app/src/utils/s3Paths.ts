@@ -23,17 +23,17 @@ export const S3_PATHS = {
     path: 'documentFiles/documentID/pic.png',
     toBeReplaced: ['documentID'],
   },
-  interventionSurveyPicPath: {
-    path: 'interventionFiles/interventionID/surveyFiles/surveyID/pic.png',
-    toBeReplaced: ['interventionID', 'surveyID'],
+  surveyPicPath: {
+    path: 'surveyFiles/surveyID/pic.png',
+    toBeReplaced: ['surveyID'],
   },
   questionPicPath: {
-    path: 'interventionFiles/interventionID/surveyFiles/surveyID/questionFiles/questionID/pic.png',
-    toBeReplaced: ['interventionID', 'surveyID', 'questionID'],
+    path: 'surveyFiles/surveyID/questionFiles/questionID/pic.png',
+    toBeReplaced: ['surveyID', 'questionID'],
   },
   questionOptionPicPath: {
-    path: 'interventionFiles/interventionID/surveyFiles/surveyID/questionFiles/questionID/optionFiles/optionID/pic.png',
-    toBeReplaced: ['interventionID', 'surveyID', 'questionID', 'optionID'],
+    path: 'surveyFiles/surveyID/questionFiles/questionID/optionFiles/optionID/pic.png',
+    toBeReplaced: ['surveyID', 'questionID', 'optionID'],
   },
   questionPicAnswerPath: {
     path: 'appliedInterventionFiles/appliedInterventionID/executedSurveyFiles/executedSurveyID/questionFiles/questionID/pic.png',

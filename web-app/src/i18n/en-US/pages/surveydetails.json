@@ -1,0 +1,24 @@
+{
+    "general_card": {
+        "title": {
+            "create": "Create Survey",
+            "edit": "Edit Survey"
+        },
+        "input": {
+            "name": {
+                "label": "Name",
+                "placeholder": "Enter the name of the survey"
+            },
+            "description": {
+                "label": "Description",
+                "placeholder": "Enter the description of the survey"
+            },
+            "select_language": {
+                "label": "Select Translations"
+            },
+            "intervention": {
+                "label": "Intervention"
+            }
+        }
+    }
+}

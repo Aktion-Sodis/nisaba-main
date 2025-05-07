@@ -4,9 +4,9 @@ export function getLanguageInfo(localeKey: string) {
   const normalizedKey = localeKey.includes('-')
     ? localeKey
     : `${localeKey}-${localeKey.toUpperCase()}`;
-  const languageInfo = (i18n.global.messages as Record<string, any>)[
-    normalizedKey
-  ]?.languageinfo;
+  // @ts-expect-error i18n.global.getLocaleMessage is not typed
+  const languageInfo =
+    i18n.global.getLocaleMessage(normalizedKey)?.languageinfo;
 
   if (!languageInfo) {
     console.warn(`No language information found for locale: ${localeKey}`);
@@ -23,13 +23,13 @@ interface LanguageListItem {
 }
 
 export function getAvailableLanguages(): LanguageListItem[] {
-  const messages = i18n.global.messages as Record<string, any>;
+  const locales = i18n.global.availableLocales as string[];
   const fallbackLocale = i18n.global.fallbackLocale as string;
 
-  const languages = Object.keys(messages).map((key) => ({
+  const languages = locales.map((key) => ({
     key,
-    name: messages[key].languageinfo.name,
-    emoji: messages[key].languageinfo.emoji,
+    name: getLanguageInfo(key)?.language_name,
+    emoji: getLanguageInfo(key)?.language_emoji,
   }));
 
   return [

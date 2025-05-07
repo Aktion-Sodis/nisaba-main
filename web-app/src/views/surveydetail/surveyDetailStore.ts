@@ -4,13 +4,9 @@ import { computed, ref } from 'vue';
 
 import type { Survey } from '@/models/index';
 import { useProjectConfigStore } from '@/stores/projectConfigStore';
-import {
-  createNewTextQuestion,
-  createNewSurvey,
-  createNewQuestionOption,
-} from '@/utils/newObjects';
+import { createNewTextQuestion, createNewSurvey } from '@/utils/newObjects';
 
-export const useSurveyDialogStore = defineStore('surveyDialog', () => {
+export const useSurveyDetailStore = defineStore('surveyDetail', () => {
   const projectConfigStore = useProjectConfigStore();
 
   const localSurvey = ref<Survey | null>(null);
@@ -32,11 +28,8 @@ export const useSurveyDialogStore = defineStore('surveyDialog', () => {
     localSurvey.value = survey;
   };
 
-  const initCreate = (interventionId: string) => {
-    localSurvey.value = createNewSurvey(
-      allowedLanguageKeys.value,
-      interventionId
-    );
+  const initCreate = () => {
+    localSurvey.value = createNewSurvey(allowedLanguageKeys.value);
     _dbSurvey.value = null;
   };
 

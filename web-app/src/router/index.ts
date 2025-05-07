@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Index from '@/views/index/Index.vue';
 import Interventions from '@/views/interventions/interventions.vue';
 import Login from '@/views/login/Login.vue';
+import SurveyEditor from '@/views/surveydetail/SurveyDetails.vue';
 import Umfragen from '@/views/surveys/Surveys.vue';
 
 const routes = [
@@ -26,12 +27,21 @@ const routes = [
     },
   },
   {
-    path: '/surveys',
+    path: '/surveys/overview',
     name: 'Surveys',
     component: Umfragen,
     meta: {
       layout: 'DefaultLayout',
       i18n_title: 'apps.surveys.title',
+    },
+  },
+  {
+    path: '/surveys/editor',
+    name: 'Survey Editor',
+    component: SurveyEditor,
+    meta: {
+      layout: 'DefaultLayout',
+      i18n_title: 'apps.surveyeditor.title',
     },
   },
   {

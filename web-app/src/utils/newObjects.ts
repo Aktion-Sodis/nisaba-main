@@ -14,10 +14,7 @@ const createEmptyI18nString = (languageKeys: string[]) => ({
   languageTexts: Array(languageKeys.length).fill(''),
 });
 
-export const createNewSurvey = (
-  languageKeys: string[],
-  interventionSurveysId: string
-): Survey => {
+export const createNewSurvey = (languageKeys: string[]): Survey => {
   return {
     id: uuidv4(),
     name: createEmptyI18nString(languageKeys),
@@ -28,7 +25,7 @@ export const createNewSurvey = (
     schemeVersion: 0,
     archived: false,
     tags: [],
-    interventionSurveysId: interventionSurveysId,
+    interventionSurveysId: null,
   };
 };
 
