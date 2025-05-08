@@ -23,5 +23,40 @@
                 "label": "Survey Image"
             }
         }
+    },
+    "question_card": {
+        "title": "Question {index}",
+        "input": {
+            "question": {
+                "label": "Question Text",
+                "placeholder": "Enter the question text"
+            },
+            "question_type": {
+                "label": "Question Type",
+                "options": {
+                    "TEXT": "Text Input",
+                    "SINGLECHOICE": "Single Choice",
+                    "MULTIPLECHOICE": "Multiple Choice",
+                    "INT": "Integer Input",
+                    "DOUBLE": "Decimal Input",
+                    "RATING": "Rating",
+                    "AUDIO": "Audio Input",
+                    "PICTURE": "Picture Input",
+                    "PICTUREWITHTAGS": "Picture with Tags"
+                },
+                "confirm_delete_options": "Changing the question type will delete all existing options. Are you sure you want to continue?",
+                "confirm_delete_options_title": "Changing question type"
+            },
+            "image": {
+                "label": "Question Image"
+            },
+            "is_follow_up": {
+                "label": "Follow-up Question"
+            },
+            "condition_options": {
+                "label": "Show this question when the following options are selected",
+                "placeholder": "Select condition options"
+            }
+        }
     }
 }
