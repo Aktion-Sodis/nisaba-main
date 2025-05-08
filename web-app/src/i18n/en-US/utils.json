@@ -3,5 +3,12 @@
     "profile": "Profile",
     "settings": "Settings",
     "sign_out": "Sign Out",
-    "at_least_one_language_required": "At least one language is required"
+    "at_least_one_language_required": "At least one language is required",
+    "actions": {
+        "cancel_delete": "Cancel",
+        "confirm_delete": "Delete",
+        "image_replace": "Replace Image",
+        "image_choose": "Choose Image",
+        "image_placeholder": "Drag and drop image here to upload"
+    }
 }

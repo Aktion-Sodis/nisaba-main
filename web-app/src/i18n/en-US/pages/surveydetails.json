@@ -18,6 +18,9 @@
             },
             "intervention": {
                 "label": "Intervention"
+            },
+            "image": {
+                "label": "Survey Image"
             }
         }
     }
