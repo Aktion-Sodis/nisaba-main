@@ -1,13 +1,12 @@
 <template>
   <div class="flex h-screen w-full">
-    <div
-      class="relative flex flex-col flex-grow w-full max-w-full px-4 transition-all duration-300 ease-in-out"
-    >
+    <div class="relative flex flex-col w-full max-w-full">
       <navbar
         v-if="showNavigation"
+        class="sticky top-0 z-50 px-4 transition-all duration-300 ease-in-out"
         @show-configurator="configuratorVisible = true"
       />
-      <div ref="scrollContainer" class="flex-grow pb-6">
+      <div ref="scrollContainer" class="flex-grow px-4 overflow-y-auto">
         <router-view />
       </div>
     </div>
