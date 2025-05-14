@@ -1,6 +1,7 @@
 {
       "title": "Actividades",
       "subtitle": "Aquí puedes gestionar tus actividades.",
+      "newIntervention": "Crear nueva actividad",
       "filters": {
         "search": "Buscar...",
         "filterByName": "Filtrar por nombre",
@@ -16,6 +17,11 @@
         "createdAt": "Creado en"
       },
       "createdAt": "Creado en",
-      "withActiveFilter": "con filtro activo"
+      "withActiveFilter": "con filtro activo",
     
+      "menu": {
+        "viewDetails": "Ver detalles",
+        "edit": "Editar",
+        "archive": "Archivar"
+      }
   }

@@ -1,7 +1,18 @@
 <template>
-  <div class="h-full">
+  <div class="h-full pb-4">
     <Card class="h-full">
-      <template #title>{{ $t('interventions.title') }}</template>
+      <template #title>
+        <div class="flex justify-between items-center w-full">
+          <span class="text-screen-title">{{ $t('interventions.title') }}</span>
+          <Button
+            icon="pi pi-plus"
+            :label="$t('interventions.newIntervention')"
+            class="ml-auto"
+            size="small"
+            @click="createIntervention()"
+          />
+        </div>
+      </template>
 
       <template #subtitle>{{ $t('interventions.subtitle') }}</template>
 
@@ -32,6 +43,7 @@
               v-model="viewMode"
               :options="viewOptions"
               option-value="value"
+              :allow-empty="false"
             >
               <template #option="slotProps">
                 <i :class="slotProps.option.icon"></i>
@@ -50,13 +62,14 @@
           :rows="10"
           :rows-per-page-options="[5, 10, 20, 50]"
           table-style="min-width: 50rem;"
-          scroll-height="h-[calc(100vh_-_18rem)]"
+          scroll-height="h-[calc(100vh_-_21rem)]"
           filter-display="menu"
           :global-filter-fields="[
             'name_searchable',
             'description_searchable',
             'createdAt_formatted',
           ]"
+          row-hover
         >
           <template #empty>{{ $t('interventions.noInterventionsFound') }}</template>
           <template #loading>{{ $t('interventions.loadingInterventions') }}</template>
@@ -100,53 +113,102 @@
               />
             </template>
           </Column>
+
+          <Column
+            header-style="width: 5rem; text-align: center"
+            body-style="text-align: center; overflow: visible"
+          >
+            <template #body="slotProps">
+              <Button
+                severity="light"
+                :fluid="false"
+                size="small"
+                class="w-[2em] h-[2em]"
+                aria-haspopup="true"
+                :aria-controls="'overlay_menu_intervention_' + slotProps.data.id"
+                @click.stop="toggleInterventionMenu($event, slotProps.data)"
+              >
+                <template #icon>
+                  <i class="pi pi-ellipsis-v"></i>
+                </template>
+              </Button>
+            </template>
+          </Column>
         </DataTable>
 
         <!-- Grid-Ansicht -->
-        <div v-else-if="viewMode === 'grid'" class="intervention-grid">
-          <div v-if="loading" class="flex justify-content-center col-span-full">
-            <!-- Added col-span-full for consistency -->
+        <div
+          v-else-if="viewMode === 'grid'"
+          class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6"
+        >
+          <div v-if="loading" class="col-span-full flex justify-center">
             <ProgressSpinner />
           </div>
           <div
             v-else-if="filteredGridInterventions.length === 0"
-            class="flex justify-content-center col-span-full"
+            class="col-span-full flex justify-center"
           >
-            {{ $t('interventions.noInterventionsFound') }}{{
-              filters.global.value ? ' (' + $t('interventions.withActiveFilter') + ')' : ''
+            {{ $t('interventions.noInterventionsFound')
+            }}{{
+              filters.global.value
+                ? ' (' + $t('interventions.withActiveFilter') + ')'
+                : ''
             }}
           </div>
-          <div v-else class="intervention-grid-container">
-            <div
-              v-for="intervention in filteredGridInterventions"
-              :key="intervention.id"
-              class="intervention-grid-item"
-            >
-              <Card class="h-full flex flex-col">
-                <!-- Added flex classes for consistency -->
-                <template #title>
-                  {{ formatMLString(intervention.name, locale) }}
-                </template>
-                <template #subtitle>
-                  {{ $t('interventions.createdAt') }}: {{ formatDate(intervention.createdAt) }}
-                </template>
-                <template #content>
-                  <!-- Added flex-grow -->
-                  <p class="line-clamp-3">
-                    {{ formatMLString(intervention.description, locale) }}
-                  </p>
-                </template>
-                <template #footer>
-                  <div class="flex justify-end">
-                    <!-- Add actions if needed -->
-                  </div>
-                </template>
-              </Card>
-            </div>
-          </div>
+          <Card
+            v-for="intervention in filteredGridInterventions"
+            :key="intervention.id"
+            class="w-full group shadow-sm border border-white md:shadow-none hover:bg-surface-100 md:border-surface-300 hover:border-surface-300 transition duration-200 ease-in-out relative cursor-pointer"
+            @click="onInterventionCardClick(intervention)"
+          >
+            <template #content>
+              <div class="p-2 h-full relative flex flex-col">
+                <div
+                  class="absolute z-10 top-0 right-0 -mt-1 -mr-3 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <Button
+                    severity="light"
+                    :fluid="false"
+                    size="small"
+                    class="w-[2em] h-[2em]"
+                    aria-haspopup="true"
+                    :aria-controls="'overlay_menu_intervention_' + intervention.id"
+                    @click.stop="toggleInterventionMenu($event, intervention)"
+                  >
+                    <template #icon>
+                      <i class="pi pi-ellipsis-v"></i>
+                    </template>
+                  </Button>
+                </div>
+                <div class="flex justify-between items-start mb-1 pr-8">
+                  <h3 class="text-section-inner-title">
+                    {{ formatMLString(intervention.name, locale) }}
+                  </h3>
+                  <!-- No status tag for interventions in this example -->
+                </div>
+                <div
+                  class="text-sm text-gray-600 mb-3 flex justify-between items-center"
+                >
+                  <span class="text-oneliner-light-small">
+                    {{ $t('interventions.createdAt') }}:
+                    {{ formatDate(intervention.createdAt) }}
+                  </span>
+                </div>
+                <p
+                  class="text-oneliner-light flex-grow line-clamp-3 pr-8"
+                >
+                  {{ formatMLString(intervention.description, locale) }}
+                </p>
+                <i
+                  class="pi pi-arrow-right absolute bottom-0 right-0 -mb-1 -mr-1 transition-opacity opacity-0 group-hover:opacity-100 duration-200"
+                ></i>
+              </div>
+            </template>
+          </Card>
         </div>
       </template>
     </Card>
+    <Menu ref="interventionMenu" :model="interventionMenuItems" :popup="true" />
   </div>
 </template>
 
@@ -154,11 +216,14 @@
 import { FilterMatchMode } from '@primevue/core/api';
 import { ref, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import Menu from 'primevue/menu'; // Added import for Menu
+import router from '@/router'; // Added import for router (optional, for actions)
 
+import type { Intervention } from '@/models/interventions'; // Ensure Intervention type is correctly imported
 import { useProjectConfigStore } from '@/stores/projectConfigStore';
 import { formatMLString } from '@/utils/formatStrings';
 
-const { locale } = useI18n();
+const { locale, t } = useI18n(); // t function is now destructured
 const projectConfigStore = useProjectConfigStore();
 
 const interventions = projectConfigStore.interventions;
@@ -199,13 +264,13 @@ const searchableInterventions = computed(() => {
       // Create searchable, lowercase versions for filtering
       const nameSearchable = (nameFormatted || '').toLowerCase();
       const descriptionSearchable = (descriptionFormatted || '').toLowerCase();
-      const createdAtFormatted = formatDate(intervention.createdAt); 
+      const createdAtFormatted = formatDate(intervention.createdAt);
 
       return {
         ...intervention,
         name_searchable: nameSearchable,
         description_searchable: descriptionSearchable,
-        createdAt_formatted: createdAtFormatted, 
+        createdAt_formatted: createdAtFormatted,
       };
     } catch (error) {
       console.error(
@@ -234,7 +299,7 @@ const filteredGridInterventions = computed(() => {
     return (
       intervention.name_searchable.includes(filterText) ||
       intervention.description_searchable.includes(filterText) ||
-      intervention.createdAt_formatted.toLowerCase().includes(filterText) 
+      intervention.createdAt_formatted.toLowerCase().includes(filterText)
     );
   });
 });
@@ -269,7 +334,77 @@ const formatDate = (dateString: string | null | undefined): string => {
   }
 };
 
+// Menu-related refs and functions
+const interventionMenu = ref();
+const selectedInterventionForMenu = ref<Intervention | null>(null);
+
+const interventionMenuItems = computed(() => {
+  if (!selectedInterventionForMenu.value) {
+    return [];
+  }
+  return [
+    {
+      label: t('interventions.menu.viewDetails'), // Add 'interventions.menu.viewDetails' to your i18n files
+      icon: 'pi pi-fw pi-eye',
+      command: () => {
+        if (selectedInterventionForMenu.value) {
+          viewInterventionDetails(selectedInterventionForMenu.value);
+        }
+      },
+    },
+    {
+      label: t('interventions.menu.edit'), // Add 'interventions.menu.edit' to your i18n files
+      icon: 'pi pi-fw pi-pencil',
+      command: () => {
+        if (selectedInterventionForMenu.value) {
+          editIntervention(selectedInterventionForMenu.value);
+        }
+      },
+    },
+    {
+      label: t('interventions.menu.archive'), // Add 'interventions.menu.delete' to your i18n files
+      icon: 'pi pi-fw pi-inbox',
+
+      command: () => {
+        if (selectedInterventionForMenu.value) {
+          // Implement archive logic
+        }
+      },
+    },
+  ];
+});
+
+const toggleInterventionMenu = (event: Event, intervention: Intervention) => {
+  selectedInterventionForMenu.value = intervention;
+  interventionMenu.value.toggle(event);
+};
+
+// Placeholder functions for menu actions and card click
+const viewInterventionDetails = (intervention: Intervention) => {
+  console.log('View details for intervention:', intervention);
+  // Example: router.push(`/interventions/details/${intervention.id}`);
+};
+
+const editIntervention = (intervention: Intervention) => {
+  console.log('Edit intervention:', intervention);
+  // Example: router.push(`/interventions/edit/${intervention.id}`);
+};
+
+const onInterventionCardClick = (intervention: Intervention) => {
+  // Decide if clicking the card should do the same as "View Details" or something else
+  viewInterventionDetails(intervention);
+  console.log('Intervention card clicked:', intervention);
+};
+
+const createIntervention = () => {
+  // Hier kannst du die Logik zum Erstellen einer neuen Intervention einfügen,
+  // z.B. Navigation zu einer Editor-Seite oder Initialisierung eines Stores
+  // Beispiel:
+  // router.push('/interventions/editor');
+  console.log('Neue Intervention erstellen');
+};
 onMounted(() => {
+  // Potential future logic for fetching interventions if not already handled by store
 });
 </script>
 
@@ -281,22 +416,10 @@ onMounted(() => {
 }
 :deep(.p-card-content) {
   flex-grow: 1;
-  overflow: auto; 
+  overflow: auto; /* Wichtig für scrollbare Tabelle/Grid */
 }
 
-.intervention-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
-}
-
-.intervention-grid-container {
-  display: contents;
-}
-
-.intervention-grid-item .p-card {
-  height: 100%; 
-}
+/* Removed .intervention-grid, .intervention-grid-container, .intervention-grid-item styles as Tailwind is used directly */
 
 .col-span-full {
   grid-column: 1 / -1;
@@ -309,5 +432,4 @@ onMounted(() => {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 </style>

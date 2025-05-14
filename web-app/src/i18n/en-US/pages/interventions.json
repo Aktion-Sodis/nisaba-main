@@ -1,6 +1,7 @@
 {
       "title": "Activities",
       "subtitle": "Here you can manage your activities.",
+      "newIntervention": "Create new activity",
       "filters": {
         "search": "Search...",
         "filterByName": "Filter by name",
@@ -16,6 +17,11 @@
         "createdAt": "Created at"
       },
       "createdAt": "Created at",
-      "withActiveFilter": "with active filter"
-    
+      "withActiveFilter": "with active filter",
+
+      "menu": {
+        "viewDetails": "View details",
+        "edit": "Edit",
+        "archive": "Archive"
+      }
   }
