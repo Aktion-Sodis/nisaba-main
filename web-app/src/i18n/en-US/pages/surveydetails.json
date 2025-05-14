@@ -26,6 +26,7 @@
     },
     "question_card": {
         "title": "Question {index}",
+        "general_information": "General Information",
         "input": {
             "question": {
                 "label": "Question Text",
@@ -54,9 +55,18 @@
                 "label": "Follow-up Question"
             },
             "condition_options": {
-                "label": "Show this question when the following options are selected",
+                "label": "Triggering Options",
                 "placeholder": "Select condition options"
             }
-        }
+        },
+        "options": {
+            "title": "Question Options",
+            "option_label": "Option {number}",
+            "add_button": "Add Option",
+            "option_text": {
+                "hint": "Option text"
+            }
+        },
+        "no_options_needed_description": "This question type does not require any additional options to be configured."
     }
 }

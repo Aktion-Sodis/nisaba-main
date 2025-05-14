@@ -8,15 +8,23 @@
   }
 
   h2 {
-    @apply font-semibold text-[1.25rem] leading-[1.3];
+    @apply font-semibold text-[1.25rem] leading-[1.3] text-surface-700;
   }
 
   h3 {
-    @apply font-semibold text-[1.125rem] leading-[1.3] text-surface-700;
+    @apply font-semibold text-[1.125rem] leading-[1.3];
+  }
+
+  h4 {
+    @apply font-semibold text-[1.075rem] leading-[1.3];
   }
 
   p {
     @apply font-normal text-[1rem] leading-[1.3];
+  }
+
+  label {
+    @apply font-semibold text-[1rem] leading-[1.3];
   }
 
   /* Screen Title */
@@ -32,6 +40,10 @@
   /* Section Inner Title */
   .text-section-inner-title {
     @apply font-semibold text-[1.125rem] leading-[1.3];
+  }
+
+  .text-section-inner-subtitle {
+    @apply font-semibold text-[1.075rem] leading-[1.3];
   }
 
   /* Body Text */
@@ -52,6 +64,10 @@
   /* Highlight Text */
   .text-highlight {
     @apply font-semibold text-[1.75rem] leading-[1.3] text-primary-500;
+  }
+
+  .text-label {
+    @apply font-semibold text-[1rem] leading-[1.3];
   }
 }
 

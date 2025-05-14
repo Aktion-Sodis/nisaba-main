@@ -8,6 +8,9 @@
     <template #content>
       <div class="flex flex-row gap-8">
         <div class="flex flex-col gap-4 flex-1">
+          <h4 class="mb-2">
+            {{ $t('surveydetails.question_card.general_information') }}
+          </h4>
           <div class="flex flex-row justify-between items-center gap-2">
             <label for="questionType" class="w-[40%]">
               {{ $t('surveydetails.question_card.input.question_type.label') }}
@@ -55,9 +58,9 @@
           </div>
           <div
             v-if="followUpQuestionPossible && isFollowUpQuestionLocal"
-            class="flex flex-col gap-2"
+            class="flex flex-row justify-between items-center gap-2"
           >
-            <label for="conditionOptions">
+            <label for="conditionOptions" class="w-[40%]">
               {{
                 $t('surveydetails.question_card.input.condition_options.label')
               }}
@@ -72,12 +75,37 @@
               display="chip"
               :filter="true"
               fluid
-              class="w-full"
+              class="w-[60%]"
             />
           </div>
         </div>
+        <Divider layout="vertical" />
         <div class="flex flex-col gap-4 flex-1">
-          <!-- Right column content will go here -->
+          <template
+            v-if="
+              questionType === 'SINGLECHOICE' ||
+              questionType === 'MULTIPLECHOICE'
+            "
+          >
+            <question-option-editor
+              v-model:question="localQuestion"
+              :error="''"
+            />
+          </template>
+          <template v-else>
+            <div
+              class="flex flex-col items-center justify-center gap-4 p-8 text-center"
+            >
+              <i class="pi pi-info-circle text-[3rem] text-surface-400"></i>
+              <p class="text-oneliner-light text-surface-500">
+                {{
+                  $t(
+                    'surveydetails.question_card.no_options_needed_description'
+                  )
+                }}
+              </p>
+            </div>
+          </template>
         </div>
       </div>
     </template>
@@ -90,11 +118,13 @@ import { useConfirm } from 'primevue/useconfirm';
 import { computed, defineProps, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import QuestionOptionEditor from './QuestionOptionEditor.vue';
 import { useSurveyDetailStore } from '../../surveyDetailStore';
 
 import CustomImageUpload from '@/components/elements/CustomImageUpload.vue';
 import MultiLanguageTextField from '@/components/elements/MultiLanguageTextField.vue';
 import type { Question, QuestionType } from '@/models';
+import { formatMLString } from '@/utils/formatStrings';
 import { createNewQuestionOption } from '@/utils/newObjects';
 import { deriveS3Path } from '@/utils/s3Paths';
 
@@ -103,7 +133,7 @@ const props = defineProps<{
 }>();
 
 const surveyDetailStore = useSurveyDetailStore();
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const localQuestion = ref<Question | undefined>(undefined);
 
@@ -262,7 +292,17 @@ watch(
 const isFollowUpQuestionLocal = ref(false);
 
 const availableConditionOptions = computed(() => {
-  return surveyDetailStore.getPreviousQuestionOptions(props.questionIndex);
+  const options = surveyDetailStore.getPreviousQuestionOptions(
+    props.questionIndex
+  );
+  return options.map((questionGroup) => ({
+    ...questionGroup,
+    question_text: formatMLString(questionGroup.question_text, locale.value),
+    options: questionGroup.options.map((option) => ({
+      ...option,
+      text: formatMLString(option.text, locale.value),
+    })),
+  }));
 });
 
 const selectedConditionOptions = computed({

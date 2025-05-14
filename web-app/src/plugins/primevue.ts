@@ -34,6 +34,7 @@ import InputGroupAddon from 'primevue/inputgroupaddon';
 import InputIcon from 'primevue/inputicon';
 import InputMask from 'primevue/inputmask';
 import InputNumber from 'primevue/inputnumber';
+import InputSwitch from 'primevue/inputswitch';
 import InputText from 'primevue/inputtext';
 import Knob from 'primevue/knob';
 import Menu from 'primevue/menu';
@@ -111,6 +112,7 @@ export default {
     app.component('InputMask', InputMask);
     app.component('InputNumber', InputNumber);
     app.component('InputText', InputText);
+    app.component('InputSwitch', InputSwitch);
     app.component('IconField', IconField);
     app.component('InputIcon', InputIcon);
     app.component('Knob', Knob);
