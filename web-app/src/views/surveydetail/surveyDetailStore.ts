@@ -1,7 +1,7 @@
 import { cloneDeep, isEqual } from 'lodash';
 import { defineStore } from 'pinia';
-import { useToast } from 'primevue/usetoast';
 import { useConfirm } from 'primevue/useconfirm';
+import { useToast } from 'primevue/usetoast';
 import { computed, ref } from 'vue';
 
 import i18n from '@/i18n';
@@ -80,7 +80,9 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     }
 
     confirm.require({
-      message: i18n.global.t('surveydetails.publish_card.draft.confirm.message'),
+      message: i18n.global.t(
+        'surveydetails.publish_card.draft.confirm.message'
+      ),
       header: i18n.global.t('surveydetails.publish_card.draft.confirm.title'),
       icon: 'pi pi-exclamation-triangle',
       acceptProps: {
@@ -122,8 +124,12 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
           _dbSurvey.value = cloneDeep(localSurvey.value);
           toast.add({
             severity: 'success',
-            summary: i18n.global.t('surveydetails.toasts.publish_success.title'),
-            detail: i18n.global.t('surveydetails.toasts.publish_success.message'),
+            summary: i18n.global.t(
+              'surveydetails.toasts.publish_success.title'
+            ),
+            detail: i18n.global.t(
+              'surveydetails.toasts.publish_success.message'
+            ),
             life: 3000,
           });
         } catch (error) {
@@ -155,15 +161,23 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     }
 
     confirm.require({
-      message: i18n.global.t('surveydetails.publish_card.published.confirm.message'),
-      header: i18n.global.t('surveydetails.publish_card.published.confirm.title'),
+      message: i18n.global.t(
+        'surveydetails.publish_card.published.confirm.message'
+      ),
+      header: i18n.global.t(
+        'surveydetails.publish_card.published.confirm.title'
+      ),
       icon: 'pi pi-exclamation-triangle',
       acceptProps: {
-        label: i18n.global.t('surveydetails.publish_card.published.confirm.accept'),
+        label: i18n.global.t(
+          'surveydetails.publish_card.published.confirm.accept'
+        ),
         icon: 'pi pi-archive',
       },
       rejectProps: {
-        label: i18n.global.t('surveydetails.publish_card.published.confirm.reject'),
+        label: i18n.global.t(
+          'surveydetails.publish_card.published.confirm.reject'
+        ),
         severity: 'secondary',
         outlined: true,
       },
@@ -182,8 +196,12 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
           _dbSurvey.value = cloneDeep(localSurvey.value);
           toast.add({
             severity: 'success',
-            summary: i18n.global.t('surveydetails.toasts.archive_success.title'),
-            detail: i18n.global.t('surveydetails.toasts.archive_success.message'),
+            summary: i18n.global.t(
+              'surveydetails.toasts.archive_success.title'
+            ),
+            detail: i18n.global.t(
+              'surveydetails.toasts.archive_success.message'
+            ),
             life: 3000,
           });
         } catch (error) {
@@ -215,15 +233,23 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     }
 
     confirm.require({
-      message: i18n.global.t('surveydetails.publish_card.archived.confirm.message'),
-      header: i18n.global.t('surveydetails.publish_card.archived.confirm.title'),
+      message: i18n.global.t(
+        'surveydetails.publish_card.archived.confirm.message'
+      ),
+      header: i18n.global.t(
+        'surveydetails.publish_card.archived.confirm.title'
+      ),
       icon: 'pi pi-exclamation-triangle',
       acceptProps: {
-        label: i18n.global.t('surveydetails.publish_card.archived.confirm.accept'),
+        label: i18n.global.t(
+          'surveydetails.publish_card.archived.confirm.accept'
+        ),
         icon: 'pi pi-refresh',
       },
       rejectProps: {
-        label: i18n.global.t('surveydetails.publish_card.archived.confirm.reject'),
+        label: i18n.global.t(
+          'surveydetails.publish_card.archived.confirm.reject'
+        ),
         severity: 'secondary',
         outlined: true,
       },
@@ -242,8 +268,12 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
           _dbSurvey.value = cloneDeep(localSurvey.value);
           toast.add({
             severity: 'success',
-            summary: i18n.global.t('surveydetails.toasts.reactivate_success.title'),
-            detail: i18n.global.t('surveydetails.toasts.reactivate_success.message'),
+            summary: i18n.global.t(
+              'surveydetails.toasts.reactivate_success.title'
+            ),
+            detail: i18n.global.t(
+              'surveydetails.toasts.reactivate_success.message'
+            ),
             life: 3000,
           });
         } catch (error) {
