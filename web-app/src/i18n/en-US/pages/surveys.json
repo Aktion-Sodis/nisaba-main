@@ -1,0 +1,33 @@
+{
+      "title": "Surveys",
+      "newSurvey": "New Survey",
+      "subtitle": "Here you can manage your surveys.",
+      "resetFilter": "Reset Filter",
+      "noSurveysFound": "No surveys found",
+      "loadingSurveys": "Loading survey data...",
+      "withActiveFilter": " (with active filter)",
+      "columns": {
+        "name": "Name",
+        "description": "Description",
+        "createdAt": "Created on",
+        "status": "Status"
+      },
+      "filters": {
+        "filterByName": "Filter by name",
+        "filterByDescription": "Filter by description",
+        "selectDate": "Select date",
+        "selectStatus": "Select status",
+        "search": "Search"
+      },
+      "status": {
+        "draft": "Draft",
+        "active": "Active",
+        "archived": "Archived"
+      },
+      "menu": {
+        "edit": "Edit",
+        "delete": "Delete",
+        "archive": "Archive",
+        "viewResults": "View Results"
+      }
+}

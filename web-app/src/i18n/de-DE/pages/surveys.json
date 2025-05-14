@@ -1,0 +1,33 @@
+{
+      "title": "Umfragen",
+      "newSurvey": "Neue Umfrage",
+      "subtitle": "Hier können Sie Ihre Umfragen verwalten.",
+      "resetFilter": "Filter zurücksetzen",
+      "noSurveysFound": "Keine Umfragen gefunden",
+      "loadingSurveys": "Lade Umfragedaten...",
+      "withActiveFilter": " (mit aktivem Filter)",
+      "columns": {
+        "name": "Name",
+        "description": "Beschreibung",
+        "createdAt": "Erstellt am",
+        "status": "Status"
+      },
+      "filters": {
+        "filterByName": "Nach Name filtern",
+        "filterByDescription": "Nach Beschreibung filtern",
+        "selectDate": "Datum auswählen",
+        "selectStatus": "Status auswählen",
+        "search": "Suchen"
+      },
+      "status": {
+        "draft": "Entwurf",
+        "active": "Aktiv",
+        "archived": "Archiviert"
+      },
+      "menu": {
+        "edit": "Bearbeiten",
+        "delete": "Löschen",
+        "archive": "Archivieren",
+        "viewResults": "Ergebnisse anzeigen"
+      }
+}
