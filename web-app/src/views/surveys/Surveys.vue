@@ -1,7 +1,18 @@
 <template>
-  <div class="h-full">
+  <div class="h-full pb-4">
     <Card class="h-full">
-      <template #title>Umfragen</template>
+      <template #title>
+        <div class="flex justify-between items-center w-full">
+          <span>Umfragen</span>
+          <Button
+            icon="pi pi-plus"
+            label="Neue Umfrage"
+            @click="createSurvey()"
+            class="ml-auto"
+            size="small"
+          />
+        </div>
+      </template>
 
       <template #subtitle>Hier können Sie Ihre Umfragen verwalten.</template>
 
@@ -28,17 +39,11 @@
             />
           </div>
           <div>
-            <Button
-              icon="pi pi-plus"
-              label="Neue Umfrage"
-              @click="createSurvey()"
-            />
-          </div>
-          <div class="flex align-items-center">
             <SelectButton
               v-model="viewMode"
               :options="viewOptions"
               option-value="value"
+              :allow-empty="false"
             >
               <template #option="slotProps">
                 <i :class="slotProps.option.icon"></i>
@@ -46,7 +51,7 @@
             </SelectButton>
           </div>
         </div>
-
+        
         <DataTable
           v-if="viewMode === 'table'"
           v-model:filters="filters"
@@ -56,13 +61,17 @@
           :rows="10"
           :rows-per-page-options="[5, 10, 20, 50]"
           table-style="min-width: 50rem;"
-          scroll-height="h-[calc(100vh_-_18rem)]"
+          scroll-height="h-[calc(100vh_-_21rem)]"
           filter-display="menu"
           :global-filter-fields="[
             'name_searchable',
             'description_searchable',
             'createdAt_formatted',
+            'status_searchable',
           ]"
+          @row-click="onRowClick"
+          class="cursor-pointer"
+          rowHover 
         >
           <template #empty>Keine Umfragen gefunden.</template>
           <template #loading>Lade Umfragedaten...</template>
@@ -105,75 +114,110 @@
               />
             </template>
           </Column>
-          <!-- Optional: Spalte für Aktionen hinzufügen -->
-          <!--
-           <Column header="Aktionen">
-             <template #body="slotProps">
-               <Button icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" @click="editSurvey(slotProps.data)" />
-               <Button icon="pi pi-trash" class="p-button-rounded p-button-warning" @click="confirmDeleteSurvey(slotProps.data)" />
-             </template>
-           </Column>
-           -->
+          
+          <Column field="status" header="Status" sortable filter :show-filter-match-modes="false">
+            <template #body="slotProps">
+              <Tag :value="formatSurveyStatus(slotProps.data.status)" :severity="getStatusSeverity(slotProps.data.status)" :icon="getStatusIcon(slotProps.data.status)" class="text-xs" />
+            </template>
+            <template #filter="{ filterModel }">
+              <Dropdown
+                v-model="filterModel.value"
+                :options="[
+                  { label: 'Entwurf', value: 'DRAFT' },
+                  { label: 'Aktiv', value: 'ACTIVE' }, 
+                  { label: 'Archiviert', value: 'ARCHIVED' }
+                ]"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Status wählen"
+                class="p-column-filter"
+                style="min-width: 12rem"
+                showClear
+              />
+            </template>
+          </Column>
+          
+          <Column headerStyle="width: 5rem; text-align: center" bodyStyle="text-align: center; overflow: visible">
+        <template #body="slotProps">
+            <Button
+              severity="light"
+              :fluid="false"
+              size="small"
+              class="w-[2em] h-[2em]"
+              @click.stop="toggleMenu($event, slotProps.data)" 
+              aria-haspopup="true"
+              :aria-controls="'overlay_menu'"
+            >
+              <template #icon>
+                <i class="pi pi-ellipsis-v"></i>
+              </template>
+
+            </Button>
+        </template>
+            </Column>
         </DataTable>
 
-        <div v-else-if="viewMode === 'grid'" class="survey-grid">
-          <div v-if="loading" class="flex justify-content-center col-span-full">
+<!-- Grid View -->
+        <div v-else-if="viewMode === 'grid'" class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+          <div v-if="loading" class="col-span-full flex justify-center">
             <ProgressSpinner />
           </div>
-          <div
-            v-else-if="filteredGridSurveys.length === 0"
-            class="flex justify-content-center col-span-full"
-          >
-            Keine Umfragen gefunden{{
-              filters.global.value ? ' (mit aktivem Filter)' : ''
-            }}.
+          <div v-else-if="filteredGridSurveys.length === 0" class="col-span-full flex justify-center">
+            Keine Umfragen gefunden{{ filters.global.value ? ' (mit aktivem Filter)' : '' }}.
           </div>
-          <div v-else class="survey-grid-container">
-            <div
-              v-for="survey in filteredGridSurveys"
-              :key="survey.id"
-              class="survey-grid-item"
-            >
-              <Card class="h-full flex flex-col">
-                <template #title>
-                  {{ formatMLString(survey.name, locale) }}
-                </template>
-                <template #subtitle>
-                  Erstellt am: {{ formatDate(survey.createdAt) }}
-                </template>
-                <template #content>
-                  <p class="line-clamp-3">
-                    {{ formatMLString(survey.description, locale) }}
-                  </p>
-                </template>
-                <template #footer>
-                  <div class="flex justify-end">
-                    <!-- Beispiel-Aktionen für Grid -->
-                    <!--
-                    <Button icon="pi pi-pencil" class="p-button-sm p-button-success mr-1" @click="editSurvey(survey)" />
-                    <Button icon="pi pi-trash" class="p-button-sm p-button-warning" @click="confirmDeleteSurvey(survey)" />
-                    -->
-                  </div>
-                </template>
-              </Card>
-            </div>
-          </div>
+          <Card v-for="survey in filteredGridSurveys"
+                :key="survey.id"
+                class="w-full group shadow-sm border border-white md:shadow-none hover:bg-surface-100 md:border-surface-300 hover:border-surface-300 transition duration-200 ease-in-out relative cursor-pointer"
+                @click="viewResults(survey)">
+            <template #content>
+              <div class="p-2 h-full relative flex flex-col">
+                <div class="absolute z-10 top-0 right-0 -mt-1 -mr-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Button
+                    severity="light"
+                    :fluid="false"
+                    size="small"
+                    class="w-[2em] h-[2em]"
+                    @click.stop="toggleMenu($event, survey)"
+                    aria-haspopup="true"
+                    :aria-controls="'overlay_menu'"
+                  >
+                    <template #icon>
+                      <i class="pi pi-ellipsis-v"></i>
+                    </template>
+                  </Button>
+                </div>
+                <div class="flex justify-between items-start mb-1 pr-8"> 
+                  <h3 class="text-xl font-semibold">
+                    {{ formatMLString(survey.name, locale) }}
+                  </h3>
+                  <Tag :value="formatSurveyStatus(survey.status)" :severity="getStatusSeverity(survey.status)" :icon="getStatusIcon(survey.status)" class="text-xs ml-2 shrink-0" /> 
+                </div>
+                <div class="text-sm text-gray-600 mb-3 flex justify-between items-center">
+                  <span>Erstellt am: {{ formatDate(survey.createdAt) }}</span>
+                </div>
+                <p class="text-base text-gray-700 flex-grow line-clamp-3 pr-8">
+                  {{ formatMLString(survey.description, locale) }}
+                </p>
+                <i class="pi pi-arrow-right absolute bottom-0 right-0 -mb-1 -mr-1 transition-opacity opacity-0 group-hover:opacity-100 duration-200"></i>
+              </div>
+            </template>
+          </Card>
         </div>
       </template>
     </Card>
+    <Menu ref="menu" :model="menuItems" :popup="true" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { FilterMatchMode } from '@primevue/core/api';
+import { FilterMatchMode, type DataTableRowClickEvent } from '@primevue/core/api';
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-
 import { useSurveyDetailStore } from '../surveydetail/surveyDetailStore';
-
 import router from '@/router';
 import { useProjectConfigStore } from '@/stores/projectConfigStore';
 import { formatMLString } from '@/utils/formatStrings';
+import { Survey, SurveyStatus } from '@/models';
 
 const { locale } = useI18n();
 const projectConfigStore = useProjectConfigStore();
@@ -191,6 +235,7 @@ const filters = ref({
   name_searchable: { value: null, matchMode: FilterMatchMode.CONTAINS },
   description_searchable: { value: null, matchMode: FilterMatchMode.CONTAINS },
   createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
+  status: { value: null, matchMode: FilterMatchMode.EQUALS }, 
 });
 
 const isFilterActive = computed(() => {
@@ -212,16 +257,17 @@ const searchableSurveys = computed(() => {
         survey.description,
         currentLocale
       );
-      // Wichtig: Diese Felder werden jetzt für Spalten- UND Globalfilter verwendet
       const nameSearchable = (nameFormatted || '').toLowerCase();
       const descriptionSearchable = (descriptionFormatted || '').toLowerCase();
       const createdAtFormatted = formatDate(survey.createdAt);
+      const statusSearchable = formatSurveyStatus(survey.status).toLowerCase(); 
 
       return {
         ...survey,
         name_searchable: nameSearchable,
         description_searchable: descriptionSearchable,
         createdAt_formatted: createdAtFormatted,
+        status_searchable: statusSearchable, 
       };
     } catch (error) {
       console.error(
@@ -229,7 +275,6 @@ const searchableSurveys = computed(() => {
         survey,
         error
       );
-      // Fallback-Werte bereitstellen
       return {
         ...survey,
         name_searchable: '',
@@ -250,13 +295,13 @@ const filteredGridSurveys = computed(() => {
     return (
       survey.name_searchable.includes(filterText) ||
       survey.description_searchable.includes(filterText) ||
-      survey.createdAt_formatted.toLowerCase().includes(filterText)
+      survey.createdAt_formatted.toLowerCase().includes(filterText) ||
+      survey.status_searchable.includes(filterText) 
     );
   });
 });
 
 const clearFilter = () => {
-  // Wichtig: Die Schlüssel müssen mit den Feldern in der DataTable übereinstimmen
   filters.value = {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     name_searchable: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -265,6 +310,7 @@ const clearFilter = () => {
       matchMode: FilterMatchMode.CONTAINS,
     },
     createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
+    status: { value: null, matchMode: FilterMatchMode.EQUALS }, 
   };
 };
 
@@ -286,13 +332,158 @@ const formatDate = (dateString: string | null | undefined): string => {
   }
 };
 
+const getStatusSeverity = (status: SurveyStatus): string => {
+  switch (status) {
+    case SurveyStatus.DRAFT:
+      return 'info';
+    case SurveyStatus.ACTIVE:
+      return 'success';
+    case SurveyStatus.ARCHIVED:
+      return 'secondary';
+    default:
+      return 'secondary';
+  }
+};
+
+const getStatusIcon = (status: SurveyStatus): string => {
+  switch (status) {
+    case SurveyStatus.DRAFT:
+      return 'pi pi-pencil';
+    case SurveyStatus.ACTIVE:
+      return 'pi pi-check-circle';
+    case SurveyStatus.ARCHIVED:
+      return 'pi pi-archive';
+    default:
+      return 'pi pi-question-circle'; // Fallback icon
+  }
+};
+
+const formatSurveyStatus = (status: SurveyStatus): string => {
+  switch (status) {
+    case SurveyStatus.DRAFT:
+      return 'Entwurf';
+    case SurveyStatus.ACTIVE:
+      return 'Aktiv';
+    case SurveyStatus.ARCHIVED:
+      return 'Archiviert';
+    default:
+      return status; // Fallback, falls ein unbekannter Status auftritt
+  }
+};
+
 const createSurvey = () => {
   const surveyDetailStore = useSurveyDetailStore();
   surveyDetailStore.initCreate();
   router.push('/surveys/editor');
 };
 
-// *** filterMLString wurde entfernt ***
+
+// Menu-related refs and functions
+const menu = ref();
+const selectedSurveyForMenu = ref<Survey | null>(null);
+
+const menuItems = computed(() => {
+  if (!selectedSurveyForMenu.value || !selectedSurveyForMenu.value.status) {
+    return []; // Keine Optionen, wenn kein Survey oder kein Status vorhanden ist
+  }
+
+  const status = selectedSurveyForMenu.value.status;
+  const items = [];
+
+  if (status === SurveyStatus.DRAFT) { 
+    items.push({
+      label: 'Bearbeiten',
+      icon: 'pi pi-fw pi-pencil',
+      command: () => {
+        if (selectedSurveyForMenu.value) {
+          editSurvey(selectedSurveyForMenu.value);
+        }
+      },
+    });
+    items.push({
+      label: 'Löschen',
+      icon: 'pi pi-fw pi-trash',
+      command: () => {
+        if (selectedSurveyForMenu.value) {
+          confirmDeleteSurvey(selectedSurveyForMenu.value);
+        }
+      },
+    });
+  } else if (status === SurveyStatus.ACTIVE) { 
+    items.push({
+      label: 'Archivieren',
+      icon: 'pi pi-fw pi-archive',
+      command: () => {
+        if (selectedSurveyForMenu.value) {
+          archiveSurvey(selectedSurveyForMenu.value);
+        }
+      },
+    });
+    items.push({
+      label: 'Auswertung anzeigen',
+      icon: 'pi pi-fw pi-chart-bar',
+      command: () => {
+        if (selectedSurveyForMenu.value) {
+          viewResults(selectedSurveyForMenu.value);
+        }
+      },
+    });
+  } else if (status === SurveyStatus.ARCHIVED) { 
+    items.push({
+      label: 'Auswertung anzeigen',
+      icon: 'pi pi-fw pi-chart-bar',
+      command: () => {
+        if (selectedSurveyForMenu.value) {
+          viewResults(selectedSurveyForMenu.value);
+        }
+      },
+    });
+  }
+
+  return items;
+});
+
+const toggleMenu = (event: Event, survey: Survey) => { // Survey Typ hier auch anpassen, falls Survey importiert wurde
+  selectedSurveyForMenu.value = survey;
+  menu.value.toggle(event);
+};
+
+// Placeholder functions for menu actions
+const editSurvey = (survey: Survey) => { // Survey Typ
+  console.log('Edit survey:', survey);
+  // Implement navigation to editor or modal for editing
+  // Example: router.push(`/surveys/editor/${survey.id}`);
+  // Or: surveyDetailStore.initEdit(survey); router.push('/surveys/editor');
+};
+
+const confirmDeleteSurvey = (survey: any) => { // Adjust survey type
+  console.log('Confirm delete survey:', survey);
+  // Implement confirmation dialog and deletion logic
+  // Example: if (confirm('Are you sure?')) { projectConfigStore.deleteSurvey(survey.id); }
+};
+
+const viewResults = (survey: any) => { // Adjust survey type
+  console.log('View results for:', survey);
+  // Implement navigation or other logic
+  // Example: router.push(`/surveys/results/${survey.id}`);
+};
+
+const onRowClick = (event: DataTableRowClickEvent) => {
+  // event.data enthält das Survey-Objekt der angeklickten Zeile
+  if (event.data) {
+    viewResults(event.data);
+  }
+};
+
+const archiveSurvey = (survey: any) => { // Adjust survey type
+  console.log('Archive survey:', survey);
+  // Implement logic to change survey state to 'archived'
+  // Example: projectConfigStore.updateSurveyState(survey.id, 'archived');
+  // Sie müssen sicherstellen, dass die Survey-Liste aktualisiert wird,
+  // damit die Änderungen im UI sichtbar werden.
+};
+
+
 </script>
 
 <style scoped>
@@ -306,25 +497,11 @@ const createSurvey = () => {
   overflow: auto; /* Wichtig für scrollbare Tabelle/Grid */
 }
 
-.survey-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
-}
-
-.survey-grid-container {
-  display: contents; /* Lässt die Items direkt im Grid-Kontext sein */
-}
-
-.survey-grid-item .p-card {
-  height: 100%;
-}
 
 .col-span-full {
   grid-column: 1 / -1;
 }
 
-/* Text auf maximal 3 Zeilen beschränken und mit ... abschneiden */
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
