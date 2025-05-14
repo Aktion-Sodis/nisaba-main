@@ -1,0 +1,33 @@
+{
+      "title": "Encuestas",
+      "newSurvey": "Nueva Encuesta",
+      "subtitle": "Aquí puedes gestionar tus encuestas.",
+      "resetFilter": "Restablecer Filtro",
+      "noSurveysFound": "No se encontraron encuestas",
+      "loadingSurveys": "Cargando datos de encuestas...",
+      "withActiveFilter": " (con filtro activo)",
+      "columns": {
+        "name": "Nombre",
+        "description": "Descripción",
+        "createdAt": "Creado el",
+        "status": "Estado"
+      },
+      "filters": {
+        "filterByName": "Filtrar por nombre",
+        "filterByDescription": "Filtrar por descripción",
+        "selectDate": "Seleccionar fecha",
+        "selectStatus": "Seleccionar estado",
+        "search": "Buscar"
+      },
+      "status": {
+        "draft": "Borrador",
+        "active": "Activo",
+        "archived": "Archivado"
+      },
+      "menu": {
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "archive": "Archivar",
+        "viewResults": "Ver Resultados"
+      }
+}
