@@ -7,9 +7,9 @@
           <Button
             icon="pi pi-plus"
             label="Neue Umfrage"
-            @click="createSurvey()"
             class="ml-auto"
             size="small"
+            @click="createSurvey()"
           />
         </div>
       </template>
@@ -51,7 +51,7 @@
             </SelectButton>
           </div>
         </div>
-        
+
         <DataTable
           v-if="viewMode === 'table'"
           v-model:filters="filters"
@@ -69,9 +69,9 @@
             'createdAt_formatted',
             'status_searchable',
           ]"
-          @row-click="onRowClick"
           class="cursor-pointer"
-          rowHover 
+          row-hover
+          @row-click="onRowClick"
         >
           <template #empty>Keine Umfragen gefunden.</template>
           <template #loading>Lade Umfragedaten...</template>
@@ -114,91 +114,125 @@
               />
             </template>
           </Column>
-          
-          <Column field="status" header="Status" sortable filter :show-filter-match-modes="false">
+
+          <Column
+            field="status"
+            header="Status"
+            sortable
+            filter
+            :show-filter-match-modes="false"
+          >
             <template #body="slotProps">
-              <Tag :value="formatSurveyStatus(slotProps.data.status)" :severity="getStatusSeverity(slotProps.data.status)" :icon="getStatusIcon(slotProps.data.status)" class="text-xs" />
+              <Tag
+                :value="formatSurveyStatus(slotProps.data.status)"
+                :severity="getStatusSeverity(slotProps.data.status)"
+                :icon="getStatusIcon(slotProps.data.status)"
+                class="text-xs"
+              />
             </template>
             <template #filter="{ filterModel }">
               <Dropdown
                 v-model="filterModel.value"
                 :options="[
                   { label: 'Entwurf', value: 'DRAFT' },
-                  { label: 'Aktiv', value: 'ACTIVE' }, 
-                  { label: 'Archiviert', value: 'ARCHIVED' }
+                  { label: 'Aktiv', value: 'ACTIVE' },
+                  { label: 'Archiviert', value: 'ARCHIVED' },
                 ]"
-                optionLabel="label"
-                optionValue="value"
+                option-label="label"
+                option-value="value"
                 placeholder="Status wählen"
                 class="p-column-filter"
                 style="min-width: 12rem"
-                showClear
+                show-clear
               />
             </template>
           </Column>
-          
-          <Column headerStyle="width: 5rem; text-align: center" bodyStyle="text-align: center; overflow: visible">
-        <template #body="slotProps">
-            <Button
-              severity="light"
-              :fluid="false"
-              size="small"
-              class="w-[2em] h-[2em]"
-              @click.stop="toggleMenu($event, slotProps.data)" 
-              aria-haspopup="true"
-              :aria-controls="'overlay_menu'"
-            >
-              <template #icon>
-                <i class="pi pi-ellipsis-v"></i>
-              </template>
 
-            </Button>
-        </template>
-            </Column>
+          <Column
+            header-style="width: 5rem; text-align: center"
+            body-style="text-align: center; overflow: visible"
+          >
+            <template #body="slotProps">
+              <Button
+                severity="light"
+                :fluid="false"
+                size="small"
+                class="w-[2em] h-[2em]"
+                aria-haspopup="true"
+                :aria-controls="'overlay_menu'"
+                @click.stop="toggleMenu($event, slotProps.data)"
+              >
+                <template #icon>
+                  <i class="pi pi-ellipsis-v"></i>
+                </template>
+              </Button>
+            </template>
+          </Column>
         </DataTable>
 
-<!-- Grid View -->
-        <div v-else-if="viewMode === 'grid'" class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+        <!-- Grid View -->
+        <div
+          v-else-if="viewMode === 'grid'"
+          class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6"
+        >
           <div v-if="loading" class="col-span-full flex justify-center">
             <ProgressSpinner />
           </div>
-          <div v-else-if="filteredGridSurveys.length === 0" class="col-span-full flex justify-center">
-            Keine Umfragen gefunden{{ filters.global.value ? ' (mit aktivem Filter)' : '' }}.
+          <div
+            v-else-if="filteredGridSurveys.length === 0"
+            class="col-span-full flex justify-center"
+          >
+            Keine Umfragen gefunden{{
+              filters.global.value ? ' (mit aktivem Filter)' : ''
+            }}.
           </div>
-          <Card v-for="survey in filteredGridSurveys"
-                :key="survey.id"
-                class="w-full group shadow-sm border border-white md:shadow-none hover:bg-surface-100 md:border-surface-300 hover:border-surface-300 transition duration-200 ease-in-out relative cursor-pointer"
-                @click="viewResults(survey)">
+          <Card
+            v-for="survey in filteredGridSurveys"
+            :key="survey.id"
+            class="w-full group shadow-sm border border-white md:shadow-none hover:bg-surface-100 md:border-surface-300 hover:border-surface-300 transition duration-200 ease-in-out relative cursor-pointer"
+            @click="viewResults(survey)"
+          >
             <template #content>
               <div class="p-2 h-full relative flex flex-col">
-                <div class="absolute z-10 top-0 right-0 -mt-1 -mr-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div
+                  class="absolute z-10 top-0 right-0 -mt-1 -mr-3 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
                   <Button
                     severity="light"
                     :fluid="false"
                     size="small"
                     class="w-[2em] h-[2em]"
-                    @click.stop="toggleMenu($event, survey)"
                     aria-haspopup="true"
                     :aria-controls="'overlay_menu'"
+                    @click.stop="toggleMenu($event, survey)"
                   >
                     <template #icon>
                       <i class="pi pi-ellipsis-v"></i>
                     </template>
                   </Button>
                 </div>
-                <div class="flex justify-between items-start mb-1 pr-8"> 
+                <div class="flex justify-between items-start mb-1 pr-8">
                   <h3 class="text-xl font-semibold">
                     {{ formatMLString(survey.name, locale) }}
                   </h3>
-                  <Tag :value="formatSurveyStatus(survey.status)" :severity="getStatusSeverity(survey.status)" :icon="getStatusIcon(survey.status)" class="text-xs ml-2 shrink-0" /> 
+                  <Tag
+                    :value="formatSurveyStatus(survey.status)"
+                    :severity="getStatusSeverity(survey.status)"
+                    :icon="getStatusIcon(survey.status)"
+                    class="text-xs ml-2 shrink-0"
+                  />
                 </div>
-                <div class="text-sm text-gray-600 mb-3 flex justify-between items-center">
+                <div
+                  class="text-sm text-gray-600 mb-3 flex justify-between items-center"
+                >
                   <span>Erstellt am: {{ formatDate(survey.createdAt) }}</span>
                 </div>
                 <p class="text-base text-gray-700 flex-grow line-clamp-3 pr-8">
                   {{ formatMLString(survey.description, locale) }}
                 </p>
-                <i class="pi pi-arrow-right absolute bottom-0 right-0 -mb-1 -mr-1 transition-opacity opacity-0 group-hover:opacity-100 duration-200"></i>
+                <i
+                  class="pi pi-arrow-right absolute bottom-0 right-0 -mb-1 -mr-1 transition-opacity opacity-0 group-hover:opacity-100 duration-200"
+                ></i>
               </div>
             </template>
           </Card>
@@ -210,14 +244,19 @@
 </template>
 
 <script lang="ts" setup>
-import { FilterMatchMode, type DataTableRowClickEvent } from '@primevue/core/api';
+import {
+  FilterMatchMode,
+  type DataTableRowClickEvent,
+} from '@primevue/core/api';
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+
 import { useSurveyDetailStore } from '../surveydetail/surveyDetailStore';
+
+import { Survey, SurveyStatus } from '@/models';
 import router from '@/router';
 import { useProjectConfigStore } from '@/stores/projectConfigStore';
 import { formatMLString } from '@/utils/formatStrings';
-import { Survey, SurveyStatus } from '@/models';
 
 const { locale } = useI18n();
 const projectConfigStore = useProjectConfigStore();
@@ -235,7 +274,7 @@ const filters = ref({
   name_searchable: { value: null, matchMode: FilterMatchMode.CONTAINS },
   description_searchable: { value: null, matchMode: FilterMatchMode.CONTAINS },
   createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
-  status: { value: null, matchMode: FilterMatchMode.EQUALS }, 
+  status: { value: null, matchMode: FilterMatchMode.EQUALS },
 });
 
 const isFilterActive = computed(() => {
@@ -260,14 +299,14 @@ const searchableSurveys = computed(() => {
       const nameSearchable = (nameFormatted || '').toLowerCase();
       const descriptionSearchable = (descriptionFormatted || '').toLowerCase();
       const createdAtFormatted = formatDate(survey.createdAt);
-      const statusSearchable = formatSurveyStatus(survey.status).toLowerCase(); 
+      const statusSearchable = formatSurveyStatus(survey.status).toLowerCase();
 
       return {
         ...survey,
         name_searchable: nameSearchable,
         description_searchable: descriptionSearchable,
         createdAt_formatted: createdAtFormatted,
-        status_searchable: statusSearchable, 
+        status_searchable: statusSearchable,
       };
     } catch (error) {
       console.error(
@@ -296,7 +335,7 @@ const filteredGridSurveys = computed(() => {
       survey.name_searchable.includes(filterText) ||
       survey.description_searchable.includes(filterText) ||
       survey.createdAt_formatted.toLowerCase().includes(filterText) ||
-      survey.status_searchable.includes(filterText) 
+      survey.status_searchable.includes(filterText)
     );
   });
 });
@@ -310,7 +349,7 @@ const clearFilter = () => {
       matchMode: FilterMatchMode.CONTAINS,
     },
     createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
-    status: { value: null, matchMode: FilterMatchMode.EQUALS }, 
+    status: { value: null, matchMode: FilterMatchMode.EQUALS },
   };
 };
 
@@ -377,7 +416,6 @@ const createSurvey = () => {
   router.push('/surveys/editor');
 };
 
-
 // Menu-related refs and functions
 const menu = ref();
 const selectedSurveyForMenu = ref<Survey | null>(null);
@@ -390,7 +428,7 @@ const menuItems = computed(() => {
   const status = selectedSurveyForMenu.value.status;
   const items = [];
 
-  if (status === SurveyStatus.DRAFT) { 
+  if (status === SurveyStatus.DRAFT) {
     items.push({
       label: 'Bearbeiten',
       icon: 'pi pi-fw pi-pencil',
@@ -409,7 +447,7 @@ const menuItems = computed(() => {
         }
       },
     });
-  } else if (status === SurveyStatus.ACTIVE) { 
+  } else if (status === SurveyStatus.ACTIVE) {
     items.push({
       label: 'Archivieren',
       icon: 'pi pi-fw pi-archive',
@@ -428,7 +466,7 @@ const menuItems = computed(() => {
         }
       },
     });
-  } else if (status === SurveyStatus.ARCHIVED) { 
+  } else if (status === SurveyStatus.ARCHIVED) {
     items.push({
       label: 'Auswertung anzeigen',
       icon: 'pi pi-fw pi-chart-bar',
@@ -443,26 +481,30 @@ const menuItems = computed(() => {
   return items;
 });
 
-const toggleMenu = (event: Event, survey: Survey) => { // Survey Typ hier auch anpassen, falls Survey importiert wurde
+const toggleMenu = (event: Event, survey: Survey) => {
+  // Survey Typ hier auch anpassen, falls Survey importiert wurde
   selectedSurveyForMenu.value = survey;
   menu.value.toggle(event);
 };
 
 // Placeholder functions for menu actions
-const editSurvey = (survey: Survey) => { // Survey Typ
+const editSurvey = (survey: Survey) => {
+  // Survey Typ
   console.log('Edit survey:', survey);
   // Implement navigation to editor or modal for editing
   // Example: router.push(`/surveys/editor/${survey.id}`);
   // Or: surveyDetailStore.initEdit(survey); router.push('/surveys/editor');
 };
 
-const confirmDeleteSurvey = (survey: any) => { // Adjust survey type
+const confirmDeleteSurvey = (survey: any) => {
+  // Adjust survey type
   console.log('Confirm delete survey:', survey);
   // Implement confirmation dialog and deletion logic
   // Example: if (confirm('Are you sure?')) { projectConfigStore.deleteSurvey(survey.id); }
 };
 
-const viewResults = (survey: any) => { // Adjust survey type
+const viewResults = (survey: any) => {
+  // Adjust survey type
   console.log('View results for:', survey);
   // Implement navigation or other logic
   // Example: router.push(`/surveys/results/${survey.id}`);
@@ -475,15 +517,14 @@ const onRowClick = (event: DataTableRowClickEvent) => {
   }
 };
 
-const archiveSurvey = (survey: any) => { // Adjust survey type
+const archiveSurvey = (survey: any) => {
+  // Adjust survey type
   console.log('Archive survey:', survey);
   // Implement logic to change survey state to 'archived'
   // Example: projectConfigStore.updateSurveyState(survey.id, 'archived');
   // Sie müssen sicherstellen, dass die Survey-Liste aktualisiert wird,
   // damit die Änderungen im UI sichtbar werden.
 };
-
-
 </script>
 
 <style scoped>
@@ -496,7 +537,6 @@ const archiveSurvey = (survey: any) => { // Adjust survey type
   flex-grow: 1;
   overflow: auto; /* Wichtig für scrollbare Tabelle/Grid */
 }
-
 
 .col-span-full {
   grid-column: 1 / -1;
