@@ -1,6 +1,7 @@
 import { cloneDeep, isEqual } from 'lodash';
 import { defineStore } from 'pinia';
 import { useToast } from 'primevue/usetoast';
+import { useConfirm } from 'primevue/useconfirm';
 import { computed, ref } from 'vue';
 
 import i18n from '@/i18n';
@@ -10,6 +11,7 @@ import { createNewTextQuestion, createNewSurvey } from '@/utils/newObjects';
 
 export const useSurveyDetailStore = defineStore('surveyDetail', () => {
   const toast = useToast();
+  const confirm = useConfirm();
   const activeIndex = ref(-1);
   const lastSavedAt = ref<Date | null>(null);
   const isSaving = ref(false);
@@ -67,82 +69,199 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     );
   });
 
+  const publishingSurvey = ref(false);
   const publishSurvey = async () => {
     if (!localSurvey.value) {
       return;
     }
 
-    clearErrors();
-
-    if (!validateSurvey()) {
-      toast.add({
-        severity: 'error',
-        summary: i18n.global.t(
-          'surveydetails.toasts.publish_validation_error.title'
-        ),
-        detail: i18n.global.t(
-          'surveydetails.toasts.publish_validation_error.message'
-        ),
-        life: 5000,
-      });
+    if (publishingSurvey.value) {
       return;
     }
 
-    try {
-      await projectConfigStore.updateSurvey({
-        ...localSurvey.value,
-        status: SurveyStatus.ACTIVE,
-      } as Survey);
-      _dbSurvey.value = cloneDeep(localSurvey.value);
-      toast.add({
-        severity: 'success',
-        summary: i18n.global.t('surveydetails.toasts.publish_success.title'),
-        detail: i18n.global.t('surveydetails.toasts.publish_success.message'),
-        life: 3000,
-      });
-    } catch (error) {
-      toast.add({
-        severity: 'error',
-        summary: i18n.global.t(
-          'surveydetails.toasts.publish_server_error.title'
-        ),
-        detail: i18n.global.t(
-          'surveydetails.toasts.publish_server_error.message'
-        ),
-        life: 5000,
-      });
-    }
+    confirm.require({
+      message: i18n.global.t('surveydetails.publish_card.draft.confirm.message'),
+      header: i18n.global.t('surveydetails.publish_card.draft.confirm.title'),
+      icon: 'pi pi-exclamation-triangle',
+      acceptProps: {
+        label: i18n.global.t('surveydetails.publish_card.draft.confirm.accept'),
+        icon: 'pi pi-send',
+      },
+      rejectProps: {
+        label: i18n.global.t('surveydetails.publish_card.draft.confirm.reject'),
+        severity: 'secondary',
+        outlined: true,
+      },
+      accept: async () => {
+        publishingSurvey.value = true;
+        clearErrors();
+
+        if (!validateSurvey()) {
+          toast.add({
+            severity: 'error',
+            summary: i18n.global.t(
+              'surveydetails.toasts.publish_validation_error.title'
+            ),
+            detail: i18n.global.t(
+              'surveydetails.toasts.publish_validation_error.message'
+            ),
+            life: 5000,
+          });
+          return;
+        }
+
+        try {
+          await projectConfigStore.updateSurvey({
+            ...localSurvey.value,
+            status: SurveyStatus.ACTIVE,
+          } as Survey);
+          localSurvey.value = {
+            ...localSurvey.value,
+            status: SurveyStatus.ACTIVE,
+          } as Survey;
+          _dbSurvey.value = cloneDeep(localSurvey.value);
+          toast.add({
+            severity: 'success',
+            summary: i18n.global.t('surveydetails.toasts.publish_success.title'),
+            detail: i18n.global.t('surveydetails.toasts.publish_success.message'),
+            life: 3000,
+          });
+        } catch (error) {
+          toast.add({
+            severity: 'error',
+            summary: i18n.global.t(
+              'surveydetails.toasts.publish_server_error.title'
+            ),
+            detail: i18n.global.t(
+              'surveydetails.toasts.publish_server_error.message'
+            ),
+            life: 5000,
+          });
+        } finally {
+          publishingSurvey.value = false;
+        }
+      },
+    });
   };
 
+  const archivingSurvey = ref(false);
   const archiveSurvey = async () => {
     if (!localSurvey.value) {
       return;
     }
 
-    try {
-      await projectConfigStore.updateSurvey({
-        ...localSurvey.value,
-        status: SurveyStatus.ARCHIVED,
-      } as Survey);
-      _dbSurvey.value = cloneDeep(localSurvey.value);
-      toast.add({
-        severity: 'success',
-        summary: i18n.global.t('surveydetails.toasts.archive_success.title'),
-        detail: i18n.global.t('surveydetails.toasts.archive_success.message'),
-        life: 3000,
-      });
-    } catch (error) {
-      toast.add({
-        severity: 'error',
-        summary: i18n.global.t(
-          'surveydetails.toasts.archive_server_error.title'
-        ),
-        detail: i18n.global.t(
-          'surveydetails.toasts.archive_server_error.message'
-        ),
-        life: 5000,
-      });
+    if (archivingSurvey.value) {
+      return;
     }
+
+    confirm.require({
+      message: i18n.global.t('surveydetails.publish_card.published.confirm.message'),
+      header: i18n.global.t('surveydetails.publish_card.published.confirm.title'),
+      icon: 'pi pi-exclamation-triangle',
+      acceptProps: {
+        label: i18n.global.t('surveydetails.publish_card.published.confirm.accept'),
+        icon: 'pi pi-archive',
+      },
+      rejectProps: {
+        label: i18n.global.t('surveydetails.publish_card.published.confirm.reject'),
+        severity: 'secondary',
+        outlined: true,
+      },
+      accept: async () => {
+        archivingSurvey.value = true;
+
+        try {
+          await projectConfigStore.updateSurvey({
+            ...localSurvey.value,
+            status: SurveyStatus.ARCHIVED,
+          } as Survey);
+          localSurvey.value = {
+            ...localSurvey.value,
+            status: SurveyStatus.ARCHIVED,
+          } as Survey;
+          _dbSurvey.value = cloneDeep(localSurvey.value);
+          toast.add({
+            severity: 'success',
+            summary: i18n.global.t('surveydetails.toasts.archive_success.title'),
+            detail: i18n.global.t('surveydetails.toasts.archive_success.message'),
+            life: 3000,
+          });
+        } catch (error) {
+          toast.add({
+            severity: 'error',
+            summary: i18n.global.t(
+              'surveydetails.toasts.archive_server_error.title'
+            ),
+            detail: i18n.global.t(
+              'surveydetails.toasts.archive_server_error.message'
+            ),
+            life: 5000,
+          });
+        } finally {
+          archivingSurvey.value = false;
+        }
+      },
+    });
+  };
+
+  const reactivatingSurvey = ref(false);
+  const reactivateSurvey = async () => {
+    if (!localSurvey.value) {
+      return;
+    }
+
+    if (reactivatingSurvey.value) {
+      return;
+    }
+
+    confirm.require({
+      message: i18n.global.t('surveydetails.publish_card.archived.confirm.message'),
+      header: i18n.global.t('surveydetails.publish_card.archived.confirm.title'),
+      icon: 'pi pi-exclamation-triangle',
+      acceptProps: {
+        label: i18n.global.t('surveydetails.publish_card.archived.confirm.accept'),
+        icon: 'pi pi-refresh',
+      },
+      rejectProps: {
+        label: i18n.global.t('surveydetails.publish_card.archived.confirm.reject'),
+        severity: 'secondary',
+        outlined: true,
+      },
+      accept: async () => {
+        reactivatingSurvey.value = true;
+
+        try {
+          await projectConfigStore.updateSurvey({
+            ...localSurvey.value,
+            status: SurveyStatus.ACTIVE,
+          } as Survey);
+          localSurvey.value = {
+            ...localSurvey.value,
+            status: SurveyStatus.ACTIVE,
+          } as Survey;
+          _dbSurvey.value = cloneDeep(localSurvey.value);
+          toast.add({
+            severity: 'success',
+            summary: i18n.global.t('surveydetails.toasts.reactivate_success.title'),
+            detail: i18n.global.t('surveydetails.toasts.reactivate_success.message'),
+            life: 3000,
+          });
+        } catch (error) {
+          toast.add({
+            severity: 'error',
+            summary: i18n.global.t(
+              'surveydetails.toasts.reactivate_server_error.title'
+            ),
+            detail: i18n.global.t(
+              'surveydetails.toasts.reactivate_server_error.message'
+            ),
+            life: 5000,
+          });
+        } finally {
+          reactivatingSurvey.value = false;
+        }
+      },
+    });
   };
 
   const initEdit = (survey: Survey) => {
@@ -629,6 +748,7 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     lastSavedAt,
     publishSurvey,
     archiveSurvey,
+    reactivateSurvey,
     errors,
     hasErrors,
     validateSurvey,

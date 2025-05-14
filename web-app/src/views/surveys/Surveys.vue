@@ -266,6 +266,7 @@ import {
   type DataTableRowClickEvent,
 } from '@primevue/core/api';
 import { useConfirm } from 'primevue/useconfirm';
+import { useToast } from 'primevue/usetoast';
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -278,6 +279,8 @@ import { formatMLString } from '@/utils/formatStrings';
 
 const { locale, t } = useI18n();
 const projectConfigStore = useProjectConfigStore();
+const confirm = useConfirm();
+const toast = useToast();
 
 const surveys = computed(() => projectConfigStore.surveys);
 const loading = computed(() => projectConfigStore.isLoadingSurveys);
@@ -409,7 +412,7 @@ const getStatusIcon = (status: SurveyStatus): string => {
     case SurveyStatus.ACTIVE:
       return 'pi pi-check-circle';
     case SurveyStatus.ARCHIVED:
-      return 'pi pi-archive';
+      return 'pi pi-box';
     default:
       return 'pi pi-question-circle'; // Fallback icon
   }
@@ -440,7 +443,7 @@ const selectedSurveyForMenu = ref<Survey | null>(null);
 
 const menuItems = computed(() => {
   if (!selectedSurveyForMenu.value || !selectedSurveyForMenu.value.status) {
-    return []; // Keine Optionen, wenn kein Survey oder kein Status vorhanden ist
+    return [];
   }
 
   const status = selectedSurveyForMenu.value.status;
@@ -468,7 +471,7 @@ const menuItems = computed(() => {
   } else if (status === SurveyStatus.ACTIVE) {
     items.push({
       label: t('surveys.menu.archive'),
-      icon: 'pi pi-fw pi-archive',
+      icon: 'pi pi-fw pi-box',
       command: () => {
         if (selectedSurveyForMenu.value) {
           archiveSurvey(selectedSurveyForMenu.value);
@@ -478,6 +481,7 @@ const menuItems = computed(() => {
     items.push({
       label: t('surveys.menu.viewResults'),
       icon: 'pi pi-fw pi-chart-bar',
+      disabled: true, // Disabled for now
       command: () => {
         if (selectedSurveyForMenu.value) {
           viewResults(selectedSurveyForMenu.value);
@@ -486,8 +490,18 @@ const menuItems = computed(() => {
     });
   } else if (status === SurveyStatus.ARCHIVED) {
     items.push({
+      label: t('surveys.menu.reactivate'),
+      icon: 'pi pi-fw pi-refresh',
+      command: () => {
+        if (selectedSurveyForMenu.value) {
+          reactivateSurvey(selectedSurveyForMenu.value);
+        }
+      },
+    });
+    items.push({
       label: t('surveys.menu.viewResults'),
       icon: 'pi pi-fw pi-chart-bar',
+      disabled: true, // Disabled for now
       command: () => {
         if (selectedSurveyForMenu.value) {
           viewResults(selectedSurveyForMenu.value);
@@ -512,8 +526,6 @@ const editSurvey = (survey: Survey) => {
   router.push('/surveys/editor');
 };
 
-const confirm = useConfirm();
-
 const confirmDeleteSurvey = (survey: any) => {
   confirm.require({
     message: t('surveys.confirm.delete.message'),
@@ -535,11 +547,10 @@ const confirmDeleteSurvey = (survey: any) => {
   });
 };
 
-const viewResults = (survey: any) => {
-  // Adjust survey type
+const viewResults = (survey: Survey) => {
+  // This is currently disabled in the menu
   console.log('View results for:', survey);
-  // Implement navigation or other logic
-  // Example: router.push(`/surveys/results/${survey.id}`);
+  // Will be implemented later
 };
 
 const onRowClick = (event: DataTableRowClickEvent) => {
@@ -549,13 +560,80 @@ const onRowClick = (event: DataTableRowClickEvent) => {
   }
 };
 
-const archiveSurvey = (survey: any) => {
-  // Adjust survey type
-  console.log('Archive survey:', survey);
-  // Implement logic to change survey state to 'archived'
-  // Example: projectConfigStore.updateSurveyState(survey.id, 'archived');
-  // Sie müssen sicherstellen, dass die Survey-Liste aktualisiert wird,
-  // damit die Änderungen im UI sichtbar werden.
+const archiveSurvey = (survey: Survey) => {
+  confirm.require({
+    message: t('surveydetails.publish_card.published.confirm.message'),
+    header: t('surveydetails.publish_card.published.confirm.title'),
+    icon: 'pi pi-exclamation-triangle',
+    acceptProps: {
+      label: t('surveydetails.publish_card.published.confirm.accept'),
+      icon: 'pi pi-archive',
+    },
+    rejectProps: {
+      label: t('surveydetails.publish_card.published.confirm.reject'),
+      severity: 'secondary',
+      outlined: true,
+    },
+    accept: async () => {
+      try {
+        await projectConfigStore.updateSurvey({
+          ...survey,
+          status: SurveyStatus.ARCHIVED,
+        } as Survey);
+        toast.add({
+          severity: 'success',
+          summary: t('surveydetails.toasts.archive_success.title'),
+          detail: t('surveydetails.toasts.archive_success.message'),
+          life: 3000,
+        });
+      } catch (error) {
+        toast.add({
+          severity: 'error',
+          summary: t('surveydetails.toasts.archive_server_error.title'),
+          detail: t('surveydetails.toasts.archive_server_error.message'),
+          life: 5000,
+        });
+      }
+    },
+  });
+};
+
+const reactivateSurvey = (survey: Survey) => {
+  confirm.require({
+    message: t('surveydetails.publish_card.archived.confirm.message'),
+    header: t('surveydetails.publish_card.archived.confirm.title'),
+    icon: 'pi pi-exclamation-triangle',
+    acceptProps: {
+      label: t('surveydetails.publish_card.archived.confirm.accept'),
+      icon: 'pi pi-refresh',
+    },
+    rejectProps: {
+      label: t('surveydetails.publish_card.archived.confirm.reject'),
+      severity: 'secondary',
+      outlined: true,
+    },
+    accept: async () => {
+      try {
+        await projectConfigStore.updateSurvey({
+          ...survey,
+          status: SurveyStatus.ACTIVE,
+        } as Survey);
+        toast.add({
+          severity: 'success',
+          summary: t('surveydetails.toasts.reactivate_success.title'),
+          detail: t('surveydetails.toasts.reactivate_success.message'),
+          life: 3000,
+        });
+      } catch (error) {
+        toast.add({
+          severity: 'error',
+          summary: t('surveydetails.toasts.reactivate_server_error.title'),
+          detail: t('surveydetails.toasts.reactivate_server_error.message'),
+          life: 5000,
+        });
+      }
+    },
+  });
 };
 </script>
 

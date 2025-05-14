@@ -91,6 +91,16 @@
                 "accept": "Yes, archive survey",
                 "reject": "No, keep published"
             }
+        },
+        "archived": {
+            "info": "This survey is currently archived and not available to users.",
+            "button": "Reactivate Survey",
+            "confirm": {
+                "title": "Reactivate Survey",
+                "message": "Are you sure you want to reactivate this survey? It will become available to users again.",
+                "accept": "Yes, reactivate survey",
+                "reject": "No, keep archived"
+            }
         }
     },
     "errors": {
@@ -141,6 +151,14 @@
         "archive_server_error": {
             "title": "Server Error",
             "message": "An error occurred while archiving the survey. Please try again later."
+        },
+        "reactivate_success": {
+            "title": "Survey reactivated",
+            "message": "The survey has been reactivated successfully and is now available to users again."
+        },
+        "reactivate_server_error": {
+            "title": "Server Error",
+            "message": "An error occurred while reactivating the survey. Please try again later."
         }
     }
 }
