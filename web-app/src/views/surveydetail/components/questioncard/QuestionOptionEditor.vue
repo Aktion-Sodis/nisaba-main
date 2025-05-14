@@ -26,12 +26,14 @@
               v-model:allowed-keys="surveyDetailStore.allowedLanguageKeys"
               :hint="$t('surveydetails.question_card.options.option_text.hint')"
               :error="error"
+              :disabled="disabled"
               class="flex-1"
             />
             <Button
               icon="pi pi-trash"
               severity="danger"
-              outlined
+              text
+              :disabled="disabled"
               @click="removeOption(index)"
             />
           </div>
@@ -41,6 +43,7 @@
       <Button
         icon="pi pi-plus"
         :label="$t('surveydetails.question_card.options.add_button')"
+        :disabled="disabled"
         @click="addOption"
       />
     </div>
@@ -65,6 +68,11 @@ const props = defineProps({
     type: String,
     required: false,
     default: '',
+  },
+  disabled: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 });
 

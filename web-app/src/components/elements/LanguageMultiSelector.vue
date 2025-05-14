@@ -9,6 +9,7 @@
       :show-toggle-all="false"
       fluid
       :max-selected-labels="2"
+      :disabled="disabled"
       @change="handleChange"
     />
     <Message v-if="showError" severity="error" :closable="false">
@@ -27,6 +28,10 @@ const props = defineProps({
   value: {
     type: Array as PropType<string[]>,
     required: true,
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
   },
 });
 

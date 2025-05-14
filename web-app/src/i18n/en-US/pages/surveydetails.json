@@ -166,5 +166,8 @@
             "title": "Server Error",
             "message": "An error occurred while reactivating the survey. Please try again later."
         }
+    },
+    "add_question_card": {
+        "button": "Add Question"
     }
 }

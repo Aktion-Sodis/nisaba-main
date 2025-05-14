@@ -30,7 +30,9 @@
         />
       </div>
       <publish-card />
-      <save-card />
+      <save-card
+        v-if="surveyDetailStore.survey?.status === SurveyStatus.DRAFT"
+      />
     </div>
   </div>
 </template>
@@ -46,6 +48,8 @@ import PublishCard from './components/PublishCard.vue';
 import QuestionCard from './components/questioncard/QuestionCard.vue';
 import SaveCard from './components/SaveCard.vue';
 import { useSurveyDetailStore } from './surveyDetailStore';
+
+import { SurveyStatus } from '@/models';
 
 const surveyDetailStore = useSurveyDetailStore();
 const { locale } = useI18n();

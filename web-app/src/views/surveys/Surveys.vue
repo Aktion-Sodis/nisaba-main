@@ -205,7 +205,7 @@
             v-for="survey in filteredGridSurveys"
             :key="survey.id"
             class="w-full group shadow-sm border border-white md:shadow-none hover:bg-surface-100 md:border-surface-300 hover:border-surface-300 transition duration-200 ease-in-out relative cursor-pointer"
-            @click="viewResults(survey)"
+            @click="handleSurveyClick(survey)"
           >
             <template #content>
               <div class="p-2 h-full relative flex flex-col">
@@ -553,10 +553,23 @@ const viewResults = (survey: Survey) => {
   // Will be implemented later
 };
 
+const viewSurvey = (survey: Survey) => {
+  const surveyDetailStore = useSurveyDetailStore();
+  surveyDetailStore.initView(survey);
+  router.push('/surveys/editor');
+};
+
 const onRowClick = (event: DataTableRowClickEvent) => {
-  // event.data enthält das Survey-Objekt der angeklickten Zeile
   if (event.data) {
-    editSurvey(event.data);
+    handleSurveyClick(event.data);
+  }
+};
+
+const handleSurveyClick = (survey: Survey) => {
+  if (survey.status === SurveyStatus.DRAFT) {
+    editSurvey(survey);
+  } else {
+    viewSurvey(survey);
   }
 };
 

@@ -32,6 +32,7 @@
               option-label="label"
               option-value="value"
               class="w-[60%]"
+              :disabled="!surveyDetailStore.editMode"
             />
           </div>
           <div class="flex flex-col gap-2">
@@ -42,6 +43,7 @@
               v-model:value="localQuestion.text"
               :allowed-keys="surveyDetailStore.allowedLanguageKeys"
               :n-lines="3"
+              :disabled="!surveyDetailStore.editMode"
             />
           </div>
           <div class="flex flex-col gap-2">
@@ -55,7 +57,7 @@
                   questionID: localQuestion.id,
                 })
               "
-              :editable="true"
+              :editable="surveyDetailStore.editMode"
             />
           </div>
           <div
@@ -65,7 +67,10 @@
             <label for="isFollowUpQuestion" class="w-[40%]">
               {{ $t('surveydetails.question_card.input.is_follow_up.label') }}
             </label>
-            <InputSwitch v-model="isFollowUpQuestionLocal" />
+            <InputSwitch
+              v-model="isFollowUpQuestionLocal"
+              :disabled="!surveyDetailStore.editMode"
+            />
           </div>
           <div
             v-if="followUpQuestionPossible && isFollowUpQuestionLocal"
@@ -87,6 +92,7 @@
               :filter="true"
               fluid
               class="w-[60%]"
+              :disabled="!surveyDetailStore.editMode"
             />
           </div>
         </div>
@@ -101,6 +107,7 @@
             <question-option-editor
               v-model:question="localQuestion"
               :error="''"
+              :disabled="!surveyDetailStore.editMode"
             />
           </template>
           <template v-else>

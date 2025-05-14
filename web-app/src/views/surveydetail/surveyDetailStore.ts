@@ -15,6 +15,7 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
   const activeIndex = ref(-1);
   const lastSavedAt = ref<Date | null>(null);
   const isSaving = ref(false);
+  const editMode = ref(false);
 
   const projectConfigStore = useProjectConfigStore();
 
@@ -297,16 +298,25 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
   const initEdit = (survey: Survey) => {
     _dbSurvey.value = cloneDeep(survey);
     localSurvey.value = cloneDeep(survey);
+    editMode.value = true;
   };
 
   const initCreate = () => {
     localSurvey.value = createNewSurvey(allowedLanguageKeys.value);
     _dbSurvey.value = null;
+    editMode.value = true;
+  };
+
+  const initView = (survey: Survey) => {
+    localSurvey.value = cloneDeep(survey);
+    _dbSurvey.value = cloneDeep(survey);
+    editMode.value = false;
   };
 
   const clear = () => {
     localSurvey.value = null;
     _dbSurvey.value = null;
+    editMode.value = false;
   };
 
   const clearErrors = () => {
@@ -785,5 +795,7 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     clearErrors,
     isSaving,
     initEdit,
+    editMode,
+    initView,
   };
 });

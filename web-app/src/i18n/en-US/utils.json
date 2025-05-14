@@ -10,6 +10,7 @@
         "image_replace": "Replace Image",
         "image_choose": "Choose Image",
         "image_placeholder": "Drag and drop image here to upload",
-        "save": "Save"
+        "save": "Save",
+        "edit": "Edit Survey"
     }
 }
