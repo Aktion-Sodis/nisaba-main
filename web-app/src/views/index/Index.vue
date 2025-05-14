@@ -28,7 +28,7 @@
             @click="$router.push('/interventions')"
           >
             <template #icon>
-              <i class="pi pi-clipboard text-surface-0 text-5xl md:text-6xl" />
+              <i class="pi pi-bolt text-surface-0 text-5xl md:text-6xl" />
             </template>
           </menu-card>
 
