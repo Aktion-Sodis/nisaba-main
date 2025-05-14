@@ -71,6 +71,12 @@
         "general_section": "General Information",
         "question_title": "Question {index}"
     },
+    "navigation_guard": {
+        "title": "Unsaved Changes",
+        "message": "You have unsaved changes in your survey. Are you sure you want to leave?",
+        "accept": "Yes, leave",
+        "reject": "No, stay"
+    },
     "publish_card": {
         "draft": {
             "info": "This survey is currently in draft mode. You can publish it when you're ready.",

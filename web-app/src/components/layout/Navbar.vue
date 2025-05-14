@@ -391,6 +391,7 @@ import { useRoute, useRouter } from 'vue-router';
 import logoURL from '@/assets/img/aktionSodisBig.png';
 import { useAuthStore, AuthenticationState } from '@/stores/auth';
 import { useUserStore } from '@/stores/user';
+import { useSurveyDetailStore } from '@/views/surveydetail/surveyDetailStore';
 
 const getColor = (target: string) => {
   if (route.path !== undefined && route.path.includes(target)) {
@@ -417,6 +418,7 @@ const breadcrumbMenuLevel = ref();
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
+const surveyDetailStore = useSurveyDetailStore();
 const actionMenuItems = ref<MenuItem[]>([
   {
     items: [
@@ -531,17 +533,18 @@ const breadcrumbMenuItems = computed(() => {
           icon: 'assignment',
           iconType: 'material',
           color: getColor('surveys'),
-          active: isActive('surveys'),
-          command: () => router.push({ name: 'Surveys' }),
+          active: isActive('surveys/overview'),
+          command: () => router.push('/surveys/overview'),
         },
         {
           id: 'surveyeditor',
           label: t('apps.apps.surveyeditor.title'),
           icon: 'edit_note',
           iconType: 'material',
-          color: getColor('surveyeditor'),
-          active: isActive('surveyeditor'),
-          command: () => router.push({ name: 'SurveyEditor' }),
+          color: getColor('surveys/editor'),
+          active: isActive('surveys/editor'),
+          disabled: !surveyDetailStore.survey,
+          command: () => router.push('/surveys/editor'),
         },
       ],
     },
