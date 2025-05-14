@@ -1,38 +1,44 @@
 <template>
-  <Card class="h-full">
+  <Card class="h-full flex flex-col">
     <template #title>
       {{ t('surveydetails.navigation_card.title') }}
     </template>
     <template #content>
-      <Listbox
-        :options="navigationItems"
-        option-label="label"
-        option-value="value"
-        :model-value="activeIndex"
-        list-style="max-height: 100%"
-        @change="(e) => onNavigate(e.value)"
+      <div
+        class="flex-1 min-h-0 overflow-auto"
+        style="height: calc(100% - 2.5rem)"
       >
-        <template #option="slotProps">
-          <div class="flex flex-col gap-1 my-1">
-            <div class="flex items-center gap-4">
-              <span class="text-body">
-                {{ slotProps.option.label }}
+        <Listbox
+          :options="navigationItems"
+          option-label="label"
+          option-value="value"
+          :model-value="activeIndex"
+          class="h-full"
+          list-style="max-height: none"
+          @change="(e) => onNavigate(e.value)"
+        >
+          <template #option="slotProps">
+            <div class="flex flex-col gap-1 my-1">
+              <div class="flex items-center gap-4">
+                <span class="text-body">
+                  {{ slotProps.option.label }}
+                </span>
+                <Tag
+                  v-if="slotProps.option.type"
+                  :value="slotProps.option.type"
+                  class="w-fit"
+                />
+              </div>
+              <span
+                v-if="slotProps.option.subtitle"
+                class="text-oneliner-light-small"
+              >
+                {{ slotProps.option.subtitle }}
               </span>
-              <Tag
-                v-if="slotProps.option.type"
-                :value="slotProps.option.type"
-                class="w-fit"
-              />
             </div>
-            <span
-              v-if="slotProps.option.subtitle"
-              class="text-oneliner-light-small"
-            >
-              {{ slotProps.option.subtitle }}
-            </span>
-          </div>
-        </template>
-      </Listbox>
+          </template>
+        </Listbox>
+      </div>
     </template>
   </Card>
 </template>

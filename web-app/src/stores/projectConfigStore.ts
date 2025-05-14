@@ -21,7 +21,7 @@ import {
   deleteLevel as deleteLevelMutation,
   deleteIntervention as deleteInterventionMutation,
 } from '@/graphql/mutations';
-import { listLevels, listInterventions, listSurveys } from '@/graphql/queries';
+import { listLevels, listInterventions } from '@/graphql/queries';
 import i18n from '@/i18n';
 import { amplifyDataClient } from '@/utils/amplifyDataClient';
 
@@ -169,6 +169,66 @@ const deleteSurveyMinimalMutation = /* GraphQL */ `
   ) {
     deleteSurvey(input: $input, condition: $condition) {
       id
+    }
+  }
+`;
+
+const listSurveysMinimal = /* GraphQL */ `
+  query ListSurveysMinimal(
+    $filter: ModelSurveyFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSurveys(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        questions {
+          id
+          text {
+            languageKeys
+            languageTexts
+            __typename
+          }
+          type
+          questionOptions {
+            id
+            text {
+              languageKeys
+              languageTexts
+              __typename
+            }
+            followUpQuestionIDs
+            __typename
+          }
+          isFollowUpQuestion
+          __typename
+        }
+        surveyType
+        status
+        schemeVersion
+        archived
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        interventionSurveysId
+        organization_id
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
     }
   }
 `;
@@ -373,7 +433,7 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
 
       do {
         const result = (await amplifyDataClient.graphql({
-          query: listSurveys,
+          query: listSurveysMinimal,
           variables: {
             nextToken,
           },

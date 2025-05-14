@@ -22,11 +22,13 @@
         <add-question-card />
       </div>
     </div>
-    <div class="w-80 flex-shrink-0 flex flex-col gap-4">
-      <navigation-card
-        :active-index="activeIndex"
-        :on-navigate="scrollToSection"
-      />
+    <div class="w-80 flex-shrink-0 flex flex-col gap-4 h-full">
+      <div class="flex-grow min-h-0">
+        <navigation-card
+          :active-index="activeIndex"
+          :on-navigate="scrollToSection"
+        />
+      </div>
       <publish-card />
       <save-card />
     </div>

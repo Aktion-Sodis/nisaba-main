@@ -1,6 +1,7 @@
 export default {
   root: ({ props }) => ({
     class: [
+      'h-full',
 
       // Colors
       { 'bg-surface-0 dark:bg-surface-900': !props.disabled },
@@ -16,7 +17,7 @@ export default {
       { 'border-red-500 dark:border-red-400': props.invalid },
     ],
   }),
-  listContainer: 'overflow-auto',
+  listContainer: 'overflow-auto h-full',
   list: {
     class: 'py-1 list-none m-0 outline-none',
   },
