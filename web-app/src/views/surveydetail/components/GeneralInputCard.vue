@@ -4,6 +4,16 @@
       {{ $t('surveydetails.general_card.title') }}
     </template>
     <template #content>
+      <div class="flex flex-col gap-2 mb-4">
+        <Message
+          v-for="(error, index) in surveyDetailStore.errors.general"
+          :key="index"
+          severity="error"
+          :closable="false"
+        >
+          {{ error }}
+        </Message>
+      </div>
       <div class="flex flex-row gap-8">
         <div class="flex flex-col gap-8 flex-1">
           <div class="flex flex-row justify-between items-center gap-2">

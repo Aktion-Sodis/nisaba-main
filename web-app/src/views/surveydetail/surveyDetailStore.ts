@@ -1,20 +1,40 @@
 import { isEqual } from 'lodash';
 import { defineStore } from 'pinia';
+import { useToast } from 'primevue/usetoast';
 import { computed, ref } from 'vue';
 
-import type { Survey } from '@/models/index';
+import i18n from '@/i18n';
+import { SurveyStatus, type Survey } from '@/models/index';
 import { useProjectConfigStore } from '@/stores/projectConfigStore';
 import { createNewTextQuestion, createNewSurvey } from '@/utils/newObjects';
 
 export const useSurveyDetailStore = defineStore('surveyDetail', () => {
+  const toast = useToast();
   const activeIndex = ref(-1);
   const lastSavedAt = ref<Date | null>(null);
+  const isSaving = ref(false);
 
   const projectConfigStore = useProjectConfigStore();
 
   const localSurvey = ref<Survey | null>(null);
 
   const _dbSurvey = ref<Survey | null>(null);
+
+  // Error state
+  const errors = ref<{
+    general: string[];
+    [key: number]: string[];
+  }>({
+    general: [],
+  });
+
+  const hasErrors = computed(() => {
+    if (errors.value.general.length > 0) return true;
+
+    return Object.keys(errors.value)
+      .filter((key) => key !== 'general')
+      .some((key) => errors.value[Number(key)].length > 0);
+  });
 
   const survey = computed(() => {
     return localSurvey.value || _dbSurvey.value;
@@ -30,22 +50,78 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     if (!localSurvey.value) {
       return;
     }
-    await projectConfigStore.updateSurvey({
-      ...localSurvey.value,
-      status: 'PUBLISHED',
-    } as Survey);
-    _dbSurvey.value = localSurvey.value;
+
+    clearErrors();
+
+    if (!validateSurvey()) {
+      toast.add({
+        severity: 'error',
+        summary: i18n.global.t(
+          'surveydetails.toasts.publish_validation_error.title'
+        ),
+        detail: i18n.global.t(
+          'surveydetails.toasts.publish_validation_error.message'
+        ),
+        life: 5000,
+      });
+      return;
+    }
+
+    try {
+      await projectConfigStore.updateSurvey({
+        ...localSurvey.value,
+        status: SurveyStatus.ACTIVE,
+      } as Survey);
+      _dbSurvey.value = localSurvey.value;
+      toast.add({
+        severity: 'success',
+        summary: i18n.global.t('surveydetails.toasts.publish_success.title'),
+        detail: i18n.global.t('surveydetails.toasts.publish_success.message'),
+        life: 3000,
+      });
+    } catch (error) {
+      toast.add({
+        severity: 'error',
+        summary: i18n.global.t(
+          'surveydetails.toasts.publish_server_error.title'
+        ),
+        detail: i18n.global.t(
+          'surveydetails.toasts.publish_server_error.message'
+        ),
+        life: 5000,
+      });
+    }
   };
 
   const archiveSurvey = async () => {
     if (!localSurvey.value) {
       return;
     }
-    await projectConfigStore.updateSurvey({
-      ...localSurvey.value,
-      status: 'ARCHIVED',
-    } as Survey);
-    _dbSurvey.value = localSurvey.value;
+
+    try {
+      await projectConfigStore.updateSurvey({
+        ...localSurvey.value,
+        status: SurveyStatus.ARCHIVED,
+      } as Survey);
+      _dbSurvey.value = localSurvey.value;
+      toast.add({
+        severity: 'success',
+        summary: i18n.global.t('surveydetails.toasts.archive_success.title'),
+        detail: i18n.global.t('surveydetails.toasts.archive_success.message'),
+        life: 3000,
+      });
+    } catch (error) {
+      toast.add({
+        severity: 'error',
+        summary: i18n.global.t(
+          'surveydetails.toasts.archive_server_error.title'
+        ),
+        detail: i18n.global.t(
+          'surveydetails.toasts.archive_server_error.message'
+        ),
+        life: 5000,
+      });
+    }
   };
 
   const setDbSurvey = (survey: Survey) => {
@@ -63,18 +139,144 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     _dbSurvey.value = null;
   };
 
+  const clearErrors = () => {
+    errors.value = { general: [] };
+  };
+
+  const validateSurvey = (): boolean => {
+    if (!localSurvey.value) {
+      errors.value.general.push(
+        i18n.global.t('surveydetails.errors.general.no_survey_data')
+      );
+      return false;
+    }
+
+    // Clear previous errors
+    clearErrors();
+
+    // Validate general info (name is required, description is optional)
+    const hasName = localSurvey.value.name.languageKeys.every((key, index) =>
+      localSurvey.value?.name.languageTexts[index]?.trim()
+    );
+    if (!hasName) {
+      errors.value.general.push(
+        i18n.global.t('surveydetails.errors.general.name_required')
+      );
+    }
+
+    // Validate intervention
+    if (!localSurvey.value.interventionSurveysId) {
+      errors.value.general.push(
+        i18n.global.t('surveydetails.errors.general.intervention_required')
+      );
+    }
+
+    // Validate that there is at least one question
+    if (
+      !localSurvey.value.questions ||
+      localSurvey.value.questions.length === 0
+    ) {
+      errors.value.general.push(
+        i18n.global.t(
+          'surveydetails.errors.general.at_least_one_question_required'
+        )
+      );
+    }
+
+    // Validate each question
+    localSurvey.value.questions.forEach((question, index) => {
+      const questionErrors: string[] = [];
+
+      // Check question text
+      const hasQuestionText = question.text.languageKeys.every(
+        (key, textIndex) => question.text.languageTexts[textIndex]?.trim()
+      );
+      if (!hasQuestionText) {
+        questionErrors.push(
+          i18n.global.t('surveydetails.errors.question.text_required')
+        );
+      }
+
+      // Check question options if they exist
+      if (question.questionOptions && question.questionOptions.length > 0) {
+        question.questionOptions.forEach((option, optionIndex) => {
+          const hasOptionText = option.text.languageKeys.every(
+            (key, textIndex) => option.text.languageTexts[textIndex]?.trim()
+          );
+          if (!hasOptionText) {
+            questionErrors.push(
+              i18n.global.t(
+                'surveydetails.errors.question.option_text_required',
+                {
+                  number: optionIndex + 1,
+                }
+              )
+            );
+          }
+        });
+      }
+
+      if (questionErrors.length > 0) {
+        errors.value[index] = questionErrors;
+      }
+    });
+
+    return !hasErrors.value;
+  };
+
   const saveSurvey = async () => {
+    if (isSaving.value) {
+      return;
+    }
+
+    clearErrors();
+
     if (!localSurvey.value) {
       return;
     }
-    if (isCreate.value) {
-      await projectConfigStore.createSurvey(localSurvey.value as Survey);
-      _dbSurvey.value = localSurvey.value;
-    } else {
-      await projectConfigStore.updateSurvey(localSurvey.value as Survey);
-      _dbSurvey.value = localSurvey.value;
+
+    if (!validateSurvey()) {
+      toast.add({
+        severity: 'error',
+        summary: i18n.global.t('surveydetails.toasts.save_error.title'),
+        detail: i18n.global.t('surveydetails.toasts.save_error.message'),
+        life: 5000,
+      });
+      return;
     }
-    lastSavedAt.value = new Date();
+
+    isSaving.value = true;
+    try {
+      if (isCreate.value) {
+        await projectConfigStore.createSurvey(localSurvey.value as Survey);
+        _dbSurvey.value = localSurvey.value;
+        toast.add({
+          severity: 'success',
+          summary: i18n.global.t('surveydetails.toasts.create_success.title'),
+          detail: i18n.global.t('surveydetails.toasts.create_success.message'),
+          life: 3000,
+        });
+      } else {
+        await projectConfigStore.updateSurvey(localSurvey.value as Survey);
+        _dbSurvey.value = localSurvey.value;
+        toast.add({
+          severity: 'success',
+          summary: i18n.global.t('surveydetails.toasts.save_success.title'),
+          detail: i18n.global.t('surveydetails.toasts.save_success.message'),
+          life: 3000,
+        });
+      }
+      lastSavedAt.value = new Date();
+    } catch (error) {
+      toast.add({
+        severity: 'error',
+        summary: i18n.global.t('surveydetails.toasts.server_error.title'),
+        detail: i18n.global.t('surveydetails.toasts.server_error.message'),
+        life: 5000,
+      });
+    } finally {
+      isSaving.value = false;
+    }
   };
 
   const addEmptyQuestion = () => {
@@ -407,5 +609,10 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     lastSavedAt,
     publishSurvey,
     archiveSurvey,
+    errors,
+    hasErrors,
+    validateSurvey,
+    clearErrors,
+    isSaving,
   };
 });

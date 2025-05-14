@@ -6,6 +6,17 @@
       }}
     </template>
     <template #content>
+      <div class="flex flex-col gap-2 mb-4">
+        <Message
+          v-for="(error, index) in surveyDetailStore.errors[questionIndex] ||
+          []"
+          :key="index"
+          severity="error"
+          :closable="false"
+        >
+          {{ error }}
+        </Message>
+      </div>
       <div class="flex flex-row gap-8">
         <div class="flex flex-col gap-4 flex-1">
           <h4 class="mb-2">

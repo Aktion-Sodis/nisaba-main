@@ -92,5 +92,55 @@
                 "reject": "No, keep published"
             }
         }
+    },
+    "errors": {
+        "general": {
+            "no_survey_data": "No survey data available",
+            "name_required": "Survey name is required in all languages",
+            "intervention_required": "An intervention must be selected",
+            "at_least_one_question_required": "At least one question must be added to the survey"
+        },
+        "question": {
+            "text_required": "Question text is required in all languages",
+            "option_text_required": "Option {number} text is required in all languages"
+        }
+    },
+    "toasts": {
+        "save_error": {
+            "title": "Cannot save survey",
+            "message": "Please check the highlighted fields for errors. Each card shows its specific validation errors."
+        },
+        "save_success": {
+            "title": "Survey saved",
+            "message": "The survey has been saved successfully."
+        },
+        "create_success": {
+            "title": "Survey created",
+            "message": "The new survey has been created successfully."
+        },
+        "server_error": {
+            "title": "Server Error",
+            "message": "An error occurred while saving the survey. Please try again later."
+        },
+        "publish_validation_error": {
+            "title": "Cannot publish survey",
+            "message": "Please check the highlighted fields for errors. Each card shows its specific validation errors."
+        },
+        "publish_success": {
+            "title": "Survey published",
+            "message": "The survey has been published successfully and is now available to users."
+        },
+        "publish_server_error": {
+            "title": "Server Error",
+            "message": "An error occurred while publishing the survey. Please try again later."
+        },
+        "archive_success": {
+            "title": "Survey archived",
+            "message": "The survey has been archived successfully and is no longer available to users."
+        },
+        "archive_server_error": {
+            "title": "Server Error",
+            "message": "An error occurred while archiving the survey. Please try again later."
+        }
     }
 }

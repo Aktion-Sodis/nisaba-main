@@ -8,6 +8,7 @@
         <Button
           severity="success"
           :disabled="!hasUnsavedChanges"
+          :loading="store.isSaving"
           :label="t('utils.actions.save')"
           icon="pi pi-save"
           @click="handleSave"
