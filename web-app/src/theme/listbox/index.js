@@ -1,13 +1,10 @@
 export default {
   root: ({ props }) => ({
     class: [
-      'rounded-md',
 
       // Colors
       { 'bg-surface-0 dark:bg-surface-900': !props.disabled },
       'text-surface-700 dark:text-white/80',
-      'border',
-      { 'border-surface-300 dark:border-surface-700': !props.invalid },
 
       // Disabled State
       {
@@ -21,7 +18,7 @@ export default {
   }),
   listContainer: 'overflow-auto',
   list: {
-    class: 'p-1 list-none m-0 outline-none',
+    class: 'py-1 list-none m-0 outline-none',
   },
   option: ({ context, props }) => ({
     class: [

@@ -1,9 +1,6 @@
 {
     "general_card": {
-        "title": {
-            "create": "Create Survey",
-            "edit": "Edit Survey"
-        },
+        "title": "General Information",
         "input": {
             "name": {
                 "label": "Name",
@@ -70,6 +67,7 @@
         "no_options_needed_description": "This question type does not require any additional options to be configured."
     },
     "navigation_card": {
+        "title": "Survey Overwiew",
         "general_section": "General Information",
         "question_title": "Question {index}"
     },

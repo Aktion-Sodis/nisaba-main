@@ -1,5 +1,8 @@
 <template>
   <Card class="h-full">
+    <template #title>
+      {{ t('surveydetails.navigation_card.title') }}
+    </template>
     <template #content>
       <Listbox
         :options="navigationItems"
@@ -10,9 +13,9 @@
         @change="(e) => onNavigate(e.value)"
       >
         <template #option="slotProps">
-          <div class="flex flex-col gap-1">
+          <div class="flex flex-col gap-1 my-1">
             <div class="flex items-center gap-4">
-              <span class="text-section-inner-title">
+              <span class="text-body">
                 {{ slotProps.option.label }}
               </span>
               <Tag

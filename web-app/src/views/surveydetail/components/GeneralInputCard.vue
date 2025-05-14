@@ -1,11 +1,7 @@
 <template>
   <Card v-if="surveyDetailStore.localSurvey">
     <template #title>
-      {{
-        surveyDetailStore.isCreate
-          ? $t('surveydetails.general_card.title.create')
-          : $t('surveydetails.general_card.title.edit')
-      }}
+      {{ $t('surveydetails.general_card.title') }}
     </template>
     <template #content>
       <div class="flex flex-row gap-8">
