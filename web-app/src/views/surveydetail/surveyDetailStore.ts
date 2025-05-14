@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash';
+import { cloneDeep, isEqual } from 'lodash';
 import { defineStore } from 'pinia';
 import { useToast } from 'primevue/usetoast';
 import { computed, ref } from 'vue';
@@ -43,7 +43,28 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
   const isCreate = computed(() => _dbSurvey.value === null);
 
   const unsavedChangesAvailable = computed(() => {
-    return !isEqual(localSurvey.value, _dbSurvey.value);
+    if (isCreate.value) {
+      return true;
+    }
+
+    if (!localSurvey.value || !_dbSurvey.value) {
+      return false;
+    }
+
+    // Compare only the relevant properties
+    const local = localSurvey.value;
+    const db = _dbSurvey.value;
+
+    return (
+      !isEqual(local.name, db.name) ||
+      !isEqual(local.description, db.description) ||
+      !isEqual(local.questions, db.questions) ||
+      !isEqual(local.surveyType, db.surveyType) ||
+      !isEqual(local.status, db.status) ||
+      !isEqual(local.schemeVersion, db.schemeVersion) ||
+      !isEqual(local.archived, db.archived) ||
+      !isEqual(local.interventionSurveysId, db.interventionSurveysId)
+    );
   });
 
   const publishSurvey = async () => {
@@ -72,7 +93,7 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
         ...localSurvey.value,
         status: SurveyStatus.ACTIVE,
       } as Survey);
-      _dbSurvey.value = localSurvey.value;
+      _dbSurvey.value = cloneDeep(localSurvey.value);
       toast.add({
         severity: 'success',
         summary: i18n.global.t('surveydetails.toasts.publish_success.title'),
@@ -103,7 +124,7 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
         ...localSurvey.value,
         status: SurveyStatus.ARCHIVED,
       } as Survey);
-      _dbSurvey.value = localSurvey.value;
+      _dbSurvey.value = cloneDeep(localSurvey.value);
       toast.add({
         severity: 'success',
         summary: i18n.global.t('surveydetails.toasts.archive_success.title'),
@@ -124,9 +145,9 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     }
   };
 
-  const setDbSurvey = (survey: Survey) => {
-    _dbSurvey.value = survey;
-    localSurvey.value = survey;
+  const initEdit = (survey: Survey) => {
+    _dbSurvey.value = cloneDeep(survey);
+    localSurvey.value = cloneDeep(survey);
   };
 
   const initCreate = () => {
@@ -249,7 +270,7 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     try {
       if (isCreate.value) {
         await projectConfigStore.createSurvey(localSurvey.value as Survey);
-        _dbSurvey.value = localSurvey.value;
+        _dbSurvey.value = cloneDeep(localSurvey.value);
         toast.add({
           severity: 'success',
           summary: i18n.global.t('surveydetails.toasts.create_success.title'),
@@ -258,7 +279,7 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
         });
       } else {
         await projectConfigStore.updateSurvey(localSurvey.value as Survey);
-        _dbSurvey.value = localSurvey.value;
+        _dbSurvey.value = cloneDeep(localSurvey.value);
         toast.add({
           severity: 'success',
           summary: i18n.global.t('surveydetails.toasts.save_success.title'),
@@ -592,7 +613,6 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     survey,
     saveSurvey,
     clear,
-    setDbSurvey,
     unsavedChangesAvailable,
     isCreate,
     allowedLanguageKeys,
@@ -614,5 +634,6 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     validateSurvey,
     clearErrors,
     isSaving,
+    initEdit,
   };
 });

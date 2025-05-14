@@ -1,7 +1,0 @@
-#set($status = "DRAFT")
-#if($ctx.source.archived == true)
-  #set($status = "ARCHIVED")
-#else
-  #set($status = "ACTIVE")
-#end
-$util.toJson($status) 

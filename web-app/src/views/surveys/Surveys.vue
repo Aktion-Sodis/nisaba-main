@@ -265,6 +265,7 @@ import {
   FilterMatchMode,
   type DataTableRowClickEvent,
 } from '@primevue/core/api';
+import { useConfirm } from 'primevue/useconfirm';
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -278,8 +279,8 @@ import { formatMLString } from '@/utils/formatStrings';
 const { locale, t } = useI18n();
 const projectConfigStore = useProjectConfigStore();
 
-const surveys = projectConfigStore.surveys;
-const loading = projectConfigStore.isLoadingSurveys;
+const surveys = computed(() => projectConfigStore.surveys);
+const loading = computed(() => projectConfigStore.isLoadingSurveys);
 const viewMode = ref('table');
 const viewOptions = ref([
   { value: 'table', icon: 'pi pi-list' },
@@ -302,11 +303,11 @@ const isFilterActive = computed(() => {
 });
 
 const searchableSurveys = computed(() => {
-  if (!Array.isArray(surveys)) {
+  if (!Array.isArray(surveys.value)) {
     return [];
   }
   const currentLocale = locale.value;
-  return surveys.map((survey) => {
+  return surveys.value.map((survey) => {
     try {
       const nameFormatted = formatMLString(survey.name, currentLocale);
       const descriptionFormatted = formatMLString(
@@ -506,18 +507,32 @@ const toggleMenu = (event: Event, survey: Survey) => {
 
 // Placeholder functions for menu actions
 const editSurvey = (survey: Survey) => {
-  // Survey Typ
-  console.log('Edit survey:', survey);
-  // Implement navigation to editor or modal for editing
-  // Example: router.push(`/surveys/editor/${survey.id}`);
-  // Or: surveyDetailStore.initEdit(survey); router.push('/surveys/editor');
+  const surveyDetailStore = useSurveyDetailStore();
+  surveyDetailStore.initEdit(survey);
+  router.push('/surveys/editor');
 };
 
+const confirm = useConfirm();
+
 const confirmDeleteSurvey = (survey: any) => {
-  // Adjust survey type
-  console.log('Confirm delete survey:', survey);
-  // Implement confirmation dialog and deletion logic
-  // Example: if (confirm('Are you sure?')) { projectConfigStore.deleteSurvey(survey.id); }
+  confirm.require({
+    message: t('surveys.confirm.delete.message'),
+    header: t('surveys.confirm.delete.title'),
+    icon: 'pi pi-exclamation-triangle',
+    acceptProps: {
+      label: t('surveys.confirm.delete.accept'),
+      icon: 'pi pi-trash',
+      severity: 'danger',
+    },
+    rejectProps: {
+      label: t('surveys.confirm.delete.reject'),
+      severity: 'secondary',
+      outlined: true,
+    },
+    accept: () => {
+      projectConfigStore.deleteSurvey(survey.id);
+    },
+  });
 };
 
 const viewResults = (survey: any) => {
@@ -530,7 +545,7 @@ const viewResults = (survey: any) => {
 const onRowClick = (event: DataTableRowClickEvent) => {
   // event.data enthält das Survey-Objekt der angeklickten Zeile
   if (event.data) {
-    viewResults(event.data);
+    editSurvey(event.data);
   }
 };
 
