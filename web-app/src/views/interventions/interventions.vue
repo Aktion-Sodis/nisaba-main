@@ -1,9 +1,9 @@
 <template>
   <div class="h-full">
     <Card class="h-full">
-      <template #title>Aktivitäten</template>
+      <template #title>{{ $t('interventions.title') }}</template>
 
-      <template #subtitle>Hier können Sie Ihre Aktivitäten verwalten.</template>
+      <template #subtitle>{{ $t('interventions.subtitle') }}</template>
 
       <template #content>
         <div class="flex justify-between mb-3">
@@ -14,14 +14,14 @@
               </InputIcon>
               <InputText
                 v-model="filters['global'].value"
-                placeholder="Suche..."
+                :placeholder="$t('interventions.filters.search')"
               />
             </IconField>
             <Button
               v-if="isFilterActive"
               type="button"
               icon="pi pi-filter-slash"
-              label="Filter zurücksetzen"
+              :label="$t('interventions.resetFilter')"
               outlined
               class="ml-2"
               @click="clearFilter()"
@@ -58,10 +58,10 @@
             'createdAt_formatted',
           ]"
         >
-          <template #empty>Keine Aktivitäten gefunden.</template>
-          <template #loading>Lade Aktivitätsdaten...</template>
+          <template #empty>{{ $t('interventions.noInterventionsFound') }}</template>
+          <template #loading>{{ $t('interventions.loadingInterventions') }}</template>
 
-          <Column field="name_searchable" header="Name" sortable filter>
+          <Column field="name_searchable" :header="$t('interventions.columns.name')" sortable filter>
             <template #body="{ data }">
               {{ formatMLString(data.name, locale) }}
               <!-- Display original formatted string -->
@@ -70,11 +70,11 @@
               <InputText
                 v-model="filterModel.value"
                 type="text"
-                placeholder="Nach Name filtern"
+                :placeholder="$t('interventions.filters.filterByName')"
               />
             </template>
           </Column>
-          <Column field="description_searchable" header="Beschreibung" filter>
+          <Column field="description_searchable" :header="$t('interventions.columns.description')" filter>
             <template #body="{ data }">
               {{ formatMLString(data.description, locale) }}
               <!-- Display original formatted string -->
@@ -83,11 +83,11 @@
               <InputText
                 v-model="filterModel.value"
                 type="text"
-                placeholder="Nach Beschreibung filtern"
+                :placeholder="$t('interventions.filters.filterByDescription')"
               />
             </template>
           </Column>
-          <Column field="createdAt" header="Erstellt am" sortable filter>
+          <Column field="createdAt" :header="$t('interventions.columns.createdAt')" sortable filter>
             <!-- Keep original field for date filtering -->
             <template #body="{ data }">
               {{ formatDate(data.createdAt) }}
@@ -96,7 +96,7 @@
               <DatePicker
                 v-model="filterModel.value"
                 date-format="dd.mm.yy"
-                placeholder="Datum wählen"
+                :placeholder="$t('interventions.filters.selectDate')"
               />
             </template>
           </Column>
@@ -112,11 +112,9 @@
             v-else-if="filteredGridInterventions.length === 0"
             class="flex justify-content-center col-span-full"
           >
-            <!-- Added col-span-full -->
-            Keine Aktivitäten gefunden{{
-              filters.global.value ? ' (mit aktivem Filter)' : ''
-            }}.
-            <!-- Improved message -->
+            {{ $t('interventions.noInterventionsFound') }}{{
+              filters.global.value ? ' (' + $t('interventions.withActiveFilter') + ')' : ''
+            }}
           </div>
           <div v-else class="intervention-grid-container">
             <div
@@ -130,7 +128,7 @@
                   {{ formatMLString(intervention.name, locale) }}
                 </template>
                 <template #subtitle>
-                  Erstellt am: {{ formatDate(intervention.createdAt) }}
+                  {{ $t('interventions.createdAt') }}: {{ formatDate(intervention.createdAt) }}
                 </template>
                 <template #content>
                   <!-- Added flex-grow -->
@@ -153,7 +151,6 @@
 </template>
 
 <script lang="ts" setup>
-// Imports
 import { FilterMatchMode } from '@primevue/core/api';
 import { ref, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -161,11 +158,9 @@ import { useI18n } from 'vue-i18n';
 import { useProjectConfigStore } from '@/stores/projectConfigStore';
 import { formatMLString } from '@/utils/formatStrings';
 
-// i18n
 const { locale } = useI18n();
 const projectConfigStore = useProjectConfigStore();
 
-// Zustandsvariablen
 const interventions = projectConfigStore.interventions;
 const loading = projectConfigStore.isLoadingInterventions;
 const viewMode = ref('table');
@@ -174,7 +169,6 @@ const viewOptions = ref([
   { value: 'grid', icon: 'pi pi-th-large' },
 ]);
 
-// Filter-Zustand initialisieren (using searchable keys)
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   name_searchable: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -182,7 +176,6 @@ const filters = ref({
   createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
 });
 
-// Computed property zur Überprüfung, ob Filter aktiv sind (using updated keys)
 const isFilterActive = computed(() => {
   return Object.entries(filters.value).some(([_key, filter]) => {
     // Example: return key !== 'global' && filter.value !== null && filter.value !== '';
@@ -206,13 +199,13 @@ const searchableInterventions = computed(() => {
       // Create searchable, lowercase versions for filtering
       const nameSearchable = (nameFormatted || '').toLowerCase();
       const descriptionSearchable = (descriptionFormatted || '').toLowerCase();
-      const createdAtFormatted = formatDate(intervention.createdAt); // Format date for global search
+      const createdAtFormatted = formatDate(intervention.createdAt); 
 
       return {
         ...intervention,
         name_searchable: nameSearchable,
         description_searchable: descriptionSearchable,
-        createdAt_formatted: createdAtFormatted, // Add formatted date for global search
+        createdAt_formatted: createdAtFormatted, 
       };
     } catch (error) {
       console.error(
@@ -231,24 +224,21 @@ const searchableInterventions = computed(() => {
   });
 });
 
-// Computed property for filtering in grid view
 const filteredGridInterventions = computed(() => {
   const globalFilterValue = filters.value.global.value;
   if (!globalFilterValue) {
-    return searchableInterventions.value; // Return all searchable items if no global filter
+    return searchableInterventions.value;
   }
   const filterText = String(globalFilterValue).toLowerCase();
-  // Filter based on the searchable fields
   return searchableInterventions.value.filter((intervention) => {
     return (
       intervention.name_searchable.includes(filterText) ||
       intervention.description_searchable.includes(filterText) ||
-      intervention.createdAt_formatted.toLowerCase().includes(filterText) // Search in formatted date string
+      intervention.createdAt_formatted.toLowerCase().includes(filterText) 
     );
   });
 });
 
-// Filter zurücksetzen (using updated keys)
 const clearFilter = () => {
   filters.value = {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -265,28 +255,25 @@ const formatDate = (dateString: string | null | undefined): string => {
   if (!dateString) return '-';
   try {
     const date = new Date(dateString);
-    // Check if the date is valid
     if (isNaN(date.getTime())) {
-      return '-'; // Return '-' for invalid dates
+      return '-'; 
     }
     return date.toLocaleDateString('de-DE', {
       day: '2-digit',
       month: '2-digit',
-      year: 'numeric', // Consistent format
+      year: 'numeric', 
     });
   } catch (e) {
     console.error('Error formatting date:', dateString, e);
-    return '-'; // Return '-' on error
+    return '-';
   }
 };
 
 onMounted(() => {
-  // Fetch interventions if needed
 });
 </script>
 
 <style scoped>
-/* Ensure Card takes full height and content scrolls */
 :deep(.p-card) {
   display: flex;
   flex-direction: column;
@@ -294,32 +281,27 @@ onMounted(() => {
 }
 :deep(.p-card-content) {
   flex-grow: 1;
-  overflow: auto; /* Important for scrollable table/grid */
+  overflow: auto; 
 }
 
-/* Styling für Grid und Kartenansicht - Adopted from Surveys.vue for consistency */
 .intervention-grid {
   display: grid;
-  /* Use auto-fill and minmax for responsive columns */
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
 }
 
 .intervention-grid-container {
-  /* Allows items to be direct children of the grid */
   display: contents;
 }
 
 .intervention-grid-item .p-card {
-  height: 100%; /* Ensure cards fill the grid item height */
+  height: 100%; 
 }
 
-/* Span the full grid width for loading/empty messages */
 .col-span-full {
   grid-column: 1 / -1;
 }
 
-/* Text auf maximal 3 Zeilen beschränken und mit ... abschneiden */
 .line-clamp-3 {
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -328,28 +310,4 @@ onMounted(() => {
   text-overflow: ellipsis;
 }
 
-/* Remove previous flexbox grid styling if not needed */
-/*
-  .intervention-grid-container {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .intervention-grid-item {
-    flex-basis: calc(25% - 1rem);
-    margin: 0.5rem;
-  }
-
-  @media (max-width: 768px) {
-    .intervention-grid-item {
-      flex-basis: calc(50% - 1rem);
-    }
-  }
-
-  @media (max-width: 480px) {
-    .intervention-grid-item {
-      flex-basis: calc(100% - 1rem);
-    }
-  }
-  */
 </style>

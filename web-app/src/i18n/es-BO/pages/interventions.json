@@ -1,0 +1,21 @@
+{
+      "title": "Actividades",
+      "subtitle": "Aquí puedes gestionar tus actividades.",
+      "filters": {
+        "search": "Buscar...",
+        "filterByName": "Filtrar por nombre",
+        "filterByDescription": "Filtrar por descripción",
+        "selectDate": "Seleccionar fecha"
+      },
+      "resetFilter": "Restablecer filtro",
+      "noInterventionsFound": "No se encontraron actividades.",
+      "loadingInterventions": "Cargando datos de actividades...",
+      "columns": {
+        "name": "Nombre",
+        "description": "Descripción",
+        "createdAt": "Creado en"
+      },
+      "createdAt": "Creado en",
+      "withActiveFilter": "con filtro activo"
+    
+  }
