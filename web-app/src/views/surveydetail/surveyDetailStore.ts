@@ -7,6 +7,9 @@ import { useProjectConfigStore } from '@/stores/projectConfigStore';
 import { createNewTextQuestion, createNewSurvey } from '@/utils/newObjects';
 
 export const useSurveyDetailStore = defineStore('surveyDetail', () => {
+  const activeIndex = ref(-1);
+  const lastSavedAt = ref<Date | null>(null);
+
   const projectConfigStore = useProjectConfigStore();
 
   const localSurvey = ref<Survey | null>(null);
@@ -22,6 +25,28 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
   const unsavedChangesAvailable = computed(() => {
     return !isEqual(localSurvey.value, _dbSurvey.value);
   });
+
+  const publishSurvey = async () => {
+    if (!localSurvey.value) {
+      return;
+    }
+    await projectConfigStore.updateSurvey({
+      ...localSurvey.value,
+      status: 'PUBLISHED',
+    } as Survey);
+    _dbSurvey.value = localSurvey.value;
+  };
+
+  const archiveSurvey = async () => {
+    if (!localSurvey.value) {
+      return;
+    }
+    await projectConfigStore.updateSurvey({
+      ...localSurvey.value,
+      status: 'ARCHIVED',
+    } as Survey);
+    _dbSurvey.value = localSurvey.value;
+  };
 
   const setDbSurvey = (survey: Survey) => {
     _dbSurvey.value = survey;
@@ -49,6 +74,7 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
       await projectConfigStore.updateSurvey(localSurvey.value as Survey);
       _dbSurvey.value = localSurvey.value;
     }
+    lastSavedAt.value = new Date();
   };
 
   const addEmptyQuestion = () => {
@@ -377,5 +403,9 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     cleanupQuestionOptionDeletion,
     cleanupQuestionDeletion,
     deleteQuestion,
+    activeIndex,
+    lastSavedAt,
+    publishSurvey,
+    archiveSurvey,
   };
 });

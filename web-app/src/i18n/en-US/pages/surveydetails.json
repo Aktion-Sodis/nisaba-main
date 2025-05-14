@@ -68,5 +68,31 @@
             }
         },
         "no_options_needed_description": "This question type does not require any additional options to be configured."
+    },
+    "navigation_card": {
+        "general_section": "General Information",
+        "question_title": "Question {index}"
+    },
+    "publish_card": {
+        "draft": {
+            "info": "This survey is currently in draft mode. You can publish it when you're ready.",
+            "button": "Publish Survey",
+            "confirm": {
+                "title": "Publish Survey",
+                "message": "Are you sure you want to publish this survey? This action cannot be undone.",
+                "accept": "Yes, publish survey",
+                "reject": "No, keep as draft"
+            }
+        },
+        "published": {
+            "info": "This survey is currently published and available to users.",
+            "button": "Archive Survey",
+            "confirm": {
+                "title": "Archive Survey",
+                "message": "Are you sure you want to archive this survey? It will no longer be available to users.",
+                "accept": "Yes, archive survey",
+                "reject": "No, keep published"
+            }
+        }
     }
 }

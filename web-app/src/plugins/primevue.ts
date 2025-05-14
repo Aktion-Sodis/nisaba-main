@@ -37,6 +37,7 @@ import InputNumber from 'primevue/inputnumber';
 import InputSwitch from 'primevue/inputswitch';
 import InputText from 'primevue/inputtext';
 import Knob from 'primevue/knob';
+import Listbox from 'primevue/listbox';
 import Menu from 'primevue/menu';
 import MenuBar from 'primevue/menubar';
 import Message from 'primevue/message';
@@ -148,7 +149,7 @@ export default {
     app.component('Toast', Toast);
     app.component('Form', Form);
     app.component('FormField', FormField);
-
+    app.component('Listbox', Listbox);
     // Directives
     app.directive('badge', BadgeDirective);
     app.directive('tooltip', Tooltip);
