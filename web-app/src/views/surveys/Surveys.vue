@@ -3,10 +3,10 @@
     <Card class="h-full">
       <template #title>
         <div class="flex justify-between items-center w-full">
-          <span>Umfragen</span>
+          <span>{{ $t('surveys.title') }}</span>
           <Button
             icon="pi pi-plus"
-            label="Neue Umfrage"
+            :label="$t('surveys.newSurvey')"
             class="ml-auto"
             size="small"
             @click="createSurvey()"
@@ -14,7 +14,7 @@
         </div>
       </template>
 
-      <template #subtitle>Hier können Sie Ihre Umfragen verwalten.</template>
+      <template #subtitle>{{ $t('surveys.subtitle') }}</template>
 
       <template #content>
         <div class="flex justify-between mb-3">
@@ -25,14 +25,14 @@
               </InputIcon>
               <InputText
                 v-model="filters['global'].value"
-                placeholder="Suche..."
+                :placeholder="$t('surveys.filters.search')"
               />
             </IconField>
             <Button
               v-if="isFilterActive"
               type="button"
               icon="pi pi-filter-slash"
-              label="Filter zurücksetzen"
+              :label="$t('surveys.resetFilter')"
               outlined
               class="ml-2"
               @click="clearFilter()"
@@ -73,10 +73,10 @@
           row-hover
           @row-click="onRowClick"
         >
-          <template #empty>Keine Umfragen gefunden.</template>
-          <template #loading>Lade Umfragedaten...</template>
+          <template #empty>{{ $t('surveys.noSurveysFound') }}</template>
+          <template #loading>{{ $t('surveys.loadingSurveys') }}</template>
 
-          <Column field="name_searchable" header="Name" sortable filter>
+          <Column field="name_searchable" :header="$t('surveys.columns.name')" sortable filter>
             <template #body="slotProps">
               {{ formatMLString(slotProps.data.name, locale) }}
             </template>
@@ -84,12 +84,12 @@
               <InputText
                 v-model="filterModel.value"
                 type="text"
-                placeholder="Nach Name filtern"
+                :placeholder="$t('surveys.filters.filterByName')"
               />
             </template>
           </Column>
 
-          <Column field="description_searchable" header="Beschreibung" filter>
+          <Column field="description_searchable" :header="$t('surveys.columns.description')" filter>
             <template #body="slotProps">
               {{ formatMLString(slotProps.data.description, locale) }}
             </template>
@@ -97,12 +97,12 @@
               <InputText
                 v-model="filterModel.value"
                 type="text"
-                placeholder="Nach Beschreibung filtern"
+                :placeholder="$t('surveys.filters.filterByDescription')"
               />
             </template>
           </Column>
 
-          <Column field="createdAt" header="Erstellt am" sortable filter>
+          <Column field="createdAt" :header="$t('surveys.columns.createdAt')" sortable filter>
             <template #body="slotProps">
               {{ formatDate(slotProps.data.createdAt) }}
             </template>
@@ -110,14 +110,14 @@
               <DatePicker
                 v-model="filterModel.value"
                 date-format="dd.mm.yy"
-                placeholder="Datum wählen"
+                :placeholder="$t('surveys.filters.selectDate')"
               />
             </template>
           </Column>
 
           <Column
             field="status"
-            header="Status"
+            :header="$t('surveys.columns.status')"
             sortable
             filter
             :show-filter-match-modes="false"
@@ -133,14 +133,10 @@
             <template #filter="{ filterModel }">
               <Select
                 v-model="filterModel.value"
-                :options="[
-                  { label: 'Entwurf', value: 'DRAFT' },
-                  { label: 'Aktiv', value: 'ACTIVE' },
-                  { label: 'Archiviert', value: 'ARCHIVED' },
-                ]"
+                :options="statusOptions"
                 option-label="label"
                 option-value="value"
-                placeholder="Status wählen"
+                :placeholder="$t('surveys.filters.selectStatus')"
                 class="p-column-filter"
                 style="min-width: 12rem"
                 show-clear
@@ -182,8 +178,8 @@
             v-else-if="filteredGridSurveys.length === 0"
             class="col-span-full flex justify-center"
           >
-            Keine Umfragen gefunden{{
-              filters.global.value ? ' (mit aktivem Filter)' : ''
+            {{ $t('surveys.noSurveysFound') }}{{
+              filters.global.value ? $t('surveys.withActiveFilter') : ''
             }}.
           </div>
           <Card
@@ -258,7 +254,7 @@ import router from '@/router';
 import { useProjectConfigStore } from '@/stores/projectConfigStore';
 import { formatMLString } from '@/utils/formatStrings';
 
-const { locale } = useI18n();
+const { locale, t } = useI18n();
 const projectConfigStore = useProjectConfigStore();
 
 const surveys = projectConfigStore.surveys;
@@ -400,11 +396,11 @@ const getStatusIcon = (status: SurveyStatus): string => {
 const formatSurveyStatus = (status: SurveyStatus): string => {
   switch (status) {
     case SurveyStatus.DRAFT:
-      return 'Entwurf';
+      return t('surveys.status.draft');
     case SurveyStatus.ACTIVE:
-      return 'Aktiv';
+      return t('surveys.status.active');
     case SurveyStatus.ARCHIVED:
-      return 'Archiviert';
+      return t('surveys.status.archived');
     default:
       return status; // Fallback, falls ein unbekannter Status auftritt
   }
@@ -430,7 +426,7 @@ const menuItems = computed(() => {
 
   if (status === SurveyStatus.DRAFT) {
     items.push({
-      label: 'Bearbeiten',
+      label: t('surveys.menu.edit'),
       icon: 'pi pi-fw pi-pencil',
       command: () => {
         if (selectedSurveyForMenu.value) {
@@ -439,7 +435,7 @@ const menuItems = computed(() => {
       },
     });
     items.push({
-      label: 'Löschen',
+      label: t('surveys.menu.delete'),
       icon: 'pi pi-fw pi-trash',
       command: () => {
         if (selectedSurveyForMenu.value) {
@@ -449,7 +445,7 @@ const menuItems = computed(() => {
     });
   } else if (status === SurveyStatus.ACTIVE) {
     items.push({
-      label: 'Archivieren',
+      label: t('surveys.menu.archive'),
       icon: 'pi pi-fw pi-archive',
       command: () => {
         if (selectedSurveyForMenu.value) {
@@ -458,7 +454,7 @@ const menuItems = computed(() => {
       },
     });
     items.push({
-      label: 'Auswertung anzeigen',
+      label: t('surveys.menu.viewResults'),
       icon: 'pi pi-fw pi-chart-bar',
       command: () => {
         if (selectedSurveyForMenu.value) {
@@ -468,7 +464,7 @@ const menuItems = computed(() => {
     });
   } else if (status === SurveyStatus.ARCHIVED) {
     items.push({
-      label: 'Auswertung anzeigen',
+      label: t('surveys.menu.viewResults'),
       icon: 'pi pi-fw pi-chart-bar',
       command: () => {
         if (selectedSurveyForMenu.value) {
