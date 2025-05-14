@@ -3,7 +3,7 @@
     <Card class="h-full">
       <template #title>
         <div class="flex justify-between items-center w-full">
-          <span>{{ $t('surveys.title') }}</span>
+          <span class="text-screen-title">{{ $t('surveys.title') }}</span>
           <Button
             icon="pi pi-plus"
             :label="$t('surveys.newSurvey')"
@@ -14,7 +14,9 @@
         </div>
       </template>
 
-      <template #subtitle>{{ $t('surveys.subtitle') }}</template>
+      <template #subtitle>
+        <span class="text-oneliner-light">{{ $t('surveys.subtitle') }}</span>
+      </template>
 
       <template #content>
         <div class="flex justify-between mb-3">
@@ -73,10 +75,19 @@
           row-hover
           @row-click="onRowClick"
         >
-          <template #empty>{{ $t('surveys.noSurveysFound') }}</template>
-          <template #loading>{{ $t('surveys.loadingSurveys') }}</template>
+          <template #empty>
+            <span class="text-body">{{ $t('surveys.noSurveysFound') }}</span>
+          </template>
+          <template #loading>
+            <span class="text-body">{{ $t('surveys.loadingSurveys') }}</span>
+          </template>
 
-          <Column field="name_searchable" :header="$t('surveys.columns.name')" sortable filter>
+          <Column
+            field="name_searchable"
+            :header="$t('surveys.columns.name')"
+            sortable
+            filter
+          >
             <template #body="slotProps">
               {{ formatMLString(slotProps.data.name, locale) }}
             </template>
@@ -89,7 +100,11 @@
             </template>
           </Column>
 
-          <Column field="description_searchable" :header="$t('surveys.columns.description')" filter>
+          <Column
+            field="description_searchable"
+            :header="$t('surveys.columns.description')"
+            filter
+          >
             <template #body="slotProps">
               {{ formatMLString(slotProps.data.description, locale) }}
             </template>
@@ -102,7 +117,12 @@
             </template>
           </Column>
 
-          <Column field="createdAt" :header="$t('surveys.columns.createdAt')" sortable filter>
+          <Column
+            field="createdAt"
+            :header="$t('surveys.columns.createdAt')"
+            sortable
+            filter
+          >
             <template #body="slotProps">
               {{ formatDate(slotProps.data.createdAt) }}
             </template>
@@ -178,9 +198,8 @@
             v-else-if="filteredGridSurveys.length === 0"
             class="col-span-full flex justify-center"
           >
-            {{ $t('surveys.noSurveysFound') }}{{
-              filters.global.value ? $t('surveys.withActiveFilter') : ''
-            }}.
+            {{ $t('surveys.noSurveysFound')
+            }}{{ filters.global.value ? $t('surveys.withActiveFilter') : '' }}.
           </div>
           <Card
             v-for="survey in filteredGridSurveys"
@@ -208,7 +227,7 @@
                   </Button>
                 </div>
                 <div class="flex justify-between items-start mb-1 pr-8">
-                  <h3 class="text-xl font-semibold">
+                  <h3 class="text-section-inner-title">
                     {{ formatMLString(survey.name, locale) }}
                   </h3>
                   <Tag
@@ -221,9 +240,11 @@
                 <div
                   class="text-sm text-gray-600 mb-3 flex justify-between items-center"
                 >
-                  <span>Erstellt am: {{ formatDate(survey.createdAt) }}</span>
+                  <span class="text-oneliner-light-small">
+                    Erstellt am: {{ formatDate(survey.createdAt) }}
+                  </span>
                 </div>
-                <p class="text-base text-gray-700 flex-grow line-clamp-3 pr-8">
+                <p class="text-oneliner-light flex-grow line-clamp-3 pr-8">
                   {{ formatMLString(survey.description, locale) }}
                 </p>
                 <i
