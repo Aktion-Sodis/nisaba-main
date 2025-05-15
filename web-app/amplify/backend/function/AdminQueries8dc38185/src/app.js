@@ -27,6 +27,8 @@ const {
   listGroupsForUser,
   listUsersInGroup,
   signUserOut,
+  createUser,
+  hardPasswordReset,
 } = require('./cognitoActions');
 
 const app = express();
@@ -78,7 +80,7 @@ app.post('/addUserToGroup', async (req, res, next) => {
   }
 
   try {
-    const response = await addUserToGroup(req.body.username, req.body.groupname);
+    const response = await addUserToGroup(req.body.username, req.body.groupname, req.apiGateway.event);
     res.status(200).json(response);
   } catch (err) {
     next(err);
@@ -93,7 +95,7 @@ app.post('/removeUserFromGroup', async (req, res, next) => {
   }
 
   try {
-    const response = await removeUserFromGroup(req.body.username, req.body.groupname);
+    const response = await removeUserFromGroup(req.body.username, req.body.groupname, req.apiGateway.event);
     res.status(200).json(response);
   } catch (err) {
     next(err);
@@ -108,7 +110,7 @@ app.post('/confirmUserSignUp', async (req, res, next) => {
   }
 
   try {
-    const response = await confirmUserSignUp(req.body.username);
+    const response = await confirmUserSignUp(req.body.username, req.apiGateway.event);
     res.status(200).json(response);
   } catch (err) {
     next(err);
@@ -123,7 +125,7 @@ app.post('/disableUser', async (req, res, next) => {
   }
 
   try {
-    const response = await disableUser(req.body.username);
+    const response = await disableUser(req.body.username, req.apiGateway.event);
     res.status(200).json(response);
   } catch (err) {
     next(err);
@@ -138,7 +140,7 @@ app.post('/enableUser', async (req, res, next) => {
   }
 
   try {
-    const response = await enableUser(req.body.username);
+    const response = await enableUser(req.body.username, req.apiGateway.event);
     res.status(200).json(response);
   } catch (err) {
     next(err);
@@ -153,7 +155,7 @@ app.get('/getUser', async (req, res, next) => {
   }
 
   try {
-    const response = await getUser(req.query.username);
+    const response = await getUser(req.query.username, req.apiGateway.event);
     res.status(200).json(response);
   } catch (err) {
     next(err);
@@ -164,11 +166,11 @@ app.get('/listUsers', async (req, res, next) => {
   try {
     let response;
     if (req.query.token) {
-      response = await listUsers(req.query.limit || 25, req.query.token);
+      response = await listUsers(req.query.limit || 25, req.query.token, req.apiGateway.event);
     } else if (req.query.limit) {
-      response = await listUsers((Limit = req.query.limit));
+      response = await listUsers(req.query.limit, undefined, req.apiGateway.event);
     } else {
-      response = await listUsers();
+      response = await listUsers(undefined, undefined, req.apiGateway.event);
     }
     res.status(200).json(response);
   } catch (err) {
@@ -180,11 +182,11 @@ app.get('/listGroups', async (req, res, next) => {
   try {
     let response;
     if (req.query.token) {
-      response = await listGroups(req.query.limit || 25, req.query.token);
+      response = await listGroups(req.query.limit || 25, req.query.token, req.apiGateway.event);
     } else if (req.query.limit) {
-      response = await listGroups((Limit = req.query.limit));
+      response = await listGroups(req.query.limit, undefined, req.apiGateway.event);
     } else {
-      response = await listGroups();
+      response = await listGroups(undefined, undefined, req.apiGateway.event);
     }
     res.status(200).json(response);
   } catch (err) {
@@ -202,11 +204,11 @@ app.get('/listGroupsForUser', async (req, res, next) => {
   try {
     let response;
     if (req.query.token) {
-      response = await listGroupsForUser(req.query.username, req.query.limit || 25, req.query.token);
+      response = await listGroupsForUser(req.query.username, req.query.limit || 25, req.query.token, req.apiGateway.event);
     } else if (req.query.limit) {
-      response = await listGroupsForUser(req.query.username, (Limit = req.query.limit));
+      response = await listGroupsForUser(req.query.username, req.query.limit, undefined, req.apiGateway.event);
     } else {
-      response = await listGroupsForUser(req.query.username);
+      response = await listGroupsForUser(req.query.username, undefined, undefined, req.apiGateway.event);
     }
     res.status(200).json(response);
   } catch (err) {
@@ -224,11 +226,11 @@ app.get('/listUsersInGroup', async (req, res, next) => {
   try {
     let response;
     if (req.query.token) {
-      response = await listUsersInGroup(req.query.groupname, req.query.limit || 25, req.query.token);
+      response = await listUsersInGroup(req.query.groupname, req.query.limit || 25, req.query.token, req.apiGateway.event);
     } else if (req.query.limit) {
-      response = await listUsersInGroup(req.query.groupname, (Limit = req.query.limit));
+      response = await listUsersInGroup(req.query.groupname, req.query.limit, undefined, req.apiGateway.event);
     } else {
-      response = await listUsersInGroup(req.query.groupname);
+      response = await listUsersInGroup(req.query.groupname, undefined, undefined, req.apiGateway.event);
     }
     res.status(200).json(response);
   } catch (err) {
@@ -253,7 +255,46 @@ app.post('/signUserOut', async (req, res, next) => {
   }
 
   try {
-    const response = await signUserOut(req.body.username);
+    const response = await signUserOut(req.body.username, req.apiGateway.event);
+    res.status(200).json(response);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post('/createUser', async (req, res, next) => {
+  if (!req.body.username || typeof req.body.returnPassword !== 'boolean') {
+    const err = new Error('username and returnPassword (boolean) are required');
+    err.statusCode = 400;
+    return next(err);
+  }
+
+  try {
+    const response = await createUser(
+      req.body.username,
+      req.body.userGroup,
+      req.body.returnPassword,
+      req.apiGateway.event
+    );
+    res.status(200).json(response);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post('/hardPasswordReset', async (req, res, next) => {
+  if (!req.body.username || typeof req.body.returnPassword !== 'boolean') {
+    const err = new Error('username and returnPassword (boolean) are required');
+    err.statusCode = 400;
+    return next(err);
+  }
+
+  try {
+    const response = await hardPasswordReset(
+      req.body.username,
+      req.body.returnPassword,
+      req.apiGateway.event
+    );
     res.status(200).json(response);
   } catch (err) {
     next(err);

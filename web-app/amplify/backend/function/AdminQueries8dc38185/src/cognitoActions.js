@@ -17,7 +17,15 @@ const { CognitoIdentityServiceProvider } = require('aws-sdk');
 const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
 const userPoolId = process.env.USERPOOL;
 
-async function addUserToGroup(username, groupname) {
+async function addUserToGroup(username, groupname, event) {
+  // First check if the target user is in the same organization
+  const organizationId = event.requestContext.authorizer.claims['custom:organization_id'];
+  const targetUser = await getUser(username, event);
+  
+  if (targetUser.UserAttributes.find(attr => attr.Name === 'custom:organization_id')?.Value !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
   const params = {
     GroupName: groupname,
     UserPoolId: userPoolId,
@@ -38,7 +46,15 @@ async function addUserToGroup(username, groupname) {
   }
 }
 
-async function removeUserFromGroup(username, groupname) {
+async function removeUserFromGroup(username, groupname, event) {
+  // First check if the target user is in the same organization
+  const organizationId = event.requestContext.authorizer.claims['custom:organization_id'];
+  const targetUser = await getUser(username, event);
+  
+  if (targetUser.UserAttributes.find(attr => attr.Name === 'custom:organization_id')?.Value !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
   const params = {
     GroupName: groupname,
     UserPoolId: userPoolId,
@@ -60,7 +76,15 @@ async function removeUserFromGroup(username, groupname) {
 }
 
 // Confirms as an admin without using a confirmation code.
-async function confirmUserSignUp(username) {
+async function confirmUserSignUp(username, event) {
+  // First check if the target user is in the same organization
+  const organizationId = event.requestContext.authorizer.claims['custom:organization_id'];
+  const targetUser = await getUser(username, event);
+  
+  if (targetUser.UserAttributes.find(attr => attr.Name === 'custom:organization_id')?.Value !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
   const params = {
     UserPoolId: userPoolId,
     Username: username,
@@ -78,7 +102,15 @@ async function confirmUserSignUp(username) {
   }
 }
 
-async function disableUser(username) {
+async function disableUser(username, event) {
+  // First check if the target user is in the same organization
+  const organizationId = event.requestContext.authorizer.claims['custom:organization_id'];
+  const targetUser = await getUser(username, event);
+  
+  if (targetUser.UserAttributes.find(attr => attr.Name === 'custom:organization_id')?.Value !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
   const params = {
     UserPoolId: userPoolId,
     Username: username,
@@ -96,7 +128,15 @@ async function disableUser(username) {
   }
 }
 
-async function enableUser(username) {
+async function enableUser(username, event) {
+  // First check if the target user is in the same organization
+  const organizationId = event.requestContext.authorizer.claims['custom:organization_id'];
+  const targetUser = await getUser(username, event);
+  
+  if (targetUser.UserAttributes.find(attr => attr.Name === 'custom:organization_id')?.Value !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
   const params = {
     UserPoolId: userPoolId,
     Username: username,
@@ -114,7 +154,7 @@ async function enableUser(username) {
   }
 }
 
-async function getUser(username) {
+async function getUser(username, event) {
   const params = {
     UserPoolId: userPoolId,
     Username: username,
@@ -124,6 +164,15 @@ async function getUser(username) {
 
   try {
     const result = await cognitoIdentityServiceProvider.adminGetUser(params).promise();
+    
+    // If this is a direct getUser call (not from another method), check organization
+    if (event) {
+      const organizationId = event.requestContext.authorizer.claims['custom:organization_id'];
+      if (result.UserAttributes.find(attr => attr.Name === 'custom:organization_id')?.Value !== organizationId) {
+        throw new Error('Cannot access user from different organization');
+      }
+    }
+    
     return result;
   } catch (err) {
     console.log(err);
@@ -131,12 +180,18 @@ async function getUser(username) {
   }
 }
 
-async function listUsers(Limit, PaginationToken) {
+async function listUsers(Limit, PaginationToken, event) {
   const params = {
     UserPoolId: userPoolId,
     ...(Limit && { Limit }),
     ...(PaginationToken && { PaginationToken }),
   };
+
+  const organizationId = event.requestContext.authorizer.claims['custom:organization_id'];
+  
+  if (organizationId) {
+    params.Filter = `custom:organization_id = "${organizationId}"`;
+  }
 
   console.log('Attempting to list users');
 
@@ -154,7 +209,7 @@ async function listUsers(Limit, PaginationToken) {
   }
 }
 
-async function listGroups(Limit, PaginationToken) {
+async function listGroups(Limit, PaginationToken, event) {
   const params = {
     UserPoolId: userPoolId,
     ...(Limit && { Limit }),
@@ -177,7 +232,15 @@ async function listGroups(Limit, PaginationToken) {
   }
 }
 
-async function listGroupsForUser(username, Limit, NextToken) {
+async function listGroupsForUser(username, Limit, NextToken, event) {
+  // First check if the target user is in the same organization
+  const organizationId = event.requestContext.authorizer.claims['custom:organization_id'];
+  const targetUser = await getUser(username, event);
+  
+  if (targetUser.UserAttributes.find(attr => attr.Name === 'custom:organization_id')?.Value !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
   const params = {
     UserPoolId: userPoolId,
     Username: username,
@@ -189,10 +252,6 @@ async function listGroupsForUser(username, Limit, NextToken) {
 
   try {
     const result = await cognitoIdentityServiceProvider.adminListGroupsForUser(params).promise();
-    /**
-     * We are filtering out the results that seem to be innapropriate for client applications
-     * to prevent any informaiton disclosure. Customers can modify if they have the need.
-     */
     result.Groups.forEach(val => {
       delete val.UserPoolId, delete val.LastModifiedDate, delete val.CreationDate, delete val.Precedence, delete val.RoleArn;
     });
@@ -204,7 +263,7 @@ async function listGroupsForUser(username, Limit, NextToken) {
   }
 }
 
-async function listUsersInGroup(groupname, Limit, NextToken) {
+async function listUsersInGroup(groupname, Limit, NextToken, event) {
   const params = {
     GroupName: groupname,
     UserPoolId: userPoolId,
@@ -216,6 +275,13 @@ async function listUsersInGroup(groupname, Limit, NextToken) {
 
   try {
     const result = await cognitoIdentityServiceProvider.listUsersInGroup(params).promise();
+    
+    // Filter users by organization
+    const organizationId = event.requestContext.authorizer.claims['custom:organization_id'];
+    result.Users = result.Users.filter(user => 
+      user.Attributes.find(attr => attr.Name === 'custom:organization_id')?.Value === organizationId
+    );
+    
     return result;
   } catch (err) {
     console.log(err);
@@ -224,7 +290,15 @@ async function listUsersInGroup(groupname, Limit, NextToken) {
 }
 
 // Signs out from all devices, as an administrator.
-async function signUserOut(username) {
+async function signUserOut(username, event) {
+  // First check if the target user is in the same organization
+  const organizationId = event.requestContext.authorizer.claims['custom:organization_id'];
+  const targetUser = await getUser(username, event);
+  
+  if (targetUser.UserAttributes.find(attr => attr.Name === 'custom:organization_id')?.Value !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
   const params = {
     UserPoolId: userPoolId,
     Username: username,
@@ -244,6 +318,139 @@ async function signUserOut(username) {
   }
 }
 
+async function createUser(username, userGroup, returnPassword, event) {
+  const organizationId = event.requestContext.authorizer.claims['custom:organization_id'];
+  const isEmail = username.includes('@');
+  
+  const userAttributes = [
+    {
+      Name: 'custom:organization_id',
+      Value: organizationId
+    }
+  ];
+
+  if (isEmail) {
+    userAttributes.push(
+      { Name: 'email', Value: username },
+      { Name: 'email_verified', Value: 'true' }
+    );
+  } else {
+    userAttributes.push(
+      { Name: 'phone_number', Value: username },
+      { Name: 'phone_number_verified', Value: 'true' }
+    );
+  }
+
+  let temporaryPassword;
+  if (returnPassword) {
+    const lower = 'abcdefghijklmnopqrstuvwxyz';
+    const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const numbers = '0123456789';
+    const special = '!@#$%^&*';
+    
+    temporaryPassword = 
+      lower[Math.floor(Math.random() * lower.length)] +
+      upper[Math.floor(Math.random() * upper.length)] +
+      numbers[Math.floor(Math.random() * numbers.length)] +
+      special[Math.floor(Math.random() * special.length)] +
+      lower[Math.floor(Math.random() * lower.length)] +
+      upper[Math.floor(Math.random() * upper.length)] +
+      numbers[Math.floor(Math.random() * numbers.length)] +
+      special[Math.floor(Math.random() * special.length)];
+  }
+
+  const params = {
+    UserPoolId: userPoolId,
+    Username: username,
+    UserAttributes: userAttributes,
+    MessageAction: returnPassword ? 'SUPPRESS' : 'SEND',
+    ...(temporaryPassword && { TemporaryPassword: temporaryPassword })
+  };
+
+  console.log(`Attempting to create user ${username}`);
+
+  try {
+    const result = await cognitoIdentityServiceProvider.adminCreateUser(params).promise();
+    
+    if (userGroup) {
+      await addUserToGroup(username, userGroup, event);
+    }
+
+    if (returnPassword) {
+      const setPasswordParams = {
+        UserPoolId: userPoolId,
+        Username: username,
+        Password: temporaryPassword,
+        Permanent: true
+      };
+      await cognitoIdentityServiceProvider.adminSetUserPassword(setPasswordParams).promise();
+    }
+
+    return {
+      message: `Successfully created user ${username}`,
+      ...(returnPassword && { password: temporaryPassword })
+    };
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+async function hardPasswordReset(username, returnPassword, event) {
+  const organizationId = event.requestContext.authorizer.claims['custom:organization_id'];
+  const targetUser = await getUser(username, event);
+  
+  if (targetUser.UserAttributes.find(attr => attr.Name === 'custom:organization_id')?.Value !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
+  let newPassword;
+  if (returnPassword) {
+    const lower = 'abcdefghijklmnopqrstuvwxyz';
+    const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const numbers = '0123456789';
+    const special = '!@#$%^&*';
+    
+    newPassword = 
+      lower[Math.floor(Math.random() * lower.length)] +
+      upper[Math.floor(Math.random() * upper.length)] +
+      numbers[Math.floor(Math.random() * numbers.length)] +
+      special[Math.floor(Math.random() * special.length)] +
+      lower[Math.floor(Math.random() * lower.length)] +
+      upper[Math.floor(Math.random() * upper.length)] +
+      numbers[Math.floor(Math.random() * numbers.length)] +
+      special[Math.floor(Math.random() * special.length)];
+  }
+
+  const params = {
+    UserPoolId: userPoolId,
+    Username: username,
+    Password: newPassword,
+    Permanent: true
+  };
+
+  console.log(`Attempting to reset password for ${username}`);
+
+  try {
+    await cognitoIdentityServiceProvider.adminSetUserPassword(params).promise();
+    
+    if (!returnPassword) {
+      await cognitoIdentityServiceProvider.adminResetUserPassword({
+        UserPoolId: userPoolId,
+        Username: username
+      }).promise();
+    }
+
+    return {
+      message: `Successfully reset password for ${username}`,
+      ...(returnPassword && { password: newPassword })
+    };
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
 module.exports = {
   addUserToGroup,
   removeUserFromGroup,
@@ -256,4 +463,6 @@ module.exports = {
   listGroupsForUser,
   listUsersInGroup,
   signUserOut,
+  createUser,
+  hardPasswordReset,
 };
