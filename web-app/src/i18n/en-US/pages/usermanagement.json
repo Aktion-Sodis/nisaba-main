@@ -1,0 +1,41 @@
+{
+  "title": "User Management",
+  "subtitle": "Manage users and their permissions",
+  "newUser": "New User",
+  "filters": {
+    "search": "Search users..."
+  },
+  "resetFilter": "Reset Filter",
+  "noUsersFound": "No users found",
+  "loadingUsers": "Loading users...",
+  "columns": {
+    "username": "Username",
+    "verified": "Verified",
+    "groups": "Groups"
+  },
+  "access_levels": {
+    "superadmin": "Super Administrator",
+    "admin": "Administrator",
+    "mobile": "Mobile User",
+    "analytics": "Analytics User"
+  },
+  "create_user": {
+    "title": "Create New User",
+    "email": "Email or Phone",
+    "user_group": "Access Level",
+    "show_password": "Show Password",
+    "create": "Create User",
+    "success_title": "User Created",
+    "success_message": "User {username} has been created successfully. They will receive their password via email/phone.",
+    "error_title": "Error Creating User",
+    "password_info": "Please save this password securely. It will not be shown again.",
+    "password": "Password",
+    "confirm_save": "I have saved the password",
+    "finish": "Finish",
+    "password_copied": "Password copied to clipboard",
+    "validation": {
+      "required": "This field is required",
+      "invalid_email_or_phone": "Please enter a valid email address or phone number"
+    }
+  }
+} 

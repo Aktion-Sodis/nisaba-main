@@ -529,7 +529,7 @@ const breadcrumbMenuItems = computed(() => {
       items: [
         {
           id: 'surveys',
-          label: t('apps.apps.umfragen.title'),
+          label: t('apps.apps.surveys.title'),
           icon: 'assignment',
           iconType: 'material',
           color: getColor('surveys'),
@@ -555,7 +555,21 @@ const breadcrumbMenuItems = computed(() => {
       iconType: 'material',
       color: getColor('interventions'),
       command: () => {
-        router.push({ name: 'Interventions' });
+        router.push('/interventions');
+      },
+    },
+    {
+      id: 'settings',
+      label: t('apps.categories.settings'),
+    },
+    {
+      id: 'users',
+      label: t('apps.apps.users.title'),
+      icon: 'people',
+      iconType: 'material',
+      color: getColor('users'),
+      command: () => {
+        router.push('/users');
       },
     },
   ];

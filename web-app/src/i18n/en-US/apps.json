@@ -1,6 +1,7 @@
 {
     "categories": {
-        "admin": "Admin Apps"
+        "admin": "Admin Apps",
+        "settings": "Management"
     },
     "groups": {
         "surveys": "Surveys"
@@ -18,13 +19,17 @@
             "title": "Interventions",
             "description": "Manage the interventions"
         },
-        "umfragen": {
+        "surveys": {
             "title": "Survey Overview",
             "description": "Manage the surveys"
         },
         "surveyeditor": {
             "title": "Survey Editor",
             "description": "Edit the survey"
+        },
+        "users": {
+            "title": "Users",
+            "description": "Add and manage users"
         }
     }
 }

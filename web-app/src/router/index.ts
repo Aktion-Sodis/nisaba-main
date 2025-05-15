@@ -9,6 +9,7 @@ import Login from '@/views/login/Login.vue';
 import SurveyEditor from '@/views/surveydetail/SurveyDetails.vue';
 import { useSurveyDetailStore } from '@/views/surveydetail/surveyDetailStore';
 import Umfragen from '@/views/surveys/Surveys.vue';
+import UserManagement from '@/views/usermanagement/UserManagement.vue';
 
 const routes = [
   {
@@ -54,6 +55,15 @@ const routes = [
     meta: {
       layout: 'DefaultLayout',
       i18n_title: 'apps.interventions.title',
+    },
+  },
+  {
+    path: '/users',
+    name: 'Users',
+    component: UserManagement,
+    meta: {
+      layout: 'DefaultLayout',
+      i18n_title: 'apps.apps.users.title',
     },
   },
   // Add other routes here as needed

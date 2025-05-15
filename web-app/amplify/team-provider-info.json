@@ -74,7 +74,7 @@
       "function": {
         "AdminQueries8dc38185": {
           "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
-          "s3Key": "amplify-builds/AdminQueries8dc38185-65343169496b7849564e-build.zip"
+          "s3Key": "amplify-builds/AdminQueries8dc38185-504d63494874384d7854-build.zip"
         },
         "authnisabaPreTokenGeneration": {
           "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
