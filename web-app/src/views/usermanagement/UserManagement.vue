@@ -78,22 +78,130 @@
               </div>
             </template>
           </Column>
+
+          <Column
+            header-style="width: 5rem; text-align: center"
+            body-style="text-align: center; overflow: visible"
+          >
+            <template #body="{ data }">
+              <Button
+                severity="light"
+                :fluid="false"
+                size="small"
+                class="w-[2em] h-[2em]"
+                aria-haspopup="true"
+                :aria-controls="'overlay_menu'"
+                @click.stop="toggleMenu($event, data)"
+              >
+                <template #icon>
+                  <i class="pi pi-ellipsis-v"></i>
+                </template>
+              </Button>
+            </template>
+          </Column>
         </DataTable>
       </template>
     </Card>
     <create-user-modal v-model:is-shown="showCreateUserModal" />
+    <reset-password-modal
+      v-model:is-shown="showResetPasswordModal"
+      :user="selectedUserForMenu"
+    />
+    <Menu ref="menu" :model="menuItems" :popup="true" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import Tag from 'primevue/tag';
-import { onMounted, ref } from 'vue';
+import { useConfirm } from 'primevue/useconfirm';
+import { useToast } from 'primevue/usetoast';
+import { onMounted, ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 import CreateUserModal from './components/CreateUserModal.vue';
+import ResetPasswordModal from './components/ResetPasswordModal.vue';
 import { useUserManagementStore } from './userManagementStore';
 
+const { t } = useI18n();
 const userManagementStore = useUserManagementStore();
 const showCreateUserModal = ref(false);
+const showResetPasswordModal = ref(false);
+const confirm = useConfirm();
+const toast = useToast();
+const menu = ref();
+const selectedUserForMenu = ref<any>(null);
+
+const menuItems = computed(() => {
+  if (!selectedUserForMenu.value) {
+    return [];
+  }
+
+  return [
+    {
+      label: t('usermanagement.menu.reset_password'),
+      icon: 'pi pi-fw pi-key',
+      command: () => {
+        if (selectedUserForMenu.value) {
+          showResetPasswordModal.value = true;
+        }
+      },
+    },
+    {
+      label: t('usermanagement.menu.delete'),
+      icon: 'pi pi-fw pi-trash',
+      command: () => {
+        if (selectedUserForMenu.value) {
+          confirmDeleteUser(selectedUserForMenu.value);
+        }
+      },
+    },
+  ];
+});
+
+const toggleMenu = (event: Event, user: any) => {
+  selectedUserForMenu.value = user;
+  menu.value.toggle(event);
+};
+
+const confirmDeleteUser = (user: any) => {
+  confirm.require({
+    message: t('usermanagement.confirm.delete.message'),
+    header: t('usermanagement.confirm.delete.title'),
+    icon: 'pi pi-exclamation-triangle',
+    acceptProps: {
+      label: t('usermanagement.confirm.delete.accept'),
+      icon: 'pi pi-trash',
+      severity: 'danger',
+    },
+    rejectProps: {
+      label: t('usermanagement.confirm.delete.reject'),
+      severity: 'secondary',
+      outlined: true,
+    },
+    accept: async () => {
+      try {
+        const result = await userManagementStore.deleteUser(user.id);
+        if (result) {
+          toast.add({
+            severity: 'success',
+            summary: t('usermanagement.toasts.delete_success.title'),
+            detail: t('usermanagement.toasts.delete_success.message'),
+            life: 3000,
+          });
+        } else {
+          throw new Error('User could not be deleted');
+        }
+      } catch (error) {
+        toast.add({
+          severity: 'error',
+          summary: t('usermanagement.toasts.delete_error.title'),
+          detail: t('usermanagement.toasts.delete_error.message'),
+          life: 5000,
+        });
+      }
+    },
+  });
+};
 
 onMounted(() => {
   if (!userManagementStore.isInitialized) {

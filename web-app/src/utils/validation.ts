@@ -9,10 +9,14 @@ export const validatePhone = (value: string): boolean => {
 };
 
 export const validateUsername = (
-  value: string
+  value: string,
+  t: (key: string) => string
 ): { isValid: boolean; message: string } => {
   if (!value) {
-    return { isValid: false, message: 'Email or phone is required' };
+    return {
+      isValid: false,
+      message: t('login.login_form.validation.username_required'),
+    };
   }
 
   if (validateEmail(value) || validatePhone(value)) {
@@ -21,22 +25,41 @@ export const validateUsername = (
 
   return {
     isValid: false,
-    message: 'Please enter a valid email or phone number',
+    message: t('login.login_form.validation.username_invalid'),
   };
 };
 
 export const validatePassword = (
-  value: string
+  value: string,
+  t: (key: string) => string,
+  isInitialReset: boolean = false
 ): { isValid: boolean; message: string } => {
   if (!value) {
-    return { isValid: false, message: 'Password is required' };
-  }
-
-  if (value.length < 8) {
     return {
       isValid: false,
-      message: 'Password must be at least 8 characters long',
+      message: t('login.login_form.validation.password_required'),
     };
+  }
+
+  if (isInitialReset) {
+    if (value.length < 6) {
+      return {
+        isValid: false,
+        message: t('login.password_reset.validation.password_length'),
+      };
+    }
+
+    const hasLower = /[a-z]/.test(value);
+    const hasUpper = /[A-Z]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+
+    if (!hasLower || !hasUpper || !hasNumber || !hasSpecial) {
+      return {
+        isValid: false,
+        message: t('login.password_reset.validation.password_complexity'),
+      };
+    }
   }
 
   return { isValid: true, message: '' };

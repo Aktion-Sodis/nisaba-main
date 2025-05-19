@@ -183,6 +183,7 @@ async function enableUser(username, event) {
   }
 }
 
+//debugged
 async function getUser(username, event) {
   const params = {
     UserPoolId: userPoolId,
@@ -207,13 +208,21 @@ async function getUser(username, event) {
       }
     }
     
-    return result;
+    // Rename UserAttributes to Attributes
+    const modifiedResult = {
+      ...result,
+      Attributes: result.UserAttributes,
+    };
+    delete modifiedResult.UserAttributes;
+    
+    return modifiedResult;
   } catch (err) {
     console.log(err);
     throw err;
   }
 }
 
+//debugged
 async function listUsers(Limit, PaginationToken, event) {
   const params = {
     UserPoolId: userPoolId,
@@ -399,6 +408,7 @@ async function signUserOut(username, event) {
   }
 }
 
+//debugged
 async function createUser(username, userGroup, returnPassword, event) {
   // Get organization ID of the requesting user
   const organizationId = await getOrgIdDirect(event.requestContext.authorizer.claims.username);
@@ -449,7 +459,7 @@ async function createUser(username, userGroup, returnPassword, event) {
     UserPoolId: userPoolId,
     Username: username,
     UserAttributes: userAttributes,
-    MessageAction: returnPassword ? 'SUPPRESS' : 'SEND',
+    ...(returnPassword && { MessageAction: 'SUPPRESS' }),
     ...(temporaryPassword && { TemporaryPassword: temporaryPassword })
   };
 
@@ -463,26 +473,33 @@ async function createUser(username, userGroup, returnPassword, event) {
     }
 
     if (returnPassword) {
+      console.log('Setting fixed password to return')
       const setPasswordParams = {
         UserPoolId: userPoolId,
         Username: username,
         Password: temporaryPassword,
         Permanent: true
       };
+      console.log('generated password: ', temporaryPassword)
       await cognitoIdentityServiceProvider.adminSetUserPassword(setPasswordParams).promise();
+      console.log('password successfully set')
     }
 
     // Get the complete user object with groups
     const user = await getUser(username, event);
+    console.log('get user worked')
     const groupsResult = await cognitoIdentityServiceProvider.adminListGroupsForUser({
       UserPoolId: userPoolId,
       Username: username
     }).promise();
+    console.log('got user groups');
     
     const userWithGroups = {
       ...user,
       Groups: groupsResult.Groups.map(group => group.GroupName)
     };
+
+    console.log('userWithGroups: ', userWithGroups)
 
     return {
       message: `Successfully created user ${username}`,
@@ -494,6 +511,7 @@ async function createUser(username, userGroup, returnPassword, event) {
     throw err;
   }
 }
+
 
 async function hardPasswordReset(username, returnPassword, event) {
   // Get organization ID of the requesting user
@@ -508,47 +526,49 @@ async function hardPasswordReset(username, returnPassword, event) {
     throw new Error('Cannot perform action on user from different organization');
   }
 
-  let newPassword;
-  if (returnPassword) {
-    const lower = 'abcdefghijklmnopqrstuvwxyz';
-    const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const numbers = '0123456789';
-    const special = '!@#$%^&*';
-    
-    newPassword = 
-      lower[Math.floor(Math.random() * lower.length)] +
-      upper[Math.floor(Math.random() * upper.length)] +
-      numbers[Math.floor(Math.random() * numbers.length)] +
-      special[Math.floor(Math.random() * special.length)] +
-      lower[Math.floor(Math.random() * lower.length)] +
-      upper[Math.floor(Math.random() * upper.length)] +
-      numbers[Math.floor(Math.random() * numbers.length)] +
-      special[Math.floor(Math.random() * special.length)];
-  }
-
-  const params = {
-    UserPoolId: userPoolId,
-    Username: username,
-    Password: newPassword,
-    Permanent: true
-  };
-
   console.log(`Attempting to reset password for ${username}`);
 
   try {
-    await cognitoIdentityServiceProvider.adminSetUserPassword(params).promise();
-    
-    if (!returnPassword) {
+    if (returnPassword) {
+      // Generate a new permanent password
+      const lower = 'abcdefghijklmnopqrstuvwxyz';
+      const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const numbers = '0123456789';
+      const special = '!@#$%^&*';
+      
+      const newPassword = 
+        lower[Math.floor(Math.random() * lower.length)] +
+        upper[Math.floor(Math.random() * upper.length)] +
+        numbers[Math.floor(Math.random() * numbers.length)] +
+        special[Math.floor(Math.random() * special.length)] +
+        lower[Math.floor(Math.random() * lower.length)] +
+        upper[Math.floor(Math.random() * upper.length)] +
+        numbers[Math.floor(Math.random() * numbers.length)] +
+        special[Math.floor(Math.random() * special.length)];
+
+      // Set the permanent password
+      await cognitoIdentityServiceProvider.adminSetUserPassword({
+        UserPoolId: userPoolId,
+        Username: username,
+        Password: newPassword,
+        Permanent: true
+      }).promise();
+
+      return {
+        message: `Successfully reset password for ${username}`,
+        password: newPassword
+      };
+    } else {
+      // Just trigger the password reset email
       await cognitoIdentityServiceProvider.adminResetUserPassword({
         UserPoolId: userPoolId,
         Username: username
       }).promise();
-    }
 
-    return {
-      message: `Successfully reset password for ${username}`,
-      ...(returnPassword && { password: newPassword })
-    };
+      return {
+        message: `Password reset email sent to ${username}`
+      };
+    }
   } catch (err) {
     console.log(err);
     throw err;

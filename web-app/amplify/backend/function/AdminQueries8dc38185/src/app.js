@@ -1,4 +1,8 @@
-/* eslint-disable */
+/* Amplify Params - DO NOT EDIT
+	AUTH_AUTHNISABA_USERPOOLID
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT *//* eslint-disable */
 /*
  * Copyright 2019-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
@@ -277,6 +281,7 @@ app.post('/createUser', async (req, res, next) => {
       req.body.returnPassword,
       req.apiGateway.event
     );
+    console.log('response returning now: ', response)
     res.status(200).json(response);
   } catch (err) {
     next(err);

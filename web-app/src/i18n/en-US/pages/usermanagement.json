@@ -19,6 +19,28 @@
     "mobile": "Mobile User",
     "analytics": "Analytics User"
   },
+  "menu": {
+    "delete": "Delete User",
+    "reset_password": "Reset Password"
+  },
+  "confirm": {
+    "delete": {
+      "title": "Delete User",
+      "message": "Are you sure you want to delete this user?",
+      "accept": "Delete",
+      "reject": "Cancel"
+    }
+  },
+  "toasts": {
+    "delete_success": {
+      "title": "Success",
+      "message": "User has been deleted successfully"
+    },
+    "delete_error": {
+      "title": "Error",
+      "message": "Failed to delete user"
+    }
+  },
   "create_user": {
     "title": "Create New User",
     "email": "Email or Phone",
@@ -37,5 +59,19 @@
       "required": "This field is required",
       "invalid_email_or_phone": "Please enter a valid email address or phone number"
     }
+  },
+  "reset_password": {
+    "title": "Reset Password",
+    "info": "Reset password for user {username}",
+    "show_password": "Show new password",
+    "password_info": "Please save this password securely. It will not be shown again.",
+    "password": "New Password",
+    "confirm_save": "I have saved the password",
+    "reset": "Reset Password",
+    "finish": "Finish",
+    "password_copied": "Password copied to clipboard",
+    "success_title": "Password Reset Successful",
+    "success_message": "Password has been reset for {username}",
+    "error_title": "Password Reset Failed"
   }
 } 

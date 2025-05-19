@@ -64,7 +64,11 @@
         </div>
 
         <div class="flex w-full justify-end">
-          <Button severity="success" :loading="loading" @click="handleSubmit">
+          <Button
+            severity="success"
+            :loading="userManagementStore.isCreatingUser"
+            @click="handleSubmit"
+          >
             {{ $t('usermanagement.create_user.create') }}
           </Button>
         </div>
@@ -159,7 +163,6 @@ watch(
 const email = ref('');
 const userGroup = ref<UserGroup>(UserGroup.MOBILE);
 const showPassword = ref(false);
-const loading = ref(false);
 const password = ref<string | null>(null);
 const passwordConfirmed = ref(false);
 
@@ -233,7 +236,6 @@ const handleSubmit = async () => {
 
   if (!isEmailValid || !isUserGroupValid) return;
 
-  loading.value = true;
   try {
     const result = await userManagementStore.createUser(
       email.value,
@@ -245,7 +247,6 @@ const handleSubmit = async () => {
       if (result.password) {
         password.value = result.password;
       } else {
-        loading.value = false;
         localIsShown.value = false;
         toast.add({
           severity: 'success',
@@ -264,8 +265,14 @@ const handleSubmit = async () => {
         life: 5000,
       });
     }
-  } finally {
-    loading.value = false;
+  } catch (error) {
+    toast.add({
+      severity: 'error',
+      summary: t('usermanagement.create_user.error_title'),
+      detail:
+        error instanceof Error ? error.message : 'An unknown error occurred',
+      life: 5000,
+    });
   }
 };
 </script>

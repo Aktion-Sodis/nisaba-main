@@ -27,6 +27,13 @@ interface CognitoUser {
   Groups?: string[];
 }
 
+export interface User {
+  id: string;
+  username: string;
+  confirmed: boolean;
+  groups: string[];
+}
+
 interface ListUsersResponse {
   Users: CognitoUser[];
   NextToken?: string;
@@ -36,6 +43,11 @@ interface CreateUserResponse {
   message: string;
   password?: string;
   user: CognitoUser;
+}
+
+interface PasswordResetResponse {
+  message: string;
+  password?: string;
 }
 
 export const useUserManagementStore = defineStore('userManagement', () => {
@@ -122,12 +134,13 @@ export const useUserManagementStore = defineStore('userManagement', () => {
     });
   });
 
+  const isCreatingUser = ref(false);
   const createUser = async (
     username: string,
     userGroup: UserGroup,
     returnPassword: boolean = false
   ) => {
-    loadingUsers.value = true;
+    isCreatingUser.value = true;
     error.value = null;
 
     try {
@@ -137,11 +150,11 @@ export const useUserManagementStore = defineStore('userManagement', () => {
         path: '/createUser',
         options: {
           ...options,
-          body: JSON.stringify({
+          body: {
             username,
             returnPassword,
             userGroup,
-          }),
+          },
         },
       });
       const responseData = await response.response;
@@ -164,7 +177,79 @@ export const useUserManagementStore = defineStore('userManagement', () => {
         error: err instanceof Error ? err.message : 'Failed to create user',
       };
     } finally {
-      loadingUsers.value = false;
+      isCreatingUser.value = false;
+    }
+  };
+
+  const isDeletingUser = ref(false);
+  const deleteUser = async (username: string) => {
+    isDeletingUser.value = true;
+    error.value = null;
+
+    try {
+      const options = await getAuthorizationHeader();
+      const response = await post({
+        apiName: API_NAME,
+        path: '/deleteUser',
+        options: {
+          ...options,
+          body: { username },
+        },
+      });
+      const responseData = await response.response;
+      const _data = await responseData.body.json();
+
+      // Remove the deleted user from the users array
+      _allUsers.value = _allUsers.value.filter(
+        (user) => user.Username !== username
+      );
+      isDeletingUser.value = false;
+      return true;
+    } catch (err) {
+      error.value =
+        err instanceof Error ? err.message : 'Failed to delete user';
+      console.error('Error deleting user:', err);
+      isDeletingUser.value = false;
+      throw err;
+    }
+  };
+
+  const isResettingPassword = ref(false);
+  const resetPassword = async (
+    username: string,
+    returnPassword: boolean = false
+  ) => {
+    isResettingPassword.value = true;
+    error.value = null;
+
+    try {
+      const options = await getAuthorizationHeader();
+      const response = await post({
+        apiName: API_NAME,
+        path: '/hardPasswordReset',
+        options: {
+          ...options,
+          body: { username, returnPassword },
+        },
+      });
+      const responseData = await response.response;
+      const data =
+        (await responseData.body.json()) as unknown as PasswordResetResponse;
+
+      return {
+        success: true,
+        password: returnPassword ? data.password : undefined,
+      };
+    } catch (err) {
+      error.value =
+        err instanceof Error ? err.message : 'Failed to reset password';
+      console.error('Error resetting password:', err);
+      return {
+        success: false,
+        error: err instanceof Error ? err.message : 'Failed to reset password',
+      };
+    } finally {
+      isResettingPassword.value = false;
     }
   };
 
@@ -177,5 +262,9 @@ export const useUserManagementStore = defineStore('userManagement', () => {
     init,
     clear,
     createUser,
+    deleteUser,
+    resetPassword,
+    isResettingPassword,
+    isCreatingUser,
   };
 });
