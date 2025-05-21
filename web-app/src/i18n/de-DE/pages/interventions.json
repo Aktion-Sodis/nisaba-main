@@ -1,7 +1,7 @@
 {
       "title": "Aktivitäten",
       "subtitle": "Hier können Sie Ihre Aktivitäten verwalten.",
-      "newIntervention": "Neue Aktivität",
+      "newIntervention": "Neue Aktivität erstellen",
       "filters": {
         "search": "Suche...",
         "filterByName": "Nach Name filtern",
@@ -18,10 +18,15 @@
       },
       "createdAt": "Erstellt am",
       "withActiveFilter": "mit aktivem Filter",
-
       "menu": {
         "viewDetails": "Details anzeigen",
         "edit": "Bearbeiten",
         "archive": "Archivieren"
+      },
+      "form": {
+        "name": "Name",
+        "namePlaceholder": "Name der Aktivität eingeben",
+        "description": "Beschreibung",
+        "descriptionPlaceholder": "Beschreibung der Aktivität eingeben"
       }
   }

@@ -1,27 +1,32 @@
 {
-      "title": "Activities",
-      "subtitle": "Here you can manage your activities.",
-      "newIntervention": "Create new activity",
-      "filters": {
-        "search": "Search...",
-        "filterByName": "Filter by name",
-        "filterByDescription": "Filter by description",
-        "selectDate": "Select date"
-      },
-      "resetFilter": "Reset filter",
-      "noInterventionsFound": "No activities found.",
-      "loadingInterventions": "Loading activity data...",
-      "columns": {
-        "name": "Name",
-        "description": "Description",
-        "createdAt": "Created at"
-      },
-      "createdAt": "Created at",
-      "withActiveFilter": "with active filter",
-
-      "menu": {
-        "viewDetails": "View details",
-        "edit": "Edit",
-        "archive": "Archive"
-      }
+  "title": "Activities",
+  "subtitle": "Here you can manage your activities.",
+  "newIntervention": "Create new activity",
+  "filters": {
+    "search": "Search...",
+    "filterByName": "Filter by name",
+    "filterByDescription": "Filter by description",
+    "selectDate": "Select date"
+  },
+  "resetFilter": "Reset filter",
+  "noInterventionsFound": "No activities found.",
+  "loadingInterventions": "Loading activity data...",
+  "columns": {
+    "name": "Name",
+    "description": "Description",
+    "createdAt": "Created at"
+  },
+  "createdAt": "Created at",
+  "withActiveFilter": "with active filter",
+  "menu": {
+    "viewDetails": "View details",
+    "edit": "Edit",
+    "archive": "Archive"
+  },
+  "form": {
+    "name": "Name",
+    "namePlaceholder": "Enter the activity name",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter the activity description"
   }
+}

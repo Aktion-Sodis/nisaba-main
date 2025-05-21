@@ -1,0 +1,30 @@
+{
+    "title": {
+      "create": "Create New Intervention",
+      "edit": "Edit Intervention"
+    },
+    "labels": {
+      "languages": "Languages",
+      "name": "Name",
+      "description": "Description",
+      "type": "Type",
+      "image": "Image"
+    },
+    "placeholders": {
+      "name": "Enter intervention name",
+      "description": "Enter intervention description"
+    },
+    "imageUpload": {
+      "dnd": "Drag and drop an image here, or click to select.",
+      "alt": "Intervention image preview"
+    },
+    "buttons": {
+      "removeImage": "Remove Image",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "types": {
+      "technology": "Technology",
+      "education": "Education"
+    }
+  }

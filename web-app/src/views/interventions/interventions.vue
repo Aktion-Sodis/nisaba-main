@@ -209,6 +209,13 @@
       </template>
     </Card>
     <Menu ref="interventionMenu" :model="interventionMenuItems" :popup="true" />
+    
+    <!-- Verwenden Sie hier Ihre InterventionDialog Komponente -->
+    <InterventionDialog 
+      v-model="showInterventionDialog" 
+      @saved="handleInterventionSaved" 
+    />
+    <!-- Der vorherige Dialog-Block wurde entfernt -->
   </div>
 </template>
 
@@ -216,10 +223,12 @@
 import { FilterMatchMode } from '@primevue/core/api';
 import { ref, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import Menu from 'primevue/menu'; // Added import for Menu
-import router from '@/router'; // Added import for router (optional, for actions)
+import Menu from 'primevue/menu';
+// Entfernen Sie: import Dialog from 'primevue/dialog';
+import InterventionDialog from './components/InterventionDialog.vue'; // Pfad anpassen, falls nötig
+import router from '@/router'; 
 
-import type { Intervention } from '@/models/interventions'; // Ensure Intervention type is correctly imported
+import type { Intervention } from '@/models/interventions'; 
 import { useProjectConfigStore } from '@/stores/projectConfigStore';
 import { formatMLString } from '@/utils/formatStrings';
 
@@ -387,7 +396,10 @@ const viewInterventionDetails = (intervention: Intervention) => {
 
 const editIntervention = (intervention: Intervention) => {
   console.log('Edit intervention:', intervention);
-  // Example: router.push(`/interventions/edit/${intervention.id}`);
+  // Hier könnten Sie den InterventionDialog auch für Bearbeitungen öffnen:
+  // selectedInterventionId.value = intervention.id; // Eine neue ref, um die ID zu speichern
+  // showInterventionDialog.value = true;
+  // Stellen Sie sicher, dass InterventionDialog eine `interventionId` Prop akzeptiert, um den Bearbeitungsmodus zu aktivieren.
 };
 
 const onInterventionCardClick = (intervention: Intervention) => {
@@ -396,16 +408,29 @@ const onInterventionCardClick = (intervention: Intervention) => {
   console.log('Intervention card clicked:', intervention);
 };
 
+// Modal-bezogene Refs und Funktionen
+const showInterventionDialog = ref(false);
+// const selectedInterventionId = ref<string | null>(null); // Für den Bearbeitungsmodus, falls benötigt
+
 const createIntervention = () => {
-  // Hier kannst du die Logik zum Erstellen einer neuen Intervention einfügen,
-  // z.B. Navigation zu einer Editor-Seite oder Initialisierung eines Stores
-  // Beispiel:
-  // router.push('/interventions/editor');
-  console.log('Neue Intervention erstellen');
+  // selectedInterventionId.value = null; // Sicherstellen, dass kein Bearbeitungsmodus aktiv ist
+  showInterventionDialog.value = true;
 };
-onMounted(() => {
-  // Potential future logic for fetching interventions if not already handled by store
-});
+
+const handleInterventionSaved = (savedIntervention: any) => { // Typ anpassen
+  console.log('Intervention saved:', savedIntervention);
+  showInterventionDialog.value = false;
+  // Hier können Sie Logik hinzufügen, um die Interventionsliste zu aktualisieren,
+  // z.B. durch erneutes Laden vom Store oder Hinzufügen zur lokalen Liste.
+  // projectConfigStore.fetchInterventions(); // Beispiel
+};
+
+// Entfernen Sie die folgenden Refs und Funktionen, die für den inline Dialog waren:
+// const displayModal = ref(false);
+// const newIntervention = ref({ ... });
+// const closeModal = () => { ... };
+// const saveIntervention = async () => { ... };
+
 </script>
 
 <style scoped>
@@ -418,8 +443,6 @@ onMounted(() => {
   flex-grow: 1;
   overflow: auto; /* Wichtig für scrollbare Tabelle/Grid */
 }
-
-/* Removed .intervention-grid, .intervention-grid-container, .intervention-grid-item styles as Tailwind is used directly */
 
 .col-span-full {
   grid-column: 1 / -1;

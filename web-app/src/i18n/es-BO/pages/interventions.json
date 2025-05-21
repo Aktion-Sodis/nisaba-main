@@ -1,27 +1,32 @@
 {
-      "title": "Actividades",
-      "subtitle": "Aquí puedes gestionar tus actividades.",
-      "newIntervention": "Crear nueva actividad",
-      "filters": {
-        "search": "Buscar...",
-        "filterByName": "Filtrar por nombre",
-        "filterByDescription": "Filtrar por descripción",
-        "selectDate": "Seleccionar fecha"
-      },
-      "resetFilter": "Restablecer filtro",
-      "noInterventionsFound": "No se encontraron actividades.",
-      "loadingInterventions": "Cargando datos de actividades...",
-      "columns": {
-        "name": "Nombre",
-        "description": "Descripción",
-        "createdAt": "Creado en"
-      },
-      "createdAt": "Creado en",
-      "withActiveFilter": "con filtro activo",
-    
-      "menu": {
-        "viewDetails": "Ver detalles",
-        "edit": "Editar",
-        "archive": "Archivar"
-      }
+  "title": "Actividades",
+  "subtitle": "Aquí puedes gestionar tus actividades.",
+  "newIntervention": "Crear nueva actividad",
+  "filters": {
+    "search": "Buscar...",
+    "filterByName": "Filtrar por nombre",
+    "filterByDescription": "Filtrar por descripción",
+    "selectDate": "Seleccionar fecha"
+  },
+  "resetFilter": "Restablecer filtro",
+  "noInterventionsFound": "No se encontraron actividades.",
+  "loadingInterventions": "Cargando datos de actividades...",
+  "columns": {
+    "name": "Nombre",
+    "description": "Descripción",
+    "createdAt": "Creado en"
+  },
+  "createdAt": "Creado en",
+  "withActiveFilter": "con filtro activo",
+  "menu": {
+    "viewDetails": "Ver detalles",
+    "edit": "Editar",
+    "archive": "Archivar"
+  },
+  "form": {
+    "name": "Nombre",
+    "namePlaceholder": "Ingrese el nombre de la actividad",
+    "description": "Descripción",
+    "descriptionPlaceholder": "Ingrese la descripción de la actividad"
   }
+}
