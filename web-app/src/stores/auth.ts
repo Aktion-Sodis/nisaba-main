@@ -5,6 +5,7 @@ import {
   getCurrentUser,
   fetchAuthSession,
   GetCurrentUserOutput,
+  AuthUser,
 } from '@aws-amplify/auth';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
@@ -22,7 +23,9 @@ export enum AuthenticationState {
 
 export const useAuthStore = defineStore('auth', () => {
   const { t } = useI18n();
-  const user = ref<GetCurrentUserOutput | null>(null);
+  const user = ref<AuthUser | null>(null);
+  
+
   const authenticationState = ref<AuthenticationState>(
     AuthenticationState.LoggedOut
   );
