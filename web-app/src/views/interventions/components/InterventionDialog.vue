@@ -6,7 +6,7 @@
     class="w-dialog-lg"
     :maximizable="true"
   >
-    <div v-if="localIntervention!=null" class="flex flex-col gap-2">
+    <div v-if="localIntervention!=null" class="flex flex-col gap-4">
       <!-- Sprachauswahl für die Intervention -->
       <div class="flex flex-row justify-between items-center gap-2">
         <label for="language" class="w-[40%]">
@@ -23,10 +23,10 @@
         <label for="interventionName">
           {{ $t('interventiondialog.labels.name') }}
         </label>
-        <multi-language-text-field
+        <MultiLanguageTextField
           v-model:value="localIntervention.name"
           :allowed-keys="allowedLanguageKeys"
-          :n-lines="3"
+          :n-lines="1"
         />
       </div>
 
@@ -38,17 +38,17 @@
         <MultiLanguageTextField
           v-model:value="localIntervention.description"
           :allowed-keys="allowedLanguageKeys"
-          :n-lines="5"
+          :n-lines="2"
         />
       </div>
 
         <!-- Level zuordnung -->
-        <div class="flex flex-row justify-between items-center gap-2 mb-4">
+        <div class="flex flex-row justify-between items-center gap-2">
           <label for="levels" class="w-[40%]">
             {{ t('interventiondialog.labels.levels') }}
           </label>
           <MultiSelect
-            v-model="selectedLevels"
+            v-model="localConnectedLevelIds"
             :options="availableLevels"
             option-label="formattedName"
             option-value="id"
@@ -59,12 +59,12 @@
         </div>
 
         <!-- Intervention Type -->
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-row justify-between items-center gap-2">
           <label for="interventionType">
             {{ t('interventiondialog.labels.type') }}
           </label>
             <SelectButton
-              v-model="localIntervention.type"
+              v-model="localIntervention.interventionType"
               :options="interventionTypes"
               optionLabel="name"
               optionValue="value"
@@ -94,8 +94,8 @@
         <Button
           :label="t('interventiondialog.buttons.cancel')"
           icon="pi pi-times"
-          class="p-button-text p-button-secondary"
-          @click="closeDialog"
+          class="p-button-text p-button-danger"
+          @click="() => { emit('update:isOpened', false); clear(); }"
         />
         <Button
           :label="t('interventiondialog.buttons.save')"
@@ -121,6 +121,8 @@ import { deriveS3Path } from '@/utils/s3Paths';
 import CustomImageUpload from '@/components/elements/CustomImageUpload.vue';
 import { useProjectConfigStore } from '@/stores/projectConfigStore';
 import { formatMLString } from '@/utils/formatStrings';
+import { useToast } from 'primevue/usetoast';
+import { createNewIntervention } from '@/utils/newObjects';
 
 const projectConfigStore = useProjectConfigStore();
 
@@ -138,6 +140,7 @@ const emit = defineEmits(['update:isOpened', 'saved']);
 
 // i18n
 const { t, locale } = useI18n(); // Destructure locale here
+const toast = useToast();
 
 // Dialog Sichtbarkeit
 const isOpenedLocal = ref(props.isOpened);
@@ -154,6 +157,9 @@ watch(
   () => isOpenedLocal.value,
   (newValue) => {
     emit('update:isOpened', newValue);
+    if (!newValue) {
+      clear();
+    }
   }
 )
 // Mögliche Interventionstypen
@@ -172,25 +178,13 @@ const dialogTitle = computed(() =>
 const allowedLanguageKeys = ref<Array<string>>([]);
 
 // Initialisieren Sie die erlaubten Sprachschlüssel, ähnlich wie in surveyDetailStore
-// Sie können dies entweder aus dem projectConfigStore beziehen oder manuell festlegen
-onMounted(() => {
-  // Option 1: Verwenden Sie die verfügbaren Sprachen aus dem projectConfigStore
- //  allowedLanguageKeys.value = projectConfigStore.availableLanguages.map(lang => lang.key) || [];;
-  
-  // Option 2: Oder setzen Sie die Sprachen basierend auf den Daten des Interventions-Objekts
-  // wenn Sie ein Interventions-Objekt bearbeiten
-  if (props.intervention && props.intervention.name.languageKeys.length > 0) {
-    const intervention = projectConfigStore.getInterventionById(props.interventionId);
-    if (intervention?.name?.languageKeys) {
-      allowedLanguageKeys.value = [...intervention.name.languageKeys];
-    }
-  }
-});
+
+
 const localIntervention = ref<StoreIntervention | null>(null);
 const dbIntervention = ref<StoreIntervention | null>(null);
 
-const localInterventionLevelConnections = ref<Array<MinimalLevelInterventionRelation> | null>(null);
-const dbInterventionLevelConnections = ref<Array<MinimalLevelInterventionRelation> | null>(null);
+const localConnectedLevelIds = ref<Array<string> | null>(null);
+const dbConnectedLevelIds = ref<Array<string>| null>(null);
 
 const isEditMode = ref(false);
 const errors = ref<Array<string>>([]);
@@ -198,12 +192,12 @@ const errors = ref<Array<string>>([]);
 const isInitializing = ref(false);
 const initialize = async () => {
   isInitializing.value = true;
-  try {
     //set language key array initial selection
-    allowedLanguageKeys.value = (projectConfigStore.availableLanguages || []).map(lang => lang.key) || [];
+allowedLanguageKeys.value = [locale.value];
     
     if (props.interventionId) {
-      //get from store dbIntervention and dbInterventionLevelConnections
+      try {
+        //get from store dbIntervention and dbInterventionLevelConnections
       const intervention = projectConfigStore.getInterventionById(props.interventionId);
       if (intervention) {
         dbIntervention.value = cloneDeep(intervention);
@@ -215,138 +209,179 @@ const initialize = async () => {
         }
         
         // Lade die Level-Verbindungen für diese Intervention
-        const levelConnections = projectConfigStore.getRelationsByInterventionId(props.interventionId);
-        dbInterventionLevelConnections.value = cloneDeep(levelConnections);
-        localInterventionLevelConnections.value = cloneDeep(levelConnections);
+        const levelConnections = projectConfigStore.getLevelIdsByInterventionId(props.interventionId);
+        localConnectedLevelIds.value = cloneDeep(levelConnections);
+        dbConnectedLevelIds.value = cloneDeep(levelConnections);
         
-        isEditMode.value = true;
       } else {
-        console.error(`Intervention mit ID ${props.interventionId} nicht gefunden`);
-        emit('update:isOpened', false);
+        throw new Error('Intervention not found');
       }
+      } catch (error) {
+        isOpenedLocal.value = false;
+        toast.add({
+          severity: 'error',
+          summary: t('interventiondialog.toast.intervention_not_found.title'),
+          detail: t('interventiondialog.toast.intervention_not_found.detail'),
+          life: 3000,
+        });
+      }
+      
     } else {
-      //create new empty element
-      const newId = crypto.randomUUID();
-      const emptyIntervention: StoreIntervention = {
-        id: newId,
-        name: { languageMap: {}, languageKeys: [...allowedLanguageKeys.value] },
-        description: { languageMap: {}, languageKeys: [...allowedLanguageKeys.value] },
-        type: 'technology', // Standardwert
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        _version: 1,
-        _lastChangedAt: Date.now(),
-        _deleted: false,
-      };
-      
-      localIntervention.value = emptyIntervention;
+      try {
+        //create new empty element
+        const newIntervention = createNewIntervention(allowedLanguageKeys.value);
+      localIntervention.value = newIntervention;
       dbIntervention.value = null;
-      localInterventionLevelConnections.value = [];
-      dbInterventionLevelConnections.value = null;
       
-      isEditMode.value = false;
+      localConnectedLevelIds.value = [];
+      dbConnectedLevelIds.value = null;
+      
+      isEditMode.value = true;
+
+      } catch (error) {
+        isOpenedLocal.value = false;
+        toast.add({
+          severity: 'error',
+          summary: t('interventiondialog.toast.new_intervention_not_created.title'),
+          detail: t('interventiondialog.toast.new_intervention_not_created.detail'),
+          life: 3000,
+        });
+      }
+      
     }
-  } catch (error) {
-    console.error('Fehler bei der Initialisierung:', error);
-    errors.value.push('Fehler beim Laden der Intervention');
-  } finally {
     isInitializing.value = false;
-  }
 }
 
 const clear = () => {
   localIntervention.value = null;
   dbIntervention.value = null;
-
+  localConnectedLevelIds.value = null;
+  dbConnectedLevelIds.value = null;
+  isInitializing.value = false;
+  isSaving.value = false;
+  isEditMode.value = false;
+  allowedLanguageKeys.value = [];
+  errors.value = [];
 }
+
 
 const isSaving = ref(false);
 const saveInterventionAndConnections = async () => {
-  //check for changes in intervention and connections
+
+  if (!localIntervention.value || !localConnectedLevelIds.value) {
+    return;
+  }
+
   isSaving.value = true;
+  errors.value = [];
   try {
-    let savedIntervention;
-    
-    // Prüfen, ob es sich um eine neue Intervention handelt oder eine Bearbeitung
-    if (!isEditMode.value) {
-      // Neue Intervention erstellen
-      savedIntervention = await projectConfigStore.createIntervention(localIntervention.value);
-    } else {
-      // Bestehende Intervention aktualisieren
-      savedIntervention = await projectConfigStore.updateIntervention(localIntervention.value);
+    const isValidated = validate();
+    if (!isValidated) {
+      isSaving.value = false;
+      return;
+    }
+    if (unsavedChangesIntervention.value) {
+      if (dbIntervention.value) {
+      try {
+        await projectConfigStore.updateIntervention(localIntervention.value);
+        dbIntervention.value = cloneDeep(localIntervention.value);
+      } catch (error) {
+        isSaving.value = false;
+        toast.add({
+          severity: 'error',
+          summary: t('interventiondialog.toast.intervention_not_saved.title'), // todo: strings anpassen
+          detail: t('interventiondialog.toast.intervention_not_saved.detail'), // todo: strings anpassen
+          life: 3000,
+        });
+        return;
+      }  
       
-      // Prüfen, ob Level-Verbindungen geändert wurden
-      if (localInterventionLevelConnections.value && dbInterventionLevelConnections.value) {
-        // Finde gelöschte Verbindungen
-        const deletedConnections = dbInterventionLevelConnections.value.filter(
-          dbConn => !localInterventionLevelConnections.value.some(
-            localConn => localConn.id === dbConn.id
-          )
-        );
-        
-        // Finde neue Verbindungen
-        const newConnections = localInterventionLevelConnections.value.filter(
-          localConn => !dbInterventionLevelConnections.value.some(
-            dbConn => dbConn.id === localConn.id
-          )
-        );
-        
-        // Lösche entfernte Verbindungen
-        for (const connection of deletedConnections) {
-          await projectConfigStore.deleteLevelInterventionRelation(connection.id);
-        }
-        
-        // Erstelle neue Verbindungen
-        for (const connection of newConnections) {
-          await projectConfigStore.createLevelInterventionRelation(
-            connection.levelId,
-            connection.interventionId
-          );
-        }
+      } else {
+        try {
+        await projectConfigStore.createIntervention(localIntervention.value);
+        dbIntervention.value = cloneDeep(localIntervention.value);
+      } catch (error) {
+        isSaving.value = false;
+        toast.add({
+          severity: 'error',
+          summary: t('interventiondialog.toast.intervention_not_saved.title'), // todo: strings anpassen
+          detail: t('interventiondialog.toast.intervention_not_saved.detail'), // todo: strings anpassen
+          life: 3000,
+        });
+        return;
+      }  
       }
     }
-    
-    // Dialog schließen und Erfolg melden
-    emit('saved', savedIntervention);
-    emit('update:isOpened', false);
-    clear();
+
+    if (dbIntervention.value && unsavedChangesLevelConnections.value) {
+      try {
+        await projectConfigStore.setInterventionLevelRelations(localIntervention.value.id, localConnectedLevelIds.value);
+        dbConnectedLevelIds.value = cloneDeep(localConnectedLevelIds.value);
+      } catch (error) {
+        isSaving.value = false;
+        toast.add({
+          severity: 'error',
+          summary: t('interventiondialog.toast.intervention_not_saved.title'), // todo: strings anpassen
+          detail: t('interventiondialog.toast.intervention_not_saved.detail'), // todo: strings anpassen
+          life: 3000,
+        });
+        return;
+      }
+    }
   } catch (error) {
-    console.error('Fehler beim Speichern:', error);
-    errors.value.push('Fehler beim Speichern der Intervention');
-  } finally {
     isSaving.value = false;
+    toast.add({
+      severity: 'error',
+      summary: t('interventiondialog.toast.intervention_not_saved.title'), // todo: strings anpassen
+      detail: t('interventiondialog.toast.intervention_not_saved.detail'), // todo: strings anpassen
+      life: 3000,
+    });
+    return;
   }
+ isSaving.value = false;
 }
 
 const validate = () => {
-  
+  return true;
+  //clear errors
+  //notwendige validation machen
+  //falls errors -> errormassage (errors.push)
+  //return errors.length === 0;
+  //i18n nutzen
 }
 
 const unsavedChanges = computed(() => {
-  // Prüfe, ob die Intervention geändert wurde
-  const interventionChanged = !isEqual(localIntervention.value, dbIntervention.value);
-  
-  // Prüfe, ob die Level-Verbindungen geändert wurden
+  return unsavedChangesIntervention.value || unsavedChangesLevelConnections.value;
+});
+
+const unsavedChangesIntervention = computed(() => {
+  return !isEqual(localIntervention.value, dbIntervention.value);
+});
+
+const unsavedChangesLevelConnections = computed(() => {
   let connectionsChanged = false;
-  if (localInterventionLevelConnections.value && dbInterventionLevelConnections.value) {
-    // Prüfe, ob die Anzahl der Verbindungen unterschiedlich ist
-    if (localInterventionLevelConnections.value.length !== dbInterventionLevelConnections.value.length) {
+
+  if (localConnectedLevelIds.value && dbConnectedLevelIds.value) {
+    // Check if the number of connections is different
+    if (localConnectedLevelIds.value.length !== dbConnectedLevelIds.value.length) {
       connectionsChanged = true;
     } else {
-      // Prüfe, ob alle lokalen Verbindungen auch in den DB-Verbindungen vorhanden sind
-      connectionsChanged = localInterventionLevelConnections.value.some(
-        localConn => !dbInterventionLevelConnections.value.some(
-          dbConn => isEqual(localConn, dbConn)
-        )
+      // Check if any level IDs are different between local and db
+      connectionsChanged = localConnectedLevelIds.value.some(
+        localId => !dbConnectedLevelIds.value?.includes(localId)
+      ) || dbConnectedLevelIds.value.some(
+        dbId => !localConnectedLevelIds.value?.includes(dbId)
       );
     }
+  } else {
+    // If either list is null, there are changes
+    connectionsChanged = true;
   }
-  
-  return interventionChanged || connectionsChanged;
+  return connectionsChanged;
 });
 
 const imagePath = computed(() => {
-  if (!localIntervention.value?.id) return '';
+  if (!localIntervention.value?.id) return null;
   
   return deriveS3Path('interventionPicPath', {
     interventionID: localIntervention.value.id
@@ -354,41 +389,13 @@ const imagePath = computed(() => {
 });
 
 
-// Für die Level-Auswahl
-const selectedLevels = computed({
-  get: () => {
-    if (!localInterventionLevelConnections.value) return [];
-    return localInterventionLevelConnections.value.map(connection => connection.levelId);
-  },
-  set: (newLevelIds) => {
-    if (!localIntervention.value) return;
-    
-    // Bestehende Verbindungen entfernen, die nicht mehr ausgewählt sind
-    localInterventionLevelConnections.value = (localInterventionLevelConnections.value || [])
-      .filter(connection => newLevelIds.includes(connection.levelId));
-    
-    // Neue Verbindungen hinzufügen
-    newLevelIds.forEach(levelId => {
-      if (!localInterventionLevelConnections.value?.some(connection => connection.levelId === levelId)) {
-        localInterventionLevelConnections.value = [
-          ...(localInterventionLevelConnections.value || []),
-          {
-            id: crypto.randomUUID(),
-            levelId: levelId,
-            interventionId: localIntervention.value.id
-          }
-        ];
-      }
-    });
-  }
-});
-
 // Verfügbare Level für die Auswahl
 const availableLevels = computed(() => {
-  return (projectConfigStore.levels || []).map(level => ({
+  return projectConfigStore.levelsSortedByHierarchy.map(level => ({
     ...level,
     formattedName: formatMLString(level.name, locale.value)
   }));
 });
+
 
 </script>

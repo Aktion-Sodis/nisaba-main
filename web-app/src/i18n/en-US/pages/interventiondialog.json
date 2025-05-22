@@ -30,5 +30,15 @@
           "label": "Select Language"
         }
       }
+    },
+    "toast": {
+      "intervention_not_found": {
+        "title": "Intervention Not Found",
+        "detail": "The requested intervention could not be found"
+      },
+      "new_intervention_not_created": {
+        "title": "Creation Failed",
+        "detail": "Failed to create new intervention. Please try again."
+      }
     }
   }

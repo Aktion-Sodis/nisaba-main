@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import {
+  InterventionType,
   Question,
   QuestionOption,
   QuestionType,
@@ -8,6 +9,8 @@ import {
   SurveyStatus,
   SurveyType,
 } from '@/models/index';
+
+import { StoreIntervention } from '@/stores/projectConfigStore';
 
 const createEmptyI18nString = (languageKeys: string[]) => ({
   languageKeys,
@@ -45,5 +48,17 @@ export const createNewQuestionOption = (
     id: uuidv4(),
     text: createEmptyI18nString(languageKeys),
     followUpQuestionIDs: [],
+  };
+};
+export const createNewIntervention =(
+  languageKeys: string[]
+): StoreIntervention => {
+  return {
+    id: uuidv4(),
+    //@ts-expect-error /db autogeneration
+    name: createEmptyI18nString(languageKeys),
+        //@ts-expect-error /db autogeneration
+    description: createEmptyI18nString(languageKeys),
+    interventionType: InterventionType.EDUCATION,
   };
 };
