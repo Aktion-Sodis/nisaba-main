@@ -1,102 +1,92 @@
 <template>
   <Dialog
-    v-model:visible="isOpened"
+    v-model:visible="isOpenedLocal"
     modal
     :header="dialogTitle"
-    :style="{ width: '50vw', minWidth: '450px' }"
+    class="w-dialog-lg"
     :maximizable="true"
-    class="intervention-dialog"
-    @hide="onDialogHide"
   >
-    <div class="p-fluid">
+    <div v-if="localIntervention!=null" class="flex flex-col gap-2">
       <!-- Sprachauswahl für die Intervention -->
-      <div class="field mb-4">
-        <label class="font-bold">{{ t('interventiondialog.labels.languages') }}</label>
-        <LanguageMultiSelector 
-          v-model:value="interventionFormState.selectedLanguages" />
+      <div class="flex flex-row justify-between items-center gap-2">
+        <label for="language" class="w-[40%]">
+          {{ $t('interventiondialog.labels.languages') }}
+        </label>
+        <LanguageMultiSelector
+          v-model:value="allowedLanguageKeys"
+          class="w-[60%]"
+        />
       </div>
 
-      <!-- Intervention Name mit mehrsprachiger Eingabe -->
-      <div class="field mb-4">
-        <label for="interventionName" class="font-bold">{{ t('interventiondialog.labels.name') }}</label>
-        <MultiLanguageTextField
-          v-model:value="interventionFormState.currentIntervention.name"
-          :allowed-keys="interventionFormState.selectedLanguages"
-          :hint="t('interventiondialog.placeholders.name')"
-          :mode="MLTextFieldMode.AllDisplayed"
-          :n-lines="1"
+      <!-- Name mit mehrsprachiger Eingabe -->
+      <div class="flex flex-col gap-2">
+        <label for="interventionName">
+          {{ $t('interventiondialog.labels.name') }}
+        </label>
+        <multi-language-text-field
+          v-model:value="localIntervention.name"
+          :allowed-keys="allowedLanguageKeys"
+          :n-lines="3"
         />
       </div>
 
       <!-- Intervention Description mit mehrsprachiger Eingabe -->
-      <div class="field mb-4">
-        <label for="interventionDescription" class="font-bold">{{ t('interventiondialog.labels.description') }}</label>
+      <div class="flex flex-col gap-2">
+        <label for="interventionDescription">
+          {{ t('interventiondialog.labels.description') }}
+        </label>
         <MultiLanguageTextField
-          v-model:value="interventionFormState.currentIntervention.description"
-          :allowed-keys="interventionFormState.selectedLanguages"
-          :hint="t('interventiondialog.placeholders.description')"
-          :mode="MLTextFieldMode.AllDisplayed"
+          v-model:value="localIntervention.description"
+          :allowed-keys="allowedLanguageKeys"
           :n-lines="5"
         />
       </div>
 
-      <div class="grid">
+        <!-- Level zuordnung -->
+        <div class="flex flex-row justify-between items-center gap-2 mb-4">
+          <label for="levels" class="w-[40%]">
+            {{ t('interventiondialog.labels.levels') }}
+          </label>
+          <MultiSelect
+            v-model="selectedLevels"
+            :options="availableLevels"
+            option-label="formattedName"
+            option-value="id"
+            display="chip"
+            :filter="true"
+            class="w-[60%]"
+          />
+        </div>
+
         <!-- Intervention Type -->
-        <div class="field col-12 md:col-6 mb-4">
-          <label for="interventionType" class="font-bold">{{ t('interventiondialog.labels.type') }}</label>
-          <div class="card p-0">
+        <div class="flex flex-col gap-2">
+          <label for="interventionType">
+            {{ t('interventiondialog.labels.type') }}
+          </label>
             <SelectButton
-              v-model="interventionFormState.currentIntervention.type"
+              v-model="localIntervention.type"
               :options="interventionTypes"
               optionLabel="name"
               optionValue="value"
               aria-labelledby="interventionType"
-              class="w-full"
               :allow-empty="false"
             />
-          </div>
         </div>
 
         <!-- Intervention Image -->
-        <div class="field col-12 md:col-6 mb-4">
-          <label for="interventionImage" class="font-bold">{{ t('interventiondialog.labels.image') }}</label>
-          <div class="upload-container">
-            <FileUpload
-              name="interventionImage"
-              @uploader="onImageUpload"
-              :multiple="false"
-              accept="image/*"
-              :maxFileSize="1000000"
-              :showCancelButton="false"
-              chooseLabel=""
-              class="w-full"
-            >
-              <template #empty>
-                <div class="upload-placeholder p-3 border-dashed border-1 border-300 text-center">
-                  <i class="pi pi-image text-4xl text-500 mb-2"></i>
-                  <p>{{ t('interventiondialog.imageUpload.dnd') }}</p>
-                </div>
-              </template>
-            </FileUpload>
-            
-            <div v-if="interventionFormState.currentIntervention.imageUrl" class="image-preview mt-2 text-center">
-              <Image
-                :src="interventionFormState.currentIntervention.imageUrl"
-                :alt="t('interventiondialog.imageUpload.alt')"
-                width="150"
-                preview
-                class="shadow-1"
-              />
-              <Button 
-                icon="pi pi-trash" 
-                class="p-button-rounded p-button-danger p-button-sm image-delete-btn"
-                @click="removeImage"
-                v-tooltip="t('interventiondialog.buttons.removeImage')"
-              />
-            </div>
-          </div>
+        <div class="flex flex-col gap-2">
+          <label for="image">
+            {{ t('interventiondialog.labels.image') }}
+          </label>
+          <custom-image-upload
+            :path="
+            deriveS3Path('interventionPicPath', {
+              interventionID: localIntervention.id
+            })
+            "
+            :editable="true"
+          />
         </div>
-      </div>
     </div>
 
     <template #footer>
@@ -104,14 +94,14 @@
         <Button
           :label="t('interventiondialog.buttons.cancel')"
           icon="pi pi-times"
-          class="p-button-text"
+          class="p-button-text p-button-secondary"
           @click="closeDialog"
         />
         <Button
           :label="t('interventiondialog.buttons.save')"
           icon="pi pi-check"
           @click="saveIntervention"
-          :loading="interventionFormState.isSaving"
+          :loading="isSaving"
           class="p-button-primary"
         />
       </div>
@@ -120,30 +110,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, onMounted, reactive } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import MultiLanguageTextField from '@/components/elements/MultiLanguageTextField.vue';
 import LanguageMultiSelector from '@/components/elements/LanguageMultiSelector.vue';
-import { I18nString } from '@/models';
+import { Intervention } from '@/models';
+import { isEqual, cloneDeep } from 'lodash';
+import { MinimalLevelInterventionRelation, StoreIntervention } from '@/stores/projectConfigStore';
+import { deriveS3Path } from '@/utils/s3Paths';
+import CustomImageUpload from '@/components/elements/CustomImageUpload.vue';
+import { useProjectConfigStore } from '@/stores/projectConfigStore';
+import { formatMLString } from '@/utils/formatStrings';
 
-// Enum für MultiLanguageTextField
-enum MLTextFieldMode {
-  AllDisplayed = 'AllDisplayed',
-  Select = 'Select',
-}
-
-// Interface für die lokalen Interventionsdaten
-interface LocalIntervention {
-  id: string | null;
-  name: I18nString;
-  description: I18nString;
-  type: string | null; // Oder InterventionType, falls importiert
-  imageUrl: string | null;
-}
+const projectConfigStore = useProjectConfigStore();
 
 // Props
 const props = defineProps({
-  modelValue: Boolean,
+  isOpened: Boolean,
   interventionId: {
     type: String,
     default: null,
@@ -151,270 +134,261 @@ const props = defineProps({
 });
 
 // Emits
-const emit = defineEmits(['update:modelValue', 'saved']);
+const emit = defineEmits(['update:isOpened', 'saved']);
 
 // i18n
-const { t } = useI18n();
+const { t, locale } = useI18n(); // Destructure locale here
 
 // Dialog Sichtbarkeit
-const isOpened = ref(props.modelValue);
+const isOpenedLocal = ref(props.isOpened);
 watch(
-  () => props.modelValue,
+  () => props.isOpened,
   (newValue) => {
-    isOpened.value = newValue;
+    isOpenedLocal.value = newValue;
     if (newValue) {
-      loadInterventionData();
+      initialize(); // Call initialize when the dialog is opened
     }
   }
 );
-
+watch(
+  () => isOpenedLocal.value,
+  (newValue) => {
+    emit('update:isOpened', newValue);
+  }
+)
 // Mögliche Interventionstypen
 const interventionTypes = computed(() => [
   { name: t('interventiondialog.types.technology'), value: 'technology' },
   { name: t('interventiondialog.types.education'), value: 'education' },
 ]);
 
-// Lokaler Store für Formulardaten
-const interventionFormState = reactive<{
-  currentIntervention: LocalIntervention;
-  selectedLanguages: string[];
-  isSaving: boolean;
-}>({
-  currentIntervention: {
-    id: null,
-    name: { languageKeys: ['en'], languageTexts: [''] },
-    description: { languageKeys: ['en'], languageTexts: [''] },
-    type: interventionTypes.value.length > 0 ? interventionTypes.value[0].value : null,
-    imageUrl: null,
-  },
-  selectedLanguages: ['en'],
-  isSaving: false,
-});
-
-// Watcher, um Name und Beschreibung an selectedLanguages anzupassen
-watch(() => interventionFormState.selectedLanguages, (newLangs, oldLangs) => {
-  // Nur ausführen, wenn sich die Sprachen tatsächlich geändert haben, um Endlosschleifen zu vermeiden
-  if (JSON.stringify(newLangs) === JSON.stringify(oldLangs)) {
-    return;
-  }
-
-  const updateI18nString = (currentI18n: I18nString): I18nString => {
-    const newKeys = [...newLangs];
-    const newTexts: string[] = [];
-    const oldTextsMap = new Map(currentI18n.languageKeys.map((k, i) => [k, currentI18n.languageTexts[i]]));
-
-    newKeys.forEach(langKey => {
-      newTexts.push(oldTextsMap.get(langKey) || '');
-    });
-    return { languageKeys: newKeys, languageTexts: newTexts };
-  };
-
-  interventionFormState.currentIntervention.name = updateI18nString(interventionFormState.currentIntervention.name);
-  interventionFormState.currentIntervention.description = updateI18nString(interventionFormState.currentIntervention.description);
-}, { deep: true });
-
-
 // Computed Properties
-const isEditMode = computed(() => !!props.interventionId);
+const isCreate = computed(() => !!props.interventionId);
 const dialogTitle = computed(() =>
-  isEditMode.value ? t('interventiondialog.title.edit') : t('interventiondialog.title.create')
+  isCreate.value ? t('interventiondialog.title.create'):t('interventiondialog.title.edit')
 );
 
-// Methoden
-const resetFormState = () => {
-  // Wichtig: Zuerst selectedLanguages setzen, damit der Watcher korrekt arbeitet
-  interventionFormState.selectedLanguages = ['en']; 
-  
-  // Dann den Rest des Formulars zurücksetzen
-  interventionFormState.currentIntervention = {
-    id: null,
-    name: { languageKeys: ['en'], languageTexts: [''] },
-    description: { languageKeys: ['en'], languageTexts: [''] },
-    type: interventionTypes.value.length > 0 ? interventionTypes.value[0].value : null,
-    imageUrl: null,
-  };
-  interventionFormState.isSaving = false;
-};
+//state
+const allowedLanguageKeys = ref<Array<string>>([]);
 
-const loadInterventionData = async () => {
-  if (isEditMode.value && props.interventionId) {
-    console.log('Edit mode: Load data for ID', props.interventionId);
-    // HINWEIS: Ersetzen Sie dies durch tatsächliche Ladelogik, z.B. aus einem globalen Store
-    // const interventionFromStore = projectConfigStore.getInterventionById(props.interventionId);
-    // if (interventionFromStore) { ... }
-
-    // Beispielhafte Befüllung für Edit-Mode (ersetzen durch Store-Logik)
-    const loadedData = { // Dies ist ein Platzhalter
-      id: props.interventionId,
-      // Das Backend liefert wahrscheinlich ein Objekt wie { en: "Name", de: "Name" }
-      name: { en: 'Loaded Name', de: 'Geladener Name', fr: 'Nom chargé' },
-      description: { en: 'Loaded Description', de: 'Geladene Beschreibung', fr: 'Description chargée' },
-      type: 'technology',
-      imageUrl: 'https://primefaces.org/cdn/primevue/images/galleria/galleria10.jpg'
-    };
-    
-    interventionFormState.currentIntervention.id = loadedData.id;
-    interventionFormState.currentIntervention.type = loadedData.type;
-    interventionFormState.currentIntervention.imageUrl = loadedData.imageUrl;
-    
-    // Konvertiere Name von {en: "Text"} zu I18nString
-    const nameKeys = Object.keys(loadedData.name);
-    const nameTexts = nameKeys.map(key => loadedData.name[key] || '');
-    
-    // Konvertiere Description von {en: "Text"} zu I18nString
-    const descKeys = Object.keys(loadedData.description);
-    const descTexts = descKeys.map(key => loadedData.description[key] || '');
-
-    // Setze selectedLanguages basierend auf den geladenen Daten
-    // Stelle sicher, dass der Watcher für selectedLanguages nicht unnötig getriggert wird,
-    // indem wir die Zuweisung vor der Aktualisierung von Name und Beschreibung machen.
-    const allKeys = [...new Set([...nameKeys, ...descKeys])];
-    let newSelectedLanguages = allKeys.length > 0 ? allKeys : ['en']; // Default to 'en' if no keys found
-
-    // Ensure selectedLanguages is updated only if it's different to avoid unnecessary watcher triggers
-    if (JSON.stringify(interventionFormState.selectedLanguages) !== JSON.stringify(newSelectedLanguages)) {
-        interventionFormState.selectedLanguages = newSelectedLanguages;
-    }
-    
-    interventionFormState.currentIntervention.name = { languageKeys: nameKeys, languageTexts: nameTexts };
-    interventionFormState.currentIntervention.description = { languageKeys: descKeys, languageTexts: descTexts };
-
-  } else {
-    resetFormState();
-    console.log('Create mode');
-  }
-};
-
-const saveIntervention = async () => {
-  interventionFormState.isSaving = true;
-  try {
-    // Daten aus I18nString in das Backend-Format ({en: "Text"}) konvertieren
-    const nameObj: Record<string, string> = {};
-    interventionFormState.currentIntervention.name.languageKeys.forEach((key, index) => {
-      if (interventionFormState.currentIntervention.name.languageTexts[index]) { // Nur nicht-leere Texte speichern
-        nameObj[key] = interventionFormState.currentIntervention.name.languageTexts[index];
-      }
-    });
-    
-    const descriptionObj: Record<string, string> = {};
-    interventionFormState.currentIntervention.description.languageKeys.forEach((key, index) => {
-      if (interventionFormState.currentIntervention.description.languageTexts[index]) { // Nur nicht-leere Texte speichern
-        descriptionObj[key] = interventionFormState.currentIntervention.description.languageTexts[index];
-      }
-    });
-    
-    // Gesamtes Interventions-Objekt zusammenstellen
-    const interventionToSave = {
-      id: interventionFormState.currentIntervention.id, // ist null bei neuer Intervention
-      name: nameObj,
-      description: descriptionObj,
-      type: interventionFormState.currentIntervention.type,
-      imageUrl: interventionFormState.currentIntervention.imageUrl,
-      // Fügen Sie hier weitere Felder hinzu, die Teil des Intervention-Modells sind
-    };
-    
-    if (isEditMode.value) {
-      console.log('Updating intervention:', interventionToSave);
-      // Hier Aufruf der Update-Funktion, z.B. await projectConfigStore.updateIntervention(interventionToSave);
-    } else {
-      console.log('Adding new intervention:', interventionToSave);
-      // Hier Aufruf der Create-Funktion, z.B. await projectConfigStore.createIntervention(interventionToSave);
-    }
-    
-    emit('saved', interventionToSave);
-    closeDialog();
-  } catch (error) {
-    console.error('Error saving intervention:', error);
-    // Fehlerbehandlung, z.B. Toast-Nachricht anzeigen
-  } finally {
-    interventionFormState.isSaving = false;
-  }
-};
-
-const closeDialog = () => {
-  isOpened.value = false;
-  // emit('update:modelValue', false); // Wird durch onDialogHide behandelt
-};
-
-const onDialogHide = () => {
-  emit('update:modelValue', false);
-  // Optional: Formular zurücksetzen, wenn der Dialog geschlossen wird, falls nicht gespeichert wurde
-  // resetFormState(); 
-};
-
-const onImageUpload = (event: any) => { // Typ genauer definieren, falls bekannt
-  const file = event.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      interventionFormState.currentIntervention.imageUrl = e.target?.result as string;
-    };
-    reader.readAsDataURL(file);
-    console.log('Image selected:', file);
-  }
-};
-
-const removeImage = () => {
-  interventionFormState.currentIntervention.imageUrl = null;
-};
-
-// Lifecycle Hooks
+// Initialisieren Sie die erlaubten Sprachschlüssel, ähnlich wie in surveyDetailStore
+// Sie können dies entweder aus dem projectConfigStore beziehen oder manuell festlegen
 onMounted(() => {
-  // Initialisiere den Typ, falls noch nicht geschehen und Typen verfügbar sind
-  if (!interventionFormState.currentIntervention.type && interventionTypes.value.length > 0) {
-    interventionFormState.currentIntervention.type = interventionTypes.value[0].value;
-  }
-  if (props.modelValue) { // Wenn der Dialog initial geöffnet ist
-    loadInterventionData();
+  // Option 1: Verwenden Sie die verfügbaren Sprachen aus dem projectConfigStore
+ //  allowedLanguageKeys.value = projectConfigStore.availableLanguages.map(lang => lang.key) || [];;
+  
+  // Option 2: Oder setzen Sie die Sprachen basierend auf den Daten des Interventions-Objekts
+  // wenn Sie ein Interventions-Objekt bearbeiten
+  if (props.intervention && props.intervention.name.languageKeys.length > 0) {
+    const intervention = projectConfigStore.getInterventionById(props.interventionId);
+    if (intervention?.name?.languageKeys) {
+      allowedLanguageKeys.value = [...intervention.name.languageKeys];
+    }
   }
 });
+const localIntervention = ref<StoreIntervention | null>(null);
+const dbIntervention = ref<StoreIntervention | null>(null);
+
+const localInterventionLevelConnections = ref<Array<MinimalLevelInterventionRelation> | null>(null);
+const dbInterventionLevelConnections = ref<Array<MinimalLevelInterventionRelation> | null>(null);
+
+const isEditMode = ref(false);
+const errors = ref<Array<string>>([]);
+
+const isInitializing = ref(false);
+const initialize = async () => {
+  isInitializing.value = true;
+  try {
+    //set language key array initial selection
+    allowedLanguageKeys.value = (projectConfigStore.availableLanguages || []).map(lang => lang.key) || [];
+    
+    if (props.interventionId) {
+      //get from store dbIntervention and dbInterventionLevelConnections
+      const intervention = projectConfigStore.getInterventionById(props.interventionId);
+      if (intervention) {
+        dbIntervention.value = cloneDeep(intervention);
+        localIntervention.value = cloneDeep(intervention);
+        
+        // Wenn die Intervention eigene Sprachschlüssel hat, diese verwenden
+        if (intervention.name && intervention.name.languageKeys && intervention.name.languageKeys.length > 0) {
+          allowedLanguageKeys.value = [...intervention.name.languageKeys];
+        }
+        
+        // Lade die Level-Verbindungen für diese Intervention
+        const levelConnections = projectConfigStore.getRelationsByInterventionId(props.interventionId);
+        dbInterventionLevelConnections.value = cloneDeep(levelConnections);
+        localInterventionLevelConnections.value = cloneDeep(levelConnections);
+        
+        isEditMode.value = true;
+      } else {
+        console.error(`Intervention mit ID ${props.interventionId} nicht gefunden`);
+        emit('update:isOpened', false);
+      }
+    } else {
+      //create new empty element
+      const newId = crypto.randomUUID();
+      const emptyIntervention: StoreIntervention = {
+        id: newId,
+        name: { languageMap: {}, languageKeys: [...allowedLanguageKeys.value] },
+        description: { languageMap: {}, languageKeys: [...allowedLanguageKeys.value] },
+        type: 'technology', // Standardwert
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        _version: 1,
+        _lastChangedAt: Date.now(),
+        _deleted: false,
+      };
+      
+      localIntervention.value = emptyIntervention;
+      dbIntervention.value = null;
+      localInterventionLevelConnections.value = [];
+      dbInterventionLevelConnections.value = null;
+      
+      isEditMode.value = false;
+    }
+  } catch (error) {
+    console.error('Fehler bei der Initialisierung:', error);
+    errors.value.push('Fehler beim Laden der Intervention');
+  } finally {
+    isInitializing.value = false;
+  }
+}
+
+const clear = () => {
+  localIntervention.value = null;
+  dbIntervention.value = null;
+
+}
+
+const isSaving = ref(false);
+const saveInterventionAndConnections = async () => {
+  //check for changes in intervention and connections
+  isSaving.value = true;
+  try {
+    let savedIntervention;
+    
+    // Prüfen, ob es sich um eine neue Intervention handelt oder eine Bearbeitung
+    if (!isEditMode.value) {
+      // Neue Intervention erstellen
+      savedIntervention = await projectConfigStore.createIntervention(localIntervention.value);
+    } else {
+      // Bestehende Intervention aktualisieren
+      savedIntervention = await projectConfigStore.updateIntervention(localIntervention.value);
+      
+      // Prüfen, ob Level-Verbindungen geändert wurden
+      if (localInterventionLevelConnections.value && dbInterventionLevelConnections.value) {
+        // Finde gelöschte Verbindungen
+        const deletedConnections = dbInterventionLevelConnections.value.filter(
+          dbConn => !localInterventionLevelConnections.value.some(
+            localConn => localConn.id === dbConn.id
+          )
+        );
+        
+        // Finde neue Verbindungen
+        const newConnections = localInterventionLevelConnections.value.filter(
+          localConn => !dbInterventionLevelConnections.value.some(
+            dbConn => dbConn.id === localConn.id
+          )
+        );
+        
+        // Lösche entfernte Verbindungen
+        for (const connection of deletedConnections) {
+          await projectConfigStore.deleteLevelInterventionRelation(connection.id);
+        }
+        
+        // Erstelle neue Verbindungen
+        for (const connection of newConnections) {
+          await projectConfigStore.createLevelInterventionRelation(
+            connection.levelId,
+            connection.interventionId
+          );
+        }
+      }
+    }
+    
+    // Dialog schließen und Erfolg melden
+    emit('saved', savedIntervention);
+    emit('update:isOpened', false);
+    clear();
+  } catch (error) {
+    console.error('Fehler beim Speichern:', error);
+    errors.value.push('Fehler beim Speichern der Intervention');
+  } finally {
+    isSaving.value = false;
+  }
+}
+
+const validate = () => {
+  
+}
+
+const unsavedChanges = computed(() => {
+  // Prüfe, ob die Intervention geändert wurde
+  const interventionChanged = !isEqual(localIntervention.value, dbIntervention.value);
+  
+  // Prüfe, ob die Level-Verbindungen geändert wurden
+  let connectionsChanged = false;
+  if (localInterventionLevelConnections.value && dbInterventionLevelConnections.value) {
+    // Prüfe, ob die Anzahl der Verbindungen unterschiedlich ist
+    if (localInterventionLevelConnections.value.length !== dbInterventionLevelConnections.value.length) {
+      connectionsChanged = true;
+    } else {
+      // Prüfe, ob alle lokalen Verbindungen auch in den DB-Verbindungen vorhanden sind
+      connectionsChanged = localInterventionLevelConnections.value.some(
+        localConn => !dbInterventionLevelConnections.value.some(
+          dbConn => isEqual(localConn, dbConn)
+        )
+      );
+    }
+  }
+  
+  return interventionChanged || connectionsChanged;
+});
+
+const imagePath = computed(() => {
+  if (!localIntervention.value?.id) return '';
+  
+  return deriveS3Path('interventionPicPath', {
+    interventionID: localIntervention.value.id
+  });
+});
+
+
+// Für die Level-Auswahl
+const selectedLevels = computed({
+  get: () => {
+    if (!localInterventionLevelConnections.value) return [];
+    return localInterventionLevelConnections.value.map(connection => connection.levelId);
+  },
+  set: (newLevelIds) => {
+    if (!localIntervention.value) return;
+    
+    // Bestehende Verbindungen entfernen, die nicht mehr ausgewählt sind
+    localInterventionLevelConnections.value = (localInterventionLevelConnections.value || [])
+      .filter(connection => newLevelIds.includes(connection.levelId));
+    
+    // Neue Verbindungen hinzufügen
+    newLevelIds.forEach(levelId => {
+      if (!localInterventionLevelConnections.value?.some(connection => connection.levelId === levelId)) {
+        localInterventionLevelConnections.value = [
+          ...(localInterventionLevelConnections.value || []),
+          {
+            id: crypto.randomUUID(),
+            levelId: levelId,
+            interventionId: localIntervention.value.id
+          }
+        ];
+      }
+    });
+  }
+});
+
+// Verfügbare Level für die Auswahl
+const availableLevels = computed(() => {
+  return (projectConfigStore.levels || []).map(level => ({
+    ...level,
+    formattedName: formatMLString(level.name, locale.value)
+  }));
+});
+
 </script>
-
-<style scoped>
-.intervention-dialog :deep(.p-dialog-content) {
-  padding: 1.5rem;
-}
-
-.upload-placeholder {
-  border-radius: 6px;
-  min-height: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.image-preview {
-  position: relative;
-  display: inline-block;
-}
-
-.image-delete-btn {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  width: 2rem;
-  height: 2rem;
-}
-
-.field > label {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-:deep(.p-selectbutton) {
-  display: flex;
-}
-
-:deep(.p-selectbutton .p-button) {
-  flex: 1;
-}
-
-:deep(.p-fileupload-content) {
-  padding: 0;
-}
-
-:deep(.p-fileupload) {
-  border: none;
-}
-</style>

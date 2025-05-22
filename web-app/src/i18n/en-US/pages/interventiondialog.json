@@ -8,15 +8,12 @@
       "name": "Name",
       "description": "Description",
       "type": "Type",
-      "image": "Image"
+      "image": "Image",
+      "levels": "Levels"
     },
     "placeholders": {
       "name": "Enter intervention name",
       "description": "Enter intervention description"
-    },
-    "imageUpload": {
-      "dnd": "Drag and drop an image here, or click to select.",
-      "alt": "Intervention image preview"
     },
     "buttons": {
       "removeImage": "Remove Image",
@@ -26,5 +23,12 @@
     "types": {
       "technology": "Technology",
       "education": "Education"
+    },
+    "dialog": {
+      "input": {
+        "select_language": {
+          "label": "Select Language"
+        }
+      }
     }
   }

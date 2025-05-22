@@ -40,7 +40,7 @@ const listLevelInterventionRelationsMinimal = /* GraphQL */ `
   }
 `;
 
-interface MinimalLevelInterventionRelation {
+export interface MinimalLevelInterventionRelation {
   id: string;
   levelId: string;
   interventionId: string;
@@ -57,8 +57,8 @@ interface MinimalLevelInterventionRelationsResponse {
   listLevelInterventionRelations: MinimalLevelInterventionRelationConnection;
 }
 
-interface StoreLevel extends Omit<Level, 'allowedInterventions'> {}
-interface StoreIntervention extends Omit<Intervention, 'levels'> {}
+export interface StoreLevel extends Omit<Level, 'allowedInterventions'> {}
+export interface StoreIntervention extends Omit<Intervention, 'levels'> {}
 
 export const useProjectConfigStore = defineStore('projectConfig', () => {
   const _levels = reactive<Record<string, StoreLevel>>({});

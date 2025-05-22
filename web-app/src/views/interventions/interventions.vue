@@ -42,6 +42,7 @@
             <SelectButton
               v-model="viewMode"
               :options="viewOptions"
+              option-label="value"
               option-value="value"
               :allow-empty="false"
             >
@@ -212,7 +213,7 @@
     
     <!-- Verwenden Sie hier Ihre InterventionDialog Komponente -->
     <InterventionDialog 
-      v-model="showInterventionDialog" 
+      v-model:isOpened="showInterventionDialog" 
       @saved="handleInterventionSaved" 
     />
     <!-- Der vorherige Dialog-Block wurde entfernt -->
