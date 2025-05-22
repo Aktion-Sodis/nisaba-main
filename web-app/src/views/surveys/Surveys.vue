@@ -45,6 +45,7 @@
               v-model="viewMode"
               :options="viewOptions"
               option-value="value"
+              option-label="value"
               :allow-empty="false"
             >
               <template #option="slotProps">

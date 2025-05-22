@@ -2,7 +2,7 @@
 <template>
   <div class="flex w-full items-center justify-center pb-6">
     <div class="flex flex-col gap-7 xl:mx-32 2xl:mx-80">
-      <div class="w-full flex flex-col">
+      <div class="w-full flex flex-col" v-if="hasAdminRights">
         <div class="flex mb-3">
           <h3>
             {{ $t('apps.categories.admin') }}
@@ -12,6 +12,7 @@
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 h-full gap-4"
         >
           <menu-card
+            v-if="hasAdminRights"
             :title="$t('apps.apps.surveys.title')"
             :subtitle="$t('apps.apps.surveys.description')"
             bg-color="bg-secondary-700"
@@ -22,6 +23,7 @@
             </template>
           </menu-card>
           <menu-card
+            v-if="hasAdminRights"
             :title="$t('apps.apps.interventions.title')"
             :subtitle="$t('apps.apps.interventions.description')"
             bg-color="bg-secondary-700"
@@ -70,7 +72,7 @@
             -->
         </div>
       </div>
-      <div class="w-full flex flex-col">
+      <div class="w-full flex flex-col" v-if="hasAdminRights">
         <div class="flex mb-3">
           <h3>
             {{ $t('apps.categories.settings') }}
@@ -80,6 +82,7 @@
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 h-full gap-4"
         >
           <menu-card
+            v-if="hasAdminRights"
             :title="$t('apps.apps.users.title')"
             :subtitle="$t('apps.apps.users.description')"
             bg-color="bg-surface-400"
@@ -134,4 +137,13 @@
 
 <script lang="ts" setup>
 import MenuCard from '@/components/cards/MenuCard.vue';
+import { useAuthStore } from '@/stores/auth';
+import { UserGroup, hasRights } from '@/types/UserGroup';
+import { computed } from 'vue';
+
+const authStore = useAuthStore();
+
+const hasAdminRights = computed(() => {
+  return authStore.highestRole && hasRights(authStore.highestRole, UserGroup.ADMIN);
+});
 </script>

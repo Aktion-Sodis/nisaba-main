@@ -4,13 +4,12 @@ import {
   confirmSignIn,
   getCurrentUser,
   fetchAuthSession,
-  GetCurrentUserOutput,
   AuthUser,
 } from '@aws-amplify/auth';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-
+import { getHighestRole, UserGroup } from '@/types/UserGroup';
 import { useUserStore } from './user';
 
 // src/types/LoginState.ts
@@ -24,6 +23,7 @@ export enum AuthenticationState {
 export const useAuthStore = defineStore('auth', () => {
   const { t } = useI18n();
   const user = ref<AuthUser | null>(null);
+  const highestRole = ref<UserGroup | null>(null);
   
 
   const authenticationState = ref<AuthenticationState>(
@@ -43,12 +43,12 @@ export const useAuthStore = defineStore('auth', () => {
       const signInOutput = await signIn({ username: usernameInput, password });
       console.log('signInOutput', signInOutput);
       if (signInOutput.isSignedIn) {
-        const currentUser = await getCurrentUser();
-        user.value = currentUser;
+        user.value = await getCurrentUser();
+        setHighestRole();
         try {
-          const userData = await userStore.getUserAsync(currentUser.userId);
+          const userData = await userStore.getUserAsync(user.value.userId);
           if (userData === null) {
-            pendingUserId.value = currentUser.userId;
+            pendingUserId.value = user.value.userId;
             authenticationState.value =
               AuthenticationState.ProfileSetupRequired;
           } else {
@@ -58,6 +58,7 @@ export const useAuthStore = defineStore('auth', () => {
           error.value = t('login.errors.load_user_data_failed');
           authenticationState.value = AuthenticationState.LoggedOut;
           user.value = null;
+          highestRole.value = null;
         }
       } else {
         if (
@@ -93,6 +94,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       const currentUser = await getCurrentUser();
       user.value = currentUser;
+      setHighestRole();
       try {
         await userStore.createUserInitialSetup(
           currentUser.userId,
@@ -153,6 +155,7 @@ export const useAuthStore = defineStore('auth', () => {
       await signOut();
       authenticationState.value = AuthenticationState.LoggedOut;
       user.value = null;
+      highestRole.value = null;
       pendingUserId.value = null;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Logout failed';
@@ -173,6 +176,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       if (tokens && currentUser) {
         user.value = currentUser;
+        setHighestRole();
         try {
           const userData = await userStore.getUserAsync(currentUser.userId);
           if (userData === null) {
@@ -192,9 +196,17 @@ export const useAuthStore = defineStore('auth', () => {
     } catch (err) {
       authenticationState.value = AuthenticationState.LoggedOut;
       user.value = null;
+      highestRole.value = null;
       pendingUserId.value = null;
     }
   };
+
+  const setHighestRole = async () => {
+    const token = await fetchAuthSession();
+    highestRole.value = getHighestRole(token.tokens?.accessToken.payload[
+      'cognito:groups'
+    ] as UserGroup[])
+  }
 
   return {
     user,
@@ -202,6 +214,7 @@ export const useAuthStore = defineStore('auth', () => {
     loading,
     username,
     error,
+    highestRole,
     login,
     initialPasswordReset,
     setupProfile,
