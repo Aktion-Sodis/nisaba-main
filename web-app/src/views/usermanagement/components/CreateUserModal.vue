@@ -127,6 +127,7 @@ import { ref, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 import { useUserManagementStore } from '../userManagementStore';
+
 import { UserGroup } from '@/types/UserGroup';
 
 const props = defineProps<{

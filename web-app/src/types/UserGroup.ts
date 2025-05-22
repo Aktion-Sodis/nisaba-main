@@ -1,15 +1,15 @@
 export enum UserGroup {
-    SUPERADMIN = 'superadmin',
-    ADMIN = 'admin',
-    MOBILE = 'mobile',
-    ANALYTICS = 'analytics',
+  SUPERADMIN = 'superadmin',
+  ADMIN = 'admin',
+  MOBILE = 'mobile',
+  ANALYTICS = 'analytics',
 }
 
 export const UserGroupLevel = {
-    [UserGroup.ANALYTICS]: 0,
-    [UserGroup.MOBILE]: 1,
-    [UserGroup.ADMIN]: 2,
-    [UserGroup.SUPERADMIN]: 3,
+  [UserGroup.ANALYTICS]: 0,
+  [UserGroup.MOBILE]: 1,
+  [UserGroup.ADMIN]: 2,
+  [UserGroup.SUPERADMIN]: 3,
 } as const;
 
 export const hasRights = (userGroup: UserGroup, requiredGroup: UserGroup) => {
@@ -18,6 +18,8 @@ export const hasRights = (userGroup: UserGroup, requiredGroup: UserGroup) => {
 
 export const getHighestRole = (userGroups: UserGroup[]) => {
   return userGroups.reduce((highest, current) => {
-    return UserGroupLevel[current] > UserGroupLevel[highest] ? current : highest;
+    return UserGroupLevel[current] > UserGroupLevel[highest]
+      ? current
+      : highest;
   }, userGroups[0]);
 };

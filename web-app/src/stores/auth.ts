@@ -9,8 +9,10 @@ import {
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getHighestRole, UserGroup } from '@/types/UserGroup';
+
 import { useUserStore } from './user';
+
+import { getHighestRole, UserGroup } from '@/types/UserGroup';
 
 // src/types/LoginState.ts
 export enum AuthenticationState {
@@ -24,7 +26,6 @@ export const useAuthStore = defineStore('auth', () => {
   const { t } = useI18n();
   const user = ref<AuthUser | null>(null);
   const highestRole = ref<UserGroup | null>(null);
-  
 
   const authenticationState = ref<AuthenticationState>(
     AuthenticationState.LoggedOut
@@ -203,10 +204,10 @@ export const useAuthStore = defineStore('auth', () => {
 
   const setHighestRole = async () => {
     const token = await fetchAuthSession();
-    highestRole.value = getHighestRole(token.tokens?.accessToken.payload[
-      'cognito:groups'
-    ] as UserGroup[])
-  }
+    highestRole.value = getHighestRole(
+      token.tokens?.accessToken.payload['cognito:groups'] as UserGroup[]
+    );
+  };
 
   return {
     user,

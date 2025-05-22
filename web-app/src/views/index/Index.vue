@@ -2,7 +2,7 @@
 <template>
   <div class="flex w-full items-center justify-center pb-6">
     <div class="flex flex-col gap-7 xl:mx-32 2xl:mx-80">
-      <div class="w-full flex flex-col" v-if="hasAdminRights">
+      <div v-if="hasAdminRights" class="w-full flex flex-col">
         <div class="flex mb-3">
           <h3>
             {{ $t('apps.categories.admin') }}
@@ -72,7 +72,7 @@
             -->
         </div>
       </div>
-      <div class="w-full flex flex-col" v-if="hasAdminRights">
+      <div v-if="hasAdminRights" class="w-full flex flex-col">
         <div class="flex mb-3">
           <h3>
             {{ $t('apps.categories.settings') }}
@@ -136,14 +136,17 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
+
 import MenuCard from '@/components/cards/MenuCard.vue';
 import { useAuthStore } from '@/stores/auth';
 import { UserGroup, hasRights } from '@/types/UserGroup';
-import { computed } from 'vue';
 
 const authStore = useAuthStore();
 
 const hasAdminRights = computed(() => {
-  return authStore.highestRole && hasRights(authStore.highestRole, UserGroup.ADMIN);
+  return (
+    authStore.highestRole && hasRights(authStore.highestRole, UserGroup.ADMIN)
+  );
 });
 </script>

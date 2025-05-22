@@ -2,6 +2,7 @@ import { get, post } from 'aws-amplify/api';
 import { fetchAuthSession } from 'aws-amplify/auth';
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
+
 import { UserGroup } from '@/types/UserGroup';
 const API_NAME = 'AdminQueries';
 
