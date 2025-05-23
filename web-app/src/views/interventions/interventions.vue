@@ -72,10 +72,19 @@
           ]"
           row-hover
         >
-          <template #empty>{{ $t('interventions.noInterventionsFound') }}</template>
-          <template #loading>{{ $t('interventions.loadingInterventions') }}</template>
+          <template #empty>
+            {{ $t('interventions.noInterventionsFound') }}
+          </template>
+          <template #loading>
+            {{ $t('interventions.loadingInterventions') }}
+          </template>
 
-          <Column field="name_searchable" :header="$t('interventions.columns.name')" sortable filter>
+          <Column
+            field="name_searchable"
+            :header="$t('interventions.columns.name')"
+            sortable
+            filter
+          >
             <template #body="{ data }">
               {{ formatMLString(data.name, locale) }}
             </template>
@@ -87,7 +96,11 @@
               />
             </template>
           </Column>
-          <Column field="description_searchable" :header="$t('interventions.columns.description')" filter>
+          <Column
+            field="description_searchable"
+            :header="$t('interventions.columns.description')"
+            filter
+          >
             <template #body="{ data }">
               {{ formatMLString(data.description, locale) }}
             </template>
@@ -99,7 +112,12 @@
               />
             </template>
           </Column>
-          <Column field="createdAt" :header="$t('interventions.columns.createdAt')" sortable filter>
+          <Column
+            field="createdAt"
+            :header="$t('interventions.columns.createdAt')"
+            sortable
+            filter
+          >
             <template #body="{ data }">
               {{ formatDate(data.createdAt) }}
             </template>
@@ -123,7 +141,9 @@
                 size="small"
                 class="w-[2em] h-[2em]"
                 aria-haspopup="true"
-                :aria-controls="'overlay_menu_intervention_' + slotProps.data.id"
+                :aria-controls="
+                  'overlay_menu_intervention_' + slotProps.data.id
+                "
                 @click.stop="toggleInterventionMenu($event, slotProps.data)"
               >
                 <template #icon>
@@ -170,7 +190,9 @@
                     size="small"
                     class="w-[2em] h-[2em]"
                     aria-haspopup="true"
-                    :aria-controls="'overlay_menu_intervention_' + intervention.id"
+                    :aria-controls="
+                      'overlay_menu_intervention_' + intervention.id
+                    "
                     @click.stop="toggleInterventionMenu($event, intervention)"
                   >
                     <template #icon>
@@ -191,9 +213,7 @@
                     {{ formatDate(intervention.createdAt) }}
                   </span>
                 </div>
-                <p
-                  class="text-oneliner-light flex-grow line-clamp-3 pr-8"
-                >
+                <p class="text-oneliner-light flex-grow line-clamp-3 pr-8">
                   {{ formatMLString(intervention.description, locale) }}
                 </p>
                 <i
@@ -206,25 +226,25 @@
       </template>
     </Card>
     <Menu ref="interventionMenu" :model="interventionMenuItems" :popup="true" />
-    
-    <InterventionDialog 
-      v-model:isOpened="showInterventionDialog" 
+
+    <intervention-dialog
+      v-model:is-opened="showInterventionDialog"
       :intervention-id="dialogInterventionId"
       :view-mode="dialogViewMode"
-      @saved="handleInterventionSaved" 
+      @saved="handleInterventionSaved"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { FilterMatchMode } from '@primevue/core/api';
-import { ref, onMounted, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 import Menu from 'primevue/menu';
-import InterventionDialog from './components/InterventionDialog.vue';
-import router from '@/router'; 
+import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-import type { Intervention } from '@/models/interventions'; 
+import InterventionDialog from './components/InterventionDialog.vue';
+
+import type { Intervention } from '@/models/interventions';
 import { useProjectConfigStore } from '@/stores/projectConfigStore';
 import { formatMLString } from '@/utils/formatStrings';
 
@@ -322,12 +342,12 @@ const formatDate = (dateString: string | null | undefined): string => {
   try {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
-      return '-'; 
+      return '-';
     }
     return date.toLocaleDateString('de-DE', {
       day: '2-digit',
       month: '2-digit',
-      year: 'numeric', 
+      year: 'numeric',
     });
   } catch (e) {
     console.error('Error formatting date:', dateString, e);
@@ -379,12 +399,10 @@ const toggleInterventionMenu = (event: Event, intervention: Intervention) => {
   interventionMenu.value.toggle(event);
 };
 
-// Dialog-bezogene Refs
 const showInterventionDialog = ref(false);
 const dialogInterventionId = ref<string | null>(null);
 const dialogViewMode = ref(false);
 
-// Funktionen für verschiedene Dialog-Modi
 const createIntervention = () => {
   dialogInterventionId.value = null;
   dialogViewMode.value = false;
@@ -411,6 +429,7 @@ const onInterventionCardClick = (intervention: Intervention) => {
 const handleInterventionSaved = (savedIntervention: any) => {
   console.log('Intervention saved:', savedIntervention);
   showInterventionDialog.value = false;
+  // Dialog-State zurücksetzen
   dialogInterventionId.value = null;
   dialogViewMode.value = false;
 };
