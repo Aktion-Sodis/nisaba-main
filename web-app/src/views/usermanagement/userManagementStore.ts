@@ -209,6 +209,74 @@ export const useUserManagementStore = defineStore('userManagement', () => {
   };
 
   const isResettingPassword = ref(false);
+  const isUpdatingRole = ref(false);
+
+  const updateUserRole = async (username: string, newGroup: string) => {
+    isUpdatingRole.value = true;
+    error.value = null;
+
+    try {
+      const options = await getAuthorizationHeader();
+
+      // First, get current groups for the user
+      const currentGroupsResponse = await get({
+        apiName: API_NAME,
+        path: '/listGroupsForUser',
+        options: {
+          ...options,
+          queryParams: { username },
+        },
+      });
+      const currentGroupsData = await currentGroupsResponse.response;
+      const currentGroups = (await currentGroupsData.body.json()) as {
+        Groups: { GroupName: string }[];
+      };
+
+      // Remove user from all current groups
+      for (const group of currentGroups.Groups) {
+        await post({
+          apiName: API_NAME,
+          path: '/removeUserFromGroup',
+          options: {
+            ...options,
+            body: { username, groupname: group.GroupName },
+          },
+        });
+      }
+
+      // Add user to new group
+      await post({
+        apiName: API_NAME,
+        path: '/addUserToGroup',
+        options: {
+          ...options,
+          body: { username, groupname: newGroup },
+        },
+      });
+
+      // Update local state
+      const userIndex = _allUsers.value.findIndex(
+        (user) => user.Username === username
+      );
+      if (userIndex !== -1) {
+        _allUsers.value[userIndex].Groups = [newGroup];
+      }
+
+      return { success: true };
+    } catch (err) {
+      error.value =
+        err instanceof Error ? err.message : 'Failed to update user role';
+      console.error('Error updating user role:', err);
+      return {
+        success: false,
+        error:
+          err instanceof Error ? err.message : 'Failed to update user role',
+      };
+    } finally {
+      isUpdatingRole.value = false;
+    }
+  };
+
   const resetPassword = async (
     username: string,
     returnPassword: boolean = false
@@ -257,8 +325,10 @@ export const useUserManagementStore = defineStore('userManagement', () => {
     clear,
     createUser,
     deleteUser,
+    updateUserRole,
     resetPassword,
     isResettingPassword,
     isCreatingUser,
+    isUpdatingRole,
   };
 });

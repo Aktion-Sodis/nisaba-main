@@ -17,15 +17,6 @@
           }}
         </p>
 
-        <div class="flex flex-row justify-between items-center gap-2">
-          <label for="showPassword" class="w-[40%]">
-            {{ $t('usermanagement.reset_password.show_password') }}
-          </label>
-          <div class="w-[60%] flex justify-end">
-            <Checkbox id="showPassword" v-model="showPassword" :binary="true" />
-          </div>
-        </div>
-
         <div class="flex w-full justify-end">
           <Button
             severity="success"
@@ -125,7 +116,6 @@ watch(
 );
 
 // Form data
-const showPassword = ref(false);
 const password = ref<string | null>(null);
 const passwordConfirmed = ref(false);
 
@@ -146,10 +136,7 @@ const finishReset = () => {
 
 const handleSubmit = async () => {
   try {
-    const result = await userManagementStore.resetPassword(
-      props.user.id,
-      showPassword.value
-    );
+    const result = await userManagementStore.resetPassword(props.user.id, true);
 
     if (result.success) {
       if (result.password) {

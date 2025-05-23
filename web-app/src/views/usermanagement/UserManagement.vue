@@ -107,6 +107,10 @@
       v-model:is-shown="showResetPasswordModal"
       :user="selectedUserForMenu"
     />
+    <update-role-modal
+      v-model:is-shown="showUpdateRoleModal"
+      :user="selectedUserForMenu"
+    />
     <Menu ref="menu" :model="menuItems" :popup="true" />
   </div>
 </template>
@@ -120,12 +124,14 @@ import { useI18n } from 'vue-i18n';
 
 import CreateUserModal from './components/CreateUserModal.vue';
 import ResetPasswordModal from './components/ResetPasswordModal.vue';
+import UpdateRoleModal from './components/UpdateRoleModal.vue';
 import { useUserManagementStore } from './userManagementStore';
 
 const { t } = useI18n();
 const userManagementStore = useUserManagementStore();
 const showCreateUserModal = ref(false);
 const showResetPasswordModal = ref(false);
+const showUpdateRoleModal = ref(false);
 const confirm = useConfirm();
 const toast = useToast();
 const menu = ref();
@@ -137,6 +143,15 @@ const menuItems = computed(() => {
   }
 
   return [
+    {
+      label: t('usermanagement.menu.update_role'),
+      icon: 'pi pi-fw pi-user-edit',
+      command: () => {
+        if (selectedUserForMenu.value) {
+          showUpdateRoleModal.value = true;
+        }
+      },
+    },
     {
       label: t('usermanagement.menu.reset_password'),
       icon: 'pi pi-fw pi-key',

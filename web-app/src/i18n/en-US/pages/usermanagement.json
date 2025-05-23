@@ -21,7 +21,8 @@
   },
   "menu": {
     "delete": "Delete User",
-    "reset_password": "Reset Password"
+    "reset_password": "Reset Password",
+    "update_role": "Update Role"
   },
   "confirm": {
     "delete": {
@@ -62,7 +63,7 @@
   },
   "reset_password": {
     "title": "Reset Password",
-    "info": "Reset password for user {username}",
+    "info": "A new password will be generated and displayed for user {username}. Please make sure to save it securely as it will only be shown once.",
     "show_password": "Show new password",
     "password_info": "Please save this password securely. It will not be shown again.",
     "password": "New Password",
@@ -73,5 +74,15 @@
     "success_title": "Password Reset Successful",
     "success_message": "Password has been reset for {username}",
     "error_title": "Password Reset Failed"
+  },
+  "update_role": {
+    "title": "Update User Role",
+    "info": "Update the role for user {username}",
+    "select_role": "Select Role",
+    "save": "Save Changes",
+    "success_title": "Role Updated",
+    "success_message": "Successfully updated role for {username}",
+    "error_title": "Update Failed",
+    "error_message": "Failed to update role for {username}"
   }
 } 
