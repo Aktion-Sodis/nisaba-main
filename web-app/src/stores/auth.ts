@@ -7,6 +7,7 @@ import {
   AuthUser,
   resetPassword,
   confirmResetPassword,
+  fetchUserAttributes,
 } from '@aws-amplify/auth';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
@@ -49,6 +50,7 @@ export const useAuthStore = defineStore('auth', () => {
   const { t } = useI18n();
   const user = ref<AuthUser | null>(null);
   const highestRole = ref<UserGroup | null>(null);
+  const organizationId = ref<string | null>(null);
 
   const authenticationState = ref<AuthenticationState>(
     AuthenticationState.LoggedOut
@@ -230,6 +232,9 @@ export const useAuthStore = defineStore('auth', () => {
     highestRole.value = getHighestRole(
       token.tokens?.accessToken.payload['cognito:groups'] as UserGroup[]
     );
+    const userAttributes = await fetchUserAttributes();
+    organizationId.value =
+      (userAttributes['custom:organization_id'] as string) || null;
   };
 
   const requestPasswordReset = async (username: string) => {
@@ -301,6 +306,7 @@ export const useAuthStore = defineStore('auth', () => {
     username,
     error,
     highestRole,
+    organizationId,
     login,
     initialPasswordReset,
     setupProfile,

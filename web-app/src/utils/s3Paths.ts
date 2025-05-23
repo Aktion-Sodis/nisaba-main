@@ -1,3 +1,5 @@
+import { useAuthStore } from '@/stores/auth';
+
 export const S3_PATHS = {
   userPicPath: {
     path: 'userFiles/userID/pic.png',
@@ -68,11 +70,16 @@ export function deriveS3Path(
   pathKey: S3PathKey,
   replacements: Record<string, string>
 ): string {
+  const authStore = useAuthStore();
   let path = S3_PATHS[pathKey].path as string;
 
   for (const [key, value] of Object.entries(replacements)) {
     path = path.replace(key, value);
   }
 
-  return path;
+  if (!authStore.organizationId) {
+    throw new Error('Organization ID is required to create a path');
+  }
+
+  return `organization/${authStore.organizationId}/${path}`;
 }
