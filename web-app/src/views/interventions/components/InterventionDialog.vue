@@ -100,7 +100,7 @@
         <Button
           :label="t('interventiondialog.buttons.save')"
           icon="pi pi-check"
-          @click="saveIntervention"
+          @click="saveInterventionAndConnections"
           :loading="isSaving"
           class="p-button-primary"
         />
@@ -110,13 +110,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, onMounted } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import MultiLanguageTextField from '@/components/elements/MultiLanguageTextField.vue';
 import LanguageMultiSelector from '@/components/elements/LanguageMultiSelector.vue';
-import { Intervention } from '@/models';
 import { isEqual, cloneDeep } from 'lodash';
-import { MinimalLevelInterventionRelation, StoreIntervention } from '@/stores/projectConfigStore';
+import { StoreIntervention } from '@/stores/projectConfigStore';
 import { deriveS3Path } from '@/utils/s3Paths';
 import CustomImageUpload from '@/components/elements/CustomImageUpload.vue';
 import { useProjectConfigStore } from '@/stores/projectConfigStore';
@@ -169,15 +168,13 @@ const interventionTypes = computed(() => [
 ]);
 
 // Computed Properties
-const isCreate = computed(() => !!props.interventionId);
+const isCreate = computed(() => !dbIntervention.value);
 const dialogTitle = computed(() =>
   isCreate.value ? t('interventiondialog.title.create'):t('interventiondialog.title.edit')
 );
 
 //state
 const allowedLanguageKeys = ref<Array<string>>([]);
-
-// Initialisieren Sie die erlaubten Sprachschlüssel, ähnlich wie in surveyDetailStore
 
 
 const localIntervention = ref<StoreIntervention | null>(null);
@@ -187,7 +184,6 @@ const localConnectedLevelIds = ref<Array<string> | null>(null);
 const dbConnectedLevelIds = ref<Array<string>| null>(null);
 
 const isEditMode = ref(false);
-const errors = ref<Array<string>>([]);
 
 const isInitializing = ref(false);
 const initialize = async () => {
@@ -261,7 +257,7 @@ const clear = () => {
   isSaving.value = false;
   isEditMode.value = false;
   allowedLanguageKeys.value = [];
-  errors.value = [];
+  errors.value = { general: [] };
 }
 
 
@@ -277,6 +273,15 @@ const saveInterventionAndConnections = async () => {
   try {
     const isValidated = validate();
     if (!isValidated) {
+      // Zeige Validierungsfehler an
+  errors.value.general.forEach(error => {
+    toast.add({
+      severity: 'error',
+      summary: t('interventiondialog.validation.error_summary'),
+      detail: error,
+      life: 5000
+    });
+  });
       isSaving.value = false;
       return;
     }
@@ -289,8 +294,8 @@ const saveInterventionAndConnections = async () => {
         isSaving.value = false;
         toast.add({
           severity: 'error',
-          summary: t('interventiondialog.toast.intervention_not_saved.title'), // todo: strings anpassen
-          detail: t('interventiondialog.toast.intervention_not_saved.detail'), // todo: strings anpassen
+          summary: t('interventiondialog.toast.intervention_update_failed.title'),
+          detail: t('interventiondialog.toast.intervention_update_failed.detail'),
           life: 3000,
         });
         return;
@@ -304,8 +309,8 @@ const saveInterventionAndConnections = async () => {
         isSaving.value = false;
         toast.add({
           severity: 'error',
-          summary: t('interventiondialog.toast.intervention_not_saved.title'), // todo: strings anpassen
-          detail: t('interventiondialog.toast.intervention_not_saved.detail'), // todo: strings anpassen
+          summary: t('interventiondialog.toast.intervention_create_failed.title'),
+          detail: t('interventiondialog.toast.intervention_create_failed.detail'),
           life: 3000,
         });
         return;
@@ -321,8 +326,8 @@ const saveInterventionAndConnections = async () => {
         isSaving.value = false;
         toast.add({
           severity: 'error',
-          summary: t('interventiondialog.toast.intervention_not_saved.title'), // todo: strings anpassen
-          detail: t('interventiondialog.toast.intervention_not_saved.detail'), // todo: strings anpassen
+          summary: t('interventiondialog.toast.level_connections_failed.title'),
+          detail: t('interventiondialog.toast.level_connections_failed.detail'),
           life: 3000,
         });
         return;
@@ -332,8 +337,8 @@ const saveInterventionAndConnections = async () => {
     isSaving.value = false;
     toast.add({
       severity: 'error',
-      summary: t('interventiondialog.toast.intervention_not_saved.title'), // todo: strings anpassen
-      detail: t('interventiondialog.toast.intervention_not_saved.detail'), // todo: strings anpassen
+      summary: t('interventiondialog.toast.save_operation_failed.title'),
+      detail: t('interventiondialog.toast.save_operation_failed.detail'),
       life: 3000,
     });
     return;
@@ -341,14 +346,57 @@ const saveInterventionAndConnections = async () => {
  isSaving.value = false;
 }
 
-const validate = () => {
-  return true;
-  //clear errors
-  //notwendige validation machen
-  //falls errors -> errormassage (errors.push)
-  //return errors.length === 0;
-  //i18n nutzen
-}
+const errors = ref<{
+  general: string[];
+}>({
+  general: [],
+});
+
+const clearErrors = () => {
+  errors.value = { general: [] };
+};
+
+const validate = (): boolean => {
+  clearErrors();
+
+  if (!localIntervention.value) {
+    errors.value.general.push(t('interventiondialog.validation.no_intervention_data'));
+    return false;
+  }
+
+  // Titel-Validierung (mindestens eine Sprache)
+  const hasTitle = localIntervention.value.name.languageKeys.some((key, index) =>
+    localIntervention.value?.name.languageTexts[index]?.trim()
+  );
+  if (!hasTitle) {
+    errors.value.general.push(t('interventiondialog.validation.title_required'));
+  }
+
+  // Alle Titel wenn mehrere Sprachen
+  if (allowedLanguageKeys.value.length > 1) {
+    const missingTitleLanguages = allowedLanguageKeys.value.filter(key => {
+      const index = localIntervention.value.name.languageKeys.indexOf(key);
+      return index === -1 || !localIntervention.value.name.languageTexts[index]?.trim();
+    });
+    
+    if (missingTitleLanguages.length > 0) {
+      errors.value.general.push(
+        t('interventiondialog.validation.title_all_languages_required', {
+          languages: missingTitleLanguages.join(', ')
+        })
+      );
+    }
+  }
+
+
+  // Interventionstyp
+  if (!localIntervention.value.interventionType) {
+    errors.value.general.push(t('interventiondialog.validation.type_required'));
+  }
+
+  return errors.value.general.length === 0;
+};
+
 
 const unsavedChanges = computed(() => {
   return unsavedChangesIntervention.value || unsavedChangesLevelConnections.value;
