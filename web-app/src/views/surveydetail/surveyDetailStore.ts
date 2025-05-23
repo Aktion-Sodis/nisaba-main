@@ -344,6 +344,8 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     try {
       if (isCreate.value) {
         await projectConfigStore.createSurvey(localSurvey.value as Survey);
+        localSurvey.value._version = 1;
+        localSurvey.value._lastChangedAt = new Date();
         _dbSurvey.value = cloneDeep(localSurvey.value);
         if (options.showToasts) {
           toast.add({
