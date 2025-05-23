@@ -23,6 +23,7 @@
             <multi-language-text-field
               v-model:value="surveyDetailStore.localSurvey!.name"
               :allowed-keys="surveyDetailStore.allowedLanguageKeys"
+              :disabled="!surveyDetailStore.editMode"
               class="w-[60%]"
             />
           </div>
@@ -33,6 +34,7 @@
             <multi-language-text-field
               v-model:value="surveyDetailStore.localSurvey!.description"
               :allowed-keys="surveyDetailStore.allowedLanguageKeys"
+              :disabled="!surveyDetailStore.editMode"
               :n-lines="3"
             />
           </div>
@@ -48,6 +50,7 @@
               </label>
               <language-multi-selector
                 v-model:value="surveyDetailStore.allowedLanguageKeys"
+                :disabled="!surveyDetailStore.editMode"
                 class="w-[60%]"
               />
             </div>
@@ -60,6 +63,7 @@
                 :options="formattedInterventions"
                 option-label="formattedName"
                 option-value="id"
+                :disabled="!surveyDetailStore.editMode"
                 class="w-[60%]"
               />
             </div>
@@ -74,7 +78,7 @@
                   surveyID: surveyDetailStore.localSurvey!.id,
                 })
               "
-              :editable="true"
+              :editable="surveyDetailStore.editMode"
             />
           </div>
         </div>

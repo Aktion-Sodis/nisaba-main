@@ -3,8 +3,9 @@
     <template #content>
       <div class="flex w-full justify-end">
         <Button
-          label="Add Question"
           icon="pi pi-plus"
+          :label="t('surveydetails.add_question_card.button')"
+          :disabled="!surveyDetailStore.editMode"
           @click="surveyDetailStore.addEmptyQuestion"
         />
       </div>
@@ -13,7 +14,10 @@
 </template>
 
 <script setup lang="ts">
-import { useSurveyDetailStore } from '@/views/surveydetail/surveyDetailStore';
+import { useI18n } from 'vue-i18n';
 
+import { useSurveyDetailStore } from '../surveyDetailStore';
+
+const { t } = useI18n();
 const surveyDetailStore = useSurveyDetailStore();
 </script>

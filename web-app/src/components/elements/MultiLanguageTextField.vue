@@ -10,6 +10,7 @@
           v-model="localValue.languageTexts[index]"
           :placeholder="hint"
           fluid
+          :disabled="disabled"
         />
         <Textarea
           v-else
@@ -18,6 +19,7 @@
           :rows="nLines"
           auto-resize
           fluid
+          :disabled="disabled"
         />
         <InputText
           :model-value="
@@ -36,6 +38,7 @@
           v-model="selectedText"
           :placeholder="hint"
           fluid
+          :disabled="disabled"
         />
         <Textarea
           v-else
@@ -44,6 +47,7 @@
           :rows="nLines"
           auto-resize
           fluid
+          :disabled="disabled"
         />
         <Select
           v-model="selectedLanguage"
@@ -96,6 +100,10 @@ const props = defineProps({
   nLines: {
     type: Number,
     default: 1,
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
   },
 });
 

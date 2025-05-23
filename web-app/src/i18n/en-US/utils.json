@@ -10,6 +10,17 @@
         "image_replace": "Replace Image",
         "image_choose": "Choose Image",
         "image_placeholder": "Drag and drop image here to upload",
-        "save": "Save"
+        "save": "Save",
+        "edit": "Edit Survey"
+    },
+    "auth": {
+        "not_authenticated": {
+            "title": "Authentication Required",
+            "detail": "Please log in to access this page"
+        },
+        "not_authorized": {
+            "title": "Access Denied",
+            "detail": "You need {role} privileges to access {page}. Please contact your administrator for access."
+        }
     }
 }

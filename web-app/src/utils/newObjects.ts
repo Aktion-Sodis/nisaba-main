@@ -27,7 +27,6 @@ export const createNewSurvey = (languageKeys: string[]): Survey => {
     status: SurveyStatus.DRAFT,
     schemeVersion: 0,
     archived: false,
-    tags: [],
     interventionSurveysId: null,
   };
 };

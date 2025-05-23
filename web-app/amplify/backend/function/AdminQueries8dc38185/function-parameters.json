@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "auth": {
+      "authnisaba": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
+}

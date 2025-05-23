@@ -1,0 +1,88 @@
+{
+  "title": "User Management",
+  "subtitle": "Manage users and their permissions",
+  "newUser": "New User",
+  "filters": {
+    "search": "Search users..."
+  },
+  "resetFilter": "Reset Filter",
+  "noUsersFound": "No users found",
+  "loadingUsers": "Loading users...",
+  "columns": {
+    "username": "Username",
+    "verified": "Verified",
+    "groups": "Groups"
+  },
+  "access_levels": {
+    "superadmin": "Super Administrator",
+    "admin": "Administrator",
+    "mobile": "Mobile User",
+    "analytics": "Analytics User"
+  },
+  "menu": {
+    "delete": "Delete User",
+    "reset_password": "Reset Password",
+    "update_role": "Update Role"
+  },
+  "confirm": {
+    "delete": {
+      "title": "Delete User",
+      "message": "Are you sure you want to delete this user?",
+      "accept": "Delete",
+      "reject": "Cancel"
+    }
+  },
+  "toasts": {
+    "delete_success": {
+      "title": "Success",
+      "message": "User has been deleted successfully"
+    },
+    "delete_error": {
+      "title": "Error",
+      "message": "Failed to delete user"
+    }
+  },
+  "create_user": {
+    "title": "Create New User",
+    "email": "Email or Phone",
+    "user_group": "Access Level",
+    "show_password": "Show Password",
+    "create": "Create User",
+    "success_title": "User Created",
+    "success_message": "User {username} has been created successfully. They will receive their password via email/phone.",
+    "error_title": "Error Creating User",
+    "password_info": "Please save this password securely. It will not be shown again.",
+    "password": "Password",
+    "confirm_save": "I have saved the password",
+    "finish": "Finish",
+    "password_copied": "Password copied to clipboard",
+    "validation": {
+      "required": "This field is required",
+      "invalid_email_or_phone": "Please enter a valid email address or phone number"
+    }
+  },
+  "reset_password": {
+    "title": "Reset Password",
+    "info": "A new password will be generated and displayed for user {username}. Please make sure to save it securely as it will only be shown once.",
+    "show_password": "Show new password",
+    "password_info": "Please save this password securely. It will not be shown again.",
+    "password": "New Password",
+    "confirm_save": "I have saved the password",
+    "reset": "Reset Password",
+    "finish": "Finish",
+    "password_copied": "Password copied to clipboard",
+    "success_title": "Password Reset Successful",
+    "success_message": "Password has been reset for {username}",
+    "error_title": "Password Reset Failed"
+  },
+  "update_role": {
+    "title": "Update User Role",
+    "info": "Update the role for user {username}",
+    "select_role": "Select Role",
+    "save": "Save Changes",
+    "success_title": "Role Updated",
+    "success_message": "Successfully updated role for {username}",
+    "error_title": "Update Failed",
+    "error_message": "Failed to update role for {username}"
+  }
+} 

@@ -71,6 +71,12 @@
         "general_section": "General Information",
         "question_title": "Question {index}"
     },
+    "navigation_guard": {
+        "title": "Unsaved Changes",
+        "message": "You have unsaved changes in your survey. Are you sure you want to leave?",
+        "accept": "Yes, leave",
+        "reject": "No, stay"
+    },
     "publish_card": {
         "draft": {
             "info": "This survey is currently in draft mode. You can publish it when you're ready.",
@@ -90,6 +96,16 @@
                 "message": "Are you sure you want to archive this survey? It will no longer be available to users.",
                 "accept": "Yes, archive survey",
                 "reject": "No, keep published"
+            }
+        },
+        "archived": {
+            "info": "This survey is currently archived and not available to users.",
+            "button": "Reactivate Survey",
+            "confirm": {
+                "title": "Reactivate Survey",
+                "message": "Are you sure you want to reactivate this survey? It will become available to users again.",
+                "accept": "Yes, reactivate survey",
+                "reject": "No, keep archived"
             }
         }
     },
@@ -141,6 +157,17 @@
         "archive_server_error": {
             "title": "Server Error",
             "message": "An error occurred while archiving the survey. Please try again later."
+        },
+        "reactivate_success": {
+            "title": "Survey reactivated",
+            "message": "The survey has been reactivated successfully and is now available to users again."
+        },
+        "reactivate_server_error": {
+            "title": "Server Error",
+            "message": "An error occurred while reactivating the survey. Please try again later."
         }
+    },
+    "add_question_card": {
+        "button": "Add Question"
     }
 }

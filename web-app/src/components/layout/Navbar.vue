@@ -391,6 +391,8 @@ import { useRoute, useRouter } from 'vue-router';
 import logoURL from '@/assets/img/aktionSodisBig.png';
 import { useAuthStore, AuthenticationState } from '@/stores/auth';
 import { useUserStore } from '@/stores/user';
+import { UserGroup, hasRights } from '@/types/UserGroup';
+import { useSurveyDetailStore } from '@/views/surveydetail/surveyDetailStore';
 
 const getColor = (target: string) => {
   if (route.path !== undefined && route.path.includes(target)) {
@@ -417,6 +419,7 @@ const breadcrumbMenuLevel = ref();
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
+const surveyDetailStore = useSurveyDetailStore();
 const actionMenuItems = ref<MenuItem[]>([
   {
     items: [
@@ -517,6 +520,7 @@ const breadcrumbMenuItems = computed(() => {
     {
       id: 'applications',
       label: t('apps.categories.admin'),
+      minRole: UserGroup.ADMIN,
     },
     {
       id: 'surveys',
@@ -527,21 +531,24 @@ const breadcrumbMenuItems = computed(() => {
       items: [
         {
           id: 'surveys',
-          label: t('apps.apps.umfragen.title'),
+          label: t('apps.apps.surveys.title'),
           icon: 'assignment',
           iconType: 'material',
           color: getColor('surveys'),
-          active: isActive('surveys'),
-          command: () => router.push({ name: 'Surveys' }),
+          active: isActive('surveys/overview'),
+          command: () => router.push('/surveys/overview'),
+          minRole: UserGroup.ADMIN,
         },
         {
           id: 'surveyeditor',
           label: t('apps.apps.surveyeditor.title'),
           icon: 'edit_note',
           iconType: 'material',
-          color: getColor('surveyeditor'),
-          active: isActive('surveyeditor'),
-          command: () => router.push({ name: 'SurveyEditor' }),
+          color: getColor('surveys/editor'),
+          active: isActive('surveys/editor'),
+          disabled: !surveyDetailStore.survey,
+          command: () => router.push('/surveys/editor'),
+          minRole: UserGroup.ADMIN,
         },
       ],
     },
@@ -552,19 +559,70 @@ const breadcrumbMenuItems = computed(() => {
       iconType: 'material',
       color: getColor('interventions'),
       command: () => {
-        router.push({ name: 'Interventions' });
+        router.push('/interventions');
       },
+      minRole: UserGroup.ADMIN,
+    },
+    {
+      id: 'settings',
+      label: t('apps.categories.settings'),
+      minRole: UserGroup.ADMIN,
+    },
+    {
+      id: 'users',
+      label: t('apps.apps.users.title'),
+      icon: 'people',
+      iconType: 'material',
+      color: getColor('users'),
+      command: () => {
+        router.push('/users');
+      },
+      minRole: UserGroup.ADMIN,
     },
   ];
 
-  return [{ items }];
+  // Filter items based on authorization
+  const filteredItems = items
+    .map((item) => {
+      // First check if the item itself requires authorization
+      if (item.minRole && authStore.highestRole) {
+        if (!hasRights(authStore.highestRole, item.minRole)) {
+          return null;
+        }
+      }
+
+      if (item.items) {
+        // For items with subitems, filter the subitems
+        const filteredSubItems = item.items.filter((subItem) => {
+          if (!subItem.minRole || !authStore.highestRole) return true;
+          return hasRights(authStore.highestRole, subItem.minRole);
+        });
+
+        // Only include the parent item if it has visible children
+        if (filteredSubItems.length > 0) {
+          return {
+            ...item,
+            items: filteredSubItems,
+          } as MenuItem;
+        }
+        return null;
+      } else {
+        // For items without subitems, check their own minRole
+        if (!item.minRole || !authStore.highestRole) return item;
+        return hasRights(authStore.highestRole, item.minRole) ? item : null;
+      }
+    })
+    .filter((item): item is MenuItem => item !== null);
+
+  return [{ items: filteredItems }] as MenuItem[];
 });
 
 const breadcrumbMenuLevelItems = computed(() => {
   if (route.path.split('/').length > 2) {
-    const sub = breadcrumbMenuItems.value[0].items.find(
-      (item) => item.id === route.path.split('/')[1]
-    );
+    const menuItems = breadcrumbMenuItems.value[0]?.items as
+      | MenuItem[]
+      | undefined;
+    const sub = menuItems?.find((item) => item.id === route.path.split('/')[1]);
 
     if (sub?.items) {
       return sub.items;

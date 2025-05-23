@@ -1,21 +1,28 @@
 import { GraphQLResult } from '@aws-amplify/api';
+import { cloneDeep } from 'lodash';
 import { defineStore } from 'pinia';
+import { useToast } from 'primevue/usetoast';
 import { computed, reactive, ref } from 'vue';
 
-import { Level, Intervention, Survey } from '@/API';
+import {
+  Level,
+  Intervention,
+  Survey,
+  UpdateSurveyInput,
+  CreateSurveyInput,
+} from '@/API';
 import {
   createLevel as createLevelMutation,
   updateLevel as updateLevelMutation,
   createIntervention as createInterventionMutation,
   updateIntervention as updateInterventionMutation,
-  createSurvey as createSurveyMutation,
-  updateSurvey as updateSurveyMutation,
   createLevelInterventionRelation as createLevelInterventionRelationMutation,
   deleteLevelInterventionRelation as deleteLevelInterventionRelationMutation,
   deleteLevel as deleteLevelMutation,
   deleteIntervention as deleteInterventionMutation,
 } from '@/graphql/mutations';
-import { listLevels, listInterventions, listSurveys } from '@/graphql/queries';
+import { listLevels, listInterventions } from '@/graphql/queries';
+import i18n from '@/i18n';
 import { amplifyDataClient } from '@/utils/amplifyDataClient';
 
 const listLevelInterventionRelationsMinimal = /* GraphQL */ `
@@ -60,7 +67,174 @@ interface MinimalLevelInterventionRelationsResponse {
 export interface StoreLevel extends Omit<Level, 'allowedInterventions'> {}
 export interface StoreIntervention extends Omit<Intervention, 'levels'> {}
 
+// Custom minimal mutation for creating a survey (does not request intervention field)
+const createSurveyMinimalMutation = /* GraphQL */ `
+  mutation CreateSurveyMinimal(
+    $input: CreateSurveyInput!
+    $condition: ModelSurveyConditionInput
+  ) {
+    createSurvey(input: $input, condition: $condition) {
+      id
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
+      questions {
+        id
+        text {
+          languageKeys
+          languageTexts
+        }
+        type
+        questionOptions {
+          id
+          text {
+            languageKeys
+            languageTexts
+          }
+          followUpQuestionIDs
+        }
+        isFollowUpQuestion
+      }
+      surveyType
+      status
+      schemeVersion
+      archived
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      interventionSurveysId
+      organization_id
+    }
+  }
+`;
+
+const updateSurveyMinimalMutation = /* GraphQL */ `
+  mutation UpdateSurveyMinimal(
+    $input: UpdateSurveyInput!
+    $condition: ModelSurveyConditionInput
+  ) {
+    updateSurvey(input: $input, condition: $condition) {
+      id
+      name {
+        languageKeys
+        languageTexts
+      }
+      description {
+        languageKeys
+        languageTexts
+      }
+      questions {
+        id
+        text {
+          languageKeys
+          languageTexts
+        }
+        type
+        questionOptions {
+          id
+          text {
+            languageKeys
+            languageTexts
+          }
+          followUpQuestionIDs
+        }
+        isFollowUpQuestion
+      }
+      surveyType
+      status
+      schemeVersion
+      archived
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      interventionSurveysId
+      organization_id
+    }
+  }
+`;
+
+const deleteSurveyMinimalMutation = /* GraphQL */ `
+  mutation DeleteSurveyMinimal(
+    $input: DeleteSurveyInput!
+    $condition: ModelSurveyConditionInput
+  ) {
+    deleteSurvey(input: $input, condition: $condition) {
+      id
+    }
+  }
+`;
+
+const listSurveysMinimal = /* GraphQL */ `
+  query ListSurveysMinimal(
+    $filter: ModelSurveyFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSurveys(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        name {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        description {
+          languageKeys
+          languageTexts
+          __typename
+        }
+        questions {
+          id
+          text {
+            languageKeys
+            languageTexts
+            __typename
+          }
+          type
+          questionOptions {
+            id
+            text {
+              languageKeys
+              languageTexts
+              __typename
+            }
+            followUpQuestionIDs
+            __typename
+          }
+          isFollowUpQuestion
+          __typename
+        }
+        surveyType
+        status
+        schemeVersion
+        archived
+        id
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        interventionSurveysId
+        organization_id
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+
 export const useProjectConfigStore = defineStore('projectConfig', () => {
+  const toast = useToast();
   const _levels = reactive<Record<string, StoreLevel>>({});
   const _interventions = reactive<Record<string, StoreIntervention>>({});
   const _surveys = reactive<Record<string, Survey>>({});
@@ -259,7 +433,7 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
 
       do {
         const result = (await amplifyDataClient.graphql({
-          query: listSurveys,
+          query: listSurveysMinimal,
           variables: {
             nextToken,
           },
@@ -376,23 +550,62 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
   };
 
   const isCreatingSurvey = ref(false);
+  const isUpdateSurveyInputKey = (
+    key: string
+  ): key is keyof UpdateSurveyInput => {
+    return (
+      key === 'id' ||
+      key === 'name' ||
+      key === 'description' ||
+      key === 'questions' ||
+      key === 'surveyType' ||
+      key === 'status' ||
+      key === 'schemeVersion' ||
+      key === 'archived' ||
+      key === '_version' ||
+      key === 'interventionSurveysId'
+    );
+  };
+
+  const isCreateSurveyInputKey = (
+    key: string
+  ): key is keyof CreateSurveyInput => {
+    return (
+      key === 'name' ||
+      key === 'description' ||
+      key === 'questions' ||
+      key === 'surveyType' ||
+      key === 'status' ||
+      key === 'schemeVersion' ||
+      key === 'archived' ||
+      key === 'id' ||
+      key === '_version' ||
+      key === 'interventionSurveysId'
+    );
+  };
+
   const createSurvey = async (survey: Survey) => {
     try {
       isCreatingSurvey.value = true;
-      const { data } = await amplifyDataClient.graphql({
-        query: createSurveyMutation,
+      const input = Object.fromEntries(
+        Object.entries(survey).filter(([key]) => isCreateSurveyInputKey(key))
+      ) as unknown as CreateSurveyInput;
+      const result = (await amplifyDataClient.graphql({
+        query: createSurveyMinimalMutation,
         variables: {
-          input: survey,
+          input,
         },
-      });
-      // @ts-expect-error problems with the type inference
+      })) as GraphQLResult<any>;
+      const data = result.data;
+      if (!data || !data.createSurvey)
+        throw new Error('Survey creation failed');
       _surveys[data.createSurvey.id] = data.createSurvey;
 
       // Update relationships in offline state
-      if (data.createSurvey.intervention?.id) {
+      if (data.createSurvey.interventionSurveysId) {
         _updateSurveyIntervention(
           data.createSurvey.id,
-          data.createSurvey.intervention.id
+          data.createSurvey.interventionSurveysId
         );
       }
     } catch (error: unknown) {
@@ -460,27 +673,110 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
   const updateSurvey = async (survey: Survey) => {
     try {
       isUpdatingSurvey.value = true;
-      const { data } = await amplifyDataClient.graphql({
-        query: updateSurveyMutation,
+      const input = Object.fromEntries(
+        Object.entries(survey).filter(([key]) => isUpdateSurveyInputKey(key))
+      ) as unknown as UpdateSurveyInput;
+
+      // Convert reactive objects to plain objects using lodash and remove __typename fields
+      const plainInput = cloneDeep(input);
+      const removeTypename = (obj: any) => {
+        if (obj && typeof obj === 'object') {
+          delete obj.__typename;
+          Object.values(obj).forEach(removeTypename);
+        }
+      };
+      removeTypename(plainInput);
+
+      const result = (await amplifyDataClient.graphql({
+        query: updateSurveyMinimalMutation,
         variables: {
-          input: survey,
+          input: plainInput,
         },
-      });
+      })) as GraphQLResult<any>;
+      const data = result.data;
+      if (!data || !data.updateSurvey) throw new Error('Survey update failed');
 
       // Update the store
-      // @ts-expect-error problems with the type inference
       _surveys[data.updateSurvey.id] = data.updateSurvey;
 
       // Update relationships in offline state
-      _updateSurveyIntervention(
-        survey.id,
-        data.updateSurvey.intervention?.id ?? null
-      );
+      if (data.updateSurvey.interventionSurveysId) {
+        _updateSurveyIntervention(
+          survey.id,
+          data.updateSurvey.interventionSurveysId
+        );
+      } else {
+        _updateSurveyIntervention(survey.id, null);
+      }
     } catch (error: unknown) {
       console.error(error);
       throw error;
     } finally {
       isUpdatingSurvey.value = false;
+    }
+  };
+
+  const isDeletingSurvey = ref(false);
+  const deleteSurvey = async (surveyId: string) => {
+    try {
+      isDeletingSurvey.value = true;
+
+      // Pre-delete check: Only allow deletion of draft surveys
+      const survey = _surveys[surveyId];
+      if (!survey) {
+        throw new Error('Survey not found');
+      }
+      if (survey.status !== 'DRAFT') {
+        throw new Error('Only draft surveys can be deleted');
+      }
+
+      await amplifyDataClient.graphql({
+        query: deleteSurveyMinimalMutation,
+        variables: {
+          input: {
+            id: surveyId,
+            _version: survey._version,
+          },
+        },
+      });
+      delete _surveys[surveyId];
+
+      // Show success toast
+      toast.add({
+        severity: 'success',
+        summary: i18n.global.t('surveys.toasts.deleteSuccess.summary'),
+        detail: i18n.global.t('surveys.toasts.deleteSuccess.detail'),
+        life: 3000,
+      });
+    } catch (error: unknown) {
+      console.error(error);
+
+      if (error instanceof Error) {
+        if (error.message === 'Only draft surveys can be deleted') {
+          toast.add({
+            severity: 'error',
+            summary: i18n.global.t('surveys.toasts.deleteNotAllowed.summary'),
+            detail: i18n.global.t('surveys.toasts.deleteNotAllowed.detail'),
+            life: 5000,
+          });
+        } else {
+          toast.add({
+            severity: 'error',
+            summary: i18n.global.t('surveys.toasts.deleteError.summary'),
+            detail: i18n.global.t('surveys.toasts.deleteError.detail'),
+            life: 5000,
+          });
+        }
+      } else {
+        toast.add({
+          severity: 'error',
+          summary: i18n.global.t('surveys.toasts.deleteError.summary'),
+          detail: i18n.global.t('surveys.toasts.deleteError.detail'),
+          life: 5000,
+        });
+      }
+    } finally {
+      isDeletingSurvey.value = false;
     }
   };
 
@@ -836,5 +1132,7 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     errorLoadingRelations,
     setLevelInterventionRelations,
     setInterventionLevelRelations,
+    deleteSurvey,
+    isDeletingSurvey,
   };
 });

@@ -5,14 +5,23 @@
         <div v-if="lastSavedAt" class="text-oneliner-light-small mr-3">
           Last saved: {{ formatDate(lastSavedAt) }}
         </div>
-        <Button
-          severity="success"
-          :disabled="!hasUnsavedChanges"
-          :loading="store.isSaving"
-          :label="t('utils.actions.save')"
-          icon="pi pi-save"
-          @click="handleSave"
-        />
+        <template v-if="store.editMode">
+          <Button
+            severity="success"
+            :disabled="!hasUnsavedChanges"
+            :loading="store.isSaving"
+            :label="t('utils.actions.save')"
+            icon="pi pi-save"
+            @click="handleSave"
+          />
+        </template>
+        <template v-else>
+          <Button
+            :label="t('utils.actions.edit')"
+            icon="pi pi-pencil"
+            @click="handleEdit"
+          />
+        </template>
       </div>
     </template>
   </Card>
@@ -34,5 +43,9 @@ const lastSavedAt = computed(() => store.lastSavedAt);
 
 const handleSave = async () => {
   await store.saveSurvey();
+};
+
+const handleEdit = () => {
+  store.editMode = true;
 };
 </script>

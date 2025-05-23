@@ -1,5 +1,42 @@
 {
-    "form": {
-        "username": "E-Mail / Phone Number"
+    "login_form": {
+        "username": "E-Mail / Phone Number",
+        "password": "Password",
+        "login_button": "Login",
+        "forgot_password": "Forgot Password?",
+        "validation": {
+            "username_required": "Email or phone is required",
+            "username_invalid": "Please enter a valid email or phone number",
+            "password_required": "Password is required"
+        }
+    },
+    "password_reset": {
+        "title": "Set new password",
+        "description": "Password must be at least 6 characters long and contain lowercase, uppercase, and numbers.",
+        "new_password": "New Password",
+        "new_password_validation": "New Password (Validation)",
+        "validation": {
+            "password_required": "Password is required",
+            "password_length": "Password must be at least 6 characters long",
+            "password_complexity": "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",
+            "passwords_mismatch": "Passwords do not match"
+        }
+    },
+    "profile_setup": {
+        "title": "Configure your profile",
+        "first_name": "First Name",
+        "surname": "Surname",
+        "validation": {
+            "first_name_required": "First name is required",
+            "surname_required": "Last name is required"
+        }
+    },
+    "buttons": {
+        "set_password": "Set Password",
+        "save_profile": "Save Profile"
+    },
+    "errors": {
+        "login_failed": "Login failed",
+        "load_user_data_failed": "Failed to load user data. Please try again."
     }
 }

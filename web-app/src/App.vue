@@ -32,12 +32,26 @@ const layoutComponent = computed(() => {
 });
 
 onMounted(() => {
-  authStore.checkAuth().then((_) => {
+  authStore.checkAuth().then(async (_) => {
     if (authStore.authenticationState === AuthenticationState.LoggedIn) {
       if (authStore.user?.userId) {
-        userStore.initialize(authStore.user.userId);
+        try {
+          const userData = await userStore.getUserAsync(authStore.user.userId);
+          if (userData === null) {
+            // User is authenticated but doesn't have a profile
+            authStore.authenticationState =
+              AuthenticationState.ProfileSetupRequired;
+            router.push('/login');
+          } else {
+            // User exists and is authenticated
+            router.push('/');
+          }
+        } catch (error) {
+          console.error('Error checking user profile:', error);
+          authStore.authenticationState = AuthenticationState.LoggedOut;
+          router.push('/login');
+        }
       }
-      router.push('/');
     } else {
       router.push('/login');
     }
@@ -49,11 +63,14 @@ watch(
   (newState, oldState) => {
     if (
       newState === AuthenticationState.LoggedOut ||
-      newState === AuthenticationState.PasswordResetRequired
+      newState === AuthenticationState.PasswordResetRequired ||
+      newState === AuthenticationState.ProfileSetupRequired
     ) {
       router.push('/login');
-      userStore.clear();
-      projectConfigStore.clear();
+      if (newState === AuthenticationState.LoggedOut) {
+        userStore.clear();
+        projectConfigStore.clear();
+      }
     } else if (
       newState === AuthenticationState.LoggedIn &&
       oldState !== AuthenticationState.LoggedIn
