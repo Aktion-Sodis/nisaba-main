@@ -5,6 +5,8 @@ import {
   getCurrentUser,
   fetchAuthSession,
   AuthUser,
+  resetPassword,
+  confirmResetPassword,
 } from '@aws-amplify/auth';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
@@ -20,6 +22,27 @@ export enum AuthenticationState {
   LoggedOut = 'LOGGED_OUT',
   PasswordResetRequired = 'CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED',
   ProfileSetupRequired = 'PROFILE_SETUP_REQUIRED',
+}
+
+export enum AuthErrorCode {
+  UserNotFound = 'USER_NOT_FOUND',
+  InvalidPhone = 'INVALID_PHONE',
+  InvalidEmail = 'INVALID_EMAIL',
+  InvalidCode = 'INVALID_CODE',
+  CodeExpired = 'CODE_EXPIRED',
+  PasswordPolicyViolation = 'PASSWORD_POLICY_VIOLATION',
+  RequestFailed = 'REQUEST_FAILED',
+  ResetFailed = 'RESET_FAILED',
+}
+
+export class AuthError extends Error {
+  constructor(
+    public code: AuthErrorCode,
+    message: string
+  ) {
+    super(message);
+    this.name = 'AuthError';
+  }
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -209,6 +232,68 @@ export const useAuthStore = defineStore('auth', () => {
     );
   };
 
+  const requestPasswordReset = async (username: string) => {
+    loading.value = true;
+    error.value = null;
+    try {
+      const output = await resetPassword({ username });
+      return output;
+    } catch (err) {
+      let errorCode = AuthErrorCode.RequestFailed;
+      if (err instanceof Error) {
+        if (err.message.includes('User does not exist')) {
+          errorCode = AuthErrorCode.UserNotFound;
+        } else if (err.message.includes('Invalid phone number')) {
+          errorCode = AuthErrorCode.InvalidPhone;
+        } else if (err.message.includes('Invalid email')) {
+          errorCode = AuthErrorCode.InvalidEmail;
+        }
+      }
+      throw new AuthError(
+        errorCode,
+        err instanceof Error ? err.message : 'Failed to request password reset'
+      );
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const confirmPasswordReset = async (
+    username: string,
+    code: string,
+    newPassword: string
+  ) => {
+    loading.value = true;
+    error.value = null;
+    try {
+      await confirmResetPassword({
+        username,
+        confirmationCode: code,
+        newPassword,
+      });
+      return true;
+    } catch (err) {
+      let errorCode = AuthErrorCode.ResetFailed;
+      if (err instanceof Error) {
+        if (err.message.includes('Invalid verification code')) {
+          errorCode = AuthErrorCode.InvalidCode;
+        } else if (
+          err.message.includes('Password did not conform with policy')
+        ) {
+          errorCode = AuthErrorCode.PasswordPolicyViolation;
+        } else if (err.message.includes('Code expired')) {
+          errorCode = AuthErrorCode.CodeExpired;
+        }
+      }
+      throw new AuthError(
+        errorCode,
+        err instanceof Error ? err.message : 'Failed to reset password'
+      );
+    } finally {
+      loading.value = false;
+    }
+  };
+
   return {
     user,
     authenticationState,
@@ -221,5 +306,7 @@ export const useAuthStore = defineStore('auth', () => {
     setupProfile,
     logout,
     checkAuth,
+    requestPasswordReset,
+    confirmPasswordReset,
   };
 });

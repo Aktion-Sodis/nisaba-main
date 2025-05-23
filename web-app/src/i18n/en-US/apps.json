@@ -30,6 +30,10 @@
         "users": {
             "title": "Users",
             "description": "Add and manage users"
+        },
+        "passwordreset": {
+            "title": "Reset Password",
+            "description": "Reset the password"
         }
     }
 }

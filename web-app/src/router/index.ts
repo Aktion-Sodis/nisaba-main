@@ -9,6 +9,7 @@ import { UserGroup, hasRights } from '@/types/UserGroup';
 import Index from '@/views/index/Index.vue';
 import Interventions from '@/views/interventions/interventions.vue';
 import Login from '@/views/login/Login.vue';
+import PasswordReset from '@/views/passwordreset/PasswordReset.vue';
 import SurveyEditor from '@/views/surveydetail/SurveyDetails.vue';
 import { useSurveyDetailStore } from '@/views/surveydetail/surveyDetailStore';
 import Umfragen from '@/views/surveys/Surveys.vue';
@@ -77,6 +78,16 @@ const routes = [
       i18n_title: 'apps.apps.users.title',
       requiresAuth: true,
       minRole: UserGroup.ADMIN,
+    },
+  },
+  {
+    path: '/password-reset',
+    name: 'Password Reset',
+    component: PasswordReset,
+    meta: {
+      requiresAuth: false,
+      i18n_title: 'apps.passwordreset.title',
+      layout: 'BlankLayout',
     },
   },
   // Add other routes here as needed

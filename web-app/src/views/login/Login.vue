@@ -77,14 +77,25 @@
               </Message>
 
               <!-- Submit Button -->
-              <Button
-                :label="t('login.login_form.login_button')"
-                icon="pi pi-sign-in"
-                class="w-full mt-4"
-                type="submit"
-                fluid
-                :loading="authStore.loading"
-              />
+              <div class="flex flex-col gap-2 mt-4">
+                <Button
+                  :label="t('login.login_form.login_button')"
+                  icon="pi pi-sign-in"
+                  class="w-full mt-4"
+                  type="submit"
+                  fluid
+                  :loading="authStore.loading"
+                />
+                <Button
+                  :label="t('login.login_form.forgot_password')"
+                  text
+                  severity="secondary"
+                  size="small"
+                  class="w-full"
+                  fluid
+                  @click="router.push('/password-reset')"
+                />
+              </div>
             </div>
           </Form>
 

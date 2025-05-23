@@ -52,7 +52,7 @@ export const validatePassword = (
     const hasLower = /[a-z]/.test(value);
     const hasUpper = /[A-Z]/.test(value);
     const hasNumber = /[0-9]/.test(value);
-    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>\-_+=/\\[\]~`]/.test(value);
 
     if (!hasLower || !hasUpper || !hasNumber || !hasSpecial) {
       return {

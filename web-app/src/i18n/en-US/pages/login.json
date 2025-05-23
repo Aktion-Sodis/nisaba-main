@@ -3,6 +3,7 @@
         "username": "E-Mail / Phone Number",
         "password": "Password",
         "login_button": "Login",
+        "forgot_password": "Forgot Password?",
         "validation": {
             "username_required": "Email or phone is required",
             "username_invalid": "Please enter a valid email or phone number",
