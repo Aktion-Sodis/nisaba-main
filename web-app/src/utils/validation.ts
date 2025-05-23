@@ -64,3 +64,21 @@ export const validatePassword = (
 
   return { isValid: true, message: '' };
 };
+
+export const validateMLString = (
+  mlString:
+    | { languageKeys: string[]; languageTexts: string[] }
+    | null
+    | undefined,
+  allowedKeys: string[]
+): boolean => {
+  if (!mlString || !mlString.languageKeys || !mlString.languageTexts) {
+    return false;
+  }
+
+  // For each allowed key, check if there's a corresponding non-empty text
+  return allowedKeys.every((key) => {
+    const index = mlString.languageKeys.indexOf(key);
+    return index !== -1 && mlString.languageTexts[index]?.trim();
+  });
+};

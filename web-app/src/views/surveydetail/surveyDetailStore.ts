@@ -8,6 +8,7 @@ import i18n from '@/i18n';
 import { SurveyStatus, type Survey } from '@/models/index';
 import { useProjectConfigStore } from '@/stores/projectConfigStore';
 import { createNewTextQuestion, createNewSurvey } from '@/utils/newObjects';
+import { validateMLString } from '@/utils/validation';
 
 export const useSurveyDetailStore = defineStore('surveyDetail', () => {
   const toast = useToast();
@@ -441,28 +442,55 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     lastAutoSaveFailed.value = false;
   };
 
-  const initEdit = (survey: Survey) => {
+  const allowedLanguageKeys = ref<Array<string>>([]);
+
+  const initializeAllowedLanguageKeys = (
+    survey: Survey | null,
+    currentLocale: string
+  ) => {
+    if (!survey) {
+      // In create mode, use current locale
+      allowedLanguageKeys.value = [currentLocale];
+      return;
+    }
+
+    // For existing surveys, use the language keys from the survey name
+    // Filter out any empty/null language texts
+    const validLanguageKeys = survey.name.languageKeys.filter((key, index) =>
+      survey.name.languageTexts[index]?.trim()
+    );
+
+    // If no valid language keys found, fallback to current locale
+    allowedLanguageKeys.value =
+      validLanguageKeys.length > 0 ? validLanguageKeys : [currentLocale];
+  };
+
+  const initEdit = (survey: Survey, currentLocale: string) => {
     _dbSurvey.value = cloneDeep(survey);
     localSurvey.value = cloneDeep(survey);
     editMode.value = true;
+    initializeAllowedLanguageKeys(survey, currentLocale);
   };
 
-  const initCreate = () => {
+  const initCreate = (currentLocale: string) => {
     localSurvey.value = createNewSurvey(allowedLanguageKeys.value);
     _dbSurvey.value = null;
     editMode.value = true;
+    initializeAllowedLanguageKeys(null, currentLocale);
   };
 
-  const initView = (survey: Survey) => {
+  const initView = (survey: Survey, currentLocale: string) => {
     localSurvey.value = cloneDeep(survey);
     _dbSurvey.value = cloneDeep(survey);
     editMode.value = false;
+    initializeAllowedLanguageKeys(survey, currentLocale);
   };
 
   const clear = () => {
     localSurvey.value = null;
     _dbSurvey.value = null;
     editMode.value = false;
+    allowedLanguageKeys.value = [];
   };
 
   const clearErrors = () => {
@@ -487,8 +515,9 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
     let hasValidationErrors = false;
 
     // Validate general info (name is required, description is optional)
-    const hasName = localSurvey.value.name.languageKeys.every((key, index) =>
-      localSurvey.value?.name.languageTexts[index]?.trim()
+    const hasName = validateMLString(
+      localSurvey.value.name,
+      allowedLanguageKeys.value
     );
     if (!hasName) {
       hasValidationErrors = true;
@@ -529,8 +558,9 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
       const questionErrors: string[] = [];
 
       // Check question text
-      const hasQuestionText = question.text.languageKeys.every(
-        (key, textIndex) => question.text.languageTexts[textIndex]?.trim()
+      const hasQuestionText = validateMLString(
+        question.text,
+        allowedLanguageKeys.value
       );
       if (!hasQuestionText) {
         hasValidationErrors = true;
@@ -544,8 +574,9 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
       // Check question options if they exist
       if (question.questionOptions && question.questionOptions.length > 0) {
         question.questionOptions.forEach((option, optionIndex) => {
-          const hasOptionText = option.text.languageKeys.every(
-            (key, textIndex) => option.text.languageTexts[textIndex]?.trim()
+          const hasOptionText = validateMLString(
+            option.text,
+            allowedLanguageKeys.value
           );
           if (!hasOptionText) {
             hasValidationErrors = true;
@@ -876,8 +907,6 @@ export const useSurveyDetailStore = defineStore('surveyDetail', () => {
 
     cleanupQuestionDeletion(questionToDelete.id);
   };
-
-  const allowedLanguageKeys = ref<Array<string>>([]);
 
   return {
     localSurvey,

@@ -434,7 +434,7 @@ const formatSurveyStatus = (status: SurveyStatus): string => {
 
 const createSurvey = () => {
   const surveyDetailStore = useSurveyDetailStore();
-  surveyDetailStore.initCreate();
+  surveyDetailStore.initCreate(locale.value);
   router.push('/surveys/editor');
 };
 
@@ -523,7 +523,7 @@ const toggleMenu = (event: Event, survey: Survey) => {
 // Placeholder functions for menu actions
 const editSurvey = (survey: Survey) => {
   const surveyDetailStore = useSurveyDetailStore();
-  surveyDetailStore.initEdit(survey);
+  surveyDetailStore.initEdit(survey, locale.value);
   router.push('/surveys/editor');
 };
 
@@ -556,7 +556,7 @@ const viewResults = (survey: Survey) => {
 
 const viewSurvey = (survey: Survey) => {
   const surveyDetailStore = useSurveyDetailStore();
-  surveyDetailStore.initView(survey);
+  surveyDetailStore.initView(survey, locale.value);
   router.push('/surveys/editor');
 };
 

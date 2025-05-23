@@ -39,7 +39,6 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 
 import AddQuestionCard from './components/AddQuestionCard.vue';
 import GeneralInputCard from './components/GeneralInputCard.vue';
@@ -52,7 +51,6 @@ import { useSurveyDetailStore } from './surveyDetailStore';
 import { SurveyStatus } from '@/models';
 
 const surveyDetailStore = useSurveyDetailStore();
-const { locale } = useI18n();
 
 const questionRefs = ref<(HTMLElement | null)[]>([]);
 const generalCardRef = ref<HTMLElement | null>(null);
@@ -171,9 +169,6 @@ const checkForScrollbar = () => {
 };
 
 onMounted(() => {
-  if (surveyDetailStore.allowedLanguageKeys.length === 0) {
-    surveyDetailStore.allowedLanguageKeys = [locale.value];
-  }
   mainScrollRef.value?.addEventListener('scroll', onScroll);
   checkForScrollbar();
   // Add resize observer to check for scrollbar when content changes
