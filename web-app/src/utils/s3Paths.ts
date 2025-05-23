@@ -38,12 +38,12 @@ export const S3_PATHS = {
     toBeReplaced: ['surveyID', 'questionID', 'optionID'],
   },
   questionPicAnswerPath: {
-    path: 'appliedInterventionFiles/appliedInterventionID/executedSurveyFiles/executedSurveyID/questionFiles/questionID/pic.png',
-    toBeReplaced: ['appliedInterventionID', 'executedSurveyID', 'questionID'],
+    path: 'executedSurveyFiles/executedSurveyID/questionFiles/questionID/pic.png',
+    toBeReplaced: ['executedSurveyID', 'questionID'],
   },
   questionAudioAnswerPath: {
-    path: 'appliedInterventionFiles/appliedInterventionID/executedSurveyFiles/executedSurveyID/questionFiles/questionID/audio.mp3',
-    toBeReplaced: ['appliedInterventionID', 'executedSurveyID', 'questionID'],
+    path: 'executedSurveyFiles/executedSurveyID/questionFiles/questionID/audio.aac',
+    toBeReplaced: ['executedSurveyID', 'questionID'],
   },
   appliedInterventionPicPath: {
     path: 'appliedInterventionFiles/appliedInterventionID/pic.png',
@@ -60,6 +60,10 @@ export const S3_PATHS = {
   taskAudioPath: {
     path: 'taskFiles/taskID/audio.mp3',
     toBeReplaced: ['taskID'],
+  },
+  failedDBObject: {
+    path: 'failedDBObjects/type/failedDBObjectID.json',
+    toBeReplaced: ['type', 'failedDBObjectID'],
   },
 } as const;
 

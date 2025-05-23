@@ -57,28 +57,24 @@ final Map<DataStorePaths, dynamic> databaseOntologies = {
     "toBeReplaced": ["documentID"],
   },
   DataStorePaths.interventionSurveyPicPath: {
-    "path": "interventionFiles/interventionID/surveyFiles/surveyID/pic.png",
-    "toBeReplaced": ["interventionID", "surveyID"],
+    "path": "surveyFiles/surveyID/pic.png",
+    "toBeReplaced": ["surveyID"],
   },
   DataStorePaths.questionPicPath: {
-    "path":
-        "interventionFiles/interventionID/surveyFiles/surveyID/questionFiles/questionID/pic.png",
-    "toBeReplaced": ["interventionID", "surveyID", "questionID"],
+    "path": "surveyFiles/surveyID/questionFiles/questionID/pic.png",
+    "toBeReplaced": ["surveyID", "questionID"],
   },
   DataStorePaths.questionOptionPicPath: {
-    "path":
-        "interventionFiles/interventionID/surveyFiles/surveyID/questionFiles/questionID/optionFiles/optionID/pic.png",
-    "toBeReplaced": ["interventionID", "surveyID", "questionID", "optionID"],
+    "path": "surveyFiles/surveyID/questionFiles/questionID/optionFiles/optionID/pic.png",
+    "toBeReplaced": ["surveyID", "questionID", "optionID"],
   },
   DataStorePaths.questionPicAnswerPath: {
-    "path":
-        "appliedInterventionFiles/appliedInterventionID/executedSurveyFiles/executedSurveyID/questionFiles/questionID/pic.png",
-    "toBeReplaced": ["appliedInterventionID", "executedSurveyID", "questionID"],
+    "path": "executedSurveyFiles/executedSurveyID/questionFiles/questionID/pic.png",
+    "toBeReplaced": ["executedSurveyID", "questionID"],
   },
   DataStorePaths.questionAudioAnswerPath: {
-    "path":
-        "appliedInterventionFiles/appliedInterventionID/executedSurveyFiles/executedSurveyID/questionFiles/questionID/audio.aac",
-    "toBeReplaced": ["appliedInterventionID", "executedSurveyID", "questionID"],
+    "path": "executedSurveyFiles/executedSurveyID/questionFiles/questionID/audio.aac",
+    "toBeReplaced": ["executedSurveyID", "questionID"],
   },
   DataStorePaths.appliedInterventionPicPath: {
     "path": "appliedInterventionFiles/appliedInterventionID/pic.png",
@@ -89,12 +85,12 @@ final Map<DataStorePaths, dynamic> databaseOntologies = {
     "toBeReplaced": ["entityID"],
   },
   DataStorePaths.taskPicPath: {
-    "path": "taskFiles/taskID/picID.png",
-    "toBeReplaced": ["taskID", "picID"]
+    "path": "taskFiles/taskID/pic.png",
+    "toBeReplaced": ["taskID"],
   },
   DataStorePaths.taskAudioPath: {
-    "path": "taskFiles/taskID/audioID.aac",
-    "toBeReplaced": ["taskID", "audioID"],
+    "path": "taskFiles/taskID/audio.mp3",
+    "toBeReplaced": ["taskID"],
   },
   DataStorePaths.failedDBObject: {
     "path": "failedDBObjects/type/failedDBObjectID.json",
