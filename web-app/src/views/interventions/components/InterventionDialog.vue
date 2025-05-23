@@ -15,6 +15,7 @@
         <LanguageMultiSelector
           v-model:value="allowedLanguageKeys"
           class="w-[60%]"
+          :disabled="viewMode"
         />
       </div>
 
@@ -27,6 +28,7 @@
           v-model:value="localIntervention.name"
           :allowed-keys="allowedLanguageKeys"
           :n-lines="1"
+          :readonly="viewMode"
         />
       </div>
 
@@ -39,6 +41,7 @@
           v-model:value="localIntervention.description"
           :allowed-keys="allowedLanguageKeys"
           :n-lines="2"
+          :readonly="viewMode"
         />
       </div>
 
@@ -53,7 +56,8 @@
             option-label="formattedName"
             option-value="id"
             display="chip"
-            :filter="true"
+            :filter="!viewMode"
+            :disabled="viewMode"
             class="w-[60%]"
           />
         </div>
@@ -69,6 +73,7 @@
               optionLabel="name"
               optionValue="value"
               aria-labelledby="interventionType"
+              :disabled="viewMode"
               :allow-empty="false"
             />
         </div>
@@ -79,12 +84,8 @@
             {{ t('interventiondialog.labels.image') }}
           </label>
           <custom-image-upload
-            :path="
-            deriveS3Path('interventionPicPath', {
-              interventionID: localIntervention.id
-            })
-            "
-            :editable="true"
+            :path="imagePath"
+            :editable="!viewMode"
           />
         </div>
     </div>
@@ -92,12 +93,13 @@
     <template #footer>
       <div class="flex justify-content-end gap-2">
         <Button
-          :label="t('interventiondialog.buttons.cancel')"
+          :label="viewMode ? t('interventiondialog.buttons.close') : t('interventiondialog.buttons.cancel')"
           icon="pi pi-times"
-          class="p-button-text p-button-danger"
+          :class="viewMode ? 'p-button-text' : 'p-button-text p-button-danger'"
           @click="() => { emit('update:isOpened', false); clear(); }"
         />
         <Button
+          v-if="!viewMode"
           :label="t('interventiondialog.buttons.save')"
           icon="pi pi-check"
           @click="saveInterventionAndConnections"
@@ -132,13 +134,17 @@ const props = defineProps({
     type: String,
     default: null,
   },
+  viewMode: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Emits
 const emit = defineEmits(['update:isOpened', 'saved']);
 
 // i18n
-const { t, locale } = useI18n(); // Destructure locale here
+const { t, locale } = useI18n();
 const toast = useToast();
 
 // Dialog Sichtbarkeit
@@ -148,7 +154,7 @@ watch(
   (newValue) => {
     isOpenedLocal.value = newValue;
     if (newValue) {
-      initialize(); // Call initialize when the dialog is opened
+      initialize();
     }
   }
 );
@@ -161,6 +167,7 @@ watch(
     }
   }
 )
+
 // Mögliche Interventionstypen
 const interventionTypes = computed(() => [
   { name: t('interventiondialog.types.technology'), value: 'technology' },
@@ -169,14 +176,17 @@ const interventionTypes = computed(() => [
 
 // Computed Properties
 const isCreate = computed(() => !dbIntervention.value);
-const dialogTitle = computed(() =>
-  isCreate.value ? t('interventiondialog.title.create'):t('interventiondialog.title.edit')
-);
+const dialogTitle = computed(() => {
+  if (props.viewMode) {
+    return t('interventiondialog.title.view');
+  }
+  return isCreate.value ? 
+    t('interventiondialog.title.create') : 
+    t('interventiondialog.title.edit');
+});
 
 //state
 const allowedLanguageKeys = ref<Array<string>>([]);
-
-
 const localIntervention = ref<StoreIntervention | null>(null);
 const dbIntervention = ref<StoreIntervention | null>(null);
 
@@ -188,12 +198,10 @@ const isEditMode = ref(false);
 const isInitializing = ref(false);
 const initialize = async () => {
   isInitializing.value = true;
-    //set language key array initial selection
-allowedLanguageKeys.value = [locale.value];
+  allowedLanguageKeys.value = [locale.value];
     
-    if (props.interventionId) {
-      try {
-        //get from store dbIntervention and dbInterventionLevelConnections
+  if (props.interventionId) {
+    try {
       const intervention = projectConfigStore.getInterventionById(props.interventionId);
       if (intervention) {
         dbIntervention.value = cloneDeep(intervention);
@@ -212,20 +220,18 @@ allowedLanguageKeys.value = [locale.value];
       } else {
         throw new Error('Intervention not found');
       }
-      } catch (error) {
-        isOpenedLocal.value = false;
-        toast.add({
-          severity: 'error',
-          summary: t('interventiondialog.toast.intervention_not_found.title'),
-          detail: t('interventiondialog.toast.intervention_not_found.detail'),
-          life: 3000,
-        });
-      }
-      
-    } else {
-      try {
-        //create new empty element
-        const newIntervention = createNewIntervention(allowedLanguageKeys.value);
+    } catch (error) {
+      isOpenedLocal.value = false;
+      toast.add({
+        severity: 'error',
+        summary: t('interventiondialog.toast.intervention_not_found.title'),
+        detail: t('interventiondialog.toast.intervention_not_found.detail'),
+        life: 3000,
+      });
+    }
+  } else {
+    try {
+      const newIntervention = createNewIntervention(allowedLanguageKeys.value);
       localIntervention.value = newIntervention;
       dbIntervention.value = null;
       
@@ -234,18 +240,23 @@ allowedLanguageKeys.value = [locale.value];
       
       isEditMode.value = true;
 
-      } catch (error) {
-        isOpenedLocal.value = false;
-        toast.add({
-          severity: 'error',
-          summary: t('interventiondialog.toast.new_intervention_not_created.title'),
-          detail: t('interventiondialog.toast.new_intervention_not_created.detail'),
-          life: 3000,
-        });
-      }
-      
+    } catch (error) {
+      isOpenedLocal.value = false;
+      toast.add({
+        severity: 'error',
+        summary: t('interventiondialog.toast.new_intervention_not_created.title'),
+        detail: t('interventiondialog.toast.new_intervention_not_created.detail'),
+        life: 3000,
+      });
     }
-    isInitializing.value = false;
+  }
+
+  // Im View-Modus kein Bearbeitungsmodus aktivieren
+  if (props.viewMode) {
+    isEditMode.value = false;
+  }
+
+  isInitializing.value = false;
 }
 
 const clear = () => {
@@ -260,9 +271,10 @@ const clear = () => {
   errors.value = { general: [] };
 }
 
-
 const isSaving = ref(false);
 const saveInterventionAndConnections = async () => {
+  // Verhindere Speichern im View-Modus
+  if (props.viewMode) return;
 
   if (!localIntervention.value || !localConnectedLevelIds.value) {
     return;
@@ -273,15 +285,14 @@ const saveInterventionAndConnections = async () => {
   try {
     const isValidated = validate();
     if (!isValidated) {
-      // Zeige Validierungsfehler an
-  errors.value.general.forEach(error => {
-    toast.add({
-      severity: 'error',
-      summary: t('interventiondialog.validation.error_summary'),
-      detail: error,
-      life: 5000
-    });
-  });
+      errors.value.general.forEach(error => {
+        toast.add({
+          severity: 'error',
+          summary: t('interventiondialog.validation.error_summary'),
+          detail: error,
+          life: 5000
+        });
+      });
       isSaving.value = false;
       return;
     }
@@ -388,7 +399,6 @@ const validate = (): boolean => {
     }
   }
 
-
   // Interventionstyp
   if (!localIntervention.value.interventionType) {
     errors.value.general.push(t('interventiondialog.validation.type_required'));
@@ -396,7 +406,6 @@ const validate = (): boolean => {
 
   return errors.value.general.length === 0;
 };
-
 
 const unsavedChanges = computed(() => {
   return unsavedChangesIntervention.value || unsavedChangesLevelConnections.value;
@@ -410,11 +419,9 @@ const unsavedChangesLevelConnections = computed(() => {
   let connectionsChanged = false;
 
   if (localConnectedLevelIds.value && dbConnectedLevelIds.value) {
-    // Check if the number of connections is different
     if (localConnectedLevelIds.value.length !== dbConnectedLevelIds.value.length) {
       connectionsChanged = true;
     } else {
-      // Check if any level IDs are different between local and db
       connectionsChanged = localConnectedLevelIds.value.some(
         localId => !dbConnectedLevelIds.value?.includes(localId)
       ) || dbConnectedLevelIds.value.some(
@@ -422,7 +429,6 @@ const unsavedChangesLevelConnections = computed(() => {
       );
     }
   } else {
-    // If either list is null, there are changes
     connectionsChanged = true;
   }
   return connectionsChanged;
@@ -436,7 +442,6 @@ const imagePath = computed(() => {
   });
 });
 
-
 // Verfügbare Level für die Auswahl
 const availableLevels = computed(() => {
   return projectConfigStore.levelsSortedByHierarchy.map(level => ({
@@ -444,6 +449,4 @@ const availableLevels = computed(() => {
     formattedName: formatMLString(level.name, locale.value)
   }));
 });
-
-
 </script>

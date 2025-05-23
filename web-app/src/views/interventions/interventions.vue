@@ -78,7 +78,6 @@
           <Column field="name_searchable" :header="$t('interventions.columns.name')" sortable filter>
             <template #body="{ data }">
               {{ formatMLString(data.name, locale) }}
-              <!-- Display original formatted string -->
             </template>
             <template #filter="{ filterModel }">
               <InputText
@@ -91,7 +90,6 @@
           <Column field="description_searchable" :header="$t('interventions.columns.description')" filter>
             <template #body="{ data }">
               {{ formatMLString(data.description, locale) }}
-              <!-- Display original formatted string -->
             </template>
             <template #filter="{ filterModel }">
               <InputText
@@ -102,7 +100,6 @@
             </template>
           </Column>
           <Column field="createdAt" :header="$t('interventions.columns.createdAt')" sortable filter>
-            <!-- Keep original field for date filtering -->
             <template #body="{ data }">
               {{ formatDate(data.createdAt) }}
             </template>
@@ -185,7 +182,6 @@
                   <h3 class="text-section-inner-title">
                     {{ formatMLString(intervention.name, locale) }}
                   </h3>
-                  <!-- No status tag for interventions in this example -->
                 </div>
                 <div
                   class="text-sm text-gray-600 mb-3 flex justify-between items-center"
@@ -211,12 +207,12 @@
     </Card>
     <Menu ref="interventionMenu" :model="interventionMenuItems" :popup="true" />
     
-    <!-- Verwenden Sie hier Ihre InterventionDialog Komponente -->
     <InterventionDialog 
       v-model:isOpened="showInterventionDialog" 
+      :intervention-id="dialogInterventionId"
+      :view-mode="dialogViewMode"
       @saved="handleInterventionSaved" 
     />
-    <!-- Der vorherige Dialog-Block wurde entfernt -->
   </div>
 </template>
 
@@ -225,15 +221,14 @@ import { FilterMatchMode } from '@primevue/core/api';
 import { ref, onMounted, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Menu from 'primevue/menu';
-// Entfernen Sie: import Dialog from 'primevue/dialog';
-import InterventionDialog from './components/InterventionDialog.vue'; // Pfad anpassen, falls nötig
+import InterventionDialog from './components/InterventionDialog.vue';
 import router from '@/router'; 
 
 import type { Intervention } from '@/models/interventions'; 
 import { useProjectConfigStore } from '@/stores/projectConfigStore';
 import { formatMLString } from '@/utils/formatStrings';
 
-const { locale, t } = useI18n(); // t function is now destructured
+const { locale, t } = useI18n();
 const projectConfigStore = useProjectConfigStore();
 
 const interventions = projectConfigStore.interventions;
@@ -253,12 +248,10 @@ const filters = ref({
 
 const isFilterActive = computed(() => {
   return Object.entries(filters.value).some(([_key, filter]) => {
-    // Example: return key !== 'global' && filter.value !== null && filter.value !== '';
-    return filter.value !== null && filter.value !== ''; // Check all filters including global
+    return filter.value !== null && filter.value !== '';
   });
 });
 
-// Computed property to create searchable intervention data
 const searchableInterventions = computed(() => {
   if (!Array.isArray(interventions)) {
     return [];
@@ -271,7 +264,6 @@ const searchableInterventions = computed(() => {
         intervention.description,
         currentLocale
       );
-      // Create searchable, lowercase versions for filtering
       const nameSearchable = (nameFormatted || '').toLowerCase();
       const descriptionSearchable = (descriptionFormatted || '').toLowerCase();
       const createdAtFormatted = formatDate(intervention.createdAt);
@@ -288,7 +280,6 @@ const searchableInterventions = computed(() => {
         intervention,
         error
       );
-      // Provide fallback values
       return {
         ...intervention,
         name_searchable: '',
@@ -354,7 +345,7 @@ const interventionMenuItems = computed(() => {
   }
   return [
     {
-      label: t('interventions.menu.viewDetails'), // Add 'interventions.menu.viewDetails' to your i18n files
+      label: t('interventions.menu.viewDetails'),
       icon: 'pi pi-fw pi-eye',
       command: () => {
         if (selectedInterventionForMenu.value) {
@@ -363,7 +354,7 @@ const interventionMenuItems = computed(() => {
       },
     },
     {
-      label: t('interventions.menu.edit'), // Add 'interventions.menu.edit' to your i18n files
+      label: t('interventions.menu.edit'),
       icon: 'pi pi-fw pi-pencil',
       command: () => {
         if (selectedInterventionForMenu.value) {
@@ -372,9 +363,8 @@ const interventionMenuItems = computed(() => {
       },
     },
     {
-      label: t('interventions.menu.archive'), // Add 'interventions.menu.delete' to your i18n files
+      label: t('interventions.menu.archive'),
       icon: 'pi pi-fw pi-inbox',
-
       command: () => {
         if (selectedInterventionForMenu.value) {
           // Implement archive logic
@@ -389,49 +379,41 @@ const toggleInterventionMenu = (event: Event, intervention: Intervention) => {
   interventionMenu.value.toggle(event);
 };
 
-// Placeholder functions for menu actions and card click
+// Dialog-bezogene Refs
+const showInterventionDialog = ref(false);
+const dialogInterventionId = ref<string | null>(null);
+const dialogViewMode = ref(false);
+
+// Funktionen für verschiedene Dialog-Modi
+const createIntervention = () => {
+  dialogInterventionId.value = null;
+  dialogViewMode.value = false;
+  showInterventionDialog.value = true;
+};
+
 const viewInterventionDetails = (intervention: Intervention) => {
-  console.log('View details for intervention:', intervention);
-  // Example: router.push(`/interventions/details/${intervention.id}`);
+  dialogInterventionId.value = intervention.id;
+  dialogViewMode.value = true;
+  showInterventionDialog.value = true;
 };
 
 const editIntervention = (intervention: Intervention) => {
-  console.log('Edit intervention:', intervention);
-  // Hier könnten Sie den InterventionDialog auch für Bearbeitungen öffnen:
-  // selectedInterventionId.value = intervention.id; // Eine neue ref, um die ID zu speichern
-  // showInterventionDialog.value = true;
-  // Stellen Sie sicher, dass InterventionDialog eine `interventionId` Prop akzeptiert, um den Bearbeitungsmodus zu aktivieren.
+  dialogInterventionId.value = intervention.id;
+  dialogViewMode.value = false;
+  showInterventionDialog.value = true;
 };
 
 const onInterventionCardClick = (intervention: Intervention) => {
-  // Decide if clicking the card should do the same as "View Details" or something else
   viewInterventionDetails(intervention);
   console.log('Intervention card clicked:', intervention);
 };
 
-// Modal-bezogene Refs und Funktionen
-const showInterventionDialog = ref(false);
-// const selectedInterventionId = ref<string | null>(null); // Für den Bearbeitungsmodus, falls benötigt
-
-const createIntervention = () => {
-  // selectedInterventionId.value = null; // Sicherstellen, dass kein Bearbeitungsmodus aktiv ist
-  showInterventionDialog.value = true;
-};
-
-const handleInterventionSaved = (savedIntervention: any) => { // Typ anpassen
+const handleInterventionSaved = (savedIntervention: any) => {
   console.log('Intervention saved:', savedIntervention);
   showInterventionDialog.value = false;
-  // Hier können Sie Logik hinzufügen, um die Interventionsliste zu aktualisieren,
-  // z.B. durch erneutes Laden vom Store oder Hinzufügen zur lokalen Liste.
-  // projectConfigStore.fetchInterventions(); // Beispiel
+  dialogInterventionId.value = null;
+  dialogViewMode.value = false;
 };
-
-// Entfernen Sie die folgenden Refs und Funktionen, die für den inline Dialog waren:
-// const displayModal = ref(false);
-// const newIntervention = ref({ ... });
-// const closeModal = () => { ... };
-// const saveIntervention = async () => { ... };
-
 </script>
 
 <style scoped>
@@ -442,7 +424,7 @@ const handleInterventionSaved = (savedIntervention: any) => { // Typ anpassen
 }
 :deep(.p-card-content) {
   flex-grow: 1;
-  overflow: auto; /* Wichtig für scrollbare Tabelle/Grid */
+  overflow: auto;
 }
 
 .col-span-full {
