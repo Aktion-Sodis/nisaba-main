@@ -71,6 +71,7 @@
             'createdAt_formatted',
           ]"
           row-hover
+          @row-click="(event) => viewInterventionDetails(event.data)"
         >
           <template #empty>
             {{ $t('interventions.noInterventionsFound') }}

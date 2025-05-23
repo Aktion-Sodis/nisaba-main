@@ -94,7 +94,8 @@
           v-if="!viewMode"
           :label="t('interventiondialog.buttons.cancel')"
           icon="pi pi-times"
-          class="p-button-text p-button-danger"
+          severity="secondary"
+          text
           @click="
             () => {
               emit('update:isOpened', false);
@@ -104,10 +105,10 @@
         />
         <Button
           v-if="!viewMode"
-          :label="t('interventiondialog.buttons.save')"
+          :label="isCreate ? t('interventiondialog.buttons.save') : t('interventiondialog.buttons.update')"
           icon="pi pi-check"
           :loading="isSaving"
-          class="p-button-primary"
+          severity="success"
           @click="saveInterventionAndConnections"
         />
       </div>

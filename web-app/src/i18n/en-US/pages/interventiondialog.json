@@ -18,7 +18,8 @@
   "buttons": {
     "removeImage": "Remove Image",
     "cancel": "Cancel",
-    "save": "Save"
+    "save": "Save",
+    "update": "Update"
   },
   "types": {
     "technology": "Technology",
