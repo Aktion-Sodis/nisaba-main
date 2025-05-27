@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sound/flutter_sound.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_app_bar.dart';
-import 'package:mobile_app/frontend/strings.dart';
 import 'package:mobile_app/frontend/tests/amplify_cognito_test.dart';
 import 'package:mobile_app/frontend/tests/audio_test.dart';
 import 'package:mobile_app/frontend/tests/gps_test.dart';
@@ -10,12 +8,10 @@ import 'package:mobile_app/frontend/tests/graphql_db_implementation_test.dart';
 import 'package:mobile_app/frontend/tests/image_compression_test.dart';
 import 'package:mobile_app/frontend/tests/db_test.dart';
 import 'package:mobile_app/frontend/tests/integrated_synced_db_test.dart';
-import 'package:mobile_app/frontend/tests/synced_db_restricted_test.dart';
-import 'package:mobile_app/frontend/tests/synced_db_test.dart';
 import 'package:mobile_app/frontend/tests/test_registered_models_queries.dart';
 
 class TestList extends StatelessWidget {
-  TestList({Key? key}) : super(key: key);
+  TestList({super.key});
 
   final Map<String, Widget Function()> _allTests = {
     "flutter_sound": () => AudioTest(),

@@ -8,10 +8,8 @@ import 'package:mobile_app/backend/repositories/AppliedInterventionRepository.da
     as definition;
 import 'package:mobile_app/backend/repositories/ExecutedSurveyRepository.dart';
 import 'package:mobile_app/backend/repositories/InterventionRepository.dart';
-import 'package:mobile_app/backend/repositories/UserRepository.dart';
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 class AppliedInterventionRepositoryCustom
     extends definition.AppliedInterventionRepository {
@@ -107,7 +105,7 @@ class AppliedInterventionRepositoryCustom
   @override
   SyncedFile appliedInterventionPic(AppliedIntervention appliedIntervention) {
     String path = dataStorePath(
-        DataStorePaths.appliedInterventionPicPath, [appliedIntervention.id!]);
+        DataStorePaths.appliedInterventionPicPath, [appliedIntervention.id]);
     return SyncedFile(path);
   }
 }

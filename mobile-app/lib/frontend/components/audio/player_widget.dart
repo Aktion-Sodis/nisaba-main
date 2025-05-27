@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/frontend/components/audio/audio_stateful_widget.dart';
-import 'package:mobile_app/utils/audio.dart';
 
 /// Widget for playing some audio data
 ///
@@ -12,14 +11,13 @@ import 'package:mobile_app/utils/audio.dart';
 /// order to keep session opened, even if all attached widgets are destroyed.
 class PlayerWidget extends AudioStatefulWidget {
   PlayerWidget(
-      {Key? key,
-      Audio? audio,
+      {super.key,
+      super.audio,
       required this.audioURL,
       required this.restingViewBuilder,
       required this.loadingViewBuilder,
       required this.playingViewBuilder,
-      this.onStatusChange})
-      : super(key: key, audio: audio);
+      this.onStatusChange});
 
   final Function(bool playing)? onStatusChange;
   final String audioURL;

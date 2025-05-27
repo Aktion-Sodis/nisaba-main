@@ -1,16 +1,12 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
-import 'package:mobile_app/backend/callableModels/Intervention.dart';
 import 'package:mobile_app/backend/database/DB.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
-import 'package:mobile_app/backend/repositories/SurveyRepository.dart';
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/backend/repositories/InterventionRepository.dart'
     as definition;
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import '../../../callableModels/Relation.dart';
 
@@ -129,7 +125,7 @@ class InterventionRepositoryCustom extends definition.InterventionRepository {
   @override
   SyncedFile getInterventionPic(Intervention intervention) {
     String path =
-        dataStorePath(DataStorePaths.interventionPicPath, [intervention.id!]);
+        dataStorePath(DataStorePaths.interventionPicPath, [intervention.id]);
     return SyncedFile(path);
   }
 

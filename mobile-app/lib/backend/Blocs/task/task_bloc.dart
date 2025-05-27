@@ -18,10 +18,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     });
   }
 
-  @override
-  Future<void> close() {
-    return super.close();
-  }
 
   void _mapEventToState(TaskEvent event, Emitter<TaskState> emit) async {
     print(state.toString());
@@ -35,7 +31,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       LoadedTaskState loadedTaskState = state as LoadedTaskState;
       if (event is CreateTask) {
         Task toAdd =
-            await taskRepository.createTask((event as CreateTask).task);
+            await taskRepository.createTask((event).task);
         List<Task> newList = List.from(loadedTaskState.allTasks);
 
         newList.add(toAdd);
@@ -43,7 +39,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
         emit(loadedTaskState.copyWith(allTasks: newList));
       } else if (event is UpdateTask) {
         Task toUpdate =
-            await taskRepository.updateTask((event as UpdateTask).task);
+            await taskRepository.updateTask((event).task);
         List<Task> newList = List.from(loadedTaskState.allTasks);
 
         int index = newList.indexWhere((element) => element.id == toUpdate.id);

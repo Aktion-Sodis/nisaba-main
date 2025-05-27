@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/frontend/components/loadingsign.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
@@ -13,14 +12,13 @@ class ImageWidget extends StatefulWidget {
   final double? height;
   final BorderRadius? borderRadius;
 
-  ImageWidget(
-      {Key? key,
+  const ImageWidget(
+      {super.key,
       required this.imageFile,
       this.boxConstraints,
       this.width,
       this.height,
-      this.borderRadius})
-      : super(key: key);
+      this.borderRadius});
 
   @override
   State<StatefulWidget> createState() {
@@ -80,7 +78,7 @@ class ImageWidgetState extends State<ImageWidget> {
 class ImageFromSyncedFile extends StatefulWidget {
   final SyncedFile? syncedFile;
 
-  const ImageFromSyncedFile({Key? key, this.syncedFile}) : super(key: key);
+  const ImageFromSyncedFile({super.key, this.syncedFile});
 
   @override
   State<ImageFromSyncedFile> createState() => _ImageFromSyncedFileState();
@@ -96,7 +94,7 @@ class _ImageFromSyncedFileState extends State<ImageFromSyncedFile> {
     print("reinitializing image widget");
     super.initState();
     widget.syncedFile?.file().then((value) async {
-      print('Image synced File != null: ' + (value != null).toString());
+      print('Image synced File != null: ${value != null}');
       imageFile = value;
       if (imageFile != null) {
         fileImage = FileImage(imageFile!);

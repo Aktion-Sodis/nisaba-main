@@ -1,6 +1,4 @@
-import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:mobile_app/backend/callableModels/User.dart';
 
 abstract class UserEvent {}

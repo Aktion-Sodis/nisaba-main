@@ -1,21 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:mobile_app/backend/database/DBModelCollection.dart';
-import 'package:mobile_app/backend/database/DBModelRegistration.dart';
-import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDB.dart';
-import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDBModelRegistration.dart';
-import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDBModelRegistration.dart';
-import 'package:mobile_app/backend/database/db_implementations/synced_db/DBQueue.dart';
-import 'package:mobile_app/backend/database/db_implementations/synced_db/DBQueueObject.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
-import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDBModelRegistration.dart';
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:flutter/material.dart';
-import 'package:mobile_app/backend/database/DB.dart';
-import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
-import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDB.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
-import 'package:sembast/sembast.dart';
 
 import '../../backend/callableModels/TestObject.dart';
 import '../../backend/database/Query.dart';
@@ -23,7 +10,7 @@ import '../../backend/database/Query.dart';
 /// This page contains the same tests as synced_db_test.dart, but with the
 /// SyncedDB.instance singleton instead of a new SyncedDB instance.
 class IntegratedSyncedDBTest extends StatelessWidget {
-  IntegratedSyncedDBTest({Key? key}) : super(key: key);
+  const IntegratedSyncedDBTest({super.key});
 
   SyncedDB get db => SyncedDB.instance;
 
@@ -106,7 +93,7 @@ class IntegratedSyncedDBTest extends StatelessWidget {
     }
 
     // Test 2: test synced objects
-    await (db as SyncedDB).synchronizer.syncDownstream();
+    await (db).synchronizer.syncDownstream();
     receivedObjectsFromRemoteDB = await db.remoteDB.get<TestObject>(
       TestObject,
     );
@@ -123,7 +110,7 @@ class IntegratedSyncedDBTest extends StatelessWidget {
     // Test 3: test updated objects
     testObject1.age = 4;
     await db.remoteDB.update(testObject1);
-    await (db as SyncedDB).synchronizer.syncDownstream();
+    await (db).synchronizer.syncDownstream();
     receivedObjectsFromRemoteDB = await db.remoteDB.get<TestObject>(
       TestObject,
     );
@@ -149,14 +136,11 @@ class IntegratedSyncedDBTest extends StatelessWidget {
 
     // Test Create
     await db.create(testObject1);
-    if (testObject1.id == null) {
-      throw "TestObject1 has no ID. Probably, testObject1 has not been created";
-    }
     print("Test Create: OK");
 
     // Test GetByID
     TestObject? receivedObject1 =
-        await db.getById<TestObject>(TestObject, testObject1.id!);
+        await db.getById<TestObject>(TestObject, testObject1.id);
     if (receivedObject1 == null) {
       throw "testObject1 has not been received. Probably, testObject1 has not been created";
     }
@@ -173,19 +157,13 @@ class IntegratedSyncedDBTest extends StatelessWidget {
     }
 
     await db.create(testObject2);
-    if (testObject2.id == null) {
-      throw "TestObject2 has no ID. Probably, testObject2 has not been created";
-    }
 
     await db.create(testObject3);
-    if (testObject3.id == null) {
-      throw "TestObject3 has no ID. Probably, testObject3 has not been created";
-    }
 
     // Test Update
     testObject1.name = "Test1Updated";
     await db.update(testObject1);
-    receivedObject1 = await db.getById<TestObject>(TestObject, testObject1.id!);
+    receivedObject1 = await db.getById<TestObject>(TestObject, testObject1.id);
     if (receivedObject1 == null) {
       throw "testObject1 has not been received. Probably, testObject1 has not been updated";
     }
@@ -252,7 +230,7 @@ class IntegratedSyncedDBTest extends StatelessWidget {
     print("Test Predicates: OK");
 
     // Test Delete
-    String testObject1Id = testObject1.id!;
+    String testObject1Id = testObject1.id;
     await db.delete(testObject1);
     receivedObject1 = await db.getById<TestObject>(TestObject, testObject1Id);
     if (receivedObject1 != null) {
@@ -271,7 +249,7 @@ class IntegratedSyncedDBTest extends StatelessWidget {
     for (TestObject object in objectList1) {
       await db.localDB.delete(object);
     }
-    print(objectList1.length.toString() + " objects deleted from the local DB");
+    print("${objectList1.length} objects deleted from the local DB");
 
     List<TestObject> objectList2 = await db.remoteDB.get<TestObject>(
       TestObject,
@@ -280,7 +258,7 @@ class IntegratedSyncedDBTest extends StatelessWidget {
       await db.remoteDB.delete(object);
     }
     print(
-        objectList2.length.toString() + " objects deleted from the remote DB");
+        "${objectList2.length} objects deleted from the remote DB");
 
     /*DBQueueObject? queueObject = await db.queue.get();
     while (queueObject != null) {
@@ -302,12 +280,9 @@ class IntegratedSyncedDBTest extends StatelessWidget {
       TestObject,
     );
     for (TestObject object in objectList) {
-      print(object.id.toString() +
-          ": " +
-          db.localDB
+      print("${object.id}: ${db.localDB
               .getRegisteredModel(TestObject)
-              .fromDBModel(object)
-              .toString());
+              .fromDBModel(object)}");
     }
   }
 

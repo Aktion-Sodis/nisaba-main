@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:mobile_app/frontend/strings.dart';
 import 'package:mobile_app/utils/hive_db_helper.dart';
 
 import '../callableModels/User.dart';

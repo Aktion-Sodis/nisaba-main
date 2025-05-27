@@ -13,8 +13,7 @@ class UpdatePasswordView extends StatefulWidget {
   SessionCubit sessionCubit;
 
   UpdatePasswordView(
-      {Key? key, required this.authCredentials, required this.sessionCubit})
-      : super(key: key);
+      {super.key, required this.authCredentials, required this.sessionCubit});
 
   @override
   State<StatefulWidget> createState() {
@@ -64,7 +63,6 @@ class UpdatePasswordViewState extends State<UpdatePasswordView> {
         loading = true;
       });
       if (_formKey.currentState!.validate()) {
-        //todo: implement
         AuthCredentials? newCredentials = await widget.sessionCubit.authRepo
             .updatePasswordInitially(
                 widget.authCredentials, textEditingControllerOne.text.trim());
@@ -111,10 +109,10 @@ class UpdatePasswordViewState extends State<UpdatePasswordView> {
                                       child: Hero(
                                           tag: 'Logo_Hero',
                                           child: ClipRRect(
-                                              child: Image.asset(
-                                                  "assets/fixAssets/nisaba_logo.png"),
                                               borderRadius:
-                                                  BorderRadius.circular(8)))))),
+                                                  BorderRadius.circular(8),
+                                              child: Image.asset(
+                                                  "assets/fixAssets/nisaba_logo.png")))))),
                           Container(
                             margin: EdgeInsets.only(
                               left: width(context) * .1,
@@ -196,22 +194,22 @@ class UpdatePasswordViewState extends State<UpdatePasswordView> {
                                           : ElevatedButton(
                                               style: ButtonStyle(
                                                 textStyle:
-                                                    MaterialStateProperty.all(
+                                                    WidgetStateProperty.all(
                                                         TextStyle(
                                                             fontSize: 18)),
-                                                shape: MaterialStateProperty
+                                                shape: WidgetStateProperty
                                                     .all(RoundedRectangleBorder(
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(8))),
                                                 minimumSize:
-                                                    MaterialStateProperty.all(
+                                                    WidgetStateProperty.all(
                                                         Size(
                                                             width(context) * .8,
                                                             width(context) *
                                                                 .12)),
                                                 backgroundColor:
-                                                    MaterialStateProperty.all(
+                                                    WidgetStateProperty.all(
                                                         Colors
                                                             .green), //todo: change
                                               ),

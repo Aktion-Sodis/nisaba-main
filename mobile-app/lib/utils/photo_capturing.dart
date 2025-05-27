@@ -19,10 +19,9 @@ abstract class CameraFunctionality {
       throw CameraError();
     }
 
-    await _compress(picture!);
+    await _compress(picture);
     bool isCompressionSatisfying = (await picture.length()) <= maxSize;
-    debugPrint("Compression has been done. Compression satisfying: " +
-        isCompressionSatisfying.toString());
+    debugPrint("Compression has been done. Compression satisfying: $isCompressionSatisfying");
 
     return picture;
   }
@@ -35,6 +34,6 @@ abstract class CameraFunctionality {
       quality: 80,
     );
     File file = File(picture.path);
-    await file.writeAsBytes(compressed!);
+    await file.writeAsBytes(compressed);
   }
 }

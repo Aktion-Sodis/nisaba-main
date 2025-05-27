@@ -1,14 +1,9 @@
-import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:mobile_app/backend/database/DB.dart';
-import 'package:amplify_api/amplify_api.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
 import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
 import '../../UserRepository.dart';
 
 class UserRepositoryCustom extends UserRepository {
@@ -17,26 +12,9 @@ class UserRepositoryCustom extends UserRepository {
 
   DB db = SyncedDB.instance;
 
-  //hier nicht geändert erstmal? @arthur-becker
-  @override
-  Future<User?> fetchUserByID(String id) async {
-    GraphQLResponse<amp.User> result = await Amplify.API
-        .query(
-          request: ModelQueries.get(amp.User.classType, amp.UserModelIdentifier(id: id)),
-        )
-        .response;
-    return result.data != null ? User.fromAmplifyModel(result.data!) : null;
-  }
-
   @override
   Future<User?> getUserById(String userId) async {
     User? user = await db.getById(User, userId);
-    return user;
-  }
-
-  @override
-  Future<User> getAmpUserByID(String userID) async {
-    User user = await db.getById(User, userID) as User;
     return user;
   }
 
@@ -59,7 +37,7 @@ class UserRepositoryCustom extends UserRepository {
 
   @override
   SyncedFile getUserPicFile(User user) {
-    String path = dataStorePath(DataStorePaths.userPicPath, [user.id!]);
+    String path = dataStorePath(DataStorePaths.userPicPath, [user.id]);
     return SyncedFile(path);
   }
 

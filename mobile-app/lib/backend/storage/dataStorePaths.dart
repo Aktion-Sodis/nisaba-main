@@ -1,6 +1,7 @@
 ///This class is only for a common definition of paths between the apps.
 ///
 ///It has to be synchronized in the application's lib folder to be used.
+library;
 
 import 'dart:core';
 
@@ -18,7 +19,7 @@ enum DataStorePaths {
   interventionPicPath,
   docPdfPath,
   docPicPath,
-  interventionSurveyPicPath,
+  surveyPicPath,
   questionPicPath,
   questionOptionPicPath,
   questionPicAnswerPath,
@@ -56,7 +57,7 @@ final Map<DataStorePaths, dynamic> databaseOntologies = {
     "path": "documentFiles/documentID/pic.png",
     "toBeReplaced": ["documentID"],
   },
-  DataStorePaths.interventionSurveyPicPath: {
+  DataStorePaths.surveyPicPath: {
     "path": "surveyFiles/surveyID/pic.png",
     "toBeReplaced": ["surveyID"],
   },
@@ -116,12 +117,12 @@ String dataStorePath(DataStorePaths path, List<String> parameters) {
 
     return filledPath;
   } else {
-    throw new FormatException(
+    throw FormatException(
         "Wrong parameters passed for dataStorePath $path");
   }
 }
 
 String addOrganizationPrefix(String path) {
   String organizationID = LocalDataRepository.instance.organizationID;
-  return "organization/" + organizationID + "/" + path;
+  return "organization/$organizationID/$path";
 }

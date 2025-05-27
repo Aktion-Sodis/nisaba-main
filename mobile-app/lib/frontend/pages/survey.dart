@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,8 +14,6 @@ import 'package:mobile_app/backend/Blocs/task/task_bloc.dart';
 import 'package:mobile_app/backend/Blocs/task_form/task_form_cubit.dart';
 import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
-import 'package:mobile_app/backend/repositories/AppliedInterventionRepository.dart';
-import 'package:mobile_app/backend/repositories/EntityRepository.dart';
 import 'package:mobile_app/backend/repositories/ExecutedSurveyRepository.dart';
 import 'package:mobile_app/backend/repositories/SurveyRepository.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
@@ -29,17 +26,14 @@ import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/frontend/strings.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:mobile_app/frontend/theme.dart';
-import 'package:mobile_app/utils/audio.dart';
 import 'package:mobile_app/utils/photo_capturing.dart';
 
-import '../../backend/callableModels/ExecutedSurvey.dart';
-import '../../backend/callableModels/Survey.dart';
 
 typedef QuestionEditor = Function Function(Question question);
 
 class AnimatedProgressBar extends StatefulWidget {
   final double progress;
-  const AnimatedProgressBar(this.progress, {Key? key}) : super(key: key);
+  const AnimatedProgressBar(this.progress, {super.key});
 
   @override
   State<AnimatedProgressBar> createState() => _AnimatedProgressBarState();
@@ -47,8 +41,7 @@ class AnimatedProgressBar extends StatefulWidget {
 
 class AudioPlayerWidgetFromSyncFile extends StatefulWidget {
   final SyncedFile? syncedFile;
-  const AudioPlayerWidgetFromSyncFile({Key? key, this.syncedFile})
-      : super(key: key);
+  const AudioPlayerWidgetFromSyncFile({super.key, this.syncedFile});
 
   @override
   State<AudioPlayerWidgetFromSyncFile> createState() =>
@@ -58,7 +51,7 @@ class AudioPlayerWidgetFromSyncFile extends StatefulWidget {
 // TODO: Change name. Conflict with SurveyWidget in main_menu_organization.dart
 class SurveyWidget extends StatefulWidget {
   final Survey survey;
-  const SurveyWidget({Key? key, required this.survey}) : super(key: key);
+  const SurveyWidget({super.key, required this.survey});
 
   @override
   State<SurveyWidget> createState() => SurveyWidgetState();
@@ -194,16 +187,16 @@ class SurveyWidgetState extends State<SurveyWidget> {
         SurveyRepository.instance.getSurveyPic(widget.survey);
     picAndAudioAnswerFiles = {};
     textEditingControllers = {};
-    widget.survey.questions.forEach((element) {
+    for (var element in widget.survey.questions) {
       if (element.type == QuestionType.PICTURE) {
-        picAndAudioAnswerFiles[element.id!] = ExecutedSurveyRepository.instance
+        picAndAudioAnswerFiles[element.id] = ExecutedSurveyRepository.instance
             .getQuestionAnswerPic(
                 (context.read<InAppBloc>().state as SurveyInAppState)
                     .appliedIntervention,
                 preliminaryExecutedSurveyId,
                 element);
       } else if (element.type == QuestionType.AUDIO) {
-        picAndAudioAnswerFiles[element.id!] = ExecutedSurveyRepository.instance
+        picAndAudioAnswerFiles[element.id] = ExecutedSurveyRepository.instance
             .getQuestionAnswerAudio(
                 (context.read<InAppBloc>().state as SurveyInAppState)
                     .appliedIntervention,
@@ -215,7 +208,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
           element.type == QuestionType.DOUBLE) {
         textEditingControllers[element] = TextEditingController();
       }
-    });
+    }
     print('initialised State of SurveyWidget');
     print('picAndAudioAnswerFilesPaths:');
     //print path for each picAndAudioAnswerFile
@@ -288,7 +281,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                     questions[_inSurveyPageController.page!.round()];
                 if (currentQuestion.type == QuestionType.MULTIPLECHOICE) {
                   answers[currentQuestion] ??= QuestionAnswer(
-                    questionID: widget.survey.id!,
+                    questionID: widget.survey.id,
                     date: DateTime.now(),
                     type: currentQuestion.type,
                     questionOptions: [],
@@ -397,7 +390,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                         }
                       } else {
                         answers[question] = QuestionAnswer(
-                            questionID: question.id!,
+                            questionID: question.id,
                             date: DateTime.now(),
                             type: question.type)
                           ..questionOptions = [
@@ -481,7 +474,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                             setState(() {
                               if (answers[question] == null) {
                                 answers[question] = QuestionAnswer(
-                                    questionID: question.id!,
+                                    questionID: question.id,
                                     date: DateTime.now(),
                                     type: question.type)
                                   ..questionOptions = [
@@ -510,7 +503,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                     setState(() {
                       if (answers[question] == null) {
                         answers[question] = QuestionAnswer(
-                            questionID: question.id!,
+                            questionID: question.id,
                             date: DateTime.now(),
                             type: question.type)
                           ..questionOptions = [
@@ -559,23 +552,23 @@ class SurveyWidgetState extends State<SurveyWidget> {
           height: defaultPadding(context) * 2,
         ),
         AudioPlayerWidgetFromSyncFile(
-          key: picAndAudioAnswerFiles[question.id!]!.key,
-          syncedFile: picAndAudioAnswerFiles[question.id!],
+          key: picAndAudioAnswerFiles[question.id]!.key,
+          syncedFile: picAndAudioAnswerFiles[question.id],
         ),
         SizedBox(
           height: defaultPadding(context),
         ),
         getTakeAudioWidget(
-          syncedFile: picAndAudioAnswerFiles[question.id!]!,
+          syncedFile: picAndAudioAnswerFiles[question.id]!,
           callback: (sF) async {
             if (answers[question] == null) {
               answers[question] = QuestionAnswer(
-                  questionID: question.id!,
+                  questionID: question.id,
                   date: DateTime.now(),
                   type: question.type);
             }
             setState(() {
-              picAndAudioAnswerFiles[question.id!] = sF;
+              picAndAudioAnswerFiles[question.id] = sF;
             });
           },
           isRecording: (isRecordingBoo) {
@@ -631,7 +624,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
           callback: (sF) async {
             if (answers[question] == null) {
               answers[question] = QuestionAnswer(
-                  questionID: question.id!,
+                  questionID: question.id,
                   date: DateTime.now(),
                   type: question.type);
             }
@@ -684,7 +677,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
             maxLines: 5,
             onChanged: (String result) {
               answers[question] = QuestionAnswer(
-                  questionID: question.id!,
+                  questionID: question.id,
                   date: DateTime.now(),
                   type: QuestionType.TEXT)
                 ..text = result;
@@ -726,7 +719,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
           height: defaultPadding(context),
         ),
         Center(
-          child: Container(
+          child: SizedBox(
               width: width(context) * .25,
               child: TextField(
                 controller: textEditingControllers[question],
@@ -734,7 +727,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                 keyboardType: TextInputType.number,
                 onChanged: (String result) {
                   answers[question] = QuestionAnswer(
-                      questionID: question.id!,
+                      questionID: question.id,
                       date: DateTime.now(),
                       type: QuestionType.INT)
                     ..intValue = int.tryParse(result);
@@ -799,7 +792,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
               glow: false,
               onRatingUpdate: (rating) {
                 answers[question] = QuestionAnswer(
-                    questionID: question.id!,
+                    questionID: question.id,
                     date: DateTime.now(),
                     type: QuestionType.RATING)
                   ..rating = rating.round();
@@ -840,7 +833,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
           height: defaultPadding(context),
         ),
         Center(
-          child: Container(
+          child: SizedBox(
               width: width(context) * .25,
               child: TextField(
                 controller: textEditingControllers[question],
@@ -850,7 +843,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 onChanged: (String result) {
                   answers[question] = QuestionAnswer(
-                      questionID: question.id!,
+                      questionID: question.id,
                       date: DateTime.now(),
                       type: QuestionType.DOUBLE)
                     ..doubleValue = double.tryParse(result);
@@ -1270,7 +1263,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
               style: Theme.of(context).textTheme.bodyLarge);
           break;
         case QuestionType.RATING:
-          answerWidget = Text(questionAnswer.rating!.toString() + "/9",
+          answerWidget = Text("${questionAnswer.rating!}/9",
               style: Theme.of(context).textTheme.bodyLarge);
           break;
         default:
@@ -1299,8 +1292,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
                         question.displayText,
                         style: Theme.of(context).textTheme.displayMedium,
                       ),
-                      if (questionAnswer != null &&
-                          ((questionAnswer.type ==
+                      if (((questionAnswer.type ==
                                       QuestionType.MULTIPLECHOICE &&
                                   questionAnswer.questionOptions!.isNotEmpty) ||
                               questionAnswer.type ==
@@ -1398,7 +1390,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
     for (Question question in survey.questions) {
       if (answers.keys.any((element) => element.id == question.id)) {
         surveyAnswersAsList.add(QuestionAnswer(
-            questionID: question.id!,
+            questionID: question.id,
             date: DateTime.now(),
             type: question.type));
       }
@@ -1746,11 +1738,11 @@ const double _kInnerRadius = 4.5;
 
 class FakeRadioWidget extends StatelessWidget {
   final bool active;
-  const FakeRadioWidget({Key? key, required this.active}) : super(key: key);
+  const FakeRadioWidget({super.key, required this.active});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 15,
       height: 15,
       child: CustomPaint(
@@ -1779,7 +1771,7 @@ class _FakeRadioPainter extends CustomPainter {
 
     // Outer circle
     final Paint paint = Paint()
-      ..color = Colors.lightBlue!
+      ..color = Colors.lightBlue
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;
     canvas.drawCircle(center, _kOuterRadius, paint);

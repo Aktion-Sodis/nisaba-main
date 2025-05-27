@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
-import 'package:path/path.dart';
 import 'package:string_similarity/string_similarity.dart';
 
 ///hier die String jeweils in englisch hinterlegen und in allen anderen  angelegten Sprachen zumindest anlegen

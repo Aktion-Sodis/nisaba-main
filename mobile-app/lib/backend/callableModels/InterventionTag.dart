@@ -1,9 +1,7 @@
 import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-import 'Intervention.dart';
 import 'Relation.dart';
 
 import 'package:json_annotation/json_annotation.dart';
@@ -18,6 +16,7 @@ class InterventionTag extends DBModel {
   factory InterventionTag.fromJson(Map<String, dynamic> json) =>
       _$InterventionTagFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$InterventionTagToJson(this);
 
   late I18nString text_ml;
@@ -39,7 +38,7 @@ class InterventionTag extends DBModel {
       this.updatedAt})
       : super(id);
 
-  InterventionTag.unpopulated(String? id) : super(id) {
+  InterventionTag.unpopulated(super.id) {
     isPopulated = false;
   }
   @override

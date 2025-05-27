@@ -4,16 +4,12 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:mobile_app/backend/Blocs/sync/sync_bloc.dart';
 import 'package:mobile_app/backend/Blocs/sync/sync_events.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
-import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
-import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDB.dart';
 import 'package:mobile_app/backend/database/db_implementations/remote_db/DBExceptions.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/DBQueue.dart';
 import 'package:mobile_app/backend/storage/storage_repository.dart';
 import 'package:synchronized/synchronized.dart';
-import '../../../../frontend/tests/synced_db_test.dart';
 import '../../DB.dart';
-import '../../DBErrorType.dart';
 import 'DBQueueObject.dart';
 import 'SyncStatus.dart';
 
@@ -48,14 +44,12 @@ class Synchronizer {
         DBQueueObject? queueObject = await queue.get();
         while (queueObject != null) {
           try {
-            print('[Sync] processing queue object ' +
-                queueObject.action.toString());
-            print('[Sync] processing queue object ' +
-                queueObject.toJson().toString());
+            print('[Sync] processing queue object ${queueObject.action}');
+            print('[Sync] processing queue object ${queueObject.toJson()}');
 
             //for test purposes of fallback -> set false for any release
-            bool test_fallback_s3 = false;
-            if (test_fallback_s3) {
+            bool testFallbackS3 = false;
+            if (testFallbackS3) {
               throw (Exception('Test Fallback S3'));
             }
 
@@ -80,7 +74,7 @@ class Synchronizer {
             }
 
             queueObject = await queue.get();
-          } on NoConnectionException catch (e) {
+          } on NoConnectionException {
             //rethrow exception to stop sync process
             rethrow;
           } on OperationException catch (e) {
@@ -112,7 +106,7 @@ class Synchronizer {
             print('[Sync] Error in DB Upstream Sync:');
             print(e);
 
-            Map<String, dynamic> objectJson = queueObject!.object.toJson();
+            Map<String, dynamic> objectJson = queueObject.object.toJson();
 
             bool hasBeenSaved = await StorageRepository.dbObjectSave(objectJson,
                 objectJson['id'], queueObject.object.runtimeType.toString());
@@ -142,7 +136,7 @@ class Synchronizer {
             print('[Sync] Error in DB Upstream Sync:');
             print(e);
 
-            Map<String, dynamic> objectJson = queueObject!.object.toJson();
+            Map<String, dynamic> objectJson = queueObject.object.toJson();
 
             bool hasBeenSaved = await StorageRepository.dbObjectSave(objectJson,
                 objectJson['id'], queueObject.object.runtimeType.toString());
@@ -164,7 +158,7 @@ class Synchronizer {
           }
         }
         upstreamSyncStatus = SyncStatus.UP_TO_DATE;
-      } on NoConnectionException catch (e) {
+      } on NoConnectionException {
         syncBloc.add(CancelSyncEvent());
         upstreamSyncStatus = SyncStatus.WAITING;
       } catch (e) {
@@ -193,7 +187,7 @@ class Synchronizer {
         // Download all entries from remoteDB
         List<DBModel> entries = [];
         for (Type modelType in modelsToSyncDownstream) {
-          print('getting model type: ' + modelType.toString());
+          print('getting model type: $modelType');
           List<DBModel> modelEntries = await remoteDB.get(modelType);
           entries.addAll(modelEntries);
         }
@@ -207,7 +201,7 @@ class Synchronizer {
         }
 
         // TODO: consistency check
-      } on NoConnectionException catch (e) {
+      } on NoConnectionException {
         downstreamSyncStatus = SyncStatus.WAITING;
       } catch (e) {
         print('Error in DB Downstream Sync:');

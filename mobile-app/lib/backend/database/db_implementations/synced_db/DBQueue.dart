@@ -1,4 +1,3 @@
-import 'package:mobile_app/backend/database/DB.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDB.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/DBQueueObject.dart';
@@ -14,8 +13,8 @@ class DBQueue {
   //static const String queueStoreName = 'DBQueue';
 
   static String queueStoreName() {
-    String orga_id = LocalDataRepository.instance.organizationID;
-    return 'DBQueue_' + orga_id;
+    String orgaId = LocalDataRepository.instance.organizationID;
+    return 'DBQueue_$orgaId';
   }
 
   DBQueue(this.localDB);
@@ -79,7 +78,7 @@ class DBQueue {
 
   Future<DBQueueObject?> delete(DBQueueObject queueObject) async {
     var store = intMapStoreFactory.store(queueStoreName());
-    await store.record(int.parse(queueObject.id!)).delete(localDB.db);
+    await store.record(int.parse(queueObject.id)).delete(localDB.db);
     return Future.value(queueObject);
   }
 

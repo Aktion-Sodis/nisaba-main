@@ -5,12 +5,10 @@ import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
 import 'package:mobile_app/backend/repositories/AppliedInterventionRepository.dart';
-import 'package:mobile_app/backend/repositories/LevelRepository.dart';
 import 'package:mobile_app/backend/repositories/EntityRepository.dart'
     as definition;
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 class EntityRepositoryCustom extends definition.EntityRepository {
   final int batchSize = 15;
@@ -104,7 +102,7 @@ class EntityRepositoryCustom extends definition.EntityRepository {
     String id = UUID.getUUID();
     entity.id = entity.id ?? id;
     db.create(entity);
-    return entity.id!;
+    return entity.id;
   }
 
   @override
@@ -114,7 +112,7 @@ class EntityRepositoryCustom extends definition.EntityRepository {
 
   @override
   SyncedFile getEntityPic(Entity entity) {
-    String path = dataStorePath(DataStorePaths.entityPicPath, [entity.id!]);
+    String path = dataStorePath(DataStorePaths.entityPicPath, [entity.id]);
     return SyncedFile(path);
   }
 

@@ -14,6 +14,7 @@ class Config extends DBModel {
   // JsonSerializable factory and toJson methods
   factory Config.fromJson(Map<String, dynamic> json) => _$ConfigFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$ConfigToJson(this);
 
   late String name;
@@ -52,7 +53,7 @@ class Config extends DBModel {
         schemeVersion: schemeVersion));
   }
 
-  Config.unpopulated(String? id) : super(id);
+  Config.unpopulated(super.id);
   @override
   DBModel getUnpopulated() {
     return Config.unpopulated(id);

@@ -6,7 +6,7 @@ import '../../common_widgets.dart';
 Widget MainMenuAppBar(
     BuildContext context, VoidCallback voidCallback, String text,
     {bool showBackButton = false}) {
-  return Container(
+  return SizedBox(
       width: width(context),
       height: appBarHeight(context),
       child: Column(children: [

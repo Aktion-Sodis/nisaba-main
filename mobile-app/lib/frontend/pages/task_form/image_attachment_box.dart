@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,8 +6,7 @@ import 'package:mobile_app/backend/callableModels/localModels/image_attachment.d
 import 'package:mobile_app/frontend/pages/task_form/task_attachment_box.dart';
 
 class ImageAttachmentBox extends StatelessWidget {
-  const ImageAttachmentBox({Key? key, required this.attachment})
-      : super(key: key);
+  const ImageAttachmentBox({super.key, required this.attachment});
 
   final ImageAttachment attachment;
 

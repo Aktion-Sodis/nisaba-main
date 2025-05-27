@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 
 abstract class InAppState {}

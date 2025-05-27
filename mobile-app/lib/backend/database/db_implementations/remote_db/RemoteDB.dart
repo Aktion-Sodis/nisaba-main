@@ -1,26 +1,17 @@
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:mobile_app/backend/database/db_implementations/remote_db/DBExceptions.dart';
-import 'package:mobile_app/backend/database/DBModelCollection.dart';
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
-import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDBModelRegistration.dart';
-import 'package:mobile_app/models/Config.dart';
 import 'package:mobile_app/utils/connectivity.dart';
 
 import '../../../../models/ModelProvider.dart' as amp;
-import '../../../callableModels/CallableModels.dart';
 import '../../DB.dart';
 
 class RemoteDB extends DB<RemoteDBModelRegistration> {
   QueryPredicate _createAmplifyQuery(Type type, Query query) {
-    if (getRegisteredModel(type) == null) {
-      throw "Model not registered";
-    }
-
     DBModelRegistration modelRegistration = getRegisteredModel(type);
     QueryPredicate? queryPredicate =
         modelRegistration.queryPredicateTranslation(query);
@@ -49,7 +40,7 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
       }
 
       object.id = createdObject.id;
-    } on ApiException catch (e) {
+    } on ApiException {
       bool connected = await isThereInternetConnection();
       if (!connected) {
         throw NoConnectionException();
@@ -66,7 +57,7 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
           getRegisteredModel(modelType).fromDBModel(object) as Model;
       final request = ModelMutations.delete(amplifyObject);
       final response = await Amplify.API.mutate(request: request).response;
-    } on ApiException catch (e) {
+    } on ApiException {
       bool connected = await isThereInternetConnection();
       if (!connected) {
         throw NoConnectionException();
@@ -84,7 +75,9 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
       final whereQuery =
           query != null ? _createAmplifyQuery(type, query) : null;
       final request = ModelQueries.list(modelType, where: whereQuery);
+      print('request: $request');
       final response = await Amplify.API.query(request: request).response;
+      print('response: $response');
 
       final data = response.data;
 
@@ -99,7 +92,7 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
           .map((e) => _modelToDBModel(type, e!) as G)
           .toList();
       return Future.value(dbObjects);
-    } on ApiException catch (e) {
+    } on ApiException {
       bool connected = await isThereInternetConnection();
       if (!connected) {
         throw NoConnectionException();
@@ -170,7 +163,7 @@ class RemoteDB extends DB<RemoteDBModelRegistration> {
       }
       final G dbObject = _modelToDBModel(type, data) as G;
       return Future.value(dbObject);
-    } on ApiException catch (e) {
+    } on ApiException {
       bool connected = await isThereInternetConnection();
       if (!connected) {
         throw NoConnectionException();

@@ -5,7 +5,7 @@ import 'package:mobile_app/backend/Blocs/session/session_cubit.dart';
 class SessionView extends StatelessWidget {
   final String username;
 
-  const SessionView({Key? key, required this.username}) : super(key: key);
+  const SessionView({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {

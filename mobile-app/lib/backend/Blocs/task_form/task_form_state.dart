@@ -28,25 +28,15 @@ abstract class TaskFormState {
 
 class TaskFormFillingOut extends TaskFormState {
   TaskFormFillingOut(
-      {List<Attachment>? attachments,
-      DateTime? deadline,
-      Entity? entity,
-      required TaskBloc taskBloc,
-      required OrganizationViewBloc organizationViewBloc,
-      required UserBloc userBloc,
-      AppliedIntervention? appliedIntervention,
-      ExecutedSurvey? executedSurvey,
-      Task? task})
-      : super(
-            attachments: attachments,
-            deadline: deadline,
-            entity: entity,
-            taskBloc: taskBloc,
-            organizationViewBloc: organizationViewBloc,
-            userBloc: userBloc,
-            appliedIntervention: appliedIntervention,
-            executedSurvey: executedSurvey,
-            task: task);
+      {super.attachments,
+      super.deadline,
+      super.entity,
+      required super.taskBloc,
+      required super.organizationViewBloc,
+      required super.userBloc,
+      super.appliedIntervention,
+      super.executedSurvey,
+      super.task});
 
   TaskFormFillingOut copyWith(
       {List<Attachment>? attachments,
@@ -73,46 +63,26 @@ class TaskFormFillingOut extends TaskFormState {
 
 class TaskFormSavingInProgress extends TaskFormState {
   TaskFormSavingInProgress(
-      {List<Attachment>? attachments,
-      DateTime? deadline,
-      Entity? entity,
-      required TaskBloc taskBloc,
-      required OrganizationViewBloc organizationViewBloc,
-      required UserBloc userBloc,
-      AppliedIntervention? appliedIntervention,
-      ExecutedSurvey? executedSurvey,
-      Task? task})
-      : super(
-            attachments: attachments,
-            deadline: deadline,
-            entity: entity,
-            taskBloc: taskBloc,
-            organizationViewBloc: organizationViewBloc,
-            userBloc: userBloc,
-            appliedIntervention: appliedIntervention,
-            executedSurvey: executedSurvey,
-            task: task);
+      {super.attachments,
+      super.deadline,
+      super.entity,
+      required super.taskBloc,
+      required super.organizationViewBloc,
+      required super.userBloc,
+      super.appliedIntervention,
+      super.executedSurvey,
+      super.task});
 }
 
 class TaskFormSuccessfullSubmitted extends TaskFormState {
   TaskFormSuccessfullSubmitted(
-      {List<Attachment>? attachments,
-      DateTime? deadline,
-      Entity? entity,
-      required TaskBloc taskBloc,
-      required OrganizationViewBloc organizationViewBloc,
-      required UserBloc userBloc,
-      AppliedIntervention? appliedIntervention,
-      ExecutedSurvey? executedSurvey,
-      Task? task})
-      : super(
-            attachments: attachments,
-            deadline: deadline,
-            entity: entity,
-            taskBloc: taskBloc,
-            organizationViewBloc: organizationViewBloc,
-            userBloc: userBloc,
-            appliedIntervention: appliedIntervention,
-            executedSurvey: executedSurvey,
-            task: task);
+      {super.attachments,
+      super.deadline,
+      super.entity,
+      required super.taskBloc,
+      required super.organizationViewBloc,
+      required super.userBloc,
+      super.appliedIntervention,
+      super.executedSurvey,
+      super.task});
 }

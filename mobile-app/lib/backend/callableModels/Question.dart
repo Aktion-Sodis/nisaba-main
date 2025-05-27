@@ -66,7 +66,7 @@ class Question extends DBModel {
     isFollowUpQuestion = question.isFollowUpQuestion;
   }
 
-  Question.unpopulated(String? id) : super(id) {
+  Question.unpopulated(super.id) {
     isPopulated = false;
   }
   @override

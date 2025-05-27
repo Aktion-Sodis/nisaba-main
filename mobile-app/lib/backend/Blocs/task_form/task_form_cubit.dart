@@ -6,7 +6,6 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app/backend/Blocs/organization_view/organization_view_bloc.dart';
-import 'package:mobile_app/backend/Blocs/organization_view/organization_view_state.dart';
 import 'package:mobile_app/backend/Blocs/task/task_bloc.dart';
 import 'package:mobile_app/backend/Blocs/task/task_events.dart';
 import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
@@ -16,7 +15,6 @@ import 'package:mobile_app/backend/callableModels/localModels/image_attachment.d
 import 'package:mobile_app/backend/repositories/EntityRepository.dart';
 import 'package:mobile_app/backend/repositories/TaskRepository.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
-import 'package:mobile_app/backend/storage/storage_repository.dart';
 import 'package:mobile_app/frontend/pages/task_form/task_form.dart';
 import 'package:mobile_app/utils/photo_capturing.dart';
 import 'package:mobile_app/utils/storage.dart';
@@ -36,7 +34,7 @@ void openTaskForm<T extends TaskFormCubit>(
     required UserBloc userBloc,
     List<Attachment>? attachment}) {
   showDialog(
-      barrierColor: Theme.of(context).colorScheme.background,
+      barrierColor: Theme.of(context).colorScheme.surface,
       context: context,
       builder: (context) => TaskForm<T>(
           title: strings.main_menu_tasks,
@@ -110,10 +108,7 @@ class TaskFormCubit extends Cubit<TaskFormState> {
 
     // Find free filepath in the temporary folder
     Directory tempDir = await getTemporaryDirectory();
-    String filepath = tempDir.path +
-        "/photo_" +
-        DateTime.now().microsecondsSinceEpoch.toString() +
-        ".aac";
+    String filepath = "${tempDir.path}/photo_${DateTime.now().microsecondsSinceEpoch}.aac";
     String freeFilepath = await getFreeFilepath(filepath);
 
     await photo.saveTo(freeFilepath);

@@ -1,4 +1,3 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -9,14 +8,12 @@ import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:mobile_app/backend/callableModels/localModels/attachment.dart';
 import 'package:mobile_app/backend/callableModels/localModels/audio_attachment.dart';
-import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/frontend/components/audio/recorder_widget.dart';
 import 'package:mobile_app/frontend/components/buttons.dart';
 import 'package:mobile_app/frontend/components/keyboard_dismisser.dart';
 import 'package:mobile_app/frontend/components/nisaba_app_bar.dart';
 import 'package:mobile_app/frontend/components/shadow_box.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
-import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_commonwidgets.dart';
 import 'package:mobile_app/frontend/pages/task_form/attachments_list.dart';
 import 'package:mobile_app/frontend/pages/task_form/small_button.dart';
 import 'package:mobile_app/frontend/theme.dart';
@@ -26,7 +23,7 @@ import 'package:mobile_app/frontend/strings.dart' as strings;
 @immutable
 class TaskForm<T extends TaskFormCubit> extends StatelessWidget {
   TaskForm(
-      {Key? key,
+      {super.key,
       required this.title,
       this.task,
       this.entity,
@@ -35,8 +32,7 @@ class TaskForm<T extends TaskFormCubit> extends StatelessWidget {
       required this.taskBloc,
       required this.organizationViewBloc,
       required this.userBloc,
-      this.attachments})
-      : super(key: key) {
+      this.attachments}) {
     if (task != null) {
       _taskTextController.text = task!.title;
       _taskDescriptionController.text = task!.text ?? "";
@@ -81,11 +77,7 @@ class TaskForm<T extends TaskFormCubit> extends StatelessWidget {
   }
 
   static String formatDate(DateTime deadline) {
-    return deadline.day.toString() +
-        "." +
-        deadline.month.toString() +
-        "." +
-        deadline.year.toString();
+    return "${deadline.day}.${deadline.month}.${deadline.year}";
   }
 
   // Subwidgets
@@ -417,9 +409,7 @@ class TaskForm<T extends TaskFormCubit> extends StatelessWidget {
                                 iconData: MdiIcons.calendarOutline,
                                 text: state.deadline != null &&
                                         _customDateSelected(state.deadline!)
-                                    ? strings.task_deadline +
-                                        ": " +
-                                        formatDate(state.deadline!)
+                                    ? "${strings.task_deadline}: ${formatDate(state.deadline!)}"
                                     : strings.task_set_date,
                                 outlinedWhenSelected: true,
                                 keepClickable: true,

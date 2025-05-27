@@ -5,13 +5,10 @@ import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
 import 'package:mobile_app/backend/repositories/AppliedInterventionRepository.dart';
-import 'package:mobile_app/backend/repositories/SurveyRepository.dart';
-import 'package:mobile_app/backend/repositories/UserRepository.dart';
 import 'package:mobile_app/backend/repositories/ExecutedSurveyRepository.dart'
     as definition;
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 class ExecutedSurveyRepositoryCustom
     extends definition.ExecutedSurveyRepository {
@@ -65,7 +62,7 @@ class ExecutedSurveyRepositoryCustom
         executedSurvey.appliedIntervention.intervention.surveys.where(
             (element) => element.id == executedSurvey.executedSurveySurveyId);
 
-    if (interventionSurveys.length == 0) {
+    if (interventionSurveys.isEmpty) {
       throw Exception(
           'No survey found for executed survey with id ${executedSurvey.id} in intervention with id ${executedSurvey.appliedIntervention.intervention.id}');
     }
@@ -98,7 +95,7 @@ class ExecutedSurveyRepositoryCustom
   SyncedFile getQuestionAnswerPic(AppliedIntervention appliedIntervention,
       String executedSurveyID, Question question) {
     String path = dataStorePath(DataStorePaths.questionPicAnswerPath,
-        [appliedIntervention.id!, executedSurveyID, question.id!]);
+        [executedSurveyID, question.id]);
     return SyncedFile(path);
   }
 
@@ -106,7 +103,7 @@ class ExecutedSurveyRepositoryCustom
   SyncedFile getQuestionAnswerAudio(AppliedIntervention appliedIntervention,
       String executedSurveyID, Question question) {
     String path = dataStorePath(DataStorePaths.questionAudioAnswerPath,
-        [appliedIntervention.id!, executedSurveyID, question.id!]);
+        [executedSurveyID, question.id]);
     return SyncedFile(path);
   }
 }

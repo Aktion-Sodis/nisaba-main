@@ -1,12 +1,7 @@
-import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_app/backend/Blocs/content/content_bloc.dart';
-import 'package:mobile_app/backend/Blocs/organization_view/organization_view_bloc.dart';
-import 'package:mobile_app/backend/Blocs/organization_view/organization_view_state.dart';
 import 'package:mobile_app/backend/Blocs/sync/sync_events.dart';
 import 'package:mobile_app/backend/Blocs/sync/sync_state.dart';
-import 'package:mobile_app/backend/Blocs/task/task_bloc.dart';
 import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncStatus.dart';
@@ -21,11 +16,7 @@ import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/backend/repositories/SurveyRepository.dart';
 import 'package:mobile_app/backend/repositories/TaskRepository.dart';
 import 'package:mobile_app/backend/repositories/UserRepository.dart';
-import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/backend/storage/storage_repository.dart';
-import 'package:mobile_app/models/InterventionContentRelation.dart';
-import 'package:mobile_app/models/LevelInterventionRelation.dart';
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:mobile_app/utils/connectivity.dart';
 
 import '../../database/db_implementations/synced_db/SyncedDB.dart';
@@ -481,18 +472,18 @@ class SyncBloc extends Bloc<SyncEvent, SyncState> {
               ExecutedSurveyRepository.instance
                   .getQuestionAnswerAudio(
                       appliedIntervention,
-                      executedSurvey.id!,
+                      executedSurvey.id,
                       executedSurvey.survey.questions.firstWhere((element) =>
-                          element.id == questionAnswer.questionID!))
+                          element.id == questionAnswer.questionID))
                   .sync(this);
             } else if (questionAnswer.type == QuestionType.PICTURE ||
                 questionAnswer.type == QuestionType.PICTUREWITHTAGS) {
               ExecutedSurveyRepository.instance
                   .getQuestionAnswerPic(
                       appliedIntervention,
-                      executedSurvey.id!,
+                      executedSurvey.id,
                       executedSurvey.survey.questions.firstWhere((element) =>
-                          element.id == questionAnswer.questionID!))
+                          element.id == questionAnswer.questionID))
                   .sync(this);
             }
           }

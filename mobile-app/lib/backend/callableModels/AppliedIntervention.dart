@@ -3,7 +3,6 @@ import 'package:mobile_app/backend/callableModels/ExecutedSurvey.dart';
 import 'package:mobile_app/backend/callableModels/Intervention.dart';
 import 'package:mobile_app/backend/callableModels/Location.dart';
 import 'package:mobile_app/backend/callableModels/User.dart';
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import '../database/DBModel.dart';
 import 'Entity.dart';
@@ -22,6 +21,7 @@ class AppliedIntervention extends DBModel {
 
   static Map<String, dynamic> queryFields() => _$AppliedIntervention;
 
+  @override
   Map<String, dynamic> toJson() => _$AppliedInterventionToJson(this);
 
   @DBModelIgnore()
@@ -56,7 +56,7 @@ class AppliedIntervention extends DBModel {
       required this.isOkay})
       : super(id);
 
-  AppliedIntervention.unpopulated(String? id) : super(id) {
+  AppliedIntervention.unpopulated(super.id) {
     isPopulated = false;
   }
   @override

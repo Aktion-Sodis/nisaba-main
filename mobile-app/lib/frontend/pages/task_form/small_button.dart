@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/frontend/theme.dart';
 
 class SmallButton extends StatelessWidget {
-  SmallButton(
+  const SmallButton(
       {required this.iconData,
       required this.text,
       required this.onPressed,
       this.selected = false,
-      Key? key,
+      super.key,
       this.outlinedWhenSelected = false,
-      this.keepClickable = false})
-      : super(key: key);
+      this.keepClickable = false});
 
   final IconData iconData;
   final String text;
@@ -32,10 +31,10 @@ class SmallButton extends StatelessWidget {
     return ElevatedButton(
         onPressed: selected && !keepClickable ? null : onPressed,
         style: ButtonStyle(
-            padding: MaterialStateProperty.all(const EdgeInsets.only(
+            padding: WidgetStateProperty.all(const EdgeInsets.only(
                 left: 15, right: 20, top: 10, bottom: 10)),
-            backgroundColor: MaterialStateProperty.all(backgroundColor),
-            shape: MaterialStateProperty.all<OutlinedBorder>(
+            backgroundColor: WidgetStateProperty.all(backgroundColor),
+            shape: WidgetStateProperty.all<OutlinedBorder>(
                 RoundedRectangleBorder(
                     side: borderSide,
                     borderRadius: BorderRadius.circular(30)))),

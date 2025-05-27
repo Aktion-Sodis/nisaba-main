@@ -10,10 +10,10 @@ import 'package:mobile_app/utils/audio.dart';
 
 class AudioAttachmentBox extends StatefulWidget {
   AudioAttachmentBox({
-    Key? key,
+    super.key,
     required this.attachment,
     Audio? audio,
-  }) : super(key: key) {
+  }) {
     this.audio = audio ?? Audio.instance;
   }
 

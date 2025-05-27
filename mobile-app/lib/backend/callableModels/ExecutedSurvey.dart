@@ -8,7 +8,6 @@ import 'package:mobile_app/backend/callableModels/User.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/db_implementations/graphql_db/GraphQLJsonConverter.dart';
 
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import 'package:json_annotation/json_annotation.dart';
 
@@ -22,6 +21,7 @@ class ExecutedSurvey extends DBModel {
   factory ExecutedSurvey.fromJson(Map<String, dynamic> json) =>
       _$ExecutedSurveyFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$ExecutedSurveyToJson(this);
 
   static Map<String, dynamic> queryFields() => _$ExecutedSurvey;

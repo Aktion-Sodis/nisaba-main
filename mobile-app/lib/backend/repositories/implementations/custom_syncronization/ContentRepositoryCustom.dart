@@ -1,4 +1,3 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:mobile_app/backend/callableModels/Content.dart';
 import 'package:mobile_app/backend/database/DB.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
@@ -9,7 +8,6 @@ import 'package:mobile_app/backend/repositories/ContentRepository.dart'
 import 'package:mobile_app/backend/repositories/InterventionRepository.dart';
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import '../../../callableModels/Relation.dart';
 
@@ -57,7 +55,7 @@ class ContentRepositoryCustom extends definition.ContentRepository {
   Future<Content> _populate(Content content) async {
     Content toReturn = content;
     toReturn.tagConnections =
-        await contentContentTagRelationsByContentID(toReturn.id!);
+        await contentContentTagRelationsByContentID(toReturn.id);
     toReturn.interventions = [];
     return toReturn;
   }
@@ -79,14 +77,14 @@ class ContentRepositoryCustom extends definition.ContentRepository {
 
   @override
   SyncedFile getContentPDFFile(Content content) {
-    String path = dataStorePath(DataStorePaths.docPdfPath, [content.id!]);
+    String path = dataStorePath(DataStorePaths.docPdfPath, [content.id]);
     print("synced pdf file called for path: $path");
     return SyncedFile(path);
   }
 
   @override
   SyncedFile getContentPic(Content content) {
-    String path = dataStorePath(DataStorePaths.docPicPath, [content.id!]);
+    String path = dataStorePath(DataStorePaths.docPicPath, [content.id]);
     return SyncedFile(path);
   }
 }

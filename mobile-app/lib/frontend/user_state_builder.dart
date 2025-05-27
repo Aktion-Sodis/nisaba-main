@@ -5,7 +5,6 @@ import 'package:mobile_app/backend/Blocs/in_app/in_app_bloc.dart';
 import 'package:mobile_app/backend/Blocs/in_app/in_app_state.dart';
 import 'package:mobile_app/backend/Blocs/organization_view/organization_view_bloc.dart';
 import 'package:mobile_app/backend/Blocs/organization_view/organization_view_state.dart';
-import 'package:mobile_app/backend/Blocs/sync/sync_bloc.dart';
 import 'package:mobile_app/backend/Blocs/task/task_bloc.dart';
 import 'package:mobile_app/backend/repositories/AppliedInterventionRepository.dart';
 import 'package:mobile_app/backend/repositories/ContentRepository.dart';
@@ -22,7 +21,7 @@ import '../backend/Blocs/user/user_state.dart';
 
 /// This widget is responsible for forcing the user to fill in their profile date
 class UserStateBuilder extends StatelessWidget {
-  const UserStateBuilder({Key? key}) : super(key: key);
+  const UserStateBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {

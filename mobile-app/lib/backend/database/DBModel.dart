@@ -23,6 +23,7 @@ abstract class DBModel {
     this.id = id ?? this.id;
   }
 
+  @override
   bool operator ==(Object other) {
     throw UnimplementedError();
   }

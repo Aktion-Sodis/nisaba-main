@@ -20,6 +20,7 @@ class Survey extends DBModel {
 
   factory Survey.fromJson(Map<String, dynamic> json) => _$SurveyFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$SurveyToJson(this);
 
   static Map<String, dynamic> queryFields() => _$Survey;
@@ -35,7 +36,7 @@ class Survey extends DBModel {
   @DBModelIgnore()
   @JsonKey(includeFromJson: false, includeToJson: false)
   late List<SurveySurveyTagRelation> tagConnections = []; // Unpopulated allowed
-  late bool archived;
+  late SurveyStatus status;
   int? schemeVersion;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -77,10 +78,35 @@ class Survey extends DBModel {
       this.createdAt,
       this.updatedAt,
       required this.surveyType,
-      this.archived = false})
+      this.status = SurveyStatus.DRAFT})
       : super(id);
 
-  Survey.unpopulated(String? id) : super(id) {
+  Survey.fromAmplifyModel(amp.Survey survey) : super(survey.id) {
+    id = survey.id;
+    name = I18nString.fromAmplifyModel(survey.name);
+    description = I18nString.fromAmplifyModel(survey.description);
+    questions = survey.questions
+        .map((question) => Question.fromAmplifyModel(question))
+        .toList();
+    status = surveyStatusFromAmplifySurveyStatus(survey.status);
+    schemeVersion = survey.schemeVersion;
+    createdAt = survey.createdAt?.getDateTimeInUtc();
+    updatedAt = survey.updatedAt?.getDateTimeInUtc();
+    surveyType = surveyTypeFromAmplifySurveyType(survey.surveyType);
+  }
+
+  amp.Survey toAmplifyModel() {
+    return amp.Survey(
+        name: name.toAmplifyModel(),
+        description: description.toAmplifyModel(),
+        questions: questions.map((question) => question.toAmplifyModel()).toList(),
+        status: surveyStatusToAmplifySurveyStatus(status),
+        id: id,
+        schemeVersion: schemeVersion,
+        surveyType: surveyTypeToAmplifySurveyType(surveyType));
+  }
+
+  Survey.unpopulated(super.id) {
     isPopulated = false;
   }
   @override
@@ -105,7 +131,7 @@ class Survey extends DBModel {
           schemeVersion == other.schemeVersion &&
           unpopulatedListsEqual(tagConnections, other.tagConnections) &&
           surveyType == other.surveyType &&
-          archived == other.archived;
+          status == other.status;
     } else {
       return false;
     }
@@ -132,6 +158,36 @@ amp.SurveyType surveyTypeToAmplifySurveyType(SurveyType surveyType) {
       break;
     case SurveyType.DEFAULT:
       return amp.SurveyType.DEFAULT;
+      break;
+  }
+}
+
+enum SurveyStatus { DRAFT, ACTIVE, ARCHIVED }
+
+SurveyStatus surveyStatusFromAmplifySurveyStatus(amp.SurveyStatus surveyStatus) {
+  switch (surveyStatus) {
+    case amp.SurveyStatus.DRAFT:
+      return SurveyStatus.DRAFT;
+      break;
+    case amp.SurveyStatus.ACTIVE:
+      return SurveyStatus.ACTIVE;
+      break;
+    case amp.SurveyStatus.ARCHIVED:
+      return SurveyStatus.ARCHIVED;
+      break;
+  }
+}
+
+amp.SurveyStatus surveyStatusToAmplifySurveyStatus(SurveyStatus surveyStatus) {
+  switch (surveyStatus) {
+    case SurveyStatus.DRAFT:
+      return amp.SurveyStatus.DRAFT;
+      break;
+    case SurveyStatus.ACTIVE:
+      return amp.SurveyStatus.ACTIVE;
+      break;
+    case SurveyStatus.ARCHIVED:
+      return amp.SurveyStatus.ARCHIVED;
       break;
   }
 }

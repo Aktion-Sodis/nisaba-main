@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,8 +25,7 @@ import 'package:mobile_app/utils/photo_capturing.dart';
 import '../dependentsizes.dart';
 
 class UserDataView extends StatefulWidget {
-  UserDataView({Key? key, required this.userBloc, this.inApp = false})
-      : super(key: key);
+  UserDataView({super.key, required this.userBloc, this.inApp = false});
   UserBloc userBloc;
   bool inApp;
 
@@ -122,7 +120,7 @@ class UserDataViewState extends State<UserDataView> {
                         padding: EdgeInsets.only(
                             top: MediaQuery.of(context).padding.top),
                         width: width(context),
-                        color: Theme.of(context).colorScheme.background,
+                        color: Theme.of(context).colorScheme.surface,
                         child:
                             Column(mainAxisSize: MainAxisSize.min, children: [
                           Flexible(
@@ -194,7 +192,7 @@ class UserDataViewState extends State<UserDataView> {
                 children: [
                   Expanded(
                       child: Center(
-                          child: Container(
+                          child: SizedBox(
                               width: width(context) * .5,
                               height: width(context) * .5,
                               child: Stack(
@@ -315,19 +313,19 @@ class UserDataViewState extends State<UserDataView> {
                                         top: defaultPadding(context)),
                                     child: ElevatedButton(
                                         style: ButtonStyle(
-                                          textStyle: MaterialStateProperty.all(
+                                          textStyle: WidgetStateProperty.all(
                                               TextStyle(fontSize: 18)),
-                                          shape: MaterialStateProperty.all(
+                                          shape: WidgetStateProperty.all(
                                               RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           8))),
                                           minimumSize:
-                                              MaterialStateProperty.all(Size(
+                                              WidgetStateProperty.all(Size(
                                                   width(context) * .8,
                                                   width(context) * .12)),
                                           backgroundColor:
-                                              MaterialStateProperty.all(
+                                              WidgetStateProperty.all(
                                                   Colors.green), //todo: change
                                         ),
                                         onPressed: () {
@@ -395,8 +393,8 @@ class UserDataViewState extends State<UserDataView> {
     var options = strings.availableLocals.keys
         .map(
           (e) => DropdownMenuItem<String>(
-            child: Text(strings.availableLocals[e]!),
             value: e,
+            child: Text(strings.availableLocals[e]!),
           ),
         )
         .toList();

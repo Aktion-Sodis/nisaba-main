@@ -5,7 +5,6 @@ import 'package:mobile_app/backend/callableModels/Location.dart';
 import 'package:mobile_app/backend/callableModels/User.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 /// DO NOT NEED TO IMPLEMENT
 class Task extends DBModel {
@@ -43,7 +42,7 @@ class Task extends DBModel {
       required this.picList})
       : super(id);
 
-  Task.unpopulated(String? id) : super(id) {
+  Task.unpopulated(super.id) {
     isPopulated = false;
   }
   @override

@@ -12,16 +12,14 @@ import 'package:mobile_app/backend/callableModels/Task.dart';
 import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/frontend/components/buttons.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
-import 'package:mobile_app/frontend/pages/main_menu.dart';
 import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_commonwidgets.dart';
 import 'package:mobile_app/frontend/strings.dart' as strings;
 
-import 'main_menu_app_bar.dart';
 
 class MainMenuHome extends StatefulWidget {
   ValueChanged<int> onNavigationCall;
 
-  MainMenuHome(this.onNavigationCall);
+  MainMenuHome(this.onNavigationCall, {super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -33,9 +31,7 @@ class MainMenuHomeState extends State<MainMenuHome> {
   Widget _nisabaLogo() {
     return LocalDataRepository.instance.organizationNameVerbose != null
         ? Text(
-            "For " +
-                LocalDataRepository.instance.organizationNameVerbose! +
-                " \u2661",
+            "For ${LocalDataRepository.instance.organizationNameVerbose!} \u2661",
             style: TextStyle(fontStyle: FontStyle.italic),
           )
         : SizedBox.shrink();
@@ -44,7 +40,7 @@ class MainMenuHomeState extends State<MainMenuHome> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Container(
+      SizedBox(
         width: width(context),
         height: appBarHeight(context),
         child: Column(children: [
@@ -84,7 +80,7 @@ class MainMenuHomeState extends State<MainMenuHome> {
                       color: Colors.red, size: width(context) * .08);
                 } else {
                   return Icon(MdiIcons.cloudSyncOutline,
-                      color: Theme.of(context).colorScheme.onBackground,
+                      color: Theme.of(context).colorScheme.onSurface,
                       size: width(context) * .08);
                 }
               }),

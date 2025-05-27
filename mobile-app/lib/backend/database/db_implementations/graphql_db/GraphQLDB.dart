@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart' as gql_flutter;
-import 'package:mobile_app/backend/callableModels/TestObject.dart';
 import 'package:mobile_app/backend/database/DB.dart';
-import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/db_implementations/graphql_db/ConfigGraphQL.dart';
@@ -199,17 +197,17 @@ class GraphQLDB extends DB<GraphQLDBModelRegistration> {
     print('[GQL] Create operation');
     String query = _mutation(object, DBAction.CREATE);
 
-    print('[GQL] Query: ' + query);
+    print('[GQL] Query: $query');
 
     ConfigGraphQL config = ConfigGraphQL();
     print('[GQL] client: ${config.client}');
 
-    var response = await config.client!
+    var response = await config.client
         .mutate(gql_flutter.MutationOptions(document: gql_flutter.gql(query)));
     print('[GQL] Got Respone');
 
     if (response.hasException) {
-      debugPrint('[GQL] Exception: ' + response.exception.toString(), wrapWidth: 1024);
+      debugPrint('[GQL] Exception: ${response.exception}', wrapWidth: 1024);
       throw response.exception!;
     }
 
@@ -230,7 +228,7 @@ class GraphQLDB extends DB<GraphQLDBModelRegistration> {
     String gqlQuery = _listQuery(modelType, query);
 
     ConfigGraphQL config = ConfigGraphQL();
-    var response = await config.client!
+    var response = await config.client
         .query(gql_flutter.QueryOptions(document: gql_flutter.gql(gqlQuery)));
 
     if (response.hasException) {
@@ -254,7 +252,7 @@ class GraphQLDB extends DB<GraphQLDBModelRegistration> {
     String gqlQuery = _getQuery(modelType, id);
 
     ConfigGraphQL config = ConfigGraphQL();
-    var response = await config.client!
+    var response = await config.client
         .query(gql_flutter.QueryOptions(document: gql_flutter.gql(gqlQuery)));
 
     if (response.hasException) {
@@ -282,14 +280,14 @@ class GraphQLDB extends DB<GraphQLDBModelRegistration> {
     print('[GQL] Update operation');
     String query = _mutation(object, DBAction.UPDATE);
 
-    print('[GQL] Query: ' + query);
+    print('[GQL] Query: $query');
 
     ConfigGraphQL config = ConfigGraphQL();
-    var response = await config.client!
+    var response = await config.client
         .mutate(gql_flutter.MutationOptions(document: gql_flutter.gql(query)));
 
     if (response.hasException) {
-      debugPrint('[GQL] Exception: ' + response.exception.toString(), wrapWidth: 1024);
+      debugPrint('[GQL] Exception: ${response.exception}', wrapWidth: 1024);
       throw response.exception!;
     }
 

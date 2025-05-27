@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -11,7 +10,6 @@ import 'package:mobile_app/backend/Blocs/task/task_state.dart';
 import 'package:mobile_app/backend/Blocs/task_form/task_form_cubit.dart';
 import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
-import 'package:mobile_app/backend/callableModels/Entity.dart';
 import 'package:mobile_app/backend/callableModels/localModels/attachment.dart';
 import 'package:mobile_app/backend/callableModels/localModels/audio_attachment.dart';
 import 'package:mobile_app/backend/callableModels/localModels/image_attachment.dart';
@@ -22,11 +20,10 @@ import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_app_bar.dart';
 import 'package:mobile_app/frontend/pages/main_menu_components/main_menu_commonwidgets.dart';
 import 'package:mobile_app/frontend/pages/task_form/small_button.dart';
-import 'package:provider/src/provider.dart';
 import 'package:mobile_app/frontend/strings.dart' as strings;
 
 class MainMenuTasks extends StatelessWidget {
-  const MainMenuTasks({Key? key}) : super(key: key);
+  const MainMenuTasks({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +39,7 @@ class MainMenuTasks extends StatelessWidget {
 class TaskWidget extends StatelessWidget {
   Entity? entity;
 
-  TaskWidget({Key? key, this.entity}) : super(key: key);
+  TaskWidget({super.key, this.entity});
 
   void checkChange(Task task, BuildContext context) async {
     if (task.finishedDate == null) {

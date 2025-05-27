@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
@@ -40,10 +39,9 @@ class LocalDBModelRegistration extends DBModelRegistration<_TranslatedModelType,
   };
 
   LocalDBModelRegistration({
-    required ToDBModelConverter<_TranslatedModelType> toDBModel,
+    required super.toDBModel,
   }) : super(
             fromDBModel: _fromDBModel,
-            toDBModel: toDBModel,
             predicatesTranslations: _predefinedPredicatesTranslations);
 
   static _TranslatedModelType _fromDBModel(

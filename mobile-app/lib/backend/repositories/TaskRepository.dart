@@ -1,8 +1,4 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
-import 'package:mobile_app/backend/repositories/AppliedInterventionRepository.dart';
-import 'package:mobile_app/backend/repositories/EntityRepository.dart';
-import 'package:mobile_app/backend/repositories/ExecutedSurveyRepository.dart';
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
@@ -54,13 +50,13 @@ class TaskRepository {
 
   static SyncedFile getTaskPic(Task task, int index) {
     String path =
-        dataStorePath(DataStorePaths.taskPicPath, [task.id!, index.toString()]);
+        dataStorePath(DataStorePaths.taskPicPath, [task.id]);
     return SyncedFile(path);
   }
 
   static SyncedFile getTaskAudio(Task task, int index) {
     String path = dataStorePath(
-        DataStorePaths.taskAudioPath, [task.id!, index.toString()]);
+        DataStorePaths.taskAudioPath, [task.id]);
     return SyncedFile(path);
   }
 }

@@ -22,7 +22,6 @@ import 'package:mobile_app/utils/amplify.dart';
 import 'package:mobile_app/frontend/authentication_state_builder.dart';
 import 'package:mobile_app/utils/hive_db_helper.dart';
 
-import 'backend/callableModels/TestObject.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +35,7 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   State<StatefulWidget> createState() => MyAppState();
@@ -60,8 +59,6 @@ class MyAppState extends State<MyApp> {
     // Init SyncedDB
     await SyncedDB.instance.localDB.initLocalDB();
     SyncedDB.instance.initSynchronizer();
-    //todo: sync-fix: maybe add all objects to sync downstream?
-    SyncedDB.instance.synchronizer.modelsToSyncDownstream.addAll([TestObject]);
     registerModels();
 
     await AmplifyIntegration.initialize();

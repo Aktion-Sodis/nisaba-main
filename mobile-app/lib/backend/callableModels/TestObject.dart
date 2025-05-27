@@ -1,7 +1,5 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 
 part 'TestObject.g.dart';
@@ -26,7 +24,7 @@ class TestObject extends DBModel {
   }
   @override
   DBModel getUnpopulated() {
-    return TestObject.unpopulated(id!);
+    return TestObject.unpopulated(id);
   }
 
   @override
@@ -41,5 +39,6 @@ class TestObject extends DBModel {
   factory TestObject.fromJson(Map<String, dynamic> json) =>
       _$TestObjectFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$TestObjectToJson(this);
 }

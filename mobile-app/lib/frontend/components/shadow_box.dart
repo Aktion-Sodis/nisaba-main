@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/frontend/theme.dart';
 
 class ShadowBox extends StatelessWidget {
-  const ShadowBox({Key? key, required this.child}) : super(key: key);
+  const ShadowBox({super.key, required this.child});
 
   final Widget child;
 

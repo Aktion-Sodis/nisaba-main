@@ -1,8 +1,6 @@
 import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
-import 'Content.dart';
 import 'Relation.dart';
 
 import 'package:json_annotation/json_annotation.dart';
@@ -17,6 +15,7 @@ class ContentTag extends DBModel {
   factory ContentTag.fromJson(Map<String, dynamic> json) =>
       _$ContentTagFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$ContentTagToJson(this);
 
   late I18nString text_ml;
@@ -38,7 +37,7 @@ class ContentTag extends DBModel {
       this.updatedAt})
       : super(id);
 
-  ContentTag.unpopulated(String? id) : super(id) {
+  ContentTag.unpopulated(super.id) {
     isPopulated = false;
   }
   @override

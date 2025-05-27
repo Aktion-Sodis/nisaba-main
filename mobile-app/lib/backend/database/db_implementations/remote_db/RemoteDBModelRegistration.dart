@@ -1,7 +1,6 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 
-import '../../DBModel.dart';
 import '../../QPredicate.dart';
 import '../../Query.dart';
 
@@ -14,14 +13,12 @@ class RemoteDBModelRegistration extends DBModelRegistration<
 
   RemoteDBModelRegistration(
       {required List<QueryField> modelAttributes,
-      required FromDBModelConverter<_TranslatedModelType> fromDBModel,
-      required ToDBModelConverter<_TranslatedModelType> toDBModel,
+      required super.fromDBModel,
+      required super.toDBModel,
       required this.modelType})
       : super(
             predicatesTranslations:
-                generatePredicatesTranslations(modelAttributes),
-            fromDBModel: fromDBModel,
-            toDBModel: toDBModel);
+                generatePredicatesTranslations(modelAttributes));
 
   static Map<QPredicate, QueryPredicate<Model>? Function(Query p1)>
       generatePredicatesTranslations(List<QueryField> attributesInput) {
@@ -36,6 +33,7 @@ class RemoteDBModelRegistration extends DBModelRegistration<
           return attribute.eq(query.attr1);
         }
       }
+      return null;
     };
 
     predicatesTranslations[QPredicate.NE] = (Query query) {
@@ -44,6 +42,7 @@ class RemoteDBModelRegistration extends DBModelRegistration<
           return attribute.ne(query.attr1);
         }
       }
+      return null;
     };
 
     predicatesTranslations[QPredicate.LE] = (Query query) {
@@ -52,6 +51,7 @@ class RemoteDBModelRegistration extends DBModelRegistration<
           return attribute.le(query.attr1);
         }
       }
+      return null;
     };
 
     predicatesTranslations[QPredicate.LT] = (Query query) {
@@ -60,6 +60,7 @@ class RemoteDBModelRegistration extends DBModelRegistration<
           return attribute.lt(query.attr1);
         }
       }
+      return null;
     };
 
     predicatesTranslations[QPredicate.GE] = (Query query) {
@@ -68,6 +69,7 @@ class RemoteDBModelRegistration extends DBModelRegistration<
           return attribute.ge(query.attr1);
         }
       }
+      return null;
     };
 
     predicatesTranslations[QPredicate.GT] = (Query query) {
@@ -76,6 +78,7 @@ class RemoteDBModelRegistration extends DBModelRegistration<
           return attribute.gt(query.attr1);
         }
       }
+      return null;
     };
 
     predicatesTranslations[QPredicate.BETWEEN] = (Query query) {
@@ -84,6 +87,7 @@ class RemoteDBModelRegistration extends DBModelRegistration<
           return attribute.between(query.attr1, query.attr2);
         }
       }
+      return null;
     };
 
     /*predicatesTranslations[QPredicate.CONTAINS] = (Query query) {

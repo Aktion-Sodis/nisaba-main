@@ -4,7 +4,7 @@ import 'package:mobile_app/backend/Blocs/request_permissions/request_permissions
 import 'package:mobile_app/frontend/pages/request_permissions_page.dart';
 
 class PermissionsChecker extends StatelessWidget with WidgetsBindingObserver {
-  PermissionsChecker({Key? key, required this.child}) : super(key: key);
+  PermissionsChecker({super.key, required this.child});
 
   final Widget child;
 
@@ -37,7 +37,7 @@ class PermissionsChecker extends StatelessWidget with WidgetsBindingObserver {
     _checkAllPermissions =
         BlocProvider.of<RequestPermissionsCubit>(context).checkAllPermissions;
     this.context = context;
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     checkAndRequestPermissions();
 
     return child;

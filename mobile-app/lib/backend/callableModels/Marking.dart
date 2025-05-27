@@ -13,6 +13,7 @@ class Marking extends DBModel {
   factory Marking.fromJson(Map<String, dynamic> json) =>
       _$MarkingFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$MarkingToJson(this);
 
   late double x;

@@ -14,6 +14,7 @@ class User extends DBModel {
   // JsonSerializable factory and toJson methods
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
   static Map<String, dynamic> queryFields() => _$User;
@@ -73,7 +74,7 @@ class User extends DBModel {
     };
   }
 
-  User.unpopulated(String? id) : super(id) {
+  User.unpopulated(super.id) {
     isPopulated = false;
   }
   @override

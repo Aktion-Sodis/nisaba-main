@@ -4,10 +4,10 @@ import 'package:mobile_app/frontend/theme.dart';
 
 class TaskAttachmentBox extends StatelessWidget {
   const TaskAttachmentBox({
-    Key? key,
+    super.key,
     this.removeAttachment,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Function()? removeAttachment;
   final Widget child;

@@ -6,7 +6,7 @@ import 'package:mobile_app/backend/Blocs/user/user_bloc.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
 
 class SyncTrigger extends StatefulWidget {
-  const SyncTrigger({Key? key, required this.child}) : super(key: key);
+  const SyncTrigger({super.key, required this.child});
 
   final Widget child;
 
@@ -20,18 +20,14 @@ class _SyncTriggerState extends State<SyncTrigger> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    if (WidgetsBinding.instance != null) {
-      WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     }
-  }
 
   @override
   void dispose() {
     super.dispose();
-    if (WidgetsBinding.instance != null) {
-      WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     }
-  }
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {

@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 
 Widget CustomIconButton(
@@ -31,13 +30,13 @@ Widget defaultGreenButton(BuildContext context, VoidCallback onPressed,
         {double? minWidth, double? minHeight, String? text, IconData? icon}) =>
     ElevatedButton(
         style: ButtonStyle(
-          textStyle: MaterialStateProperty.all(TextStyle(fontSize: 18)),
-          shape: MaterialStateProperty.all(
+          textStyle: WidgetStateProperty.all(TextStyle(fontSize: 18)),
+          shape: WidgetStateProperty.all(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-          minimumSize: MaterialStateProperty.all(Size(
+          minimumSize: WidgetStateProperty.all(Size(
               minWidth ?? width(context) * .3,
               minHeight ?? width(context) * .12)),
-          backgroundColor: MaterialStateProperty.all(
+          backgroundColor: WidgetStateProperty.all(
               Theme.of(context).colorScheme.secondary), //todo: change
         ),
         onPressed: onPressed,

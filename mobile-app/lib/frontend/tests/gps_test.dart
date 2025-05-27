@@ -3,12 +3,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 
 class GpsTest extends StatelessWidget {
-  const GpsTest({Key? key}) : super(key: key);
+  const GpsTest({super.key});
 
   Future<void> _getLocation() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    print("Current position: " + position.toString());
+    print("Current position: $position");
   }
 
   @override

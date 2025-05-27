@@ -14,6 +14,7 @@ class Permission extends DBModel {
   factory Permission.fromJson(Map<String, dynamic> json) =>
       _$PermissionFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PermissionToJson(this);
 
   late PermissionType permissionType;

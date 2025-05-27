@@ -1,11 +1,9 @@
-import 'dart:io';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:mobile_app/backend/Blocs/in_app/in_app_bloc.dart';
 import 'package:mobile_app/backend/Blocs/in_app/in_app_events.dart';
@@ -37,13 +35,14 @@ import 'package:mobile_app/frontend/common_widgets.dart';
 import 'package:mobile_app/utils/photo_capturing.dart';
 import 'package:mobile_app/frontend/pages/survey.dart' as surveyarea;
 
-import '../../../backend/callableModels/Relation.dart';
 
 // TODO: refactor this file as the code is not readable
 class MainMenuOrganization extends StatelessWidget {
+  const MainMenuOrganization({super.key});
+
   Widget appBarWidget(BuildContext context,
       EntitiesLoadedOrganizationViewState organizationViewState) {
-    return Container(
+    return SizedBox(
         height: height(context) * .11,
         width: width(context),
         child: Column(children: [
@@ -109,7 +108,7 @@ class MainMenuOrganization extends StatelessWidget {
                                         : Icon(MdiIcons.cloudSyncOutline,
                                             color: Theme.of(context)
                                                 .colorScheme
-                                                .onBackground,
+                                                .onSurface,
                                             size: width(context) * .08),
                               );
                             })),
@@ -140,15 +139,10 @@ class MainMenuOrganization extends StatelessWidget {
                                       null,
                                       organizationViewState
                                           .levelContentList.last.level,
-                                      organizationViewState.levelContentList
-                                                  .last.parentEntity ==
-                                              null
-                                          ? null
-                                          : organizationViewState
+                                      organizationViewState
                                               .levelContentList
                                               .last
-                                              .parentEntity!
-                                              .id);
+                                              .parentEntity?.id);
                                   if (toAdd != null) {
                                     context
                                         .read<OrganizationViewBloc>()
@@ -200,7 +194,7 @@ class MainMenuOrganization extends StatelessWidget {
         case OrganizationViewType.LIST:
           return Container(
               child: ListWidget(
-            key: Key(organizationViewState.levelContentList.last.level.id!),
+            key: Key(organizationViewState.levelContentList.last.level.id),
           ));
           break;
         case OrganizationViewType.OVERVIEW:
@@ -309,7 +303,7 @@ class MainMenuOrganization extends StatelessWidget {
           children: [
             appBarWidget(context, state as EntitiesLoadedOrganizationViewState),
             levelIndicatorWidget(
-                context, state as EntitiesLoadedOrganizationViewState),
+                context, state),
             Expanded(child: mainWidget(context, state))
           ],
         );
@@ -321,7 +315,7 @@ class MainMenuOrganization extends StatelessWidget {
 Future<Entity?> showEntityDialog(BuildContext buildContext, Entity? entity,
     Level level, String? parentEntityID) async {
   return showDialog(
-      barrierColor: Theme.of(buildContext).colorScheme.background,
+      barrierColor: Theme.of(buildContext).colorScheme.surface,
       context: buildContext,
       builder: (context) {
         return EntityDialogWidget(entity, level, parentEntityID, buildContext);
@@ -334,7 +328,7 @@ class EntityDialogWidget extends StatefulWidget {
   String? parentEntityID;
   BuildContext buildContext;
   EntityDialogWidget(
-      this.entity, this.level, this.parentEntityID, this.buildContext);
+      this.entity, this.level, this.parentEntityID, this.buildContext, {super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -383,21 +377,21 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
     nameEditingController = TextEditingController();
     descriptionEditingController = TextEditingController();
     customDataControllers = [];
-    widget.level.customData.forEach((element) {
+    for (var element in widget.level.customData) {
       customDataControllers.add(TextEditingController());
-    });
+    }
     if (widget.entity != null) {
       create = false;
       entity = widget.entity;
       nameEditingController.text = entity!.displayName;
       descriptionEditingController.text = entity!.displayDescription;
-      entity!.customData.forEach((cd) {
+      for (var cd in entity!.customData) {
         int index = widget.level.customData
             .indexWhere((element) => element.id == cd.customDataID);
         customDataControllers[index].text = cd.type == CustomDataType.INT
             ? (cd.intValue.toString())
             : (cd.stringValue ?? "");
-      });
+      }
     } else {
       preliminaryEntityId = UUID.getUUID();
     }
@@ -414,7 +408,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
           CustomData customData = widget.level.customData[index];
           print("input: ${customDataControllers[index].text.trim()}");
           return AppliedCustomData(
-            customDataID: customData.id!,
+            customDataID: customData.id,
             type: customData.type,
             name: customData.name,
             intValue: customData.type == CustomDataType.INT
@@ -426,13 +420,9 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
           );
         });
         print("saving entity: customData");
-        appliedCustomDatas.forEach((element) {
-          print(element.displayName +
-              " " +
-              element.intValue.toString() +
-              " " +
-              (element.stringValue ?? "e"));
-        });
+        for (var element in appliedCustomDatas) {
+          print("${element.displayName} ${element.intValue} ${element.stringValue ?? "e"}");
+        }
         if (create) {
           Entity toSave = Entity(
               id: preliminaryEntityId,
@@ -549,7 +539,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
         bottom: false,
         top: false,
         child: Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             body: Padding(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).padding.bottom <
@@ -559,7 +549,7 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
                 child: Container(
                   child: Column(
                     children: [
-                      Container(
+                      SizedBox(
                           height: height(context) * .1,
                           width: width(context),
                           child: Row(
@@ -610,16 +600,16 @@ class EntityDialogWidgetState extends State<EntityDialogWidget> {
                           margin: EdgeInsets.all(defaultPadding(context)),
                           child: ElevatedButton(
                               style: ButtonStyle(
-                                textStyle: MaterialStateProperty.all(
+                                textStyle: WidgetStateProperty.all(
                                     TextStyle(fontSize: 18)),
-                                shape: MaterialStateProperty.all(
+                                shape: WidgetStateProperty.all(
                                     RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(8))),
-                                minimumSize: MaterialStateProperty.all(Size(
+                                minimumSize: WidgetStateProperty.all(Size(
                                     width(context) * .92,
                                     width(context) * .12)),
-                                backgroundColor: MaterialStateProperty.all(
+                                backgroundColor: WidgetStateProperty.all(
                                     Theme.of(context)
                                         .colorScheme
                                         .secondary), //todo: change
@@ -699,17 +689,21 @@ class ListWidget extends StatelessWidget {
                   ),
                 if (state.addChildPossible(entities[index]))
                   Container(
+                    padding: EdgeInsets.only(
+                        left: defaultPadding(buildContext),
+                        right: defaultPadding(buildContext),
+                        bottom: defaultPadding(buildContext)),
                     child: ElevatedButton(
                         style: ButtonStyle(
-                          textStyle: MaterialStateProperty.all(
+                          textStyle: WidgetStateProperty.all(
                               TextStyle(fontSize: 18)),
-                          shape: MaterialStateProperty.all(
+                          shape: WidgetStateProperty.all(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8))),
-                          minimumSize: MaterialStateProperty.all(Size(
+                          minimumSize: WidgetStateProperty.all(Size(
                               width(buildContext) * .84,
                               width(buildContext) * .12)),
-                          backgroundColor: MaterialStateProperty.all(
+                          backgroundColor: WidgetStateProperty.all(
                               Theme.of(buildContext)
                                   .colorScheme
                                   .secondary), //todo: change
@@ -724,10 +718,6 @@ class ListWidget extends StatelessWidget {
                                 color: Theme.of(buildContext)
                                     .colorScheme
                                     .onSecondary))),
-                    padding: EdgeInsets.only(
-                        left: defaultPadding(buildContext),
-                        right: defaultPadding(buildContext),
-                        bottom: defaultPadding(buildContext)),
                   ),
               ],
             ),
@@ -736,11 +726,11 @@ class ListWidget extends StatelessWidget {
                 top: height(buildContext) * .2 - width(buildContext) * .06,
                 child: ElevatedButton(
                   style: ButtonStyle(
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    shape: WidgetStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8))),
-                    minimumSize: MaterialStateProperty.all(Size(
+                    minimumSize: WidgetStateProperty.all(Size(
                         width(buildContext) * .2, width(buildContext) * .12)),
-                    backgroundColor: MaterialStateProperty.all(
+                    backgroundColor: WidgetStateProperty.all(
                         Theme.of(buildContext)
                             .colorScheme
                             .primary), //todo: change
@@ -823,13 +813,12 @@ class ListWidget extends StatelessWidget {
 
 class OverviewWidget extends StatelessWidget {
   OverviewWidget(
-      {Key? key,
+      {super.key,
       required this.entity,
       required this.onTasksTapped,
       required this.onSurveysTapped,
       required this.onAppliedInterventionsTapped,
-      required this.onUpdateEntityTapped})
-      : super(key: key);
+      required this.onUpdateEntityTapped});
   ValueChanged<Entity> onTasksTapped;
   ValueChanged<Entity> onSurveysTapped;
   ValueChanged<Entity> onAppliedInterventionsTapped;
@@ -889,8 +878,7 @@ class OverviewWidget extends StatelessWidget {
                             child: RichText(
                                 text: TextSpan(children: [
                               TextSpan(
-                                  text: entity.customData[index].displayName +
-                                      ": ",
+                                  text: "${entity.customData[index].displayName}: ",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!
@@ -953,7 +941,7 @@ class OverviewWidget extends StatelessWidget {
     for (AppliedIntervention appliedIntervention
         in entity.appliedInterventions) {
       for (Survey element in appliedIntervention.intervention.surveys) {
-        if (!element.archived) {
+        if (element.status == SurveyStatus.ACTIVE) {
           firstThreeSurveys.add(element);
         }
         if (firstThreeSurveys.length >= 3) {
@@ -1070,7 +1058,7 @@ class OverviewWidget extends StatelessWidget {
 }
 
 class AppliedInterventionOverviewPage extends StatelessWidget {
-  const AppliedInterventionOverviewPage({Key? key}) : super(key: key);
+  const AppliedInterventionOverviewPage({super.key});
 
   Widget listItem(BuildContext buildContext, int index) {
     List<AppliedIntervention> interventions = (buildContext
@@ -1135,7 +1123,7 @@ class AppliedInterventionOverviewPage extends StatelessWidget {
 }
 
 class AppliedInterventionPage extends StatefulWidget {
-  const AppliedInterventionPage({Key? key}) : super(key: key);
+  const AppliedInterventionPage({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -1187,7 +1175,7 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
   Widget build(BuildContext context) {
     List<Survey> nonArchivedSurveys = List.from(appliedIntervention
         .intervention.surveys
-        .where((element) => !element.archived));
+        .where((element) => element.status == SurveyStatus.ACTIVE));
 
     return Align(
         alignment: Alignment.topCenter,
@@ -1198,7 +1186,7 @@ class AppliedInterventionPageState extends State<AppliedInterventionPage> {
           children: [
             Card(
               margin: EdgeInsets.all(defaultPadding(context)),
-              child: Container(
+              child: SizedBox(
                   height: height(context) * .3,
                   width: width(context) * .92,
                   child: Stack(
@@ -1302,7 +1290,7 @@ Future<AppliedIntervention?> showAppliedInterventionDialog(
     AppliedIntervention? appliedIntervention,
     User user) async {
   return showDialog(
-      barrierColor: Theme.of(buildContext).colorScheme.background,
+      barrierColor: Theme.of(buildContext).colorScheme.surface,
       context: buildContext,
       builder: (context) {
         return AppliedInterventionDialog(
@@ -1318,7 +1306,7 @@ class AppliedInterventionDialog extends StatefulWidget {
   User user;
 
   AppliedInterventionDialog(
-      this.entity, this.appliedIntervention, this.buildContext, this.user);
+      this.entity, this.appliedIntervention, this.buildContext, this.user, {super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -1415,7 +1403,7 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
         bottom: false,
         top: false,
         child: Scaffold(
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Theme.of(context).colorScheme.surface,
             body: Padding(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).padding.bottom <
@@ -1424,7 +1412,7 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
                         : MediaQuery.of(context).padding.bottom),
                 child: Column(children: [
                   Flexible(
-                    child: Container(
+                    child: SizedBox(
                         height: height(context) * .1,
                         width: width(context),
                         child: Row(
@@ -1466,7 +1454,7 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
                   !loaded
                       ? Center(child: loadingSign(context))
                       : appliedIntervention == null
-                          ? Container(
+                          ? SizedBox(
                               height: height(context) * .8,
                               child: Scrollbar(
                                   child: ListView.builder(
@@ -1479,7 +1467,7 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
                                 Card(
                                   margin:
                                       EdgeInsets.all(defaultPadding(context)),
-                                  child: Container(
+                                  child: SizedBox(
                                       height: height(context) * .3,
                                       width: width(context) * .92,
                                       child: Stack(
@@ -1521,7 +1509,7 @@ class AppliedInterventionDialogState extends State<AppliedInterventionDialog> {
 }
 
 class SurveyWidget extends StatefulWidget {
-  const SurveyWidget({Key? key}) : super(key: key);
+  const SurveyWidget({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -1537,25 +1525,25 @@ class SurveyWidgetState extends State<SurveyWidget> {
   void updateCurrentlySelectedInterventions(List<Intervention> selected) {
     if (selected.isEmpty) {
       List<Map<String, dynamic>> toSet = [];
-      entity.appliedInterventions.forEach((element) {
+      for (var element in entity.appliedInterventions) {
         for (Survey survey in element.intervention.surveys) {
           toSet.add({"appliedIntervention": element, "survey": survey});
         }
-      });
+      }
       setState(() {
         currentlyDisplayedSurveys = toSet;
       });
     } else {
       List<Map<String, dynamic>> toSet = [];
-      entity.appliedInterventions.forEach((element) {
+      for (var element in entity.appliedInterventions) {
         if (selected.any((obj) => obj.id == element.intervention.id)) {
           for (Survey survey in element.intervention.surveys) {
-            if (!survey.archived) {
+            if (survey.status == SurveyStatus.ACTIVE) {
               toSet.add({"appliedIntervention": element, "survey": survey});
             }
           }
         }
-      });
+      }
       setState(() {
         currentlyDisplayedSurveys = toSet;
       });
@@ -1572,7 +1560,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
     currentlyDisplayedSurveys = [];
     for (var element in entity.appliedInterventions) {
       for (Survey survey in element.intervention.surveys) {
-        if (!survey.archived) {
+        if (survey.status == SurveyStatus.ACTIVE) {
           currentlyDisplayedSurveys
               .add({"appliedIntervention": element, "survey": survey});
         }
@@ -1620,8 +1608,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
 }
 
 class ExecutedSurveyHistory extends StatelessWidget {
-  const ExecutedSurveyHistory({Key? key, required this.entity})
-      : super(key: key);
+  const ExecutedSurveyHistory({super.key, required this.entity});
   final Entity entity;
 
   @override
@@ -1648,22 +1635,22 @@ class ExecutedSurveyWidget extends StatelessWidget {
   Map<Question, QuestionAnswer> mappedAnswers = {};
   Map<String, SyncedFile> syncedFileMap = {};
 
-  ExecutedSurveyWidget(this.executedSurvey) {
+  ExecutedSurveyWidget(this.executedSurvey, {super.key}) {
     for (Question question in executedSurvey.survey.questions) {
       var answers = executedSurvey.answers
           .where((element) => element.questionID == question.id);
-      QuestionAnswer? answer = answers.length > 0 ? answers.first : null;
+      QuestionAnswer? answer = answers.isNotEmpty ? answers.first : null;
       if (answer != null) {
         mappedAnswers[question] = answer;
       }
       if (question.type == QuestionType.AUDIO) {
-        syncedFileMap[question.id!] = ExecutedSurveyRepository.instance
+        syncedFileMap[question.id] = ExecutedSurveyRepository.instance
             .getQuestionAnswerAudio(executedSurvey.appliedIntervention,
-                executedSurvey.id!, question);
+                executedSurvey.id, question);
       } else if (question.type == QuestionType.PICTURE) {
-        syncedFileMap[question.id!] = ExecutedSurveyRepository.instance
+        syncedFileMap[question.id] = ExecutedSurveyRepository.instance
             .getQuestionAnswerPic(executedSurvey.appliedIntervention,
-                executedSurvey.id!, question);
+                executedSurvey.id, question);
       }
     }
   }
@@ -1674,7 +1661,7 @@ class ExecutedSurveyWidget extends StatelessWidget {
       survey: executedSurvey.survey,
       picAndAudioAnswerFiles: syncedFileMap,
       appliedIntervention: executedSurvey.appliedIntervention,
-      executedSurveyId: executedSurvey.id!,
+      executedSurveyId: executedSurvey.id,
       answers: mappedAnswers,
       context: context,
     );

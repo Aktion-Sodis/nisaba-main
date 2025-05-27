@@ -2,7 +2,6 @@ import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDBModelRegistration.dart';
-import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDBModelRegistration.dart';
 
 class SyncedDBModelRegistration extends DBModelRegistration<Object?, Object?> {
   final bool haveToSyncDownstream;

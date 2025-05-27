@@ -34,6 +34,7 @@ class Survey extends amplify_core.Model {
   final List<Question>? _questions;
   final List<SurveySurveyTagRelation>? _tags;
   final SurveyType? _surveyType;
+  final SurveyStatus? _status;
   final int? _schemeVersion;
   final bool? _archived;
   final amplify_core.TemporalDateTime? _createdAt;
@@ -112,6 +113,19 @@ class Survey extends amplify_core.Model {
     }
   }
   
+  SurveyStatus get status {
+    try {
+      return _status!;
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
+  }
+  
   int? get schemeVersion {
     return _schemeVersion;
   }
@@ -128,9 +142,9 @@ class Survey extends amplify_core.Model {
     return _updatedAt;
   }
   
-  const Survey._internal({required this.id, required name, required description, intervention, required questions, tags, required surveyType, schemeVersion, archived, createdAt, updatedAt}): _name = name, _description = description, _intervention = intervention, _questions = questions, _tags = tags, _surveyType = surveyType, _schemeVersion = schemeVersion, _archived = archived, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Survey._internal({required this.id, required name, required description, intervention, required questions, tags, required surveyType, required status, schemeVersion, archived, createdAt, updatedAt}): _name = name, _description = description, _intervention = intervention, _questions = questions, _tags = tags, _surveyType = surveyType, _status = status, _schemeVersion = schemeVersion, _archived = archived, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Survey({String? id, required I18nString name, required I18nString description, Intervention? intervention, required List<Question> questions, List<SurveySurveyTagRelation>? tags, required SurveyType surveyType, int? schemeVersion, bool? archived}) {
+  factory Survey({String? id, required I18nString name, required I18nString description, Intervention? intervention, required List<Question> questions, List<SurveySurveyTagRelation>? tags, required SurveyType surveyType, required SurveyStatus status, int? schemeVersion, bool? archived}) {
     return Survey._internal(
       id: id == null ? amplify_core.UUID.getUUID() : id,
       name: name,
@@ -139,6 +153,7 @@ class Survey extends amplify_core.Model {
       questions: questions != null ? List<Question>.unmodifiable(questions) : questions,
       tags: tags != null ? List<SurveySurveyTagRelation>.unmodifiable(tags) : tags,
       surveyType: surveyType,
+      status: status,
       schemeVersion: schemeVersion,
       archived: archived);
   }
@@ -158,6 +173,7 @@ class Survey extends amplify_core.Model {
       DeepCollectionEquality().equals(_questions, other._questions) &&
       DeepCollectionEquality().equals(_tags, other._tags) &&
       _surveyType == other._surveyType &&
+      _status == other._status &&
       _schemeVersion == other._schemeVersion &&
       _archived == other._archived;
   }
@@ -176,6 +192,7 @@ class Survey extends amplify_core.Model {
     buffer.write("intervention=" + (_intervention != null ? _intervention!.toString() : "null") + ", ");
     buffer.write("questions=" + (_questions != null ? _questions!.toString() : "null") + ", ");
     buffer.write("surveyType=" + (_surveyType != null ? amplify_core.enumToString(_surveyType)! : "null") + ", ");
+    buffer.write("status=" + (_status != null ? amplify_core.enumToString(_status)! : "null") + ", ");
     buffer.write("schemeVersion=" + (_schemeVersion != null ? _schemeVersion!.toString() : "null") + ", ");
     buffer.write("archived=" + (_archived != null ? _archived!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
@@ -185,7 +202,7 @@ class Survey extends amplify_core.Model {
     return buffer.toString();
   }
   
-  Survey copyWith({I18nString? name, I18nString? description, Intervention? intervention, List<Question>? questions, List<SurveySurveyTagRelation>? tags, SurveyType? surveyType, int? schemeVersion, bool? archived}) {
+  Survey copyWith({I18nString? name, I18nString? description, Intervention? intervention, List<Question>? questions, List<SurveySurveyTagRelation>? tags, SurveyType? surveyType, SurveyStatus? status, int? schemeVersion, bool? archived}) {
     return Survey._internal(
       id: id,
       name: name ?? this.name,
@@ -194,6 +211,7 @@ class Survey extends amplify_core.Model {
       questions: questions ?? this.questions,
       tags: tags ?? this.tags,
       surveyType: surveyType ?? this.surveyType,
+      status: status ?? this.status,
       schemeVersion: schemeVersion ?? this.schemeVersion,
       archived: archived ?? this.archived);
   }
@@ -205,6 +223,7 @@ class Survey extends amplify_core.Model {
     ModelFieldValue<List<Question>>? questions,
     ModelFieldValue<List<SurveySurveyTagRelation>>? tags,
     ModelFieldValue<SurveyType>? surveyType,
+    ModelFieldValue<SurveyStatus>? status,
     ModelFieldValue<int?>? schemeVersion,
     ModelFieldValue<bool?>? archived
   }) {
@@ -216,6 +235,7 @@ class Survey extends amplify_core.Model {
       questions: questions == null ? this.questions : questions.value,
       tags: tags == null ? this.tags : tags.value,
       surveyType: surveyType == null ? this.surveyType : surveyType.value,
+      status: status == null ? this.status : status.value,
       schemeVersion: schemeVersion == null ? this.schemeVersion : schemeVersion.value,
       archived: archived == null ? this.archived : archived.value
     );
@@ -258,13 +278,14 @@ class Survey extends amplify_core.Model {
               .toList()
           : null),
       _surveyType = amplify_core.enumFromString<SurveyType>(json['surveyType'], SurveyType.values),
+      _status = amplify_core.enumFromString<SurveyStatus>(json['status'], SurveyStatus.values),
       _schemeVersion = (json['schemeVersion'] as num?)?.toInt(),
       _archived = json['archived'],
       _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name?.toJson(), 'description': _description?.toJson(), 'intervention': _intervention?.toJson(), 'questions': _questions?.map((Question? e) => e?.toJson()).toList(), 'tags': _tags?.map((SurveySurveyTagRelation? e) => e?.toJson()).toList(), 'surveyType': amplify_core.enumToString(_surveyType), 'schemeVersion': _schemeVersion, 'archived': _archived, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'name': _name?.toJson(), 'description': _description?.toJson(), 'intervention': _intervention?.toJson(), 'questions': _questions?.map((Question? e) => e?.toJson()).toList(), 'tags': _tags?.map((SurveySurveyTagRelation? e) => e?.toJson()).toList(), 'surveyType': amplify_core.enumToString(_surveyType), 'status': amplify_core.enumToString(_status), 'schemeVersion': _schemeVersion, 'archived': _archived, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
   
   Map<String, Object?> toMap() => {
@@ -275,6 +296,7 @@ class Survey extends amplify_core.Model {
     'questions': _questions,
     'tags': _tags,
     'surveyType': _surveyType,
+    'status': _status,
     'schemeVersion': _schemeVersion,
     'archived': _archived,
     'createdAt': _createdAt,
@@ -293,6 +315,7 @@ class Survey extends amplify_core.Model {
     fieldName: "tags",
     fieldType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.model, ofModelName: 'SurveySurveyTagRelation'));
   static final SURVEYTYPE = amplify_core.QueryField(fieldName: "surveyType");
+  static final STATUS = amplify_core.QueryField(fieldName: "status");
   static final SCHEMEVERSION = amplify_core.QueryField(fieldName: "schemeVersion");
   static final ARCHIVED = amplify_core.QueryField(fieldName: "archived");
   static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
@@ -305,6 +328,15 @@ class Survey extends amplify_core.Model {
         ownerField: "organization_id",
         identityClaim: "custom:organization_id",
         provider: amplify_core.AuthRuleProvider.USERPOOLS,
+        operations: const [
+          amplify_core.ModelOperation.CREATE,
+          amplify_core.ModelOperation.UPDATE,
+          amplify_core.ModelOperation.DELETE,
+          amplify_core.ModelOperation.READ
+        ]),
+      amplify_core.AuthRule(
+        authStrategy: amplify_core.AuthStrategy.PRIVATE,
+        provider: amplify_core.AuthRuleProvider.IAM,
         operations: const [
           amplify_core.ModelOperation.CREATE,
           amplify_core.ModelOperation.UPDATE,
@@ -350,6 +382,12 @@ class Survey extends amplify_core.Model {
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
       key: Survey.SURVEYTYPE,
+      isRequired: true,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.enumeration)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: Survey.STATUS,
       isRequired: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.enumeration)
     ));

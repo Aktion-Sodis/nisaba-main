@@ -15,6 +15,7 @@ class Location extends DBModel {
   factory Location.fromJson(Map<String, dynamic> json) =>
       _$LocationFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$LocationToJson(this);
 
   @DBModelIgnore()

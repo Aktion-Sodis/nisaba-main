@@ -1,12 +1,9 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:mobile_app/backend/database/DB.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/Query.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
-import 'package:mobile_app/backend/repositories/InterventionRepository.dart';
 import 'package:mobile_app/backend/storage/dataStorePaths.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 
 import '../../../callableModels/Relation.dart';
@@ -61,8 +58,7 @@ class SurveyRepositoryCustom extends SurveyRepository {
     return toReturn;
   }
 
-  Future<List<Survey>> _populateList(List<Survey> surveys,
-      {Intervention? intervention}) {
+  Future<List<Survey>> _populateList(List<Survey> surveys) {
     return Future.wait(
         List.generate(surveys.length, (index) => _populate(surveys[index])));
   }
@@ -82,15 +78,15 @@ class SurveyRepositoryCustom extends SurveyRepository {
 
   @override
   SyncedFile getSurveyPic(Survey survey) {
-    String path = dataStorePath(DataStorePaths.interventionSurveyPicPath,
-        [survey.intervention!.id!, survey.id!]);
+    String path = dataStorePath(DataStorePaths.surveyPicPath,
+        [survey.id]);
     return SyncedFile(path);
   }
 
   @override
   SyncedFile getQuestionPic(Survey survey, Question question) {
     String path = dataStorePath(DataStorePaths.questionPicPath,
-        [survey.intervention!.id!, survey.id!, question.id!]);
+        [survey.id, question.id]);
     return SyncedFile(path);
   }
 
@@ -98,10 +94,9 @@ class SurveyRepositoryCustom extends SurveyRepository {
   SyncedFile getQuestionOptionPic(
       Survey survey, Question question, QuestionOption questionOption) {
     String path = dataStorePath(DataStorePaths.questionOptionPicPath, [
-      survey.intervention!.id!,
-      survey.id!,
-      question.id!,
-      questionOption.id!
+      survey.id,
+      question.id,
+      questionOption.id
     ]);
     return SyncedFile(path);
   }

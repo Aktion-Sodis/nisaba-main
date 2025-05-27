@@ -12,6 +12,7 @@ class Organization extends DBModel {
   factory Organization.fromJson(Map<String, dynamic> json) =>
       _$OrganizationFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$OrganizationToJson(this);
 
   late String nameCamelCase;
@@ -25,7 +26,7 @@ class Organization extends DBModel {
       required this.nameVerbose})
       : super(id);
 
-  Organization.unpopulated(String id) : super(id);
+  Organization.unpopulated(String super.id);
 
   @override
   DBModel getUnpopulated() {

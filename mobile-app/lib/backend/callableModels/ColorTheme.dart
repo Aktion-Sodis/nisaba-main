@@ -14,6 +14,7 @@ class ColorTheme extends DBModel {
   factory ColorTheme.fromJson(Map<String, dynamic> json) =>
       _$ColorThemeFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$ColorThemeToJson(this);
 
   String? highlight;

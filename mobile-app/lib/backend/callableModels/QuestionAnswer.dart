@@ -19,6 +19,7 @@ class QuestionAnswer extends DBModel {
   factory QuestionAnswer.fromJson(Map<String, dynamic> json) =>
       _$QuestionAnswerFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$QuestionAnswerToJson(this);
 
   late String questionID;
@@ -81,7 +82,7 @@ class QuestionAnswer extends DBModel {
         (index) => Marking.fromAmplifyModel(questionAnswer.markings![index]));
   }
 
-  QuestionAnswer.unpopulated(String? id) : super(id) {
+  QuestionAnswer.unpopulated(super.id) {
     isPopulated = false;
   }
   @override

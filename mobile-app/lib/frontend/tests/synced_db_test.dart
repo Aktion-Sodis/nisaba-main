@@ -1,24 +1,4 @@
-import 'package:flutter/foundation.dart';
-import 'package:mobile_app/backend/database/DBModelCollection.dart';
-import 'package:mobile_app/backend/database/DBModelRegistration.dart';
-import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDB.dart';
-import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDBModelRegistration.dart';
-import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDBModelRegistration.dart';
-import 'package:mobile_app/backend/database/db_implementations/synced_db/DBQueue.dart';
-import 'package:mobile_app/backend/database/db_implementations/synced_db/DBQueueObject.dart';
-import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
-import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDBModelRegistration.dart';
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
-import 'package:flutter/material.dart';
-import 'package:mobile_app/backend/database/DB.dart';
-import 'package:mobile_app/backend/database/DBModel.dart';
-import 'package:mobile_app/backend/database/QPredicate.dart';
-import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDB.dart';
-import 'package:mobile_app/frontend/dependentsizes.dart';
-import 'package:sembast/sembast.dart';
 
-import '../../backend/callableModels/TestObject.dart';
-import '../../backend/database/Query.dart';
 
 /*class SyncedDBTest extends StatelessWidget {
   SyncedDBTest({Key? key}) : super(key: key);

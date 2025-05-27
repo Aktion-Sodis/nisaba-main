@@ -3,7 +3,7 @@ import 'package:mobile_app/utils/audio.dart';
 
 // ignore: must_be_immutable
 abstract class AudioStatefulWidget extends StatefulWidget {
-  AudioStatefulWidget({Key? key, Audio? audio}) : super(key: key) {
+  AudioStatefulWidget({super.key, Audio? audio}) {
     this.audio = audio ?? Audio.instance;
   }
 

@@ -13,7 +13,7 @@ import 'package:mobile_app/frontend/strings.dart' as strings;
 class LoginView extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
-  LoginView({Key? key}) : super(key: key);
+  LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +55,8 @@ class LoginView extends StatelessWidget {
         child: Hero(
             tag: 'Logo_Hero',
             child: ClipRRect(
-                child: Image.asset("assets/fixAssets/nisaba_logo.png"),
-                borderRadius: BorderRadius.circular(8))));
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset("assets/fixAssets/nisaba_logo.png"))));
   }
 
   Widget _pic(BuildContext context) {
@@ -66,8 +66,8 @@ class LoginView extends StatelessWidget {
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
             margin: EdgeInsets.symmetric(horizontal: width(context) * .1),
             child: ClipRRect(
-                child: Image.asset("assets/specificAssets/action_pic.jpg"),
-                borderRadius: BorderRadius.circular(8))));
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset("assets/specificAssets/action_pic.jpg"))));
   }
 
   Widget _loginForm() {
@@ -167,6 +167,7 @@ class LoginView extends StatelessWidget {
         if (state.formStatus is SubmissionFailed)
           Container(
             margin: EdgeInsets.only(top: defaultPadding(context)),
+            alignment: Alignment.center,
             child: Text(
                 "Invalid login data. Please try again or talk to your admin!",
                 style: Theme.of(context)
@@ -174,7 +175,6 @@ class LoginView extends StatelessWidget {
                     .bodyLarge!
                     .copyWith(color: Theme.of(context).colorScheme.error),
                 textAlign: TextAlign.center),
-            alignment: Alignment.center,
           ),
         Row(
             mainAxisSize: MainAxisSize.max,
@@ -186,14 +186,14 @@ class LoginView extends StatelessWidget {
                       ? const CircularProgressIndicator(color: Colors.green)
                       : ElevatedButton(
                           style: ButtonStyle(
-                            textStyle: MaterialStateProperty.all(
+                            textStyle: WidgetStateProperty.all(
                                 TextStyle(fontSize: 18, color: Colors.white)),
-                            shape: MaterialStateProperty.all(
+                            shape: WidgetStateProperty.all(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8))),
-                            minimumSize: MaterialStateProperty.all(Size(
+                            minimumSize: WidgetStateProperty.all(Size(
                                 width(context) * .8, width(context) * .12)),
-                            backgroundColor: MaterialStateProperty.all(
+                            backgroundColor: WidgetStateProperty.all(
                                 Colors.green), //todo: change
                           ),
                           onPressed: () {
@@ -224,17 +224,17 @@ class LoginView extends StatelessWidget {
                   child: Text(strings.or, style: TextStyle(fontSize: 18))),
               ElevatedButton(
                 style: ButtonStyle(
-                  padding: MaterialStateProperty.all(EdgeInsets.zero),
-                  textStyle: MaterialStateProperty.all(
+                  padding: WidgetStateProperty.all(EdgeInsets.zero),
+                  textStyle: WidgetStateProperty.all(
                       TextStyle(fontSize: 18, color: Colors.black)),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  shape: WidgetStateProperty.all(RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8))),
-                  minimumSize: MaterialStateProperty.all(
+                  minimumSize: WidgetStateProperty.all(
                       Size(width(context) * .8, width(context) * .1)),
-                  maximumSize: MaterialStateProperty.all(
+                  maximumSize: WidgetStateProperty.all(
                       Size(width(context) * .8, width(context) * .12)),
                   backgroundColor:
-                      MaterialStateProperty.all(Colors.white), //todo: change
+                      WidgetStateProperty.all(Colors.white), //todo: change
                 ),
                 onPressed: () {
                   context.read<LoginBloc>().add(GoogleLogin());

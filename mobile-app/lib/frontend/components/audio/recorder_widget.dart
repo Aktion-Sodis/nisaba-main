@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:mobile_app/frontend/components/audio/audio_stateful_widget.dart';
-import 'package:mobile_app/utils/audio.dart';
 import 'package:mobile_app/utils/storage.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -17,13 +16,12 @@ import 'package:path_provider/path_provider.dart';
 /// order to keep session opened, even if all attached widgets are destroyed.
 class RecorderWidget extends AudioStatefulWidget {
   RecorderWidget(
-      {Key? key,
+      {super.key,
       required this.restingViewBuilder,
       required this.recordingViewBuilder,
-      Audio? audio,
+      super.audio,
       required this.onAudioRecorded,
-      required this.loadingViewBuilder})
-      : super(key: key, audio: audio);
+      required this.loadingViewBuilder});
 
   final Function(String audioURL) onAudioRecorded;
   final Widget Function(Function() startRecording) restingViewBuilder;
@@ -47,10 +45,7 @@ class _RecorderWidgetState extends AudioStatefulWidgetState<RecorderWidget> {
     }
 
     Directory tempDir = await getTemporaryDirectory();
-    String filepath = tempDir.path +
-        "/recorded_audio_" +
-        DateTime.now().microsecondsSinceEpoch.toString() +
-        ".aac";
+    String filepath = "${tempDir.path}/recorded_audio_${DateTime.now().microsecondsSinceEpoch}.aac";
     String freeFilepath = await getFreeFilepath(filepath);
 
     widget.audio.recorder.startRecorder(

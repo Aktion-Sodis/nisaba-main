@@ -6,7 +6,7 @@ import 'package:mobile_app/frontend/theme.dart';
 import 'package:mobile_app/frontend/strings.dart' as strings;
 
 class WifiOnlySettingChecker extends StatefulWidget {
-  WifiOnlySettingChecker({Key? key, required this.child}) : super(key: key);
+  const WifiOnlySettingChecker({super.key, required this.child});
 
   final Widget child;
 
@@ -54,10 +54,10 @@ class _WifiOnlySettingCheckerState extends State<WifiOnlySettingChecker> {
           ),
           ElevatedButton(
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(ThemeColors.green),
-                  padding: MaterialStateProperty.all<EdgeInsets>(
+                  backgroundColor: WidgetStateProperty.all(ThemeColors.green),
+                  padding: WidgetStateProperty.all<EdgeInsets>(
                       const EdgeInsets.all(18)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ))),
@@ -68,10 +68,10 @@ class _WifiOnlySettingCheckerState extends State<WifiOnlySettingChecker> {
           ),
           ElevatedButton(
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(ThemeColors.green),
-                  padding: MaterialStateProperty.all<EdgeInsets>(
+                  backgroundColor: WidgetStateProperty.all(ThemeColors.green),
+                  padding: WidgetStateProperty.all<EdgeInsets>(
                       const EdgeInsets.all(18)),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ))),

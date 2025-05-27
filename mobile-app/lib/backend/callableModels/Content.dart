@@ -1,12 +1,9 @@
 import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:flutter/foundation.dart';
-import 'package:mobile_app/backend/callableModels/Intervention.dart';
-import 'package:mobile_app/backend/callableModels/ContentTag.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/callableModels/Relation.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import 'package:json_annotation/json_annotation.dart';
 
@@ -20,6 +17,7 @@ class Content extends DBModel {
   factory Content.fromJson(Map<String, dynamic> json) =>
       _$ContentFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$ContentToJson(this);
 
   late I18nString name_ml;
@@ -112,7 +110,7 @@ class Content extends DBModel {
         schemeVersion: schemeVersion));
   }*/
 
-  Content.unpopulated(String? id) : super(id) {
+  Content.unpopulated(super.id) {
     isPopulated = false;
   }
   @override

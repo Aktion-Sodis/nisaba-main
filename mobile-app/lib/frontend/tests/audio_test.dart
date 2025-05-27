@@ -10,7 +10,7 @@ import 'package:mobile_app/utils/storage.dart';
 import 'package:path_provider/path_provider.dart';
 
 class AudioTest extends StatefulWidget {
-  AudioTest({Key? key}) : super(key: key);
+  const AudioTest({super.key});
 
   @override
   State<AudioTest> createState() => _AudioTestState();
@@ -27,10 +27,7 @@ class _AudioTestState extends State<AudioTest> {
 
   Future<void> _startRecording() async {
     Directory tempDir = await getTemporaryDirectory();
-    String filepath = tempDir.path +
-        "/test_audio_" +
-        DateTime.now().microsecondsSinceEpoch.toString() +
-        ".aac";
+    String filepath = "${tempDir.path}/test_audio_${DateTime.now().microsecondsSinceEpoch}.aac";
     String freeFilepath = await getFreeFilepath(filepath);
 
     audio.recorder.startRecorder(
@@ -45,10 +42,11 @@ class _AudioTestState extends State<AudioTest> {
   }
 
   void _startPlaying() {
-    if (_recordedURI != null)
+    if (_recordedURI != null) {
       audio.startPlayer(fromURI: _recordedURI);
-    else
+    } else {
       print("Nothing has been recorded yet");
+    }
   }
 
   Future<void> _stopPlaying() => audio.stopPlayer();

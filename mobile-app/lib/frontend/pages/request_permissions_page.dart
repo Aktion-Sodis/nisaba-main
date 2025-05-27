@@ -10,7 +10,7 @@ import 'package:mobile_app/frontend/strings.dart' as strings;
 void mackeSureAccepringPermissions() {}
 
 class RequestPermissionsPage extends StatelessWidget {
-  RequestPermissionsPage({Key? key}) : super(key: key) {
+  RequestPermissionsPage({super.key}) {
     RequestPermissionsPage.opened = true;
   }
 
@@ -32,7 +32,7 @@ class RequestPermissionsPage extends StatelessWidget {
         listener: (context, state) {
           if (state is RequestingPermissionsWithDialog) {
             showDialog(
-                barrierColor: Theme.of(context).colorScheme.background,
+                barrierColor: Theme.of(context).colorScheme.surface,
                 context: context,
                 builder: (context) => Center(
                         child: Padding(
@@ -56,7 +56,7 @@ class RequestPermissionsPage extends StatelessWidget {
                                     ElevatedButton(
                                         style: ButtonStyle(
                                             backgroundColor:
-                                                MaterialStateProperty.all(
+                                                WidgetStateProperty.all(
                                                     ThemeColors.green)),
                                         onPressed: () {
                                           Navigator.pop(context);
@@ -75,7 +75,7 @@ class RequestPermissionsPage extends StatelessWidget {
                                     ElevatedButton(
                                         style: ButtonStyle(
                                             backgroundColor:
-                                                MaterialStateProperty.all(
+                                                WidgetStateProperty.all(
                                                     ThemeColors.mobster)),
                                         onPressed: () => Navigator.pop(context),
                                         child: SizedBox(
@@ -146,11 +146,11 @@ class RequestPermissionsPage extends StatelessWidget {
                 ElevatedButton(
                     style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(ThemeColors.green),
-                        padding: MaterialStateProperty.all<EdgeInsets>(
+                            WidgetStateProperty.all(ThemeColors.green),
+                        padding: WidgetStateProperty.all<EdgeInsets>(
                             const EdgeInsets.all(18)),
                         shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                            WidgetStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ))),

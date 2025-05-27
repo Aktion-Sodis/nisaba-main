@@ -41,7 +41,7 @@ class ContentBloc extends Bloc<ContentEvent, ContentState> {
       if (event is AddInterventionFilter) {
         List<Intervention> newInterventions =
             List.from(loadedState.selectedInterventions);
-        newInterventions.add((event as AddInterventionFilter).intervention);
+        newInterventions.add((event).intervention);
         List<Content> toDisplayContent =
             toDisplay(loadedState, newInterventions);
         emit(loadedState.copyWith(

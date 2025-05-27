@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 
 class AmplifyCognitoTest extends StatelessWidget {
-  const AmplifyCognitoTest({Key? key}) : super(key: key);
+  const AmplifyCognitoTest({super.key});
 
   Future<void> _getOrganizationID() async {
     final userAttributes = await Amplify.Auth.fetchUserAttributes();
     final organizationID = userAttributes.firstWhere(
         (element) => element.userAttributeKey.key == "custom:organization_id");
-    print("Get organization ID: " + organizationID.value);
+    print("Get organization ID: ${organizationID.value}");
   }
 
   @override

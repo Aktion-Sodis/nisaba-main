@@ -1,18 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/backend/callableModels/InterventionTag.dart';
-import 'package:mobile_app/backend/callableModels/Organization.dart';
-import 'package:mobile_app/backend/callableModels/Relation.dart';
-import 'package:mobile_app/backend/callableModels/SurveyTag.dart';
-import 'package:mobile_app/backend/callableModels/TestObject.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
-import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDB.dart';
-import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDB.dart';
-import 'package:mobile_app/backend/database/db_implementations/synced_db/DBQueueObject.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDBModelRegistration.dart';
 import 'package:mobile_app/frontend/models_auto_registration.dart';
-import 'package:mobile_app/backend/callableModels/CallableModels.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,11 +29,11 @@ Future<void> syncedDBModelsIntegrationTest() async {
 }
 
 void testModel(Type type) {
-  print("Starting test for " + type.toString());
+  print("Starting test for $type");
   assert(_instances[type] != null);
   testEqualsOperation(type);
   testModelTransformations(type);
-  print("Test for " + type.toString() + " finished");
+  print("Test for $type finished");
 }
 
 void testEqualsOperation(Type type) {

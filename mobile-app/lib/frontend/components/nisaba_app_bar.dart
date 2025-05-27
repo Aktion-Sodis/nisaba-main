@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:mobile_app/frontend/common_widgets.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
-import 'package:mobile_app/frontend/theme.dart';
 
 class NisabaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool showBackButton;
 
   const NisabaAppBar(
-      {Key? key, required this.title, this.showBackButton = true})
-      : super(key: key);
+      {super.key, required this.title, this.showBackButton = true});
 
   @override
   Widget build(BuildContext context) {

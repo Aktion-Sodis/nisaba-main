@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile_app/backend/Blocs/sync/sync_bloc.dart';
 import 'package:mobile_app/backend/repositories/AuthRepository.dart';
 import 'package:mobile_app/backend/Blocs/session/session_cubit.dart';
 import 'package:mobile_app/backend/Blocs/session/session_state.dart';
@@ -13,7 +12,7 @@ import 'package:mobile_app/frontend/pages/update_password_view.dart';
 import 'package:mobile_app/frontend/user_state_builder.dart';
 
 class AuthenticationStateBuilder extends StatelessWidget {
-  const AuthenticationStateBuilder({Key? key}) : super(key: key);
+  const AuthenticationStateBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +27,28 @@ class AuthenticationStateBuilder extends StatelessWidget {
           if (state is RequiresAuthentificationSessionState)
             _buildRequiresAuthenticationSessionState(context, state),
 
+          // Show syncing screen
+          if (state is SyncingSessionState)
+            _buildSyncingSessionState(context, state),
+
           // Show further app content
-          //todo: insert user Bloc here
           if (state is FullyAuthenticatedSessionState)
             _buildFullyAuthenticatedSessionState(context, state),
 
           if (state is RequiresPasswordChangeSessionState)
-            _buildRequiresPasswordChangeSessionState(context, state)
+            _buildRequiresPasswordChangeSessionState(context, state),
+
+          // Default to loading screen if no state matches
+          if (!(state is UnknownSessionState ||
+              state is RequiresAuthentificationSessionState ||
+              state is SyncingSessionState ||
+              state is FullyAuthenticatedSessionState ||
+              state is RequiresPasswordChangeSessionState))
+            const MaterialPage(child: LoadingView()),
         ],
-        onPopPage: (route, result) => route.didPop(result),
+        onPopPage: (route, result) {
+          return route.didPop(result);
+        },
       );
     });
   }
@@ -50,8 +62,6 @@ class AuthenticationStateBuilder extends StatelessWidget {
               authRepo: context.read<AuthRepository>(),
               userID: state.userID,
               userRepository: context.read<UserRepository>()),
-
-          //todo: insert here the sync bloc -> so it is accessible
           child: UserStateBuilder()),
     );
   }
@@ -69,5 +79,10 @@ class AuthenticationStateBuilder extends StatelessWidget {
     return MaterialPage(
       child: LoginView(),
     );
+  }
+
+  MaterialPage _buildSyncingSessionState(
+      BuildContext context, SyncingSessionState state) {
+    return const MaterialPage(child: LoadingView());
   }
 }

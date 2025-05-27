@@ -1,5 +1,4 @@
 import 'package:db_model_generator/db_model_annotations.dart';
-import 'package:mobile_app/backend/callableModels/Content.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/callableModels/Relation.dart';
 import 'package:mobile_app/backend/callableModels/Survey.dart';
@@ -8,7 +7,6 @@ import 'package:mobile_app/backend/database/DBModel.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-import 'Level.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 
@@ -22,6 +20,7 @@ class Intervention extends DBModel {
   factory Intervention.fromJson(Map<String, dynamic> json) =>
       _$InterventionFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$InterventionToJson(this);
 
   static Map<String, dynamic> queryFields() => _$Intervention;
@@ -89,7 +88,7 @@ class Intervention extends DBModel {
     this.levelConnections = levelConnections ?? [];
   }
 
-  Intervention.unpopulated(String? id) : super(id) {
+  Intervention.unpopulated(super.id) {
     isPopulated = false;
   }
   @override

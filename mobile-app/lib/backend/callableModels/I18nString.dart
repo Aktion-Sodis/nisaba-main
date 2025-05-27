@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:mobile_app/frontend/strings.dart' as str;
-import 'package:path/path.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 
@@ -17,6 +16,7 @@ class I18nString extends DBModel {
   factory I18nString.fromJson(Map<String, dynamic> json) =>
       _$I18nStringFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$I18nStringToJson(this);
 
   late List<String> languageKeys;

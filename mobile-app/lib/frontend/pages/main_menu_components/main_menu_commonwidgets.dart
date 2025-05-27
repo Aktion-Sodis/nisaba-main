@@ -3,16 +3,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:mobile_app/backend/Blocs/organization_view/organization_view_bloc.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
-import 'package:mobile_app/backend/callableModels/Survey.dart';
 import 'package:mobile_app/backend/repositories/ContentRepository.dart';
-import 'package:mobile_app/backend/repositories/EntityRepository.dart';
 import 'package:mobile_app/backend/repositories/InterventionRepository.dart';
 import 'package:mobile_app/backend/repositories/LevelRepository.dart';
 import 'package:mobile_app/backend/repositories/SurveyRepository.dart';
 import 'package:mobile_app/backend/storage/image_synch.dart';
-import 'package:mobile_app/frontend/buttons.dart';
 import 'package:mobile_app/frontend/common_widgets.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 import 'package:mobile_app/frontend/strings.dart' as strings;
@@ -27,15 +23,14 @@ class CustomPicButton extends StatefulWidget {
   bool selected;
 
   CustomPicButton(
-      {Key? key,
+      {super.key,
       this.onPressed,
       required this.syncedFile,
       required this.size,
       required this.pressable,
       this.padding,
       this.defaultIconData,
-      this.selected = false})
-      : super(key: key);
+      this.selected = false});
 
   @override
   State<StatefulWidget> createState() {
@@ -50,10 +45,15 @@ class CustomPicButtonState extends State<CustomPicButton> {
   @override
   void initState() {
     widget.syncedFile.file().then((value) {
-      setState(() {
-        imageFile = value;
+      if (mounted) {
+        setState(() {
+          imageFile = value;
+          loading = false;
+        });
+      } else {
+        imageFile = null;
         loading = false;
-      });
+      }
     });
     super.initState();
   }
@@ -247,19 +247,15 @@ Widget taskRow(BuildContext context, Task task,
                                     Container(
                                         margin: EdgeInsets.only(
                                             top: defaultPadding(context)),
-                                        child: Text(strings.remaining +
-                                            ": " +
-                                            task.dueDate!
+                                        child: Text("${strings.remaining}: ${task.dueDate!
                                                 .difference(DateTime.now())
-                                                .inDays
-                                                .toString() +
-                                            (task.dueDate!
+                                                .inDays}${task.dueDate!
                                                         .difference(
                                                             DateTime.now())
                                                         .inDays >
                                                     1
                                                 ? strings.days
-                                                : strings.day)))
+                                                : strings.day}"))
                                 ])),
                             if (checkChangePossible)
                               Checkbox(
@@ -406,7 +402,7 @@ class InterventionFilterWidget extends StatefulWidget {
   List<Intervention> allInterventions;
 
   InterventionFilterWidget(
-      {required this.allInterventions,
+      {super.key, required this.allInterventions,
       this.selectable = false,
       this.onSelectionChanged});
 
@@ -473,7 +469,7 @@ class InterventionFilterWidgetState extends State<InterventionFilterWidget> {
             child: Wrap(
                 direction: Axis.horizontal,
                 alignment: WrapAlignment.center,
-                children: getWrapChildren(),
-                spacing: defaultPadding(context))));
+                spacing: defaultPadding(context),
+                children: getWrapChildren())));
   }
 }

@@ -29,7 +29,7 @@ abstract class CommonWidgets {
                       color: Theme.of(context)
                               .buttonTheme
                               .colorScheme
-                              ?.background ??
+                              ?.surface ??
                           Colors.green,
                       width: 1)),
               child: Container(
@@ -40,7 +40,7 @@ abstract class CommonWidgets {
                       color: Theme.of(context)
                               .buttonTheme
                               .colorScheme
-                              ?.background ??
+                              ?.surface ??
                           Colors.green,
                     ),
                   )),

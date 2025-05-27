@@ -1,6 +1,4 @@
-import 'package:mobile_app/backend/callableModels/AppliedIntervention.dart';
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
-import 'package:mobile_app/backend/callableModels/Survey.dart';
 
 abstract class OrganizationViewEvent {}
 

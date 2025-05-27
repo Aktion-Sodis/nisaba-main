@@ -16,6 +16,7 @@ class CustomData extends DBModel {
   factory CustomData.fromJson(Map<String, dynamic> json) =>
       _$CustomDataFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$CustomDataToJson(this);
 
   late I18nString name;
@@ -42,7 +43,7 @@ class CustomData extends DBModel {
         id: id));
   }
 
-  CustomData.unpopulated(String? id) : super(id) {
+  CustomData.unpopulated(super.id) {
     isPopulated = false;
   }
   @override

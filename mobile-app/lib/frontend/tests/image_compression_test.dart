@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
-import 'package:mobile_app/utils/photo_capturing.dart';
 
 class ImageCompressionTest extends StatelessWidget {
-  const ImageCompressionTest({Key? key}) : super(key: key);
+  const ImageCompressionTest({super.key});
 
   Future<void> _startTest(BuildContext context) async {
     print("Start test:");
@@ -19,11 +18,10 @@ class ImageCompressionTest extends StatelessWidget {
     print("A picture has been chosen");
 
     int lengthBeforeCompressing = await picture!.length();
-    print("Picture size before compressing: " +
-        lengthBeforeCompressing.toString());
+    print("Picture size before compressing: $lengthBeforeCompressing");
 
     int upperBoundLength = (lengthBeforeCompressing ~/ 2);
-    print("Max expected file size: " + upperBoundLength.toString());
+    print("Max expected file size: $upperBoundLength");
 
     Uint8List? compressed = await FlutterImageCompress.compressWithFile(
       picture.path,
@@ -34,12 +32,12 @@ class ImageCompressionTest extends StatelessWidget {
     File file = File(picture.path);
     await file.writeAsBytes(compressed!);
 
-    int lengthAfterCompressing = await picture!.length();
+    int lengthAfterCompressing = await picture.length();
     print(
-        "Picture size after compressing: " + lengthAfterCompressing.toString());
+        "Picture size after compressing: $lengthAfterCompressing");
 
     bool compressionSatisfied = lengthAfterCompressing <= upperBoundLength;
-    print("The compression is satisfying: " + compressionSatisfied.toString());
+    print("The compression is satisfying: $compressionSatisfied");
   }
 
   @override

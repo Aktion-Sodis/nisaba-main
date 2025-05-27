@@ -1,24 +1,13 @@
-import 'package:flutter/foundation.dart';
-import 'package:mobile_app/backend/database/DBModelCollection.dart';
-import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/db_implementations/graphql_db/GraphQLDB.dart';
-import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDB.dart';
-import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDBModelRegistration.dart';
-import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDBModelRegistration.dart';
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:flutter/material.dart';
 import 'package:mobile_app/backend/database/DB.dart';
-import 'package:mobile_app/backend/database/DBModel.dart';
-import 'package:mobile_app/backend/database/QPredicate.dart';
-import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDB.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 
 import '../../backend/callableModels/TestObject.dart';
-import '../../backend/database/Query.dart';
 import '../../backend/database/db_implementations/graphql_db/GraphQGDBModelRegistration.dart';
 
 class GraphQLQueryTest extends StatelessWidget {
-  GraphQLQueryTest({Key? key}) : super(key: key);
+  GraphQLQueryTest({super.key});
 
   late DB db;
 
@@ -47,7 +36,7 @@ class GraphQLQueryTest extends StatelessWidget {
       "IloveNisaba and Kazakhstan",
     );
 
-    TestObject? testObject2 = await db.getById(TestObject, testObject.id!);
+    TestObject? testObject2 = await db.getById(TestObject, testObject.id);
     print("DBTest: TestObject gotten: $testObject2");
     if (testObject2 != null) {
       print(testObject2.toJson());

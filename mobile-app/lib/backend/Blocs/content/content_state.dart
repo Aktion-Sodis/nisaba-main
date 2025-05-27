@@ -1,5 +1,4 @@
 import 'package:mobile_app/backend/callableModels/CallableModels.dart';
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import '../../callableModels/Relation.dart';
 

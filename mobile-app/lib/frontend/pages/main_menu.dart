@@ -16,7 +16,7 @@ import 'package:mobile_app/frontend/test_list.dart';
 const bool show_all_menu_pages = false;
 
 class MainMenu extends StatefulWidget {
-  const MainMenu({Key? key}) : super(key: key);
+  const MainMenu({super.key});
 
   @override
   State<StatefulWidget> createState() {

@@ -15,6 +15,7 @@ class QuestionOption extends DBModel {
   factory QuestionOption.fromJson(Map<String, dynamic> json) =>
       _$QuestionOptionFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$QuestionOptionToJson(this);
 
   late I18nString text;
@@ -45,7 +46,7 @@ class QuestionOption extends DBModel {
     followUpQuestionIDs = questionOption.followUpQuestionIDs;
   }
 
-  QuestionOption.unpopulated(String? id) : super(id) {
+  QuestionOption.unpopulated(super.id) {
     isPopulated = false;
   }
   @override

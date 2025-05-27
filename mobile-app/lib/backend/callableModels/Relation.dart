@@ -4,7 +4,6 @@ import 'package:mobile_app/backend/callableModels/InterventionTag.dart';
 import 'package:mobile_app/backend/callableModels/SurveyTag.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 
-import 'Survey.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Relation.g.dart';
@@ -43,7 +42,7 @@ abstract class Relation<T extends DBModel, P extends DBModel> extends DBModel {
         secondID = second.id,
         super(id);
 
-  Relation.unpopulated(String? id) : super(id);
+  Relation.unpopulated(super.id);
 
   @override
   DBModel getUnpopulated() {

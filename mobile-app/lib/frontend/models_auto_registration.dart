@@ -1,19 +1,10 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:mobile_app/backend/callableModels/Relation.dart';
 import 'package:mobile_app/backend/callableModels/TestObject.dart';
-import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/DBModelRegistration.dart';
-import 'package:mobile_app/backend/database/QPredicate.dart';
 import 'package:mobile_app/backend/database/db_implementations/graphql_db/GraphQGDBModelRegistration.dart';
 import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDBModelRegistration.dart';
-import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDBModelRegistration.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDBModelRegistration.dart';
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
-import '../backend/callableModels/Organization.dart';
-import '../backend/callableModels/SurveyTag.dart';
 import '../backend/callableModels/callableModels.dart';
 import '../backend/database/db_implementations/synced_db/SyncedDB.dart';
 
@@ -128,7 +119,7 @@ void registerModels() {
       });
 
   // Survey
-  /*_register(
+  _register(
       type: Survey,
       haveToSyncDownstream: true,
       toDBModel: Survey.fromJson,
@@ -137,7 +128,7 @@ void registerModels() {
       updateMutation: "updateSurvey",
       getQuery: "getSurvey",
       listQuery: "listSurveys",
-      queryFields: Survey.queryFields());*/
+      queryFields: Survey.queryFields());
 
   // AppliedIntervention
   _register(
@@ -178,7 +169,7 @@ void registerModels() {
   // User
   _register(
       type: User,
-      haveToSyncDownstream: false,
+      haveToSyncDownstream: true,
       toDBModel: User.fromJson,
       createMutation: "createUser",
       deleteMutation: "deleteUser",

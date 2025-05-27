@@ -16,13 +16,21 @@ class AuthenticatedSessionState extends SessionState {
   AuthenticatedSessionState({required this.userID});
 }
 
+class SyncingSessionState extends AuthenticatedSessionState {
+  SyncingSessionState({required super.userID});
+}
+
 class FullyAuthenticatedSessionState extends AuthenticatedSessionState {
   User? user;
-  FullyAuthenticatedSessionState({required String userID, this.user})
-      : super(userID: userID);
+  FullyAuthenticatedSessionState({required super.userID, this.user});
 }
 
 class RequiresPasswordChangeSessionState extends SessionState {
   AuthCredentials authCredentials;
   RequiresPasswordChangeSessionState({required this.authCredentials});
+}
+
+class RequiresUserCreationState extends SessionState {
+  String userID;
+  RequiresUserCreationState({required this.userID});
 }

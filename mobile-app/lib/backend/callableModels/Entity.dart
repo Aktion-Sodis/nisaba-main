@@ -8,7 +8,6 @@ import 'package:mobile_app/backend/callableModels/Location.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 
 import 'package:json_annotation/json_annotation.dart';
 
@@ -21,6 +20,7 @@ class Entity extends DBModel {
   // JsonSerializable factory and toJson methods
   factory Entity.fromJson(Map<String, dynamic> json) {Entity tr = _$EntityFromJson(json); tr.entityLevelId = tr.level.id; return tr;}
 
+  @override
   Map<String, dynamic> toJson() => _$EntityToJson(this);
 
   static Map<String, dynamic> queryFields() => _$Entity;
@@ -89,7 +89,7 @@ class Entity extends DBModel {
     return toSort;
   }
 
-  Entity.unpopulated(String? id) : super(id) {
+  Entity.unpopulated(super.id) {
     isPopulated = false;
   }
   @override

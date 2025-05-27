@@ -6,7 +6,6 @@ import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedD
 import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/backend/repositories/UserRepository.dart';
 import 'package:mobile_app/backend/repositories/exceptions/AuthRepositoryExceptions.dart';
-import 'package:mobile_app/utils/amplify.dart';
 
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import '../Blocs/session/auth_credentials.dart';
@@ -60,9 +59,8 @@ class AuthRepository {
           organization.nameKebabCase;
       LocalDataRepository.instance.organizationNameCamelCase =
           organization.nameCamelCase;
-      print("Organization information saved: " +
-          LocalDataRepository.instance.organizationNameVerbose.toString());
-    } on DataStoreException catch (e) {
+      print("Organization information saved: ${LocalDataRepository.instance.organizationNameVerbose}");
+    } on DataStoreException {
       // TODO: implement exception handling
     }
   }
@@ -70,10 +68,6 @@ class AuthRepository {
   bool _sessionDataIsConsistent() {
     print('SessionData');
     print(LocalDataRepository.instance.toString());
-
-    if (LocalDataRepository.instance.organizationID == null) {
-      return false;
-    }
 
     if (LocalDataRepository.instance.organizationNameVerbose == null) {
       return false;
@@ -106,7 +100,6 @@ class AuthRepository {
       print("trying auto login");
 
       final session = await Amplify.Auth.fetchAuthSession();
-      await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
       print("autoLogin logged in?: ${session.isSignedIn}");
 
       if (!_sessionDataIsConsistent()) {
@@ -125,22 +118,19 @@ class AuthRepository {
       } on SocketException catch (_) {
         internetconnection = false;
       }
-      if (internetconnection) {
-        await initSession();
-      } else {
+      if (!internetconnection) {
         print('performing offline login');
       }
-      //await initSession();
       return session.isSignedIn ? (await _getUserIdFromAttributes()) : null;
-    } on SessionDataInconsistentException catch (e) {
-      throw e;
+    } on SessionDataInconsistentException {
+      rethrow;
     } catch (e) {
       try {
         print("tryining offline login");
         AuthUser authUser = await Amplify.Auth.getCurrentUser();
         return authUser.userId;
-      } on SessionDataInconsistentException catch (e) {
-        throw e;
+      } on SessionDataInconsistentException {
+        rethrow;
       } catch (e) {
         print("offline login not possible");
         return null;
@@ -164,7 +154,6 @@ class AuthRepository {
       print("trying auto login");
 
       final session = await Amplify.Auth.fetchAuthSession();
-      await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
       print("autoLogin logged in?: ${session.isSignedIn}");
 
       bool autoLoggedIn = session.isSignedIn;
@@ -199,46 +188,13 @@ class AuthRepository {
     );
 
     print("is Signed in: ${result.isSignedIn}");
-    print("next Step: ${result.nextStep?.signInStep}");
-    if (result.nextStep?.signInStep == "CONFIRM_SIGN_IN_WITH_NEW_PASSWORD") {
+    print("next Step: ${result.nextStep.signInStep}");
+    if (result.nextStep.signInStep == "CONFIRM_SIGN_IN_WITH_NEW_PASSWORD") {
       return ("CONFIRM_SIGN_IN_WITH_NEW_PASSWORD");
     }
 
     if (result.isSignedIn) {
-      /*await SyncedDB.instance.clear();
-      ConfigGraphQL().initClient();
-      final userID = await _getUserIdFromAttributes();
-      await _rememberUserAttributesLocally();
-      await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
-      await _rememberUserOrganization(
-          LocalDataRepository.instance.organizationID);
-
-      // Init sync
-      await SyncedDB.instance.synchronizer.syncDownstream();
-
-      // TODO: loading a user
-      User? user = await UserRepository.instance.fetchUserByID(userID);
-      /*if (user == null) {
-        throw UserNotFoundInDatabaseException();
-        //todo: wie soll das offline funktionieren -> dann gibt online db immer null zurück?
-        //dann pushen zu create user?
-      }*/
-      LocalDataRepository.instance.user = user;*/
-      print('initiates Session with db');
-      await initSession();
-
-      print('gets user id');
       String userID = await _getUserIdFromAttributes();
-      // TODO: loading a user
-      print('gets user');
-      User? user = await UserRepository.instance.fetchUserByID(userID);
-      /*if (user == null) {
-        throw UserNotFoundInDatabaseException();
-        //todo: wie soll das offline funktionieren -> dann gibt online db immer null zurück?
-        //dann pushen zu create user?
-      }*/
-      print('got user and sets it');
-      LocalDataRepository.instance.user = user;
       return userID;
     } else {
       return null;
@@ -246,56 +202,66 @@ class AuthRepository {
   }
 
   bool _sessionInitialized = false;
-  Future<void> initSession() async {
-    //todo: sync-fix -> hier vor clearen prüfen ob upstream gesynced
-    if (_sessionInitialized) return;
-    ConfigGraphQL().initClient();
-
-    await SyncedDB.instance.synchronizer.syncUpstream();
-
-    print('gets user id again from attributes');
-    final userID = await _getUserIdFromAttributes();
-    print('saves attributes locally');
-    await _rememberUserAttributesLocally();
-    print('fetches and remembers auth token');
-    await CognitoOIDCAuthProvider.fetchAndRememberAuthToken();
-    print('remembers user organization');
-    await _rememberUserOrganization(
-        LocalDataRepository.instance.organizationID);
-    print('now inits sync');
-    print('upstream sync');
-    SyncedDB.instance.synchronizer.syncUpstream();
-
-    print('[LocalDB] clears synced db from init session');
-    await SyncedDB.instance.clear();
-
-    // Init sync
-    await SyncedDB.instance.synchronizer.syncDownstream();
-
-    _sessionInitialized = true;
+  Future<User?> initSession() async {
+    if (_sessionInitialized) return null;
+    
+    try {
+      // 1. Initialize GraphQL client
+      ConfigGraphQL().initClient();
+      
+      // 2. Perform upstream sync to save any local data
+      print('Starting upstream sync...');
+      await SyncedDB.instance.synchronizer.syncUpstream();
+      
+      // 3. Clear local DB
+      print('Clearing local DB...');
+      await SyncedDB.instance.clear();
+      
+      // 4. Get user ID and remember attributes
+      final userID = await _getUserIdFromAttributes();
+      await _rememberUserAttributesLocally();
+      await _rememberUserOrganization(LocalDataRepository.instance.organizationID);
+      
+      // 5. Perform downstream sync
+      print('Starting downstream sync...');
+      await SyncedDB.instance.synchronizer.syncDownstream();
+      
+      // 6. Check if user exists
+      print('Checking if user exists...');
+      User? user = await UserRepository.instance.getUserById(userID);
+      
+      // 7. Store user in LocalDataRepository
+      LocalDataRepository.instance.user = user;
+      
+      _sessionInitialized = true;
+      
+      return user;
+    } catch (e) {
+      print('Error in initSession: $e');
+      _sessionInitialized = false;
+      rethrow;
+    }
   }
 
   Future<AuthCredentials?> updatePasswordInitially(
       AuthCredentials oldCredentials, String newPassword) async {
-    print("updateing password");
-    SignInResult signInResult =
-        await Amplify.Auth.confirmSignIn(confirmationValue: newPassword);
-    print("updated password: ${signInResult.isSignedIn}");
-    if (signInResult.isSignedIn) {
-      String? id = await _getUserIdFromAttributes();
-      print("id: $id");
-      if (id != null) {
-        AuthCredentials creds = AuthCredentials(
-            userName: oldCredentials.userName,
-            password: newPassword,
-            userId: id,
-            email: oldCredentials.email,
-            phoneNumber: oldCredentials.phoneNumber);
-        return creds;
-      } else {
-        return null;
+    try {
+      final result = await Amplify.Auth.confirmSignIn(
+        confirmationValue: newPassword,
+      );
+
+      if (result.isSignedIn) {
+        await initSession();
+        return AuthCredentials(
+          userName: oldCredentials.userName,
+          password: newPassword,
+          userId: await _getUserIdFromAttributes(),
+        );
       }
-    } else {
+      return null;
+    } catch (e) {
+      print("error in updating password");
+      print(e.toString());
       return null;
     }
   }
@@ -361,7 +327,6 @@ class AuthRepository {
     await Amplify.Auth.signOut(
         options: const SignOutOptions(globalSignOut: true));
 
-    CognitoOIDCAuthProvider.forgetAuthToken();
     _clearSessionData();
     ConfigGraphQL().closeClient();
     return true;

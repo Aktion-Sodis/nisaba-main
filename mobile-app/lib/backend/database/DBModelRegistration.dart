@@ -1,4 +1,3 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
 
 import 'DBModel.dart';
 import 'QPredicate.dart';

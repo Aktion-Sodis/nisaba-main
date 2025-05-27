@@ -13,27 +13,18 @@ abstract class RequestPermissionsState {
 
 class RequestingPermissions extends RequestPermissionsState {
   const RequestingPermissions(
-      {List<RequiredPermission> acceptedPermissions = const [],
-      List<RequiredPermission> restrictedPermissions = const []})
-      : super(
-            acceptedPermissions: acceptedPermissions,
-            restrictedPermissions: restrictedPermissions);
+      {super.acceptedPermissions = const [],
+      super.restrictedPermissions = const []});
 }
 
 class RequestingPermissionsWithDialog extends RequestingPermissions {
   const RequestingPermissionsWithDialog(
-      {List<RequiredPermission> acceptedPermissions = const [],
-      List<RequiredPermission> restrictedPermissions = const []})
-      : super(
-            acceptedPermissions: acceptedPermissions,
-            restrictedPermissions: restrictedPermissions);
+      {super.acceptedPermissions,
+      super.restrictedPermissions});
 }
 
 class RequestedPermissionsAccepted extends RequestPermissionsState {
   const RequestedPermissionsAccepted(
-      {List<RequiredPermission> acceptedPermissions = const [],
-      List<RequiredPermission> restrictedPermissions = const []})
-      : super(
-            acceptedPermissions: acceptedPermissions,
-            restrictedPermissions: restrictedPermissions);
+      {super.acceptedPermissions = const [],
+      super.restrictedPermissions = const []});
 }

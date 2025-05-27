@@ -42,10 +42,10 @@ class OrganizationViewBloc
     List<Entity> loadedEntities = await EntityRepository.instance.getEntities(
         byParentEntityID: true, parentEntityID: parentEntityID, page: 0);
     print('Loaded entities length: ${loadedEntities.length}');
-    loadedEntities.forEach((element) {
+    for (var element in loadedEntities) {
       element.level = content.level;
       print('Loaded entity: ${element.displayName}');
-    });
+    }
     //todo: hier läuft es iwie nicht
     //state wird nicht geupdatet
     content.daughterEntities.addAll(loadedEntities);
@@ -102,15 +102,13 @@ class OrganizationViewBloc
             emit(loadedState.copyWith(
                 organizationViewType: OrganizationViewType.SURVEYS,
                 currentDetailEntity: loadedState.currentDetailEntity,
-                appBarString: strings.organization_view_surveys +
-                    " (${loadedState.currentDetailEntity!.name})"));
+                appBarString: "${strings.organization_view_surveys} (${loadedState.currentDetailEntity!.name})"));
             break;
           case OrganizationViewType.EXECUTEDSURVEY:
             emit(loadedState.copyWith(
                 organizationViewType: OrganizationViewType.HISTORY,
                 currentDetailEntity: loadedState.currentDetailEntity,
-                appBarString: strings.organization_view_history +
-                    " (${loadedState.currentDetailEntity!.name})"));
+                appBarString: "${strings.organization_view_history} (${loadedState.currentDetailEntity!.name})"));
             break;
           default:
             emit(loadedState.copyWith(
@@ -143,31 +141,30 @@ class OrganizationViewBloc
             organizationViewType: OrganizationViewType.TASKS,
             currentDetailEntity: event.entity,
             appBarString:
-                strings.organization_view_taks + " (${event.entity.name})"));
+                "${strings.organization_view_taks} (${event.entity.name})"));
       } else if (event is NavigateToEntityInfo) {
         emit(loadedState.copyWith(
             organizationViewType: OrganizationViewType.INFO,
             currentDetailEntity: event.entity,
             appBarString:
-                strings.organization_view_info + " (${event.entity.name})"));
+                "${strings.organization_view_info} (${event.entity.name})"));
       } else if (event is NavigateToEntitySurveys) {
         emit(loadedState.copyWith(
             organizationViewType: OrganizationViewType.SURVEYS,
             currentDetailEntity: event.entity,
             appBarString:
-                strings.organization_view_surveys + " (${event.entity.name})"));
+                "${strings.organization_view_surveys} (${event.entity.name})"));
       } else if (event is NavigateToEntityHistory) {
         emit(loadedState.copyWith(
             organizationViewType: OrganizationViewType.HISTORY,
             currentDetailEntity: event.entity,
             appBarString:
-                strings.organization_view_history + " (${event.entity.name})"));
+                "${strings.organization_view_history} (${event.entity.name})"));
       } else if (event is NavigateToEntityAppliedInterventions) {
         emit(loadedState.copyWith(
             organizationViewType: OrganizationViewType.APPLIEDINTERVENTIONS,
             currentDetailEntity: event.entity,
-            appBarString: strings.organization_view_applied_interventions +
-                " (${event.entity.name})"));
+            appBarString: "${strings.organization_view_applied_interventions} (${event.entity.name})"));
       } else if (event is StartSurvey) {
         inAppBloc.add(PerformSurveyEvent(
             survey: event.survey,
@@ -269,9 +266,7 @@ class OrganizationViewBloc
             currentDetailAppliedIntervention: event.appliedIntervention));
       } else if (event is NavigateToExecutedSurvey) {
         emit(loadedState.copyWith(
-          appBarString: TaskForm.formatDate(event.executedSurvey.date) +
-              ": " +
-              event.executedSurvey.survey.displayName,
+          appBarString: "${TaskForm.formatDate(event.executedSurvey.date)}: ${event.executedSurvey.survey.displayName}",
           executedSurveyToDisplay: event.executedSurvey,
           currentDetailEntity: loadedState.currentDetailEntity,
           organizationViewType: OrganizationViewType.EXECUTEDSURVEY,

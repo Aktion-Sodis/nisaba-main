@@ -11,8 +11,8 @@ import 'package:mobile_app/frontend/theme.dart';
 
 class AttachmentsList extends StatelessWidget {
   const AttachmentsList({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

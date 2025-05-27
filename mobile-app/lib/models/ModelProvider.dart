@@ -81,6 +81,7 @@ export 'QuestionOption.dart';
 export 'QuestionType.dart';
 export 'SessionData.dart';
 export 'Survey.dart';
+export 'SurveyStatus.dart';
 export 'SurveySurveyTagRelation.dart';
 export 'SurveyTag.dart';
 export 'SurveyType.dart';
@@ -91,7 +92,7 @@ export 'User.dart';
 
 class ModelProvider implements amplify_core.ModelProviderInterface {
   @override
-  String version = "3cb0d27e7c97a6e190622e12087e3b5e";
+  String version = "dbd865950d7ea16f5493b9e65d9d47dd";
   @override
   List<amplify_core.ModelSchema> modelSchemas = [AppliedIntervention.schema, Config.schema, Content.schema, ContentContentTagRelation.schema, ContentTag.schema, Entity.schema, ExecutedSurvey.schema, Intervention.schema, InterventionContentRelation.schema, InterventionInterventionTagRelation.schema, InterventionTag.schema, Level.schema, LevelInterventionRelation.schema, Organization.schema, SessionData.schema, Survey.schema, SurveySurveyTagRelation.schema, SurveyTag.schema, Task.schema, TestObject.schema, User.schema];
   @override

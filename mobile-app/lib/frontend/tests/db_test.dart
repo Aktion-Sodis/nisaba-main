@@ -1,22 +1,16 @@
 import 'package:flutter/foundation.dart';
-import 'package:mobile_app/backend/database/DBModelCollection.dart';
-import 'package:mobile_app/backend/database/DBModelRegistration.dart';
 import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDB.dart';
 import 'package:mobile_app/backend/database/db_implementations/local_db/LocalDBModelRegistration.dart';
-import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDBModelRegistration.dart';
-import 'package:mobile_app/models/ModelProvider.dart' as amp;
 import 'package:flutter/material.dart';
 import 'package:mobile_app/backend/database/DB.dart';
-import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/backend/database/QPredicate.dart';
-import 'package:mobile_app/backend/database/db_implementations/remote_db/RemoteDB.dart';
 import 'package:mobile_app/frontend/dependentsizes.dart';
 
 import '../../backend/callableModels/TestObject.dart';
 import '../../backend/database/Query.dart';
 
 class LocalDBTest extends StatelessWidget {
-  LocalDBTest({Key? key}) : super(key: key);
+  LocalDBTest({super.key});
 
   late DB db;
 
@@ -60,13 +54,10 @@ class LocalDBTest extends StatelessWidget {
 
     // Test Create
     await db.create(testObject1);
-    if (testObject1.id == null) {
-      throw "TestObject1 has no ID. Probably, testObject1 has not been created";
-    }
     print("Test Create: OK");
 
     // Test GetByID
-    TestObject? receivedObject1 = await db.getById(TestObject, testObject1.id!);
+    TestObject? receivedObject1 = await db.getById(TestObject, testObject1.id);
     if (receivedObject1 == null) {
       throw "testObject1 has not been received. Probably, testObject1 has not been created";
     }
@@ -83,19 +74,13 @@ class LocalDBTest extends StatelessWidget {
     }
 
     await db.create(testObject2);
-    if (testObject2.id == null) {
-      throw "TestObject2 has no ID. Probably, testObject2 has not been created";
-    }
 
     await db.create(testObject3);
-    if (testObject3.id == null) {
-      throw "TestObject3 has no ID. Probably, testObject3 has not been created";
-    }
 
     // Test Update
     testObject1.name = "Test1Updated";
     await db.update(testObject1);
-    receivedObject1 = await db.getById<TestObject>(TestObject, testObject1.id!);
+    receivedObject1 = await db.getById<TestObject>(TestObject, testObject1.id);
     if (receivedObject1 == null) {
       throw "testObject1 has not been received. Probably, testObject1 has not been updated";
     }
@@ -162,7 +147,7 @@ class LocalDBTest extends StatelessWidget {
     print("Test Predicates: OK");
 
     // Test Delete
-    String testObject1Id = testObject1.id!;
+    String testObject1Id = testObject1.id;
     await db.delete(testObject1);
     receivedObject1 = await db.getById<TestObject>(TestObject, testObject1Id);
     if (receivedObject1 != null) {
@@ -177,7 +162,7 @@ class LocalDBTest extends StatelessWidget {
     for (TestObject object in objectList) {
       await db.delete(object);
     }
-    print(objectList.length.toString() + " objects deleted");
+    print("${objectList.length} objects deleted");
   }
 
   List<int> _getAges(List<TestObject> objects) {

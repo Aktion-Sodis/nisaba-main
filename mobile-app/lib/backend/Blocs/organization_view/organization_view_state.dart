@@ -40,13 +40,11 @@ class EntitiesLoadedOrganizationViewState extends OrganizationViewState {
     this.currentDetailAppliedIntervention,
     this.executedSurveyToDisplay,
   }) {
-    this.keyDateTime = DateTime.now();
+    keyDateTime = DateTime.now();
     print("loaded state newly created");
   }
 
-  /**
-   * Notice: `currentDetailEntity` will be taken exactly like it stands in the arguments
-   */
+  /// Notice: `currentDetailEntity` will be taken exactly like it stands in the arguments
   EntitiesLoadedOrganizationViewState copyWith(
       {List<Level>? allLevels,
       OrganizationViewType? organizationViewType,

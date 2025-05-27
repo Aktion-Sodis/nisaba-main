@@ -17,6 +17,8 @@ void showSyncDialog(BuildContext context) {
 }
 
 class SyncOverviewDialog extends StatelessWidget {
+  const SyncOverviewDialog({super.key});
+
   List<Widget> columnChilds(BuildContext context, SyncState syncState) {
     //InSyncState, CannotSyncState, FullySyncedState, PrepareSyncState
     if (syncState is PrepareSyncState) {
@@ -137,7 +139,7 @@ class SyncOverviewDialog extends StatelessWidget {
         color: Colors.green,
       );
     } else {
-      return Container(
+      return SizedBox(
           width: 20,
           height: 20,
           child: CircularProgressIndicator(
@@ -154,7 +156,7 @@ class SyncOverviewDialog extends StatelessWidget {
         color: Colors.green,
       );
     } else {
-      return Container(
+      return SizedBox(
           width: 20,
           height: 20,
           child: CircularProgressIndicator(
