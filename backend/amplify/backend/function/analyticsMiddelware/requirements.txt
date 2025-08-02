@@ -1,0 +1,8 @@
+pandas==2.0.3
+xlsxwriter==3.1.9
+numpy==1.24.4
+python-dateutil==2.8.2
+pytz==2023.3.post1
+simplejson==3.19.1
+requests==2.31.0
+boto3==1.34.0 

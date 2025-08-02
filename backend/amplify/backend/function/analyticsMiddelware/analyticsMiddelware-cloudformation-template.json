@@ -1,0 +1,202 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Lambda Function resource stack creation using Amplify CLI",
+    "Parameters": {
+        "CloudWatchRule": {
+            "Type": "String",
+            "Default" : "NONE",
+            "Description" : " Schedule Expression"
+        },
+        "deploymentBucketName": {
+            "Type": "String"
+        },
+        "env": {
+            "Type": "String"
+        },
+        "s3Key": {
+            "Type": "String"
+        }
+        ,
+    
+    
+    
+        "apiapinisabaGraphQLAPIIdOutput": {
+            "Type": "String",
+            "Default": "apiapinisabaGraphQLAPIIdOutput"
+            },
+        
+        "apiapinisabaGraphQLAPIEndpointOutput": {
+            "Type": "String",
+            "Default": "apiapinisabaGraphQLAPIEndpointOutput"
+            },
+        
+        "apiapinisabaGraphQLAPIKeyOutput": {
+            "Type": "String",
+            "Default": "apiapinisabaGraphQLAPIKeyOutput"
+            },
+        
+    
+        
+    
+        "storagenisabareleaseBucketName": {
+            "Type": "String",
+            "Default": "storagenisabareleaseBucketName"
+            }
+        
+    
+        
+    
+    },
+    "Conditions": {
+        "ShouldNotCreateEnvResources": {
+            "Fn::Equals": [
+                {
+                    "Ref": "env"
+                },
+                "NONE"
+            ]
+        }
+    },
+    "Resources": {
+        "LambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Metadata": {
+            "aws:asset:path": "./src",
+            "aws:asset:property": "Code"
+          },
+          "Properties": {
+            "Code": {
+                "S3Bucket": {
+                    "Ref": "deploymentBucketName"
+                },
+                "S3Key": {
+                    "Ref": "s3Key"
+                }
+            },
+            "Handler": "index.handler",
+            "FunctionName": {
+                "Fn::If": [
+                    "ShouldNotCreateEnvResources",
+                    "analyticsMiddelware",
+                    {
+
+                        "Fn::Join": [
+                            "",
+                            [
+                                "analyticsMiddelware",
+                                "-",
+                                {
+                                    "Ref": "env"
+                                }
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "Environment": {
+                "Variables" : {"ENV":{"Ref":"env"},"REGION":{"Ref":"AWS::Region"},"API_APINISABA_GRAPHQLAPIIDOUTPUT":{"Ref":"apiapinisabaGraphQLAPIIdOutput"},"API_APINISABA_GRAPHQLAPIENDPOINTOUTPUT":{"Ref":"apiapinisabaGraphQLAPIEndpointOutput"},"API_APINISABA_GRAPHQLAPIKEYOUTPUT":{"Ref":"apiapinisabaGraphQLAPIKeyOutput"},"STORAGE_NISABARELEASE_BUCKETNAME":{"Ref":"storagenisabareleaseBucketName"},"API_APINISABA_ORGANIZATIONTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:OrganizationTable:Name"}},"API_APINISABA_ORGANIZATIONTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:OrganizationTable:Name"}}]]},"API_APINISABA_USERTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:UserTable:Name"}},"API_APINISABA_USERTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:UserTable:Name"}}]]},"API_APINISABA_CONFIGTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:ConfigTable:Name"}},"API_APINISABA_CONFIGTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:ConfigTable:Name"}}]]},"API_APINISABA_LEVELTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:LevelTable:Name"}},"API_APINISABA_LEVELTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:LevelTable:Name"}}]]},"API_APINISABA_INTERVENTIONTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:InterventionTable:Name"}},"API_APINISABA_INTERVENTIONTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:InterventionTable:Name"}}]]},"API_APINISABA_CONTENTTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:ContentTable:Name"}},"API_APINISABA_CONTENTTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:ContentTable:Name"}}]]},"API_APINISABA_SURVEYTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:SurveyTable:Name"}},"API_APINISABA_SURVEYTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:SurveyTable:Name"}}]]},"API_APINISABA_ENTITYTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:EntityTable:Name"}},"API_APINISABA_ENTITYTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:EntityTable:Name"}}]]},"API_APINISABA_APPLIEDINTERVENTIONTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:AppliedInterventionTable:Name"}},"API_APINISABA_APPLIEDINTERVENTIONTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:AppliedInterventionTable:Name"}}]]},"API_APINISABA_EXECUTEDSURVEYTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:ExecutedSurveyTable:Name"}},"API_APINISABA_EXECUTEDSURVEYTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:ExecutedSurveyTable:Name"}}]]},"API_APINISABA_TASKTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:TaskTable:Name"}},"API_APINISABA_TASKTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:TaskTable:Name"}}]]},"API_APINISABA_CONTENTTAGTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:ContentTagTable:Name"}},"API_APINISABA_CONTENTTAGTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:ContentTagTable:Name"}}]]},"API_APINISABA_INTERVENTIONTAGTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:InterventionTagTable:Name"}},"API_APINISABA_INTERVENTIONTAGTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:InterventionTagTable:Name"}}]]},"API_APINISABA_SURVEYTAGTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:SurveyTagTable:Name"}},"API_APINISABA_SURVEYTAGTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:SurveyTagTable:Name"}}]]},"API_APINISABA_SESSIONDATATABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:SessionDataTable:Name"}},"API_APINISABA_SESSIONDATATABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:SessionDataTable:Name"}}]]},"API_APINISABA_TESTOBJECTTABLE_NAME":{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:TestObjectTable:Name"}},"API_APINISABA_TESTOBJECTTABLE_ARN":{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:TestObjectTable:Name"}}]]}}
+            },
+            "Role": { "Fn::GetAtt": ["LambdaExecutionRole", "Arn"] },
+            "Runtime": "python3.8",
+            "Layers": [],
+            "Timeout": 25
+          }
+        },
+        "LambdaExecutionRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": {
+                    "Fn::If": [
+                        "ShouldNotCreateEnvResources",
+                        "nisabaLambdaRole26f551c1",
+                        {
+
+                            "Fn::Join": [
+                                "",
+                                [
+                                    "nisabaLambdaRole26f551c1",
+                                    "-",
+                                    {
+                                        "Ref": "env"
+                                    }
+                                ]
+                            ]
+                        }
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "lambda.amazonaws.com"
+                                ]
+                            },
+                            "Action": [
+                                "sts:AssumeRole"
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+        ,"lambdaexecutionpolicy": {
+            "DependsOn": ["LambdaExecutionRole"],
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": "lambda-execution-policy",
+                "Roles": [{ "Ref": "LambdaExecutionRole" }],
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": ["logs:CreateLogGroup",
+                            "logs:CreateLogStream",
+                            "logs:PutLogEvents"],
+                            "Resource": { "Fn::Sub": [ "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*", { "region": {"Ref": "AWS::Region"}, "account": {"Ref": "AWS::AccountId"}, "lambda": {"Ref": "LambdaFunction"}} ]}
+                        }
+                    ]
+                }
+            }
+        }
+        ,"AmplifyResourcesPolicy": {
+            "DependsOn": ["LambdaExecutionRole"],
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyName": "amplify-lambda-execution-policy",
+                "Roles": [{ "Ref": "LambdaExecutionRole" }],
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [{"Effect":"Allow","Action":["appsync:GraphQL"],"Resource":[{"Fn::Join":["",["arn:aws:appsync:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":apis/",{"Ref":"apiapinisabaGraphQLAPIIdOutput"},"/types/Query/*"]]}]},{"Effect":"Allow","Action":"s3:ListBucket","Resource":[{"Fn::Join":["",["arn:aws:s3:::",{"Ref":"storagenisabareleaseBucketName"}]]}]},{"Effect":"Allow","Action":["s3:GetObject"],"Resource":[{"Fn::Join":["",["arn:aws:s3:::",{"Ref":"storagenisabareleaseBucketName"},"/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Get*","dynamodb:BatchGetItem","dynamodb:List*","dynamodb:Describe*","dynamodb:Scan","dynamodb:Query","dynamodb:PartiQLSelect"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:OrganizationTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:OrganizationTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Get*","dynamodb:BatchGetItem","dynamodb:List*","dynamodb:Describe*","dynamodb:Scan","dynamodb:Query","dynamodb:PartiQLSelect"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:UserTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:UserTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Get*","dynamodb:BatchGetItem","dynamodb:List*","dynamodb:Describe*","dynamodb:Scan","dynamodb:Query","dynamodb:PartiQLSelect"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:ConfigTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:ConfigTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Get*","dynamodb:BatchGetItem","dynamodb:List*","dynamodb:Describe*","dynamodb:Scan","dynamodb:Query","dynamodb:PartiQLSelect"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:LevelTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:LevelTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Get*","dynamodb:BatchGetItem","dynamodb:List*","dynamodb:Describe*","dynamodb:Scan","dynamodb:Query","dynamodb:PartiQLSelect"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:InterventionTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:InterventionTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Get*","dynamodb:BatchGetItem","dynamodb:List*","dynamodb:Describe*","dynamodb:Scan","dynamodb:Query","dynamodb:PartiQLSelect"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:ContentTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:ContentTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Get*","dynamodb:BatchGetItem","dynamodb:List*","dynamodb:Describe*","dynamodb:Scan","dynamodb:Query","dynamodb:PartiQLSelect"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:SurveyTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:SurveyTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Get*","dynamodb:BatchGetItem","dynamodb:List*","dynamodb:Describe*","dynamodb:Scan","dynamodb:Query","dynamodb:PartiQLSelect"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:EntityTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:EntityTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Get*","dynamodb:BatchGetItem","dynamodb:List*","dynamodb:Describe*","dynamodb:Scan","dynamodb:Query","dynamodb:PartiQLSelect"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:AppliedInterventionTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:AppliedInterventionTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Get*","dynamodb:BatchGetItem","dynamodb:List*","dynamodb:Describe*","dynamodb:Scan","dynamodb:Query","dynamodb:PartiQLSelect"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:ExecutedSurveyTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:ExecutedSurveyTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Get*","dynamodb:BatchGetItem","dynamodb:List*","dynamodb:Describe*","dynamodb:Scan","dynamodb:Query","dynamodb:PartiQLSelect"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:TaskTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:TaskTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Get*","dynamodb:BatchGetItem","dynamodb:List*","dynamodb:Describe*","dynamodb:Scan","dynamodb:Query","dynamodb:PartiQLSelect"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:ContentTagTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:ContentTagTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Get*","dynamodb:BatchGetItem","dynamodb:List*","dynamodb:Describe*","dynamodb:Scan","dynamodb:Query","dynamodb:PartiQLSelect"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:InterventionTagTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:InterventionTagTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Get*","dynamodb:BatchGetItem","dynamodb:List*","dynamodb:Describe*","dynamodb:Scan","dynamodb:Query","dynamodb:PartiQLSelect"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:SurveyTagTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:SurveyTagTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Get*","dynamodb:BatchGetItem","dynamodb:List*","dynamodb:Describe*","dynamodb:Scan","dynamodb:Query","dynamodb:PartiQLSelect"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:SessionDataTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:SessionDataTable:Name"}},"/index/*"]]}]},{"Effect":"Allow","Action":["dynamodb:Get*","dynamodb:BatchGetItem","dynamodb:List*","dynamodb:Describe*","dynamodb:Scan","dynamodb:Query","dynamodb:PartiQLSelect"],"Resource":[{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:TestObjectTable:Name"}}]]},{"Fn::Join":["",["arn:aws:dynamodb:",{"Ref":"AWS::Region"},":",{"Ref":"AWS::AccountId"},":table/",{"Fn::ImportValue":{"Fn::Sub":"${apiapinisabaGraphQLAPIIdOutput}:GetAtt:TestObjectTable:Name"}},"/index/*"]]}]}]
+                }
+            }
+        }
+        
+        
+        
+    },
+    "Outputs": {
+        "Name": {
+            "Value": {
+                "Ref": "LambdaFunction"
+            }
+        },
+        "Arn": {
+            "Value": {"Fn::GetAtt": ["LambdaFunction", "Arn"]}
+        },
+        "Region": {
+            "Value": {
+                "Ref": "AWS::Region"
+            }
+        },
+        "LambdaExecutionRole": {
+            "Value": {
+                "Ref": "LambdaExecutionRole"
+            }
+        }
+        
+    }
+}

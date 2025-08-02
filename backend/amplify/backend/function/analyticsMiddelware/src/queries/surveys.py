@@ -1,0 +1,219 @@
+# Survey-related GraphQL queries
+
+listTotalNumberOfSurveys = {
+    "operationName": "listAllSurveys",
+    "query": """query listAllSurveys {
+    listSurveys {
+      items {
+        id
+      }
+    }
+  }
+  """,
+}
+
+listAllSurveys = {
+    "operationName": "listAllSurveys",
+    "query": """query listAllSurveys {
+        listSurveys {
+            nextToken
+            items {
+                name {
+                    languageKeys
+                    languageTexts
+                }
+                interventionSurveysId
+                createdAt
+                id
+            }
+        }
+    }""",
+}
+
+listAllSurveysFromNextToken = {
+    "operationName": "listAllSurveys",
+    "query": """query listAllSurveys($nextToken: String!) {
+        listSurveys(nextToken: $nextToken) {
+            nextToken
+            items {
+                name {
+                    languageKeys
+                    languageTexts
+                }
+                interventionSurveysId
+                createdAt
+                id
+            }
+        }
+    }""",
+}
+
+getSurveyBySurveyID = {
+    "operationName": "getSurvey",
+    "query": """query getSurvey($surveyID: ID!) {
+    getSurvey(id: $surveyID) {
+      organization_id
+      description {
+        languageKeys
+        languageTexts
+      }
+      name {
+        languageKeys
+        languageTexts
+      }
+      surveyType
+      questions {
+        id
+        type
+        questionOptions {
+          text {
+            languageKeys
+            languageTexts
+          }
+        }
+        text {
+          languageKeys
+          languageTexts
+        }
+      }
+    }
+  }
+  """,
+}
+
+getExecutedSurveyDataBySurveyID = {
+    "operationName": "listExecutedSurveys",
+    "query": """ query listExecutedSurveys($surveyID: ID!) {
+    listExecutedSurveys(filter: {executedSurveySurveyId: {eq: $surveyID}}) {
+      items {
+        executedSurveySurveyId
+        id
+        answers {
+          intValue
+          date
+          doubleValue
+          id
+          questionID
+          rating
+          text
+          type
+          questionOptions {
+            text {
+              languageKeys
+              languageTexts
+            }
+          }
+        }
+      }
+    }
+  }
+  """,
+}
+
+getExecutedSurveyDataBySurveyIDInclContext = {
+"operationName": "listExecutedSurveys",
+"query": """
+query listExecutedSurveys($surveyID: ID!) {
+  listExecutedSurveys(filter: {executedSurveySurveyId: {eq: $surveyID}}) {
+    nextToken
+    items {
+      id
+      _deleted
+      answers {
+        date
+        doubleValue
+        id
+        intValue
+        markings {
+          rx
+          ry
+          text
+          x
+          y
+        }
+        questionID
+        questionOptions {
+          followUpQuestionIDs
+          id
+          text {
+            languageKeys
+            languageTexts
+          }
+        }
+        rating
+        text
+        type
+      }
+      appliedIntervention {
+        id
+        entityAppliedInterventionsId
+      }
+      updatedAt
+      location {
+        latitude
+        longitude
+      }
+      date
+      whoExecutedIt {
+        firstName
+        lastName
+      }
+    }
+  }
+}
+"""
+}
+
+getExecutedSurveyDataBySurveyIDInclContextFromNextToken = {
+"operationName": "listExecutedSurveys",
+"query": """
+query listExecutedSurveys($surveyID: ID!, $nextToken: String!) {
+  listExecutedSurveys(filter: {executedSurveySurveyId: {eq: $surveyID}}, nextToken: $nextToken) {
+    nextToken
+    items {
+      id
+      _deleted
+      answers {
+        date
+        doubleValue
+        id
+        intValue
+        markings {
+          rx
+          ry
+          text
+          x
+          y
+        }
+        questionID
+        questionOptions {
+          followUpQuestionIDs
+          id
+          text {
+            languageKeys
+            languageTexts
+          }
+        }
+        rating
+        text
+        type
+      }
+      appliedIntervention {
+        id
+        entityAppliedInterventionsId
+      }
+      updatedAt
+      location {
+        latitude
+        longitude
+      }
+      date
+      whoExecutedIt {
+        firstName
+        lastName
+      }
+    }
+  }
+}
+"""
+} 

@@ -1,0 +1,63 @@
+{
+  "permissions": {
+    "api": {
+      "apinisaba": [
+        "Query"
+      ]
+    },
+    "storage": {
+      "nisabarelease": [
+        "read"
+      ],
+      "Organization:@model(appsync)": [
+        "read"
+      ],
+      "User:@model(appsync)": [
+        "read"
+      ],
+      "Config:@model(appsync)": [
+        "read"
+      ],
+      "Level:@model(appsync)": [
+        "read"
+      ],
+      "Intervention:@model(appsync)": [
+        "read"
+      ],
+      "Content:@model(appsync)": [
+        "read"
+      ],
+      "Survey:@model(appsync)": [
+        "read"
+      ],
+      "Entity:@model(appsync)": [
+        "read"
+      ],
+      "AppliedIntervention:@model(appsync)": [
+        "read"
+      ],
+      "ExecutedSurvey:@model(appsync)": [
+        "read"
+      ],
+      "Task:@model(appsync)": [
+        "read"
+      ],
+      "ContentTag:@model(appsync)": [
+        "read"
+      ],
+      "InterventionTag:@model(appsync)": [
+        "read"
+      ],
+      "SurveyTag:@model(appsync)": [
+        "read"
+      ],
+      "SessionData:@model(appsync)": [
+        "read"
+      ],
+      "TestObject:@model(appsync)": [
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}
