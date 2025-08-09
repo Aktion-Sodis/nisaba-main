@@ -17,7 +17,28 @@ const { CognitoIdentityServiceProvider } = require('aws-sdk');
 const cognitoIdentityServiceProvider = new CognitoIdentityServiceProvider();
 const userPoolId = process.env.USERPOOL;
 
-async function addUserToGroup(username, groupname) {
+async function getOrgIdDirect(username) {
+  const user = await cognitoIdentityServiceProvider
+    .adminGetUser({ UserPoolId: userPoolId, Username: username })
+    .promise();
+  return user.UserAttributes.find(
+    attr => attr.Name === 'custom:organization_id'
+  )?.Value;
+};
+
+async function addUserToGroup(username, groupname, event) {
+  // Get organization ID of the requesting user
+  const organizationId = await getOrgIdDirect(event.requestContext.authorizer.claims.username);
+  if (!organizationId) {
+    throw new Error('No organization ID found');
+  }
+
+  // Get target user's organization ID
+  const targetUserOrgId = await getOrgIdDirect(username);
+  if (targetUserOrgId !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
   const params = {
     GroupName: groupname,
     UserPoolId: userPoolId,
@@ -38,7 +59,19 @@ async function addUserToGroup(username, groupname) {
   }
 }
 
-async function removeUserFromGroup(username, groupname) {
+async function removeUserFromGroup(username, groupname, event) {
+  // Get organization ID of the requesting user
+  const organizationId = await getOrgIdDirect(event.requestContext.authorizer.claims.username);
+  if (!organizationId) {
+    throw new Error('No organization ID found');
+  }
+
+  // Get target user's organization ID
+  const targetUserOrgId = await getOrgIdDirect(username);
+  if (targetUserOrgId !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
   const params = {
     GroupName: groupname,
     UserPoolId: userPoolId,
@@ -60,7 +93,19 @@ async function removeUserFromGroup(username, groupname) {
 }
 
 // Confirms as an admin without using a confirmation code.
-async function confirmUserSignUp(username) {
+async function confirmUserSignUp(username, event) {
+  // Get organization ID of the requesting user
+  const organizationId = await getOrgIdDirect(event.requestContext.authorizer.claims.username);
+  if (!organizationId) {
+    throw new Error('No organization ID found');
+  }
+
+  // Get target user's organization ID
+  const targetUserOrgId = await getOrgIdDirect(username);
+  if (targetUserOrgId !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
   const params = {
     UserPoolId: userPoolId,
     Username: username,
@@ -78,7 +123,19 @@ async function confirmUserSignUp(username) {
   }
 }
 
-async function disableUser(username) {
+async function disableUser(username, event) {
+  // Get organization ID of the requesting user
+  const organizationId = await getOrgIdDirect(event.requestContext.authorizer.claims.username);
+  if (!organizationId) {
+    throw new Error('No organization ID found');
+  }
+
+  // Get target user's organization ID
+  const targetUserOrgId = await getOrgIdDirect(username);
+  if (targetUserOrgId !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
   const params = {
     UserPoolId: userPoolId,
     Username: username,
@@ -96,7 +153,19 @@ async function disableUser(username) {
   }
 }
 
-async function enableUser(username) {
+async function enableUser(username, event) {
+  // Get organization ID of the requesting user
+  const organizationId = await getOrgIdDirect(event.requestContext.authorizer.claims.username);
+  if (!organizationId) {
+    throw new Error('No organization ID found');
+  }
+
+  // Get target user's organization ID
+  const targetUserOrgId = await getOrgIdDirect(username);
+  if (targetUserOrgId !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
   const params = {
     UserPoolId: userPoolId,
     Username: username,
@@ -114,7 +183,8 @@ async function enableUser(username) {
   }
 }
 
-async function getUser(username) {
+//debugged
+async function getUser(username, event) {
   const params = {
     UserPoolId: userPoolId,
     Username: username,
@@ -124,24 +194,85 @@ async function getUser(username) {
 
   try {
     const result = await cognitoIdentityServiceProvider.adminGetUser(params).promise();
-    return result;
+    
+    // If this is a direct getUser call (not from another method), check organization
+    if (event) {
+      const organizationId = await getOrgIdDirect(event.requestContext.authorizer.claims.username);
+      if (!organizationId) {
+        throw new Error('No organization ID found');
+      }
+
+      const targetUserOrgId = await getOrgIdDirect(username);
+      if (targetUserOrgId !== organizationId) {
+        throw new Error('Cannot access user from different organization');
+      }
+    }
+    
+    // Rename UserAttributes to Attributes
+    const modifiedResult = {
+      ...result,
+      Attributes: result.UserAttributes,
+    };
+    delete modifiedResult.UserAttributes;
+    
+    return modifiedResult;
   } catch (err) {
     console.log(err);
     throw err;
   }
 }
 
-async function listUsers(Limit, PaginationToken) {
+//debugged
+async function listUsers(Limit, PaginationToken, event) {
   const params = {
     UserPoolId: userPoolId,
     ...(Limit && { Limit }),
     ...(PaginationToken && { PaginationToken }),
   };
 
-  console.log('Attempting to list users');
+  const organizationId = await getOrgIdDirect(event.requestContext.authorizer.claims.username);
+  
+  if (!organizationId) {
+    throw new Error('No organization ID found');
+  }
+
+  console.log('Attempting to list users with organizationId', organizationId);
 
   try {
     const result = await cognitoIdentityServiceProvider.listUsers(params).promise();
+
+    // Filter users by organization ID
+    result.Users = result.Users.filter(user => 
+      user.Attributes.some(attr => 
+        attr.Name === 'custom:organization_id' && 
+        attr.Value === organizationId
+      )
+    );
+
+    // Get groups for each user
+    const usersWithGroups = await Promise.all(result.Users.map(async (user) => {
+      const groupsParams = {
+        UserPoolId: userPoolId,
+        Username: user.Username,
+      };
+      
+      try {
+        const groupsResult = await cognitoIdentityServiceProvider.adminListGroupsForUser(groupsParams).promise();
+        return {
+          ...user,
+          Groups: groupsResult.Groups.map(group => group.GroupName)
+        };
+      } catch (err) {
+        console.log(`Error fetching groups for user ${user.Username}:`, err);
+        return {
+          ...user,
+          Groups: []
+        };
+      }
+    }));
+
+    // Replace Users array with the enhanced version
+    result.Users = usersWithGroups;
 
     // Rename to NextToken for consistency with other Cognito APIs
     result.NextToken = result.PaginationToken;
@@ -154,7 +285,7 @@ async function listUsers(Limit, PaginationToken) {
   }
 }
 
-async function listGroups(Limit, PaginationToken) {
+async function listGroups(Limit, PaginationToken, event) {
   const params = {
     UserPoolId: userPoolId,
     ...(Limit && { Limit }),
@@ -177,7 +308,19 @@ async function listGroups(Limit, PaginationToken) {
   }
 }
 
-async function listGroupsForUser(username, Limit, NextToken) {
+async function listGroupsForUser(username, Limit, NextToken, event) {
+  // Get organization ID of the requesting user
+  const organizationId = await getOrgIdDirect(event.requestContext.authorizer.claims.username);
+  if (!organizationId) {
+    throw new Error('No organization ID found');
+  }
+
+  // Get target user's organization ID
+  const targetUserOrgId = await getOrgIdDirect(username);
+  if (targetUserOrgId !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
   const params = {
     UserPoolId: userPoolId,
     Username: username,
@@ -189,10 +332,6 @@ async function listGroupsForUser(username, Limit, NextToken) {
 
   try {
     const result = await cognitoIdentityServiceProvider.adminListGroupsForUser(params).promise();
-    /**
-     * We are filtering out the results that seem to be innapropriate for client applications
-     * to prevent any informaiton disclosure. Customers can modify if they have the need.
-     */
     result.Groups.forEach(val => {
       delete val.UserPoolId, delete val.LastModifiedDate, delete val.CreationDate, delete val.Precedence, delete val.RoleArn;
     });
@@ -204,7 +343,7 @@ async function listGroupsForUser(username, Limit, NextToken) {
   }
 }
 
-async function listUsersInGroup(groupname, Limit, NextToken) {
+async function listUsersInGroup(groupname, Limit, NextToken, event) {
   const params = {
     GroupName: groupname,
     UserPoolId: userPoolId,
@@ -212,10 +351,23 @@ async function listUsersInGroup(groupname, Limit, NextToken) {
     ...(NextToken && { NextToken }),
   };
 
+  // Get organization ID of the requesting user
+  const organizationId = await getOrgIdDirect(event.requestContext.authorizer.claims.username);
+  if (!organizationId) {
+    throw new Error('No organization ID found');
+  }
+
   console.log(`Attempting to list users in group ${groupname}`);
 
   try {
     const result = await cognitoIdentityServiceProvider.listUsersInGroup(params).promise();
+    
+    // Filter users by organization
+    result.Users = result.Users.filter(user => {
+      const userOrgId = user.Attributes.find(attr => attr.Name === 'custom:organization_id')?.Value;
+      return userOrgId === organizationId;
+    });
+    
     return result;
   } catch (err) {
     console.log(err);
@@ -224,7 +376,19 @@ async function listUsersInGroup(groupname, Limit, NextToken) {
 }
 
 // Signs out from all devices, as an administrator.
-async function signUserOut(username) {
+async function signUserOut(username, event) {
+  // Get organization ID of the requesting user
+  const organizationId = await getOrgIdDirect(event.requestContext.authorizer.claims.username);
+  if (!organizationId) {
+    throw new Error('No organization ID found');
+  }
+
+  // Get target user's organization ID
+  const targetUserOrgId = await getOrgIdDirect(username);
+  if (targetUserOrgId !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
   const params = {
     UserPoolId: userPoolId,
     Username: username,
@@ -244,6 +408,205 @@ async function signUserOut(username) {
   }
 }
 
+//debugged
+async function createUser(username, userGroup, returnPassword, event) {
+  // Get organization ID of the requesting user
+  const organizationId = await getOrgIdDirect(event.requestContext.authorizer.claims.username);
+  if (!organizationId) {
+    throw new Error('No organization ID found');
+  }
+
+  const isEmail = username.includes('@');
+  
+  const userAttributes = [
+    {
+      Name: 'custom:organization_id',
+      Value: organizationId
+    }
+  ];
+
+  if (isEmail) {
+    userAttributes.push(
+      { Name: 'email', Value: username },
+      { Name: 'email_verified', Value: 'true' }
+    );
+  } else {
+    userAttributes.push(
+      { Name: 'phone_number', Value: username },
+      { Name: 'phone_number_verified', Value: 'true' }
+    );
+  }
+
+  let temporaryPassword;
+  if (returnPassword) {
+    const lower = 'abcdefghijklmnopqrstuvwxyz';
+    const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const numbers = '0123456789';
+    const special = '!@#$%^&*';
+    
+    temporaryPassword = 
+      lower[Math.floor(Math.random() * lower.length)] +
+      upper[Math.floor(Math.random() * upper.length)] +
+      numbers[Math.floor(Math.random() * numbers.length)] +
+      special[Math.floor(Math.random() * special.length)] +
+      lower[Math.floor(Math.random() * lower.length)] +
+      upper[Math.floor(Math.random() * upper.length)] +
+      numbers[Math.floor(Math.random() * numbers.length)] +
+      special[Math.floor(Math.random() * special.length)];
+  }
+
+  const params = {
+    UserPoolId: userPoolId,
+    Username: username,
+    UserAttributes: userAttributes,
+    ...(returnPassword && { MessageAction: 'SUPPRESS' }),
+    ...(temporaryPassword && { TemporaryPassword: temporaryPassword })
+  };
+
+  console.log(`Attempting to create user ${username}`);
+
+  try {
+    const result = await cognitoIdentityServiceProvider.adminCreateUser(params).promise();
+    
+    if (userGroup) {
+      await addUserToGroup(username, userGroup, event);
+    }
+
+    if (returnPassword) {
+      console.log('Setting fixed password to return')
+      const setPasswordParams = {
+        UserPoolId: userPoolId,
+        Username: username,
+        Password: temporaryPassword,
+        Permanent: true
+      };
+      console.log('generated password: ', temporaryPassword)
+      await cognitoIdentityServiceProvider.adminSetUserPassword(setPasswordParams).promise();
+      console.log('password successfully set')
+    }
+
+    // Get the complete user object with groups
+    const user = await getUser(username, event);
+    console.log('get user worked')
+    const groupsResult = await cognitoIdentityServiceProvider.adminListGroupsForUser({
+      UserPoolId: userPoolId,
+      Username: username
+    }).promise();
+    console.log('got user groups');
+    
+    const userWithGroups = {
+      ...user,
+      Groups: groupsResult.Groups.map(group => group.GroupName)
+    };
+
+    console.log('userWithGroups: ', userWithGroups)
+
+    return {
+      message: `Successfully created user ${username}`,
+      ...(returnPassword && { password: temporaryPassword }),
+      user: userWithGroups
+    };
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+
+async function hardPasswordReset(username, returnPassword, event) {
+  // Get organization ID of the requesting user
+  const organizationId = await getOrgIdDirect(event.requestContext.authorizer.claims.username);
+  if (!organizationId) {
+    throw new Error('No organization ID found');
+  }
+
+  // Get target user's organization ID
+  const targetUserOrgId = await getOrgIdDirect(username);
+  if (targetUserOrgId !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
+  console.log(`Attempting to reset password for ${username}`);
+
+  try {
+    if (returnPassword) {
+      // Generate a new permanent password
+      const lower = 'abcdefghijklmnopqrstuvwxyz';
+      const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const numbers = '0123456789';
+      const special = '!@#$%^&*';
+      
+      const newPassword = 
+        lower[Math.floor(Math.random() * lower.length)] +
+        upper[Math.floor(Math.random() * upper.length)] +
+        numbers[Math.floor(Math.random() * numbers.length)] +
+        special[Math.floor(Math.random() * special.length)] +
+        lower[Math.floor(Math.random() * lower.length)] +
+        upper[Math.floor(Math.random() * upper.length)] +
+        numbers[Math.floor(Math.random() * numbers.length)] +
+        special[Math.floor(Math.random() * special.length)];
+
+      // Set the permanent password
+      await cognitoIdentityServiceProvider.adminSetUserPassword({
+        UserPoolId: userPoolId,
+        Username: username,
+        Password: newPassword,
+        Permanent: true
+      }).promise();
+
+      return {
+        message: `Successfully reset password for ${username}`,
+        password: newPassword
+      };
+    } else {
+      // Just trigger the password reset email
+      await cognitoIdentityServiceProvider.adminResetUserPassword({
+        UserPoolId: userPoolId,
+        Username: username
+      }).promise();
+
+      return {
+        message: `Password reset email sent to ${username}`
+      };
+    }
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+async function deleteUser(username, event) {
+  // Get organization ID of the requesting user
+  const organizationId = await getOrgIdDirect(event.requestContext.authorizer.claims.username);
+  if (!organizationId) {
+    throw new Error('No organization ID found');
+  }
+
+  // Get target user's organization ID
+  const targetUserOrgId = await getOrgIdDirect(username);
+  if (targetUserOrgId !== organizationId) {
+    throw new Error('Cannot perform action on user from different organization');
+  }
+
+  const params = {
+    UserPoolId: userPoolId,
+    Username: username,
+  };
+
+  console.log(`Attempting to delete user ${username}`);
+
+  try {
+    const result = await cognitoIdentityServiceProvider.adminDeleteUser(params).promise();
+    console.log(`Successfully deleted user ${username}`);
+    return {
+      message: `Successfully deleted user ${username}`,
+    };
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
 module.exports = {
   addUserToGroup,
   removeUserFromGroup,
@@ -256,4 +619,7 @@ module.exports = {
   listGroupsForUser,
   listUsersInGroup,
   signUserOut,
+  createUser,
+  hardPasswordReset,
+  deleteUser,
 };

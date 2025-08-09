@@ -70,7 +70,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -173,7 +173,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -261,7 +261,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -391,7 +391,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -554,7 +554,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -676,7 +676,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -839,7 +839,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -996,7 +996,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -1166,7 +1166,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -1353,7 +1353,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -1595,7 +1595,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -1692,7 +1692,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -1789,7 +1789,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -1886,7 +1886,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -2000,7 +2000,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -2079,7 +2079,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -2206,7 +2206,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -2333,7 +2333,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -2460,7 +2460,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -2587,7 +2587,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
@@ -2714,7 +2714,7 @@ export const schema = {
                             },
                             {
                                 "allow": "private",
-                                "provider": "identityPool",
+                                "provider": "iam",
                                 "operations": [
                                     "create",
                                     "update",
