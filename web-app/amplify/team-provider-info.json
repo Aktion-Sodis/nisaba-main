@@ -103,7 +103,7 @@
         },
         "analyticsMiddelware": {
           "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
-          "s3Key": "amplify-builds/analyticsMiddelware-767053585947514d6452-build.zip"
+          "s3Key": "amplify-builds/analyticsMiddelware-46596458625a364f746b-build.zip"
         }
       },
       "hosting": {
@@ -115,7 +115,8 @@
       "api": {
         "AdminQueries": {},
         "apinisaba": {},
-        "nisabaUserManagementApi": {}
+        "nisabaUserManagementApi": {},
+        "analyticsApi": {}
       },
       "storage": {
         "nisabarelease": {}

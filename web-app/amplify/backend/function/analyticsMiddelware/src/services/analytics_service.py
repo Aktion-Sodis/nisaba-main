@@ -14,19 +14,11 @@ from queries.levels import listLevels, listEntities, getEntityByID, listEntities
 
 class AnalyticsService:
     def __init__(self):
-        """
-        Initialize analytics service with both GraphQL and DynamoDB access
-        """
         self.appsync_client = AppSyncClient()
         self.dynamodb = boto3.resource('dynamodb')
-        
-        # Get DynamoDB table names for count operations
         self.survey_table = os.environ.get('API_APINISABA_SURVEYTABLE_NAME')
     
     def get_total_number_of_surveys(self):
-        """
-        Get total count of surveys using DynamoDB (more efficient than GraphQL for count)
-        """
         try:
             table = self.dynamodb.Table(self.survey_table)
             response = table.scan(
@@ -40,9 +32,6 @@ class AnalyticsService:
             raise
     
     def get_survey_by_id(self, survey_id):
-        """
-        Get a specific survey by ID using GraphQL
-        """
         res = self.appsync_client.execute(
             query=getSurveyBySurveyID["query"],
             operation_name=getSurveyBySurveyID["operationName"],
@@ -51,25 +40,16 @@ class AnalyticsService:
         return res["data"]["getSurvey"]
     
     def get_executed_surveys_by_survey_id(self, survey_id):
-        """
-        Get executed surveys by survey ID including context using GraphQL
-        """
-        print('Getting executed surveys by survey id including context')
         res = self.appsync_client.execute(
             query=getExecutedSurveyDataBySurveyIDInclContext["query"],
             operation_name=getExecutedSurveyDataBySurveyIDInclContext["operationName"],
             variables={"surveyID": survey_id},
         )
-        print('Returned first batch of executed surveys')
         
         to_return_executed_surveys = res["data"]["listExecutedSurveys"]["items"]
         next_token = res["data"]["listExecutedSurveys"].get("nextToken", None)
 
-        # Handle pagination
         while next_token:
-            print('Getting next batch of executed surveys')
-            print(next_token)
-            
             res = self.appsync_client.execute(
                 query=getExecutedSurveyDataBySurveyIDInclContextFromNextToken["query"],
                 operation_name=getExecutedSurveyDataBySurveyIDInclContextFromNextToken["operationName"],
@@ -78,18 +58,11 @@ class AnalyticsService:
             
             items = res["data"]["listExecutedSurveys"]["items"]
             to_return_executed_surveys.extend(items)
-            
             next_token = res["data"]["listExecutedSurveys"].get("nextToken", None)
-            
-            print('Number of Items with next token: ' + str(len(items)))
 
         return to_return_executed_surveys
     
     def get_entities_by_ids(self, entity_ids):
-        """
-        Get entities by list of IDs using GraphQL
-        """
-        # Remove duplicates from entity_ids
         unique_entity_ids = list(set(entity_ids))
         
         entities = []
@@ -108,20 +81,15 @@ class AnalyticsService:
         return entities
     
     def get_all_levels(self):
-        """
-        Get all levels using GraphQL
-        """
         res = self.appsync_client.execute(
             query=listLevels["query"],
             operation_name=listLevels["operationName"],
             variables={},
         )
-        return res["data"]["listLevels"]["items"]
+        levels = res["data"]["listLevels"]["items"]
+        return self._sort_levels_by_parent_level_id(levels)
     
     def get_all_entities(self):
-        """
-        Get all entities with pagination using GraphQL
-        """
         res = self.appsync_client.execute(
             query=listEntities["query"],
             operation_name=listEntities["operationName"],
@@ -131,7 +99,6 @@ class AnalyticsService:
         to_return_entities = res["data"]["listEntities"]["items"]
         next_token = res["data"]["listEntities"].get("nextToken", None)
 
-        # Handle pagination
         while next_token:
             res = self.appsync_client.execute(
                 query=listEntitiesFromNextToken["query"],
@@ -141,7 +108,24 @@ class AnalyticsService:
             
             items = res["data"]["listEntities"]["items"]
             to_return_entities.extend(items)
-            
             next_token = res["data"]["listEntities"].get("nextToken", None)
 
-        return to_return_entities 
+        return to_return_entities
+    
+    def _sort_levels_by_parent_level_id(self, levels):
+        level_dict = {level["id"]: level for level in levels}
+        sorted_levels = []
+
+        current_level_id = None
+
+        while len(level_dict) > 0:
+            for level_id in level_dict:
+                parent_level_id = level_dict[level_id]["parentLevelID"]
+
+                if parent_level_id == current_level_id:
+                    sorted_levels.append(level_dict[level_id])
+                    level_dict.pop(level_id)
+                    current_level_id = level_id
+                    break
+
+        return sorted_levels 
