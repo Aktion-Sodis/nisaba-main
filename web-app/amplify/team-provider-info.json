@@ -82,7 +82,7 @@
         },
         "nisabaAdminSdkLayer": {
           "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
-          "s3Key": "amplify-builds/nisabaAdminSdkLayer-LambdaLayerVersion876d07a4-build.zip"
+          "s3Key": "amplify-builds/nisabaAdminSdkLayer-LambdaLayerVersionaffd9489-build.zip"
         },
         "nisabaUserManagement": {
           "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
@@ -100,6 +100,10 @@
         "createDefaultsForTesting": {
           "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
           "s3Key": "amplify-builds/createDefaultsForTesting-71706d4d6c7456617258-build.zip"
+        },
+        "analyticsMiddelware": {
+          "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
+          "s3Key": "amplify-builds/analyticsMiddelware-767053585947514d6452-build.zip"
         }
       },
       "hosting": {

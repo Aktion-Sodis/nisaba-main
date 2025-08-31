@@ -1,0 +1,1 @@
+# Queries package for GraphQL operations 
