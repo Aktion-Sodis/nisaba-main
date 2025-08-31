@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "paths": {
+    "/analytics": {
+      "name": "/analytics",
+      "lambdaFunction": "analyticsMiddelware",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "read"
+        ]
+      }
+    }
+  }
+}

@@ -22,6 +22,20 @@
       "providerPlugin": "awscloudformation",
       "service": "API Gateway"
     },
+    "analyticsApi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "analyticsMiddelware"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
     "apinisaba": {
       "dependsOn": [
         {
@@ -145,6 +159,22 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "analyticsMiddelware": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "apinisaba"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "authnisabaPreTokenGeneration": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -235,6 +265,22 @@
         {
           "category": "function",
           "resourceName": "AdminQueries8dc38185"
+        }
+      ]
+    },
+    "AMPLIFY_function_analyticsMiddelware_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "analyticsMiddelware"
+        }
+      ]
+    },
+    "AMPLIFY_function_analyticsMiddelware_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "analyticsMiddelware"
         }
       ]
     },
