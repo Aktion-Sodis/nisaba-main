@@ -191,7 +191,7 @@ class AnalyticsHandler:
                             "executed_survey_id": executed_survey["id"],
                             "answer_value": answer_value,
                             "entity_id": entity["id"] if entity else None,
-                            "entity_name": self._get_first_non_empty_text(entity["name"]["languageTexts"]) if entity and entity.get("name") else None,
+                            "entity_name": entity["name"] if entity and entity.get("name") else None,  # Full I18nString
                             "executor": self._get_executor_name(executed_survey),
                             "location": executed_survey.get("location"),
                             "metadata": {
@@ -372,33 +372,38 @@ class AnalyticsHandler:
         if not question_options:
             return {"statistics": {}, "chart_data": {}}
         
-        option_texts = [
-            self._get_first_non_empty_text(option["text"]["languageTexts"])
-            for option in question_options
+        # Store full I18nString objects for chart labels
+        option_labels = [
+            option["text"] for option in question_options
         ]
         
-        option_counts = {text: 0 for text in option_texts}
+        # Create a mapping from option text to counts (for backward compatibility)
+        option_counts = {}
+        for option in question_options:
+            first_text = self._get_first_non_empty_text(option["text"]["languageTexts"])
+            if first_text:
+                option_counts[first_text] = 0
         
         for answer in answers:
             if answer["answer_value"]:
                 if isinstance(answer["answer_value"], list):
                     for selected in answer["answer_value"]:
-                        if selected in option_texts:
+                        if selected in option_counts:
                             option_counts[selected] += 1
                 else:
-                    if answer["answer_value"] in option_texts:
+                    if answer["answer_value"] in option_counts:
                         option_counts[answer["answer_value"]] += 1
         
         chart_data = {
             "bar_chart": {
-                "x": list(option_counts.keys()),
+                "labels": option_labels,  # Full I18nString objects
                 "y": list(option_counts.values())
             }
         }
         
         if len(question_options) > 1:
             chart_data["pie_chart"] = {
-                "labels": list(option_counts.keys()),
+                "labels": option_labels,  # Full I18nString objects
                 "values": list(option_counts.values())
             }
         

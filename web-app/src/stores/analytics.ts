@@ -3,410 +3,520 @@ import { fetchAuthSession } from 'aws-amplify/auth';
 import { defineStore } from 'pinia';
 import { computed, reactive, ref, readonly } from 'vue';
 
-import { Survey, SurveyStatus, QuestionType, Entity, ExecutedSurvey, QuestionAnswer } from '@/API';
 import { useProjectConfigStore } from './projectConfigStore';
 
-// Types for analytics data based on actual middleware response
-export interface AnalyticsDataRecord {
-  surveyId: string;
-  surveyName: string;
-  executedSurveyId: string;
-  questionId: string;
-  answerId: string;
-  answerType: string;
-  date: string | null;
-  executor: string;
-  entityId: string | null;
-  entityName: string | null;
-  latitude: number | null;
-  longitude: number | null;
-  answerValue: string | number | null;
-}
+import {
+  Survey,
+  SurveyStatus,
+  Entity,
+  ExecutedSurvey,
+  QuestionOption,
+  I18nString,
+  ListExecutedSurveysQueryVariables,
+} from '@/API';
+import { listExecutedSurveys } from '@/graphql/queries';
+import { amplifyDataClient } from '@/utils/amplifyDataClient';
 
+// Types for the new server-side aggregated analytics data structure
 export interface AnalyticsFilter {
-  dateRange?: {
-    start: string;
-    end: string;
-  };
-  entityIds?: string[];
-  executorIds?: string[];
-  questionTypes?: QuestionType[];
-  location?: {
-    latitude: number;
-    longitude: number;
-    radius: number; // in meters
-  };
+  startDate?: string;
+  endDate?: string;
+  entities?: string[];
+  executors?: string[];
+  north?: number;
+  south?: number;
+  east?: number;
+  west?: number;
 }
 
-export interface ExecutedSurveySummary {
-  id: string;
-  date: string | null;
+export interface AnswerRecord {
+  answer_date: string | null;
+  executed_survey_id: string;
+  answer_value: any;
+  entity_id: string | null;
+  entity_name: I18nString | null; // Now full I18nString
   executor: string;
-  entityId: string | null;
-  entityName: string | null;
   location: {
     latitude: number | null;
     longitude: number | null;
   } | null;
-  answerCount: number;
+  metadata: {
+    applied_intervention_id: string | null;
+    organization_id: string | null;
+  };
 }
 
-export interface QuestionSummary {
-  questionId: string;
-  questionType: QuestionType;
-  answerCount: number;
-  uniqueAnswers: (string | number)[];
+export interface QuestionAnalytics {
+  total_answers: number;
+  unique_entities: number;
+  date_range: {
+    earliest: string | null;
+    latest: string | null;
+  };
+  statistics?: {
+    mean?: number;
+    median?: number;
+    min?: number;
+    max?: number;
+    range?: number;
+    std_deviation?: number;
+    total_responses?: number;
+    option_counts?: Record<string, number>;
+    average_text_length?: number;
+    longest_response?: number;
+    shortest_response?: number;
+    total_files?: number;
+    file_types?: Record<string, number>;
+    // Rating-specific fields from middleware
+    rating_counts?: Record<string, number>;
+  };
+  chart_data?: {
+    histogram?: {
+      bins: number[];
+      counts: number[];
+    };
+    bar_chart?: {
+      labels: I18nString[]; // Full I18nString objects
+      y: number[];
+    };
+    pie_chart?: {
+      labels: I18nString[]; // Full I18nString objects
+      values: number[];
+    };
+  };
+}
+
+export interface RawData {
+  text_responses?: Array<{
+    text: string;
+    date: string | null;
+    entity: I18nString | null; // Full I18nString
+    executor: string;
+    executed_survey_id: string;
+    location: {
+      latitude: number | null;
+      longitude: number | null;
+    } | null;
+  }>;
+  file_paths?: Array<{
+    path: string;
+    date: string | null;
+    entity: I18nString | null; // Full I18nString
+    executor: string;
+    executed_survey_id: string;
+    file_type: string;
+    location: {
+      latitude: number | null;
+      longitude: number | null;
+    } | null;
+  }>;
+}
+
+export interface QuestionData {
+  question_id: string;
+  question_text: I18nString;
+  question_type: string;
+  question_options: QuestionOption[];
+  answers: AnswerRecord[];
+  analytics: QuestionAnalytics;
+  raw_data?: RawData;
+}
+
+export interface AnalyticsResponse {
+  dataset: QuestionData[];
+  entities: Entity[];
+  levels: any[];
 }
 
 export const useAnalyticsStore = defineStore('analytics', () => {
   // Store state
   const selectedSurvey = ref<Survey | null>(null);
   const selectedExecutedSurvey = ref<string | null>(null);
-  const analyticsData = ref<AnalyticsDataRecord[]>([]);
-  const executedSurveys = ref<ExecutedSurveySummary[]>([]);
-  const questions = ref<QuestionSummary[]>([]);
-  
-  // Filter state
+  const analyticsData = ref<AnalyticsResponse | null>(null);
+  const surveyExecutedCounts = ref<Map<string, number>>(new Map());
+
+  // New state for executed surveys
+  const executedSurveysData = ref<ExecutedSurvey[]>([]);
+  const isLoadingExecutedSurveys = ref(false);
+  const errorExecutedSurveys = ref<string | null>(null);
+
+  // Filter state - now applied server-side
   const filters = reactive<AnalyticsFilter>({});
-  
+
   // Loading states
   const isLoadingAnalyticsData = ref(false);
-  const isLoadingExecutedSurveys = ref(false);
+  const isLoadingExecutedCounts = ref(false);
   const errorAnalyticsData = ref<string | null>(null);
-  const errorExecutedSurveys = ref<string | null>(null);
-  
+  const errorExecutedCounts = ref<string | null>(null);
+
   // Get project config store
   const projectConfigStore = useProjectConfigStore();
-  
+
   // Computed getters
   const availableSurveys = computed(() => {
-    return projectConfigStore.surveys.filter(survey => 
-      survey.status === SurveyStatus.ACTIVE || survey.status === SurveyStatus.ARCHIVED
+    return projectConfigStore.surveys.filter(
+      (survey) =>
+        survey.status === SurveyStatus.ACTIVE ||
+        survey.status === SurveyStatus.ARCHIVED
     );
   });
-  
+
   const availableEntities = computed(() => {
-    // Extract unique entities from the analytics data
-    const entityMap = new Map<string, { id: string; name: string }>();
-    analyticsData.value.forEach(record => {
-      if (record.entityId && record.entityName) {
-        entityMap.set(record.entityId, { id: record.entityId, name: record.entityName });
-      }
-    });
-    return Array.from(entityMap.values());
+    return analyticsData.value?.entities || [];
   });
-  
+
   const availableLevels = computed(() => {
-    // For now, return empty array since levels are not directly available in analytics data
-    // This could be enhanced later if needed
-    return [];
+    return analyticsData.value?.levels || [];
   });
-  
-  const filteredAnalyticsData = computed(() => {
-    let filtered = analyticsData.value;
-    
-    // Apply date range filter
-    if (filters.dateRange?.start && filters.dateRange?.end) {
-      filtered = filtered.filter(record => {
-        if (!record.date) return false;
-        const recordDate = new Date(record.date);
-        const startDate = new Date(filters.dateRange!.start);
-        const endDate = new Date(filters.dateRange!.end);
-        return recordDate >= startDate && recordDate <= endDate;
+
+  const questions = computed(() => {
+    return analyticsData.value?.dataset || [];
+  });
+
+  // Remove the old executedSurveys computed property that was reconstructing data
+
+  // New computed getter for filtered executed surveys
+  const filteredExecutedSurveys = computed(() => {
+    if (!executedSurveysData.value.length) return [];
+
+    // Apply filters to the stored executed surveys data
+    let filtered = executedSurveysData.value;
+
+    if (filters.startDate) {
+      filtered = filtered.filter((survey) => survey.date >= filters.startDate!);
+    }
+
+    if (filters.endDate) {
+      filtered = filtered.filter((survey) => survey.date <= filters.endDate!);
+    }
+
+    if (filters.entities && filters.entities.length > 0) {
+      filtered = filtered.filter(
+        (survey) =>
+          survey.appliedIntervention?.entityAppliedInterventionsId &&
+          filters.entities!.includes(
+            survey.appliedIntervention.entityAppliedInterventionsId
+          )
+      );
+    }
+
+    if (filters.executors && filters.executors.length > 0) {
+      filtered = filtered.filter(
+        (survey) =>
+          survey.whoExecutedIt &&
+          filters.executors!.includes(survey.whoExecutedIt.id)
+      );
+    }
+
+    if (
+      filters.north !== undefined ||
+      filters.south !== undefined ||
+      filters.east !== undefined ||
+      filters.west !== undefined
+    ) {
+      filtered = filtered.filter((survey) => {
+        if (!survey.location) return false;
+
+        const lat = survey.location.latitude;
+        const lng = survey.location.longitude;
+
+        if (
+          lat === null ||
+          lat === undefined ||
+          lng === null ||
+          lng === undefined
+        )
+          return false;
+
+        if (filters.north !== undefined && lat > filters.north) return false;
+        if (filters.south !== undefined && lat < filters.south) return false;
+        if (filters.east !== undefined && lng > filters.east) return false;
+        if (filters.west !== undefined && lng < filters.west) return false;
+
+        return true;
       });
     }
-    
-    // Apply entity filter
-    if (filters.entityIds && filters.entityIds.length > 0) {
-      filtered = filtered.filter(record => 
-        record.entityId && filters.entityIds!.includes(record.entityId)
-      );
-    }
-    
-    // Apply executor filter
-    if (filters.executorIds && filters.executorIds.length > 0) {
-      filtered = filtered.filter(record => 
-        filters.executorIds!.includes(record.executor)
-      );
-    }
-    
-    // Apply question type filter
-    if (filters.questionTypes && filters.questionTypes.length > 0) {
-      // We need to map question types to answer types for filtering
-      const answerTypeMap: Record<QuestionType, string[]> = {
-        [QuestionType.TEXT]: ['TEXT'],
-        [QuestionType.SINGLECHOICE]: ['QUESTION_OPTION'],
-        [QuestionType.MULTIPLECHOICE]: ['QUESTION_OPTION'],
-        [QuestionType.PICTURE]: ['TEXT'],
-        [QuestionType.PICTUREWITHTAGS]: ['TEXT'],
-        [QuestionType.AUDIO]: ['TEXT'],
-        [QuestionType.INT]: ['INT'],
-        [QuestionType.DOUBLE]: ['DOUBLE'],
-        [QuestionType.RATING]: ['RATING']
-      };
-      
-      const allowedAnswerTypes = filters.questionTypes!.flatMap(type => answerTypeMap[type]);
-      filtered = filtered.filter(record => 
-        allowedAnswerTypes.includes(record.answerType)
-      );
-    }
-    
-    // Apply location filter
-    if (filters.location) {
-      filtered = filtered.filter(record => {
-        if (!record.latitude || !record.longitude) return false;
-        
-        const distance = calculateDistance(
-          filters.location!.latitude,
-          filters.location!.longitude,
-          record.latitude,
-          record.longitude
-        );
-        
-        return distance <= filters.location!.radius;
-      });
-    }
-    
+
     return filtered;
   });
-  
-  const filteredExecutedSurveys = computed(() => {
-    if (!selectedSurvey.value) return [];
-    
-    // Get unique executed surveys from filtered analytics data
-    const uniqueExecutedSurveyIds = [...new Set(filteredAnalyticsData.value.map(record => record.executedSurveyId))];
-    
-    return executedSurveys.value.filter(executedSurvey => 
-      uniqueExecutedSurveyIds.includes(executedSurvey.id)
-    );
-  });
-  
+
   const uniqueExecutors = computed(() => {
-    return [...new Set(analyticsData.value.map(record => record.executor))].filter(executor => executor);
+    if (!analyticsData.value?.dataset) return [];
+    const executors = new Set<string>();
+    analyticsData.value.dataset.forEach((question) => {
+      question.answers.forEach((answer) => {
+        if (answer.executor) executors.add(answer.executor);
+      });
+    });
+    return Array.from(executors);
   });
-  
+
   const uniqueQuestionTypes = computed(() => {
-    const answerTypeToQuestionType: Record<string, QuestionType> = {
-      'TEXT': QuestionType.TEXT,
-      'INT': QuestionType.INT,
-      'DOUBLE': QuestionType.DOUBLE,
-      'RATING': QuestionType.RATING,
-      'QUESTION_OPTION': QuestionType.SINGLECHOICE, // Could be SINGLECHOICE or MULTIPLECHOICE
-      'DATE': QuestionType.TEXT // Assuming date is stored as text
-    };
-    
-    return [...new Set(analyticsData.value.map(record => answerTypeToQuestionType[record.answerType]))].filter(Boolean);
+    if (!analyticsData.value?.dataset) return [];
+    return [
+      ...new Set(analyticsData.value.dataset.map((q) => q.question_type)),
+    ];
   });
-  
+
   // Actions
   const selectSurvey = async (surveyId: string) => {
-    const survey = availableSurveys.value.find(s => s.id === surveyId);
+    const survey = availableSurveys.value.find((s) => s.id === surveyId);
     if (!survey) {
       throw new Error('Survey not found');
     }
-    
+
     selectedSurvey.value = survey;
     selectedExecutedSurvey.value = null;
-    
-    // Load analytics data for the selected survey
-    await loadAnalyticsData(surveyId);
-    
-    // Generate executed surveys summary
-    generateExecutedSurveysSummary();
-    
-    // Generate questions summary
-    generateQuestionsSummary();
+
+    // Load both analytics data and executed surveys in parallel
+    await Promise.all([
+      loadAnalyticsData(surveyId),
+      loadExecutedSurveys(surveyId),
+    ]);
   };
-  
+
   const selectExecutedSurvey = (executedSurveyId: string) => {
     selectedExecutedSurvey.value = executedSurveyId;
   };
-  
-  const updateFilters = (newFilters: Partial<AnalyticsFilter>) => {
+
+  const updateFilters = async (newFilters: Partial<AnalyticsFilter>) => {
     Object.assign(filters, newFilters);
+
+    // If a survey is selected, reload both data types
+    if (selectedSurvey.value) {
+      await Promise.all([
+        loadAnalyticsData(selectedSurvey.value.id),
+        loadExecutedSurveys(selectedSurvey.value.id),
+      ]);
+    }
   };
-  
-  const clearFilters = () => {
-    Object.keys(filters).forEach(key => {
+
+  const clearFilters = async () => {
+    Object.keys(filters).forEach((key) => {
       delete (filters as any)[key];
     });
+
+    // If a survey is selected, reload both data types
+    if (selectedSurvey.value) {
+      await Promise.all([
+        loadAnalyticsData(selectedSurvey.value.id),
+        loadExecutedSurveys(selectedSurvey.value.id),
+      ]);
+    }
   };
-  
+
   const loadAnalyticsData = async (surveyId: string) => {
     isLoadingAnalyticsData.value = true;
     errorAnalyticsData.value = null;
-    
+
     try {
       const options = await getAuthorizationHeader();
+
+      // Build query parameters with filters
+      const queryParams: Record<string, string> = {
+        SurveyID: surveyId,
+      };
+
+      if (filters.startDate) queryParams.startDate = filters.startDate;
+      if (filters.endDate) queryParams.endDate = filters.endDate;
+      if (filters.entities && filters.entities.length > 0) {
+        queryParams.entities = filters.entities.join(',');
+      }
+      if (filters.executors && filters.executors.length > 0) {
+        queryParams.executors = filters.executors.join(',');
+      }
+      if (filters.north !== undefined)
+        queryParams.north = filters.north.toString();
+      if (filters.south !== undefined)
+        queryParams.south = filters.south.toString();
+      if (filters.east !== undefined)
+        queryParams.east = filters.east.toString();
+      if (filters.west !== undefined)
+        queryParams.west = filters.west.toString();
+
       const response = await get({
         apiName: 'analyticsApi',
         path: '/getAggregatedSurveyDataById',
         options: {
           ...options,
-          queryParams: {
-            SurveyID: surveyId,
-          },
+          queryParams,
         },
       });
-      
+
       const responseData = await response.response;
       const data = await responseData.body.json();
-      
-      if (data && typeof data === 'object' && 'res' in data && Array.isArray(data.res)) {
-        analyticsData.value = data.res as unknown as AnalyticsDataRecord[];
+
+      if (data && typeof data === 'object' && 'dataset' in data) {
+        analyticsData.value = data as unknown as AnalyticsResponse;
       } else {
         throw new Error('Invalid response format from analytics API');
       }
     } catch (error) {
       console.error('Error loading analytics data:', error);
-      errorAnalyticsData.value = error instanceof Error ? error.message : 'Failed to load analytics data';
-      analyticsData.value = [];
+      errorAnalyticsData.value =
+        error instanceof Error
+          ? error.message
+          : 'Failed to load analytics data';
+      analyticsData.value = null;
     } finally {
       isLoadingAnalyticsData.value = false;
     }
   };
-  
-  const generateExecutedSurveysSummary = () => {
-    if (!analyticsData.value.length) {
-      executedSurveys.value = [];
-      return;
-    }
-    
-    const executedSurveyMap = new Map<string, ExecutedSurveySummary>();
-    
-    analyticsData.value.forEach(record => {
-      if (!executedSurveyMap.has(record.executedSurveyId)) {
-        executedSurveyMap.set(record.executedSurveyId, {
-          id: record.executedSurveyId,
-          date: record.date,
-          executor: record.executor,
-          entityId: record.entityId,
-          entityName: record.entityName,
-          location: record.latitude && record.longitude ? {
-            latitude: record.latitude,
-            longitude: record.longitude
-          } : null,
-          answerCount: 0
+
+  // New action to load executed surveys with pagination
+  const loadExecutedSurveys = async (surveyId: string) => {
+    if (!surveyId) return;
+
+    isLoadingExecutedSurveys.value = true;
+    errorExecutedSurveys.value = null;
+
+    try {
+      let nextToken: string | null = null;
+      const allExecutedSurveys: ExecutedSurvey[] = [];
+
+      do {
+        const variables: ListExecutedSurveysQueryVariables = {
+          filter: {
+            executedSurveySurveyId: { eq: surveyId },
+          },
+          nextToken,
+        };
+
+        const response = await amplifyDataClient.graphql({
+          query: listExecutedSurveys,
+          variables,
         });
-      }
-      
-      const summary = executedSurveyMap.get(record.executedSurveyId)!;
-      summary.answerCount++;
-    });
-    
-    executedSurveys.value = Array.from(executedSurveyMap.values());
-  };
-  
-  const generateQuestionsSummary = () => {
-    if (!analyticsData.value.length) {
-      questions.value = [];
-      return;
+
+        if (response.data?.listExecutedSurveys?.items) {
+          const items = response.data.listExecutedSurveys
+            .items as ExecutedSurvey[];
+          allExecutedSurveys.push(...items);
+        }
+
+        nextToken = response.data?.listExecutedSurveys?.nextToken || null;
+      } while (nextToken);
+
+      executedSurveysData.value = allExecutedSurveys;
+    } catch (error) {
+      console.error('Error loading executed surveys:', error);
+      errorExecutedSurveys.value =
+        error instanceof Error
+          ? error.message
+          : 'Failed to load executed surveys';
+      executedSurveysData.value = [];
+    } finally {
+      isLoadingExecutedSurveys.value = false;
     }
-    
-    const questionMap = new Map<string, QuestionSummary>();
-    
-    analyticsData.value.forEach(record => {
-      if (!questionMap.has(record.questionId)) {
-        questionMap.set(record.questionId, {
-          questionId: record.questionId,
-          questionType: mapAnswerTypeToQuestionType(record.answerType),
-          answerCount: 0,
-          uniqueAnswers: []
-        });
+  };
+
+  const loadExecutedSurveyCounts = async () => {
+    isLoadingExecutedCounts.value = true;
+    errorExecutedCounts.value = null;
+
+    try {
+      const options = await getAuthorizationHeader();
+
+      // Get total number of surveys first
+      const totalResponse = await get({
+        apiName: 'analyticsApi',
+        path: '/getTotalNumberOfSurveys',
+        options,
+      });
+
+      const totalData = await totalResponse.response;
+      const totalSurveys = await totalData.body.json();
+
+      if (
+        totalData.statusCode !== 200 ||
+        !totalSurveys ||
+        typeof totalSurveys !== 'object' ||
+        !('res' in totalSurveys)
+      ) {
+        throw new Error('Failed to get total survey count');
       }
-      
-      const summary = questionMap.get(record.questionId)!;
-      summary.answerCount++;
-      
-      if (record.answerValue && !summary.uniqueAnswers.includes(record.answerValue)) {
-        summary.uniqueAnswers.push(record.answerValue);
-      }
-    });
-    
-    questions.value = Array.from(questionMap.values());
+
+      // For now, we'll initialize with available surveys from project config
+      // In the future, this could be enhanced to get actual counts from the API
+      const counts: Map<string, number> = new Map();
+      availableSurveys.value.forEach((survey) => {
+        counts.set(survey.id, 0); // Initialize with 0 for now
+      });
+      surveyExecutedCounts.value = counts;
+    } catch (error) {
+      console.error('Error loading executed survey counts:', error);
+      errorExecutedCounts.value =
+        error instanceof Error
+          ? error.message
+          : 'Failed to load executed survey counts';
+      surveyExecutedCounts.value = new Map();
+    } finally {
+      isLoadingExecutedCounts.value = false;
+    }
   };
-  
-  const mapAnswerTypeToQuestionType = (answerType: string): QuestionType => {
-    const mapping: Record<string, QuestionType> = {
-      'TEXT': QuestionType.TEXT,
-      'INT': QuestionType.INT,
-      'DOUBLE': QuestionType.DOUBLE,
-      'RATING': QuestionType.RATING,
-      'QUESTION_OPTION': QuestionType.SINGLECHOICE,
-      'DATE': QuestionType.TEXT
-    };
-    
-    return mapping[answerType] || QuestionType.TEXT;
-  };
-  
-  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
-    const R = 6371e3; // Earth's radius in meters
-    const φ1 = lat1 * Math.PI / 180;
-    const φ2 = lat2 * Math.PI / 180;
-    const Δφ = (lat2 - lat1) * Math.PI / 180;
-    const Δλ = (lon2 - lon1) * Math.PI / 180;
-    
-    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-              Math.cos(φ1) * Math.cos(φ2) *
-              Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    
-    return R * c;
-  };
-  
+
   const getAuthorizationHeader = async () => {
     const session = await fetchAuthSession();
     const token = session.tokens?.accessToken?.toString();
-    
+
     if (!token) {
       throw new Error('No access token available');
     }
-    
+
     return {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
   };
-  
+
   const reset = () => {
     selectedSurvey.value = null;
     selectedExecutedSurvey.value = null;
-    analyticsData.value = [];
-    executedSurveys.value = [];
-    questions.value = [];
+    analyticsData.value = null;
+    surveyExecutedCounts.value = new Map();
+    executedSurveysData.value = []; // Clear executed surveys data
     clearFilters();
     errorAnalyticsData.value = null;
-    errorExecutedSurveys.value = null;
+    errorExecutedCounts.value = null;
+    errorExecutedSurveys.value = null; // Clear executed surveys error
   };
-  
+
+  // Initialize store by loading executed survey counts
+  const initialize = async () => {
+    await loadExecutedSurveyCounts();
+  };
+
   return {
     // State
     selectedSurvey: readonly(selectedSurvey),
     selectedExecutedSurvey: readonly(selectedExecutedSurvey),
     analyticsData: readonly(analyticsData),
-    executedSurveys: readonly(executedSurveys),
-    questions: readonly(questions),
+    surveyExecutedCounts: readonly(surveyExecutedCounts),
+    executedSurveysData: readonly(executedSurveysData),
     filters: readonly(filters),
     isLoadingAnalyticsData: readonly(isLoadingAnalyticsData),
+    isLoadingExecutedCounts: readonly(isLoadingExecutedCounts),
     isLoadingExecutedSurveys: readonly(isLoadingExecutedSurveys),
     errorAnalyticsData: readonly(errorAnalyticsData),
+    errorExecutedCounts: readonly(errorExecutedCounts),
     errorExecutedSurveys: readonly(errorExecutedSurveys),
-    
+
     // Computed
     availableSurveys,
     availableEntities,
     availableLevels,
-    filteredAnalyticsData,
+    questions,
     filteredExecutedSurveys,
     uniqueExecutors,
     uniqueQuestionTypes,
-    
+
     // Actions
     selectSurvey,
     selectExecutedSurvey,
     updateFilters,
     clearFilters,
-    reset
+    reset,
+    initialize,
+    loadExecutedSurveys,
   };
 });

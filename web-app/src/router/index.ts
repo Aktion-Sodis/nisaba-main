@@ -6,6 +6,10 @@ import { createRouter, createWebHistory } from 'vue-router';
 import i18n from '@/i18n';
 import { useAuthStore, AuthenticationState } from '@/stores/auth';
 import { UserGroup, hasRights } from '@/types/UserGroup';
+import AnalyticsAggregated from '@/views/analyticsaggregated/AnalyticsAggregated.vue';
+import AnalyticsExecutedSurveyOverview from '@/views/analyticsexecutedsurveyoverview/AnalyticsExecutedSurveyOverview.vue';
+import AnalyticsSurveyDetails from '@/views/analyticssurveydetails/AnalyticsSurveyDetails.vue';
+import AnalyticsSurveyOverview from '@/views/analyticssurveyoverview/AnalyticsSurveyOverview.vue';
 import Index from '@/views/index/Index.vue';
 import Interventions from '@/views/interventions/interventions.vue';
 import Login from '@/views/login/Login.vue';
@@ -78,6 +82,50 @@ const routes = [
       i18n_title: 'apps.apps.users.title',
       requiresAuth: true,
       minRole: UserGroup.ADMIN,
+    },
+  },
+  {
+    path: '/analytics/survey-overview',
+    name: 'Analytics Survey Overview',
+    component: AnalyticsSurveyOverview,
+    meta: {
+      layout: 'DefaultLayout',
+      i18n_title: 'apps.apps.analytics_survey_overview.title',
+      requiresAuth: true,
+      minRole: UserGroup.ANALYTICS,
+    },
+  },
+  {
+    path: '/analytics/aggregated',
+    name: 'Analytics Aggregated',
+    component: AnalyticsAggregated,
+    meta: {
+      layout: 'DefaultLayout',
+      i18n_title: 'apps.apps.analytics_aggregated.title',
+      requiresAuth: true,
+      minRole: UserGroup.ANALYTICS,
+    },
+  },
+  {
+    path: '/analytics/executed-survey-overview',
+    name: 'Analytics Executed Survey Overview',
+    component: AnalyticsExecutedSurveyOverview,
+    meta: {
+      layout: 'DefaultLayout',
+      i18n_title: 'apps.apps.analytics_executed_survey_overview.title',
+      requiresAuth: true,
+      minRole: UserGroup.ANALYTICS,
+    },
+  },
+  {
+    path: '/analytics/survey-details',
+    name: 'Analytics Survey Details',
+    component: AnalyticsSurveyDetails,
+    meta: {
+      layout: 'DefaultLayout',
+      i18n_title: 'apps.apps.analytics_survey_details.title',
+      requiresAuth: true,
+      minRole: UserGroup.ANALYTICS,
     },
   },
   {

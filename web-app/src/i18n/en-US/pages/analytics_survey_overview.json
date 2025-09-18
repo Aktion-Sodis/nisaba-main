@@ -1,0 +1,24 @@
+{
+  "title": "Analytics Survey Overview",
+  "subtitle": "View and analyze survey data and execution statistics",
+  "noSurveysFound": "No surveys found",
+  "loadingSurveys": "Loading surveys...",
+  "withActiveFilter": " (with active filter)",
+  "createdAt": "Created at",
+  "executedCount": "Executed count",
+  "filters": {
+    "search": "Search surveys...",
+    "reset": "Reset filters",
+    "filterByName": "Filter by name",
+    "filterByDescription": "Filter by description",
+    "selectDate": "Select date",
+    "selectStatus": "Select status"
+  },
+  "columns": {
+    "name": "Name",
+    "description": "Description",
+    "createdAt": "Created at",
+    "status": "Status",
+    "executedCount": "Executed Count"
+  }
+}

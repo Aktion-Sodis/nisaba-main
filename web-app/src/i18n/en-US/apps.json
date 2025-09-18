@@ -1,10 +1,12 @@
 {
     "categories": {
         "admin": "Admin Apps",
+        "analytics": "Analytics",
         "settings": "Management"
     },
     "groups": {
-        "surveys": "Surveys"
+        "surveys": "Surveys",
+        "analytics": "Analytics"
     },
     "apps": {
         "login": {
@@ -34,6 +36,26 @@
         "passwordreset": {
             "title": "Reset Password",
             "description": "Reset the password"
+        },
+        "analytics": {
+            "title": "Analytics",
+            "description": "View and analyze survey data"
+        },
+        "analytics_survey_overview": {
+            "title": "Survey Overview",
+            "description": "View survey execution statistics"
+        },
+        "analytics_aggregated": {
+            "title": "Aggregated Analytics",
+            "description": "View aggregated survey analytics"
+        },
+        "analytics_executed_survey_overview": {
+            "title": "Executed Surveys",
+            "description": "View executed survey details"
+        },
+        "analytics_survey_details": {
+            "title": "Survey Details",
+            "description": "View detailed survey analytics"
         }
     }
 }

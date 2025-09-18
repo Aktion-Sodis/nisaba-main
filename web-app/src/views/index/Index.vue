@@ -54,7 +54,7 @@
                     @click=""
                   >
                     <template #icon>
-                    <i class="pi pi-sitemap text-surface-0 text-5xl md:text-6xl" />
+                    <i class="pi pi-sitemap text-surface-0 max-w-12 xl:max-w-14" />
                     </template>
                   </menu-card>
                   <menu-card
@@ -70,6 +70,28 @@
                     </template>
                   </menu-card>
             -->
+        </div>
+      </div>
+      <div v-if="hasAnalyticsRights" class="w-full flex flex-col">
+        <div class="flex mb-3">
+          <h3>
+            {{ $t('apps.categories.analytics') }}
+          </h3>
+        </div>
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 h-full gap-4"
+        >
+          <menu-card
+            v-if="hasAnalyticsRights"
+            :title="$t('apps.apps.analytics.title')"
+            :subtitle="$t('apps.apps.analytics.description')"
+            bg-color="bg-secondary-800"
+            @click="$router.push('/analytics/survey-overview')"
+          >
+            <template #icon>
+              <i class="pi pi-chart-bar text-surface-0 text-5xl md:text-6xl" />
+            </template>
+          </menu-card>
         </div>
       </div>
       <div v-if="hasAdminRights" class="w-full flex flex-col">
@@ -113,7 +135,7 @@
                     @click=""
                   >
                     <template #icon>
-                    <i class="pi pi-sitemap text-surface-0 text-5xl md:text-6xl" />
+                    <i class="pi pi-sitemap text-surface-0 max-w-12 xl:max-w-14" />
                     </template>
                   </menu-card>
                   <menu-card
@@ -147,6 +169,13 @@ const authStore = useAuthStore();
 const hasAdminRights = computed(() => {
   return (
     authStore.highestRole && hasRights(authStore.highestRole, UserGroup.ADMIN)
+  );
+});
+
+const hasAnalyticsRights = computed(() => {
+  return (
+    authStore.highestRole &&
+    hasRights(authStore.highestRole, UserGroup.ANALYTICS)
   );
 });
 </script>
