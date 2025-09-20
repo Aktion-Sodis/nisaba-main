@@ -2,7 +2,7 @@
   <Dialog
     v-model:visible="isOpenedLocal"
     modal
-    :header="' '"
+    :header="dialogTitle"
     class="w-dialog-lg"
     :maximizable="false"
     :draggable="false"
@@ -105,9 +105,14 @@
         />
         <Button
           v-if="!viewMode"
-          :label="isCreate ? t('interventiondialog.buttons.save') : t('interventiondialog.buttons.update')"
+          :label="
+            isCreate
+              ? t('interventiondialog.buttons.save')
+              : t('interventiondialog.buttons.update')
+          "
           icon="pi pi-check"
           :loading="isSaving"
+          :disabled="!unsavedChanges"
           severity="success"
           @click="saveInterventionAndConnections"
         />
@@ -122,6 +127,7 @@ import { useToast } from 'primevue/usetoast';
 import { ref, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+import { InterventionType } from '@/API';
 import CustomImageUpload from '@/components/elements/CustomImageUpload.vue';
 import LanguageMultiSelector from '@/components/elements/LanguageMultiSelector.vue';
 import MultiLanguageTextField from '@/components/elements/MultiLanguageTextField.vue';
@@ -176,8 +182,14 @@ watch(
 
 // Mögliche Interventionstypen
 const interventionTypes = computed(() => [
-  { name: t('interventiondialog.types.technology'), value: 'technology' },
-  { name: t('interventiondialog.types.education'), value: 'education' },
+  {
+    name: t('interventiondialog.types.technology'),
+    value: InterventionType.TECHNOLOGY,
+  },
+  {
+    name: t('interventiondialog.types.education'),
+    value: InterventionType.EDUCATION,
+  },
 ]);
 
 // Computed Properties
@@ -297,7 +309,7 @@ const saveInterventionAndConnections = async () => {
   }
 
   isSaving.value = true;
-  errors.value = [];
+  errors.value = { general: [] };
   try {
     const isValidated = validate();
     if (!isValidated) {
@@ -317,6 +329,16 @@ const saveInterventionAndConnections = async () => {
         try {
           await projectConfigStore.updateIntervention(localIntervention.value);
           dbIntervention.value = cloneDeep(localIntervention.value);
+          toast.add({
+            severity: 'success',
+            summary: t(
+              'interventiondialog.toast.intervention_update_success.title'
+            ),
+            detail: t(
+              'interventiondialog.toast.intervention_update_success.detail'
+            ),
+            life: 3000,
+          });
         } catch (error) {
           isSaving.value = false;
           toast.add({
@@ -335,6 +357,16 @@ const saveInterventionAndConnections = async () => {
         try {
           await projectConfigStore.createIntervention(localIntervention.value);
           dbIntervention.value = cloneDeep(localIntervention.value);
+          toast.add({
+            severity: 'success',
+            summary: t(
+              'interventiondialog.toast.intervention_create_success.title'
+            ),
+            detail: t(
+              'interventiondialog.toast.intervention_create_success.detail'
+            ),
+            life: 3000,
+          });
         } catch (error) {
           isSaving.value = false;
           toast.add({
@@ -381,6 +413,9 @@ const saveInterventionAndConnections = async () => {
     return;
   }
   isSaving.value = false;
+
+  // Emit saved event to parent
+  emit('saved', localIntervention.value);
 };
 
 const errors = ref<{
@@ -414,12 +449,12 @@ const validate = (): boolean => {
   }
 
   // Alle Titel wenn mehrere Sprachen
-  if (allowedLanguageKeys.value.length > 1) {
+  if (allowedLanguageKeys.value.length > 1 && localIntervention.value) {
     const missingTitleLanguages = allowedLanguageKeys.value.filter((key) => {
-      const index = localIntervention.value.name.languageKeys.indexOf(key);
+      const index = localIntervention.value!.name.languageKeys.indexOf(key);
       return (
         index === -1 ||
-        !localIntervention.value.name.languageTexts[index]?.trim()
+        !localIntervention.value!.name.languageTexts[index]?.trim()
       );
     });
 
@@ -474,7 +509,7 @@ const unsavedChangesLevelConnections = computed(() => {
 });
 
 const imagePath = computed(() => {
-  if (!localIntervention.value?.id) return null;
+  if (!localIntervention.value?.id) return '';
 
   return deriveS3Path('interventionPicPath', {
     interventionID: localIntervention.value.id,

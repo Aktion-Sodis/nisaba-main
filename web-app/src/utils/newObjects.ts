@@ -57,6 +57,6 @@ export const createNewIntervention = (
     name: createEmptyI18nString(languageKeys),
     //@ts-expect-error /db autogeneration
     description: createEmptyI18nString(languageKeys),
-    interventionType: InterventionType.EDUCATION,
+    interventionType: InterventionType.TECHNOLOGY,
   };
 };

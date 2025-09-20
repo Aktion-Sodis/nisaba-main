@@ -252,7 +252,7 @@ import { formatMLString } from '@/utils/formatStrings';
 const { locale, t } = useI18n();
 const projectConfigStore = useProjectConfigStore();
 
-const interventions = projectConfigStore.interventions;
+const interventions = computed(() => projectConfigStore.interventions);
 const loading = projectConfigStore.isLoadingInterventions;
 const viewMode = ref('table');
 const viewOptions = ref([
@@ -274,11 +274,11 @@ const isFilterActive = computed(() => {
 });
 
 const searchableInterventions = computed(() => {
-  if (!Array.isArray(interventions)) {
+  if (!Array.isArray(interventions.value)) {
     return [];
   }
   const currentLocale = locale.value;
-  return interventions.map((intervention) => {
+  return interventions.value.map((intervention) => {
     try {
       const nameFormatted = formatMLString(intervention.name, currentLocale);
       const descriptionFormatted = formatMLString(
