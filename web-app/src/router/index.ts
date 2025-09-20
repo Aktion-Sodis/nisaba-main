@@ -26,7 +26,7 @@ const routes = [
     component: Login,
     meta: {
       layout: 'BlankLayout',
-      i18n_title: 'apps.login.title',
+      i18n_title: 'apps.apps.login.title',
       requiresAuth: false,
     },
   },
@@ -36,7 +36,7 @@ const routes = [
     component: Index,
     meta: {
       layout: 'DefaultLayout',
-      i18n_title: 'apps.project_structure.title',
+      i18n_title: 'apps.apps.project_structure.title',
       requiresAuth: true,
     },
   },
@@ -46,7 +46,7 @@ const routes = [
     component: Umfragen,
     meta: {
       layout: 'DefaultLayout',
-      i18n_title: 'apps.surveys.title',
+      i18n_title: 'apps.apps.surveys.title',
       requiresAuth: true,
       minRole: UserGroup.ADMIN,
     },
@@ -57,7 +57,7 @@ const routes = [
     component: SurveyEditor,
     meta: {
       layout: 'DefaultLayout',
-      i18n_title: 'apps.surveyeditor.title',
+      i18n_title: 'apps.apps.surveyeditor.title',
       requiresAuth: true,
       minRole: UserGroup.ADMIN,
     },
@@ -68,7 +68,7 @@ const routes = [
     component: Interventions,
     meta: {
       layout: 'DefaultLayout',
-      i18n_title: 'apps.interventions.title',
+      i18n_title: 'apps.apps.interventions.title',
       requiresAuth: true,
       minRole: UserGroup.ADMIN,
     },
