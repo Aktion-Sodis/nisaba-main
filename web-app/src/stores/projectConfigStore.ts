@@ -1,5 +1,4 @@
 import { GraphQLResult } from '@aws-amplify/api';
-import { cloneDeep } from 'lodash';
 import { defineStore } from 'pinia';
 import { useToast } from 'primevue/usetoast';
 import { computed, reactive, ref } from 'vue';
@@ -10,6 +9,10 @@ import {
   Survey,
   UpdateSurveyInput,
   CreateSurveyInput,
+  UpdateInterventionInput,
+  CreateInterventionInput,
+  UpdateLevelInput,
+  CreateLevelInput,
 } from '@/API';
 import {
   createLevel as createLevelMutation,
@@ -24,6 +27,7 @@ import {
 import { listLevels, listInterventions } from '@/graphql/queries';
 import i18n from '@/i18n';
 import { amplifyDataClient } from '@/utils/amplifyDataClient';
+import { cleanObjectForGraphQL } from '@/utils/objectCleaner';
 
 const listLevelInterventionRelationsMinimal = /* GraphQL */ `
   query ListLevelInterventionRelations(
@@ -40,6 +44,8 @@ const listLevelInterventionRelationsMinimal = /* GraphQL */ `
         id
         levelId
         interventionId
+        _version
+        _deleted
       }
       nextToken
       startedAt
@@ -47,11 +53,12 @@ const listLevelInterventionRelationsMinimal = /* GraphQL */ `
   }
 `;
 
-interface MinimalLevelInterventionRelation {
+export interface MinimalLevelInterventionRelation {
   id: string;
   levelId: string;
   interventionId: string;
   _deleted?: boolean;
+  _version?: number;
 }
 
 interface MinimalLevelInterventionRelationConnection {
@@ -64,8 +71,8 @@ interface MinimalLevelInterventionRelationsResponse {
   listLevelInterventionRelations: MinimalLevelInterventionRelationConnection;
 }
 
-interface StoreLevel extends Omit<Level, 'allowedInterventions'> {}
-interface StoreIntervention extends Omit<Intervention, 'levels'> {}
+export interface StoreLevel extends Omit<Level, 'allowedInterventions'> {}
+export interface StoreIntervention extends Omit<Intervention, 'levels'> {}
 
 // Custom minimal mutation for creating a survey (does not request intervention field)
 const createSurveyMinimalMutation = /* GraphQL */ `
@@ -239,7 +246,10 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
   const _interventions = reactive<Record<string, StoreIntervention>>({});
   const _surveys = reactive<Record<string, Survey>>({});
   const _levelInterventionRelations = reactive<
-    Record<string, { id: string; levelId: string; interventionId: string }>
+    Record<
+      string,
+      { id: string; levelId: string; interventionId: string; _version?: number }
+    >
   >({});
 
   const isLoadingLevels = ref(false);
@@ -359,6 +369,11 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
         const result = (await amplifyDataClient.graphql({
           query: listLevels,
           variables: {
+            filter: {
+              _deleted: {
+                ne: true,
+              },
+            },
             nextToken,
           },
         })) as GraphQLResult<{
@@ -366,9 +381,6 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
         }>;
 
         result.data.listLevels.items.forEach((level: Level) => {
-          // Skip if the item is marked as deleted
-          if (level._deleted) return;
-
           const {
             allowedInterventions: _allowedInterventions,
             ...levelWithoutRelations
@@ -395,6 +407,11 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
         const result = (await amplifyDataClient.graphql({
           query: listInterventions,
           variables: {
+            filter: {
+              _deleted: {
+                ne: true,
+              },
+            },
             nextToken,
           },
         })) as GraphQLResult<{
@@ -406,9 +423,6 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
 
         result.data.listInterventions.items.forEach(
           (intervention: Intervention) => {
-            // Skip if the item is marked as deleted
-            if (intervention._deleted) return;
-
             const { levels: _levels, ...interventionWithoutRelations } =
               intervention;
             _interventions[intervention.id] =
@@ -435,6 +449,11 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
         const result = (await amplifyDataClient.graphql({
           query: listSurveysMinimal,
           variables: {
+            filter: {
+              _deleted: {
+                ne: true,
+              },
+            },
             nextToken,
           },
         })) as GraphQLResult<{
@@ -442,9 +461,6 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
         }>;
 
         result.data.listSurveys.items.forEach((survey: Survey) => {
-          // Skip if the item is marked as deleted
-          if (survey._deleted) return;
-
           _surveys[survey.id] = survey;
         });
 
@@ -467,6 +483,11 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
         const result = (await amplifyDataClient.graphql({
           query: listLevelInterventionRelationsMinimal,
           variables: {
+            filter: {
+              _deleted: {
+                ne: true,
+              },
+            },
             nextToken,
           },
         })) as GraphQLResult<MinimalLevelInterventionRelationsResponse>;
@@ -476,13 +497,11 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
         }
 
         result.data.listLevelInterventionRelations.items.forEach((relation) => {
-          // Skip if the item is marked as deleted
-          if (relation._deleted) return;
-
           _levelInterventionRelations[relation.id] = {
             id: relation.id,
             levelId: relation.levelId,
             interventionId: relation.interventionId,
+            _version: relation._version,
           };
         });
 
@@ -500,10 +519,19 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
   const createLevel = async (level: StoreLevel) => {
     try {
       isCreatingLevel.value = true;
+
+      // Filter level to only include fields allowed in CreateLevelInput
+      const filteredInput = Object.fromEntries(
+        Object.entries(level).filter(([key]) => isCreateLevelInputKey(key))
+      ) as unknown as CreateLevelInput;
+
+      // Clean nested objects (remove __typename, etc.)
+      const input = cleanObjectForGraphQL(filteredInput);
+
       const { data } = await amplifyDataClient.graphql({
         query: createLevelMutation,
         variables: {
-          input: level,
+          input,
         },
       });
       const {
@@ -523,10 +551,21 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
   const createIntervention = async (intervention: StoreIntervention) => {
     try {
       isCreatingIntervention.value = true;
+
+      // Filter intervention to only include fields allowed in CreateInterventionInput
+      const filteredInput = Object.fromEntries(
+        Object.entries(intervention).filter(([key]) =>
+          isCreateInterventionInputKey(key)
+        )
+      ) as unknown as CreateInterventionInput;
+
+      // Clean nested objects (remove __typename, etc.)
+      const input = cleanObjectForGraphQL(filteredInput);
+
       const { data } = await amplifyDataClient.graphql({
         query: createInterventionMutation,
         variables: {
-          input: intervention,
+          input,
         },
       });
       const { levels: _levels, ...interventionWithoutRelations } =
@@ -584,12 +623,67 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     );
   };
 
+  const isUpdateInterventionInputKey = (
+    key: string
+  ): key is keyof UpdateInterventionInput => {
+    return (
+      key === 'id' ||
+      key === 'name' ||
+      key === 'description' ||
+      key === 'interventionType' ||
+      key === 'schemeVersion' ||
+      key === '_version'
+    );
+  };
+
+  const isCreateInterventionInputKey = (
+    key: string
+  ): key is keyof CreateInterventionInput => {
+    return (
+      key === 'name' ||
+      key === 'description' ||
+      key === 'interventionType' ||
+      key === 'schemeVersion' ||
+      key === 'id' ||
+      key === '_version'
+    );
+  };
+
+  const isUpdateLevelInputKey = (key: string): boolean => {
+    return (
+      key === 'id' ||
+      key === 'name' ||
+      key === 'description' ||
+      key === 'parentLevelID' ||
+      key === 'interventionsAreAllowed' ||
+      key === 'customData' ||
+      key === 'schemeVersion' ||
+      key === '_version'
+    );
+  };
+
+  const isCreateLevelInputKey = (key: string): boolean => {
+    return (
+      key === 'name' ||
+      key === 'description' ||
+      key === 'parentLevelID' ||
+      key === 'interventionsAreAllowed' ||
+      key === 'customData' ||
+      key === 'schemeVersion' ||
+      key === 'id' ||
+      key === '_version'
+    );
+  };
+
   const createSurvey = async (survey: Survey) => {
     try {
       isCreatingSurvey.value = true;
-      const input = Object.fromEntries(
+      const filteredInput = Object.fromEntries(
         Object.entries(survey).filter(([key]) => isCreateSurveyInputKey(key))
       ) as unknown as CreateSurveyInput;
+
+      // Clean nested objects (remove __typename, etc.)
+      const input = cleanObjectForGraphQL(filteredInput);
       const result = (await amplifyDataClient.graphql({
         query: createSurveyMinimalMutation,
         variables: {
@@ -620,10 +714,19 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
   const updateLevel = async (level: StoreLevel) => {
     try {
       isUpdatingLevel.value = true;
+
+      // Filter level to only include fields allowed in UpdateLevelInput
+      const filteredInput = Object.fromEntries(
+        Object.entries(level).filter(([key]) => isUpdateLevelInputKey(key))
+      ) as unknown as UpdateLevelInput;
+
+      // Clean nested objects (remove __typename, etc.)
+      const input = cleanObjectForGraphQL(filteredInput);
+
       const { data } = await amplifyDataClient.graphql({
         query: updateLevelMutation,
         variables: {
-          input: level,
+          input,
         },
       });
       const {
@@ -643,10 +746,21 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
   const updateIntervention = async (intervention: StoreIntervention) => {
     try {
       isUpdatingIntervention.value = true;
+
+      // Filter intervention to only include fields allowed in UpdateInterventionInput
+      const filteredInput = Object.fromEntries(
+        Object.entries(intervention).filter(([key]) =>
+          isUpdateInterventionInputKey(key)
+        )
+      ) as unknown as UpdateInterventionInput;
+
+      // Clean nested objects (remove __typename, etc.)
+      const input = cleanObjectForGraphQL(filteredInput);
+
       const { data } = await amplifyDataClient.graphql({
         query: updateInterventionMutation,
         variables: {
-          input: intervention,
+          input,
         },
       });
       const { levels: _levels, ...interventionWithoutRelations } =
@@ -673,24 +787,17 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
   const updateSurvey = async (survey: Survey) => {
     try {
       isUpdatingSurvey.value = true;
-      const input = Object.fromEntries(
+      const filteredInput = Object.fromEntries(
         Object.entries(survey).filter(([key]) => isUpdateSurveyInputKey(key))
       ) as unknown as UpdateSurveyInput;
 
-      // Convert reactive objects to plain objects using lodash and remove __typename fields
-      const plainInput = cloneDeep(input);
-      const removeTypename = (obj: any) => {
-        if (obj && typeof obj === 'object') {
-          delete obj.__typename;
-          Object.values(obj).forEach(removeTypename);
-        }
-      };
-      removeTypename(plainInput);
+      // Clean nested objects (remove __typename, etc.)
+      const input = cleanObjectForGraphQL(filteredInput);
 
       const result = (await amplifyDataClient.graphql({
         query: updateSurveyMinimalMutation,
         variables: {
-          input: plainInput,
+          input,
         },
       })) as GraphQLResult<any>;
       const data = result.data;
@@ -882,6 +989,7 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
         id: relationId,
         levelId,
         interventionId,
+        _version: data.createLevelInterventionRelation._version,
       };
     } catch (error: unknown) {
       console.error(error);
@@ -891,11 +999,17 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
 
   const deleteLevelInterventionRelation = async (relationId: string) => {
     try {
+      const relation = _levelInterventionRelations[relationId];
+      if (!relation) {
+        throw new Error(`Relation with id ${relationId} not found`);
+      }
+
       await amplifyDataClient.graphql({
         query: deleteLevelInterventionRelationMutation,
         variables: {
           input: {
             id: relationId,
+            _version: relation._version,
           },
         },
       });

@@ -1,6 +1,6 @@
 <template>
   <div class="h-full pb-4">
-    <Card class="h-full">
+    <Card class="h-full pb-4">
       <template #title>
         <div class="flex justify-between items-center w-full">
           <span class="text-screen-title">{{ $t('surveys.title') }}</span>
@@ -8,7 +8,6 @@
             icon="pi pi-plus"
             :label="$t('surveys.newSurvey')"
             class="ml-auto"
-            size="small"
             @click="createSurvey()"
           />
         </div>
@@ -64,7 +63,7 @@
           :rows="10"
           :rows-per-page-options="[5, 10, 20, 50]"
           table-style="min-width: 50rem;"
-          scroll-height="h-[calc(100vh_-_21rem)]"
+          scroll-height="h-[calc(100vh_-_23rem)]"
           filter-display="menu"
           :global-filter-fields="[
             'name_searchable',
