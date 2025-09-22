@@ -564,6 +564,17 @@ const breadcrumbMenuItems = computed(() => {
       minRole: UserGroup.ADMIN,
     },
     {
+      id: 'entities',
+      label: t('apps.apps.project_structure.title'),
+      icon: 'account_tree',
+      iconType: 'material',
+      color: getColor('entities'),
+      command: () => {
+        router.push('/entities');
+      },
+      minRole: UserGroup.ADMIN,
+    },
+    {
       id: 'settings',
       label: t('apps.categories.settings'),
       minRole: UserGroup.ADMIN,

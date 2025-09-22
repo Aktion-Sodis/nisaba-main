@@ -68,3 +68,17 @@ export const formatMLString = (
   // 5. Letzter Fallback: Leerer String
   return '';
 };
+
+/**
+ * Formats a location object or string into a readable format.
+ * @param location The location object with latitude/longitude or a string.
+ * @returns Formatted location string or empty string if no location.
+ */
+export const formatLocation = (location: any): string => {
+  if (!location) return '';
+  if (typeof location === 'string') return location;
+  if (location.latitude && location.longitude) {
+    return `${location.latitude.toFixed(6)}, ${location.longitude.toFixed(6)}`;
+  }
+  return '';
+};

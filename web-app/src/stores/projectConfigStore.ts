@@ -7,24 +7,29 @@ import {
   Level,
   Intervention,
   Survey,
+  Entity,
   UpdateSurveyInput,
   CreateSurveyInput,
   UpdateInterventionInput,
   CreateInterventionInput,
   UpdateLevelInput,
   CreateLevelInput,
+  UpdateEntityInput,
+  CreateEntityInput,
 } from '@/API';
 import {
   createLevel as createLevelMutation,
   updateLevel as updateLevelMutation,
   createIntervention as createInterventionMutation,
   updateIntervention as updateInterventionMutation,
+  createEntity as createEntityMutation,
+  updateEntity as updateEntityMutation,
   createLevelInterventionRelation as createLevelInterventionRelationMutation,
   deleteLevelInterventionRelation as deleteLevelInterventionRelationMutation,
   deleteLevel as deleteLevelMutation,
   deleteIntervention as deleteInterventionMutation,
 } from '@/graphql/mutations';
-import { listLevels, listInterventions } from '@/graphql/queries';
+import { listLevels, listInterventions, listEntities } from '@/graphql/queries';
 import i18n from '@/i18n';
 import { amplifyDataClient } from '@/utils/amplifyDataClient';
 import { cleanObjectForGraphQL } from '@/utils/objectCleaner';
@@ -73,6 +78,8 @@ interface MinimalLevelInterventionRelationsResponse {
 
 export interface StoreLevel extends Omit<Level, 'allowedInterventions'> {}
 export interface StoreIntervention extends Omit<Intervention, 'levels'> {}
+export interface StoreEntity
+  extends Omit<Entity, 'level' | 'appliedInterventions'> {}
 
 // Custom minimal mutation for creating a survey (does not request intervention field)
 const createSurveyMinimalMutation = /* GraphQL */ `
@@ -245,6 +252,7 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
   const _levels = reactive<Record<string, StoreLevel>>({});
   const _interventions = reactive<Record<string, StoreIntervention>>({});
   const _surveys = reactive<Record<string, Survey>>({});
+  const _entities = reactive<Record<string, StoreEntity>>({});
   const _levelInterventionRelations = reactive<
     Record<
       string,
@@ -255,10 +263,12 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
   const isLoadingLevels = ref(false);
   const isLoadingInterventions = ref(false);
   const isLoadingSurveys = ref(false);
+  const isLoadingEntities = ref(false);
   const isLoadingRelations = ref(false);
   const errorLoadingLevels = ref<string | null>(null);
   const errorLoadingInterventions = ref<string | null>(null);
   const errorLoadingSurveys = ref<string | null>(null);
+  const errorLoadingEntities = ref<string | null>(null);
   const errorLoadingRelations = ref<string | null>(null);
 
   const _updateInterventionSurveyRelations = (
@@ -474,6 +484,43 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     }
   };
 
+  const loadEntitiesFromRemote = async () => {
+    try {
+      isLoadingEntities.value = true;
+      let nextToken: string | null = null;
+
+      do {
+        const result = (await amplifyDataClient.graphql({
+          query: listEntities,
+          variables: {
+            filter: {
+              _deleted: {
+                ne: true,
+              },
+            },
+            nextToken,
+          },
+        })) as GraphQLResult<any>;
+
+        result.data.listEntities.items.forEach((entity: Entity) => {
+          const {
+            level: _level,
+            appliedInterventions: _appliedInterventions,
+            ...entityWithoutRelations
+          } = entity;
+          _entities[entity.id] = entityWithoutRelations as StoreEntity;
+        });
+
+        nextToken = result.data.listEntities.nextToken;
+      } while (nextToken);
+    } catch (error: unknown) {
+      errorLoadingEntities.value =
+        error instanceof Error ? error.message : String(error);
+    } finally {
+      isLoadingEntities.value = false;
+    }
+  };
+
   const loadRelationsFromRemote = async () => {
     try {
       isLoadingRelations.value = true;
@@ -672,6 +719,38 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
       key === 'schemeVersion' ||
       key === 'id' ||
       key === '_version'
+    );
+  };
+
+  const isUpdateEntityInputKey = (
+    key: string
+  ): key is keyof UpdateEntityInput => {
+    return (
+      key === 'id' ||
+      key === 'name' ||
+      key === 'description' ||
+      key === 'parentEntityID' ||
+      key === 'location' ||
+      key === 'customData' ||
+      key === 'schemeVersion' ||
+      key === '_version' ||
+      key === 'entityLevelId'
+    );
+  };
+
+  const isCreateEntityInputKey = (
+    key: string
+  ): key is keyof CreateEntityInput => {
+    return (
+      key === 'name' ||
+      key === 'description' ||
+      key === 'parentEntityID' ||
+      key === 'location' ||
+      key === 'customData' ||
+      key === 'schemeVersion' ||
+      key === 'id' ||
+      key === '_version' ||
+      key === 'entityLevelId'
     );
   };
 
@@ -887,6 +966,74 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     }
   };
 
+  const isCreatingEntity = ref(false);
+  const createEntity = async (entity: StoreEntity) => {
+    try {
+      isCreatingEntity.value = true;
+
+      // Filter entity to only include fields allowed in CreateEntityInput
+      const filteredInput = Object.fromEntries(
+        Object.entries(entity).filter(([key]) => isCreateEntityInputKey(key))
+      ) as unknown as CreateEntityInput;
+
+      // Clean nested objects (remove __typename, etc.)
+      const input = cleanObjectForGraphQL(filteredInput);
+
+      const { data } = await amplifyDataClient.graphql({
+        query: createEntityMutation,
+        variables: {
+          input,
+        },
+      });
+      const {
+        level: _level,
+        appliedInterventions: _appliedInterventions,
+        ...entityWithoutRelations
+      } = data.createEntity;
+      _entities[entityWithoutRelations.id] =
+        entityWithoutRelations as StoreEntity;
+    } catch (error: unknown) {
+      console.error(error);
+      throw error;
+    } finally {
+      isCreatingEntity.value = false;
+    }
+  };
+
+  const isUpdatingEntity = ref(false);
+  const updateEntity = async (entity: StoreEntity) => {
+    try {
+      isUpdatingEntity.value = true;
+
+      // Filter entity to only include fields allowed in UpdateEntityInput
+      const filteredInput = Object.fromEntries(
+        Object.entries(entity).filter(([key]) => isUpdateEntityInputKey(key))
+      ) as unknown as UpdateEntityInput;
+
+      // Clean nested objects (remove __typename, etc.)
+      const input = cleanObjectForGraphQL(filteredInput);
+
+      const { data } = await amplifyDataClient.graphql({
+        query: updateEntityMutation,
+        variables: {
+          input,
+        },
+      });
+      const {
+        level: _level,
+        appliedInterventions: _appliedInterventions,
+        ...entityWithoutRelations
+      } = data.updateEntity;
+      _entities[entityWithoutRelations.id] =
+        entityWithoutRelations as StoreEntity;
+    } catch (error: unknown) {
+      console.error(error);
+      throw error;
+    } finally {
+      isUpdatingEntity.value = false;
+    }
+  };
+
   const getLevelById = (id: string) => {
     return _levels[id];
   };
@@ -897,6 +1044,10 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
 
   const getSurveyById = (id: string) => {
     return _surveys[id];
+  };
+
+  const getEntityById = (id: string) => {
+    return _entities[id];
   };
 
   const levelsSortedByHierarchy = computed(() => {
@@ -928,11 +1079,16 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     return Object.values(_surveys);
   });
 
+  const entities = computed(() => {
+    return Object.values(_entities);
+  });
+
   const isLoading = computed(() => {
     return (
       isLoadingLevels.value ||
       isLoadingInterventions.value ||
-      isLoadingSurveys.value
+      isLoadingSurveys.value ||
+      isLoadingEntities.value
     );
   });
 
@@ -941,6 +1097,7 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
       loadLevelsFromRemote(),
       loadInterventionsFromRemote(),
       loadSurveysFromRemote(),
+      loadEntitiesFromRemote(),
       loadRelationsFromRemote(),
     ]);
   };
@@ -1049,16 +1206,19 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     Object.keys(_levels).forEach((key) => delete _levels[key]);
     Object.keys(_interventions).forEach((key) => delete _interventions[key]);
     Object.keys(_surveys).forEach((key) => delete _surveys[key]);
+    Object.keys(_entities).forEach((key) => delete _entities[key]);
     Object.keys(_levelInterventionRelations).forEach(
       (key) => delete _levelInterventionRelations[key]
     );
     isLoadingLevels.value = false;
     isLoadingInterventions.value = false;
     isLoadingSurveys.value = false;
+    isLoadingEntities.value = false;
     isLoadingRelations.value = false;
     errorLoadingLevels.value = null;
     errorLoadingInterventions.value = null;
     errorLoadingSurveys.value = null;
+    errorLoadingEntities.value = null;
     errorLoadingRelations.value = null;
   };
 
@@ -1248,5 +1408,14 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     setInterventionLevelRelations,
     deleteSurvey,
     isDeletingSurvey,
+    createEntity,
+    isCreatingEntity,
+    isLoadingEntities,
+    errorLoadingEntities,
+    loadEntitiesFromRemote,
+    getEntityById,
+    entities,
+    updateEntity,
+    isUpdatingEntity,
   };
 });

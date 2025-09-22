@@ -1,0 +1,97 @@
+{
+  "title": "Level & Entity Management",
+  "subtitle": "Manage your organizational levels and entities in a hierarchical structure",
+  "refresh": "Refresh",
+  "errors": {
+    "refreshFailed": "Failed to refresh data. Please try again.",
+    "initializationFailed": "Failed to initialize the view. Please refresh the page."
+  },
+  "levelColumn": {
+    "editLevel": "Edit Level",
+    "addNewLevel": "Add New Level",
+    "addNewLevelDescription": "Create a new organizational level",
+    "addLevel": "Add Level",
+    "addEntity": "Add Entity",
+    "noEntities": "No entities found for this level"
+  },
+  "levelMenu": {
+    "view": "View Level",
+    "edit": "Edit Level"
+  },
+  "entityCard": {
+    "customData": "Custom data available"
+  },
+  "levelDialog": {
+    "title": {
+      "create": "Create New Level",
+      "edit": "Edit Level",
+      "view": "View Level"
+    },
+    "labels": {
+      "languages": "Languages",
+      "name": "Name",
+      "description": "Description",
+      "interventionConnections": "Intervention Connections",
+      "customData": "Custom Data",
+      "customDataName": "Name",
+      "customDataType": "Type"
+    },
+    "placeholders": {
+      "selectInterventions": "Select interventions..."
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "update": "Update",
+      "addCustomData": "Add Custom Data",
+      "removeCustomData": "Remove"
+    },
+    "types": {
+      "text": "Text",
+      "number": "Number"
+    },
+    "noCustomData": "No custom data defined",
+    "warnings": {
+      "customDataEdit": "Note: Custom data cannot be modified in edit mode. Only new custom data can be added."
+    },
+    "confirm": {
+      "title": "Confirm Changes",
+      "customDataChange": "You are about to modify custom data. This action cannot be undone. Are you sure you want to continue?",
+      "newCustomData": "You have added new custom data fields. These fields cannot be modified after creation, but you can add more fields later. Do you want to continue with saving these changes?",
+      "unsaved_changes": {
+        "title": "Unsaved Changes",
+        "message": "You have unsaved changes. Are you sure you want to close without saving?",
+        "accept": "Discard Changes",
+        "reject": "Keep Editing"
+      }
+    },
+    "validation": {
+      "errorSummary": "Validation Error",
+      "levelRequired": "Level is required",
+      "nameRequired": "Name is required",
+      "customDataNameRequired": "Custom data name {number} is required"
+    },
+    "success": {
+      "created": "Level Created",
+      "createdDetail": "The level has been created successfully.",
+      "saved": "Level Saved",
+      "savedDetail": "The level has been saved successfully."
+    },
+    "errors": {
+      "initializationFailed": "Initialization Failed",
+      "initializationFailedDetail": "Failed to initialize the level dialog.",
+      "creationFailed": "Creation Failed",
+      "creationFailedDetail": "Failed to create new level.",
+      "saveFailed": "Save Failed",
+      "saveFailedDetail": "Failed to save the level. Please try again."
+    }
+  },
+  "entityDialog": {
+    "createTitle": "Create New Entity",
+    "editTitle": "Edit Entity",
+    "placeholder": {
+      "title": "Entity Dialog",
+      "description": "This dialog will be implemented to create and edit entities."
+    }
+  }
+}

@@ -33,6 +33,17 @@
               <i class="pi pi-bolt text-surface-0 text-5xl md:text-6xl" />
             </template>
           </menu-card>
+          <menu-card
+            v-if="hasAdminRights"
+            :title="$t('apps.apps.project_structure.title')"
+            :subtitle="$t('apps.apps.project_structure.description')"
+            bg-color="bg-secondary-700"
+            @click="$router.push('/entities')"
+          >
+            <template #icon>
+              <i class="pi pi-sitemap text-surface-0 text-5xl md:text-6xl" />
+            </template>
+          </menu-card>
 
           <!--
                   <menu-card

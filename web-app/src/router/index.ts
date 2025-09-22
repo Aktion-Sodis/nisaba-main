@@ -12,6 +12,7 @@ import AnalyticsSurveyDetails from '@/views/analyticssurveydetails/AnalyticsSurv
 import AnalyticsSurveyOverview from '@/views/analyticssurveyoverview/AnalyticsSurveyOverview.vue';
 import Index from '@/views/index/Index.vue';
 import Interventions from '@/views/interventions/interventions.vue';
+import LevelEntityView from '@/views/levelentities/LevelEntityView.vue';
 import Login from '@/views/login/Login.vue';
 import PasswordReset from '@/views/passwordreset/PasswordReset.vue';
 import SurveyEditor from '@/views/surveydetail/SurveyDetails.vue';
@@ -69,6 +70,17 @@ const routes = [
     meta: {
       layout: 'DefaultLayout',
       i18n_title: 'apps.apps.interventions.title',
+      requiresAuth: true,
+      minRole: UserGroup.ADMIN,
+    },
+  },
+  {
+    path: '/entities',
+    name: 'Project Structure',
+    component: LevelEntityView,
+    meta: {
+      layout: 'DefaultLayout',
+      i18n_title: 'apps.apps.project_structure.title',
       requiresAuth: true,
       minRole: UserGroup.ADMIN,
     },

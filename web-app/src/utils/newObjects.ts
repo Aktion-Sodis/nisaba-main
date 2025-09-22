@@ -9,7 +9,7 @@ import {
   SurveyStatus,
   SurveyType,
 } from '@/models/index';
-import { StoreIntervention } from '@/stores/projectConfigStore';
+import { StoreIntervention, StoreLevel } from '@/stores/projectConfigStore';
 
 const createEmptyI18nString = (languageKeys: string[]) => ({
   languageKeys,
@@ -58,5 +58,22 @@ export const createNewIntervention = (
     //@ts-expect-error /db autogeneration
     description: createEmptyI18nString(languageKeys),
     interventionType: InterventionType.TECHNOLOGY,
+  };
+};
+
+export const createNewLevel = (
+  languageKeys: string[],
+  parentLevelId: string | null = null
+): StoreLevel => {
+  return {
+    id: uuidv4(),
+    //@ts-expect-error /db autogeneration
+    name: createEmptyI18nString(languageKeys),
+    //@ts-expect-error /db autogeneration
+    description: createEmptyI18nString(languageKeys),
+    parentLevelID: parentLevelId,
+    interventionsAreAllowed: true,
+    customData: [],
+    schemeVersion: 1,
   };
 };

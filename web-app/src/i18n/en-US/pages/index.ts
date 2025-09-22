@@ -4,6 +4,7 @@ import analytics_survey_details from './analytics_survey_details.json';
 import analytics_survey_overview from './analytics_survey_overview.json';
 import interventiondialog from './interventiondialog.json';
 import interventions from './interventions.json';
+import level_entities from './level_entities.json';
 import login from './login.json';
 import passwordreset from './passwordreset.json';
 import surveydetails from './surveydetails.json';
@@ -22,4 +23,5 @@ export default {
   analytics_survey_details,
   interventions,
   interventiondialog,
+  level_entities,
 };
