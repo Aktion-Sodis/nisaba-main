@@ -9,9 +9,13 @@ import {
   SurveyStatus,
   SurveyType,
 } from '@/models/index';
-import { StoreIntervention, StoreLevel } from '@/stores/projectConfigStore';
+import {
+  StoreIntervention,
+  StoreLevel,
+  StoreEntity,
+} from '@/stores/projectConfigStore';
 
-const createEmptyI18nString = (languageKeys: string[]) => ({
+export const createEmptyI18nString = (languageKeys: string[]) => ({
   languageKeys,
   languageTexts: Array(languageKeys.length).fill(''),
 });
@@ -74,6 +78,35 @@ export const createNewLevel = (
     parentLevelID: parentLevelId,
     interventionsAreAllowed: true,
     customData: [],
+    schemeVersion: 1,
+  };
+};
+
+export const createNewEntity = (
+  languageKeys: string[],
+  levelId: string,
+  parentEntityId: string | null = null,
+  levelCustomData: any[] = []
+): StoreEntity => {
+  // Create custom data items based on the level's custom data schema
+  const entityCustomData = levelCustomData.map((levelCustomDataItem) => ({
+    customDataID: levelCustomDataItem.id,
+    type: levelCustomDataItem.type,
+    name: createEmptyI18nString(languageKeys),
+    intValue: levelCustomDataItem.type === 'INT' ? 0 : null,
+    stringValue: levelCustomDataItem.type === 'STRING' ? '' : null,
+  }));
+
+  return {
+    id: uuidv4(),
+    //@ts-expect-error /db autogeneration
+    name: createEmptyI18nString(languageKeys),
+    //@ts-expect-error /db autogeneration
+    description: createEmptyI18nString(languageKeys),
+    parentEntityID: parentEntityId,
+    entityLevelId: levelId,
+    //@ts-expect-error /db autogeneration
+    customData: entityCustomData,
     schemeVersion: 1,
   };
 };

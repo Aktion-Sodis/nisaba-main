@@ -19,7 +19,11 @@
     "edit": "Edit Level"
   },
   "entityCard": {
-    "customData": "Custom data available"
+    "customData": "Custom data available",
+    "menu": {
+      "edit": "Edit Entity",
+      "view": "View Entity"
+    }
   },
   "levelDialog": {
     "title": {
@@ -87,11 +91,64 @@
     }
   },
   "entityDialog": {
-    "createTitle": "Create New Entity",
-    "editTitle": "Edit Entity",
-    "placeholder": {
-      "title": "Entity Dialog",
-      "description": "This dialog will be implemented to create and edit entities."
+    "title": {
+      "create": "Create Entity",
+      "edit": "Edit Entity",
+      "view": "View Entity"
+    },
+    "labels": {
+      "languages": "Languages",
+      "name": "Name",
+      "description": "Description",
+      "level": "Level",
+      "parentEntity": "Parent Entity",
+      "location": "Location",
+      "latitude": "Latitude",
+      "longitude": "Longitude",
+      "address": "Address",
+      "image": "Image",
+      "customData": "Custom Data"
+    },
+    "placeholders": {
+      "selectLevel": "Select a level",
+      "selectParentEntity": "Select parent entity (optional)"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "update": "Update"
+    },
+    "types": {
+      "string": "String",
+      "int": "Integer"
+    },
+    "noCustomData": "No custom data defined",
+    "errors": {
+      "initializationFailed": "Initialization Failed",
+      "initializationFailedDetail": "Failed to initialize entity dialog. Please try again.",
+      "creationFailed": "Creation Failed",
+      "creationFailedDetail": "Failed to create new entity. Please try again.",
+      "saveFailed": "Save Failed",
+      "saveFailedDetail": "Failed to save entity. Please try again."
+    },
+    "validation": {
+      "entityRequired": "Entity is required",
+      "nameRequired": "Name is required",
+      "customDataNameRequired": "Custom data name {number} is required"
+    },
+    "confirm": {
+      "unsaved_changes": {
+        "title": "Unsaved Changes",
+        "message": "You have unsaved changes. Are you sure you want to close without saving?",
+        "accept": "Discard Changes",
+        "reject": "Keep Editing"
+      }
+    },
+    "success": {
+      "created": "Entity Created",
+      "createdDetail": "The entity has been created successfully.",
+      "saved": "Entity Saved",
+      "savedDetail": "The entity has been saved successfully."
     }
   }
 }

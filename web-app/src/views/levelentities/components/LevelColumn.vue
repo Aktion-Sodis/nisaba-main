@@ -70,7 +70,7 @@
         :label="$t('level_entities.levelColumn.addEntity')"
         icon="pi pi-plus"
         size="small"
-        @click="levelEntityStore.openEntityDialog(null, false)"
+        @click="levelEntityStore.openEntityDialog(null, false, level)"
       />
     </div>
 

@@ -185,9 +185,11 @@ export const useLevelEntityStore = defineStore('levelEntity', () => {
 
   const openEntityDialog = (
     entity: StoreEntity | null = null,
-    isEdit: boolean = false
+    isEdit: boolean = false,
+    level: StoreLevel | null = null
   ) => {
     selectedEntity.value = entity;
+    selectedLevel.value = level;
     isEditingEntity.value = isEdit;
     showEntityDialog.value = true;
   };
@@ -195,6 +197,7 @@ export const useLevelEntityStore = defineStore('levelEntity', () => {
   const closeEntityDialog = () => {
     showEntityDialog.value = false;
     selectedEntity.value = null;
+    selectedLevel.value = null;
     isEditingEntity.value = false;
   };
 

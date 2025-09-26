@@ -374,7 +374,7 @@ const initialize = async () => {
       dbLevel.value = cloneDeep(level);
 
       // Initialize language keys
-      allowedLanguageKeys.value = level.name.languageKeys || ['en-US'];
+      allowedLanguageKeys.value = level.name.languageKeys || [locale.value];
 
       // Initialize custom data
       localCustomData.value = cloneDeep(level.customData || []);
@@ -397,7 +397,7 @@ const initialize = async () => {
   } else {
     // Create mode
     try {
-      allowedLanguageKeys.value = ['en-US'];
+      allowedLanguageKeys.value = [locale.value];
 
       // Get parent level ID - use the last level from all available levels (sorted by hierarchy)
       // If no levels exist, create a top-level entity (parentLevelId = null)

@@ -62,23 +62,7 @@
     <level-dialog />
 
     <!-- Entity Dialog -->
-    <Dialog
-      v-model:visible="levelEntityStore.showEntityDialog"
-      :header="
-        levelEntityStore.isEditingEntity
-          ? $t('level_entities.entityDialog.editTitle')
-          : $t('level_entities.entityDialog.createTitle')
-      "
-      :modal="true"
-      :closable="true"
-      class="w-dialog-md"
-      :maximizable="false"
-    >
-      <entity-dialog
-        :entity="levelEntityStore.selectedEntity"
-        :is-edit-mode="levelEntityStore.isEditingEntity"
-      />
-    </Dialog>
+    <entity-dialog />
   </div>
 </template>
 
