@@ -391,6 +391,16 @@ const saveInterventionAndConnections = async () => {
           localConnectedLevelIds.value
         );
         dbConnectedLevelIds.value = cloneDeep(localConnectedLevelIds.value);
+
+        // Update local intervention with the latest version from store after relations change
+        const updatedIntervention = projectConfigStore.getInterventionById(
+          localIntervention.value.id
+        );
+        if (updatedIntervention) {
+          localIntervention.value._version = updatedIntervention._version;
+          localIntervention.value._lastChangedAt =
+            updatedIntervention._lastChangedAt;
+        }
       } catch (error) {
         isSaving.value = false;
         toast.add({
@@ -482,7 +492,25 @@ const unsavedChanges = computed(() => {
 });
 
 const unsavedChangesIntervention = computed(() => {
-  return !isEqual(localIntervention.value, dbIntervention.value);
+  if (!localIntervention.value || !dbIntervention.value) {
+    return localIntervention.value !== dbIntervention.value;
+  }
+
+  // Compare only user-modifiable fields (exclude auto-managed fields)
+  return !isEqual(
+    {
+      name: localIntervention.value.name,
+      description: localIntervention.value.description,
+      interventionType: localIntervention.value.interventionType,
+      schemeVersion: localIntervention.value.schemeVersion,
+    },
+    {
+      name: dbIntervention.value.name,
+      description: dbIntervention.value.description,
+      interventionType: dbIntervention.value.interventionType,
+      schemeVersion: dbIntervention.value.schemeVersion,
+    }
+  );
 });
 
 const unsavedChangesLevelConnections = computed(() => {

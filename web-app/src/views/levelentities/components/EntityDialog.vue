@@ -279,7 +279,7 @@ watch(
 
 // Computed properties
 const isCreate = computed(() => !dbEntity.value);
-const isViewMode = computed(() => false); // TODO: Add isViewingEntity to store
+const isViewMode = computed(() => levelEntityStore.isViewingEntity);
 
 const dialogTitle = computed(() => {
   if (isViewMode.value) {
@@ -405,13 +405,18 @@ const initialize = async () => {
       // Initialize language keys
       allowedLanguageKeys.value = entity.name.languageKeys || ['en-US'];
 
-      // Initialize custom data
-      localCustomData.value = cloneDeep(
-        entity.customData?.filter((item) => item !== null) || []
+      // Get the level's custom data schema
+      const level = projectConfigStore.getLevelById(entity.entityLevelId);
+      const levelCustomData = level?.customData || [];
+
+      // Merge level schema with entity data
+      const entityCustomData =
+        entity.customData?.filter((item) => item !== null) || [];
+      localCustomData.value = mergeCustomDataWithLevelSchema(
+        entityCustomData,
+        levelCustomData
       );
-      dbCustomData.value = cloneDeep(
-        entity.customData?.filter((item) => item !== null) || []
-      );
+      dbCustomData.value = cloneDeep(localCustomData.value);
     } catch (error) {
       console.error('Error initializing entity dialog:', error);
       toast.add({
@@ -462,6 +467,7 @@ const initialize = async () => {
       );
 
       dbEntity.value = null;
+      // For create mode, use the custom data from the created entity
       localCustomData.value = cloneDeep(
         localEntity.value.customData?.filter((item) => item !== null) || []
       );
@@ -484,7 +490,59 @@ const initialize = async () => {
   };
 };
 
-// Custom data is inherited from level, no management functions needed
+// Custom data management - merge level schema with entity data
+const mergeCustomDataWithLevelSchema = (
+  entityCustomData: any[],
+  levelCustomData: any[]
+) => {
+  // Create a map of existing entity custom data by customDataID
+  const entityDataMap = new Map();
+  entityCustomData.forEach((item) => {
+    if (item.customDataID) {
+      entityDataMap.set(item.customDataID, item);
+    }
+  });
+
+  // Merge level schema with entity data
+  return levelCustomData.map((levelItem) => {
+    const existingEntityData = entityDataMap.get(levelItem.id);
+
+    if (existingEntityData) {
+      // Use existing entity data
+      return {
+        ...existingEntityData,
+        name: levelItem.name, // Always use the current level schema name
+        type: levelItem.type, // Always use the current level schema type
+      };
+    } else {
+      // Create new item based on level schema
+      return {
+        customDataID: levelItem.id,
+        type: levelItem.type,
+        name: levelItem.name,
+        intValue: levelItem.type === Type.INT ? null : null,
+        stringValue: levelItem.type === Type.STRING ? null : null,
+        __typename: 'CustomData',
+      };
+    }
+  });
+};
+
+// Filter custom data to only include items with actual values
+const filterCustomDataWithValues = (customData: any[]) => {
+  return customData.filter((item) => {
+    if (item.type === Type.STRING) {
+      return (
+        item.stringValue !== null &&
+        item.stringValue !== undefined &&
+        item.stringValue.trim() !== ''
+      );
+    } else if (item.type === Type.INT) {
+      return item.intValue !== null && item.intValue !== undefined;
+    }
+    return false;
+  });
+};
 
 // Validation
 const validate = (showValidationErrors: boolean = true): boolean => {
@@ -570,10 +628,13 @@ const performSave = async () => {
   try {
     if (!localEntity.value) return;
 
-    // Update the entity with custom data
+    // Update the entity with custom data (only items with actual values)
+    const customDataWithValues = filterCustomDataWithValues(
+      localCustomData.value
+    );
     const entityToSave = {
       ...localEntity.value,
-      customData: localCustomData.value.map((item, index) => ({
+      customData: customDataWithValues.map((item, index) => ({
         ...item,
         customDataID: item.customDataID || `temp-${Date.now()}-${index}`, // Generate temp ID for new items
       })),
@@ -581,7 +642,6 @@ const performSave = async () => {
 
     if (isCreate.value) {
       // Create new entity
-      //@ts-expect-error /db autogeneration
       await projectConfigStore.createEntity(entityToSave);
 
       toast.add({
@@ -594,7 +654,6 @@ const performSave = async () => {
       levelEntityStore.closeEntityDialog();
     } else {
       // Update existing entity
-      //@ts-expect-error /db autogeneration
       await projectConfigStore.updateEntity(entityToSave);
 
       toast.add({
@@ -604,7 +663,6 @@ const performSave = async () => {
         life: 3000,
       });
       // Don't close dialog on update, just update the local state
-      //@ts-expect-error /db autogeneration
       dbEntity.value = cloneDeep(entityToSave);
       dbCustomData.value = cloneDeep(localCustomData.value);
     }

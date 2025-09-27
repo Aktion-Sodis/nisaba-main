@@ -128,7 +128,7 @@ const handleEdit = () => {
     (l) => l.id === props.entity.entityLevelId
   );
   if (level) {
-    levelEntityStore.openEntityDialog(props.entity, true, level);
+    levelEntityStore.openEntityDialog(props.entity, false, level);
   }
 };
 
@@ -137,7 +137,7 @@ const handleView = () => {
     (l) => l.id === props.entity.entityLevelId
   );
   if (level) {
-    levelEntityStore.openEntityDialog(props.entity, false, level);
+    levelEntityStore.openEntityDialog(props.entity, true, level);
   }
 };
 </script>

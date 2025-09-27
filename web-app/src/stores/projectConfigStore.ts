@@ -247,6 +247,29 @@ const listSurveysMinimal = /* GraphQL */ `
   }
 `;
 
+// Minimal queries to fetch only version information
+const getLevelVersion = /* GraphQL */ `
+  query GetLevelVersion($id: ID!) {
+    getLevel(id: $id) {
+      id
+      _version
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+
+const getInterventionVersion = /* GraphQL */ `
+  query GetInterventionVersion($id: ID!) {
+    getIntervention(id: $id) {
+      id
+      _version
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+
 export const useProjectConfigStore = defineStore('projectConfig', () => {
   const toast = useToast();
   const _levels = reactive<Record<string, StoreLevel>>({});
@@ -789,14 +812,65 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     }
   };
 
+  // Helper function to fetch current version of a level
+  const fetchLevelVersion = async (
+    levelId: string
+  ): Promise<{ _version: number; _lastChangedAt: number }> => {
+    try {
+      const result = await amplifyDataClient.graphql({
+        query: getLevelVersion,
+        variables: { id: levelId },
+      });
+      const data = (result as GraphQLResult<any>).data;
+      return {
+        _version: data.getLevel._version,
+        _lastChangedAt: data.getLevel._lastChangedAt,
+      };
+    } catch (error: unknown) {
+      console.error('Error fetching level version:', error);
+      throw error;
+    }
+  };
+
+  // Helper function to fetch current version of an intervention
+  const fetchInterventionVersion = async (
+    interventionId: string
+  ): Promise<{ _version: number; _lastChangedAt: number }> => {
+    try {
+      const result = await amplifyDataClient.graphql({
+        query: getInterventionVersion,
+        variables: { id: interventionId },
+      });
+      const data = (result as GraphQLResult<any>).data;
+      return {
+        _version: data.getIntervention._version,
+        _lastChangedAt: data.getIntervention._lastChangedAt,
+      };
+    } catch (error: unknown) {
+      console.error('Error fetching intervention version:', error);
+      throw error;
+    }
+  };
+
   const isUpdatingLevel = ref(false);
   const updateLevel = async (level: StoreLevel) => {
     try {
       isUpdatingLevel.value = true;
 
+      // Fetch current version to avoid conflicts
+      const currentVersion = await fetchLevelVersion(level.id);
+
+      // Update the level with the current version
+      const levelWithCurrentVersion = {
+        ...level,
+        _version: currentVersion._version,
+      };
+
       // Filter level to only include fields allowed in UpdateLevelInput
       const filteredInput = Object.fromEntries(
-        Object.entries(level).filter(([key]) => isUpdateLevelInputKey(key))
+        Object.entries(levelWithCurrentVersion).filter(([key]) =>
+          isUpdateLevelInputKey(key)
+        )
       ) as unknown as UpdateLevelInput;
 
       // Clean nested objects (remove __typename, etc.)
@@ -826,9 +900,18 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     try {
       isUpdatingIntervention.value = true;
 
+      // Fetch current version to avoid conflicts
+      const currentVersion = await fetchInterventionVersion(intervention.id);
+
+      // Update the intervention with the current version
+      const interventionWithCurrentVersion = {
+        ...intervention,
+        _version: currentVersion._version,
+      };
+
       // Filter intervention to only include fields allowed in UpdateInterventionInput
       const filteredInput = Object.fromEntries(
-        Object.entries(intervention).filter(([key]) =>
+        Object.entries(interventionWithCurrentVersion).filter(([key]) =>
           isUpdateInterventionInputKey(key)
         )
       ) as unknown as UpdateInterventionInput;
@@ -1316,6 +1399,24 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
           deleteLevelInterventionRelation(relation.id)
         )
       );
+
+      // Update the level version in local store after relations change
+      // This ensures the local state has the latest version for subsequent updates
+      if (relationsToCreate.length > 0 || relationsToDelete.length > 0) {
+        try {
+          const currentVersion = await fetchLevelVersion(levelId);
+          if (_levels[levelId]) {
+            _levels[levelId]._version = currentVersion._version;
+            _levels[levelId]._lastChangedAt = currentVersion._lastChangedAt;
+          }
+        } catch (versionError) {
+          console.warn(
+            'Failed to update level version after relation changes:',
+            versionError
+          );
+          // Don't throw here as the relations were successfully updated
+        }
+      }
     } catch (error: unknown) {
       console.error(error);
       throw error;
@@ -1354,6 +1455,25 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
           deleteLevelInterventionRelation(relation.id)
         )
       );
+
+      // Update the intervention version in local store after relations change
+      // This ensures the local state has the latest version for subsequent updates
+      if (relationsToCreate.length > 0 || relationsToDelete.length > 0) {
+        try {
+          const currentVersion = await fetchInterventionVersion(interventionId);
+          if (_interventions[interventionId]) {
+            _interventions[interventionId]._version = currentVersion._version;
+            _interventions[interventionId]._lastChangedAt =
+              currentVersion._lastChangedAt;
+          }
+        } catch (versionError) {
+          console.warn(
+            'Failed to update intervention version after relation changes:',
+            versionError
+          );
+          // Don't throw here as the relations were successfully updated
+        }
+      }
     } catch (error: unknown) {
       console.error(error);
       throw error;
@@ -1406,6 +1526,8 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     errorLoadingRelations,
     setLevelInterventionRelations,
     setInterventionLevelRelations,
+    fetchLevelVersion,
+    fetchInterventionVersion,
     deleteSurvey,
     isDeletingSurvey,
     createEntity,

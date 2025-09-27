@@ -344,7 +344,22 @@ const unsavedChanges = computed(() => {
   if (!localLevel.value) return false;
 
   const levelChanged = dbLevel.value
-    ? !isEqual(localLevel.value, dbLevel.value)
+    ? !isEqual(
+        {
+          name: localLevel.value.name,
+          description: localLevel.value.description,
+          parentLevelID: localLevel.value.parentLevelID,
+          interventionsAreAllowed: localLevel.value.interventionsAreAllowed,
+          schemeVersion: localLevel.value.schemeVersion,
+        },
+        {
+          name: dbLevel.value.name,
+          description: dbLevel.value.description,
+          parentLevelID: dbLevel.value.parentLevelID,
+          interventionsAreAllowed: dbLevel.value.interventionsAreAllowed,
+          schemeVersion: dbLevel.value.schemeVersion,
+        }
+      )
     : true;
   const interventionsChanged = !isEqual(
     localConnectedInterventionIds.value,
@@ -584,14 +599,53 @@ const performSave = async () => {
       clear();
       levelEntityStore.closeLevelDialog();
     } else {
-      // Update existing level
-      await projectConfigStore.updateLevel(levelToSave);
-
-      // Update intervention relations
-      await projectConfigStore.setLevelInterventionRelations(
-        levelToSave.id,
-        localConnectedInterventionIds.value
+      // Check what has actually changed (exclude auto-managed fields)
+      const levelChanged = dbLevel.value
+        ? !isEqual(
+            {
+              name: localLevel.value.name,
+              description: localLevel.value.description,
+              parentLevelID: localLevel.value.parentLevelID,
+              interventionsAreAllowed: localLevel.value.interventionsAreAllowed,
+              schemeVersion: localLevel.value.schemeVersion,
+            },
+            {
+              name: dbLevel.value.name,
+              description: dbLevel.value.description,
+              parentLevelID: dbLevel.value.parentLevelID,
+              interventionsAreAllowed: dbLevel.value.interventionsAreAllowed,
+              schemeVersion: dbLevel.value.schemeVersion,
+            }
+          )
+        : true;
+      const interventionsChanged = !isEqual(
+        localConnectedInterventionIds.value,
+        dbConnectedInterventionIds.value
       );
+      const customDataChanged = !isEqual(
+        localCustomData.value,
+        dbCustomData.value
+      );
+
+      // Only update level if level data or custom data has changed
+      if (levelChanged || customDataChanged) {
+        await projectConfigStore.updateLevel(levelToSave);
+      }
+
+      // Only update intervention relations if they have changed
+      if (interventionsChanged) {
+        await projectConfigStore.setLevelInterventionRelations(
+          levelToSave.id,
+          localConnectedInterventionIds.value
+        );
+
+        // Update local level with the latest version from store after relations change
+        const updatedLevel = projectConfigStore.getLevelById(levelToSave.id);
+        if (updatedLevel) {
+          localLevel.value._version = updatedLevel._version;
+          localLevel.value._lastChangedAt = updatedLevel._lastChangedAt;
+        }
+      }
 
       toast.add({
         severity: 'success',

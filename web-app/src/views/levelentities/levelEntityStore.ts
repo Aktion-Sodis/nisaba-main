@@ -24,6 +24,7 @@ export const useLevelEntityStore = defineStore('levelEntity', () => {
   const isEditingLevel = ref(false);
   const isEditingEntity = ref(false);
   const isViewingLevel = ref(false);
+  const isViewingEntity = ref(false);
 
   // Computed properties
   const levels = computed(() => projectConfigStore.levelsSortedByHierarchy);
@@ -185,12 +186,13 @@ export const useLevelEntityStore = defineStore('levelEntity', () => {
 
   const openEntityDialog = (
     entity: StoreEntity | null = null,
-    isEdit: boolean = false,
+    isView: boolean = false,
     level: StoreLevel | null = null
   ) => {
     selectedEntity.value = entity;
     selectedLevel.value = level;
-    isEditingEntity.value = isEdit;
+    isEditingEntity.value = !isView && entity !== null; // Edit mode if not view and entity exists
+    isViewingEntity.value = isView;
     showEntityDialog.value = true;
   };
 
@@ -199,6 +201,7 @@ export const useLevelEntityStore = defineStore('levelEntity', () => {
     selectedEntity.value = null;
     selectedLevel.value = null;
     isEditingEntity.value = false;
+    isViewingEntity.value = false;
   };
 
   return {
@@ -214,6 +217,7 @@ export const useLevelEntityStore = defineStore('levelEntity', () => {
     isEditingLevel,
     isEditingEntity,
     isViewingLevel,
+    isViewingEntity,
 
     // Computed
     levels,

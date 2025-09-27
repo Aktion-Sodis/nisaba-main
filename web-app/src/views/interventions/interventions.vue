@@ -383,15 +383,6 @@ const interventionMenuItems = computed(() => {
         }
       },
     },
-    {
-      label: t('interventions.menu.archive'),
-      icon: 'pi pi-fw pi-inbox',
-      command: () => {
-        if (selectedInterventionForMenu.value) {
-          // Implement archive logic
-        }
-      },
-    },
   ];
 });
 
@@ -429,10 +420,15 @@ const onInterventionCardClick = (intervention: Intervention) => {
 
 const handleInterventionSaved = (savedIntervention: any) => {
   console.log('Intervention saved:', savedIntervention);
-  showInterventionDialog.value = false;
-  // Dialog-State zurücksetzen
-  dialogInterventionId.value = null;
-  dialogViewMode.value = false;
+
+  // Only close dialog on create (when dialogInterventionId was null)
+  // Keep dialog open on update operations
+  if (!dialogInterventionId.value) {
+    showInterventionDialog.value = false;
+    // Dialog-State zurücksetzen
+    dialogInterventionId.value = null;
+    dialogViewMode.value = false;
+  }
 };
 </script>
 

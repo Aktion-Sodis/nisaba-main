@@ -92,7 +92,7 @@ export const createNewEntity = (
   const entityCustomData = levelCustomData.map((levelCustomDataItem) => ({
     customDataID: levelCustomDataItem.id,
     type: levelCustomDataItem.type,
-    name: createEmptyI18nString(languageKeys),
+    name: levelCustomDataItem.name, // Use the name from the level's custom data schema
     intValue: levelCustomDataItem.type === 'INT' ? 0 : null,
     stringValue: levelCustomDataItem.type === 'STRING' ? '' : null,
   }));
