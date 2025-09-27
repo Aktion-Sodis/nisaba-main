@@ -389,6 +389,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 
 import logoURL from '@/assets/img/aktionSodisBig.png';
+import { useAnalyticsStore } from '@/stores/analytics';
 import { useAuthStore, AuthenticationState } from '@/stores/auth';
 import { useUserStore } from '@/stores/user';
 import { UserGroup, hasRights } from '@/types/UserGroup';
@@ -420,6 +421,7 @@ const breadcrumbMenuLevel = ref();
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const surveyDetailStore = useSurveyDetailStore();
+const analyticsStore = useAnalyticsStore();
 const actionMenuItems = ref<MenuItem[]>([
   {
     items: [
@@ -528,6 +530,7 @@ const breadcrumbMenuItems = computed(() => {
       icon: 'assignment',
       iconType: 'material',
       color: getColor('surveys'),
+      command: () => router.push('/surveys/overview'),
       items: [
         {
           id: 'surveys',
@@ -573,6 +576,66 @@ const breadcrumbMenuItems = computed(() => {
         router.push('/entities');
       },
       minRole: UserGroup.ADMIN,
+    },
+    {
+      id: 'analytics-category',
+      label: t('apps.categories.analytics'),
+      minRole: UserGroup.ANALYTICS,
+    },
+    {
+      id: 'analytics',
+      label: t('apps.groups.analytics'),
+      icon: 'analytics',
+      iconType: 'material',
+      color: getColor('analytics'),
+      command: () => router.push('/analytics/survey-overview'),
+      items: [
+        {
+          id: 'analytics-survey-overview',
+          label: t('apps.apps.analytics_survey_overview.title'),
+          icon: 'assignment',
+          iconType: 'material',
+          color: getColor('analytics/survey-overview'),
+          active: isActive('analytics/survey-overview'),
+          command: () => router.push('/analytics/survey-overview'),
+          minRole: UserGroup.ANALYTICS,
+        },
+        {
+          id: 'analytics-aggregated',
+          label: t('apps.apps.analytics_aggregated.title'),
+          icon: 'insights',
+          iconType: 'material',
+          color: getColor('analytics/aggregated'),
+          active: isActive('analytics/aggregated'),
+          disabled: !analyticsStore.selectedSurvey,
+          command: () => router.push('/analytics/aggregated'),
+          minRole: UserGroup.ANALYTICS,
+        },
+        {
+          id: 'analytics-executed-survey-overview',
+          label: t('apps.apps.analytics_executed_survey_overview.title'),
+          icon: 'history',
+          iconType: 'material',
+          color: getColor('analytics/executed-survey-overview'),
+          active: isActive('analytics/executed-survey-overview'),
+          disabled: !analyticsStore.selectedSurvey,
+          command: () => router.push('/analytics/executed-survey-overview'),
+          minRole: UserGroup.ANALYTICS,
+        },
+        {
+          id: 'analytics-survey-details',
+          label: t('apps.apps.analytics_survey_details.title'),
+          icon: 'description',
+          iconType: 'material',
+          color: getColor('analytics/survey-details'),
+          active: isActive('analytics/survey-details'),
+          disabled:
+            !analyticsStore.selectedSurvey ||
+            !analyticsStore.selectedExecutedSurvey,
+          command: () => router.push('/analytics/survey-details'),
+          minRole: UserGroup.ANALYTICS,
+        },
+      ],
     },
     {
       id: 'settings',
