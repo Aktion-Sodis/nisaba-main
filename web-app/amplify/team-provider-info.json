@@ -29,6 +29,10 @@
           "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
           "s3Key": "amplify-builds/AdminQueries8dc38185-716c4a766c776a78314b-build.zip"
         },
+        "analyticsApp": {
+          "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
+          "s3Key": "amplify-builds/analyticsApp-512b644a7a4c49576439-build.zip"
+        },
         "authnisabaPreTokenGeneration": {
           "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
           "s3Key": "amplify-builds/authnisabaPreTokenGeneration-354b5a3446773846716a-build.zip"
@@ -52,10 +56,6 @@
         "syncConflictHandler5b19c779": {
           "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
           "s3Key": "amplify-builds/syncConflictHandler5b19c779-736d4962543068355742-build.zip"
-        },
-        "analyticsApp": {
-          "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
-          "s3Key": "amplify-builds/analyticsApp-7059714133595036694d-build.zip"
         }
       },
       "storage": {
@@ -63,9 +63,9 @@
       },
       "api": {
         "AdminQueries": {},
+        "analyticsApi": {},
         "apinisaba": {},
-        "nisabaUserManagementApi": {},
-        "analyticsApi": {}
+        "nisabaUserManagementApi": {}
       }
     }
   }

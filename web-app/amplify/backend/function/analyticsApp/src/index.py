@@ -1,6 +1,7 @@
 import json
+import asyncio
 
-from handlers.analytics_handler import AnalyticsHandler
+from handlers.async_analytics_handler import AsyncAnalyticsHandler
 from utils.response_utils import create_response, create_error_response
 
 def handler(event, context):
@@ -13,7 +14,7 @@ def handler(event, context):
             return create_error_response(405, f"Method {http_method} not allowed. Only GET is supported.")
         
         query_params = event.get('queryStringParameters') or {}
-        analytics_handler = AnalyticsHandler()
+        analytics_handler = AsyncAnalyticsHandler()
         
         path_parameters = event.get('pathParameters') or {}
         proxy_tail = path_parameters.get('proxy')
@@ -23,15 +24,21 @@ def handler(event, context):
             return create_response(200, {"message": "Analytics Middleware is running"})
 
         elif relative_path == '/getExecutedSurveyCountsForOrganization':
-            return analytics_handler.get_executed_survey_counts_for_organization()
+            organization_id = query_params.get('organizationID')
+            if not organization_id:
+                return create_error_response(400, "organizationID parameter is required")
+            return asyncio.run(analytics_handler.get_executed_survey_counts_for_organization(organization_id))
 
         elif relative_path == '/getAggregatedSurveyDataById':
             survey_id = query_params.get('SurveyID')
+            organization_id = query_params.get('OrganizationID')
             if not survey_id:
                 return create_error_response(400, "SurveyID parameter is required")
+            if not organization_id:
+                return create_error_response(400, "OrganizationID parameter is required")
             
             filters = parse_filters_from_query_params(query_params)
-            return analytics_handler.get_aggregated_survey_data_by_id(survey_id, filters)
+            return asyncio.run(analytics_handler.get_aggregated_survey_data_by_id(survey_id, organization_id, filters))
 
         elif relative_path == '/getSurveyResultsAsXLSX':
             survey_id = query_params.get('SurveyID')

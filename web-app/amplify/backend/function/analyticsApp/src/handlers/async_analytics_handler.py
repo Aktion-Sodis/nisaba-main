@@ -1,16 +1,20 @@
 from datetime import datetime
+import asyncio
+import time
 
 from utils.response_utils import create_response, create_error_response
-from services.analytics_service import AnalyticsService
+from services.async_analytics_service import AsyncAnalyticsService
 from services.excel_export import ExcelExportService
 from queries.data_store_paths import get_question_answer_audio_path, get_question_answer_pic_path
 
-class AnalyticsHandler:
+class AsyncAnalyticsHandler:
     def __init__(self):
-        self.analytics_service = AnalyticsService()
+        self.analytics_service = AsyncAnalyticsService()
+        # Note: ExcelExportService is still synchronous, would need async version for full async support
         self.excel_export = ExcelExportService(self.analytics_service)
     
     def get_total_number_of_surveys(self):
+        """Synchronous method for backward compatibility"""
         try:
             result = self.analytics_service.get_total_number_of_surveys()
             return create_response(200, {"res": result})
@@ -19,6 +23,7 @@ class AnalyticsHandler:
             return create_error_response(500, f"Failed to get total number of surveys: {str(e)}")
     
     def get_executed_survey_count_by_survey_id(self, survey_id):
+        """Synchronous method for backward compatibility"""
         try:
             result = self.analytics_service.get_executed_survey_count_by_survey_id(survey_id)
             return create_response(200, {"res": result})
@@ -26,37 +31,76 @@ class AnalyticsHandler:
             print(f"Error getting executed survey count for survey {survey_id}: {str(e)}")
             return create_error_response(500, f"Failed to get executed survey count: {str(e)}")
     
-    def get_executed_survey_counts_for_organization(self):
+    async def get_executed_survey_counts_for_organization(self, organization_id):
         try:
-            result = self.analytics_service.get_executed_survey_counts_for_organization()
+            result = await self.analytics_service.get_executed_survey_counts_for_organization(organization_id)
             return create_response(200, {"res": result})
         except Exception as e:
             print(f"Error getting executed survey counts for organization: {str(e)}")
             return create_error_response(500, f"Failed to get executed survey counts: {str(e)}")
     
-    def get_aggregated_survey_data_by_id(self, survey_id, filters=None):
+    async def get_aggregated_survey_data_by_id(self, survey_id, organization_id,filters=None):
+        start_time = time.time()
         try:
-            survey = self.analytics_service.get_survey_by_id(survey_id)
-            executed_surveys = self.analytics_service.get_executed_surveys_by_survey_id(survey_id)
+
+            # Parallel execution of ALL initial data fetching
+            survey, executed_surveys, all_entities, levels = await asyncio.gather(
+                self.analytics_service.get_survey_by_id(survey_id),
+                self.analytics_service.get_executed_surveys_by_survey_id(survey_id),
+                self.analytics_service.get_all_entities(organization_id),
+                self.analytics_service.get_all_levels(organization_id)
+            )
+            elapsed = int(time.time() - start_time)
+            print(f"[analytics] fetched survey + executed_surveys + all_entities + levels | t={elapsed}s | executed_surveys={len(executed_surveys)} | all_entities={len(all_entities)} | levels={len(levels)}")
             
             if filters:
                 executed_surveys = self._apply_filters(executed_surveys, filters)
+                elapsed = int(time.time() - start_time)
+                print(f"[analytics] applied filters | t={elapsed}s | remaining_executed_surveys={len(executed_surveys)} | filters={list(filters.keys())}")
             
+            # Extract entity IDs and filter to only needed entities
             entity_ids = self._get_entity_ids_from_surveys(executed_surveys)
-            entities = self.analytics_service.get_entities_by_ids(entity_ids)
-            levels = self.analytics_service.get_all_levels()
+            unique_entity_ids = set(entity_ids)
+            entities = [entity for entity in all_entities if entity["id"] in unique_entity_ids]
+            elapsed = int(time.time() - start_time)
+            print(f"[analytics] filtered entities | t={elapsed}s | unique_entity_ids={len(unique_entity_ids)} | filtered_entities={len(entities)}")
             
             dataset = self._generate_question_centric_dataset(survey, executed_surveys, entities)
+            elapsed = int(time.time() - start_time)
+            print(f"[analytics] generated dataset | t={elapsed}s | questions={len(dataset)}")
             
-            for question_data in dataset:
-                question_data["analytics"] = self._generate_question_analytics(
+            # Parallel execution of analytics generation for each question
+            analytics_tasks = []
+            raw_data_tasks = []
+            
+            for i, question_data in enumerate(dataset):
+                # Create analytics task
+                analytics_task = self._generate_question_analytics(
                     question_data, executed_surveys, entities
                 )
+                analytics_tasks.append((analytics_task, i))
                 
+                # Create raw data task if applicable
                 if question_data["question_type"] in ["TEXT", "AUDIO", "PICTURE"]:
-                    question_data["raw_data"] = self._generate_raw_data_for_question(
+                    raw_data_task = self._generate_raw_data_for_question(
                         question_data, executed_surveys, entities
                     )
+                    raw_data_tasks.append((raw_data_task, i))
+            
+            # Execute analytics tasks in parallel
+            analytics_results = await asyncio.gather(*[task for task, _ in analytics_tasks])
+            for (_, index), result in zip(analytics_tasks, analytics_results):
+                dataset[index]["analytics"] = result
+            elapsed = int(time.time() - start_time)
+            print(f"[analytics] completed analytics generation | t={elapsed}s | questions={len(analytics_tasks)}")
+            
+            # Execute raw data tasks in parallel
+            if raw_data_tasks:
+                raw_data_results = await asyncio.gather(*[task for task, _ in raw_data_tasks])
+                for (_, index), result in zip(raw_data_tasks, raw_data_results):
+                    dataset[index]["raw_data"] = result
+                elapsed = int(time.time() - start_time)
+                print(f"[analytics] completed raw data generation | t={elapsed}s | questions={len(raw_data_tasks)}")
             
             return create_response(200, {
                 "dataset": dataset,
@@ -69,6 +113,7 @@ class AnalyticsHandler:
             return create_error_response(500, f"Failed to get aggregated survey data: {str(e)}")
     
     def get_survey_results_as_xlsx(self, survey_id):
+        """Synchronous method for backward compatibility"""
         try:
             excel_data = self.excel_export.get_excel_workbook_for_survey_id(survey_id)
             
@@ -188,7 +233,7 @@ class AnalyticsHandler:
             for executed_survey in executed_surveys:
                 for answer in executed_survey["answers"]:
                     if answer["questionID"] == question_id:
-                        entity = self._find_entity_by_executed_survey_id(entities, executed_survey["id"])
+                        entity = self._find_entity_by_applied_intervention(entities, executed_survey)
                         
                         answer_value = self._get_answer_value(
                             answer, 
@@ -290,7 +335,8 @@ class AnalyticsHandler:
             print(f"Error generating {file_type} file path: {str(e)}")
             return None
     
-    def _generate_question_analytics(self, question_data, executed_surveys, entities):
+    async def _generate_question_analytics(self, question_data, executed_surveys, entities):
+        """Async version of question analytics generation"""
         question_type = question_data["question_type"]
         answers = question_data["answers"]
         
@@ -455,7 +501,8 @@ class AnalyticsHandler:
             }
         }
     
-    def _generate_raw_data_for_question(self, question_data, executed_surveys, entities):
+    async def _generate_raw_data_for_question(self, question_data, executed_surveys, entities):
+        """Async version of raw data generation"""
         question_type = question_data["question_type"]
         answers = question_data["answers"]
         
@@ -491,6 +538,20 @@ class AnalyticsHandler:
         
         return {}
     
+    def _find_entity_by_applied_intervention(self, entities, executed_survey):
+        """Find entity by matching entityAppliedInterventionsId from executed survey's appliedIntervention"""
+        if not executed_survey.get("appliedIntervention"):
+            return None
+        
+        entity_id = executed_survey["appliedIntervention"].get("entityAppliedInterventionsId")
+        if not entity_id:
+            return None
+        
+        for entity in entities:
+            if entity.get("id") == entity_id:
+                return entity
+        return None
+    
     def _find_entity_by_executed_survey_id(self, entities, executed_survey_id):
         for entity in entities:
             if entity.get("appliedInterventions") and entity["appliedInterventions"].get("items"):
@@ -525,4 +586,4 @@ class AnalyticsHandler:
                 if text:
                     texts.append(text)
         
-        return ", ".join(texts) 
+        return ", ".join(texts)

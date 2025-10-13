@@ -4,6 +4,7 @@ import { defineStore } from 'pinia';
 import { computed, reactive, ref, readonly } from 'vue';
 
 import { useProjectConfigStore } from './projectConfigStore';
+import { useAuthStore } from './auth';
 
 import {
   Survey,
@@ -149,8 +150,9 @@ export const useAnalyticsStore = defineStore('analytics', () => {
   const errorAnalyticsData = ref<string | null>(null);
   const errorExecutedCounts = ref<string | null>(null);
 
-  // Get project config store
+  // Get project config store and auth store
   const projectConfigStore = useProjectConfigStore();
+  const authStore = useAuthStore();
 
   // Computed getters
   const availableSurveys = computed(() => {
@@ -313,8 +315,14 @@ export const useAnalyticsStore = defineStore('analytics', () => {
       //const options = await getAuthorizationHeader();
 
       // Build query parameters with filters
+
+      if (!authStore.organizationId) {
+        throw new Error('Organization ID not available');
+      }
+
       const queryParams: Record<string, string> = {
         SurveyID: surveyId,
+        OrganizationID: authStore.organizationId,
       };
 
       if (filters.startDate) queryParams.startDate = filters.startDate;
@@ -414,12 +422,23 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     errorExecutedCounts.value = null;
 
     try {
+      // Get organization ID from auth store
+      const organizationId = authStore.organizationId;
+      if (!organizationId) {
+        throw new Error('Organization ID not available');
+      }
+
       //const options = await getAuthorizationHeader();
 
       const countsResponse = await get({
         apiName: 'analyticsApi',
         path: '/analytics/getExecutedSurveyCountsForOrganization',
-        //options,
+        options: {
+          queryParams: {
+            organizationID: organizationId
+          },
+          //...options,
+        },
       });
 
       const countsData = await countsResponse.response;

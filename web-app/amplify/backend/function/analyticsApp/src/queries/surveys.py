@@ -14,8 +14,8 @@ listTotalNumberOfSurveys = {
 
 listAllSurveys = {
     "operationName": "listAllSurveys",
-    "query": """query listAllSurveys {
-        listSurveys(filter: {_deleted: {ne: true}}) {
+    "query": """query listAllSurveys($organization_id: String!) {
+        listSurveys(filter: {_deleted: {ne: true}, organization_id: {eq: $organization_id}}) {
             nextToken
             items {
                 name {
@@ -32,8 +32,8 @@ listAllSurveys = {
 
 listAllSurveysFromNextToken = {
     "operationName": "listAllSurveys",
-    "query": """query listAllSurveys($nextToken: String!) {
-        listSurveys(filter: {_deleted: {ne: true}}, nextToken: $nextToken) {
+    "query": """query listAllSurveys($nextToken: String!, $organization_id: String!) {
+        listSurveys(filter: {_deleted: {ne: true}, organization_id: {eq: $organization_id}}, nextToken: $nextToken) {
             nextToken
             items {
                 name {
@@ -114,7 +114,7 @@ getExecutedSurveyDataBySurveyIDInclContext = {
 "operationName": "listExecutedSurveys",
 "query": """
 query listExecutedSurveys($surveyID: ID!) {
-  listExecutedSurveys(filter: {executedSurveySurveyId: {eq: $surveyID}}) {
+  listExecutedSurveys(filter: {executedSurveySurveyId: {eq: $surveyID}, _deleted: {ne: true}}) {
     nextToken
     items {
       id
@@ -168,7 +168,7 @@ getExecutedSurveyDataBySurveyIDInclContextFromNextToken = {
 "operationName": "listExecutedSurveys",
 "query": """
 query listExecutedSurveys($surveyID: ID!, $nextToken: String!) {
-  listExecutedSurveys(filter: {executedSurveySurveyId: {eq: $surveyID}}, nextToken: $nextToken) {
+  listExecutedSurveys(filter: {executedSurveySurveyId: {eq: $surveyID}, _deleted: {ne: true}}, nextToken: $nextToken) {
     nextToken
     items {
       id
