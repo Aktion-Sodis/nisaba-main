@@ -1,7 +1,5 @@
 import io
 import pandas as pd
-import xlsxwriter
-from datetime import datetime
 
 class ExcelExportService:
     def __init__(self, analytics_service):

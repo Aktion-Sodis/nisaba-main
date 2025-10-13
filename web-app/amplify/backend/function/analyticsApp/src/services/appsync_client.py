@@ -1,7 +1,6 @@
 import os
 import json
 
-import simplejson
 import requests
 import boto3
 from datetime import datetime

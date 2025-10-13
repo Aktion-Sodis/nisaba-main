@@ -4,10 +4,6 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-boto3 = "*"
-pandas = "*"
-openpyxl = "*"
-simplejson = "*"
 
 [packages]
 XlsxWriter = "*"
