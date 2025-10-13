@@ -2,7 +2,14 @@ import json
 import os
 import io
 import base64
+import sys
 from datetime import datetime
+
+# Add the src directory to Python path for local testing
+current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
+
 from utils.response_utils import create_response, create_error_response
 from services.analytics_service import AnalyticsService
 from services.excel_export import ExcelExportService
@@ -20,6 +27,22 @@ class AnalyticsHandler:
         except Exception as e:
             print(f"Error getting total number of surveys: {str(e)}")
             return create_error_response(500, f"Failed to get total number of surveys: {str(e)}")
+    
+    def get_executed_survey_count_by_survey_id(self, survey_id):
+        try:
+            result = self.analytics_service.get_executed_survey_count_by_survey_id(survey_id)
+            return create_response(200, {"res": result})
+        except Exception as e:
+            print(f"Error getting executed survey count for survey {survey_id}: {str(e)}")
+            return create_error_response(500, f"Failed to get executed survey count: {str(e)}")
+    
+    def get_executed_survey_counts_for_organization(self):
+        try:
+            result = self.analytics_service.get_executed_survey_counts_for_organization()
+            return create_response(200, {"res": result})
+        except Exception as e:
+            print(f"Error getting executed survey counts for organization: {str(e)}")
+            return create_error_response(500, f"Failed to get executed survey counts: {str(e)}")
     
     def get_aggregated_survey_data_by_id(self, survey_id, filters=None):
         try:

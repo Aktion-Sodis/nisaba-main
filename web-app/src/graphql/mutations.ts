@@ -2668,6 +2668,7 @@ export const createAppliedIntervention = /* GraphQL */ `mutation CreateAppliedIn
           __typename
         }
         schemeVersion
+        useForAnalytics
         id
         createdAt
         updatedAt
@@ -2890,6 +2891,7 @@ export const updateAppliedIntervention = /* GraphQL */ `mutation UpdateAppliedIn
           __typename
         }
         schemeVersion
+        useForAnalytics
         id
         createdAt
         updatedAt
@@ -3112,6 +3114,7 @@ export const deleteAppliedIntervention = /* GraphQL */ `mutation DeleteAppliedIn
           __typename
         }
         schemeVersion
+        useForAnalytics
         id
         createdAt
         updatedAt
@@ -3224,6 +3227,7 @@ export const createExecutedSurvey = /* GraphQL */ `mutation CreateExecutedSurvey
           surveyID
           date
           schemeVersion
+          useForAnalytics
           id
           createdAt
           updatedAt
@@ -3409,6 +3413,7 @@ export const createExecutedSurvey = /* GraphQL */ `mutation CreateExecutedSurvey
       __typename
     }
     schemeVersion
+    useForAnalytics
     id
     createdAt
     updatedAt
@@ -3504,6 +3509,7 @@ export const updateExecutedSurvey = /* GraphQL */ `mutation UpdateExecutedSurvey
           surveyID
           date
           schemeVersion
+          useForAnalytics
           id
           createdAt
           updatedAt
@@ -3689,6 +3695,7 @@ export const updateExecutedSurvey = /* GraphQL */ `mutation UpdateExecutedSurvey
       __typename
     }
     schemeVersion
+    useForAnalytics
     id
     createdAt
     updatedAt
@@ -3784,6 +3791,7 @@ export const deleteExecutedSurvey = /* GraphQL */ `mutation DeleteExecutedSurvey
           surveyID
           date
           schemeVersion
+          useForAnalytics
           id
           createdAt
           updatedAt
@@ -3969,6 +3977,7 @@ export const deleteExecutedSurvey = /* GraphQL */ `mutation DeleteExecutedSurvey
       __typename
     }
     schemeVersion
+    useForAnalytics
     id
     createdAt
     updatedAt
@@ -4186,6 +4195,7 @@ export const createTask = /* GraphQL */ `mutation CreateTask(
           surveyID
           date
           schemeVersion
+          useForAnalytics
           id
           createdAt
           updatedAt
@@ -4366,6 +4376,7 @@ export const createTask = /* GraphQL */ `mutation CreateTask(
         __typename
       }
       schemeVersion
+      useForAnalytics
       id
       createdAt
       updatedAt
@@ -4599,6 +4610,7 @@ export const updateTask = /* GraphQL */ `mutation UpdateTask(
           surveyID
           date
           schemeVersion
+          useForAnalytics
           id
           createdAt
           updatedAt
@@ -4779,6 +4791,7 @@ export const updateTask = /* GraphQL */ `mutation UpdateTask(
         __typename
       }
       schemeVersion
+      useForAnalytics
       id
       createdAt
       updatedAt
@@ -5012,6 +5025,7 @@ export const deleteTask = /* GraphQL */ `mutation DeleteTask(
           surveyID
           date
           schemeVersion
+          useForAnalytics
           id
           createdAt
           updatedAt
@@ -5192,6 +5206,7 @@ export const deleteTask = /* GraphQL */ `mutation DeleteTask(
         __typename
       }
       schemeVersion
+      useForAnalytics
       id
       createdAt
       updatedAt

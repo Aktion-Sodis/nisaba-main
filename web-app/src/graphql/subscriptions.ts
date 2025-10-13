@@ -2668,6 +2668,7 @@ export const onCreateAppliedIntervention = /* GraphQL */ `subscription OnCreateA
           __typename
         }
         schemeVersion
+        useForAnalytics
         id
         createdAt
         updatedAt
@@ -2893,6 +2894,7 @@ export const onUpdateAppliedIntervention = /* GraphQL */ `subscription OnUpdateA
           __typename
         }
         schemeVersion
+        useForAnalytics
         id
         createdAt
         updatedAt
@@ -3118,6 +3120,7 @@ export const onDeleteAppliedIntervention = /* GraphQL */ `subscription OnDeleteA
           __typename
         }
         schemeVersion
+        useForAnalytics
         id
         createdAt
         updatedAt
@@ -3230,6 +3233,7 @@ export const onCreateExecutedSurvey = /* GraphQL */ `subscription OnCreateExecut
           surveyID
           date
           schemeVersion
+          useForAnalytics
           id
           createdAt
           updatedAt
@@ -3415,6 +3419,7 @@ export const onCreateExecutedSurvey = /* GraphQL */ `subscription OnCreateExecut
       __typename
     }
     schemeVersion
+    useForAnalytics
     id
     createdAt
     updatedAt
@@ -3510,6 +3515,7 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `subscription OnUpdateExecut
           surveyID
           date
           schemeVersion
+          useForAnalytics
           id
           createdAt
           updatedAt
@@ -3695,6 +3701,7 @@ export const onUpdateExecutedSurvey = /* GraphQL */ `subscription OnUpdateExecut
       __typename
     }
     schemeVersion
+    useForAnalytics
     id
     createdAt
     updatedAt
@@ -3790,6 +3797,7 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `subscription OnDeleteExecut
           surveyID
           date
           schemeVersion
+          useForAnalytics
           id
           createdAt
           updatedAt
@@ -3975,6 +3983,7 @@ export const onDeleteExecutedSurvey = /* GraphQL */ `subscription OnDeleteExecut
       __typename
     }
     schemeVersion
+    useForAnalytics
     id
     createdAt
     updatedAt
@@ -4192,6 +4201,7 @@ export const onCreateTask = /* GraphQL */ `subscription OnCreateTask(
           surveyID
           date
           schemeVersion
+          useForAnalytics
           id
           createdAt
           updatedAt
@@ -4372,6 +4382,7 @@ export const onCreateTask = /* GraphQL */ `subscription OnCreateTask(
         __typename
       }
       schemeVersion
+      useForAnalytics
       id
       createdAt
       updatedAt
@@ -4605,6 +4616,7 @@ export const onUpdateTask = /* GraphQL */ `subscription OnUpdateTask(
           surveyID
           date
           schemeVersion
+          useForAnalytics
           id
           createdAt
           updatedAt
@@ -4785,6 +4797,7 @@ export const onUpdateTask = /* GraphQL */ `subscription OnUpdateTask(
         __typename
       }
       schemeVersion
+      useForAnalytics
       id
       createdAt
       updatedAt
@@ -5018,6 +5031,7 @@ export const onDeleteTask = /* GraphQL */ `subscription OnDeleteTask(
           surveyID
           date
           schemeVersion
+          useForAnalytics
           id
           createdAt
           updatedAt
@@ -5198,6 +5212,7 @@ export const onDeleteTask = /* GraphQL */ `subscription OnDeleteTask(
         __typename
       }
       schemeVersion
+      useForAnalytics
       id
       createdAt
       updatedAt

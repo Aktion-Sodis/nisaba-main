@@ -207,6 +207,7 @@ type ExecutedSurvey @model @auth(rules: [{allow: owner, ownerField: "organizatio
   location: Location
   answers: [QuestionAnswer!]!
   schemeVersion: Int @default(value: "0")
+  useForAnalytics: Boolean @default(value: "true")
 }
 
 type QuestionAnswer {

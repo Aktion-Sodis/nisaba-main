@@ -15,7 +15,7 @@ listTotalNumberOfSurveys = {
 listAllSurveys = {
     "operationName": "listAllSurveys",
     "query": """query listAllSurveys {
-        listSurveys {
+        listSurveys(filter: {_deleted: {ne: true}}) {
             nextToken
             items {
                 name {
@@ -33,7 +33,7 @@ listAllSurveys = {
 listAllSurveysFromNextToken = {
     "operationName": "listAllSurveys",
     "query": """query listAllSurveys($nextToken: String!) {
-        listSurveys(nextToken: $nextToken) {
+        listSurveys(filter: {_deleted: {ne: true}}, nextToken: $nextToken) {
             nextToken
             items {
                 name {

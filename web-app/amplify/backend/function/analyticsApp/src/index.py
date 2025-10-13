@@ -1,4 +1,12 @@
 import json
+import sys
+import os
+
+# Add the src directory to Python path for local testing
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
+
 from handlers.analytics_handler import AnalyticsHandler
 from utils.response_utils import create_response, create_error_response
 
@@ -21,8 +29,8 @@ def handler(event, context):
         if relative_path in ['', '/']:
             return create_response(200, {"message": "Analytics Middleware is running"})
 
-        elif relative_path == '/getTotalNumberOfSurveys':
-            return analytics_handler.get_total_number_of_surveys()
+        elif relative_path == '/getExecutedSurveyCountsForOrganization':
+            return analytics_handler.get_executed_survey_counts_for_organization()
 
         elif relative_path == '/getAggregatedSurveyDataById':
             survey_id = query_params.get('SurveyID')

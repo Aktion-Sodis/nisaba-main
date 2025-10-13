@@ -596,6 +596,7 @@ type EagerExecutedSurvey = {
   readonly location?: Location | null;
   readonly answers: QuestionAnswer[];
   readonly schemeVersion?: number | null;
+  readonly useForAnalytics?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly appliedInterventionExecutedSurveysId?: string | null;
@@ -617,6 +618,7 @@ type LazyExecutedSurvey = {
   readonly location?: Location | null;
   readonly answers: QuestionAnswer[];
   readonly schemeVersion?: number | null;
+  readonly useForAnalytics?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly appliedInterventionExecutedSurveysId?: string | null;

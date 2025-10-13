@@ -1280,6 +1280,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "useForAnalytics": {
+                    "name": "useForAnalytics",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -3169,5 +3176,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.4.4",
-    "version": "959631ea8b7c970b171e4196a98121dc"
+    "version": "0a212b8db50c045af4848544ce6d4574"
 };

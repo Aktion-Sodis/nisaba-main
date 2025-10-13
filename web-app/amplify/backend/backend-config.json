@@ -30,7 +30,42 @@
             "Arn"
           ],
           "category": "function",
-          "resourceName": "analyticsMiddelware"
+          "resourceName": "analyticsApp"
+        },
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "authnisaba"
+        },
+        {
+          "attributes": [
+            "superadminGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "adminGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "mobileGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
+        },
+        {
+          "attributes": [
+            "analyticsGroupRole"
+          ],
+          "category": "auth",
+          "resourceName": "userPoolGroups"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -159,9 +194,17 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "analyticsMiddelware": {
+    "analyticsApp": {
       "build": true,
       "dependsOn": [
+        {
+          "attributes": [
+            "ApiName",
+            "ApiId"
+          ],
+          "category": "api",
+          "resourceName": "AdminQueries"
+        },
         {
           "attributes": [
             "GraphQLAPIIdOutput",
@@ -170,6 +213,13 @@
           ],
           "category": "api",
           "resourceName": "apinisaba"
+        },
+        {
+          "attributes": [
+            "BucketName"
+          ],
+          "category": "storage",
+          "resourceName": "nisabarelease"
         }
       ],
       "providerPlugin": "awscloudformation",
@@ -268,19 +318,19 @@
         }
       ]
     },
-    "AMPLIFY_function_analyticsMiddelware_deploymentBucketName": {
+    "AMPLIFY_function_analyticsApp_deploymentBucketName": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "analyticsMiddelware"
+          "resourceName": "analyticsApp"
         }
       ]
     },
-    "AMPLIFY_function_analyticsMiddelware_s3Key": {
+    "AMPLIFY_function_analyticsApp_s3Key": {
       "usedBy": [
         {
           "category": "function",
-          "resourceName": "analyticsMiddelware"
+          "resourceName": "analyticsApp"
         }
       ]
     },

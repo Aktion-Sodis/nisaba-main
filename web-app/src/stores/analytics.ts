@@ -1,5 +1,5 @@
 import { get } from 'aws-amplify/api';
-import { fetchAuthSession } from 'aws-amplify/auth';
+//import { fetchAuthSession } from 'aws-amplify/auth';
 import { defineStore } from 'pinia';
 import { computed, reactive, ref, readonly } from 'vue';
 
@@ -310,7 +310,7 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     errorAnalyticsData.value = null;
 
     try {
-      const options = await getAuthorizationHeader();
+      //const options = await getAuthorizationHeader();
 
       // Build query parameters with filters
       const queryParams: Record<string, string> = {
@@ -336,9 +336,9 @@ export const useAnalyticsStore = defineStore('analytics', () => {
 
       const response = await get({
         apiName: 'analyticsApi',
-        path: '/getAggregatedSurveyDataById',
+        path: '/analytics/getAggregatedSurveyDataById',
         options: {
-          ...options,
+          //...options,
           queryParams,
         },
       });
@@ -414,33 +414,34 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     errorExecutedCounts.value = null;
 
     try {
-      const options = await getAuthorizationHeader();
+      //const options = await getAuthorizationHeader();
 
-      // Get total number of surveys first
-      const totalResponse = await get({
+      const countsResponse = await get({
         apiName: 'analyticsApi',
-        path: '/getTotalNumberOfSurveys',
-        options,
+        path: '/analytics/getExecutedSurveyCountsForOrganization',
+        //options,
       });
 
-      const totalData = await totalResponse.response;
-      const totalSurveys = await totalData.body.json();
+      const countsData = await countsResponse.response;
+      const countsResult = await countsData.body.json();
 
       if (
-        totalData.statusCode !== 200 ||
-        !totalSurveys ||
-        typeof totalSurveys !== 'object' ||
-        !('res' in totalSurveys)
+        countsData.statusCode !== 200 ||
+        !countsResult ||
+        typeof countsResult !== 'object' ||
+        !('res' in countsResult)
       ) {
-        throw new Error('Failed to get total survey count');
+        throw new Error('Failed to get executed survey counts');
       }
 
-      // For now, we'll initialize with available surveys from project config
-      // In the future, this could be enhanced to get actual counts from the API
+      // Convert the result to a Map
       const counts: Map<string, number> = new Map();
-      availableSurveys.value.forEach((survey) => {
-        counts.set(survey.id, 0); // Initialize with 0 for now
-      });
+      if (countsResult.res && typeof countsResult.res === 'object') {
+        Object.entries(countsResult.res).forEach(([surveyId, count]) => {
+          counts.set(surveyId, count as number);
+        });
+      }
+      
       surveyExecutedCounts.value = counts;
     } catch (error) {
       console.error('Error loading executed survey counts:', error);
@@ -454,7 +455,7 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     }
   };
 
-  const getAuthorizationHeader = async () => {
+  /*const getAuthorizationHeader = async () => {
     const session = await fetchAuthSession();
     const token = session.tokens?.accessToken?.toString();
 
@@ -467,7 +468,7 @@ export const useAnalyticsStore = defineStore('analytics', () => {
         Authorization: `Bearer ${token}`,
       },
     };
-  };
+  };*/
 
   const reset = () => {
     selectedSurvey.value = null;

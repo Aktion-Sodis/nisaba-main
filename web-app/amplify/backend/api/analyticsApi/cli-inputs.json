@@ -3,12 +3,26 @@
   "paths": {
     "/analytics": {
       "name": "/analytics",
-      "lambdaFunction": "analyticsMiddelware",
+      "lambdaFunction": "analyticsApp",
       "permissions": {
         "setting": "private",
         "auth": [
           "read"
-        ]
+        ],
+        "groups": {
+          "superadmin": [
+            "read"
+          ],
+          "admin": [
+            "read"
+          ],
+          "mobile": [
+            "read"
+          ],
+          "analytics": [
+            "read"
+          ]
+        }
       }
     }
   }

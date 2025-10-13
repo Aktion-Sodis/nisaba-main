@@ -17,13 +17,15 @@ class AnalyticsService:
         self.appsync_client = AppSyncClient()
         self.dynamodb = boto3.resource('dynamodb')
         self.survey_table = os.environ.get('API_APINISABA_SURVEYTABLE_NAME')
+        self.executed_survey_table = os.environ.get('API_APINISABA_EXECUTEDSURVEYTABLE_NAME')
     
     def get_total_number_of_surveys(self):
         try:
             table = self.dynamodb.Table(self.survey_table)
             response = table.scan(
                 Select='COUNT',
-                FilterExpression='attribute_not_exists(_deleted) OR _deleted = :deleted',
+                FilterExpression='attribute_not_exists(#deleted) OR #deleted = :deleted',
+                ExpressionAttributeNames={'#deleted': '_deleted'},
                 ExpressionAttributeValues={':deleted': False}
             )
             return response.get('Count', 0)
@@ -61,6 +63,75 @@ class AnalyticsService:
             next_token = res["data"]["listExecutedSurveys"].get("nextToken", None)
 
         return to_return_executed_surveys
+    
+    def get_executed_survey_count_by_survey_id(self, survey_id):
+        """Get the count of executed surveys for a specific survey ID"""
+        try:
+            table = self.dynamodb.Table(self.executed_survey_table)
+            response = table.query(
+                IndexName='bySurveyID',
+                KeyConditionExpression='surveyID = :survey_id',
+                FilterExpression='attribute_not_exists(#deleted) OR #deleted = :deleted',
+                ExpressionAttributeNames={'#deleted': '_deleted'},
+                ExpressionAttributeValues={
+                    ':survey_id': survey_id,
+                    ':deleted': False
+                },
+                Select='COUNT'
+            )
+            return response.get('Count', 0)
+        except ClientError as e:
+            print(f"Error getting executed survey count for survey {survey_id}: {e}")
+            raise
+    
+    def get_all_surveys_for_organization(self):
+        """Get all surveys for the organization using AppSync"""
+        try:
+            res = self.appsync_client.execute(
+                query=listAllSurveys["query"],
+                operation_name=listAllSurveys["operationName"],
+                variables={},
+            )
+            
+            surveys = res["data"]["listSurveys"]["items"]
+            next_token = res["data"]["listSurveys"].get("nextToken", None)
+
+            while next_token:
+                res = self.appsync_client.execute(
+                    query=listAllSurveysFromNextToken["query"],
+                    operation_name=listAllSurveysFromNextToken["operationName"],
+                    variables={"nextToken": next_token},
+                )
+                
+                items = res["data"]["listSurveys"]["items"]
+                surveys.extend(items)
+                next_token = res["data"]["listSurveys"].get("nextToken", None)
+
+            return surveys
+        except Exception as e:
+            print(f"Error getting all surveys: {e}")
+            raise
+    
+    def get_executed_survey_counts_for_organization(self):
+        """Get executed survey counts for all surveys in the organization"""
+        try:
+            # Get all surveys for the organization
+            surveys = self.get_all_surveys_for_organization()
+            
+            # Get executed survey counts for each survey
+            counts = {}
+            for survey in surveys:
+                survey_id = survey["id"]
+                try:
+                    counts[survey_id] = self.get_executed_survey_count_by_survey_id(survey_id)
+                except Exception as e:
+                    print(f"Error getting count for survey {survey_id}: {e}")
+                    counts[survey_id] = 0
+            
+            return counts
+        except Exception as e:
+            print(f"Error getting executed survey counts for organization: {e}")
+            raise
     
     def get_entities_by_ids(self, entity_ids):
         unique_entity_ids = list(set(entity_ids))

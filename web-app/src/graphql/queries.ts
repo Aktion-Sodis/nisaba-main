@@ -2146,6 +2146,7 @@ export const getAppliedIntervention = /* GraphQL */ `query GetAppliedInterventio
           __typename
         }
         schemeVersion
+        useForAnalytics
         id
         createdAt
         updatedAt
@@ -2263,6 +2264,7 @@ export const listAppliedInterventions = /* GraphQL */ `query ListAppliedInterven
           surveyID
           date
           schemeVersion
+          useForAnalytics
           id
           createdAt
           updatedAt
@@ -2386,6 +2388,7 @@ export const syncAppliedInterventions = /* GraphQL */ `query SyncAppliedInterven
           surveyID
           date
           schemeVersion
+          useForAnalytics
           id
           createdAt
           updatedAt
@@ -2499,6 +2502,7 @@ export const getExecutedSurvey = /* GraphQL */ `query GetExecutedSurvey($id: ID!
           surveyID
           date
           schemeVersion
+          useForAnalytics
           id
           createdAt
           updatedAt
@@ -2684,6 +2688,7 @@ export const getExecutedSurvey = /* GraphQL */ `query GetExecutedSurvey($id: ID!
       __typename
     }
     schemeVersion
+    useForAnalytics
     id
     createdAt
     updatedAt
@@ -2858,6 +2863,7 @@ export const listExecutedSurveys = /* GraphQL */ `query ListExecutedSurveys(
         __typename
       }
       schemeVersion
+      useForAnalytics
       id
       createdAt
       updatedAt
@@ -3042,6 +3048,7 @@ export const syncExecutedSurveys = /* GraphQL */ `query SyncExecutedSurveys(
         __typename
       }
       schemeVersion
+      useForAnalytics
       id
       createdAt
       updatedAt
@@ -3228,6 +3235,7 @@ export const executedSurveyBySurveyID = /* GraphQL */ `query ExecutedSurveyBySur
         __typename
       }
       schemeVersion
+      useForAnalytics
       id
       createdAt
       updatedAt
@@ -3446,6 +3454,7 @@ export const getTask = /* GraphQL */ `query GetTask($id: ID!) {
           surveyID
           date
           schemeVersion
+          useForAnalytics
           id
           createdAt
           updatedAt
@@ -3626,6 +3635,7 @@ export const getTask = /* GraphQL */ `query GetTask($id: ID!) {
         __typename
       }
       schemeVersion
+      useForAnalytics
       id
       createdAt
       updatedAt
@@ -3860,6 +3870,7 @@ export const listTasks = /* GraphQL */ `query ListTasks(
           __typename
         }
         schemeVersion
+        useForAnalytics
         id
         createdAt
         updatedAt
@@ -4104,6 +4115,7 @@ export const syncTasks = /* GraphQL */ `query SyncTasks(
           __typename
         }
         schemeVersion
+        useForAnalytics
         id
         createdAt
         updatedAt
@@ -4350,6 +4362,7 @@ export const taskByUserID = /* GraphQL */ `query TaskByUserID(
           __typename
         }
         schemeVersion
+        useForAnalytics
         id
         createdAt
         updatedAt
