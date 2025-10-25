@@ -1,8 +1,8 @@
 export default {
   root: {
     class: [
-      // Spacing
-      'p-[1.125rem] pt-0',
+      // Spacing - more uniform padding
+      'px-3 py-2',
 
       // Shape
       'rounded-md',
@@ -15,18 +15,16 @@ export default {
   },
   legend: ({ props }) => ({
     class: [
-      // Font
-      'font-semibold',
-      'leading-none',
+      // Font - using very small text style
+      'text-oneliner-light-small',
 
-      //Spacing
-      'p-0 mb-[0.375rem]',
+      //Spacing - reduced bottom margin
+      'p-0 mb-0',
 
       // Shape
       'rounded-md',
 
       // Color
-      'text-surface-700 dark:text-surface-0/80',
       'bg-surface-0 dark:bg-surface-900',
 
       // Transition
@@ -76,7 +74,7 @@ export default {
   legendLabel: ({ props }) => ({
     class: [
       'flex items-center justify-center leading-none',
-      { 'py-2 px-3': !props.toggleable },
+      { 'py-0 px-1': !props.toggleable },
     ],
   }),
   content: {

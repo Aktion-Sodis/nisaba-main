@@ -1,34 +1,31 @@
 <template>
   <div class="flex flex-col gap-4">
     <!-- Audio Statistics -->
-    <div
-      v-if="questionData.analytics.statistics"
-      class="grid grid-cols-1 md:grid-cols-3 gap-4"
-    >
-      <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
-        <div class="text-sm text-surface-600 dark:text-surface-400">
-          {{ $t('analytics_aggregated.audio_stats.total_files') }}
-        </div>
-        <div class="text-xl font-semibold">
+    <div v-if="questionData.analytics.statistics" class="flex flex-wrap gap-2">
+      <Fieldset
+        :legend="$t('analytics_aggregated.audio_stats.total_files')"
+        class="flex-1"
+      >
+        <div class="text-body">
           {{ questionData.analytics.statistics.total_files || 0 }}
         </div>
-      </div>
+      </Fieldset>
 
-      <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
-        <div class="text-sm text-surface-600 dark:text-surface-400">
-          {{ $t('analytics_aggregated.audio_stats.total_responses') }}
-        </div>
-        <div class="text-xl font-semibold">
+      <Fieldset
+        :legend="$t('analytics_aggregated.audio_stats.total_responses')"
+        class="flex-1"
+      >
+        <div class="text-body">
           {{ questionData.analytics.statistics.total_responses || 0 }}
         </div>
-      </div>
+      </Fieldset>
 
-      <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
-        <div class="text-sm text-surface-600 dark:text-surface-400">
-          {{ $t('analytics_aggregated.audio_stats.completion_rate') }}
-        </div>
-        <div class="text-xl font-semibold">{{ completionRate }}%</div>
-      </div>
+      <Fieldset
+        :legend="$t('analytics_aggregated.audio_stats.completion_rate')"
+        class="flex-1"
+      >
+        <div class="text-body">{{ completionRate }}%</div>
+      </Fieldset>
     </div>
 
     <!-- File Type Distribution -->
@@ -137,13 +134,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 
-import type { QuestionData, AnswerRecord } from '@/stores/analytics';
+import type { QuestionData } from '@/stores/analytics';
 import { useDateFormat } from '@/utils/dateFormat';
 import AudioPlayer from '@/views/analyticsaggregated/components/AudioPlayer.vue';
 
-const { t } = useI18n();
 const { formatDate } = useDateFormat();
 
 const props = defineProps<{

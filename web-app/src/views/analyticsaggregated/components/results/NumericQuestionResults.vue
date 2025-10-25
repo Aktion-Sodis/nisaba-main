@@ -151,7 +151,6 @@ const formatNumber = (value: number) => {
 const createChart = async () => {
   if (!chartContainer.value || !hasChartData.value) return;
 
-  const stats = props.questionData.analytics.statistics;
   const chartData = props.questionData.analytics.chart_data;
 
   let plotData: any;

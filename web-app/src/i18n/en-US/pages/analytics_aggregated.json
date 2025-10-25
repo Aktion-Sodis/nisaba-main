@@ -15,6 +15,9 @@
   "results": {
     "title": "Question Results"
   },
+  "answer_statistics": {
+    "title": "Answer Statistics"
+  },
   "stats": {
     "total_answers": "Total Answers",
     "unique_entities": "Unique Entities",

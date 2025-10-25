@@ -3,9 +3,7 @@
     <template #title>
       <div class="flex flex-col gap-2">
         <div class="flex items-center gap-4">
-          <span class="text-screen-title">
-            {{ $t('analytics_aggregated.results.title') }}
-          </span>
+          {{ $t('analytics_aggregated.results.title') }}
           <Tag
             :value="
               $t(
@@ -22,54 +20,12 @@
     </template>
 
     <template #content>
-      <div class="flex flex-col gap-6">
-        <!-- Question Statistics Overview -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
-            <div class="flex items-center gap-3">
-              <i class="pi pi-users text-primary text-xl"></i>
-              <div>
-                <div class="text-sm text-surface-600 dark:text-surface-400">
-                  {{ $t('analytics_aggregated.stats.total_answers') }}
-                </div>
-                <div class="text-2xl font-semibold">
-                  {{ questionData.analytics.total_answers }}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
-            <div class="flex items-center gap-3">
-              <i class="pi pi-building text-primary text-xl"></i>
-              <div>
-                <div class="text-sm text-surface-600 dark:text-surface-400">
-                  {{ $t('analytics_aggregated.stats.unique_entities') }}
-                </div>
-                <div class="text-2xl font-semibold">
-                  {{ questionData.analytics.unique_entities }}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
-            <div class="flex items-center gap-3">
-              <i class="pi pi-calendar text-primary text-xl"></i>
-              <div>
-                <div class="text-sm text-surface-600 dark:text-surface-400">
-                  {{ $t('analytics_aggregated.stats.date_range') }}
-                </div>
-                <div class="text-sm font-semibold">
-                  {{ formatDateRange(questionData.analytics.date_range) }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      <div class="flex flex-col gap-6 flex-1 min-h-0 overflow-auto">
         <!-- Question Type Specific Results -->
-        <div class="mt-6">
+        <div>
+          <h3 class="text-label mb-4">
+            {{ $t('analytics_aggregated.answer_statistics.title') }}
+          </h3>
           <!-- Text Questions -->
           <text-question-results
             v-if="questionData.question_type === 'TEXT'"
@@ -143,7 +99,6 @@
 import { useI18n } from 'vue-i18n';
 
 import type { QuestionData } from '@/stores/analytics';
-import { useDateFormat } from '@/utils/dateFormat';
 import { formatMLString } from '@/utils/formatStrings';
 import AudioQuestionResults from '@/views/analyticsaggregated/components/results/AudioQuestionResults.vue';
 import ChoiceQuestionResults from '@/views/analyticsaggregated/components/results/ChoiceQuestionResults.vue';
@@ -153,28 +108,9 @@ import NumericQuestionResults from '@/views/analyticsaggregated/components/resul
 import RatingQuestionResults from '@/views/analyticsaggregated/components/results/RatingQuestionResults.vue';
 import TextQuestionResults from '@/views/analyticsaggregated/components/results/TextQuestionResults.vue';
 
-const { t, locale } = useI18n();
-const { formatDate } = useDateFormat();
+const { locale } = useI18n();
 
 defineProps<{
   questionData: QuestionData;
 }>();
-
-const formatDateRange = (dateRange: {
-  earliest: string | null;
-  latest: string | null;
-}) => {
-  if (!dateRange.earliest || !dateRange.latest) {
-    return t('analytics_aggregated.stats.no_date_range');
-  }
-
-  const start = formatDate(dateRange.earliest);
-  const end = formatDate(dateRange.latest);
-
-  if (start === end) {
-    return start;
-  }
-
-  return `${start} - ${end}`;
-};
 </script>

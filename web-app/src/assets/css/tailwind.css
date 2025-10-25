@@ -69,6 +69,11 @@
   .text-label {
     @apply font-semibold text-[1rem] leading-[1.3];
   }
+
+  /* Small Table Text */
+  .text-small-table {
+    @apply font-normal text-[0.75rem] leading-[1.3];
+  }
 }
 
 @layer components {

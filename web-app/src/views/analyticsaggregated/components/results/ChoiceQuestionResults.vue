@@ -1,27 +1,24 @@
 <template>
   <div class="flex flex-col gap-6">
     <!-- Choice Statistics -->
-    <div
-      v-if="questionData.analytics.statistics"
-      class="grid grid-cols-1 md:grid-cols-2 gap-4"
-    >
-      <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
-        <div class="text-sm text-surface-600 dark:text-surface-400">
-          {{ $t('analytics_aggregated.choice_stats.total_responses') }}
-        </div>
-        <div class="text-xl font-semibold">
+    <div v-if="questionData.analytics.statistics" class="flex flex-wrap gap-2">
+      <Fieldset
+        :legend="$t('analytics_aggregated.choice_stats.total_responses')"
+        class="flex-1"
+      >
+        <div class="text-body">
           {{ questionData.analytics.statistics.total_responses || 0 }}
         </div>
-      </div>
+      </Fieldset>
 
-      <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
-        <div class="text-sm text-surface-600 dark:text-surface-400">
-          {{ $t('analytics_aggregated.choice_stats.unique_entities') }}
-        </div>
-        <div class="text-xl font-semibold">
+      <Fieldset
+        :legend="$t('analytics_aggregated.choice_stats.unique_entities')"
+        class="flex-1"
+      >
+        <div class="text-body">
           {{ questionData.analytics.unique_entities }}
         </div>
-      </div>
+      </Fieldset>
     </div>
 
     <!-- Chart Section -->
@@ -29,7 +26,7 @@
       v-if="hasChartData"
       class="bg-surface-50 dark:bg-surface-800 p-6 rounded-lg"
     >
-      <h3 class="text-lg font-semibold mb-4">
+      <h3 class="text-section-inner-subtitle mb-4">
         {{ $t('analytics_aggregated.choice_chart.title') }}
       </h3>
 

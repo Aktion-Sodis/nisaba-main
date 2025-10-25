@@ -25,6 +25,7 @@ import DatePicker from 'primevue/datepicker';
 import Dialog from 'primevue/dialog';
 import Divider from 'primevue/divider';
 import Drawer from 'primevue/drawer';
+import Fieldset from 'primevue/fieldset';
 import FileUpload from 'primevue/fileupload';
 import FloatLabel from 'primevue/floatlabel';
 import Galleria from 'primevue/galleria';
@@ -107,6 +108,7 @@ export default {
     app.component('DataView', DataView);
     app.component('Dialog', Dialog);
     app.component('Divider', Divider);
+    app.component('Fieldset', Fieldset);
     app.component('FileUpload', FileUpload);
     app.component('FloatLabel', FloatLabel);
     app.component('Galleria', Galleria);

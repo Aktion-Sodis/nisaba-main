@@ -111,12 +111,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 
-import type { QuestionData, AnswerRecord } from '@/stores/analytics';
+import type { QuestionData } from '@/stores/analytics';
 import { useDateFormat } from '@/utils/dateFormat';
 
-const { t } = useI18n();
 const { formatDate } = useDateFormat();
 
 const props = defineProps<{
