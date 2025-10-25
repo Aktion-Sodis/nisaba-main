@@ -66,10 +66,12 @@ getSurveyBySurveyID = {
         id
         type
         questionOptions {
+          id
           text {
             languageKeys
             languageTexts
           }
+          followUpQuestionIDs
         }
         text {
           languageKeys

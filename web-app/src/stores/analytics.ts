@@ -3,8 +3,8 @@ import { get } from 'aws-amplify/api';
 import { defineStore } from 'pinia';
 import { computed, reactive, ref, readonly } from 'vue';
 
-import { useProjectConfigStore } from './projectConfigStore';
 import { useAuthStore } from './auth';
+import { useProjectConfigStore } from './projectConfigStore';
 
 import {
   Survey,
@@ -435,7 +435,7 @@ export const useAnalyticsStore = defineStore('analytics', () => {
         path: '/analytics/getExecutedSurveyCountsForOrganization',
         options: {
           queryParams: {
-            organizationID: organizationId
+            organizationID: organizationId,
           },
           //...options,
         },
@@ -460,7 +460,7 @@ export const useAnalyticsStore = defineStore('analytics', () => {
           counts.set(surveyId, count as number);
         });
       }
-      
+
       surveyExecutedCounts.value = counts;
     } catch (error) {
       console.error('Error loading executed survey counts:', error);
@@ -538,5 +538,6 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     reset,
     initialize,
     loadExecutedSurveys,
+    loadAnalyticsData,
   };
 });

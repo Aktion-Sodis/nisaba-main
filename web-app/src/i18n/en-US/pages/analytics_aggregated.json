@@ -1,5 +1,155 @@
 {
   "title": "Aggregated Analytics",
   "subtitle": "View aggregated survey analytics and statistics",
-  "coming_soon": "This view is coming soon. It will display aggregated analytics data for the selected survey."
+  "coming_soon": "This view is coming soon. It will display aggregated analytics data for the selected survey.",
+  "no_survey_selected": "Please select a survey from the analytics overview to view aggregated data.",
+  "no_data_available": "No aggregated data is available for the selected survey.",
+  "select_question": "Select a question from the navigation to view its results.",
+  "unsupported_question_type": "Question type '{type}' is not supported in this view.",
+  "navigation": {
+    "title": "Questions",
+    "question_title": "Question {index}",
+    "total_answers": "{count} answers",
+    "unique_entities": "{count} entities"
+  },
+  "results": {
+    "title": "Question Results"
+  },
+  "stats": {
+    "total_answers": "Total Answers",
+    "unique_entities": "Unique Entities",
+    "date_range": "Date Range",
+    "no_date_range": "No date range available"
+  },
+  "question_types": {
+    "text": "Text",
+    "audio": "Audio",
+    "picture": "Image",
+    "singlechoice": "Single Choice",
+    "multiplechoice": "Multiple Choice",
+    "rating": "Rating",
+    "int": "Integer",
+    "double": "Number",
+    "date": "Date"
+  },
+  "text_stats": {
+    "average_length": "Average Length",
+    "longest_response": "Longest Response",
+    "shortest_response": "Shortest Response",
+    "total_responses": "Total Responses"
+  },
+  "text_responses": {
+    "title": "Text Responses",
+    "no_data": "No text responses available"
+  },
+  "audio_stats": {
+    "total_files": "Total Files",
+    "total_responses": "Total Responses",
+    "completion_rate": "Completion Rate",
+    "file_types": "File Types"
+  },
+  "audio_responses": {
+    "title": "Audio Responses",
+    "no_data": "No audio responses available",
+    "browser_not_supported": "Your browser does not support the audio element.",
+    "not_available": "Audio not available",
+    "load_error": "Failed to load audio"
+  },
+  "image_stats": {
+    "total_files": "Total Files",
+    "total_responses": "Total Responses",
+    "completion_rate": "Completion Rate",
+    "file_types": "File Types"
+  },
+  "image_responses": {
+    "title": "Image Responses",
+    "no_data": "No image responses available",
+    "image_alt": "Survey response image",
+    "view_full": "View Full",
+    "modal_title": "Image Response",
+    "not_available": "Image not available",
+    "load_error": "Failed to load image"
+  },
+  "choice_stats": {
+    "total_responses": "Total Responses",
+    "unique_entities": "Unique Entities"
+  },
+  "choice_chart": {
+    "title": "Response Distribution",
+    "pie_chart": "Pie Chart",
+    "bar_chart": "Bar Chart",
+    "options": "Options",
+    "count": "Count"
+  },
+  "choice_table": {
+    "title": "Option Counts",
+    "option": "Option",
+    "count": "Count",
+    "percentage": "Percentage"
+  },
+  "choice_responses": {
+    "no_data": "No choice responses available"
+  },
+  "rating_stats": {
+    "total_responses": "Total Responses",
+    "average_rating": "Average Rating",
+    "highest_rating": "Highest Rating",
+    "lowest_rating": "Lowest Rating"
+  },
+  "rating_chart": {
+    "title": "Rating Distribution",
+    "bar_chart": "Bar Chart",
+    "histogram": "Histogram",
+    "rating": "Rating",
+    "count": "Count"
+  },
+  "rating_table": {
+    "title": "Rating Counts",
+    "rating": "Rating",
+    "count": "Count",
+    "percentage": "Percentage"
+  },
+  "rating_responses": {
+    "no_data": "No rating responses available"
+  },
+  "numeric_stats": {
+    "total_responses": "Total Responses",
+    "mean": "Mean",
+    "median": "Median",
+    "std_deviation": "Std Deviation",
+    "min": "Minimum",
+    "max": "Maximum",
+    "range": "Range"
+  },
+  "numeric_chart": {
+    "title": "Value Distribution",
+    "histogram": "Histogram",
+    "box_plot": "Box Plot",
+    "value": "Value",
+    "count": "Count"
+  },
+  "numeric_responses": {
+    "no_data": "No numeric responses available"
+  },
+  "date_stats": {
+    "total_responses": "Total Responses",
+    "unique_entities": "Unique Entities"
+  },
+  "date_responses": {
+    "title": "Date Responses",
+    "no_data": "No date responses available"
+  },
+  "table": {
+    "entity": "Entity",
+    "date": "Date",
+    "executor": "Executor",
+    "text_response": "Text Response",
+    "audio_file": "Audio File",
+    "image_file": "Image File",
+    "date_response": "Date Response",
+    "no_entity": "No entity",
+    "no_date": "No date",
+    "no_executor": "No executor",
+    "no_response": "No response"
+  }
 }

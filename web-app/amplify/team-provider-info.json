@@ -31,7 +31,7 @@
         },
         "analyticsApp": {
           "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
-          "s3Key": "amplify-builds/analyticsApp-512b644a7a4c49576439-build.zip"
+          "s3Key": "amplify-builds/analyticsApp-2f6c6f39345235615744-build.zip"
         },
         "authnisabaPreTokenGeneration": {
           "deploymentBucketName": "amplify-nisaba-devtfive-d1e51-deployment",
