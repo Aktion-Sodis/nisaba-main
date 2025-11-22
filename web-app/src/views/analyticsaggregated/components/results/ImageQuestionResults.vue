@@ -1,44 +1,40 @@
 <template>
   <div class="flex flex-col gap-4">
     <!-- Image Statistics -->
-    <div
-      v-if="questionData.analytics.statistics"
-      class="grid grid-cols-1 md:grid-cols-3 gap-4"
-    >
-      <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
-        <div class="text-sm text-surface-600 dark:text-surface-400">
-          {{ $t('analytics_aggregated.image_stats.total_files') }}
+    <div v-if="questionData.analytics.statistics" class="flex flex-wrap gap-2">
+      <Fieldset
+        :legend="$t('analytics_aggregated.image_stats.total_files')"
+        class="flex-1"
+      >
+        <div class="text-body">
+          {{ totalFilesExisting }}
         </div>
-        <div class="text-xl font-semibold">
-          {{ questionData.analytics.statistics.total_files || 0 }}
-        </div>
-      </div>
+      </Fieldset>
 
-      <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
-        <div class="text-sm text-surface-600 dark:text-surface-400">
-          {{ $t('analytics_aggregated.image_stats.total_responses') }}
+      <Fieldset
+        :legend="$t('analytics_aggregated.image_stats.total_responses')"
+        class="flex-1"
+      >
+        <div class="text-body">
+          {{ questionData.analytics.total_answers || 0 }}
         </div>
-        <div class="text-xl font-semibold">
-          {{ questionData.analytics.statistics.total_responses || 0 }}
-        </div>
-      </div>
+      </Fieldset>
 
-      <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
-        <div class="text-sm text-surface-600 dark:text-surface-400">
-          {{ $t('analytics_aggregated.image_stats.completion_rate') }}
+      <Fieldset
+        :legend="$t('analytics_aggregated.choice_stats.unique_entities')"
+        class="flex-1"
+      >
+        <div class="text-body">
+          {{ questionData.analytics.unique_entities }}
         </div>
-        <div class="text-xl font-semibold">{{ completionRate }}%</div>
-      </div>
+      </Fieldset>
     </div>
 
     <!-- File Type Distribution -->
-    <div
-      v-if="fileTypes.length > 0"
-      class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg"
-    >
-      <h4 class="text-md font-semibold mb-3">
+    <div v-if="fileTypes.length > 0">
+      <h3 class="text-label mb-3">
         {{ $t('analytics_aggregated.image_stats.file_types') }}
-      </h4>
+      </h3>
       <div class="flex flex-wrap gap-2">
         <Tag
           v-for="(count, type) in fileTypes"
@@ -51,7 +47,7 @@
 
     <!-- Image Responses Table -->
     <div v-if="imageResponses.length > 0">
-      <h3 class="text-lg font-semibold mb-4">
+      <h3 class="text-label mb-4">
         {{ $t('analytics_aggregated.image_responses.title') }}
       </h3>
 
@@ -62,8 +58,7 @@
         :rows-per-page-options="[5, 10, 20, 50]"
         paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
         current-page-report-template="{first} to {last} of {totalRecords}"
-        class="p-datatable-sm"
-        responsive-layout="scroll"
+        size="small"
       >
         <Column
           field="entity_name"
@@ -71,8 +66,10 @@
           sortable
         >
           <template #body="{ data }">
-            <span v-if="data.entity_name">{{ data.entity_name }}</span>
-            <span v-else class="text-surface-500 italic">
+            <span v-if="data.entity_name" class="text-small-table">
+              {{ data.entity_name }}
+            </span>
+            <span v-else class="text-oneliner-light-small italic">
               {{ $t('analytics_aggregated.table.no_entity') }}
             </span>
           </template>
@@ -84,10 +81,10 @@
           sortable
         >
           <template #body="{ data }">
-            <span v-if="data.answer_date">
+            <span v-if="data.answer_date" class="text-small-table">
               {{ formatDate(data.answer_date) }}
             </span>
-            <span v-else class="text-surface-500 italic">
+            <span v-else class="text-oneliner-light-small italic">
               {{ $t('analytics_aggregated.table.no_date') }}
             </span>
           </template>
@@ -99,8 +96,10 @@
           sortable
         >
           <template #body="{ data }">
-            <span v-if="data.executor">{{ data.executor }}</span>
-            <span v-else class="text-surface-500 italic">
+            <span v-if="data.executor" class="text-small-table">
+              {{ data.executor }}
+            </span>
+            <span v-else class="text-oneliner-light-small italic">
               {{ $t('analytics_aggregated.table.no_executor') }}
             </span>
           </template>
@@ -115,12 +114,24 @@
               v-if="data.answer_value && data.answer_value.length > 0"
               class="flex items-center gap-2"
             >
-              <image-thumbnail
-                :file-path="data.answer_value"
-                @click="openImageModal"
-              />
+              <div v-if="fileExistsMap[data.answer_value] === true">
+                <image-thumbnail
+                  :file-path="data.answer_value"
+                  @click="openImageModal"
+                />
+              </div>
+              <span
+                v-else-if="fileExistsMap[data.answer_value] === false"
+                class="text-oneliner-light-small italic"
+              >
+                {{ $t('analytics_aggregated.image_responses.file_not_found') }}
+              </span>
+              <div v-else class="flex items-center gap-2">
+                <i class="pi pi-spin pi-spinner text-sm"></i>
+                <span class="text-oneliner-light-small">Checking...</span>
+              </div>
             </div>
-            <span v-else class="text-surface-500 italic">
+            <span v-else class="text-oneliner-light-small italic">
               {{ $t('analytics_aggregated.table.no_response') }}
             </span>
           </template>
@@ -156,7 +167,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { list } from '@aws-amplify/storage';
+import { computed, onMounted, ref } from 'vue';
 
 import type { QuestionData } from '@/stores/analytics';
 import { useDateFormat } from '@/utils/dateFormat';
@@ -193,13 +205,49 @@ const fileTypes = computed(() => {
   return props.questionData.analytics.statistics?.file_types || {};
 });
 
-const completionRate = computed(() => {
-  const total = props.questionData.analytics.statistics?.total_responses || 0;
-  const files = props.questionData.analytics.statistics?.total_files || 0;
+// Count files that actually exist
+const totalFilesExisting = computed(() => {
+  return Object.values(fileExistsMap.value).filter((exists) => exists === true)
+    .length;
+});
 
-  if (total === 0) return 0;
+// Cache to store file existence results (filePath -> boolean)
+const fileExistsCache = ref<Map<string, boolean>>(new Map());
 
-  return Math.round((files / total) * 100);
+// Map to store existence status for each file path (for template access)
+const fileExistsMap = ref<Record<string, boolean | undefined>>({});
+
+const checkFileExists = async (filePath: string): Promise<boolean> => {
+  // Return cached result if available
+  if (fileExistsCache.value.has(filePath)) {
+    return fileExistsCache.value.get(filePath)!;
+  }
+
+  try {
+    const result = await list({ path: filePath });
+    const exists = result.items.length > 0;
+    // Cache the result
+    fileExistsCache.value.set(filePath, exists);
+    return exists;
+  } catch (error) {
+    // Cache false result on error
+    fileExistsCache.value.set(filePath, false);
+    return false;
+  }
+};
+
+onMounted(async () => {
+  // Check all unique file paths once
+  const uniquePaths = [
+    ...new Set(
+      imageResponses.value
+        .map((r) => r.answer_value)
+        .filter((path): path is string => Boolean(path))
+    ),
+  ];
+  for (const path of uniquePaths) {
+    fileExistsMap.value[path] = await checkFileExists(path);
+  }
 });
 
 const openImageModal = (imageUrl: string) => {

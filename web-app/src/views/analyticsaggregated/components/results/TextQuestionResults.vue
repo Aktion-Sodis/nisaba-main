@@ -45,9 +45,9 @@
 
     <!-- Text Responses Table -->
     <div v-if="textResponses.length > 0">
-      <h4 class="text-body mb-4">
+      <h3 class="text-label mb-4">
         {{ $t('analytics_aggregated.text_responses.title') }}
-      </h4>
+      </h3>
 
       <DataTable
         :value="textResponses"

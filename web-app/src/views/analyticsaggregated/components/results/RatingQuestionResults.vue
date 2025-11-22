@@ -1,79 +1,89 @@
 <template>
   <div class="flex flex-col gap-6">
     <!-- Rating Statistics -->
-    <div
-      v-if="questionData.analytics.statistics"
-      class="grid grid-cols-1 md:grid-cols-4 gap-4"
-    >
-      <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
-        <div class="text-sm text-surface-600 dark:text-surface-400">
-          {{ $t('analytics_aggregated.rating_stats.total_responses') }}
+    <div v-if="questionData.analytics.statistics" class="flex flex-wrap gap-2">
+      <Fieldset
+        :legend="$t('analytics_aggregated.rating_stats.total_responses')"
+        class="flex-1"
+      >
+        <div class="text-body">
+          {{ questionData.analytics.total_answers || 0 }}
         </div>
-        <div class="text-xl font-semibold">
-          {{ questionData.analytics.statistics.total_responses || 0 }}
-        </div>
-      </div>
+      </Fieldset>
 
-      <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
-        <div class="text-sm text-surface-600 dark:text-surface-400">
-          {{ $t('analytics_aggregated.rating_stats.average_rating') }}
+      <Fieldset
+        :legend="$t('analytics_aggregated.choice_stats.unique_entities')"
+        class="flex-1"
+      >
+        <div class="text-body">
+          {{ questionData.analytics.unique_entities }}
         </div>
-        <div class="text-xl font-semibold">
-          {{ averageRating.toFixed(1) }}
-        </div>
-      </div>
+      </Fieldset>
 
-      <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
-        <div class="text-sm text-surface-600 dark:text-surface-400">
-          {{ $t('analytics_aggregated.rating_stats.highest_rating') }}
+      <Fieldset
+        v-if="
+          questionData.analytics.statistics.mean !== undefined &&
+          questionData.analytics.statistics.mean !== null
+        "
+        :legend="$t('analytics_aggregated.rating_stats.average_rating')"
+        class="flex-1"
+      >
+        <div class="text-body">
+          {{ questionData.analytics.statistics.mean.toFixed(1) }}
         </div>
-        <div class="text-xl font-semibold">
-          {{ questionData.analytics.statistics.max || 0 }}
-        </div>
-      </div>
+      </Fieldset>
 
-      <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
-        <div class="text-sm text-surface-600 dark:text-surface-400">
-          {{ $t('analytics_aggregated.rating_stats.lowest_rating') }}
+      <Fieldset
+        v-if="
+          questionData.analytics.statistics.min !== undefined &&
+          questionData.analytics.statistics.min !== null
+        "
+        :legend="$t('analytics_aggregated.rating_stats.lowest_rating')"
+        class="flex-1"
+      >
+        <div class="text-body">
+          {{ questionData.analytics.statistics.min }}
         </div>
-        <div class="text-xl font-semibold">
-          {{ questionData.analytics.statistics.min || 0 }}
+      </Fieldset>
+
+      <Fieldset
+        v-if="
+          questionData.analytics.statistics.max !== undefined &&
+          questionData.analytics.statistics.max !== null
+        "
+        :legend="$t('analytics_aggregated.rating_stats.highest_rating')"
+        class="flex-1"
+      >
+        <div class="text-body">
+          {{ questionData.analytics.statistics.max }}
         </div>
-      </div>
+      </Fieldset>
     </div>
 
     <!-- Chart Section -->
-    <div
-      v-if="hasChartData"
-      class="bg-surface-50 dark:bg-surface-800 p-6 rounded-lg"
-    >
-      <h3 class="text-lg font-semibold mb-4">
+    <div v-if="hasChartData">
+      <h3 class="text-label mb-4">
         {{ $t('analytics_aggregated.rating_chart.title') }}
       </h3>
 
-      <!-- Chart Type Selector -->
-      <div class="flex gap-2 mb-4">
-        <Button
-          :label="$t('analytics_aggregated.rating_chart.bar_chart')"
-          :class="{ 'p-button-outlined': chartType !== 'bar' }"
-          size="small"
-          @click="chartType = 'bar'"
-        />
-        <Button
-          :label="$t('analytics_aggregated.rating_chart.histogram')"
-          :class="{ 'p-button-outlined': chartType !== 'histogram' }"
-          size="small"
-          @click="chartType = 'histogram'"
-        />
-      </div>
-
-      <!-- Chart Container -->
-      <div ref="chartContainer" class="w-full h-96"></div>
+      <!-- Chart Tabs -->
+      <Tabs v-model="activeTab" value="bar">
+        <TabList>
+          <Tab value="bar">
+            {{ $t('analytics_aggregated.rating_chart.bar_chart') }}
+          </Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel value="bar">
+            <div ref="barChartContainer" class="w-full h-96"></div>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </div>
 
     <!-- Rating Distribution Table -->
     <div v-if="ratingCounts.length > 0">
-      <h3 class="text-lg font-semibold mb-4">
+      <h3 class="text-label mb-4">
         {{ $t('analytics_aggregated.rating_table.title') }}
       </h3>
 
@@ -140,7 +150,7 @@
     </div>
 
     <!-- No Data Message -->
-    <div v-else class="text-center p-8">
+    <div v-else-if="!hasChartData" class="text-center p-8">
       <i class="pi pi-star text-4xl text-surface-400 mb-4"></i>
       <p class="text-oneliner-light text-surface-500">
         {{ $t('analytics_aggregated.rating_responses.no_data') }}
@@ -162,8 +172,8 @@ const props = defineProps<{
   questionData: QuestionData;
 }>();
 
-const chartContainer = ref<HTMLElement>();
-const chartType = ref<'bar' | 'histogram'>('bar');
+const activeTab = ref<'bar'>('bar');
+const barChartContainer = ref<HTMLElement>();
 
 const ratingCounts = computed(() => {
   const stats = props.questionData.analytics.statistics;
@@ -181,12 +191,8 @@ const ratingCounts = computed(() => {
 });
 
 const hasChartData = computed(() => {
-  return ratingCounts.value.length > 0;
-});
-
-const averageRating = computed(() => {
-  const stats = props.questionData.analytics.statistics;
-  return stats?.mean || 0;
+  const chartData = props.questionData.analytics.chart_data;
+  return !!(chartData?.bar_chart || ratingCounts.value.length > 0);
 });
 
 const getRatingColor = (rating: number) => {
@@ -202,115 +208,114 @@ const getRatingColor = (rating: number) => {
   return colors[Math.min(rating - 1, colors.length - 1)] || colors[0];
 };
 
-const createChart = async () => {
-  if (!chartContainer.value || !hasChartData.value) return;
+const createBarChart = async () => {
+  if (!barChartContainer.value) return;
 
-  const data = ratingCounts.value;
-  const colors = data.map((item) => getRatingColor(item.rating));
+  const chartData = props.questionData.analytics.chart_data;
+  if (!chartData?.bar_chart) return;
 
-  let plotData: any;
-  let layout: any;
+  // Use precomputed bar_chart data
+  // x is array of strings (e.g., "1★", "2★"), y is array of counts
+  // @ts-expect-error no i18n strings here desired
+  const labels = chartData.bar_chart.x || [];
+  const counts = chartData.bar_chart.y || [];
 
-  if (chartType.value === 'bar') {
-    plotData = [
-      {
-        type: 'bar',
-        x: data.map((item) => item.rating),
-        y: data.map((item) => item.count),
-        marker: {
-          color: colors,
-        },
-        hovertemplate: '<b>Rating: %{x}</b><br>Count: %{y}<extra></extra>',
-      },
-    ];
+  // Get colors for each rating
+  const colors = labels.map((label: string) => {
+    // Extract rating number from label (e.g., "1★" -> 1)
+    const ratingMatch = label.match(/\d+/);
+    const rating = ratingMatch ? parseInt(ratingMatch[0]) : 1;
+    return getRatingColor(rating);
+  });
 
-    layout = {
-      xaxis: {
-        title: t('analytics_aggregated.rating_chart.rating'),
-        tickmode: 'linear',
-        tick0: 1,
-        dtick: 1,
+  const plotData: any = [
+    {
+      type: 'bar',
+      x: labels,
+      y: counts,
+      marker: {
+        color: colors,
       },
-      yaxis: {
-        title: t('analytics_aggregated.rating_chart.count'),
-      },
-      margin: { t: 20, b: 60, l: 60, r: 20 },
-      font: {
-        family: 'Inter, system-ui, sans-serif',
-        size: 12,
-      },
-    };
-  } else {
-    // Histogram
-    const allRatings = data.flatMap((item) =>
-      Array(item.count).fill(item.rating)
-    );
+      hovertemplate: '<b>%{x}</b><br>Count: %{y}<extra></extra>',
+    },
+  ];
 
-    plotData = [
-      {
-        type: 'histogram',
-        x: allRatings,
-        nbinsx:
-          Math.max(...data.map((item) => item.rating)) -
-          Math.min(...data.map((item) => item.rating)) +
-          1,
-        marker: {
-          color: '#3b82f6', // blue-500
-        },
-        hovertemplate: '<b>Rating: %{x}</b><br>Count: %{y}<extra></extra>',
-      },
-    ];
-
-    layout = {
-      xaxis: {
-        title: t('analytics_aggregated.rating_chart.rating'),
-        tickmode: 'linear',
-        tick0: 1,
-        dtick: 1,
-      },
-      yaxis: {
-        title: t('analytics_aggregated.rating_chart.count'),
-      },
-      margin: { t: 20, b: 60, l: 60, r: 20 },
-      font: {
-        family: 'Inter, system-ui, sans-serif',
-        size: 12,
-      },
-    };
-  }
-
-  const config = {
-    responsive: true,
-    displayModeBar: false,
+  const layout: any = {
+    xaxis: {
+      title: t('analytics_aggregated.rating_chart.rating'),
+      tickangle: 0,
+    },
+    yaxis: {
+      title: t('analytics_aggregated.rating_chart.count'),
+    },
+    margin: { t: 20, b: 100, l: 60, r: 20 },
+    font: {
+      family: 'Inter, system-ui, sans-serif',
+      size: 12,
+    },
   };
 
-  await Plotly.newPlot(chartContainer.value, plotData, layout, config);
+  const config: any = {
+    responsive: true,
+    displayModeBar: true,
+    displaylogo: false,
+    modeBarButtonsToRemove: [
+      'zoom2d',
+      'pan2d',
+      'select2d',
+      'lasso2d',
+      'zoomIn2d',
+      'zoomOut2d',
+      'autoScale2d',
+      'resetScale2d',
+      'hoverClosestCartesian',
+      'hoverCompareCartesian',
+      'toggleSpikelines',
+    ],
+    toImageButtonOptions: {
+      format: 'png',
+      filename: 'rating-bar-chart',
+      height: 600,
+      width: 800,
+      scale: 2,
+    },
+  };
+
+  await Plotly.newPlot(barChartContainer.value, plotData, layout, config);
 };
 
-const resizeChart = () => {
-  if (chartContainer.value) {
-    Plotly.Plots.resize(chartContainer.value);
+const resizeChart = (container: HTMLElement | undefined) => {
+  if (container) {
+    Plotly.Plots.resize(container);
   }
 };
 
-watch([chartType, ratingCounts], () => {
-  nextTick(() => {
-    createChart();
-  });
-});
+watch(
+  () => props.questionData.analytics.chart_data,
+  () => {
+    nextTick(() => {
+      createBarChart();
+    });
+  }
+);
 
 onMounted(() => {
   nextTick(() => {
-    createChart();
+    // Create chart on mount
+    createBarChart();
   });
 
-  window.addEventListener('resize', resizeChart);
+  window.addEventListener('resize', () => {
+    resizeChart(barChartContainer.value);
+  });
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', resizeChart);
-  if (chartContainer.value) {
-    Plotly.purge(chartContainer.value);
+  window.removeEventListener('resize', () => {
+    resizeChart(barChartContainer.value);
+  });
+  if (barChartContainer.value) {
+    Plotly.purge(barChartContainer.value);
   }
 });
 </script>

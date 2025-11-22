@@ -56,7 +56,8 @@
     "no_data": "No audio responses available",
     "browser_not_supported": "Your browser does not support the audio element.",
     "not_available": "Audio not available",
-    "load_error": "Failed to load audio"
+    "load_error": "Failed to load audio",
+    "file_not_found": "No audio recorded"
   },
   "image_stats": {
     "total_files": "Total Files",
@@ -71,7 +72,8 @@
     "view_full": "View Full",
     "modal_title": "Image Response",
     "not_available": "Image not available",
-    "load_error": "Failed to load image"
+    "load_error": "Failed to load image",
+    "file_not_found": "No image captured"
   },
   "choice_stats": {
     "total_responses": "Total Responses",
@@ -104,7 +106,8 @@
     "bar_chart": "Bar Chart",
     "histogram": "Histogram",
     "rating": "Rating",
-    "count": "Count"
+    "count": "Count",
+    "statistics": "Statistics"
   },
   "rating_table": {
     "title": "Rating Counts",
@@ -129,7 +132,8 @@
     "histogram": "Histogram",
     "box_plot": "Box Plot",
     "value": "Value",
-    "count": "Count"
+    "count": "Count",
+    "statistics": "Statistics"
   },
   "numeric_responses": {
     "no_data": "No numeric responses available"

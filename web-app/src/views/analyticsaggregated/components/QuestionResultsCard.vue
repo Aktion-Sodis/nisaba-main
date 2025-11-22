@@ -45,17 +45,15 @@
           />
 
           <!-- Single Choice Questions -->
-          <choice-question-results
+          <single-choice-question-results
             v-else-if="questionData.question_type === 'SINGLECHOICE'"
             :question-data="questionData"
-            :is-multiple="false"
           />
 
           <!-- Multiple Choice Questions -->
-          <choice-question-results
+          <multiple-choice-question-results
             v-else-if="questionData.question_type === 'MULTIPLECHOICE'"
             :question-data="questionData"
-            :is-multiple="true"
           />
 
           <!-- Rating Questions -->
@@ -101,11 +99,12 @@ import { useI18n } from 'vue-i18n';
 import type { QuestionData } from '@/stores/analytics';
 import { formatMLString } from '@/utils/formatStrings';
 import AudioQuestionResults from '@/views/analyticsaggregated/components/results/AudioQuestionResults.vue';
-import ChoiceQuestionResults from '@/views/analyticsaggregated/components/results/ChoiceQuestionResults.vue';
 import DateQuestionResults from '@/views/analyticsaggregated/components/results/DateQuestionResults.vue';
 import ImageQuestionResults from '@/views/analyticsaggregated/components/results/ImageQuestionResults.vue';
+import MultipleChoiceQuestionResults from '@/views/analyticsaggregated/components/results/MultipleChoiceQuestionResults.vue';
 import NumericQuestionResults from '@/views/analyticsaggregated/components/results/NumericQuestionResults.vue';
 import RatingQuestionResults from '@/views/analyticsaggregated/components/results/RatingQuestionResults.vue';
+import SingleChoiceQuestionResults from '@/views/analyticsaggregated/components/results/SingleChoiceQuestionResults.vue';
 import TextQuestionResults from '@/views/analyticsaggregated/components/results/TextQuestionResults.vue';
 
 const { locale } = useI18n();
