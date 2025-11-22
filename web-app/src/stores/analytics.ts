@@ -1,7 +1,7 @@
 import { get } from 'aws-amplify/api';
 //import { fetchAuthSession } from 'aws-amplify/auth';
 import { defineStore } from 'pinia';
-import { computed, reactive, ref, readonly } from 'vue';
+import { computed, reactive, ref, readonly, watch } from 'vue';
 
 import { useAuthStore } from './auth';
 import { useProjectConfigStore } from './projectConfigStore';
@@ -150,6 +150,9 @@ export const useAnalyticsStore = defineStore('analytics', () => {
   const errorAnalyticsData = ref<string | null>(null);
   const errorExecutedCounts = ref<string | null>(null);
 
+  // Flag to track if analytics data needs reload after invalidation
+  const analyticsDataNeedsReload = ref(false);
+
   // Get project config store and auth store
   const projectConfigStore = useProjectConfigStore();
   const authStore = useAuthStore();
@@ -253,6 +256,49 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     return Array.from(executors);
   });
 
+  // Executor options for filter dropdown
+  const executorOptions = computed(() => {
+    const executors = new Map<string, { id: string; displayName: string }>();
+
+    executedSurveysData.value.forEach((survey) => {
+      if (survey.whoExecutedIt) {
+        const userId = survey.whoExecutedIt.id;
+        if (!executors.has(userId)) {
+          const firstName = survey.whoExecutedIt.firstName || '';
+          const lastName = survey.whoExecutedIt.lastName || '';
+          const displayName = `${firstName} ${lastName}`.trim() || userId;
+          executors.set(userId, { id: userId, displayName });
+        }
+      }
+    });
+
+    return Array.from(executors.values()).sort((a, b) =>
+      a.displayName.localeCompare(b.displayName)
+    );
+  });
+
+  // Date range limits based on executed surveys
+  const dateRangeLimits = computed(() => {
+    if (!executedSurveysData.value.length) {
+      return { minDate: undefined, maxDate: undefined };
+    }
+
+    const dates = executedSurveysData.value
+      .map((survey) => survey.date)
+      .filter((date): date is string => !!date)
+      .map((date) => new Date(date))
+      .filter((date) => !isNaN(date.getTime()));
+
+    if (dates.length === 0) {
+      return { minDate: undefined, maxDate: undefined };
+    }
+
+    const minDate = new Date(Math.min(...dates.map((d) => d.getTime())));
+    const maxDate = new Date(Math.max(...dates.map((d) => d.getTime())));
+
+    return { minDate, maxDate };
+  });
+
   const uniqueQuestionTypes = computed(() => {
     if (!analyticsData.value?.dataset) return [];
     return [
@@ -307,9 +353,22 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     }
   };
 
+  // Watch survey change and clear filters when survey ID actually changes
+  watch(
+    () => selectedSurvey.value?.id,
+    (newSurveyId, oldSurveyId) => {
+      // Only clear filters if survey ID actually changed (and old value is not undefined)
+      if (newSurveyId !== oldSurveyId && oldSurveyId !== undefined) {
+        clearFilters();
+      }
+    }
+  );
+
   const loadAnalyticsData = async (surveyId: string) => {
     isLoadingAnalyticsData.value = true;
     errorAnalyticsData.value = null;
+    // Clear the reload flag when starting to load
+    analyticsDataNeedsReload.value = false;
 
     try {
       //const options = await getAuthorizationHeader();
@@ -506,6 +565,80 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     await loadExecutedSurveyCounts();
   };
 
+  // Toggle useForAnalytics for an executed survey
+  const toggleExecutedSurveyAnalytics = async (
+    executedSurveyId: string,
+    useForAnalytics: boolean
+  ) => {
+    // Find the survey in the local data
+    const surveyIndex = executedSurveysData.value.findIndex(
+      (s) => s.id === executedSurveyId
+    );
+
+    if (surveyIndex === -1) {
+      throw new Error('Executed survey not found');
+    }
+
+    const survey = executedSurveysData.value[surveyIndex];
+    const previousValue = survey.useForAnalytics;
+    const previousVersion = survey._version;
+
+    // Optimistic update
+    survey.useForAnalytics = useForAnalytics;
+
+    try {
+      // Minimal mutation to update only useForAnalytics field
+      const mutation = /* GraphQL */ `
+        mutation UpdateExecutedSurveyUseForAnalytics(
+          $id: ID!
+          $useForAnalytics: Boolean!
+          $_version: Int!
+        ) {
+          updateExecutedSurvey(
+            input: {
+              id: $id
+              useForAnalytics: $useForAnalytics
+              _version: $_version
+            }
+          ) {
+            id
+            useForAnalytics
+            _version
+            updatedAt
+            __typename
+          }
+        }
+      `;
+
+      const variables = {
+        id: executedSurveyId,
+        useForAnalytics: useForAnalytics,
+        _version: previousVersion,
+      };
+
+      const response = (await amplifyDataClient.graphql({
+        query: mutation,
+        variables,
+      })) as { data?: { updateExecutedSurvey?: { _version: number } } };
+
+      if (response.data?.updateExecutedSurvey) {
+        // Update the version from the response
+        const updatedSurvey = response.data.updateExecutedSurvey;
+        survey._version = updatedSurvey._version;
+
+        // Invalidate aggregated analytics data since it's now stale
+        analyticsData.value = null;
+        analyticsDataNeedsReload.value = true;
+      } else {
+        throw new Error('Failed to update executed survey');
+      }
+    } catch (error) {
+      // Revert optimistic update on error
+      survey.useForAnalytics = previousValue;
+      throw error;
+    }
+  };
+
   return {
     // State
     selectedSurvey: readonly(selectedSurvey),
@@ -520,6 +653,7 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     errorAnalyticsData: readonly(errorAnalyticsData),
     errorExecutedCounts: readonly(errorExecutedCounts),
     errorExecutedSurveys: readonly(errorExecutedSurveys),
+    analyticsDataNeedsReload: readonly(analyticsDataNeedsReload),
 
     // Computed
     availableSurveys,
@@ -528,6 +662,8 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     questions,
     filteredExecutedSurveys,
     uniqueExecutors,
+    executorOptions,
+    dateRangeLimits,
     uniqueQuestionTypes,
 
     // Actions
@@ -539,5 +675,6 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     initialize,
     loadExecutedSurveys,
     loadAnalyticsData,
+    toggleExecutedSurveyAnalytics,
   };
 });

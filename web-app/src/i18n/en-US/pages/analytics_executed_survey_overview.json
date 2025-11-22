@@ -1,5 +1,39 @@
 {
   "title": "Executed Surveys",
   "subtitle": "View executed survey details and responses",
-  "coming_soon": "This view is coming soon. It will display executed survey data for the selected survey."
+  "coming_soon": "This view is coming soon. It will display executed survey data for the selected survey.",
+  "no_survey_selected": "Please select a survey from the analytics overview to view executed surveys.",
+  "no_surveys_found": "No executed surveys found.",
+  "loading_surveys": "Loading executed surveys...",
+  "table": {
+    "title": "Executed Surveys"
+  },
+  "columns": {
+    "entity": "Entity",
+    "date": "Date",
+    "executor": "Executor",
+    "included_in_analytics": "Included in aggregated analytics computation"
+  },
+  "toast": {
+    "success": {
+      "included": {
+        "title": "Success",
+        "detail": "Survey {surveyId} successfully included in analytics."
+      },
+      "excluded": {
+        "title": "Success",
+        "detail": "Survey {surveyId} successfully excluded from analytics."
+      }
+    },
+    "error": {
+      "include": {
+        "title": "Error",
+        "detail": "Failed to include survey {surveyId} in analytics."
+      },
+      "exclude": {
+        "title": "Error",
+        "detail": "Failed to exclude survey {surveyId} from analytics."
+      }
+    }
+  }
 }

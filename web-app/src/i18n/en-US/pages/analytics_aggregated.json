@@ -158,5 +158,13 @@
     "no_date": "No date",
     "no_executor": "No executor",
     "no_response": "No response"
+  },
+  "filters": {
+    "title": "Filters",
+    "select_entities": "Select Entities",
+    "select_executors": "Select Executors",
+    "select_date_range": "Select Date Range",
+    "apply": "Apply",
+    "clear": "Clear"
   }
 }

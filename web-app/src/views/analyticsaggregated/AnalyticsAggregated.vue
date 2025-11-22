@@ -58,31 +58,37 @@
       </Card>
     </div>
 
-    <div v-else class="flex gap-4 h-full w-full">
-      <!-- Question Navigation Column -->
-      <div class="w-80 flex-shrink-0 flex flex-col gap-4 h-full">
-        <div class="flex-grow min-h-0">
-          <question-navigation-card
-            :questions="analyticsStore.questions"
-            :active-question-index="selectedQuestionIndex"
-            @question-selected="onQuestionSelected"
-          />
-        </div>
-      </div>
+    <div v-else class="flex flex-col gap-4 h-full w-full">
+      <!-- Filter Card -->
+      <analytics-filter-card />
 
-      <!-- Main Content Area -->
-      <div class="flex-1 min-w-0 h-full overflow-y-auto">
-        <div v-if="selectedQuestion" class="flex flex-col gap-4">
-          <question-results-card :question-data="selectedQuestion" />
+      <!-- Question Navigation and Results -->
+      <div class="flex gap-4 h-full w-full">
+        <!-- Question Navigation Column -->
+        <div class="w-80 flex-shrink-0 flex flex-col gap-4 h-full">
+          <div class="flex-grow min-h-0">
+            <question-navigation-card
+              :questions="analyticsStore.questions"
+              :active-question-index="selectedQuestionIndex"
+              @question-selected="onQuestionSelected"
+            />
+          </div>
         </div>
-        <div
-          v-else
-          class="flex flex-col items-center justify-center gap-4 p-8 text-center h-full"
-        >
-          <i class="pi pi-question-circle text-[3rem] text-surface-400"></i>
-          <p class="text-oneliner-light text-surface-500">
-            {{ $t('analytics_aggregated.select_question') }}
-          </p>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 min-w-0 h-full overflow-y-auto">
+          <div v-if="selectedQuestion" class="flex flex-col gap-4">
+            <question-results-card :question-data="selectedQuestion" />
+          </div>
+          <div
+            v-else
+            class="flex flex-col items-center justify-center gap-4 p-8 text-center h-full"
+          >
+            <i class="pi pi-question-circle text-[3rem] text-surface-400"></i>
+            <p class="text-oneliner-light text-surface-500">
+              {{ $t('analytics_aggregated.select_question') }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -90,9 +96,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 
 import { useAnalyticsStore } from '@/stores/analytics';
+import AnalyticsFilterCard from '@/views/analyticsaggregated/components/AnalyticsFilterCard.vue';
 import QuestionNavigationCard from '@/views/analyticsaggregated/components/QuestionNavigationCard.vue';
 import QuestionResultsCard from '@/views/analyticsaggregated/components/QuestionResultsCard.vue';
 
@@ -117,4 +124,18 @@ onMounted(() => {
     selectedQuestionIndex.value = 0;
   }
 });
+
+// Auto-reload analytics data when it's been invalidated
+watch(
+  [
+    () => analyticsStore.analyticsDataNeedsReload,
+    () => analyticsStore.selectedSurvey,
+    () => analyticsStore.isLoadingAnalyticsData,
+  ],
+  ([needsReload, selectedSurvey, isLoading]) => {
+    if (needsReload && selectedSurvey && !isLoading) {
+      analyticsStore.loadAnalyticsData(selectedSurvey.id);
+    }
+  }
+);
 </script>
