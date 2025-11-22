@@ -29,6 +29,40 @@
       </Card>
     </div>
 
+    <div
+      v-else-if="
+        analyticsStore.isLoadingAnalyticsData && !analyticsStore.analyticsData
+      "
+      class="h-full"
+    >
+      <Card class="h-full">
+        <template #title>
+          <div class="flex justify-between items-center w-full">
+            <span class="text-screen-title">
+              {{ $t('apps.apps.analytics_aggregated.title') }}
+            </span>
+          </div>
+        </template>
+
+        <template #subtitle>
+          <span class="text-oneliner-light">
+            {{ $t('apps.apps.analytics_aggregated.description') }}
+          </span>
+        </template>
+
+        <template #content>
+          <div
+            class="flex flex-col items-center justify-center gap-4 p-8 text-center h-full"
+          >
+            <ProgressSpinner />
+            <p class="text-oneliner-light text-surface-500">
+              {{ $t('analytics_aggregated.loading_data') }}
+            </p>
+          </div>
+        </template>
+      </Card>
+    </div>
+
     <div v-else-if="!analyticsStore.analyticsData" class="h-full">
       <Card class="h-full">
         <template #title>
@@ -77,7 +111,16 @@
 
         <!-- Main Content Area -->
         <div class="flex-1 min-w-0 h-full overflow-y-auto">
-          <div v-if="selectedQuestion" class="flex flex-col gap-4">
+          <div
+            v-if="analyticsStore.isLoadingAnalyticsData"
+            class="flex flex-col items-center justify-center gap-4 p-8 text-center h-full"
+          >
+            <ProgressSpinner />
+            <p class="text-oneliner-light text-surface-500">
+              {{ $t('analytics_aggregated.loading_data') }}
+            </p>
+          </div>
+          <div v-else-if="selectedQuestion" class="flex flex-col gap-4">
             <question-results-card :question-data="selectedQuestion" />
           </div>
           <div
@@ -96,7 +139,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onActivated, onMounted, ref, watch } from 'vue';
 
 import { useAnalyticsStore } from '@/stores/analytics';
 import AnalyticsFilterCard from '@/views/analyticsaggregated/components/AnalyticsFilterCard.vue';
@@ -118,24 +161,43 @@ const onQuestionSelected = (index: number) => {
   selectedQuestionIndex.value = index;
 };
 
-// Auto-select first question when data loads
+// Check if analytics data needs reloading when component is mounted or activated
+const checkAndReloadAnalytics = () => {
+  if (
+    analyticsStore.analyticsDataNeedsReload &&
+    analyticsStore.selectedSurvey &&
+    !analyticsStore.isLoadingAnalyticsData
+  ) {
+    analyticsStore.loadAnalyticsData(analyticsStore.selectedSurvey.id);
+  }
+};
+
+// Auto-select first question when questions become available
+watch(
+  () => analyticsStore.questions,
+  (questions) => {
+    if (
+      questions &&
+      questions.length > 0 &&
+      selectedQuestionIndex.value === null &&
+      !analyticsStore.isLoadingAnalyticsData
+    ) {
+      selectedQuestionIndex.value = 0;
+    }
+  }
+);
+
+// Auto-select first question when component mounts
 onMounted(() => {
   if (analyticsStore.questions && analyticsStore.questions.length > 0) {
     selectedQuestionIndex.value = 0;
   }
+  // Check if we need to reload analytics data when mounting
+  checkAndReloadAnalytics();
 });
 
-// Auto-reload analytics data when it's been invalidated
-watch(
-  [
-    () => analyticsStore.analyticsDataNeedsReload,
-    () => analyticsStore.selectedSurvey,
-    () => analyticsStore.isLoadingAnalyticsData,
-  ],
-  ([needsReload, selectedSurvey, isLoading]) => {
-    if (needsReload && selectedSurvey && !isLoading) {
-      analyticsStore.loadAnalyticsData(selectedSurvey.id);
-    }
-  }
-);
+// Also check when component is activated (for keep-alive scenarios)
+onActivated(() => {
+  checkAndReloadAnalytics();
+});
 </script>

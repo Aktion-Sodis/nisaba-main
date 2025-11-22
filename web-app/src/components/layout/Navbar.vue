@@ -426,15 +426,6 @@ const actionMenuItems = ref<MenuItem[]>([
   {
     items: [
       {
-        id: 'user-profile',
-        label: t('utils.profile'),
-        icon: 'pi pi-user',
-        color: '',
-        command: () => {
-          router.push('/user');
-        },
-      },
-      {
         label: t('utils.settings'),
         icon: 'pi pi-cog',
         color: '',
@@ -442,7 +433,6 @@ const actionMenuItems = ref<MenuItem[]>([
           emit('show-configurator');
         },
       },
-
       {
         label: t('utils.sign_out'),
         icon: 'pi pi-sign-out',
@@ -620,19 +610,6 @@ const breadcrumbMenuItems = computed(() => {
           active: isActive('analytics/executed-survey-overview'),
           disabled: !analyticsStore.selectedSurvey,
           command: () => router.push('/analytics/executed-survey-overview'),
-          minRole: UserGroup.ANALYTICS,
-        },
-        {
-          id: 'analytics-survey-details',
-          label: t('apps.apps.analytics_survey_details.title'),
-          icon: 'description',
-          iconType: 'material',
-          color: getColor('analytics/survey-details'),
-          active: isActive('analytics/survey-details'),
-          disabled:
-            !analyticsStore.selectedSurvey ||
-            !analyticsStore.selectedExecutedSurvey,
-          command: () => router.push('/analytics/survey-details'),
           minRole: UserGroup.ANALYTICS,
         },
       ],

@@ -96,27 +96,24 @@
             </Column>
 
             <!-- Checkbox Column -->
-            <Column
-              :header="
-                $t(
-                  'analytics_executed_survey_overview.columns.included_in_analytics'
-                )
-              "
-              :exportable="false"
-              style="min-width: 12rem"
-              header-style="text-align: right"
-            >
+            <Column :exportable="false" style="min-width: 12rem">
+              <template #header>
+                <div class="flex justify-end w-full">
+                  {{
+                    $t(
+                      'analytics_executed_survey_overview.columns.included_in_analytics'
+                    )
+                  }}
+                </div>
+              </template>
               <template #body="slotProps">
                 <div class="flex justify-end">
                   <Checkbox
                     :model-value="slotProps.data.useForAnalytics ?? true"
                     :binary="true"
-                    @change="
-                      (event: any) =>
-                        handleCheckboxChange(
-                          slotProps.data.id,
-                          event.checked ?? false
-                        )
+                    @update:model-value="
+                      (value: boolean) =>
+                        handleCheckboxChange(slotProps.data.id, value)
                     "
                     @click.stop
                   />
@@ -127,22 +124,24 @@
         </template>
       </Card>
     </div>
+
+    <!-- Executed Survey Details Modal -->
+    <executed-survey-details-modal />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useToast } from 'primevue/usetoast';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
 
 import { ExecutedSurvey } from '@/API';
 import { useAnalyticsStore } from '@/stores/analytics';
 import { useDateFormat } from '@/utils/dateFormat';
 import { formatMLString } from '@/utils/formatStrings';
 import AnalyticsFilterCard from '@/views/analyticsaggregated/components/AnalyticsFilterCard.vue';
+import ExecutedSurveyDetailsModal from '@/views/analyticsexecutedsurveyoverview/components/ExecutedSurveyDetailsModal.vue';
 
 const { locale, t } = useI18n();
-const router = useRouter();
 const analyticsStore = useAnalyticsStore();
 const toast = useToast();
 const { formatDate } = useDateFormat();
@@ -206,7 +205,6 @@ const handleCheckboxChange = async (surveyId: string, value: boolean) => {
 const onRowClick = (event: any) => {
   if (event.data) {
     analyticsStore.selectExecutedSurvey(event.data.id);
-    router.push('/analytics/survey-details');
   }
 };
 </script>

@@ -4,6 +4,7 @@
   "coming_soon": "This view is coming soon. It will display aggregated analytics data for the selected survey.",
   "no_survey_selected": "Please select a survey from the analytics overview to view aggregated data.",
   "no_data_available": "No aggregated data is available for the selected survey.",
+  "loading_data": "Loading aggregated analytics data...",
   "select_question": "Select a question from the navigation to view its results.",
   "unsupported_question_type": "Question type '{type}' is not supported in this view.",
   "navigation": {

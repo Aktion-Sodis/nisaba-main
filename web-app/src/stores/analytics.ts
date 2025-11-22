@@ -153,6 +153,9 @@ export const useAnalyticsStore = defineStore('analytics', () => {
   // Flag to track if analytics data needs reload after invalidation
   const analyticsDataNeedsReload = ref(false);
 
+  // Flag to track if executed survey counts have been loaded (for caching)
+  const executedCountsLoaded = ref(false);
+
   // Get project config store and auth store
   const projectConfigStore = useProjectConfigStore();
   const authStore = useAuthStore();
@@ -323,7 +326,7 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     ]);
   };
 
-  const selectExecutedSurvey = (executedSurveyId: string) => {
+  const selectExecutedSurvey = (executedSurveyId: string | null) => {
     selectedExecutedSurvey.value = executedSurveyId;
   };
 
@@ -476,7 +479,12 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     }
   };
 
-  const loadExecutedSurveyCounts = async () => {
+  const loadExecutedSurveyCounts = async (forceReload = false) => {
+    // Skip loading if already loaded and not forcing reload
+    if (executedCountsLoaded.value && !forceReload) {
+      return;
+    }
+
     isLoadingExecutedCounts.value = true;
     errorExecutedCounts.value = null;
 
@@ -521,6 +529,7 @@ export const useAnalyticsStore = defineStore('analytics', () => {
       }
 
       surveyExecutedCounts.value = counts;
+      executedCountsLoaded.value = true;
     } catch (error) {
       console.error('Error loading executed survey counts:', error);
       errorExecutedCounts.value =
@@ -528,6 +537,7 @@ export const useAnalyticsStore = defineStore('analytics', () => {
           ? error.message
           : 'Failed to load executed survey counts';
       surveyExecutedCounts.value = new Map();
+      // Don't set executedCountsLoaded to true on error, so we can retry
     } finally {
       isLoadingExecutedCounts.value = false;
     }
@@ -554,15 +564,16 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     analyticsData.value = null;
     surveyExecutedCounts.value = new Map();
     executedSurveysData.value = []; // Clear executed surveys data
+    executedCountsLoaded.value = false; // Reset cache flag
     clearFilters();
     errorAnalyticsData.value = null;
     errorExecutedCounts.value = null;
     errorExecutedSurveys.value = null; // Clear executed surveys error
   };
 
-  // Initialize store by loading executed survey counts
-  const initialize = async () => {
-    await loadExecutedSurveyCounts();
+  // Initialize store by loading executed survey counts (only if not already loaded)
+  const initialize = async (forceReload = false) => {
+    await loadExecutedSurveyCounts(forceReload);
   };
 
   // Toggle useForAnalytics for an executed survey
@@ -675,6 +686,7 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     initialize,
     loadExecutedSurveys,
     loadAnalyticsData,
+    loadExecutedSurveyCounts,
     toggleExecutedSurveyAnalytics,
   };
 });

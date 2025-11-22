@@ -8,7 +8,6 @@ import { useAuthStore, AuthenticationState } from '@/stores/auth';
 import { UserGroup, hasRights } from '@/types/UserGroup';
 import AnalyticsAggregated from '@/views/analyticsaggregated/AnalyticsAggregated.vue';
 import AnalyticsExecutedSurveyOverview from '@/views/analyticsexecutedsurveyoverview/AnalyticsExecutedSurveyOverview.vue';
-import AnalyticsExecutedSurveyDetails from '@/views/analyticssurveydetails/AnalyticsExecutedSurveyDetails.vue';
 import AnalyticsSurveyOverview from '@/views/analyticssurveyoverview/AnalyticsSurveyOverview.vue';
 import Index from '@/views/index/Index.vue';
 import Interventions from '@/views/interventions/interventions.vue';
@@ -125,17 +124,6 @@ const routes = [
     meta: {
       layout: 'DefaultLayout',
       i18n_title: 'apps.apps.analytics_executed_survey_overview.title',
-      requiresAuth: true,
-      minRole: UserGroup.ANALYTICS,
-    },
-  },
-  {
-    path: '/analytics/survey-details',
-    name: 'Analytics Executed Survey Details',
-    component: AnalyticsExecutedSurveyDetails,
-    meta: {
-      layout: 'DefaultLayout',
-      i18n_title: 'apps.apps.analytics_survey_details.title',
       requiresAuth: true,
       minRole: UserGroup.ANALYTICS,
     },
