@@ -156,6 +156,7 @@ query listExecutedSurveys($surveyID: ID!) {
         longitude
       }
       date
+      useForAnalytics
       whoExecutedIt {
         firstName
         lastName
@@ -210,6 +211,7 @@ query listExecutedSurveys($surveyID: ID!, $nextToken: String!) {
         longitude
       }
       date
+      useForAnalytics
       whoExecutedIt {
         firstName
         lastName

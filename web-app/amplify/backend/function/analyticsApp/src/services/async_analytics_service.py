@@ -74,7 +74,15 @@ class AsyncAnalyticsService:
             elapsed = int(time.time() - start_time)
             print(f"[service] executed_surveys page | t={elapsed}s | added={len(items)} | total={len(to_return_executed_surveys)} | hasNext={bool(next_token)}")
 
-        return to_return_executed_surveys
+        # Filter by useForAnalytics: include if null (backwards compatibility) or true, exclude if false
+        filtered_surveys = [
+            survey for survey in to_return_executed_surveys
+            if survey.get("useForAnalytics") is None or survey.get("useForAnalytics") is True
+        ]
+        elapsed = int(time.time() - start_time)
+        print(f"[service] filtered by useForAnalytics | t={elapsed}s | original={len(to_return_executed_surveys)} | filtered={len(filtered_surveys)}")
+        
+        return filtered_surveys
     
     def get_executed_survey_count_by_survey_id(self, survey_id):
         """Synchronous method for backward compatibility"""
