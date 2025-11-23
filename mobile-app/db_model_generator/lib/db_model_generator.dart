@@ -46,6 +46,25 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
     return subtype;
   }
 
+  bool _getIncludeIdFlag(ClassElement classElement) {
+    var annotation = _getDBModelAnnotation(classElement);
+
+    if (annotation == null) {
+      throw Exception(
+          "Method _getIncludeIdFlag should be applied to a class with annotation DBModelAnnotation. Class: ${classElement.name}");
+    }
+
+    var constantValue = annotation.computeConstantValue()!;
+    var includeIdField = constantValue.getField("includeId");
+    
+    // If includeId field exists, use its value; otherwise default to true for backward compatibility
+    if (includeIdField != null) {
+      return includeIdField.toBoolValue() ?? true;
+    }
+    
+    return true;
+  }
+
   ElementAnnotation? _getDBModelAnnotation(ClassElement classElement) {
     final metadataList = classElement.metadata.annotations;
     if (metadataList.isEmpty) {
@@ -142,7 +161,7 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
     var fields = classElement.fields;
     Map<String, dynamic> map = {};
     fields
-        .map((e) => _translateFieldElement(e))
+        .map((e) => _translateFieldElement(e, classElement))
         .where((element) => element != null)
         .forEach((element) {
       map[element!.key] = element.value;
@@ -150,7 +169,16 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
 
     var classType = _getClassType(classElement);
     if (classType == _ClassType.TYPE) {
-      map["id"] = null;
+      // TYPE classes always include id (if not already added as a field)
+      if (!map.containsKey("id")) {
+        map["id"] = null;
+      }
+    } else if (classType == _ClassType.SUBTYPE) {
+      // SUBTYPE classes include id only if includeId flag is true and not already added as a field
+      bool includeId = _getIncludeIdFlag(classElement);
+      if (includeId && !map.containsKey("id")) {
+        map["id"] = null;
+      }
     }
 
     return map;
@@ -175,10 +203,21 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
     }
   }
 
-  MapEntry<String, dynamic>? _translateFieldElement(FieldElement value) {
+  MapEntry<String, dynamic>? _translateFieldElement(FieldElement value, ClassElement? containingClass) {
     var annotation = _getAnnotation(value, "DBModelIgnore");
     if (annotation != null) {
       return null;
+    }
+
+    // Skip id field if includeId is false for SUBTYPE classes
+    if (containingClass != null && _getName(value) == "id") {
+      var classType = _getClassType(containingClass);
+      if (classType == _ClassType.SUBTYPE) {
+        bool includeId = _getIncludeIdFlag(containingClass);
+        if (!includeId) {
+          return null;
+        }
+      }
     }
 
     // Enum value

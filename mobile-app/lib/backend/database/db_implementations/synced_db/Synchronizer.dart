@@ -203,9 +203,10 @@ class Synchronizer {
         // TODO: consistency check
       } on NoConnectionException {
         downstreamSyncStatus = SyncStatus.WAITING;
-      } catch (e) {
+      } catch (e, trace) {
         print('Error in DB Downstream Sync:');
         print(e);
+        print(trace);
         downstreamSyncStatus = SyncStatus.UP_TO_DATE;
         rethrow;
       }

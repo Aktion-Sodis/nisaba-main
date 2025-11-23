@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
@@ -7,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'AppliedCustomData.g.dart';
 part 'AppliedCustomData.db_model.dart';
 
-@DBModelAnnotation(true)
+@DBModelAnnotation(true, false)
 @JsonSerializable()
 class AppliedCustomData extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -17,11 +18,17 @@ class AppliedCustomData extends DBModel {
   @override
   Map<String, dynamic> toJson() => _$AppliedCustomDataToJson(this);
 
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String id = UUID.getUUID();
+
   late String customDataID;
   late CustomDataType type;
   late I18nString name;
   int? intValue;
   String? stringValue;
+  
+  @JsonKey(includeFromJson: false, includeToJson: false)
   String get displayName => name.text;
 
   set displayName(String name) => this.name.text = name;

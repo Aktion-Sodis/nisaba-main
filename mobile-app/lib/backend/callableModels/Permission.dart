@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
@@ -7,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'Permission.g.dart';
 part 'Permission.db_model.dart';
 
-@DBModelAnnotation(true)
+@DBModelAnnotation(true, false)
 @JsonSerializable()
 class Permission extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -16,6 +17,10 @@ class Permission extends DBModel {
 
   @override
   Map<String, dynamic> toJson() => _$PermissionToJson(this);
+
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String id = UUID.getUUID();
 
   late PermissionType permissionType;
   late List<String> allowedEntities;

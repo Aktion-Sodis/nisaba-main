@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
@@ -7,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'ColorTheme.g.dart';
 part 'ColorTheme.db_model.dart';
 
-@DBModelAnnotation(true)
+@DBModelAnnotation(true, false)
 @JsonSerializable()
 class ColorTheme extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -16,6 +17,10 @@ class ColorTheme extends DBModel {
 
   @override
   Map<String, dynamic> toJson() => _$ColorThemeToJson(this);
+
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String id = UUID.getUUID();
 
   String? highlight;
   String? secondaryHighlight;

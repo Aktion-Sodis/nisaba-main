@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/database/DBModel.dart';
 import 'package:mobile_app/models/ModelProvider.dart' as amp;
@@ -6,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'Marking.g.dart';
 part 'Marking.db_model.dart';
 
-@DBModelAnnotation(true)
+@DBModelAnnotation(true, false)
 @JsonSerializable()
 class Marking extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -15,6 +16,10 @@ class Marking extends DBModel {
 
   @override
   Map<String, dynamic> toJson() => _$MarkingToJson(this);
+
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String id = UUID.getUUID();
 
   late double x;
   late double y;

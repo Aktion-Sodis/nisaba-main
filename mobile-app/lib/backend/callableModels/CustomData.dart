@@ -1,3 +1,4 @@
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:db_model_generator/db_model_annotations.dart';
 import 'package:mobile_app/backend/callableModels/AppliedCustomData.dart';
 import 'package:mobile_app/backend/callableModels/I18nString.dart';
@@ -22,6 +23,7 @@ class CustomData extends DBModel {
   late I18nString name;
   late CustomDataType type;
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   String get displayName => name.text;
 
   set displayName(String name) => this.name.text = name;

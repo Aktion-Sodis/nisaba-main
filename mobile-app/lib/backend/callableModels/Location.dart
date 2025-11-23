@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'Location.g.dart';
 part 'Location.db_model.dart';
 
-@DBModelAnnotation(true)
+@DBModelAnnotation(true, false)
 @JsonSerializable()
 class Location extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -18,7 +18,6 @@ class Location extends DBModel {
   @override
   Map<String, dynamic> toJson() => _$LocationToJson(this);
 
-  @DBModelIgnore()
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   String id = '';

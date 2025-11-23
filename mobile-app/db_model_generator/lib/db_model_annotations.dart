@@ -2,7 +2,8 @@
 /// corresponding DBModel.queryFields() method.
 class DBModelAnnotation {
   final bool subtype;
-  const DBModelAnnotation([this.subtype = false]);
+  final bool includeId;
+  const DBModelAnnotation([this.subtype = false, this.includeId = true]);
 }
 
 /// Annotation to mark a field as ignored by the DBModelGenerator.

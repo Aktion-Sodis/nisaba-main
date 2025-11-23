@@ -9,7 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'I18nString.g.dart';
 part 'I18nString.db_model.dart';
 
-@DBModelAnnotation(true)
+@DBModelAnnotation(true, false)
 @JsonSerializable()
 class I18nString extends DBModel {
   // JsonSerializable factory and toJson methods
@@ -23,7 +23,6 @@ class I18nString extends DBModel {
   late List<String> languageTexts;
 
   @override
-  @DBModelIgnore()
   @JsonKey(includeFromJson: false, includeToJson: false)
   String id = "";
 
