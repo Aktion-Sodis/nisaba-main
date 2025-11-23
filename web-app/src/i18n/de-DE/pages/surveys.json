@@ -28,6 +28,29 @@
         "edit": "Bearbeiten",
         "delete": "Löschen",
         "archive": "Archivieren",
-        "viewResults": "Ergebnisse anzeigen"
+        "viewResults": "Ergebnisse anzeigen",
+        "reactivate": "Reaktivieren"
+      },
+      "toasts": {
+        "deleteSuccess": {
+          "summary": "Umfrage gelöscht",
+          "detail": "Die Umfrage wurde erfolgreich aus dem System gelöscht."
+        },
+        "deleteError": {
+          "summary": "Löschen fehlgeschlagen",
+          "detail": "Beim Versuch, die Umfrage zu löschen, ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
+        },
+        "deleteNotAllowed": {
+          "summary": "Umfrage kann nicht gelöscht werden",
+          "detail": "Nur Umfragen im Entwurfsstatus können gelöscht werden. Bitte archivieren Sie die Umfrage stattdessen."
+        }
+      },
+      "confirm": {
+        "delete": {
+          "title": "Umfrage löschen",
+          "message": "Sind Sie sicher, dass Sie diese Umfrage löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+          "accept": "Ja, Umfrage löschen",
+          "reject": "Nein, Umfrage behalten"
+        }
       }
 }

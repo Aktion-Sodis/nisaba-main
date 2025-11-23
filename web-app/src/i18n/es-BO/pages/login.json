@@ -1,5 +1,42 @@
 {
-    "form": {
-        "username": "Correo electrónico o número de teléfono"
+    "login_form": {
+        "username": "Correo electrónico o número de teléfono",
+        "password": "Contraseña",
+        "login_button": "Iniciar sesión",
+        "forgot_password": "¿Olvidaste tu contraseña?",
+        "validation": {
+            "username_required": "El correo electrónico o teléfono es requerido",
+            "username_invalid": "Por favor ingrese un correo electrónico o número de teléfono válido",
+            "password_required": "La contraseña es requerida"
+        }
+    },
+    "password_reset": {
+        "title": "Establecer nueva contraseña",
+        "description": "La contraseña debe tener al menos 6 caracteres y contener letras minúsculas, mayúsculas y números.",
+        "new_password": "Nueva Contraseña",
+        "new_password_validation": "Nueva Contraseña (Validación)",
+        "validation": {
+            "password_required": "La contraseña es requerida",
+            "password_length": "La contraseña debe tener al menos 6 caracteres",
+            "password_complexity": "La contraseña debe contener al menos una letra minúscula, una mayúscula, un número y un carácter especial",
+            "passwords_mismatch": "Las contraseñas no coinciden"
+        }
+    },
+    "profile_setup": {
+        "title": "Configurar su perfil",
+        "first_name": "Nombre",
+        "surname": "Apellido",
+        "validation": {
+            "first_name_required": "El nombre es requerido",
+            "surname_required": "El apellido es requerido"
+        }
+    },
+    "buttons": {
+        "set_password": "Establecer Contraseña",
+        "save_profile": "Guardar Perfil"
+    },
+    "errors": {
+        "login_failed": "Error al iniciar sesión",
+        "load_user_data_failed": "Error al cargar los datos del usuario. Por favor intente nuevamente."
     }
-} 
+}

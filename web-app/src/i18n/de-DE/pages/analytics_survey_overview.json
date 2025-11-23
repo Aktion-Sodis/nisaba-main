@@ -1,0 +1,25 @@
+{
+  "title": "Umfrageanalyse-Übersicht",
+  "subtitle": "Umfragedaten und Ausführungsstatistiken anzeigen und analysieren",
+  "noSurveysFound": "Keine Umfragen gefunden",
+  "loadingSurveys": "Lade Umfragen...",
+  "withActiveFilter": " (mit aktivem Filter)",
+  "createdAt": "Erstellt am",
+  "executedCount": "Ausführungsanzahl",
+  "filters": {
+    "search": "Umfragen suchen...",
+    "reset": "Filter zurücksetzen",
+    "filterByName": "Nach Name filtern",
+    "filterByDescription": "Nach Beschreibung filtern",
+    "selectDate": "Datum auswählen",
+    "selectStatus": "Status auswählen"
+  },
+  "columns": {
+    "name": "Name",
+    "description": "Beschreibung",
+    "createdAt": "Erstellt am",
+    "status": "Status",
+    "executedCount": "Ausführungsanzahl"
+  }
+}
+

@@ -1,8 +1,8 @@
 {
   "title": {
-    "view": "Intervention",
-    "create": "Create New Intervention",
-    "edit": "Edit Intervention"
+    "view": "Activity",
+    "create": "Create New Activity",
+    "edit": "Edit Activity"
   },
   "labels": {
     "languages": "Languages",
@@ -13,8 +13,8 @@
     "levels": "Levels"
   },
   "placeholders": {
-    "name": "Enter intervention name",
-    "description": "Enter intervention description"
+    "name": "Enter activity name",
+    "description": "Enter activity description"
   },
   "buttons": {
     "removeImage": "Remove Image",
@@ -35,28 +35,28 @@
   },
   "toast": {
     "intervention_not_found": {
-      "title": "Intervention Not Found",
-      "detail": "The requested intervention could not be found"
+      "title": "Activity Not Found",
+      "detail": "The requested activity could not be found"
     },
     "new_intervention_not_created": {
       "title": "Creation Failed",
-      "detail": "Failed to create new intervention. Please try again."
+      "detail": "Failed to create new activity. Please try again."
     },
     "intervention_update_failed": {
       "title": "Update Failed",
-      "detail": "Failed to update intervention. Please try again."
+      "detail": "Failed to update activity. Please try again."
     },
     "intervention_create_failed": {
       "title": "Creation Failed",
-      "detail": "Failed to create intervention. Please try again."
+      "detail": "Failed to create activity. Please try again."
     },
     "intervention_create_success": {
-      "title": "Intervention Created",
-      "detail": "The intervention has been successfully created."
+      "title": "Activity Created",
+      "detail": "The activity has been successfully created."
     },
     "intervention_update_success": {
-      "title": "Intervention Updated",
-      "detail": "The intervention has been successfully updated."
+      "title": "Activity Updated",
+      "detail": "The activity has been successfully updated."
     },
     "level_connections_failed": {
       "title": "Level Connection Failed",
@@ -69,10 +69,10 @@
   },
   "validation": {
     "error_summary": "Saving Failed",
-    "no_intervention_data": "No intervention data available",
+    "no_intervention_data": "No activity data available",
     "title_required": "Title is required",
     "title_all_languages_required": "Title is required for all selected languages: {languages}",
-    "type_required": "Intervention type is required"
+    "type_required": "Activity type is required"
   },
   "confirm": {
     "unsaved_changes": {

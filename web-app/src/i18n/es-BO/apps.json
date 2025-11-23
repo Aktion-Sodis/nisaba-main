@@ -1,6 +1,12 @@
 {
     "categories": {
-        "admin": "Aplicaciones de Administración"
+        "admin": "Aplicaciones de Administración",
+        "analytics": "Análisis",
+        "settings": "Gestión"
+    },
+    "groups": {
+        "surveys": "Encuestas",
+        "analytics": "Análisis"
     },
     "apps": {
         "login": {
@@ -12,12 +18,44 @@
             "description": "Gestionar la estructura del proyecto"
         },
         "interventions": {
-            "title": "Intervenciones",
-            "description": "Gestionar las intervenciones"
+            "title": "Actividades",
+            "description": "Gestionar las actividades"
         },
-        "umfragen": {
-            "title": "Encuestas",
+        "surveys": {
+            "title": "Resumen de Encuestas",
             "description": "Gestionar las encuestas"
+        },
+        "surveyeditor": {
+            "title": "Editor de Encuestas",
+            "description": "Editar la encuesta"
+        },
+        "users": {
+            "title": "Usuarios",
+            "description": "Agregar y gestionar usuarios"
+        },
+        "passwordreset": {
+            "title": "Restablecer Contraseña",
+            "description": "Restablecer la contraseña"
+        },
+        "analytics": {
+            "title": "Análisis",
+            "description": "Ver y analizar datos de encuestas"
+        },
+        "analytics_survey_overview": {
+            "title": "Resumen de Encuestas",
+            "description": "Ver estadísticas de ejecución de encuestas"
+        },
+        "analytics_aggregated": {
+            "title": "Análisis Agregados",
+            "description": "Ver análisis agregados de encuestas"
+        },
+        "analytics_executed_survey_overview": {
+            "title": "Encuestas Ejecutadas",
+            "description": "Ver detalles de encuestas ejecutadas"
+        },
+        "analytics_survey_details": {
+            "title": "Detalles de la Encuesta",
+            "description": "Ver análisis detallados de encuestas"
         }
     }
-} 
+}

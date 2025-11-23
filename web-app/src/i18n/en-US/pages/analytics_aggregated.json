@@ -150,20 +150,20 @@
   "table": {
     "entity": "Entity",
     "date": "Date",
-    "executor": "Executor",
+    "executor": "Data Collector",
     "text_response": "Text Response",
     "audio_file": "Audio File",
     "image_file": "Image File",
     "date_response": "Date Response",
     "no_entity": "No entity",
     "no_date": "No date",
-    "no_executor": "No executor",
+    "no_executor": "No data collector",
     "no_response": "No response"
   },
   "filters": {
     "title": "Filters",
     "select_entities": "Select Entities",
-    "select_executors": "Select Executors",
+    "select_executors": "Select Data Collectors",
     "select_date_range": "Select Date Range",
     "apply": "Apply",
     "clear": "Clear"

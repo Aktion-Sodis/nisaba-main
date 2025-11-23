@@ -1,0 +1,172 @@
+{
+  "title": "Análisis Agregados",
+  "subtitle": "Ver análisis y estadísticas agregadas de encuestas",
+  "coming_soon": "Esta vista estará disponible pronto. Mostrará datos de análisis agregados para la encuesta seleccionada.",
+  "no_survey_selected": "Por favor seleccione una encuesta del resumen de análisis para ver datos agregados.",
+  "no_data_available": "No hay datos agregados disponibles para la encuesta seleccionada.",
+  "loading_data": "Cargando datos de análisis agregados...",
+  "select_question": "Seleccione una pregunta de la navegación para ver sus resultados.",
+  "unsupported_question_type": "El tipo de pregunta '{type}' no es compatible con esta vista.",
+  "navigation": {
+    "title": "Preguntas",
+    "question_title": "Pregunta {index}",
+    "total_answers": "{count} respuestas",
+    "unique_entities": "{count} entidades"
+  },
+  "results": {
+    "title": "Resultados de la Pregunta"
+  },
+  "answer_statistics": {
+    "title": "Estadísticas de Respuestas"
+  },
+  "stats": {
+    "total_answers": "Total de Respuestas",
+    "unique_entities": "Entidades Únicas",
+    "date_range": "Rango de Fechas",
+    "no_date_range": "No hay rango de fechas disponible"
+  },
+  "question_types": {
+    "text": "Texto",
+    "audio": "Audio",
+    "picture": "Imagen",
+    "singlechoice": "Opción Única",
+    "multiplechoice": "Opción Múltiple",
+    "rating": "Calificación",
+    "int": "Entero",
+    "double": "Número",
+    "date": "Fecha"
+  },
+  "text_stats": {
+    "average_length": "Longitud Promedio",
+    "longest_response": "Respuesta Más Larga",
+    "shortest_response": "Respuesta Más Corta",
+    "total_responses": "Total de Respuestas"
+  },
+  "text_responses": {
+    "title": "Respuestas de Texto",
+    "no_data": "No hay respuestas de texto disponibles"
+  },
+  "audio_stats": {
+    "total_files": "Total de Archivos",
+    "total_responses": "Total de Respuestas",
+    "completion_rate": "Tasa de Finalización",
+    "file_types": "Tipos de Archivo"
+  },
+  "audio_responses": {
+    "title": "Respuestas de Audio",
+    "no_data": "No hay respuestas de audio disponibles",
+    "browser_not_supported": "Su navegador no soporta el elemento de audio.",
+    "not_available": "Audio no disponible",
+    "load_error": "Error al cargar el audio",
+    "file_not_found": "No se grabó audio"
+  },
+  "image_stats": {
+    "total_files": "Total de Archivos",
+    "total_responses": "Total de Respuestas",
+    "completion_rate": "Tasa de Finalización",
+    "file_types": "Tipos de Archivo"
+  },
+  "image_responses": {
+    "title": "Respuestas de Imagen",
+    "no_data": "No hay respuestas de imagen disponibles",
+    "image_alt": "Imagen de respuesta de encuesta",
+    "view_full": "Ver Completo",
+    "modal_title": "Respuesta de Imagen",
+    "not_available": "Imagen no disponible",
+    "load_error": "Error al cargar la imagen",
+    "file_not_found": "No se capturó imagen"
+  },
+  "choice_stats": {
+    "total_responses": "Total de Respuestas",
+    "unique_entities": "Entidades Únicas"
+  },
+  "choice_chart": {
+    "title": "Distribución de Respuestas",
+    "pie_chart": "Gráfico Circular",
+    "bar_chart": "Gráfico de Barras",
+    "options": "Opciones",
+    "count": "Cantidad"
+  },
+  "choice_table": {
+    "title": "Conteo de Opciones",
+    "option": "Opción",
+    "count": "Cantidad",
+    "percentage": "Porcentaje"
+  },
+  "choice_responses": {
+    "no_data": "No hay respuestas de opción disponibles"
+  },
+  "rating_stats": {
+    "total_responses": "Total de Respuestas",
+    "average_rating": "Calificación Promedio",
+    "highest_rating": "Calificación Más Alta",
+    "lowest_rating": "Calificación Más Baja"
+  },
+  "rating_chart": {
+    "title": "Distribución de Calificaciones",
+    "bar_chart": "Gráfico de Barras",
+    "histogram": "Histograma",
+    "rating": "Calificación",
+    "count": "Cantidad",
+    "statistics": "Estadísticas"
+  },
+  "rating_table": {
+    "title": "Conteo de Calificaciones",
+    "rating": "Calificación",
+    "count": "Cantidad",
+    "percentage": "Porcentaje"
+  },
+  "rating_responses": {
+    "no_data": "No hay respuestas de calificación disponibles"
+  },
+  "numeric_stats": {
+    "total_responses": "Total de Respuestas",
+    "mean": "Media",
+    "median": "Mediana",
+    "std_deviation": "Desviación Estándar",
+    "min": "Mínimo",
+    "max": "Máximo",
+    "range": "Rango"
+  },
+  "numeric_chart": {
+    "title": "Distribución de Valores",
+    "histogram": "Histograma",
+    "box_plot": "Diagrama de Caja",
+    "value": "Valor",
+    "count": "Cantidad",
+    "statistics": "Estadísticas"
+  },
+  "numeric_responses": {
+    "no_data": "No hay respuestas numéricas disponibles"
+  },
+  "date_stats": {
+    "total_responses": "Total de Respuestas",
+    "unique_entities": "Entidades Únicas"
+  },
+  "date_responses": {
+    "title": "Respuestas de Fecha",
+    "no_data": "No hay respuestas de fecha disponibles"
+  },
+  "table": {
+    "entity": "Entidad",
+    "date": "Fecha",
+    "executor": "Recolector de Datos",
+    "text_response": "Respuesta de Texto",
+    "audio_file": "Archivo de Audio",
+    "image_file": "Archivo de Imagen",
+    "date_response": "Respuesta de Fecha",
+    "no_entity": "Sin entidad",
+    "no_date": "Sin fecha",
+    "no_executor": "Sin recolector de datos",
+    "no_response": "Sin respuesta"
+  },
+  "filters": {
+    "title": "Filtros",
+    "select_entities": "Seleccionar Entidades",
+    "select_executors": "Seleccionar Recolectores de Datos",
+    "select_date_range": "Seleccionar Rango de Fechas",
+    "apply": "Aplicar",
+    "clear": "Limpiar"
+  }
+}
+

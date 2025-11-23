@@ -1,0 +1,86 @@
+{
+  "title": {
+    "view": "Maßnahme",
+    "create": "Neue Maßnahme erstellen",
+    "edit": "Maßnahme bearbeiten"
+  },
+  "labels": {
+    "languages": "Sprachen",
+    "name": "Name",
+    "description": "Beschreibung",
+    "type": "Typ",
+    "image": "Bild",
+    "levels": "Niveaus"
+  },
+  "placeholders": {
+    "name": "Name der Maßnahme eingeben",
+    "description": "Beschreibung der Maßnahme eingeben"
+  },
+  "buttons": {
+    "removeImage": "Bild entfernen",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "update": "Aktualisieren"
+  },
+  "types": {
+    "technology": "Technologie",
+    "education": "Bildung"
+  },
+  "dialog": {
+    "input": {
+      "select_language": {
+        "label": "Sprache auswählen"
+      }
+    }
+  },
+  "toast": {
+    "intervention_not_found": {
+      "title": "Maßnahme nicht gefunden",
+      "detail": "Die angeforderte Maßnahme konnte nicht gefunden werden"
+    },
+    "new_intervention_not_created": {
+      "title": "Erstellung fehlgeschlagen",
+      "detail": "Fehler beim Erstellen einer neuen Maßnahme. Bitte versuchen Sie es erneut."
+    },
+    "intervention_update_failed": {
+      "title": "Aktualisierung fehlgeschlagen",
+      "detail": "Fehler beim Aktualisieren der Maßnahme. Bitte versuchen Sie es erneut."
+    },
+    "intervention_create_failed": {
+      "title": "Erstellung fehlgeschlagen",
+      "detail": "Fehler beim Erstellen der Maßnahme. Bitte versuchen Sie es erneut."
+    },
+    "intervention_create_success": {
+      "title": "Maßnahme erstellt",
+      "detail": "Die Maßnahme wurde erfolgreich erstellt."
+    },
+    "intervention_update_success": {
+      "title": "Maßnahme aktualisiert",
+      "detail": "Die Maßnahme wurde erfolgreich aktualisiert."
+    },
+    "level_connections_failed": {
+      "title": "Niveauverbindung fehlgeschlagen",
+      "detail": "Fehler beim Aktualisieren der Niveauverbindungen. Bitte versuchen Sie es erneut."
+    },
+    "save_operation_failed": {
+      "title": "Speichern fehlgeschlagen",
+      "detail": "Speichervorgang fehlgeschlagen. Bitte versuchen Sie es erneut."
+    }
+  },
+  "validation": {
+    "error_summary": "Speichern fehlgeschlagen",
+    "no_intervention_data": "Keine Maßnahmendaten verfügbar",
+    "title_required": "Titel ist erforderlich",
+    "title_all_languages_required": "Titel ist für alle ausgewählten Sprachen erforderlich: {languages}",
+    "type_required": "Maßnahmentyp ist erforderlich"
+  },
+  "confirm": {
+    "unsaved_changes": {
+      "title": "Nicht gespeicherte Änderungen",
+      "message": "Sie haben nicht gespeicherte Änderungen. Sind Sie sicher, dass Sie schließen möchten, ohne zu speichern?",
+      "accept": "Änderungen verwerfen",
+      "reject": "Weiter bearbeiten"
+    }
+  }
+}
+

@@ -270,6 +270,28 @@ const getInterventionVersion = /* GraphQL */ `
   }
 `;
 
+const getSurveyVersion = /* GraphQL */ `
+  query GetSurveyVersion($id: ID!) {
+    getSurvey(id: $id) {
+      id
+      _version
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+
+const getEntityVersion = /* GraphQL */ `
+  query GetEntityVersion($id: ID!) {
+    getEntity(id: $id) {
+      id
+      _version
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+
 export const useProjectConfigStore = defineStore('projectConfig', () => {
   const toast = useToast();
   const _levels = reactive<Record<string, StoreLevel>>({});
@@ -852,6 +874,46 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     }
   };
 
+  // Helper function to fetch current version of a survey
+  const fetchSurveyVersion = async (
+    surveyId: string
+  ): Promise<{ _version: number; _lastChangedAt: number }> => {
+    try {
+      const result = await amplifyDataClient.graphql({
+        query: getSurveyVersion,
+        variables: { id: surveyId },
+      });
+      const data = (result as GraphQLResult<any>).data;
+      return {
+        _version: data.getSurvey._version,
+        _lastChangedAt: data.getSurvey._lastChangedAt,
+      };
+    } catch (error: unknown) {
+      console.error('Error fetching survey version:', error);
+      throw error;
+    }
+  };
+
+  // Helper function to fetch current version of an entity
+  const fetchEntityVersion = async (
+    entityId: string
+  ): Promise<{ _version: number; _lastChangedAt: number }> => {
+    try {
+      const result = await amplifyDataClient.graphql({
+        query: getEntityVersion,
+        variables: { id: entityId },
+      });
+      const data = (result as GraphQLResult<any>).data;
+      return {
+        _version: data.getEntity._version,
+        _lastChangedAt: data.getEntity._lastChangedAt,
+      };
+    } catch (error: unknown) {
+      console.error('Error fetching entity version:', error);
+      throw error;
+    }
+  };
+
   const isUpdatingLevel = ref(false);
   const updateLevel = async (level: StoreLevel) => {
     try {
@@ -949,8 +1011,20 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
   const updateSurvey = async (survey: Survey) => {
     try {
       isUpdatingSurvey.value = true;
+
+      // Fetch current version to avoid conflicts
+      const currentVersion = await fetchSurveyVersion(survey.id);
+
+      // Update the survey with the current version
+      const surveyWithCurrentVersion = {
+        ...survey,
+        _version: currentVersion._version,
+      };
+
       const filteredInput = Object.fromEntries(
-        Object.entries(survey).filter(([key]) => isUpdateSurveyInputKey(key))
+        Object.entries(surveyWithCurrentVersion).filter(([key]) =>
+          isUpdateSurveyInputKey(key)
+        )
       ) as unknown as UpdateSurveyInput;
 
       // Clean nested objects (remove __typename, etc.)
@@ -1088,9 +1162,20 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     try {
       isUpdatingEntity.value = true;
 
+      // Fetch current version to avoid conflicts
+      const currentVersion = await fetchEntityVersion(entity.id);
+
+      // Update the entity with the current version
+      const entityWithCurrentVersion = {
+        ...entity,
+        _version: currentVersion._version,
+      };
+
       // Filter entity to only include fields allowed in UpdateEntityInput
       const filteredInput = Object.fromEntries(
-        Object.entries(entity).filter(([key]) => isUpdateEntityInputKey(key))
+        Object.entries(entityWithCurrentVersion).filter(([key]) =>
+          isUpdateEntityInputKey(key)
+        )
       ) as unknown as UpdateEntityInput;
 
       // Clean nested objects (remove __typename, etc.)
@@ -1528,6 +1613,8 @@ export const useProjectConfigStore = defineStore('projectConfig', () => {
     setInterventionLevelRelations,
     fetchLevelVersion,
     fetchInterventionVersion,
+    fetchSurveyVersion,
+    fetchEntityVersion,
     deleteSurvey,
     isDeletingSurvey,
     createEntity,

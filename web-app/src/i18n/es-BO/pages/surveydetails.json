@@ -1,0 +1,174 @@
+{
+    "general_card": {
+        "title": "Información General",
+        "input": {
+            "name": {
+                "label": "Nombre",
+                "placeholder": "Ingrese el nombre de la encuesta"
+            },
+            "description": {
+                "label": "Descripción",
+                "placeholder": "Ingrese la descripción de la encuesta"
+            },
+            "select_language": {
+                "label": "Seleccionar Traducciones"
+            },
+            "intervention": {
+                "label": "Actividad"
+            },
+            "image": {
+                "label": "Imagen de la Encuesta"
+            }
+        }
+    },
+    "question_card": {
+        "title": "Pregunta {index}",
+        "general_information": "Información General",
+        "input": {
+            "question": {
+                "label": "Texto de la Pregunta",
+                "placeholder": "Ingrese el texto de la pregunta"
+            },
+            "question_type": {
+                "label": "Tipo de Pregunta",
+                "options": {
+                    "TEXT": "Entrada de Texto",
+                    "SINGLECHOICE": "Opción Única",
+                    "MULTIPLECHOICE": "Opción Múltiple",
+                    "INT": "Entrada de Entero",
+                    "DOUBLE": "Entrada Decimal",
+                    "RATING": "Calificación",
+                    "AUDIO": "Entrada de Audio",
+                    "PICTURE": "Entrada de Imagen",
+                    "PICTUREWITHTAGS": "Imagen con Etiquetas"
+                },
+                "confirm_delete_options": "Cambiar el tipo de pregunta eliminará todas las opciones existentes. ¿Está seguro de que desea continuar?",
+                "confirm_delete_options_title": "Cambiar tipo de pregunta"
+            },
+            "image": {
+                "label": "Imagen de la Pregunta"
+            },
+            "is_follow_up": {
+                "label": "Pregunta de Seguimiento"
+            },
+            "condition_options": {
+                "label": "Opciones Desencadenantes",
+                "placeholder": "Seleccionar opciones de condición"
+            }
+        },
+        "options": {
+            "title": "Opciones de la Pregunta",
+            "option_label": "Opción {number}",
+            "add_button": "Agregar Opción",
+            "option_text": {
+                "hint": "Texto de la opción"
+            }
+        },
+        "no_options_needed_description": "Este tipo de pregunta no requiere opciones adicionales para ser configurado."
+    },
+    "navigation_card": {
+        "title": "Resumen de la Encuesta",
+        "general_section": "Información General",
+        "question_title": "Pregunta {index}"
+    },
+    "navigation_guard": {
+        "title": "Cambios Sin Guardar",
+        "message": "Tiene cambios sin guardar en su encuesta. ¿Está seguro de que desea salir?",
+        "accept": "Sí, salir",
+        "reject": "No, permanecer"
+    },
+    "publish_card": {
+        "draft": {
+            "info": "Esta encuesta está actualmente en modo borrador. Puede publicarla cuando esté listo.",
+            "button": "Publicar Encuesta",
+            "confirm": {
+                "title": "Publicar Encuesta",
+                "message": "¿Está seguro de que desea publicar esta encuesta? Esta acción no se puede deshacer.",
+                "accept": "Sí, publicar encuesta",
+                "reject": "No, mantener como borrador"
+            }
+        },
+        "published": {
+            "info": "Esta encuesta está actualmente publicada y disponible para los usuarios.",
+            "button": "Archivar Encuesta",
+            "confirm": {
+                "title": "Archivar Encuesta",
+                "message": "¿Está seguro de que desea archivar esta encuesta? Ya no estará disponible para los usuarios.",
+                "accept": "Sí, archivar encuesta",
+                "reject": "No, mantener publicada"
+            }
+        },
+        "archived": {
+            "info": "Esta encuesta está actualmente archivada y no disponible para los usuarios.",
+            "button": "Reactivar Encuesta",
+            "confirm": {
+                "title": "Reactivar Encuesta",
+                "message": "¿Está seguro de que desea reactivar esta encuesta? Estará disponible para los usuarios nuevamente.",
+                "accept": "Sí, reactivar encuesta",
+                "reject": "No, mantener archivada"
+            }
+        }
+    },
+    "errors": {
+        "general": {
+            "no_survey_data": "No hay datos de encuesta disponibles",
+            "name_required": "El nombre de la encuesta es requerido en todos los idiomas",
+            "intervention_required": "Se debe seleccionar una actividad",
+            "at_least_one_question_required": "Se debe agregar al menos una pregunta a la encuesta"
+        },
+        "question": {
+            "text_required": "El texto de la pregunta es requerido en todos los idiomas",
+            "option_text_required": "El texto de la opción {number} es requerido en todos los idiomas"
+        }
+    },
+    "toasts": {
+        "save_error": {
+            "title": "No se puede guardar la encuesta",
+            "message": "Por favor revise los campos resaltados para errores. Cada tarjeta muestra sus errores de validación específicos."
+        },
+        "save_success": {
+            "title": "Encuesta guardada",
+            "message": "La encuesta ha sido guardada exitosamente."
+        },
+        "create_success": {
+            "title": "Encuesta creada",
+            "message": "La nueva encuesta ha sido creada exitosamente."
+        },
+        "server_error": {
+            "title": "Error del Servidor",
+            "message": "Ocurrió un error al guardar la encuesta. Por favor intente nuevamente más tarde."
+        },
+        "publish_validation_error": {
+            "title": "No se puede publicar la encuesta",
+            "message": "Por favor revise los campos resaltados para errores. Cada tarjeta muestra sus errores de validación específicos."
+        },
+        "publish_success": {
+            "title": "Encuesta publicada",
+            "message": "La encuesta ha sido publicada exitosamente y ahora está disponible para los usuarios."
+        },
+        "publish_server_error": {
+            "title": "Error del Servidor",
+            "message": "Ocurrió un error al publicar la encuesta. Por favor intente nuevamente más tarde."
+        },
+        "archive_success": {
+            "title": "Encuesta archivada",
+            "message": "La encuesta ha sido archivada exitosamente y ya no está disponible para los usuarios."
+        },
+        "archive_server_error": {
+            "title": "Error del Servidor",
+            "message": "Ocurrió un error al archivar la encuesta. Por favor intente nuevamente más tarde."
+        },
+        "reactivate_success": {
+            "title": "Encuesta reactivada",
+            "message": "La encuesta ha sido reactivada exitosamente y ahora está disponible para los usuarios nuevamente."
+        },
+        "reactivate_server_error": {
+            "title": "Error del Servidor",
+            "message": "Ocurrió un error al reactivar la encuesta. Por favor intente nuevamente más tarde."
+        }
+    },
+    "add_question_card": {
+        "button": "Agregar Pregunta"
+    }
+}
+

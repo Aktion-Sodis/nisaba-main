@@ -1,0 +1,174 @@
+{
+    "general_card": {
+        "title": "Allgemeine Informationen",
+        "input": {
+            "name": {
+                "label": "Name",
+                "placeholder": "Geben Sie den Namen der Umfrage ein"
+            },
+            "description": {
+                "label": "Beschreibung",
+                "placeholder": "Geben Sie die Beschreibung der Umfrage ein"
+            },
+            "select_language": {
+                "label": "Übersetzungen auswählen"
+            },
+            "intervention": {
+                "label": "Maßnahme"
+            },
+            "image": {
+                "label": "Umfragebild"
+            }
+        }
+    },
+    "question_card": {
+        "title": "Frage {index}",
+        "general_information": "Allgemeine Informationen",
+        "input": {
+            "question": {
+                "label": "Fragetext",
+                "placeholder": "Geben Sie den Fragetext ein"
+            },
+            "question_type": {
+                "label": "Fragetyp",
+                "options": {
+                    "TEXT": "Texteingabe",
+                    "SINGLECHOICE": "Einzelauswahl",
+                    "MULTIPLECHOICE": "Mehrfachauswahl",
+                    "INT": "Ganzzahleingabe",
+                    "DOUBLE": "Dezimaleingabe",
+                    "RATING": "Bewertung",
+                    "AUDIO": "Audioeingabe",
+                    "PICTURE": "Bildeingabe",
+                    "PICTUREWITHTAGS": "Bild mit Tags"
+                },
+                "confirm_delete_options": "Das Ändern des Fragetyps löscht alle vorhandenen Optionen. Sind Sie sicher, dass Sie fortfahren möchten?",
+                "confirm_delete_options_title": "Fragetyp ändern"
+            },
+            "image": {
+                "label": "Fragebild"
+            },
+            "is_follow_up": {
+                "label": "Nachfrage"
+            },
+            "condition_options": {
+                "label": "Auslöseroptionen",
+                "placeholder": "Bedingungsoptionen auswählen"
+            }
+        },
+        "options": {
+            "title": "Frageoptionen",
+            "option_label": "Option {number}",
+            "add_button": "Option hinzufügen",
+            "option_text": {
+                "hint": "Optionstext"
+            }
+        },
+        "no_options_needed_description": "Dieser Fragetyp erfordert keine zusätzlichen Optionen, die konfiguriert werden müssen."
+    },
+    "navigation_card": {
+        "title": "Umfrageübersicht",
+        "general_section": "Allgemeine Informationen",
+        "question_title": "Frage {index}"
+    },
+    "navigation_guard": {
+        "title": "Nicht gespeicherte Änderungen",
+        "message": "Sie haben nicht gespeicherte Änderungen in Ihrer Umfrage. Sind Sie sicher, dass Sie verlassen möchten?",
+        "accept": "Ja, verlassen",
+        "reject": "Nein, bleiben"
+    },
+    "publish_card": {
+        "draft": {
+            "info": "Diese Umfrage befindet sich derzeit im Entwurfsmodus. Sie können sie veröffentlichen, wenn Sie bereit sind.",
+            "button": "Umfrage veröffentlichen",
+            "confirm": {
+                "title": "Umfrage veröffentlichen",
+                "message": "Sind Sie sicher, dass Sie diese Umfrage veröffentlichen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+                "accept": "Ja, Umfrage veröffentlichen",
+                "reject": "Nein, als Entwurf behalten"
+            }
+        },
+        "published": {
+            "info": "Diese Umfrage ist derzeit veröffentlicht und für Benutzer verfügbar.",
+            "button": "Umfrage archivieren",
+            "confirm": {
+                "title": "Umfrage archivieren",
+                "message": "Sind Sie sicher, dass Sie diese Umfrage archivieren möchten? Sie wird nicht mehr für Benutzer verfügbar sein.",
+                "accept": "Ja, Umfrage archivieren",
+                "reject": "Nein, veröffentlicht behalten"
+            }
+        },
+        "archived": {
+            "info": "Diese Umfrage ist derzeit archiviert und nicht für Benutzer verfügbar.",
+            "button": "Umfrage reaktivieren",
+            "confirm": {
+                "title": "Umfrage reaktivieren",
+                "message": "Sind Sie sicher, dass Sie diese Umfrage reaktivieren möchten? Sie wird wieder für Benutzer verfügbar sein.",
+                "accept": "Ja, Umfrage reaktivieren",
+                "reject": "Nein, archiviert behalten"
+            }
+        }
+    },
+    "errors": {
+        "general": {
+            "no_survey_data": "Keine Umfragedaten verfügbar",
+            "name_required": "Der Umfragename ist in allen Sprachen erforderlich",
+            "intervention_required": "Eine Maßnahme muss ausgewählt werden",
+            "at_least_one_question_required": "Mindestens eine Frage muss zur Umfrage hinzugefügt werden"
+        },
+        "question": {
+            "text_required": "Der Fragetext ist in allen Sprachen erforderlich",
+            "option_text_required": "Der Text der Option {number} ist in allen Sprachen erforderlich"
+        }
+    },
+    "toasts": {
+        "save_error": {
+            "title": "Umfrage kann nicht gespeichert werden",
+            "message": "Bitte überprüfen Sie die hervorgehobenen Felder auf Fehler. Jede Karte zeigt ihre spezifischen Validierungsfehler."
+        },
+        "save_success": {
+            "title": "Umfrage gespeichert",
+            "message": "Die Umfrage wurde erfolgreich gespeichert."
+        },
+        "create_success": {
+            "title": "Umfrage erstellt",
+            "message": "Die neue Umfrage wurde erfolgreich erstellt."
+        },
+        "server_error": {
+            "title": "Serverfehler",
+            "message": "Beim Speichern der Umfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
+        },
+        "publish_validation_error": {
+            "title": "Umfrage kann nicht veröffentlicht werden",
+            "message": "Bitte überprüfen Sie die hervorgehobenen Felder auf Fehler. Jede Karte zeigt ihre spezifischen Validierungsfehler."
+        },
+        "publish_success": {
+            "title": "Umfrage veröffentlicht",
+            "message": "Die Umfrage wurde erfolgreich veröffentlicht und ist jetzt für Benutzer verfügbar."
+        },
+        "publish_server_error": {
+            "title": "Serverfehler",
+            "message": "Beim Veröffentlichen der Umfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
+        },
+        "archive_success": {
+            "title": "Umfrage archiviert",
+            "message": "Die Umfrage wurde erfolgreich archiviert und ist nicht mehr für Benutzer verfügbar."
+        },
+        "archive_server_error": {
+            "title": "Serverfehler",
+            "message": "Beim Archivieren der Umfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
+        },
+        "reactivate_success": {
+            "title": "Umfrage reaktiviert",
+            "message": "Die Umfrage wurde erfolgreich reaktiviert und ist jetzt wieder für Benutzer verfügbar."
+        },
+        "reactivate_server_error": {
+            "title": "Serverfehler",
+            "message": "Beim Reaktivieren der Umfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut."
+        }
+    },
+    "add_question_card": {
+        "button": "Frage hinzufügen"
+    }
+}
+

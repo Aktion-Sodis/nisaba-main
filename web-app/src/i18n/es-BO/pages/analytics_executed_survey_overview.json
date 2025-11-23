@@ -1,0 +1,48 @@
+{
+  "title": "Encuestas Ejecutadas",
+  "subtitle": "Ver detalles y respuestas de encuestas ejecutadas",
+  "coming_soon": "Esta vista estará disponible pronto. Mostrará datos de encuestas ejecutadas para la encuesta seleccionada.",
+  "no_survey_selected": "Por favor seleccione una encuesta del resumen de análisis para ver encuestas ejecutadas.",
+  "no_surveys_found": "No se encontraron encuestas ejecutadas.",
+  "loading_surveys": "Cargando encuestas ejecutadas...",
+  "table": {
+    "title": "Encuestas Ejecutadas"
+  },
+  "columns": {
+    "entity": "Entidad",
+    "date": "Fecha",
+    "executor": "Recolector de Datos",
+    "included_in_analytics": "Incluido en el cálculo de análisis agregados"
+  },
+  "details": {
+    "entity_name": "Nombre de la Entidad",
+    "date": "Fecha",
+    "executor": "Recolector de Datos",
+    "question": "Pregunta",
+    "answer": "Respuesta",
+    "no_answer": "Sin respuesta"
+  },
+  "toast": {
+    "success": {
+      "included": {
+        "title": "Éxito",
+        "detail": "La encuesta {surveyId} se incluyó exitosamente en el análisis."
+      },
+      "excluded": {
+        "title": "Éxito",
+        "detail": "La encuesta {surveyId} se excluyó exitosamente del análisis."
+      }
+    },
+    "error": {
+      "include": {
+        "title": "Error",
+        "detail": "Error al incluir la encuesta {surveyId} en el análisis."
+      },
+      "exclude": {
+        "title": "Error",
+        "detail": "Error al excluir la encuesta {surveyId} del análisis."
+      }
+    }
+  }
+}
+

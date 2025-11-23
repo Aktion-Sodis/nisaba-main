@@ -1,0 +1,155 @@
+{
+  "title": "Niveau- und Entitätsverwaltung",
+  "subtitle": "Verwalten Sie Ihre organisatorischen Ebenen und Entitäten in einer hierarchischen Struktur",
+  "refresh": "Aktualisieren",
+  "errors": {
+    "refreshFailed": "Fehler beim Aktualisieren der Daten. Bitte versuchen Sie es erneut.",
+    "initializationFailed": "Fehler beim Initialisieren der Ansicht. Bitte aktualisieren Sie die Seite."
+  },
+  "levelColumn": {
+    "editLevel": "Niveau bearbeiten",
+    "addNewLevel": "Neues Niveau hinzufügen",
+    "addNewLevelDescription": "Ein neues organisatorisches Niveau erstellen",
+    "addLevel": "Niveau hinzufügen",
+    "addEntity": "Entität hinzufügen",
+    "noEntities": "Keine Entitäten für dieses Niveau gefunden"
+  },
+  "levelMenu": {
+    "view": "Niveau anzeigen",
+    "edit": "Niveau bearbeiten"
+  },
+  "entityCard": {
+    "customData": "Benutzerdefinierte Daten verfügbar",
+    "menu": {
+      "edit": "Entität bearbeiten",
+      "view": "Entität anzeigen"
+    }
+  },
+  "levelDialog": {
+    "title": {
+      "create": "Neues Niveau erstellen",
+      "edit": "Niveau bearbeiten",
+      "view": "Niveau anzeigen"
+    },
+    "labels": {
+      "languages": "Sprachen",
+      "name": "Name",
+      "description": "Beschreibung",
+      "interventionConnections": "Maßnahmenverbindungen",
+      "customData": "Benutzerdefinierte Daten",
+      "customDataName": "Name",
+      "customDataType": "Typ"
+    },
+    "placeholders": {
+      "selectInterventions": "Maßnahmen auswählen..."
+    },
+    "buttons": {
+      "cancel": "Abbrechen",
+      "save": "Speichern",
+      "update": "Aktualisieren",
+      "addCustomData": "Benutzerdefinierte Daten hinzufügen",
+      "removeCustomData": "Entfernen"
+    },
+    "types": {
+      "text": "Text",
+      "number": "Zahl"
+    },
+    "noCustomData": "Keine benutzerdefinierten Daten definiert",
+    "warnings": {
+      "customDataEdit": "Hinweis: Benutzerdefinierte Daten können im Bearbeitungsmodus nicht geändert werden. Es können nur neue benutzerdefinierte Daten hinzugefügt werden."
+    },
+    "confirm": {
+      "title": "Änderungen bestätigen",
+      "customDataChange": "Sie sind dabei, benutzerdefinierte Daten zu ändern. Diese Aktion kann nicht rückgängig gemacht werden. Sind Sie sicher, dass Sie fortfahren möchten?",
+      "newCustomData": "Sie haben neue benutzerdefinierte Datenfelder hinzugefügt. Diese Felder können nach der Erstellung nicht geändert werden, aber Sie können später weitere Felder hinzufügen. Möchten Sie mit dem Speichern dieser Änderungen fortfahren?",
+      "unsaved_changes": {
+        "title": "Nicht gespeicherte Änderungen",
+        "message": "Sie haben nicht gespeicherte Änderungen. Sind Sie sicher, dass Sie schließen möchten, ohne zu speichern?",
+        "accept": "Änderungen verwerfen",
+        "reject": "Weiter bearbeiten"
+      }
+    },
+    "validation": {
+      "errorSummary": "Validierungsfehler",
+      "levelRequired": "Niveau ist erforderlich",
+      "nameRequired": "Name ist erforderlich",
+      "customDataNameRequired": "Name der benutzerdefinierten Daten {number} ist erforderlich"
+    },
+    "success": {
+      "created": "Niveau erstellt",
+      "createdDetail": "Das Niveau wurde erfolgreich erstellt.",
+      "saved": "Niveau gespeichert",
+      "savedDetail": "Das Niveau wurde erfolgreich gespeichert."
+    },
+    "errors": {
+      "initializationFailed": "Initialisierung fehlgeschlagen",
+      "initializationFailedDetail": "Fehler beim Initialisieren des Niveaudialogs.",
+      "creationFailed": "Erstellung fehlgeschlagen",
+      "creationFailedDetail": "Fehler beim Erstellen eines neuen Niveaus.",
+      "saveFailed": "Speichern fehlgeschlagen",
+      "saveFailedDetail": "Fehler beim Speichern des Niveaus. Bitte versuchen Sie es erneut."
+    }
+  },
+  "entityDialog": {
+    "title": {
+      "create": "Entität erstellen",
+      "edit": "Entität bearbeiten",
+      "view": "Entität anzeigen"
+    },
+    "labels": {
+      "languages": "Sprachen",
+      "name": "Name",
+      "description": "Beschreibung",
+      "level": "Niveau",
+      "parentEntity": "Übergeordnete Entität",
+      "location": "Standort",
+      "latitude": "Breitengrad",
+      "longitude": "Längengrad",
+      "address": "Adresse",
+      "image": "Bild",
+      "customData": "Benutzerdefinierte Daten"
+    },
+    "placeholders": {
+      "selectLevel": "Ein Niveau auswählen",
+      "selectParentEntity": "Übergeordnete Entität auswählen (optional)"
+    },
+    "buttons": {
+      "cancel": "Abbrechen",
+      "save": "Speichern",
+      "update": "Aktualisieren"
+    },
+    "types": {
+      "string": "Zeichenkette",
+      "int": "Ganzzahl"
+    },
+    "noCustomData": "Keine benutzerdefinierten Daten definiert",
+    "errors": {
+      "initializationFailed": "Initialisierung fehlgeschlagen",
+      "initializationFailedDetail": "Fehler beim Initialisieren des Entitätsdialogs. Bitte versuchen Sie es erneut.",
+      "creationFailed": "Erstellung fehlgeschlagen",
+      "creationFailedDetail": "Fehler beim Erstellen einer neuen Entität. Bitte versuchen Sie es erneut.",
+      "saveFailed": "Speichern fehlgeschlagen",
+      "saveFailedDetail": "Fehler beim Speichern der Entität. Bitte versuchen Sie es erneut."
+    },
+    "validation": {
+      "entityRequired": "Entität ist erforderlich",
+      "nameRequired": "Name ist erforderlich",
+      "customDataNameRequired": "Name der benutzerdefinierten Daten {number} ist erforderlich"
+    },
+    "confirm": {
+      "unsaved_changes": {
+        "title": "Nicht gespeicherte Änderungen",
+        "message": "Sie haben nicht gespeicherte Änderungen. Sind Sie sicher, dass Sie schließen möchten, ohne zu speichern?",
+        "accept": "Änderungen verwerfen",
+        "reject": "Weiter bearbeiten"
+      }
+    },
+    "success": {
+      "created": "Entität erstellt",
+      "createdDetail": "Die Entität wurde erfolgreich erstellt.",
+      "saved": "Entität gespeichert",
+      "savedDetail": "Die Entität wurde erfolgreich gespeichert."
+    }
+  }
+}
+

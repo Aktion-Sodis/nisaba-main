@@ -1,0 +1,89 @@
+{
+  "title": "Benutzerverwaltung",
+  "subtitle": "Benutzer und ihre Berechtigungen verwalten",
+  "newUser": "Neuer Benutzer",
+  "filters": {
+    "search": "Benutzer suchen..."
+  },
+  "resetFilter": "Filter zurücksetzen",
+  "noUsersFound": "Keine Benutzer gefunden",
+  "loadingUsers": "Lade Benutzer...",
+  "columns": {
+    "username": "Benutzername",
+    "verified": "Verifiziert",
+    "groups": "Gruppen"
+  },
+  "access_levels": {
+    "superadmin": "Super-Administrator",
+    "admin": "Administrator",
+    "mobile": "Mobiler Benutzer",
+    "analytics": "Analysebenutzer"
+  },
+  "menu": {
+    "delete": "Benutzer löschen",
+    "reset_password": "Passwort zurücksetzen",
+    "update_role": "Rolle aktualisieren"
+  },
+  "confirm": {
+    "delete": {
+      "title": "Benutzer löschen",
+      "message": "Sind Sie sicher, dass Sie diesen Benutzer löschen möchten?",
+      "accept": "Löschen",
+      "reject": "Abbrechen"
+    }
+  },
+  "toasts": {
+    "delete_success": {
+      "title": "Erfolg",
+      "message": "Der Benutzer wurde erfolgreich gelöscht"
+    },
+    "delete_error": {
+      "title": "Fehler",
+      "message": "Fehler beim Löschen des Benutzers"
+    }
+  },
+  "create_user": {
+    "title": "Neuen Benutzer erstellen",
+    "email": "E-Mail oder Telefon",
+    "user_group": "Zugriffsebene",
+    "show_password": "Passwort anzeigen",
+    "create": "Benutzer erstellen",
+    "success_title": "Benutzer erstellt",
+    "success_message": "Der Benutzer {username} wurde erfolgreich erstellt. Er erhält sein Passwort per E-Mail/Telefon.",
+    "error_title": "Fehler beim Erstellen des Benutzers",
+    "password_info": "Bitte speichern Sie dieses Passwort sicher. Es wird nicht erneut angezeigt.",
+    "password": "Passwort",
+    "confirm_save": "Ich habe das Passwort gespeichert",
+    "finish": "Fertig",
+    "password_copied": "Passwort in die Zwischenablage kopiert",
+    "validation": {
+      "required": "Dieses Feld ist erforderlich",
+      "invalid_email_or_phone": "Bitte geben Sie eine gültige E-Mail-Adresse oder Telefonnummer ein"
+    }
+  },
+  "reset_password": {
+    "title": "Passwort zurücksetzen",
+    "info": "Ein neues Passwort wird für den Benutzer {username} generiert und angezeigt. Bitte stellen Sie sicher, dass Sie es sicher speichern, da es nur einmal angezeigt wird.",
+    "show_password": "Neues Passwort anzeigen",
+    "password_info": "Bitte speichern Sie dieses Passwort sicher. Es wird nicht erneut angezeigt.",
+    "password": "Neues Passwort",
+    "confirm_save": "Ich habe das Passwort gespeichert",
+    "reset": "Passwort zurücksetzen",
+    "finish": "Fertig",
+    "password_copied": "Passwort in die Zwischenablage kopiert",
+    "success_title": "Passwort erfolgreich zurückgesetzt",
+    "success_message": "Das Passwort wurde für {username} zurückgesetzt",
+    "error_title": "Passwort zurücksetzen fehlgeschlagen"
+  },
+  "update_role": {
+    "title": "Benutzerrolle aktualisieren",
+    "info": "Rolle für den Benutzer {username} aktualisieren",
+    "select_role": "Rolle auswählen",
+    "save": "Änderungen speichern",
+    "success_title": "Rolle aktualisiert",
+    "success_message": "Rolle für {username} erfolgreich aktualisiert",
+    "error_title": "Aktualisierung fehlgeschlagen",
+    "error_message": "Fehler beim Aktualisieren der Rolle für {username}"
+  }
+}
+

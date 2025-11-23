@@ -14,7 +14,7 @@
                 "label": "Select Translations"
             },
             "intervention": {
-                "label": "Intervention"
+                "label": "Activity"
             },
             "image": {
                 "label": "Survey Image"
@@ -113,7 +113,7 @@
         "general": {
             "no_survey_data": "No survey data available",
             "name_required": "Survey name is required in all languages",
-            "intervention_required": "An intervention must be selected",
+            "intervention_required": "An activity must be selected",
             "at_least_one_question_required": "At least one question must be added to the survey"
         },
         "question": {

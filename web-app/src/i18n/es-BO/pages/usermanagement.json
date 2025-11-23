@@ -1,0 +1,89 @@
+{
+  "title": "Gestión de Usuarios",
+  "subtitle": "Gestionar usuarios y sus permisos",
+  "newUser": "Nuevo Usuario",
+  "filters": {
+    "search": "Buscar usuarios..."
+  },
+  "resetFilter": "Restablecer Filtro",
+  "noUsersFound": "No se encontraron usuarios",
+  "loadingUsers": "Cargando usuarios...",
+  "columns": {
+    "username": "Nombre de Usuario",
+    "verified": "Verificado",
+    "groups": "Grupos"
+  },
+  "access_levels": {
+    "superadmin": "Super Administrador",
+    "admin": "Administrador",
+    "mobile": "Usuario Móvil",
+    "analytics": "Usuario de Análisis"
+  },
+  "menu": {
+    "delete": "Eliminar Usuario",
+    "reset_password": "Restablecer Contraseña",
+    "update_role": "Actualizar Rol"
+  },
+  "confirm": {
+    "delete": {
+      "title": "Eliminar Usuario",
+      "message": "¿Está seguro de que desea eliminar este usuario?",
+      "accept": "Eliminar",
+      "reject": "Cancelar"
+    }
+  },
+  "toasts": {
+    "delete_success": {
+      "title": "Éxito",
+      "message": "El usuario ha sido eliminado exitosamente"
+    },
+    "delete_error": {
+      "title": "Error",
+      "message": "Error al eliminar el usuario"
+    }
+  },
+  "create_user": {
+    "title": "Crear Nuevo Usuario",
+    "email": "Correo Electrónico o Teléfono",
+    "user_group": "Nivel de Acceso",
+    "show_password": "Mostrar Contraseña",
+    "create": "Crear Usuario",
+    "success_title": "Usuario Creado",
+    "success_message": "El usuario {username} ha sido creado exitosamente. Recibirá su contraseña por correo electrónico/teléfono.",
+    "error_title": "Error al Crear Usuario",
+    "password_info": "Por favor guarde esta contraseña de forma segura. No se mostrará nuevamente.",
+    "password": "Contraseña",
+    "confirm_save": "He guardado la contraseña",
+    "finish": "Finalizar",
+    "password_copied": "Contraseña copiada al portapapeles",
+    "validation": {
+      "required": "Este campo es requerido",
+      "invalid_email_or_phone": "Por favor ingrese un correo electrónico o número de teléfono válido"
+    }
+  },
+  "reset_password": {
+    "title": "Restablecer Contraseña",
+    "info": "Se generará y mostrará una nueva contraseña para el usuario {username}. Por favor asegúrese de guardarla de forma segura ya que solo se mostrará una vez.",
+    "show_password": "Mostrar nueva contraseña",
+    "password_info": "Por favor guarde esta contraseña de forma segura. No se mostrará nuevamente.",
+    "password": "Nueva Contraseña",
+    "confirm_save": "He guardado la contraseña",
+    "reset": "Restablecer Contraseña",
+    "finish": "Finalizar",
+    "password_copied": "Contraseña copiada al portapapeles",
+    "success_title": "Contraseña Restablecida Exitosamente",
+    "success_message": "La contraseña ha sido restablecida para {username}",
+    "error_title": "Error al Restablecer Contraseña"
+  },
+  "update_role": {
+    "title": "Actualizar Rol de Usuario",
+    "info": "Actualizar el rol para el usuario {username}",
+    "select_role": "Seleccionar Rol",
+    "save": "Guardar Cambios",
+    "success_title": "Rol Actualizado",
+    "success_message": "Rol actualizado exitosamente para {username}",
+    "error_title": "Error al Actualizar",
+    "error_message": "Error al actualizar el rol para {username}"
+  }
+}
+

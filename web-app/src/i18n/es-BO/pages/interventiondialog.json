@@ -1,0 +1,86 @@
+{
+  "title": {
+    "view": "Actividad",
+    "create": "Crear Nueva Actividad",
+    "edit": "Editar Actividad"
+  },
+  "labels": {
+    "languages": "Idiomas",
+    "name": "Nombre",
+    "description": "Descripción",
+    "type": "Tipo",
+    "image": "Imagen",
+    "levels": "Niveles"
+  },
+  "placeholders": {
+    "name": "Ingrese el nombre de la actividad",
+    "description": "Ingrese la descripción de la actividad"
+  },
+  "buttons": {
+    "removeImage": "Eliminar Imagen",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "update": "Actualizar"
+  },
+  "types": {
+    "technology": "Tecnología",
+    "education": "Educación"
+  },
+  "dialog": {
+    "input": {
+      "select_language": {
+        "label": "Seleccionar Idioma"
+      }
+    }
+  },
+  "toast": {
+    "intervention_not_found": {
+      "title": "Actividad No Encontrada",
+      "detail": "La actividad solicitada no pudo ser encontrada"
+    },
+    "new_intervention_not_created": {
+      "title": "Error al Crear",
+      "detail": "Error al crear nueva actividad. Por favor intente nuevamente."
+    },
+    "intervention_update_failed": {
+      "title": "Error al Actualizar",
+      "detail": "Error al actualizar la actividad. Por favor intente nuevamente."
+    },
+    "intervention_create_failed": {
+      "title": "Error al Crear",
+      "detail": "Error al crear la actividad. Por favor intente nuevamente."
+    },
+    "intervention_create_success": {
+      "title": "Actividad Creada",
+      "detail": "La actividad ha sido creada exitosamente."
+    },
+    "intervention_update_success": {
+      "title": "Actividad Actualizada",
+      "detail": "La actividad ha sido actualizada exitosamente."
+    },
+    "level_connections_failed": {
+      "title": "Error en Conexión de Nivel",
+      "detail": "Error al actualizar las conexiones de nivel. Por favor intente nuevamente."
+    },
+    "save_operation_failed": {
+      "title": "Error al Guardar",
+      "detail": "La operación de guardado falló. Por favor intente nuevamente."
+    }
+  },
+  "validation": {
+    "error_summary": "Error al Guardar",
+    "no_intervention_data": "No hay datos de actividad disponibles",
+    "title_required": "El título es requerido",
+    "title_all_languages_required": "El título es requerido para todos los idiomas seleccionados: {languages}",
+    "type_required": "El tipo de actividad es requerido"
+  },
+  "confirm": {
+    "unsaved_changes": {
+      "title": "Cambios Sin Guardar",
+      "message": "Tiene cambios sin guardar. ¿Está seguro de que desea cerrar sin guardar?",
+      "accept": "Descartar Cambios",
+      "reject": "Continuar Editando"
+    }
+  }
+}
+

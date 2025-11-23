@@ -1,5 +1,42 @@
 {
-    "form": {
-        "username": "E-Mail oder Telefonnummer"
+    "login_form": {
+        "username": "E-Mail oder Telefonnummer",
+        "password": "Passwort",
+        "login_button": "Anmelden",
+        "forgot_password": "Passwort vergessen?",
+        "validation": {
+            "username_required": "E-Mail oder Telefonnummer ist erforderlich",
+            "username_invalid": "Bitte geben Sie eine gültige E-Mail-Adresse oder Telefonnummer ein",
+            "password_required": "Passwort ist erforderlich"
+        }
+    },
+    "password_reset": {
+        "title": "Neues Passwort festlegen",
+        "description": "Das Passwort muss mindestens 6 Zeichen lang sein und Kleinbuchstaben, Großbuchstaben und Zahlen enthalten.",
+        "new_password": "Neues Passwort",
+        "new_password_validation": "Neues Passwort (Validierung)",
+        "validation": {
+            "password_required": "Passwort ist erforderlich",
+            "password_length": "Das Passwort muss mindestens 6 Zeichen lang sein",
+            "password_complexity": "Das Passwort muss mindestens einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl und ein Sonderzeichen enthalten",
+            "passwords_mismatch": "Die Passwörter stimmen nicht überein"
+        }
+    },
+    "profile_setup": {
+        "title": "Ihr Profil konfigurieren",
+        "first_name": "Vorname",
+        "surname": "Nachname",
+        "validation": {
+            "first_name_required": "Vorname ist erforderlich",
+            "surname_required": "Nachname ist erforderlich"
+        }
+    },
+    "buttons": {
+        "set_password": "Passwort festlegen",
+        "save_profile": "Profil speichern"
+    },
+    "errors": {
+        "login_failed": "Anmeldung fehlgeschlagen",
+        "load_user_data_failed": "Fehler beim Laden der Benutzerdaten. Bitte versuchen Sie es erneut."
     }
-} 
+}

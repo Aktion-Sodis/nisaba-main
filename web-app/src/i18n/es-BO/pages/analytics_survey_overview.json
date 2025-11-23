@@ -1,0 +1,25 @@
+{
+  "title": "Resumen de Análisis de Encuestas",
+  "subtitle": "Ver y analizar datos de encuestas y estadísticas de ejecución",
+  "noSurveysFound": "No se encontraron encuestas",
+  "loadingSurveys": "Cargando encuestas...",
+  "withActiveFilter": " (con filtro activo)",
+  "createdAt": "Creado en",
+  "executedCount": "Cantidad ejecutada",
+  "filters": {
+    "search": "Buscar encuestas...",
+    "reset": "Restablecer filtros",
+    "filterByName": "Filtrar por nombre",
+    "filterByDescription": "Filtrar por descripción",
+    "selectDate": "Seleccionar fecha",
+    "selectStatus": "Seleccionar estado"
+  },
+  "columns": {
+    "name": "Nombre",
+    "description": "Descripción",
+    "createdAt": "Creado en",
+    "status": "Estado",
+    "executedCount": "Cantidad Ejecutada"
+  }
+}
+

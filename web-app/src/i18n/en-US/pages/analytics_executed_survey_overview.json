@@ -11,13 +11,13 @@
   "columns": {
     "entity": "Entity",
     "date": "Date",
-    "executor": "Executor",
+    "executor": "Data Collector",
     "included_in_analytics": "Included in aggregated analytics computation"
   },
   "details": {
     "entity_name": "Entity Name",
     "date": "Date",
-    "executor": "Executor",
+    "executor": "Data Collector",
     "question": "Question",
     "answer": "Answer",
     "no_answer": "No answer"

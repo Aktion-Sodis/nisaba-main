@@ -1,0 +1,155 @@
+{
+  "title": "Gestión de Niveles y Entidades",
+  "subtitle": "Gestionar sus niveles organizacionales y entidades en una estructura jerárquica",
+  "refresh": "Actualizar",
+  "errors": {
+    "refreshFailed": "Error al actualizar los datos. Por favor intente nuevamente.",
+    "initializationFailed": "Error al inicializar la vista. Por favor actualice la página."
+  },
+  "levelColumn": {
+    "editLevel": "Editar Nivel",
+    "addNewLevel": "Agregar Nuevo Nivel",
+    "addNewLevelDescription": "Crear un nuevo nivel organizacional",
+    "addLevel": "Agregar Nivel",
+    "addEntity": "Agregar Entidad",
+    "noEntities": "No se encontraron entidades para este nivel"
+  },
+  "levelMenu": {
+    "view": "Ver Nivel",
+    "edit": "Editar Nivel"
+  },
+  "entityCard": {
+    "customData": "Datos personalizados disponibles",
+    "menu": {
+      "edit": "Editar Entidad",
+      "view": "Ver Entidad"
+    }
+  },
+  "levelDialog": {
+    "title": {
+      "create": "Crear Nuevo Nivel",
+      "edit": "Editar Nivel",
+      "view": "Ver Nivel"
+    },
+    "labels": {
+      "languages": "Idiomas",
+      "name": "Nombre",
+      "description": "Descripción",
+      "interventionConnections": "Conexiones de Actividades",
+      "customData": "Datos Personalizados",
+      "customDataName": "Nombre",
+      "customDataType": "Tipo"
+    },
+    "placeholders": {
+      "selectInterventions": "Seleccionar actividades..."
+    },
+    "buttons": {
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "update": "Actualizar",
+      "addCustomData": "Agregar Datos Personalizados",
+      "removeCustomData": "Eliminar"
+    },
+    "types": {
+      "text": "Texto",
+      "number": "Número"
+    },
+    "noCustomData": "No hay datos personalizados definidos",
+    "warnings": {
+      "customDataEdit": "Nota: Los datos personalizados no se pueden modificar en modo de edición. Solo se pueden agregar nuevos datos personalizados."
+    },
+    "confirm": {
+      "title": "Confirmar Cambios",
+      "customDataChange": "Está a punto de modificar datos personalizados. Esta acción no se puede deshacer. ¿Está seguro de que desea continuar?",
+      "newCustomData": "Ha agregado nuevos campos de datos personalizados. Estos campos no se pueden modificar después de la creación, pero puede agregar más campos más tarde. ¿Desea continuar guardando estos cambios?",
+      "unsaved_changes": {
+        "title": "Cambios Sin Guardar",
+        "message": "Tiene cambios sin guardar. ¿Está seguro de que desea cerrar sin guardar?",
+        "accept": "Descartar Cambios",
+        "reject": "Continuar Editando"
+      }
+    },
+    "validation": {
+      "errorSummary": "Error de Validación",
+      "levelRequired": "El nivel es requerido",
+      "nameRequired": "El nombre es requerido",
+      "customDataNameRequired": "El nombre de datos personalizados {number} es requerido"
+    },
+    "success": {
+      "created": "Nivel Creado",
+      "createdDetail": "El nivel ha sido creado exitosamente.",
+      "saved": "Nivel Guardado",
+      "savedDetail": "El nivel ha sido guardado exitosamente."
+    },
+    "errors": {
+      "initializationFailed": "Error de Inicialización",
+      "initializationFailedDetail": "Error al inicializar el diálogo de nivel.",
+      "creationFailed": "Error al Crear",
+      "creationFailedDetail": "Error al crear nuevo nivel.",
+      "saveFailed": "Error al Guardar",
+      "saveFailedDetail": "Error al guardar el nivel. Por favor intente nuevamente."
+    }
+  },
+  "entityDialog": {
+    "title": {
+      "create": "Crear Entidad",
+      "edit": "Editar Entidad",
+      "view": "Ver Entidad"
+    },
+    "labels": {
+      "languages": "Idiomas",
+      "name": "Nombre",
+      "description": "Descripción",
+      "level": "Nivel",
+      "parentEntity": "Entidad Padre",
+      "location": "Ubicación",
+      "latitude": "Latitud",
+      "longitude": "Longitud",
+      "address": "Dirección",
+      "image": "Imagen",
+      "customData": "Datos Personalizados"
+    },
+    "placeholders": {
+      "selectLevel": "Seleccionar un nivel",
+      "selectParentEntity": "Seleccionar entidad padre (opcional)"
+    },
+    "buttons": {
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "update": "Actualizar"
+    },
+    "types": {
+      "string": "Cadena",
+      "int": "Entero"
+    },
+    "noCustomData": "No hay datos personalizados definidos",
+    "errors": {
+      "initializationFailed": "Error de Inicialización",
+      "initializationFailedDetail": "Error al inicializar el diálogo de entidad. Por favor intente nuevamente.",
+      "creationFailed": "Error al Crear",
+      "creationFailedDetail": "Error al crear nueva entidad. Por favor intente nuevamente.",
+      "saveFailed": "Error al Guardar",
+      "saveFailedDetail": "Error al guardar la entidad. Por favor intente nuevamente."
+    },
+    "validation": {
+      "entityRequired": "La entidad es requerida",
+      "nameRequired": "El nombre es requerido",
+      "customDataNameRequired": "El nombre de datos personalizados {number} es requerido"
+    },
+    "confirm": {
+      "unsaved_changes": {
+        "title": "Cambios Sin Guardar",
+        "message": "Tiene cambios sin guardar. ¿Está seguro de que desea cerrar sin guardar?",
+        "accept": "Descartar Cambios",
+        "reject": "Continuar Editando"
+      }
+    },
+    "success": {
+      "created": "Entidad Creada",
+      "createdDetail": "La entidad ha sido creada exitosamente.",
+      "saved": "Entidad Guardada",
+      "savedDetail": "La entidad ha sido guardada exitosamente."
+    }
+  }
+}
+

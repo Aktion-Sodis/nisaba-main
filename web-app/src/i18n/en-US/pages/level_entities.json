@@ -35,13 +35,13 @@
       "languages": "Languages",
       "name": "Name",
       "description": "Description",
-      "interventionConnections": "Intervention Connections",
+      "interventionConnections": "Activity Connections",
       "customData": "Custom Data",
       "customDataName": "Name",
       "customDataType": "Type"
     },
     "placeholders": {
-      "selectInterventions": "Select interventions..."
+      "selectInterventions": "Select activities..."
     },
     "buttons": {
       "cancel": "Cancel",

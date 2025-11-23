@@ -28,6 +28,29 @@
         "edit": "Editar",
         "delete": "Eliminar",
         "archive": "Archivar",
-        "viewResults": "Ver Resultados"
+        "viewResults": "Ver Resultados",
+        "reactivate": "Reactivar"
+      },
+      "toasts": {
+        "deleteSuccess": {
+          "summary": "Encuesta eliminada",
+          "detail": "La encuesta ha sido eliminada exitosamente del sistema."
+        },
+        "deleteError": {
+          "summary": "Error al eliminar",
+          "detail": "Ocurrió un error al intentar eliminar la encuesta. Por favor intente nuevamente más tarde."
+        },
+        "deleteNotAllowed": {
+          "summary": "No se puede eliminar la encuesta",
+          "detail": "Solo las encuestas en estado borrador pueden ser eliminadas. Por favor archive la encuesta en su lugar."
+        }
+      },
+      "confirm": {
+        "delete": {
+          "title": "Eliminar Encuesta",
+          "message": "¿Está seguro de que desea eliminar esta encuesta? Esta acción no se puede deshacer.",
+          "accept": "Sí, eliminar encuesta",
+          "reject": "No, mantener encuesta"
+        }
       }
 }

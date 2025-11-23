@@ -18,8 +18,8 @@
             "description": "Manage the project structure"
         },
         "interventions": {
-            "title": "Interventions",
-            "description": "Manage the interventions"
+            "title": "Activities",
+            "description": "Manage the activities"
         },
         "surveys": {
             "title": "Survey Overview",

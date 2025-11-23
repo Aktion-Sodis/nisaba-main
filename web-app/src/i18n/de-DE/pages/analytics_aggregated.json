@@ -1,0 +1,172 @@
+{
+  "title": "Aggregierte Analysen",
+  "subtitle": "Aggregierte Umfrageanalysen und Statistiken anzeigen",
+  "coming_soon": "Diese Ansicht wird in Kürze verfügbar sein. Sie zeigt aggregierte Analysedaten für die ausgewählte Umfrage an.",
+  "no_survey_selected": "Bitte wählen Sie eine Umfrage aus der Analyseübersicht aus, um aggregierte Daten anzuzeigen.",
+  "no_data_available": "Für die ausgewählte Umfrage sind keine aggregierten Daten verfügbar.",
+  "loading_data": "Lade aggregierte Analysedaten...",
+  "select_question": "Wählen Sie eine Frage aus der Navigation aus, um ihre Ergebnisse anzuzeigen.",
+  "unsupported_question_type": "Der Fragentyp '{type}' wird in dieser Ansicht nicht unterstützt.",
+  "navigation": {
+    "title": "Fragen",
+    "question_title": "Frage {index}",
+    "total_answers": "{count} Antworten",
+    "unique_entities": "{count} Entitäten"
+  },
+  "results": {
+    "title": "Fragenergebnisse"
+  },
+  "answer_statistics": {
+    "title": "Antwortstatistiken"
+  },
+  "stats": {
+    "total_answers": "Gesamtantworten",
+    "unique_entities": "Eindeutige Entitäten",
+    "date_range": "Datumsbereich",
+    "no_date_range": "Kein Datumsbereich verfügbar"
+  },
+  "question_types": {
+    "text": "Text",
+    "audio": "Audio",
+    "picture": "Bild",
+    "singlechoice": "Einzelauswahl",
+    "multiplechoice": "Mehrfachauswahl",
+    "rating": "Bewertung",
+    "int": "Ganzzahl",
+    "double": "Zahl",
+    "date": "Datum"
+  },
+  "text_stats": {
+    "average_length": "Durchschnittliche Länge",
+    "longest_response": "Längste Antwort",
+    "shortest_response": "Kürzeste Antwort",
+    "total_responses": "Gesamtantworten"
+  },
+  "text_responses": {
+    "title": "Textantworten",
+    "no_data": "Keine Textantworten verfügbar"
+  },
+  "audio_stats": {
+    "total_files": "Gesamtdateien",
+    "total_responses": "Gesamtantworten",
+    "completion_rate": "Abschlussrate",
+    "file_types": "Dateitypen"
+  },
+  "audio_responses": {
+    "title": "Audioantworten",
+    "no_data": "Keine Audioantworten verfügbar",
+    "browser_not_supported": "Ihr Browser unterstützt das Audio-Element nicht.",
+    "not_available": "Audio nicht verfügbar",
+    "load_error": "Fehler beim Laden des Audios",
+    "file_not_found": "Kein Audio aufgenommen"
+  },
+  "image_stats": {
+    "total_files": "Gesamtdateien",
+    "total_responses": "Gesamtantworten",
+    "completion_rate": "Abschlussrate",
+    "file_types": "Dateitypen"
+  },
+  "image_responses": {
+    "title": "Bildantworten",
+    "no_data": "Keine Bildantworten verfügbar",
+    "image_alt": "Umfrageantwortbild",
+    "view_full": "Vollständig anzeigen",
+    "modal_title": "Bildantwort",
+    "not_available": "Bild nicht verfügbar",
+    "load_error": "Fehler beim Laden des Bildes",
+    "file_not_found": "Kein Bild aufgenommen"
+  },
+  "choice_stats": {
+    "total_responses": "Gesamtantworten",
+    "unique_entities": "Eindeutige Entitäten"
+  },
+  "choice_chart": {
+    "title": "Antwortverteilung",
+    "pie_chart": "Kreisdiagramm",
+    "bar_chart": "Balkendiagramm",
+    "options": "Optionen",
+    "count": "Anzahl"
+  },
+  "choice_table": {
+    "title": "Optionsanzahl",
+    "option": "Option",
+    "count": "Anzahl",
+    "percentage": "Prozent"
+  },
+  "choice_responses": {
+    "no_data": "Keine Auswahlantworten verfügbar"
+  },
+  "rating_stats": {
+    "total_responses": "Gesamtantworten",
+    "average_rating": "Durchschnittliche Bewertung",
+    "highest_rating": "Höchste Bewertung",
+    "lowest_rating": "Niedrigste Bewertung"
+  },
+  "rating_chart": {
+    "title": "Bewertungsverteilung",
+    "bar_chart": "Balkendiagramm",
+    "histogram": "Histogramm",
+    "rating": "Bewertung",
+    "count": "Anzahl",
+    "statistics": "Statistiken"
+  },
+  "rating_table": {
+    "title": "Bewertungsanzahl",
+    "rating": "Bewertung",
+    "count": "Anzahl",
+    "percentage": "Prozent"
+  },
+  "rating_responses": {
+    "no_data": "Keine Bewertungsantworten verfügbar"
+  },
+  "numeric_stats": {
+    "total_responses": "Gesamtantworten",
+    "mean": "Mittelwert",
+    "median": "Median",
+    "std_deviation": "Standardabweichung",
+    "min": "Minimum",
+    "max": "Maximum",
+    "range": "Spannweite"
+  },
+  "numeric_chart": {
+    "title": "Wertverteilung",
+    "histogram": "Histogramm",
+    "box_plot": "Boxplot",
+    "value": "Wert",
+    "count": "Anzahl",
+    "statistics": "Statistiken"
+  },
+  "numeric_responses": {
+    "no_data": "Keine numerischen Antworten verfügbar"
+  },
+  "date_stats": {
+    "total_responses": "Gesamtantworten",
+    "unique_entities": "Eindeutige Entitäten"
+  },
+  "date_responses": {
+    "title": "Datumsantworten",
+    "no_data": "Keine Datumsantworten verfügbar"
+  },
+  "table": {
+    "entity": "Entität",
+    "date": "Datum",
+    "executor": "Datenerheber",
+    "text_response": "Textantwort",
+    "audio_file": "Audiodatei",
+    "image_file": "Bilddatei",
+    "date_response": "Datumsantwort",
+    "no_entity": "Keine Entität",
+    "no_date": "Kein Datum",
+    "no_executor": "Kein Datenerheber",
+    "no_response": "Keine Antwort"
+  },
+  "filters": {
+    "title": "Filter",
+    "select_entities": "Entitäten auswählen",
+    "select_executors": "Datenerheber auswählen",
+    "select_date_range": "Datumsbereich auswählen",
+    "apply": "Anwenden",
+    "clear": "Löschen"
+  }
+}
+

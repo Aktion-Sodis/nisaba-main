@@ -1,6 +1,12 @@
 {
     "categories": {
-        "admin": "Admin-Apps"
+        "admin": "Admin-Apps",
+        "analytics": "Analysen",
+        "settings": "Verwaltung"
+    },
+    "groups": {
+        "surveys": "Umfragen",
+        "analytics": "Analysen"
     },
     "apps": {
         "login": {
@@ -12,12 +18,44 @@
             "description": "Projektstruktur verwalten"
         },
         "interventions": {
-            "title": "Interventionen",
-            "description": "Interventionen verwalten"
+            "title": "Maßnahmen",
+            "description": "Maßnahmen verwalten"
         },
-        "umfragen": {
-            "title": "Umfragen",
+        "surveys": {
+            "title": "Umfrageübersicht",
             "description": "Umfragen verwalten"
+        },
+        "surveyeditor": {
+            "title": "Umfrageeditor",
+            "description": "Umfrage bearbeiten"
+        },
+        "users": {
+            "title": "Benutzer",
+            "description": "Benutzer hinzufügen und verwalten"
+        },
+        "passwordreset": {
+            "title": "Passwort zurücksetzen",
+            "description": "Passwort zurücksetzen"
+        },
+        "analytics": {
+            "title": "Analysen",
+            "description": "Umfragedaten anzeigen und analysieren"
+        },
+        "analytics_survey_overview": {
+            "title": "Umfrageübersicht",
+            "description": "Umfrageausführungsstatistiken anzeigen"
+        },
+        "analytics_aggregated": {
+            "title": "Aggregierte Analysen",
+            "description": "Aggregierte Umfrageanalysen anzeigen"
+        },
+        "analytics_executed_survey_overview": {
+            "title": "Durchgeführte Umfragen",
+            "description": "Details durchgeführter Umfragen anzeigen"
+        },
+        "analytics_survey_details": {
+            "title": "Umfragedetails",
+            "description": "Detaillierte Umfrageanalysen anzeigen"
         }
     }
-} 
+}

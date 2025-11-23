@@ -1,0 +1,48 @@
+{
+  "title": "Durchgeführte Umfragen",
+  "subtitle": "Details und Antworten durchgeführter Umfragen anzeigen",
+  "coming_soon": "Diese Ansicht wird in Kürze verfügbar sein. Sie zeigt Daten durchgeführter Umfragen für die ausgewählte Umfrage an.",
+  "no_survey_selected": "Bitte wählen Sie eine Umfrage aus der Analyseübersicht aus, um durchgeführte Umfragen anzuzeigen.",
+  "no_surveys_found": "Keine durchgeführten Umfragen gefunden.",
+  "loading_surveys": "Lade durchgeführte Umfragen...",
+  "table": {
+    "title": "Durchgeführte Umfragen"
+  },
+  "columns": {
+    "entity": "Entität",
+    "date": "Datum",
+    "executor": "Datenerheber",
+    "included_in_analytics": "In aggregierter Analyseberechnung enthalten"
+  },
+  "details": {
+    "entity_name": "Entitätsname",
+    "date": "Datum",
+    "executor": "Datenerheber",
+    "question": "Frage",
+    "answer": "Antwort",
+    "no_answer": "Keine Antwort"
+  },
+  "toast": {
+    "success": {
+      "included": {
+        "title": "Erfolg",
+        "detail": "Umfrage {surveyId} wurde erfolgreich in die Analyse aufgenommen."
+      },
+      "excluded": {
+        "title": "Erfolg",
+        "detail": "Umfrage {surveyId} wurde erfolgreich aus der Analyse ausgeschlossen."
+      }
+    },
+    "error": {
+      "include": {
+        "title": "Fehler",
+        "detail": "Fehler beim Aufnehmen der Umfrage {surveyId} in die Analyse."
+      },
+      "exclude": {
+        "title": "Fehler",
+        "detail": "Fehler beim Ausschließen der Umfrage {surveyId} aus der Analyse."
+      }
+    }
+  }
+}
+
