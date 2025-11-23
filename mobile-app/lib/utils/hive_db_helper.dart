@@ -14,6 +14,17 @@ class HiveDBHelper {
   }
 
   Box getBox(HiveDBBoxNames name) {
+    if (!_openedBoxes.containsKey(name) || _openedBoxes[name] == null) {
+      // Box not opened yet, try to open it synchronously (this will throw if Hive not initialized)
+      throw Exception('Box $name has not been opened yet. Call HiveDBHelper.init() first.');
+    }
+    return _openedBoxes[name]!;
+  }
+  
+  Future<Box> ensureBoxOpen(HiveDBBoxNames name) async {
+    if (!_openedBoxes.containsKey(name) || _openedBoxes[name] == null) {
+      return await openBox(name);
+    }
     return _openedBoxes[name]!;
   }
 

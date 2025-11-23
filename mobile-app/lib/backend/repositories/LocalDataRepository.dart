@@ -6,7 +6,15 @@ import '../callableModels/User.dart';
 class LocalDataRepository {
   static final LocalDataRepository instance = LocalDataRepository();
 
-  Box get _table => HiveDBHelper.instance.getBox(HiveDBBoxNames.localData);
+  Box get _table {
+    try {
+      return HiveDBHelper.instance.getBox(HiveDBBoxNames.localData);
+    } catch (e) {
+      print('Error getting Hive box: $e');
+      print('This usually means HiveDBHelper.init() has not been called yet or the box was closed.');
+      rethrow;
+    }
+  }
 
   String? get locale => _table.get("locale");
   set locale(String? value) => _table.put("locale", value);
@@ -16,13 +24,19 @@ class LocalDataRepository {
   set wifiOnly(bool value) => _table.put("wifiOnly", value);
 
   String get organizationID {
-    String? result = _table.get("organizationID");
-    if (result == null) {
-      // TODO: throw an exception and log out
-      print('exception because organizationID is null');
+    try {
+      String? result = _table.get("organizationID");
+      if (result == null) {
+        // TODO: throw an exception and log out
+        print('exception because organizationID is null');
+        return "unknown";
+      }
+      return result;
+    } catch (e) {
+      print('Error accessing organizationID from Hive: $e');
+      print('This usually means HiveDBHelper.init() has not been called yet.');
       return "unknown";
     }
-    return result;
   }
 
   set organizationID(String? value) => _table.put("organizationID", value);

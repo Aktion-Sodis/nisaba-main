@@ -77,7 +77,7 @@ class Synchronizer {
           } on NoConnectionException {
             //rethrow exception to stop sync process
             rethrow;
-          } on OperationException catch (e) {
+          } on OperationException catch (e, trace) {
             if (e.graphqlErrors.isEmpty && e.linkException is ServerException) {
               //no graph ql error but server exception
               ServerException serverException =
@@ -105,6 +105,7 @@ class Synchronizer {
             //todo: handle other error in upload -> upload in s3 bucket
             print('[Sync] Error in DB Upstream Sync:');
             print(e);
+            print(trace);
 
             Map<String, dynamic> objectJson = queueObject.object.toJson();
 
@@ -125,7 +126,7 @@ class Synchronizer {
 
             //then set queueObject
             queueObject = await queue.get();
-          } catch (e) {
+          } catch (e, trace) {
             if (queueObject!.object is ExecutedSurvey) {
               syncBloc.add(FailedSurveyEvent());
             } else {
@@ -135,6 +136,7 @@ class Synchronizer {
             //todo: handle other error in upload -> upload in s3 bucket
             print('[Sync] Error in DB Upstream Sync:');
             print(e);
+            print(trace);
 
             Map<String, dynamic> objectJson = queueObject.object.toJson();
 
@@ -161,9 +163,10 @@ class Synchronizer {
       } on NoConnectionException {
         syncBloc.add(CancelSyncEvent());
         upstreamSyncStatus = SyncStatus.WAITING;
-      } catch (e) {
+      } catch (e, trace) {
         print('[Sync] Error in DB Upstream Sync:');
         print(e);
+        print(trace);
         syncBloc.add(CancelSyncEvent());
         upstreamSyncStatus = SyncStatus.STOPPED;
       }
