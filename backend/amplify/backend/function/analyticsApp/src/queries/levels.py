@@ -2,8 +2,27 @@
 
 listLevels = {
     "operationName": "listLevels",
-    "query": """query listLevels {
-    listLevels {
+    "query": """query listLevels($organization_id: String!) {
+    listLevels(filter: {organization_id: {eq: $organization_id}, _deleted: {ne: true}}) {
+      nextToken
+      items {
+        parentLevelID
+        name {
+          languageKeys
+          languageTexts
+        }
+        id
+      }
+    }
+  }
+  """,
+}
+
+listLevelsFromNextToken = {
+    "operationName": "listLevels",
+    "query": """query listLevels($nextToken: String!, $organization_id: String!) {
+    listLevels(filter: {organization_id: {eq: $organization_id}, _deleted: {ne: true}}, nextToken: $nextToken) {
+      nextToken
       items {
         parentLevelID
         name {
@@ -19,8 +38,8 @@ listLevels = {
 
 listEntities = {
     "operationName": "listEntities",
-    "query": """query listEntities {
-        listEntities {
+    "query": """query listEntities($organization_id: String!) {
+        listEntities(filter: {organization_id: {eq: $organization_id}, _deleted: {ne: true}}) {
             nextToken
             items {
                 id
@@ -49,8 +68,8 @@ listEntities = {
 
 listEntitiesFromNextToken = {
     "operationName": "listEntities",
-    "query": """query listEntities($nextToken: String!) {
-        listEntities(nextToken: $nextToken) {
+    "query": """query listEntities($nextToken: String!, $organization_id: String!) {
+        listEntities(filter: {organization_id: {eq: $organization_id}, _deleted: {ne: true}}, nextToken: $nextToken) {
             nextToken
             items {
                 id

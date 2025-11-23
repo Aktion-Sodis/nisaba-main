@@ -36,6 +36,7 @@ class ExecutedSurvey extends amplify_core.Model {
   final Location? _location;
   final List<QuestionAnswer>? _answers;
   final int? _schemeVersion;
+  final bool? _useForAnalytics;
   final amplify_core.TemporalDateTime? _createdAt;
   final amplify_core.TemporalDateTime? _updatedAt;
   final String? _executedSurveySurveyId;
@@ -131,6 +132,10 @@ class ExecutedSurvey extends amplify_core.Model {
     return _schemeVersion;
   }
   
+  bool? get useForAnalytics {
+    return _useForAnalytics;
+  }
+  
   amplify_core.TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -165,9 +170,9 @@ class ExecutedSurvey extends amplify_core.Model {
     }
   }
   
-  const ExecutedSurvey._internal({required this.id, required appliedIntervention, required survey, surveyID, required whoExecutedIt, required date, location, required answers, schemeVersion, createdAt, updatedAt, required executedSurveySurveyId, required executedSurveyWhoExecutedItId}): _appliedIntervention = appliedIntervention, _survey = survey, _surveyID = surveyID, _whoExecutedIt = whoExecutedIt, _date = date, _location = location, _answers = answers, _schemeVersion = schemeVersion, _createdAt = createdAt, _updatedAt = updatedAt, _executedSurveySurveyId = executedSurveySurveyId, _executedSurveyWhoExecutedItId = executedSurveyWhoExecutedItId;
+  const ExecutedSurvey._internal({required this.id, required appliedIntervention, required survey, surveyID, required whoExecutedIt, required date, location, required answers, schemeVersion, useForAnalytics, createdAt, updatedAt, required executedSurveySurveyId, required executedSurveyWhoExecutedItId}): _appliedIntervention = appliedIntervention, _survey = survey, _surveyID = surveyID, _whoExecutedIt = whoExecutedIt, _date = date, _location = location, _answers = answers, _schemeVersion = schemeVersion, _useForAnalytics = useForAnalytics, _createdAt = createdAt, _updatedAt = updatedAt, _executedSurveySurveyId = executedSurveySurveyId, _executedSurveyWhoExecutedItId = executedSurveyWhoExecutedItId;
   
-  factory ExecutedSurvey({String? id, required AppliedIntervention appliedIntervention, required Survey survey, String? surveyID, required User whoExecutedIt, required amplify_core.TemporalDateTime date, Location? location, required List<QuestionAnswer> answers, int? schemeVersion, required String executedSurveySurveyId, required String executedSurveyWhoExecutedItId}) {
+  factory ExecutedSurvey({String? id, required AppliedIntervention appliedIntervention, required Survey survey, String? surveyID, required User whoExecutedIt, required amplify_core.TemporalDateTime date, Location? location, required List<QuestionAnswer> answers, int? schemeVersion, bool? useForAnalytics, required String executedSurveySurveyId, required String executedSurveyWhoExecutedItId}) {
     return ExecutedSurvey._internal(
       id: id == null ? amplify_core.UUID.getUUID() : id,
       appliedIntervention: appliedIntervention,
@@ -178,6 +183,7 @@ class ExecutedSurvey extends amplify_core.Model {
       location: location,
       answers: answers != null ? List<QuestionAnswer>.unmodifiable(answers) : answers,
       schemeVersion: schemeVersion,
+      useForAnalytics: useForAnalytics,
       executedSurveySurveyId: executedSurveySurveyId,
       executedSurveyWhoExecutedItId: executedSurveyWhoExecutedItId);
   }
@@ -199,6 +205,7 @@ class ExecutedSurvey extends amplify_core.Model {
       _location == other._location &&
       DeepCollectionEquality().equals(_answers, other._answers) &&
       _schemeVersion == other._schemeVersion &&
+      _useForAnalytics == other._useForAnalytics &&
       _executedSurveySurveyId == other._executedSurveySurveyId &&
       _executedSurveyWhoExecutedItId == other._executedSurveyWhoExecutedItId;
   }
@@ -218,6 +225,7 @@ class ExecutedSurvey extends amplify_core.Model {
     buffer.write("location=" + (_location != null ? _location!.toString() : "null") + ", ");
     buffer.write("answers=" + (_answers != null ? _answers!.toString() : "null") + ", ");
     buffer.write("schemeVersion=" + (_schemeVersion != null ? _schemeVersion!.toString() : "null") + ", ");
+    buffer.write("useForAnalytics=" + (_useForAnalytics != null ? _useForAnalytics!.toString() : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null") + ", ");
     buffer.write("executedSurveySurveyId=" + "$_executedSurveySurveyId" + ", ");
@@ -227,7 +235,7 @@ class ExecutedSurvey extends amplify_core.Model {
     return buffer.toString();
   }
   
-  ExecutedSurvey copyWith({AppliedIntervention? appliedIntervention, Survey? survey, String? surveyID, User? whoExecutedIt, amplify_core.TemporalDateTime? date, Location? location, List<QuestionAnswer>? answers, int? schemeVersion, String? executedSurveySurveyId, String? executedSurveyWhoExecutedItId}) {
+  ExecutedSurvey copyWith({AppliedIntervention? appliedIntervention, Survey? survey, String? surveyID, User? whoExecutedIt, amplify_core.TemporalDateTime? date, Location? location, List<QuestionAnswer>? answers, int? schemeVersion, bool? useForAnalytics, String? executedSurveySurveyId, String? executedSurveyWhoExecutedItId}) {
     return ExecutedSurvey._internal(
       id: id,
       appliedIntervention: appliedIntervention ?? this.appliedIntervention,
@@ -238,6 +246,7 @@ class ExecutedSurvey extends amplify_core.Model {
       location: location ?? this.location,
       answers: answers ?? this.answers,
       schemeVersion: schemeVersion ?? this.schemeVersion,
+      useForAnalytics: useForAnalytics ?? this.useForAnalytics,
       executedSurveySurveyId: executedSurveySurveyId ?? this.executedSurveySurveyId,
       executedSurveyWhoExecutedItId: executedSurveyWhoExecutedItId ?? this.executedSurveyWhoExecutedItId);
   }
@@ -251,6 +260,7 @@ class ExecutedSurvey extends amplify_core.Model {
     ModelFieldValue<Location?>? location,
     ModelFieldValue<List<QuestionAnswer>>? answers,
     ModelFieldValue<int?>? schemeVersion,
+    ModelFieldValue<bool?>? useForAnalytics,
     ModelFieldValue<String>? executedSurveySurveyId,
     ModelFieldValue<String>? executedSurveyWhoExecutedItId
   }) {
@@ -264,6 +274,7 @@ class ExecutedSurvey extends amplify_core.Model {
       location: location == null ? this.location : location.value,
       answers: answers == null ? this.answers : answers.value,
       schemeVersion: schemeVersion == null ? this.schemeVersion : schemeVersion.value,
+      useForAnalytics: useForAnalytics == null ? this.useForAnalytics : useForAnalytics.value,
       executedSurveySurveyId: executedSurveySurveyId == null ? this.executedSurveySurveyId : executedSurveySurveyId.value,
       executedSurveyWhoExecutedItId: executedSurveyWhoExecutedItId == null ? this.executedSurveyWhoExecutedItId : executedSurveyWhoExecutedItId.value
     );
@@ -300,13 +311,14 @@ class ExecutedSurvey extends amplify_core.Model {
           .toList()
         : null,
       _schemeVersion = (json['schemeVersion'] as num?)?.toInt(),
+      _useForAnalytics = json['useForAnalytics'],
       _createdAt = json['createdAt'] != null ? amplify_core.TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? amplify_core.TemporalDateTime.fromString(json['updatedAt']) : null,
       _executedSurveySurveyId = json['executedSurveySurveyId'],
       _executedSurveyWhoExecutedItId = json['executedSurveyWhoExecutedItId'];
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'appliedIntervention': _appliedIntervention?.toJson(), 'survey': _survey?.toJson(), 'surveyID': _surveyID, 'whoExecutedIt': _whoExecutedIt?.toJson(), 'date': _date?.format(), 'location': _location?.toJson(), 'answers': _answers?.map((QuestionAnswer? e) => e?.toJson()).toList(), 'schemeVersion': _schemeVersion, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'executedSurveySurveyId': _executedSurveySurveyId, 'executedSurveyWhoExecutedItId': _executedSurveyWhoExecutedItId
+    'id': id, 'appliedIntervention': _appliedIntervention?.toJson(), 'survey': _survey?.toJson(), 'surveyID': _surveyID, 'whoExecutedIt': _whoExecutedIt?.toJson(), 'date': _date?.format(), 'location': _location?.toJson(), 'answers': _answers?.map((QuestionAnswer? e) => e?.toJson()).toList(), 'schemeVersion': _schemeVersion, 'useForAnalytics': _useForAnalytics, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'executedSurveySurveyId': _executedSurveySurveyId, 'executedSurveyWhoExecutedItId': _executedSurveyWhoExecutedItId
   };
   
   Map<String, Object?> toMap() => {
@@ -319,6 +331,7 @@ class ExecutedSurvey extends amplify_core.Model {
     'location': _location,
     'answers': _answers,
     'schemeVersion': _schemeVersion,
+    'useForAnalytics': _useForAnalytics,
     'createdAt': _createdAt,
     'updatedAt': _updatedAt,
     'executedSurveySurveyId': _executedSurveySurveyId,
@@ -341,6 +354,7 @@ class ExecutedSurvey extends amplify_core.Model {
   static final LOCATION = amplify_core.QueryField(fieldName: "location");
   static final ANSWERS = amplify_core.QueryField(fieldName: "answers");
   static final SCHEMEVERSION = amplify_core.QueryField(fieldName: "schemeVersion");
+  static final USEFORANALYTICS = amplify_core.QueryField(fieldName: "useForAnalytics");
   static final EXECUTEDSURVEYSURVEYID = amplify_core.QueryField(fieldName: "executedSurveySurveyId");
   static final EXECUTEDSURVEYWHOEXECUTEDITID = amplify_core.QueryField(fieldName: "executedSurveyWhoExecutedItId");
   static var schema = amplify_core.Model.defineSchema(define: (amplify_core.ModelSchemaDefinition modelSchemaDefinition) {
@@ -426,6 +440,12 @@ class ExecutedSurvey extends amplify_core.Model {
       key: ExecutedSurvey.SCHEMEVERSION,
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.int)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.field(
+      key: ExecutedSurvey.USEFORANALYTICS,
+      isRequired: false,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.bool)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.nonQueryField(

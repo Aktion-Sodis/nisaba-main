@@ -6,11 +6,9 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-pandas = "==2.2.2"
-numpy = "==1.26.4"
-XlsxWriter = "==3.2.0"
+XlsxWriter = "*"
 requests = "*"
-boto3 = "*"
+aiohttp = "*"
 
 [requires]
 python_version = "3.10"
