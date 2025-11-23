@@ -14,10 +14,16 @@
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.229.0",
     "@aws-sdk/client-lambda": "^3.229.0",
+    "@aws-sdk/client-s3": "^3.229.0",
     "@aws-sdk/credential-provider-env": "^3.229.0",
+    "@aws-sdk/credential-provider-node": "^3.229.0",
+    "@aws-sdk/protocol-http": "^3.229.0",
+    "@aws-sdk/signature-v4": "^3.229.0",
+    "@aws-crypto/sha256-js": "^3.0.0",
     "aws-amplify": "^5.0.5",
     "aws-sdk": "^2.1274.0",
     "dotenv": "^16.0.3",
+    "node-fetch": "^2.7.0",
     "uuid": "^9.0.0",
     "voca": "^1.4.0"
   },

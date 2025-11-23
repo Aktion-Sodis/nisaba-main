@@ -1527,7 +1527,10 @@ class SurveyWidgetState extends State<SurveyWidget> {
       List<Map<String, dynamic>> toSet = [];
       for (var element in entity.appliedInterventions) {
         for (Survey survey in element.intervention.surveys) {
-          toSet.add({"appliedIntervention": element, "survey": survey});
+          // Only show ACTIVE surveys
+          if (survey.status == SurveyStatus.ACTIVE) {
+            toSet.add({"appliedIntervention": element, "survey": survey});
+          }
         }
       }
       setState(() {

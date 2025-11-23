@@ -24,7 +24,7 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
 
     final classElement = element as ClassElement;
 
-    String name = classElement.name;
+    String name = classElement.name ?? '';
 
     Map<String, dynamic> map = _translateClassElement(classElement);
     String stringMap = jsonEncode(map);
@@ -47,11 +47,12 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
   }
 
   ElementAnnotation? _getDBModelAnnotation(ClassElement classElement) {
-    if (classElement.metadata.isEmpty) {
+    final metadataList = classElement.metadata.annotations;
+    if (metadataList.isEmpty) {
       return null;
     }
     List<ElementAnnotation> annotationList =
-        classElement.metadata.where((element) {
+        metadataList.where((element) {
       Element? elementElement = element.element;
 
       if (elementElement != null && elementElement is ConstructorElement) {
@@ -71,13 +72,14 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
 
   ElementAnnotation? _getAnnotation(
       FieldElement fieldElement, String annotationName) {
-    if (fieldElement.metadata.isEmpty) {
+    final metadataList = fieldElement.metadata.annotations;
+    if (metadataList.isEmpty) {
       return null;
     }
 
     try {
       ElementAnnotation? annotation =
-          fieldElement.metadata.firstWhere((element) {
+          metadataList.firstWhere((element) {
         Element? elementElement = element.element;
 
         if (elementElement != null && elementElement is ConstructorElement) {
@@ -133,7 +135,7 @@ class DBModelGenerator extends GeneratorForAnnotation<DBModelAnnotation> {
   }
 
   String _getName(FieldElement element) {
-    return element.name;
+    return element.name ?? '';
   }
 
   Map<String, dynamic> _translateClassElement(ClassElement classElement) {

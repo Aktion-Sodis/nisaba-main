@@ -50,6 +50,7 @@ class ExecutedSurvey extends DBModel {
 
   Location? location;
   late List<QuestionAnswer> answers;
+  bool? useForAnalytics;
 
   ExecutedSurvey({
     String? id,
@@ -59,6 +60,7 @@ class ExecutedSurvey extends DBModel {
     required DateTime date,
     this.location,
     required this.answers,
+    this.useForAnalytics,
   }) : super(id) {
     this.date = date;
   }
@@ -81,6 +83,7 @@ class ExecutedSurvey extends DBModel {
           date == other.date &&
           location == other.location &&
           listEquals(answers, other.answers) &&
+          useForAnalytics == other.useForAnalytics &&
           id == other.id;
     } else {
       return false;

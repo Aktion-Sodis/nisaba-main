@@ -304,18 +304,19 @@ class AsyncAnalyticsHandler:
             return None
     
     def _get_audio_path(self, answer, organization_id, applied_intervention_id, executed_survey_id, question_id):
+        # Note: applied_intervention_id is kept for backward compatibility but no longer used in path
         return self._generate_file_path(None, organization_id, applied_intervention_id, executed_survey_id, question_id, "audio")
     
     def _get_picture_path(self, answer, organization_id, applied_intervention_id, executed_survey_id, question_id):
+        # Note: applied_intervention_id is kept for backward compatibility but no longer used in path
         return self._generate_file_path(None, organization_id, applied_intervention_id, executed_survey_id, question_id, "picture")
     
     def _generate_file_path(self, file_data, organization_id, applied_intervention_id, executed_survey_id, question_id, file_type):
-        if not all([organization_id, applied_intervention_id, executed_survey_id, question_id]):
+        # Note: applied_intervention_id is optional - kept for backward compatibility but not used in path generation
+        if not all([organization_id, executed_survey_id, question_id]):
             missing_fields = []
             if not organization_id:
                 missing_fields.append("organization_id")
-            if not applied_intervention_id:
-                missing_fields.append("applied_intervention_id")
             if not executed_survey_id:
                 missing_fields.append("executed_survey_id")
             if not question_id:
@@ -325,17 +326,18 @@ class AsyncAnalyticsHandler:
             return None
         
         try:
+            # Pass None for applied_intervention_id since it's no longer used in path
             if file_type == "audio":
                 return get_question_answer_audio_path(
                     organization_id, 
-                    applied_intervention_id, 
+                    None,  # applied_intervention_id no longer used
                     executed_survey_id, 
                     question_id
                 )
             elif file_type == "picture":
                 return get_question_answer_pic_path(
                     organization_id, 
-                    applied_intervention_id, 
+                    None,  # applied_intervention_id no longer used
                     executed_survey_id, 
                     question_id
                 )

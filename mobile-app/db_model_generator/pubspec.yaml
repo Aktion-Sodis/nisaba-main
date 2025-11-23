@@ -11,9 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
   build_runner: ^2.4.15
-  source_gen: ^2.0.0
-  build: ^2.4.1
-  analyzer: ^6.4.1
+  source_gen: ^4.1.1
+  build: ^3.0.0
+  analyzer: ">=8.1.1 <10.0.0"
 
 dev_dependencies:
   flutter_test:

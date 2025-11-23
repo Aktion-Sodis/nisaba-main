@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 
 Future<ThemeData> getThemeData() async {
   return ThemeData(
-
-    cardTheme: const CardTheme(
-        color: Colors.white,
-        shadowColor: Colors.grey,
-        elevation: 3,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(8)))),
+    cardTheme: const CardThemeData(
+      color: Colors.white,
+      shadowColor: Colors.grey,
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+      ),
+    ),
     colorScheme: const ColorScheme(
-        primary: Colors.blue,
-        //primaryVariant: Colors.blueAccent,
-        secondary: Colors.green,
+      primary: Colors.blue,
+      //primaryVariant: Colors.blueAccent,
+      secondary: Colors.green,
         //secondaryVariant: Colors.lightGreen,
         surface: Colors.white,
         error: Colors.red,

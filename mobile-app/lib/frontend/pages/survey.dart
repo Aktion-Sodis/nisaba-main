@@ -1419,7 +1419,8 @@ class SurveyWidgetState extends State<SurveyWidget> {
         executedSurveySurveyId: survey.id,
         executedSurveyWhoExecutedItId: userState.user!.id,
         date: DateTime.now(),
-        answers: surveyAnswersAsList)
+        answers: surveyAnswersAsList,
+        useForAnalytics: true)
       ..appliedIntervention = surveyState.appliedIntervention
       ..survey = survey
       ..whoExecutedIt = userState.user!;
