@@ -156,12 +156,31 @@ async function migrateS3Paths() {
 }
 
 async function migrateSurveyFiles(organizationId) {
+  // Custom query to include questionOptions for complete file migration
+  const listSurveysWithQuestionOptions = `
+    query ListSurveys($filter: ModelSurveyFilterInput, $limit: Int, $nextToken: String) {
+      listSurveys(filter: $filter, limit: $limit, nextToken: $nextToken) {
+        items {
+          id
+          interventionSurveysId
+          questions {
+            id
+            questionOptions {
+              id
+            }
+          }
+        }
+        nextToken
+      }
+    }
+  `;
+
   let nextToken = null;
   let totalMoved = 0;
   let totalSkipped = 0;
   
   do {
-    const response = await makeSignedRequest(queries.listSurveys, {
+    const response = await makeSignedRequest(listSurveysWithQuestionOptions, {
       filter: {
         organization_id: { eq: organizationId }
       },
@@ -200,8 +219,6 @@ async function migrateSurveyFiles(organizationId) {
           else if (questionPicResult === 'skipped') totalSkipped++;
           
           // Question option pictures
-          // Note: questionOptions may not be included in the listSurveys query response
-          // If they're not available, option files will be skipped (they don't exist in the response)
           if (question.questionOptions && question.questionOptions.length > 0) {
             for (const option of question.questionOptions) {
               const oldOptionPicPath = `organization/${organizationId}/interventionFiles/${interventionId}/surveyFiles/${survey.id}/questionFiles/${question.id}/optionFiles/${option.id}/pic.png`;

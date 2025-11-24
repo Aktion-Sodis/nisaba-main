@@ -19,7 +19,7 @@ class SessionCubit extends Cubit<SessionState> {
 
   void attemptAutoLogin() async {
     try {
-      final userId = await authRepo.attemptAutoLogin();
+      final userId= await authRepo.attemptAutoLogin();
       if (userId != null) {
         await _initializeSession(userId);
       } else {

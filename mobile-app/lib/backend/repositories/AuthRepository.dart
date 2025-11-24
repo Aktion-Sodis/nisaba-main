@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_app/backend/database/db_implementations/remote_db/DBExceptions.dart';
 import 'package:mobile_app/backend/database/db_implementations/synced_db/SyncedDB.dart';
 import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/backend/repositories/UserRepository.dart';
@@ -206,6 +207,25 @@ class AuthRepository {
     if (_sessionInitialized) return null;
     
     try {
+      bool internetconnection = false;
+      try {
+        final result = await InternetAddress.lookup('google.com');
+        if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+          internetconnection = true;
+        }
+      } on SocketException catch (_) {
+        internetconnection = false;
+      }
+      if (!internetconnection) {
+        print('performing offline login');
+        User? user = LocalDataRepository.instance.user;
+        if (user != null) {
+          _sessionInitialized = true;
+          return user;
+        }
+        throw NoConnectionException();
+      }
+
       // 1. Initialize GraphQL client
       ConfigGraphQL().initClient();
       
@@ -237,9 +257,18 @@ class AuthRepository {
       
       return user;
     } catch (e) {
-      print('Error in initSession: $e');
-      _sessionInitialized = false;
-      rethrow;
+      if (e is NetworkException || e is NoConnectionException) {
+        User? user = LocalDataRepository.instance.user;
+        if (user != null) {
+          _sessionInitialized = true;
+          return user;
+        }
+        rethrow;
+      } else {
+        print('Error in initSession: $e');
+        _sessionInitialized = false;
+        rethrow;
+      }
     }
   }
 

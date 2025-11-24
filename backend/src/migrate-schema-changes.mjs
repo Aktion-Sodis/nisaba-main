@@ -94,6 +94,7 @@ async function getAllOrganizations() {
  * Migration script to add new schema fields:
  * 1. Add 'status' field to Survey records (default: "ACTIVE")
  * 2. Add 'useForAnalytics' field to ExecutedSurvey records (default: true)
+ * 3. Add 'surveyID' field to ExecutedSurvey records (from executedSurveySurveyId)
  */
 async function migrateSchemaChanges() {
   console.log('=== Fetching all organizations ===');
@@ -118,8 +119,12 @@ async function migrateSchemaChanges() {
       await migrateSurveys(org.id);
       
       // 2. Migrate ExecutedSurvey records - add 'useForAnalytics' field
-      console.log('  === Migrating ExecutedSurvey records ===');
-      await migrateExecutedSurveys(org.id);
+      console.log('  === Migrating ExecutedSurvey records (useForAnalytics) ===');
+      await migrateExecutedSurveysUseForAnalytics(org.id);
+      
+      // 3. Migrate ExecutedSurvey records - add 'surveyID' field
+      console.log('  === Migrating ExecutedSurvey records (surveyID) ===');
+      await migrateExecutedSurveysSurveyID(org.id);
       
       totalOrgsProcessed++;
       console.log(`  ✅ Organization ${org.id} migration completed`);
@@ -199,7 +204,7 @@ async function migrateSurveys(organizationId) {
   console.log(`    Summary: ${totalUpdated} updated, ${totalSkipped} skipped`);
 }
 
-async function migrateExecutedSurveys(organizationId) {
+async function migrateExecutedSurveysUseForAnalytics(organizationId) {
   // Modified query to include useForAnalytics field
   const listExecutedSurveysWithUseForAnalytics = `
     query ListExecutedSurveys($filter: ModelExecutedSurveyFilterInput, $limit: Int, $nextToken: String) {
@@ -253,6 +258,81 @@ async function migrateExecutedSurveys(organizationId) {
           input: updateInput
         });
         console.log(`    ✅ Updated ExecutedSurvey ${executedSurvey.id}: added useForAnalytics=true`);
+        totalUpdated++;
+      }
+    }
+  } while (nextToken);
+  
+  console.log(`    Summary: ${totalUpdated} updated, ${totalSkipped} skipped`);
+}
+
+async function migrateExecutedSurveysSurveyID(organizationId) {
+  // Modified query to include surveyID and executedSurveySurveyId fields
+  const listExecutedSurveysWithSurveyID = `
+    query ListExecutedSurveys($filter: ModelExecutedSurveyFilterInput, $limit: Int, $nextToken: String) {
+      listExecutedSurveys(filter: $filter, limit: $limit, nextToken: $nextToken) {
+        items {
+          id
+          surveyID
+          executedSurveySurveyId
+          survey {
+            id
+          }
+          _version
+        }
+        nextToken
+      }
+    }
+  `;
+
+  let nextToken = null;
+  let totalUpdated = 0;
+  let totalSkipped = 0;
+  
+  do {
+    const response = await makeSignedRequest(listExecutedSurveysWithSurveyID, {
+      filter: {
+        organization_id: { eq: organizationId }
+      },
+      limit: 100,
+      nextToken: nextToken
+    });
+    
+    const executedSurveys = response.listExecutedSurveys.items;
+    nextToken = response.listExecutedSurveys.nextToken;
+    
+    for (const executedSurvey of executedSurveys) {
+      // Get survey ID from executedSurveySurveyId or survey.id
+      const surveyId = executedSurvey.executedSurveySurveyId || executedSurvey.survey?.id;
+      
+      if (!surveyId) {
+        console.log(`    ⚠️  ExecutedSurvey ${executedSurvey.id} has no survey ID - skipping`);
+        totalSkipped++;
+        continue;
+      }
+      
+      // Check if executedSurvey already has surveyID field set correctly
+      if (executedSurvey.surveyID === surveyId) {
+        console.log(`    ExecutedSurvey ${executedSurvey.id} already has surveyID: ${executedSurvey.surveyID} - skipping`);
+        totalSkipped++;
+        continue;
+      }
+      
+      // Set surveyID to the survey ID
+      const updateInput = {
+        id: executedSurvey.id,
+        surveyID: surveyId,
+        _version: executedSurvey._version || 1
+      };
+      
+      if (dryRun) {
+        console.log(`    [DRY RUN] Would update ExecutedSurvey ${executedSurvey.id}: set surveyID="${surveyId}"`);
+        totalUpdated++;
+      } else {
+        await makeSignedRequest(mutations.updateExecutedSurvey, {
+          input: updateInput
+        });
+        console.log(`    ✅ Updated ExecutedSurvey ${executedSurvey.id}: set surveyID="${surveyId}"`);
         totalUpdated++;
       }
     }
