@@ -628,7 +628,6 @@ class SurveyWidgetState extends State<SurveyWidget> {
                   date: DateTime.now(),
                   type: question.type);
             }
-            sF.key = ValueKey(DateTime.now().toIso8601String());
             setState(() {
               print('now setting state again');
               picAndAudioAnswerFiles[question.id] = sF;
@@ -1663,19 +1662,18 @@ class _AudioPlayerWidgetFromSyncFileState
 
   @override
   void initState() {
-    print("reinitializing image widget");
-    widget.syncedFile?.file().then((value) async {
-      audioFile = value;
-      if (mounted) {
-        setState(() {
-          audioFile = audioFile;
-          loading = false;
-        });
-      } else {
-        audioFile = audioFile;
+    print("reinitializing audio widget");
+    super.initState();
+    loadAudioFile();
+  }
+
+  void loadAudioFile() async {
+    audioFile = await widget.syncedFile?.file();
+    if (mounted) {
+      setState(() {
         loading = false;
-      }
-    });
+      });
+    }
   }
 
   bool _isPlaying = false;

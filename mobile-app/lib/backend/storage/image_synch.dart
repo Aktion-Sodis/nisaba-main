@@ -18,41 +18,43 @@ class SyncedFile {
 
   Future<File?> file() async {
     File localCacheFile = await getCachePath();
-    bool cached = await localCacheFile.exists();
-    if (!cached) {
-      print("file not in cache, loading it");
-      await StorageRepository.downloadFile(localCacheFile, path);
+    bool initiallyCached = await localCacheFile.exists();
+    if (!initiallyCached) {
+      try {
+        print("file not in cache, loading it");
+        await StorageRepository.downloadFile(localCacheFile, path);
+        key = ValueKey(DateTime.now().toIso8601String());
+        print("download finished: $key");
+      }
+      catch(e) {
+        print("error downloading file: $e");
+      }
     } else {
       print("found in cache: $path");
     }
 
-    cached = await localCacheFile.exists();
+    bool cached = await localCacheFile.exists();
 
     if (!cached) {
       print('not found file: return null');
       return null;
     }
-    key = ValueKey(DateTime.now().toIso8601String());
-    print("returning file: $key");
+    
+    // Only update key if file was successfully loaded and this is the first time
+    if (!initiallyCached) {
+      key = ValueKey(DateTime.now().toIso8601String());
+      print("returning file: $key");
+    }
     return localCacheFile;
   }
 
   Future<File> getCachePath() async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
-    List<String> pathParts = path.split("/");
-    pathParts.removeAt(pathParts.length - 1);
-    String toCreateDir = "";
-    for (int i = 0; i < pathParts.length; i++) {
-      toCreateDir += pathParts[i];
-      if (i != pathParts.length - 1) {
-        toCreateDir += "/";
-      }
+    File targetFile = File('${appDocDir.path}/$path');
+    if (!targetFile.parent.existsSync()) {
+      targetFile.parent.createSync(recursive: true);
     }
-    await Directory("${appDocDir.path}/$toCreateDir").create(recursive: true);
-    File localCacheFile = File('${appDocDir.path}/$path');
-    key = ValueKey(DateTime.now().toIso8601String());
-    //print("returning cache path: $key");
-    return localCacheFile;
+    return targetFile;
   }
 
   Future<void> update(String utf8String) async {
@@ -69,7 +71,7 @@ class SyncedFile {
     key = ValueKey(DateTime.now().toIso8601String());
     StorageRepository.uploadFile(localCacheFile, path);
     print("pic update finished: $key");
-    return await getCachePath();
+    return localCacheFile;
   }
 
   Future<File?> updateAsPic(XFile xfile) async {
@@ -79,17 +81,16 @@ class SyncedFile {
     key = ValueKey(DateTime.now().toIso8601String());
     print("pic update finished: $key");
     StorageRepository.uploadFile(localCacheFile, path);
-    var tR = await getCachePath();
-    key = ValueKey(DateTime.now().toIso8601String());
-    return tR;
+    return localCacheFile;
   }
 
   Future<File?> updateAsAudio(File file) async {
     File localCacheFile = await getCachePath();
     await localCacheFile.writeAsBytes(file.readAsBytesSync(), flush: true);
-    StorageRepository.uploadFile(localCacheFile, path);
     key = ValueKey(DateTime.now().toIso8601String());
-    return await getCachePath();
+    print("audio update finished: $key");
+    StorageRepository.uploadFile(localCacheFile, path);
+    return localCacheFile;
   }
 
   Future<void> delete() async {
@@ -97,6 +98,7 @@ class SyncedFile {
     await localCacheFile.delete();
     await StorageRepository.removeFile(path);
     key = ValueKey(DateTime.now().toIso8601String());
+    print("delete finished: $key");
   }
 
   Future<bool> sync(SyncBloc syncBloc, {bool onlyUpload = false}) async {
@@ -107,6 +109,8 @@ class SyncedFile {
         if (!onlyUpload) {
           await StorageRepository.downloadFile(localCacheFile, path,
               checkConnection: false);
+          key = ValueKey(DateTime.now().toIso8601String());
+          print("download finished: $key");
         }
       } else {
         StorageListResult listResult = await Amplify.Storage.list(path: StoragePath.fromString(path)).result;
@@ -125,12 +129,16 @@ class SyncedFile {
           } else if (lastModifiedLocal == null) {
             await StorageRepository.downloadFile(localCacheFile, path,
                 checkConnection: false, lastModifiedOnline: lastModifiedOnline);
+            key = ValueKey(DateTime.now().toIso8601String());
+            print("download finished: $key");
           } else if (lastModifiedLocal.isAfter(lastModifiedOnline)) {
             await StorageRepository.uploadFile(localCacheFile, path,
                 checkConnection: false);
           } else if (lastModifiedLocal.isBefore(lastModifiedOnline)) {
             await StorageRepository.downloadFile(localCacheFile, path,
                 checkConnection: false, lastModifiedOnline: lastModifiedOnline);
+            key = ValueKey(DateTime.now().toIso8601String());
+            print("download finished: $key");
           }
         }
       }

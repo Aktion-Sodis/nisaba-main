@@ -13,7 +13,6 @@ import 'package:mobile_app/backend/Blocs/request_permissions/request_permissions
 import 'package:mobile_app/backend/Blocs/session/session_cubit.dart';
 import 'package:mobile_app/backend/repositories/LocalDataRepository.dart';
 import 'package:mobile_app/backend/repositories/UserRepository.dart';
-import 'package:mobile_app/frontend/components/hive_db_initializer.dart';
 import 'package:mobile_app/frontend/pages/permissions_checker.dart';
 import 'package:mobile_app/frontend/pages/wifi_only_setting_checker.dart';
 import 'package:mobile_app/frontend/theme.dart';
@@ -86,8 +85,7 @@ class MyAppState extends State<MyApp> {
             ? const Center(child: CircularProgressIndicator())
             : WillPopScope(
                 onWillPop: () => Future.value(false),
-                child: HiveDBInitializer(
-                  child: MultiRepositoryProvider(
+                child: MultiRepositoryProvider(
                     providers: [
                       RepositoryProvider(create: (context) => AuthRepository()),
                       RepositoryProvider(
@@ -114,7 +112,6 @@ class MyAppState extends State<MyApp> {
                         );
                       }),
                     ),
-                  ),
-                )));
+                  )));
   }
 }
