@@ -41,6 +41,7 @@ class ExecutedSurvey extends DBModel {
   String appliedInterventionExecutedSurveysId;
   String executedSurveySurveyId;
   String executedSurveyWhoExecutedItId;
+  String? surveyID;
 
   // Has to be UTC
   @JsonKey(
@@ -57,6 +58,7 @@ class ExecutedSurvey extends DBModel {
     required this.appliedInterventionExecutedSurveysId,
     required this.executedSurveySurveyId,
     required this.executedSurveyWhoExecutedItId,
+    this.surveyID,
     required DateTime date,
     this.location,
     required this.answers,
