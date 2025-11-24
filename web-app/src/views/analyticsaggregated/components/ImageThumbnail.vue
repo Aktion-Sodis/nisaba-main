@@ -7,19 +7,12 @@
     <div v-else-if="error" class="text-sm text-red-500">
       {{ error }}
     </div>
-    <div v-else-if="imageUrl" class="flex items-center gap-2">
-      <img
+    <div v-else-if="imageUrl" class="flex items-center gap-2 py-2">
+      <Image
         :src="imageUrl"
         :alt="$t('analytics_aggregated.image_responses.image_alt')"
-        class="w-16 h-16 object-cover rounded border cursor-pointer hover:opacity-80 transition-opacity"
-        @click="handleClick"
-      />
-      <Button
-        :label="$t('analytics_aggregated.image_responses.view_full')"
-        icon="pi pi-external-link"
-        size="small"
-        text
-        @click="handleClick"
+        preview
+        class="w-16 h-16 object-cover rounded border cursor-pointer"
       />
     </div>
     <span v-else class="text-sm text-surface-500">
@@ -39,10 +32,6 @@ const props = defineProps<{
   filePath: string;
 }>();
 
-const emit = defineEmits<{
-  click: [imageUrl: string];
-}>();
-
 const imageUrl = ref<string | null>(null);
 const isLoading = ref(true);
 const error = ref<string | null>(null);
@@ -58,12 +47,6 @@ const loadImageUrl = async (filePath: string) => {
     console.error('Error loading image:', err);
   } finally {
     isLoading.value = false;
-  }
-};
-
-const handleClick = () => {
-  if (imageUrl.value) {
-    emit('click', imageUrl.value);
   }
 };
 

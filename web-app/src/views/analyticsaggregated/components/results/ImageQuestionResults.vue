@@ -112,13 +112,10 @@
           <template #body="{ data }">
             <div
               v-if="data.answer_value && data.answer_value.length > 0"
-              class="flex items-center gap-2"
+              class="flex items-center gap-2 py-2"
             >
               <div v-if="fileExistsMap[data.answer_value] === true">
-                <image-thumbnail
-                  :file-path="data.answer_value"
-                  @click="openImageModal"
-                />
+                <image-thumbnail :file-path="data.answer_value" />
               </div>
               <span
                 v-else-if="fileExistsMap[data.answer_value] === false"
@@ -155,10 +152,11 @@
       :style="{ width: '90vw', maxWidth: '800px' }"
     >
       <div class="flex justify-center">
-        <img
+        <Image
           v-if="selectedImageUrl"
           :src="selectedImageUrl"
           :alt="$t('analytics_aggregated.image_responses.image_alt')"
+          preview
           class="max-w-full max-h-[70vh] object-contain rounded"
         />
       </div>
@@ -191,7 +189,7 @@ const imageResponses = computed(() => {
   // Filter for image files and show responses that have image files
   return props.questionData.raw_data.file_paths
     .filter(
-      (file) => file.file_type === 'image' && file.path && file.path.length > 0
+      (file) => file.file_type === 'picture' && file.path && file.path.length > 0
     )
     .map((file) => ({
       entity_name: file.entity?.languageTexts?.[0] || null,

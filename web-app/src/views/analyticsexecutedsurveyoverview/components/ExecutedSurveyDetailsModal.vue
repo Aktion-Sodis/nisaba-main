@@ -63,6 +63,7 @@
                   getFileExists(executedSurvey.id, question.id, 'AUDIO') ===
                   true
                 "
+                class="py-2"
               >
                 <audio-player
                   :file-path="
@@ -95,6 +96,7 @@
                   getFileExists(executedSurvey.id, question.id, 'PICTURE') ===
                   true
                 "
+                class="py-2"
               >
                 <image-thumbnail
                   :file-path="

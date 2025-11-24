@@ -11,7 +11,7 @@
       v-else-if="audioUrl"
       :src="audioUrl"
       controls
-      preload="none"
+      preload="metadata"
       class="max-w-xs"
     >
       {{ $t('analytics_aggregated.audio_responses.browser_not_supported') }}
@@ -29,7 +29,7 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-defineProps<{
+const props = defineProps<{
   filePath: string;
 }>();
 
@@ -52,7 +52,6 @@ const loadAudioUrl = async (filePath: string) => {
 };
 
 onMounted(() => {
-  const props = defineProps<{ filePath: string }>();
   loadAudioUrl(props.filePath);
 });
 </script>

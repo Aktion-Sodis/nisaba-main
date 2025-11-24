@@ -30,6 +30,7 @@ import FileUpload from 'primevue/fileupload';
 import FloatLabel from 'primevue/floatlabel';
 import Galleria from 'primevue/galleria';
 import IconField from 'primevue/iconfield';
+import Image from 'primevue/image';
 import InputGroup from 'primevue/inputgroup';
 import InputGroupAddon from 'primevue/inputgroupaddon';
 import InputIcon from 'primevue/inputicon';
@@ -117,6 +118,7 @@ export default {
     app.component('InputText', InputText);
     app.component('InputSwitch', InputSwitch);
     app.component('IconField', IconField);
+    app.component('Image', Image);
     app.component('InputIcon', InputIcon);
     app.component('Knob', Knob);
     app.component('Menu', Menu);
