@@ -2,8 +2,11 @@ import { fetchAuthSession } from '@aws-amplify/auth';
 import { Amplify } from 'aws-amplify';
 import { createPinia } from 'pinia';
 import { createApp } from 'vue';
+// Import material-symbols CSS - must be imported before other CSS to ensure it's included in build
+// Using outlined.css instead of index.css to reduce bundle size (only outlined icons are used)
+import 'material-symbols/outlined.css';
+// Import primeicons CSS - must be imported before other CSS to ensure it's included in build
 import 'primeicons/primeicons.css';
-import 'material-symbols';
 
 import config from './amplifyconfiguration.json';
 import primeVuePlugin from './plugins/primevue';

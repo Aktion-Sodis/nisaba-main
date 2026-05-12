@@ -12,8 +12,7 @@ export type AmplifyDependentResourcesAttributes = {
     },
     "apinisaba": {
       "GraphQLAPIEndpointOutput": "string",
-      "GraphQLAPIIdOutput": "string",
-      "GraphQLAPIKeyOutput": "string"
+      "GraphQLAPIIdOutput": "string"
     },
     "nisabaUserManagementApi": {
       "ApiId": "string",
@@ -55,20 +54,6 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     },
     "authnisabaPreTokenGeneration": {
-      "Arn": "string",
-      "LambdaExecutionRole": "string",
-      "LambdaExecutionRoleArn": "string",
-      "Name": "string",
-      "Region": "string"
-    },
-    "createDefaultsForTesting": {
-      "Arn": "string",
-      "LambdaExecutionRole": "string",
-      "LambdaExecutionRoleArn": "string",
-      "Name": "string",
-      "Region": "string"
-    },
-    "migrateSurveyStatus": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",

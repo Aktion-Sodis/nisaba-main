@@ -11,6 +11,10 @@ export default defineConfig({
       primeicons: path.resolve(__dirname, './node_modules/primeicons'),
     },
   },
+  build: {
+    cssCodeSplit: false,
+    assetsInlineLimit: 0,
+  },
   server: {
     port: 3000,
   },

@@ -85,14 +85,6 @@
         "authConfig": {
           "additionalAuthenticationProviders": [
             {
-              "apiKeyConfig": {
-                "apiKeyExpirationDate": "2026-04-18T10:06:09.582Z",
-                "apiKeyExpirationDays": 365,
-                "description": "Nisaba API Key"
-              },
-              "authenticationType": "API_KEY"
-            },
-            {
               "authenticationType": "AWS_IAM"
             }
           ],
@@ -208,8 +200,7 @@
         {
           "attributes": [
             "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput",
-            "GraphQLAPIKeyOutput"
+            "GraphQLAPIEndpointOutput"
           ],
           "category": "api",
           "resourceName": "apinisaba"
@@ -227,38 +218,6 @@
     },
     "authnisabaPreTokenGeneration": {
       "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "createDefaultsForTesting": {
-      "build": true,
-      "dependsOn": [
-        {
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput",
-            "GraphQLAPIKeyOutput"
-          ],
-          "category": "api",
-          "resourceName": "apinisaba"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "migrateSurveyStatus": {
-      "build": true,
-      "dependsOn": [
-        {
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput",
-            "GraphQLAPIKeyOutput"
-          ],
-          "category": "api",
-          "resourceName": "apinisaba"
-        }
-      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -347,38 +306,6 @@
         {
           "category": "function",
           "resourceName": "authnisabaPreTokenGeneration"
-        }
-      ]
-    },
-    "AMPLIFY_function_createDefaultsForTesting_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "createDefaultsForTesting"
-        }
-      ]
-    },
-    "AMPLIFY_function_createDefaultsForTesting_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "createDefaultsForTesting"
-        }
-      ]
-    },
-    "AMPLIFY_function_migrateSurveyStatus_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "migrateSurveyStatus"
-        }
-      ]
-    },
-    "AMPLIFY_function_migrateSurveyStatus_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "migrateSurveyStatus"
         }
       ]
     },

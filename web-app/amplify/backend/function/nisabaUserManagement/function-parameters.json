@@ -15,7 +15,7 @@
       "resourceName": "nisabaAdminSdkLayer",
       "version": "Always choose latest version",
       "isLatestVersionSelected": true,
-      "env": "devtfive"
+      "env": "release"
     }
   ],
   "environmentVariableList": []
